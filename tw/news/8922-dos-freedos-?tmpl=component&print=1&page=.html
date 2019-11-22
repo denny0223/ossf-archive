@@ -1,0 +1,126 @@
+	<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+	<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="zh-tw" lang="zh-tw" >
+		<head>
+			  <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+  <meta name="robots" content="noindex, nofollow" />
+  <meta name="keywords" content="OSSFNL823" />
+  <meta name="title" content="開發者訪談：DOS 已死，FreeDOS 永存" />
+  <meta name="description" content="許多 30 歲以下的人可能從未見過 'C:\>'，更不用提 'A:\>' 了。然而雖然對微軟而言，DOS 在 Windows 95 之後幾乎已成為過去，但這卻不是該作業系統的終點。MS-DOS 依然健在，在嵌入式設備如某些產業控制系統中，仍可見到其身影，還可以從微軟的 MSDN 網站上下載。不過微軟淘汰 DOS 的決定卻加速了替代方案的興起。其中最顯眼的，是 FreeDOS，一套採 GPL" />
+  <meta name="generator" content="" />
+  <title>開發者訪談：DOS 已死，FreeDOS 永存</title>
+  <link href="../../favicon.ico" rel="shortcut icon" type="image/x-icon" />
+  <link rel="stylesheet" href="../../components/com_gantry/css/gantry.css" type="text/css" />
+  <link rel="stylesheet" href="../../components/com_gantry/css/grid-12.css" type="text/css" />
+  <link rel="stylesheet" href="../../components/com_gantry/css/joomla.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/joomla.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/style1.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/light-body.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/demo-styles.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/template.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/typography.css" type="text/css" />
+  <style type="text/css">
+    <!--
+#rt-main-surround ul.menu li.active > a, #rt-main-surround ul.menu li.active > .separator, #rt-main-surround ul.menu li.active > .item, #rt-main-surround .square4 ul.menu li:hover > a, #rt-main-surround .square4 ul.menu li:hover > .item, #rt-main-surround .square4 ul.menu li:hover > .separator, .roktabs-links ul li.active span {color:#0088B5;}
+a, #rt-main-surround ul.menu a:hover, #rt-main-surround ul.menu .separator:hover, #rt-main-surround ul.menu .item:hover {color:#0088B5;}
+    -->
+  </style>
+  <script type="text/javascript" src="../../components/com_jcomments/js/jcomments-v2.1.js%3Fv=2"></script>
+  <script type="text/javascript" src="../../components/com_jcomments/libraries/joomlatune/ajax.js"></script>
+  <script type="text/javascript" src="../../media/system/js/mootools.js"></script>
+  <script type="text/javascript" src="../../media/system/js/caption.js"></script>
+  <script type="text/javascript" src="../../components/com_gantry/js/gantry-buildspans.js"></script>
+  <script type="text/javascript" src="../../components/com_gantry/js/gantry-inputs.js"></script>
+  <script type="text/javascript">
+
+			window.addEvent('domready', function() {
+				var modules = ['rt-block'];
+				var header = ['h3','h2','h1'];
+				GantryBuildSpans(modules, header);
+			});
+		InputsExclusion.push('.content_vote','#rt-popup')
+  </script>
+		</head>
+		<body  class="backgroundlevel-low backgroundstyle-style8 bodylevel-med bodystyle-light cssstyle-style1 logostyle-dark font-family-helvetica font-size-is-default menu-type-fusionmenu col12 ">
+			<div id="rt-main-surround">
+				<div class="rt-container">
+					<div class="rt-block">
+						<div id="rt-mainbody">
+					    	
+<div class="rt-joomla ">
+	<div class="rt-article">
+		
+				<div class="rt-headline"><h1 class="rt-article-title">開發者訪談：DOS 已死，FreeDOS 永存</h1>		</div>
+		<div class="clear"></div>
+		
+		
+		
+				<div class="rt-articleinfo">
+						<div class="rt-article-icons">
+				<a href="8922-dos-freedos-%3Ftmpl=component&amp;print=1&amp;page=.html#" onclick="window.print();return false;"><span class="icon print"></span></a>									<span class="icon printscreen">
+						<a href="8922-dos-freedos-%3Ftmpl=component&amp;print=1&amp;page=.html#" onclick="window.print();return false;"><img src="../../images/M_images/printButton.png" alt="列印"  /></a>					</span>
+							</div>
+			
+			<span class="rt-date-posted">
+						建立日期			2013-02-18 15:16						&nbsp;&nbsp;&nbsp;&nbsp;						</span>
+
+						<span class="rt-author">
+				作者是 謝良奇／編譯			</span>
+				
+					</div>
+		
+		
+		<p>許多 30 歲以下的人可能從未見過 <code>"C:\>"</code>，更不用提 <code>"A:\>"</code> 了。然而雖然對微軟而言，DOS 在 Windows 95 之後幾乎已成為過去，但這卻不是該作業系統的終點。MS-DOS 依然健在，在嵌入式設備如某些產業控制系統中，仍可見到其身影，還可以從微軟的 MSDN 網站上下載。不過微軟淘汰 DOS 的決定卻加速了替代方案的興起。其中最顯眼的，是 FreeDOS，一套採 GPL 授權的開放源碼 MS-DOS 相容系統。</p>
+
+<p>對於這許多人認為過於小眾的開放源碼專案，其創立者 Jim Hall 表示，至少從下載數量看來，外界對 FreeDOS 還是有很大的興趣。從去年 1 月 1.1 版釋出後，FreeDOS 的下載數已經超過了 37 萬 9000 次，光是今年 1 月 FreeDOS 1.1 的下載數就超過 3 萬 9000 次。由於這只是該專案網站的下載數量，接觸該系統的實際人數應該更多。不少廠商，像是 ASUS、Dell、HP、Intel、Seagate，都有散佈 FreeDOS 各個版本，或釋出基於 FreeDOS 的產品。</p>
+<p>如今身為 Minnesota Morris 大學 IT 主管的 Hall，在開始 FreeDOS 專案的 1994 年時，只是 Wisconsin-River Falls 大學的一名物理系學生。該年 6 月，他在 comp.os.msdos.apps 新聞群組發表了 PD-DOS 專案公告。Hall 記得他為專案寫了一篇宣言。他下載了一份 GNU 宣言 (GNU Manifesto) 到電腦裡，但是在下載 GNU 的 'manifesto.txt' 檔案並儲存在他的 DOS 電腦時，檔案名稱因為 DOS 的 '8.3' 限制（檔名 8 個字元，副檔名 3 個字元）被改寫為 'manifest.txt'。由於當時他不甚了解宣言 (manifesto) 的意思，就用了改寫後的名稱，因此在他的文章中，宣言就從 'manifesto' 變成了 'manifest'。</p>
+<p>Hall 表示他讀到微軟將在新版 Windows 中揚棄 DOS 的消息。當時微軟正在準備其第一個後 DOS 時代的作業系統 Windows 95。在 1994 年他們使用的是 MS-DOS 與 Windows 3.1，Windows 3.1 雖然不錯，但並非完美，他還是喜歡在 MS-DOS 環境工作，不希望被強制改用 Windows。</p>
+<p>當時 Hall 已經得知 Linux 的存在，1993 年時他使用過 Linux 的早期版本，不過他還是常常使用 MS-DOS 環境。他想到假如一群開發者透過網際網路一同協作，可以複製出像 Unix 那麼複雜的系統，想當然也可以在更為簡單的作業系統如 MS-DOS 上，辦到一樣的事。</p>
+<p>在研究過該作業系統的使用者手冊後，Hall 寫了幾個工具程式以取代 MS-DOS 的基本命令列功能。其他有興趣的開發者也開始加入。Hall 是專案的發起者，也被默認為專案的統籌者，協調所有人的工作並確保擁有共同目標。雖然 Hall 的初衷是 MS-DOS 的公共領域版本 PD-DOS，他和其他成員為確保該系統能維持自由狀態，於是改用 GNU GPL 授權程式碼。</p>
+<p>Hall 表示他們一開始先更名為 Free-DOS，不過之後在 Pat Villani 撰寫其書籍 "FreeDOS Kernel - An MS-DOS Emulator for Platform Independence & Embedded System Development - Master OS Development" 時，又再次地更名，將連字符號丟掉改為 FreeDOS。傳言這是因為 Villani 的編輯器不喜歡連字符。</p>
+<p>從一開始，此一專案的目的實際上就是作為 MS-DOS 的替代品。Hall 認為他們的確做到了。因為用戶完全可以用 FreeDOS 取代 MS-DOS，而整個系統的運作卻毫無差別。由於 MS-DOS 6 之後 DOS 就沒有改變過，達到上述目標並不困難。例如，你可以在 FreeDOS 上跑 1980 或 1990 年代的 DOS 程式，也可以在 FreeDOS 上安裝經典 DOS 遊戲並享受有趣時光。</p>
+<p>從 Hall 的角度看來，該專案的里程碑是他終於能用 FreeDOS 開機，玩 id Software 劃時代的第一人稱射擊遊戲 Doom。FreeDOS 的運用從執行舊 DOS 程式、遊戲，到執行嵌入式系統如收銀機等，以及在個人電腦上用來安裝韌體更新。</p>
+<p>在微軟揚棄 MS-DOS 十多年之後，FreeDOS 依舊維持蓬勃發展一事，許多人或許感到驚訝。Hall 表示，的確他們的開發者人數不如十年前那麼多，但他們優秀的開發者社群，仍持續為 FreeDOS 加入新功能。</p>
+<p>這套系統在 2006 達到第一版，FreeDOS 1.1 則在去年 1 月釋出。Hall 表示對 FreeDOS 1.2 或 FreeDOS 2.0 的未來抱持希望，特別是當他們開始開發 2.0 版時，他希望能從不同的角度看待 FreeDOS，並思考 DOS 的下一步為何。</p>
+<p>對此，他在部落格上丟出許多想法，他問道，如果微軟沒有走向 Windows，DOS 會變成怎麼樣？Hall 想像 FreeDOS '2.0' 會是以 FreeDOS 1.0 為基礎的更現代化版本。但 FreeDOS '3.0' 與之後的版本則應該轉向多工 FreeDOS 模式，並擴充驅動程式支援，特別是網路部分。</p>
+<p>然而，他認為挑戰在於如何演進 FreeDOS 而不改變其基礎。因為 FreeDOS 永遠都是 DOS，必須能夠執行 DOS 程式。畢竟，和舊有應用程式的相容性一直都是 FreeDOS 一大賣點。Hall 表示，用戶應該能夠拿舊 DOS 程式安裝在 FreeDOS 上，並且順利執行。</p>
+<p>該專案開發團隊擁有二十多名一般貢獻者，以及數位非經常性的貢獻者。Hall 表示有興趣的人可以很容易地參與其中，更補充說，重要的是對於自由與開放源碼軟體來說，並不是只有開發者或撰寫程式，才能有所貢獻。像 FreeDOS 這類專案總是需要有人撰寫文件或回答問題、在各種硬體上進行測試。</p>
+<p>Hall 表示對於該社群的偉大成果感到自豪，當他發起 FreeDOS 時，沒想到會有這麼多人參與其中。在這些人當中，他特別提到在 2011 年過世的 FreeDOS 核心創造者 Pat Villani、加入網路與 CD-ROM 支援的 Jim Tabor，以及 FreeDOS 第一個命令列解譯器 FreeCOM 的作者 Tim Norman。</p>
+<p>儘管有不少大公司採用並散佈 FreeDOS，Hall 表示該專案並未收到來自這些公司的正式支援。他說他一直記得該專案初期收到過來自 @microsoft.com 郵件位址的電郵。那不是比爾蓋茨或其他你叫得出名字的人，或許是該公司內的程式設計師，或是名實習生。那個人在電郵裡說 DOS 已經結束了，接下來是 Windows 的時代，他不認為 FreeDOS 能夠撐多久。Hall 說，不過現在是 2013 年了，人們依舊在下載並使用 FreeDOS，所以，我想就是這樣吧。</p>
+<br />
+<h3>相關網址：</h3>
+<ol style="list-style-type: decimal;">
+<li>開發者訪談：DOS 已死，FreeDOS 永存<br /><a href="https://www.computerworld.com.au/article/452826/developer_interview_dos_long_dead_long_live_freedos/" target="_blank">https://www.computerworld.com.au/article/452826/developer_interview_dos_long_dead_long_live_freedos/ </a></li>
+</ol>
+			<!-- Show relate article -->
+				<!-- end -->
+		<div class="article_note">
+		<!-- Add tags use metakey, and show OSSF Newsletter tag: OSSFNL+NUM-->
+		<br><br> <hr style='border: 1px dashed #D2DADB;'><b>自由軟體鑄造場電子報&nbsp;:</b>&nbsp;<a href='../../previous-issue%3Ftask=view&amp;id=823.html'>第 214 期 MyPaint 1.1 新鮮事－老玩具，新東西</a><br>				<!-- End -->
+					<br>
+					<b>分類: </b><a href="../foss-forum.html">				自由專欄					</a>				</div>
+			 <!-- AddThis Button BEGIN ID 3001 is the front page article -->
+     			<br><br>
+       <div class="addthis_toolbox addthis_default_style addthis_32x32_style">
+       <a class="addthis_button_preferred_1"></a>
+       <a class="addthis_button_preferred_2"></a>
+       <a class="addthis_button_preferred_3"></a>
+       <a class="addthis_button_preferred_4"></a>
+       <a class="addthis_button_compact"></a>
+       <a class="addthis_counter addthis_bubble_style"></a>
+       </div>
+       <script type="text/javascript">var addthis_config = {"data_track_clickback":true};</script>
+       <script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js#pubid=openfoundry"></script>
+       <!-- AddThis Button END -->
+     <br>
+		<div class="totop" ><a class="rt-totop" href="8922-dos-freedos-%3Ftmpl=component&amp;print=1&amp;page=.html#" style="outline: medium none;">↑ Top</a></div>
+            <!-- AddThis Button END -->
+
+			</div>
+</div>
+
+						</div>
+					</div>
+				</div>
+			</div>
+		</body>
+	</html>

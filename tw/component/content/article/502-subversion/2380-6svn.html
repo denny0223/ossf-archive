@@ -1,0 +1,386 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="zh-tw" lang="zh-tw" >
+<head>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<link rel="shortcut icon" href="../../../../../images/favicon.ico" />
+	  <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+  <meta name="robots" content="index, follow" />
+  <meta name="keywords" content="propedit,pedit,propget,propdel,merge,mkdir,rename,proplist,switch,unlock,update,大部份的子命令都還有其縮,status,propset,plist,revert,resolved,blame,subcommands,praise" />
+  <meta name="title" content="6.SVN命令一覽" />
+  <meta name="description" content=" 藉由先瀏覽過一次SVN命令的功能，以便在需要時能夠回想，再回頭翻閱書籍。以下就開始介紹： 使用命令列的svn --help指令，便會列出所有的svn子命令。> svn --helpAvailable subcommands: add blame (praise, annotate, ann) cat checkout (co) cleanup commit (ci) copy (cp)" />
+  <meta name="generator" content="" />
+  <title>6.SVN命令一覽 - OpenFoundry</title>
+  <link href="../../../../../favicon.ico" rel="shortcut icon" type="image/x-icon" />
+  <link rel="stylesheet" href="../../../../../components/com_gantry/css/gantry.css" type="text/css" />
+  <link rel="stylesheet" href="../../../../../components/com_gantry/css/grid-12.css" type="text/css" />
+  <link rel="stylesheet" href="../../../../../components/com_gantry/css/joomla.css" type="text/css" />
+  <link rel="stylesheet" href="../../../../../templates/rt_quantive_j15/css/joomla.css" type="text/css" />
+  <link rel="stylesheet" href="../../../../../templates/rt_quantive_j15/css/style1.css" type="text/css" />
+  <link rel="stylesheet" href="../../../../../templates/rt_quantive_j15/css/light-body.css" type="text/css" />
+  <link rel="stylesheet" href="../../../../../templates/rt_quantive_j15/css/demo-styles.css" type="text/css" />
+  <link rel="stylesheet" href="../../../../../templates/rt_quantive_j15/css/template.css" type="text/css" />
+  <link rel="stylesheet" href="../../../../../templates/rt_quantive_j15/css/typography.css" type="text/css" />
+  <link rel="stylesheet" href="../../../../../templates/rt_quantive_j15/css/fusionmenu.css" type="text/css" />
+  <style type="text/css">
+    <!--
+#rt-main-surround ul.menu li.active > a, #rt-main-surround ul.menu li.active > .separator, #rt-main-surround ul.menu li.active > .item, #rt-main-surround .square4 ul.menu li:hover > a, #rt-main-surround .square4 ul.menu li:hover > .item, #rt-main-surround .square4 ul.menu li:hover > .separator, .roktabs-links ul li.active span {color:#0088B5;}
+a, #rt-main-surround ul.menu a:hover, #rt-main-surround ul.menu .separator:hover, #rt-main-surround ul.menu .item:hover {color:#0088B5;}
+    -->
+  </style>
+  <script type="text/javascript" src="../../../../../components/com_jcomments/js/jcomments-v2.1.js%3Fv=2"></script>
+  <script type="text/javascript" src="../../../../../components/com_jcomments/libraries/joomlatune/ajax.js"></script>
+  <script type="text/javascript" src="../../../../../media/system/js/mootools.js"></script>
+  <script type="text/javascript" src="../../../../../media/system/js/caption.js"></script>
+  <script type="text/javascript" src="../../../../../components/com_gantry/js/gantry-buildspans.js"></script>
+  <script type="text/javascript" src="../../../../../components/com_gantry/js/gantry-inputs.js"></script>
+  <script type="text/javascript" src="../../../../../templates/rt_quantive_j15/js/jquery.cookie.js"></script>
+  <script type="text/javascript" src="../../../../../modules/mod_roknavmenu/themes/fusion/js/fusion.js"></script>
+  <script type="text/javascript" src="../../../../../modules/mod_ofssologin/js/ofssologin.js"></script>
+  <script type="text/javascript">
+
+			window.addEvent('domready', function() {
+				var modules = ['rt-block'];
+				var header = ['h3','h2','h1'];
+				GantryBuildSpans(modules, header);
+			});
+		InputsExclusion.push('.content_vote','#rt-popup')
+		        window.addEvent('load', function() {
+					new Fusion('ul.menutop', {
+						pill: 0,
+						effect: 'slide and fade',
+						opacity: 1,
+						hideDelay: 500,
+						centered: 0,
+						tweakInitial: {'x': -2, 'y': 0},
+        				tweakSubsequent: {'x': 0, 'y': -14},
+						menuFx: {duration: 200, transition: Fx.Transitions.Sine.easeOut},
+						pillFx: {duration: 400, transition: Fx.Transitions.Back.easeOut}
+					});
+	            });
+  </script>
+<!-- <script type="text/javascript" src="/sso/javascripts/langsync.js"></script> -->
+<!-- <script src="/templates/rt_quantive_j15/js/ossf.js"></script> -->
+<script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-4136519-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
+</head>
+	<body  class="backgroundlevel-low backgroundstyle-style8 bodylevel-med bodystyle-light cssstyle-style1 logostyle-dark font-family-helvetica font-size-is-default menu-type-fusionmenu col12">
+		<div id="rt-main-background">
+			<div class="rt-container">
+																<div id="rt-header">
+					<div class="rt-grid-7 rt-alpha">
+    			<div class="rt-block">
+    	    	<a href="../../../../../index.html" id="rt-logo"></a>
+    		</div>
+	    
+</div>
+<div class="rt-grid-5 rt-omega">
+                    <div class="square9">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<div class="ofssologin_square9"><a href="../../../../../index.html">登入</a>&nbsp;&nbsp|&nbsp;&nbsp;<span><a href="https://www.openfoundry.org/en/component/content/article/2380-6svn" ><span lang="en" xml:lang="en">English</span></a></li></ul></span><!--Joom!fish V2.0.4 (Lightning)-->
+<!-- &copy; 2003-2009 Think Network, released under the GPL. -->
+<!-- More information: at http://www.joomfish.net -->
+<div class="ofssologin_search_square9">
+  <form id="of_search" action="https://www.openfoundry.org/of/openfoundry/search" method="get" onsubmit="of_search(); return false;">
+    <select id="of_search_type">
+      <option value="Projects"> 專案 </option>
+      <option value="Content"> 文章 </option>
+      <option value="People"> 人才 </option>
+    </select>
+    <input id="query" name="query" id="mod_search_searchword" maxlength="50" alt="search" class="inputbox" type="text" size="28" value="search..."  onblur="if(this.value=='') this.value='search...';" onfocus="if(this.value=='search...') this.value='';" />
+    <input type="hidden" name="commit" value="search" />
+  </form>
+</div></div>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		
+</div>
+					<div class="clear"></div>
+				</div>
+																<div id="rt-navigation"><div id="rt-navigation2"><div id="rt-navigation3">
+					
+<div class="nopill">
+	<ul class="menutop level1 " >
+						<li class="item1 root" >
+					<a class="orphan item bullet" href="../../../../../index.html"  >
+				<span>
+			    				首頁				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item32 root" >
+					<a class="orphan item bullet" href="../../../../../archived.html"  >
+				<span>
+			    				專案				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item186 root" >
+					<a class="orphan item bullet" href="../../../../community.html"  >
+				<span>
+			    				Who&#039;s Who				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item4 root" >
+					<a class="orphan item bullet" href="../../../../news.html"  >
+				<span>
+			    				新聞				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item5 root" >
+					<a class="orphan item bullet" href="../../../../law-and-licensing.html"  >
+				<span>
+			    				法律源地				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item3 root" >
+					<a class="orphan item bullet" href="../../../../activities.html"  >
+				<span>
+			    				活動				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item2 root" >
+					<a class="orphan item bullet" href="../../../../resourcecatalog%3FName=Value.html"  >
+				<span>
+			    				資源表列				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item45 root" >
+					<a class="orphan item bullet" href="../../../../about.html"  >
+				<span>
+			    				關於				   
+				</span>
+			</a>
+			
+			
+	</li>	
+				</ul>
+</div>
+
+				    <div class="clear"></div>
+				</div></div></div>
+								<div class="rt-surround"><div class="rt-surround2"><div class="rt-surround3">
+										<div id="rt-showcase-section">
+												<div id="rt-showcase">
+							<div class="rt-grid-12 rt-alpha rt-omega">
+    		<div class="clear"></div>
+		
+		
+                <div class="close-note">
+                    <div class="rt-block">
+               					<div class="module-content">
+                	<div style="font-size:medium; background-image:linear-gradient(120deg,#159957,#4298b2);color:white;padding:20px;margin:-10px -18px;">感謝您對「自由軟體鑄造場」的支持與愛護，十多年來「自由軟體鑄造場」受中央研究院支持，並在資訊科學研究所以及資訊科技創新研究中心執行，現已完成階段性的任務。 本網站預計持續維運至 2021年底，網站內容基本上不會再更動。<br />也紀念我們永遠的朋友 李士傑先生（Shih-Chieh Ilya Li）。</div>				</div>
+            </div>
+                </div>
+		
+</div>
+							<div class="clear"></div>
+						</div>
+																	</div>
+															<div id="rt-main-surround">
+																							              <div id="rt-main" class="mb12">
+                <div class="rt-main-inner">
+                    <div class="rt-grid-12 ">
+                                                <div class="rt-block">
+                            							<div class="square1">
+							<div class="rt-module-surround">
+								<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+								<div class="rt-module-inner">
+		                            <div id="rt-mainbody">
+		                                
+<div class="rt-joomla ">
+	<div class="rt-article">
+		
+				<div class="rt-headline"><h1 class="rt-article-title">6.SVN命令一覽</h1>		</div>
+		<div class="clear"></div>
+		
+		
+		
+				<div class="rt-articleinfo">
+						<div class="rt-article-icons">
+								<a href="https://www.openfoundry.org/tw/component/content/article/2380-6svn?tmpl=component&amp;print=1&amp;page=" title="列印" onclick="window.open(this.href,'win2','status=no,toolbar=no,scrollbars=yes,titlebar=no,menubar=no,resizable=yes,width=640,height=480,directories=no,location=no'); return false;" rel="nofollow"><span class="icon print"></span></a>																</div>
+			
+			<span class="rt-date-posted">
+						建立日期			2010-06-11 23:19						&nbsp;&nbsp;&nbsp;&nbsp;						最近更新在 2010-07-14 20:32						</span>
+
+						<span class="rt-author">
+				作者是 webmaster			</span>
+				
+					</div>
+		
+		
+		
+<p>藉由先瀏覽過一次SVN命令的功能，以便在需要時能夠回想，再回頭翻閱書籍。<br />以下就開始介紹：</p>
+<p>使用命令列的svn --help指令，便會列出所有的svn子命令。<br />&gt; svn --help<br />Available subcommands:<br /> add<br /> blame (praise, annotate, ann)<br /> cat<br /> checkout (co)<br /> cleanup<br /> commit (ci)<br /> copy (cp)<br /> delete (del, remove, rm)<br /> diff (di)<br /> export<br /> help (?, h)<br /> import<br /> info<br /> list (ls)<br /> lock<br /> log<br /> merge<br /> mkdir<br /> move (mv, rename, ren)<br /> propdel (pdel, pd)<br /> propedit (pedit, pe)<br /> propget (pget, pg)<br /> proplist (plist, pl)<br /> propset (pset, ps)<br /> resolved<br /> revert<br /> status (stat, st)<br /> switch (sw)<br /> unlock<br /> update (up)</p>
+<p>大部份的子命令都還有其縮寫！<br />如：commit是ci<br />可再使用 svn [子命令] --help 以查看子命令的說明！<br />例如：<br />svn add --help<br />svn commit --help</p>
+<p>再來開始敍述各個命令：</p>
+<ul>
+<li>svn add — 增加檔案、目錄或符號鏈結(symbolic link)。</li>
+<li>svn blame — 顯示指定檔案或URL的作者和修訂版本資訊。</li>
+<li>svn cat — 輸出指定檔案或 URL 的內容。</li>
+<li>svn checkout — 從檔案庫(Repository)取出一個工作複本(working copy)。</li>
+<li>svn cleanup — 遞迴式地清理工作複本。</li>
+遞迴式地清理工作複本，移除未完成動作的鎖定，並恢復未完成的操作。如果你遇到了 「working copy locked」 (工作複本已鎖定) 的錯誤，執行這個命令以移除遺留下來的鎖定，讓工作複本再回覆到可用的狀態。
+<li>svn commit — 從工作複本傳送更動至檔案庫。</li>
+<li>svn copy — 在工作複本或檔案庫中複製檔案或目錄。<br /> URL -&gt; URL     完成伺服器端的複製. 這通常是用來進行分支與標記.</li>
+<li>svn delete — 從工作複本或檔案庫刪除一個項目(刪除檔案或目錄)。</li>
+<li>svn diff — 比較兩個路徑之間的差異(可以是比較兩個檔案或是兩個目錄)。</li>
+<li>svn export — 匯出一個乾淨的目錄樹(指不包涵版本控制的系統檔案)。</li>
+<li>svn help — 幫助！</li>
+<li>svn import — 提交還沒有版本的檔案或目錄樹到檔案庫。</li>
+<li>svn info — 顯示關於本地或遠端項目的資訊(指定的工作複本或URL的資訊)</li>
+<li>svn list — 列出檔案庫中的目錄項目。</li>
+列出每個 TARGET 檔案與每個檔案庫裡的 TARGET 目錄. 如果 TARGET 是工作複本的路徑, 那麼相對應的檔案庫 URL       就會被拿來使用.
+<li>svn lock — 鎖定檔案庫的工作複本路徑或URL，所以沒有其他用戶可以提交這些檔案的修改。</li>
+<li>svn log — 顯示送交(commit)紀錄訊息(log)。</li>
+<li>svn merge — 將兩個來源之間的差異套用到工作複本路徑。</li>
+<li>svn mkdir — 建立受版本控制的目錄。</li>
+<li>svn move — 移動檔案或目錄。</li>
+<li>svn propdel — 刪除項目中的屬性。</li>
+<li>svn propedit — 修改一個或多個版本控制之下檔案的屬性。</li>
+<li>svn propget — 印出某個屬性的值。</li>
+<li>svn proplist — 列出所有的屬性。</li>
+<li>svn propset — 設置文件、目錄或者修訂版本的屬性(PROPNAME)為屬性值(PROPVAL)。</li>
+$ svn propset owner sally foo.c<br /> property 'owner' set on 'foo.c'
+<li>svn resolved — 移除工作複本檔案或目錄的「衝突」狀態。</li>
+<li>svn revert — 復原本地編輯(如檔案修改錯誤時可以復原)。</li>
+<li>svn status — 列出工作複本中檔案和目錄的狀態(如被修改過(M)、未加入檔案庫()、新增但尚未提交(A)。</li>
+<li>svn switch — 把工作複本更新到別的URL。</li>
+<li>svn unlock — 解鎖工作複本路徑或URL的鎖定。</li>
+<li>svn update — 更新你的工作複本(當檔案庫有更動時)。</li>
+</ul>
+<h3><span style="color: #0000ff;">參考資料</span></h3>
+<ul>
+<li>Version Control with Subversion, 一般被稱為"Subversion book" (https://svnbook.red-bean.com/)</li>
+<li>部分文字引用自 Plasmaball 所翻譯的 Subversion Book, Traditional Chinese Edition (https://svn.stu.edu.tw/svnbook/)</li>
+</ul>
+<h3><span style="color: #0000ff;">相關資源</span></h3>
+<ul>
+<li>Subversion (https://subversion.tigris.org/)</li>
+<li>Ximbiot - CVS Wiki (https://ximbiot.com/cvs/wiki/)</li>
+<li>Open Source Development with CVS, 3rd Edition (https://cvsbook.red-bean.com/)</li>
+<li>Wikipedia: Subversion (https://en.wikipedia.org/wiki/Subversion_%28software%29)</li>
+<li>Wikipedia: Concurrent Versions System (https://en.wikipedia.org/wiki/Concurrent_Versions_System)</li>
+<li>Wikipedia: Version control system (https://en.wikipedia.org/wiki/Version_control_system)</li>
+</ul>
+<p> </p>
+			<!-- Show relate article -->
+				<!-- end -->
+		<div class="article_note">
+		<!-- Add tags use metakey, and show OSSF Newsletter tag: OSSFNL+NUM-->
+		<br><br> <hr style='border: 1px dashed #D2DADB;'>		<!-- End -->
+					<br>
+					<b>分類: </b><a href="https://www.openfoundry.org/tw/component/content/category/502-subversion">				Subversion					</a>				</div>
+			 <!-- AddThis Button BEGIN ID 3001 is the front page article -->
+     			<br><br>
+       <div class="addthis_toolbox addthis_default_style addthis_32x32_style">
+       <a class="addthis_button_preferred_1"></a>
+       <a class="addthis_button_preferred_2"></a>
+       <a class="addthis_button_preferred_3"></a>
+       <a class="addthis_button_preferred_4"></a>
+       <a class="addthis_button_compact"></a>
+       <a class="addthis_counter addthis_bubble_style"></a>
+       </div>
+       <script type="text/javascript">var addthis_config = {"data_track_clickback":true};</script>
+       <script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js#pubid=openfoundry"></script>
+       <!-- AddThis Button END -->
+     <br>
+		<div class="totop" ><a class="rt-totop" href="2380-6svn.html#" style="outline: medium none;">↑ Top</a></div>
+            <!-- AddThis Button END -->
+
+			</div>
+</div>
+
+		                            </div>
+									<div class="clear"></div>
+								</div>
+								<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+							</div>
+							</div>
+                                                    </div>
+                                            </div>
+                                        <div class="clear"></div>
+                </div>
+            </div>
+																													</div>
+										<div id="rt-copyright">
+						<div class="rt-grid-12 rt-alpha rt-omega">
+                        <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<div id="desktop-mobile-version-switch"><span id="mobile-version" class="version-switch"><a href="2380-6svn.html#">行動版</a></span></div>
+自由軟體鑄造場 製作 最佳瀏覽狀態：IE7或Firefox2.0以上 (建議使用Firefox) ‧ 解析度1024*768 <br /> <strong>E-Mail</strong>：<a href="mailto:contact@openfoundry.org">contact@openfoundry.org</a> <strong>Address</strong>：台北市南港區研究院路2段128號 中央研究院資訊科學研究所 . <a href="../../../../../privacy-policy.html">隱私權條款</a>. <a href="../../../../../terms-of-use.html">使用條款</a><span style="position: relative; top: 8px; margin-top: -8px;"> <a href="../../../../../about/8101.html"><img src="../../../../../images/M_images/rss-feed-all.png" border="0" /></a></span>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+        	
+</div>
+						<div class="clear"></div>
+					</div>
+					<div class="rt-footer-bottom-wrap"><div class="rt-footer-bottom"><div class="rt-footer-bottom2"><div class="rt-footer-bottom3"></div></div></div></div>
+									</div></div></div>
+				<div class="rt-surround-bottom"><div class="rt-surround-bottom2"><div class="rt-surround-bottom3"></div></div></div>
+							</div>
+		</div>
+		<!--
+		<script id="aptureScript">
+						(function (){var a=document.createElement("script");a.defer="true";a.src="http://www.apture.com/js/apture.js?siteToken=vsJttrn";document.getElementsByTagName("head")[0].appendChild(a);})();
+     </script>
+-->
+
+<!-- Piwik -->
+<!-- 			<script type="text/javascript">
+			  var _paq = _paq || [];
+		  _paq.push(["trackPageView"]);
+		  _paq.push(["enableLinkTracking"]);
+
+		    (function() {
+			        var u=(("https:" == document.location.protocol) ? "https" : "https") + "://www.openfoundry.org/piwik/";
+				    _paq.push(["setTrackerUrl", u+"piwik.php"]);
+				    _paq.push(["setSiteId", "1"]);
+				        var d=document, g=d.createElement("script"), s=d.getElementsByTagName("script")[0]; g.type="text/javascript";
+				        g.defer=true; g.async=true; g.src=u+"piwik.js"; s.parentNode.insertBefore(g,s);
+					  })();
+		  </script> -->
+<!-- End Piwik Code -->
+	</body>
+</html>

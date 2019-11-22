@@ -1,0 +1,669 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="zh-tw" lang="zh-tw" >
+<head>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<link rel="shortcut icon" href="../images/favicon.ico" />
+	  <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+  <meta name="robots" content="index, follow" />
+  <meta name="keywords" content="OSSFNL851" />
+  <meta name="title" content="AngularJS 指令" />
+  <meta name="description" content="第二回我們接著要了解 AngularJS 的入門指令，Code 的作用。例如： 1、新增宣告語法 ng-app ： 宣告應用程式作用域（Application Scope），在 Document Object Model（DOM）載入後，AngularJS 就會開始尋找 ng-app 這個字，找到的話，就會把這頁面當成是 AngularJS 應用程式。 （1）宣告方式：一份 HTML" />
+  <meta name="generator" content="" />
+  <title>AngularJS 指令 - OpenFoundry</title>
+  <link href="../favicon.ico" rel="shortcut icon" type="image/x-icon" />
+  <link rel="stylesheet" href="../components/com_gantry/css/gantry.css" type="text/css" />
+  <link rel="stylesheet" href="../components/com_gantry/css/grid-12.css" type="text/css" />
+  <link rel="stylesheet" href="../components/com_gantry/css/joomla.css" type="text/css" />
+  <link rel="stylesheet" href="../templates/rt_quantive_j15/css/joomla.css" type="text/css" />
+  <link rel="stylesheet" href="../templates/rt_quantive_j15/css/style1.css" type="text/css" />
+  <link rel="stylesheet" href="../templates/rt_quantive_j15/css/light-body.css" type="text/css" />
+  <link rel="stylesheet" href="../templates/rt_quantive_j15/css/demo-styles.css" type="text/css" />
+  <link rel="stylesheet" href="../templates/rt_quantive_j15/css/template.css" type="text/css" />
+  <link rel="stylesheet" href="../templates/rt_quantive_j15/css/typography.css" type="text/css" />
+  <link rel="stylesheet" href="../templates/rt_quantive_j15/css/fusionmenu.css" type="text/css" />
+  <style type="text/css">
+    <!--
+#rt-main-surround ul.menu li.active > a, #rt-main-surround ul.menu li.active > .separator, #rt-main-surround ul.menu li.active > .item, #rt-main-surround .square4 ul.menu li:hover > a, #rt-main-surround .square4 ul.menu li:hover > .item, #rt-main-surround .square4 ul.menu li:hover > .separator, .roktabs-links ul li.active span {color:#0088B5;}
+a, #rt-main-surround ul.menu a:hover, #rt-main-surround ul.menu .separator:hover, #rt-main-surround ul.menu .item:hover {color:#0088B5;}
+    -->
+  </style>
+  <script type="text/javascript" src="../components/com_jcomments/js/jcomments-v2.1.js%3Fv=2"></script>
+  <script type="text/javascript" src="../components/com_jcomments/libraries/joomlatune/ajax.js"></script>
+  <script type="text/javascript" src="../media/system/js/mootools.js"></script>
+  <script type="text/javascript" src="../media/system/js/caption.js"></script>
+  <script type="text/javascript" src="../components/com_gantry/js/gantry-buildspans.js"></script>
+  <script type="text/javascript" src="../components/com_gantry/js/gantry-inputs.js"></script>
+  <script type="text/javascript" src="../templates/rt_quantive_j15/js/jquery.cookie.js"></script>
+  <script type="text/javascript" src="../modules/mod_roknavmenu/themes/fusion/js/fusion.js"></script>
+  <script type="text/javascript" src="../modules/mod_ofssologin/js/ofssologin.js"></script>
+  <script type="text/javascript">
+
+			window.addEvent('domready', function() {
+				var modules = ['rt-block'];
+				var header = ['h3','h2','h1'];
+				GantryBuildSpans(modules, header);
+			});
+		InputsExclusion.push('.content_vote','#rt-popup')
+		        window.addEvent('load', function() {
+					new Fusion('ul.menutop', {
+						pill: 0,
+						effect: 'slide and fade',
+						opacity: 1,
+						hideDelay: 500,
+						centered: 0,
+						tweakInitial: {'x': -2, 'y': 0},
+        				tweakSubsequent: {'x': 0, 'y': -14},
+						menuFx: {duration: 200, transition: Fx.Transitions.Sine.easeOut},
+						pillFx: {duration: 400, transition: Fx.Transitions.Back.easeOut}
+					});
+	            });
+  </script>
+<!-- <script type="text/javascript" src="/sso/javascripts/langsync.js"></script> -->
+<!-- <script src="/templates/rt_quantive_j15/js/ossf.js"></script> -->
+<script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-4136519-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
+</head>
+	<body  class="backgroundlevel-low backgroundstyle-style8 bodylevel-med bodystyle-light cssstyle-style1 logostyle-dark font-family-helvetica font-size-is-default menu-type-fusionmenu col12 ">
+		<div id="rt-main-background">
+			<div class="rt-container">
+																<div id="rt-header">
+					<div class="rt-grid-7 rt-alpha">
+    			<div class="rt-block">
+    	    	<a href="../index.html" id="rt-logo"></a>
+    		</div>
+	    
+</div>
+<div class="rt-grid-5 rt-omega">
+                    <div class="square9">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<div class="ofssologin_square9"><a href="../index.html">登入</a>&nbsp;&nbsp|&nbsp;&nbsp;<span><a href="../en/tech-column/9216.html" ><span lang="en" xml:lang="en">English</span></a></li></ul></span><!--Joom!fish V2.0.4 (Lightning)-->
+<!-- &copy; 2003-2009 Think Network, released under the GPL. -->
+<!-- More information: at http://www.joomfish.net -->
+<div class="ofssologin_search_square9">
+  <form id="of_search" action="https://www.openfoundry.org/of/openfoundry/search" method="get" onsubmit="of_search(); return false;">
+    <select id="of_search_type">
+      <option value="Projects"> 專案 </option>
+      <option value="Content"> 文章 </option>
+      <option value="People"> 人才 </option>
+    </select>
+    <input id="query" name="query" id="mod_search_searchword" maxlength="50" alt="search" class="inputbox" type="text" size="28" value="search..."  onblur="if(this.value=='') this.value='search...';" onfocus="if(this.value=='search...') this.value='';" />
+    <input type="hidden" name="commit" value="search" />
+  </form>
+</div></div>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		
+</div>
+					<div class="clear"></div>
+				</div>
+																<div id="rt-navigation"><div id="rt-navigation2"><div id="rt-navigation3">
+					
+<div class="nopill">
+	<ul class="menutop level1 " >
+						<li class="item1 root" >
+					<a class="orphan item bullet" href="../index.html"  >
+				<span>
+			    				首頁				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item32 root" >
+					<a class="orphan item bullet" href="../archived.html"  >
+				<span>
+			    				專案				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item186 root" >
+					<a class="orphan item bullet" href="../tw/community.html"  >
+				<span>
+			    				Who&#039;s Who				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item4 root" >
+					<a class="orphan item bullet" href="../tw/news.html"  >
+				<span>
+			    				新聞				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item5 root" >
+					<a class="orphan item bullet" href="../tw/law-and-licensing.html"  >
+				<span>
+			    				法律源地				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item3 root" >
+					<a class="orphan item bullet" href="../tw/activities.html"  >
+				<span>
+			    				活動				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item2 root" >
+					<a class="orphan item bullet" href="../tw/resourcecatalog%3FName=Value.html"  >
+				<span>
+			    				資源表列				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item45 root" >
+					<a class="orphan item bullet" href="../tw/about.html"  >
+				<span>
+			    				關於				   
+				</span>
+			</a>
+			
+			
+	</li>	
+				</ul>
+</div>
+
+				    <div class="clear"></div>
+				</div></div></div>
+								<div class="rt-surround"><div class="rt-surround2"><div class="rt-surround3">
+										<div id="rt-showcase-section">
+												<div id="rt-showcase">
+							<div class="rt-grid-12 rt-alpha rt-omega">
+    		<div class="clear"></div>
+		
+		
+                <div class="close-note">
+                    <div class="rt-block">
+               					<div class="module-content">
+                	<div style="font-size:medium; background-image:linear-gradient(120deg,#159957,#4298b2);color:white;padding:20px;margin:-10px -18px;">感謝您對「自由軟體鑄造場」的支持與愛護，十多年來「自由軟體鑄造場」受中央研究院支持，並在資訊科學研究所以及資訊科技創新研究中心執行，現已完成階段性的任務。 本網站預計持續維運至 2021年底，網站內容基本上不會再更動。<br />也紀念我們永遠的朋友 李士傑先生（Shih-Chieh Ilya Li）。</div>				</div>
+            </div>
+                </div>
+		
+</div>
+							<div class="clear"></div>
+						</div>
+																	</div>
+															<div id="rt-main-surround">
+												<div id="rt-breadcrumbs">
+								<div class="rt-breadcrumb-surround">
+		<a href="../index.html" id="breadcrumbs-home"></a>
+		<span class="breadcrumbs pathway">
+<a href="../tw/tech-column.html" class="pathway">技術專欄</a> <img src="../templates/rt_quantive_j15/images/arrow.png" alt=""  /> <span class="no-link">AngularJS 指令</span></span>
+	</div>
+	
+							<div class="clear"></div>
+						</div>
+																							              <div id="rt-main" class="sa3-mb9">
+                <div class="rt-main-inner">
+                    <div class="rt-grid-9 rt-push-3">
+                                                <div class="rt-block">
+                            							<div class="square1">
+							<div class="rt-module-surround">
+								<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+								<div class="rt-module-inner">
+		                            <div id="rt-mainbody">
+		                                
+<div class="rt-joomla ">
+	<div class="rt-article">
+		
+				<div class="rt-headline"><h1 class="rt-article-title">AngularJS 指令</h1>		</div>
+		<div class="clear"></div>
+		
+		
+		
+				<div class="rt-articleinfo">
+						<div class="rt-article-icons">
+								<a href="../tw/tech-column/9216-angularjs-2%3Ftmpl=component&amp;print=1&amp;layout=default&amp;page=.html" title="列印" onclick="window.open(this.href,'win2','status=no,toolbar=no,scrollbars=yes,titlebar=no,menubar=no,resizable=yes,width=640,height=480,directories=no,location=no'); return false;" rel="nofollow"><span class="icon print"></span></a>																</div>
+			
+			<span class="rt-date-posted">
+						建立日期			2014-04-29 10:17						&nbsp;&nbsp;&nbsp;&nbsp;						最近更新在 2014-04-30 14:17						</span>
+
+						<span class="rt-author">
+				作者是 Circle			</span>
+				
+					</div>
+		
+		
+		<h3>第二回我們接著要了解 AngularJS 的入門指令，Code 的作用。例如：</h3>
+<br />
+<h4>1、新增宣告語法 ng-app ：</h4>
+<p>宣告應用程式作用域（Application Scope），在 Document Object Model（DOM）載入後，AngularJS 就會開始尋找 <code>ng-app</code> 這個字，找到的話，就會把這頁面當成是 AngularJS 應用程式。</p>
+<p>（1）宣告方式：<strong>一份 HTML 只能宣告一個應用程式作用域（ng-app）</strong></p>
+<pre>＜html ng-app＞</pre>
+<pre>＜html ng-app="appName"＞</pre>
+
+<p>（2）ng-app 用法：</p>
+<ul>
+<li>
+<p>全站使用 AngularJS ：放在 html（或 body）裡面。</p>
+<ul>
+<pre>＜html ng-app＞ ＜/html＞</pre>
+<pre>＜body ng-app＞ ＜/body＞</pre>
+</ul>
+</li>
+<li>
+<p>局部使用 AngularJS ：可以把這個字放在某個應用到 AngularJS 的 div 中。</p>
+<ul>
+<pre>＜div ng-app="ng-app"＞＜/div＞</pre>
+</ul>
+</li>
+</ul>
+<br />
+<h4>2、{{ }} 雙大括號綁定表達式：</h4>
+<p>這行代碼演示了 AngularJS 模板的核心功能：绑定。</p>
+<pre>＜p＞Nothing here {{'yet' + '!'}}＜/p＞
+</pre>
+<p>這個绑定由雙大括號 <code>{{}}</code> 和表達式 <code>'yet' + '!'</code> 组成。它告诉 AngularJS 需要運算其中的表達式並將结果插入 DOM 中，接下来我們可以看到 DOM 隨著表達式運算结果的改變而更新。</p>
+<p>AngularJS 表達式 Angular Expression 是一種類似於 JavaScript 的代碼片段，AngularJS 表達式僅在 AngularJS 的作用域中運行，而不是在整個 DOM 中運行。</p>
+<br />
+<h4>3、<code>’$’</code>字首命名規則：</h4>
+<p>作為一個 AngularJS 的內建服務，作用域方法和其他 AngularJS 的 API 都會在名稱前面加上一個<code>’$’</code>的字首。</p>
+<p>為了避免衝突，在 Services 和 Models 的命名上最好避免有 <code>’$’</code> 的開頭。</p>
+<br />
+<h4>4、ng-controller：</h4>
+<p>是 AngularJS 的語法，主要用來綁定 View（HTML）和 Model（JS）的連結，以建立 View 和 Model 的關係。其遵循 MVC（Model–View–Controller）框架，可以透過 Controller 來處理 Model 和 View 之間的綁定。若在 Controller 中進行修改，異動也會反應到 View 中，達到 AngularJS 的雙向資料綁定（Two Way Data-Binding）。</p>
+<p>例如：<em>（指定名稱為 " fun " 的 controller，必須與 controllers.js 裡的主 function 名稱相同。）</em></p>
+<pre> ＜body ng-controller=" fun "＞ </pre>
+<br />
+<h4>5、$scope：</h4>
+<p>是 AngularJS 在建立（Controller）應用程式時產生的一個物件，用來代表應用程式的 Model。所以我們透過 <code>$scope.</code> 變數，才能得到變數的（值）位址。</p>
+<p>在 Model 裡面指定變數 name 的方式為 <code>$scope.name</code> ，View 再透過 <code>{{name}}</code> 顯示。我們在名稱為 fun 的 Controller 裡面，宣告一個名稱為 name 的變數，並將變數值指定為 “sunny”。</p>
+<pre><code>`function fun($scope)`
+` {$scope.name = "sunny";}`
+</code></pre>
+<p>接著只要在 HTML 裡面指定 <code>ng-controller</code> 名稱，並輸入 <code>{{name}}</code> ，即可。</p>
+<pre>＜p ng-controller=" fun"＞My name is {{ name }}!＜/p＞
+</pre>
+<br />
+<h4>6、如何在 AngularJS 中使用 HTML input 事件：</h4>
+<ul>
+<li>事件 ／ 屬性
+<ul>
+<li><code>name</code> ／ 名稱</li>
+<li><code>ng-model</code> ／ 綁定的資料</li>
+<li><code>required</code> ／ 限制是否必填</li>
+<li><code>ng-required</code> ／ 限制是否必填</li>
+<li><code>ng-minlength</code> ／ 限制最小長度</li>
+<li><code>ng-maxlength</code> ／ 限制最大長度</li>
+<li><code>ng-pattern</code> ／ 限制 RegExp 格式</li>
+<li><code>ng-change</code>／ 當 input 的值發生變化的時候執行
+<p> </p>
+</li>
+</ul>
+</li>
+<li>Input 包含了以下類型
+<ul>
+<li>type="checkbox"</li>
+<li>type="email"</li>
+<li>type="number"</li>
+<li>type="radio"</li>
+<li>type="text"</li>
+<li>type="url"</li>
+</ul>
+</li>
+</ul>
+<br />
+<h5>其中 checkbox 的使用方法？</h5>
+<ol>
+<li><code>ng-controller</code> ，處理 Model 和 View 的雙向連結</li>
+<li><code>ng-model</code> ，綁定 checkbox 的資料和 value1 的值，一有變動，就會隨時更新。</li>
+<li>可以透過 <code>ng-true-value</code> 和 <code>ng-false-value</code>，修改 value2 的內容。</li>
+</ol><br />
+<p><strong>HTML：</strong></p>
+<pre>＜form name="myForm" ng-controller="Ctrl"＞
+　Value1: ＜input ng-model="value1" type="checkbox" /＞ 
+　Value2: ＜input ng-model="value2" ng-true-value="YES" ng-false-value="NO" type="checkbox" /＞ 
+　　＜tt＞value1 = {{value1}}＜/tt＞
+　　＜tt＞value2 = {{value2}}＜/tt＞
+＜/form＞
+</pre>
+<p><strong>JS：</strong></p>
+<pre><code>    function Ctrl($scope) {
+        $scope.value1 = true;
+        $scope.value2 = 'YES';
+    }
+</code></pre>
+<br />
+<h4>7、指令的特性：</h4>
+<p>AngularJS 的 HTML 編譯器能讓瀏覽器識別新的 HTML 語法。它能讓你將行為關聯到 HTML 元素或者屬性上，甚至能讓你創造具有自定義行為的新元素。AngularJS 稱這種擴展行為為「指令」。</p>
+<p>指令是指「當關連的 HTML 結構進入編譯階段時應該執行的操作」。指令可以寫在元素的名稱裡、屬性裡、CSS 類名裡和注釋裡。指令的特性非常有用，它擴展了 HTML 的表現能力，使用這個特性能夠以更少的代碼建立更簡潔的頁面結構。</p>
+<ul>
+<li>
+<p>AngularJS 本身內建了一些指令，來看個例子，其使用了內建的 <code>ng-repeat</code> ，首先通過 <code>ng-init</code> 指令創建了一個 students 的對象數組，然後使用 <code>ng-repeat</code> 指令打印出所有學生的名字和年齡。</p>
+<pre>＜div ng-init="students = [        
+　　{name:'John', age:25, gender:'boy'},        
+　　{name:'Joy', age:15, gender:'girl'},        
+　　{name:'Mary', age:28, gender:'girl'},    
+　]"＞
+＜div data-ng-repeat="student in students"＞
+　　＜h3＞{{student.name}}:{{student.age}}＜/h3＞
+　＜/div＞
+＜/div＞
+</pre>
+<p>另外，還可以使用 <code>ng-show</code> 過濾重複值，只顯示 boy：</p>
+<pre>＜div data-ng-repeat="student in students" data-ng-show="student.gender=='boy'"＞
+　＜h3＞{{student.name}}:{{student.age}}＜/h3＞
+＜/div＞
+</pre>
+<p>或者使用 <code>ng-switch</code> 做一些更複雜的控制，如：年滿 18 歲打印 ADULT。</p>
+<pre>＜div data-ng-repeat="student in students" data-ng-show="student.gender=='boy'" data-ng-switch="student.age">18"＞
+　＜h3＞{{student.name}}:{{student.age}}＜/h3＞
+　＜p data-ng-switch-when="true"＞ADULT＜/p＞
+＜/div＞
+</pre>
+</li>
+<li>
+<p>其特性為開發人員省了很多代碼，對定義 Web Page Structure 來說非常有幫助。而且除了本身自帶的 Directives 滿足大部分群眾的需要外，還支持定制 Directive 來滿足使用者的特別需求。</p>
+<p>除此之外，AngularJS 指令可以用來創建自定義的標籤，它們可以用來裝飾元素或者操作 DOM 屬性。以下是監聽一個事件並且針對更新它的 <code>$scope</code> 例子：</p>
+<pre><code>myModule.directive('myComponent', function(mySharedService) {
+    return {
+        restrict: 'E',
+        controller: function($scope, $attrs, mySharedService) {
+            $scope.$on('handleBroadcast', function() {
+                $scope.message = 'Directive: ' + mySharedService.message;
+            });
+        },
+        replace: true,
+        template: '＜input＞'
+    };
+});
+</code></pre>
+<p>你可以使用這個自定義的 Directive ：</p>
+<pre>＜my-component ng-model="message"＞＜/my-component＞
+</pre>
+<p>使用一系列的組件來創建自己的應用，將使你更方便的添加、刪除和更新功能。</p>
+</li>
+</ul>
+<br />
+<h4>8、指令的用途：</h4>
+<p>一種 DOM 物件的標記（可以是 HTML 屬性／標記名稱／CSS Class），ng 會透過一組 HTML 編譯器（$compile）將功能外掛上去。</p>
+<ul>
+<li>常用指令
+<ul>
+<li>ng-app</li>
+<li>ng-init</li>
+<li>ng-bind</li>
+<li>ng-non-bindable</li>
+<li>ng-bind-html</li>
+<li>ng-bind-template</li>
+<li>ng-repeat</li>
+<li>ng-list</li>
+<li>ng-controller
+<p> </p>
+</li>
+</ul>
+</li>
+<li>事件處理
+<ul>
+<li>ng-blur</li>
+<li>ng-focus</li>
+<li>ng-copy</li>
+<li>ng-paste</li>
+<li>ng-cut</li>
+<li>ng-change</li>
+<li>ng-checked</li>
+<li>ng-click</li>
+<li>ng-dbclick</li>
+<li>ng-keydown</li>
+<li>ng-keypress</li>
+<li>ng-keyup</li>
+<li>ng-mousedown</li>
+<li>ng-mouseenter</li>
+<li>ng-mouseleave</li>
+<li>ng-mousemove</li>
+<li>ng-mouseover</li>
+<li>ng-mouseup
+<p> </p>
+</li>
+</ul>
+</li>
+<li>外觀與樣式
+<ul>
+<li>ng-show</li>
+<li>ng-hide</li>
+<li>ng-style</li>
+<li>ng-class</li>
+<li>ng-class-even</li>
+<li>ng-class-odd
+<p> </p>
+</li>
+</ul>
+</li>
+<li>HTML 增強／表單
+<ul>
+<li>a
+<ul>
+<li>ng-href</li>
+</ul>
+</li>
+<li>select
+<ul>
+<li>ng-option</li>
+<li>ng-selected</li>
+<li>ng-multiple</li>
+</ul>
+</li>
+<li>ng-open（ details ／ summary ）</li>
+<li>img
+<ul>
+<li>ng-src</li>
+<li>ng-srcset</li>
+</ul>
+</li>
+<li>form
+<ul>
+<li>ng-form （允許巢狀表單）</li>
+<li>ng-submit</li>
+</ul>
+</li>
+<li>input
+<ul>
+<li>ng-disabled</li>
+<li>ng-readonly</li>
+</ul>
+</li>
+<li>input[email]</li>
+<li>input[number]</li>
+<li>input[text]</li>
+<li>input[url]</li>
+<li>input[checkbox] , input[radio]
+<ul>
+<li>ng-checked</li>
+<li>ng-value
+<p> </p>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>範本引擎
+<ul>
+<li>ng-include src</li>
+<li>ng-script
+<p> </p>
+</li>
+</ul>
+</li>
+<li>其它
+<ul>
+<li>ng-if</li>
+<li>ng-switch</li>
+<li>ng-pluralize</li>
+<li>ng-transclude</li>
+<li>ng-csp</li>
+</ul>
+</li>
+</ul>
+<p><br /><br /><br /><br /><br /> <em>參考資料：</em></p>
+<p><em><a href="https://angularjs.org">AngularJS 官網</a>、</em></p>
+<p><em><a href="https://zh.wikipedia.org/wiki/AngularJS">AngularJS 維基百科</a>、</em></p>
+<p><em><a href="https://www.slideshare.net/kurotanshi/angularjs-31606698">AngularJS 入門簡介</a>、</em></p>
+<p><em><a href="https://ithelp.ithome.com.tw/question/10132196">Day1-Day30：入門AngularJS筆記與前端領域的學習筆記分享介紹</a></em></p>
+			<!-- Show relate article -->
+		<br><br><h4>您也許有興趣閱讀以下文章:</h4><ul><li><a href='9208.html'>AngularJS 簡介</a> - <span class='date-posted'>2014-04-14</span></li></ul>		<!-- end -->
+		<div class="article_note">
+		<!-- Add tags use metakey, and show OSSF Newsletter tag: OSSFNL+NUM-->
+		<br><br> <hr style='border: 1px dashed #D2DADB;'><b>自由軟體鑄造場電子報&nbsp;:</b>&nbsp;<a href='../previous-issue%3Ftask=view&amp;id=851.html'>第 240 期 AngularJS - 指令</a><br>				<!-- End -->
+					<br>
+					<b>分類: </b><a href="../tw/tech-column.html">				技術專欄					</a>				</div>
+			 <!-- AddThis Button BEGIN ID 3001 is the front page article -->
+     			<br><br>
+       <div class="addthis_toolbox addthis_default_style addthis_32x32_style">
+       <a class="addthis_button_preferred_1"></a>
+       <a class="addthis_button_preferred_2"></a>
+       <a class="addthis_button_preferred_3"></a>
+       <a class="addthis_button_preferred_4"></a>
+       <a class="addthis_button_compact"></a>
+       <a class="addthis_counter addthis_bubble_style"></a>
+       </div>
+       <script type="text/javascript">var addthis_config = {"data_track_clickback":true};</script>
+       <script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js#pubid=openfoundry"></script>
+       <!-- AddThis Button END -->
+     <br>
+		<div class="totop" ><a class="rt-totop" href="9216.html#" style="outline: medium none;">↑ Top</a></div>
+            <!-- AddThis Button END -->
+
+			</div>
+</div>
+
+		                            </div>
+									<div class="clear"></div>
+								</div>
+								<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+							</div>
+							</div>
+                                                    </div>
+                                            </div>
+                                <div class="rt-grid-3 rt-pull-9">
+                <div id="rt-sidebar-a">
+                                    <div class="square4">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<ul class="menu"><li class="item56"><a href="../tw/previous-issue.html"><span>電子報總覽</span></a></li><li class="item55"><a href="../tw/about-newsletter.html"><span>關於本報</span></a></li></ul>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<ul class="menu"><li class="item115"><a href="../tw/foss-news.html"><span>源碼新聞</span></a></li><li class="item141"><a href="../tw/case-job.html"><span>接案 / 工作</span></a></li></ul>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+        	                <div class="square1">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-title"><h2 class="title">專欄總覽</h2></div>
+						<div class="clear"></div>
+		                						<div class="module-content">
+		                	<ul class="menu"><li id="current" class="active item37"><a href="../tw/tech-column.html"><span>技術專欄</span></a></li><li class="item40"><a href="../tw/foss-programs.html"><span>源碼秘技</span></a></li><li class="item35"><a href="../tw/legal-article-.html"><span>法律專欄</span></a></li><li class="item154"><a href="../tw/foss-forum.html"><span>自由專欄</span></a></li><li class="item162"><a href="../tw/enterprise-application.html"><span>企業應用</span></a></li><li class="item44"><a href="../tw/foss-projects.html"><span>源碼專案</span></a></li></ul>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		                <div class="square1">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<p style="text-align: center;"><a href="../news%3Fformat=feed&amp;type=rss" target="_black"><img src="../images/M_images/news-rss-feed.png" border="0" /></a><br /><a href="https://www.openfoundry.org/rss-feed/Newsletter" target="_black"><img src="../images/M_images/newsletter-rss-feed.png" border="0" /></a></p>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		
+                </div>
+            </div>
+
+                    <div class="clear"></div>
+                </div>
+            </div>
+																													</div>
+										<div id="rt-copyright">
+						<div class="rt-grid-12 rt-alpha rt-omega">
+                        <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<div id="desktop-mobile-version-switch"><span id="mobile-version" class="version-switch"><a href="9216.html#">行動版</a></span></div>
+自由軟體鑄造場 製作 最佳瀏覽狀態：IE7或Firefox2.0以上 (建議使用Firefox) ‧ 解析度1024*768 <br /> <strong>E-Mail</strong>：<a href="mailto:contact@openfoundry.org">contact@openfoundry.org</a> <strong>Address</strong>：台北市南港區研究院路2段128號 中央研究院資訊科學研究所 . <a href="../privacy-policy.html">隱私權條款</a>. <a href="../terms-of-use.html">使用條款</a><span style="position: relative; top: 8px; margin-top: -8px;"> <a href="../about/8101.html"><img src="../images/M_images/rss-feed-all.png" border="0" /></a></span>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+        	
+</div>
+						<div class="clear"></div>
+					</div>
+					<div class="rt-footer-bottom-wrap"><div class="rt-footer-bottom"><div class="rt-footer-bottom2"><div class="rt-footer-bottom3"></div></div></div></div>
+									</div></div></div>
+				<div class="rt-surround-bottom"><div class="rt-surround-bottom2"><div class="rt-surround-bottom3"></div></div></div>
+							</div>
+		</div>
+		<!--
+		<script id="aptureScript">
+						(function (){var a=document.createElement("script");a.defer="true";a.src="http://www.apture.com/js/apture.js?siteToken=vsJttrn";document.getElementsByTagName("head")[0].appendChild(a);})();
+     </script>
+-->
+
+<!-- Piwik -->
+<!-- 			<script type="text/javascript">
+			  var _paq = _paq || [];
+		  _paq.push(["trackPageView"]);
+		  _paq.push(["enableLinkTracking"]);
+
+		    (function() {
+			        var u=(("https:" == document.location.protocol) ? "https" : "https") + "://www.openfoundry.org/piwik/";
+				    _paq.push(["setTrackerUrl", u+"piwik.php"]);
+				    _paq.push(["setSiteId", "1"]);
+				        var d=document, g=d.createElement("script"), s=d.getElementsByTagName("script")[0]; g.type="text/javascript";
+				        g.defer=true; g.async=true; g.src=u+"piwik.js"; s.parentNode.insertBefore(g,s);
+					  })();
+		  </script> -->
+<!-- End Piwik Code -->
+	</body>
+</html>

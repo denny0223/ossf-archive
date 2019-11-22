@@ -1,0 +1,464 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-gb" lang="en-gb" >
+<head>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<link rel="shortcut icon" href="../../images/favicon.ico" />
+	  <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+  <meta name="robots" content="index, follow" />
+  <meta name="keywords" content="Linux, OSSFNL780" />
+  <meta name="title" content="如何在 Linux 底下找到想找的東西？" />
+  <meta name="description" content="◎ 本文翻譯自 OLEX Wazi，採 Creative Commons Attribution 3.0 Unported 授權釋出。  在 Linux 底下，'find'、'grep' 及 'awk' 是精細且強大的檔案搜尋工具。透過它們，你可以找到系統上最大和最新的文件、微調搜索參數、搜尋文件內的文字，並執行一些華麗的用戶管理技巧。 搜尋最大或最新的檔案 只要你能弄清楚的話，'find'" />
+  <meta name="generator" content="" />
+  <title>如何在 Linux 底下找到想找的東西？ - OpenFoundry</title>
+  <link href="../../favicon.ico" rel="shortcut icon" type="image/x-icon" />
+  <link rel="stylesheet" href="../../components/com_gantry/css/gantry.css" type="text/css" />
+  <link rel="stylesheet" href="../../components/com_gantry/css/grid-12.css" type="text/css" />
+  <link rel="stylesheet" href="../../components/com_gantry/css/joomla.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/joomla.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/style1.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/light-body.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/demo-styles.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/template.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/typography.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/fusionmenu.css" type="text/css" />
+  <style type="text/css">
+    <!--
+#rt-main-surround ul.menu li.active > a, #rt-main-surround ul.menu li.active > .separator, #rt-main-surround ul.menu li.active > .item, #rt-main-surround .square4 ul.menu li:hover > a, #rt-main-surround .square4 ul.menu li:hover > .item, #rt-main-surround .square4 ul.menu li:hover > .separator, .roktabs-links ul li.active span {color:#0088B5;}
+a, #rt-main-surround ul.menu a:hover, #rt-main-surround ul.menu .separator:hover, #rt-main-surround ul.menu .item:hover {color:#0088B5;}
+    -->
+  </style>
+  <script type="text/javascript" src="../../components/com_jcomments/js/jcomments-v2.1.js%3Fv=2"></script>
+  <script type="text/javascript" src="../../components/com_jcomments/libraries/joomlatune/ajax.js"></script>
+  <script type="text/javascript" src="../../media/system/js/mootools.js"></script>
+  <script type="text/javascript" src="../../media/system/js/caption.js"></script>
+  <script type="text/javascript" src="../../components/com_gantry/js/gantry-buildspans.js"></script>
+  <script type="text/javascript" src="../../components/com_gantry/js/gantry-inputs.js"></script>
+  <script type="text/javascript" src="../../templates/rt_quantive_j15/js/jquery.cookie.js"></script>
+  <script type="text/javascript" src="../../modules/mod_roknavmenu/themes/fusion/js/fusion.js"></script>
+  <script type="text/javascript" src="../../modules/mod_ofssologin/js/ofssologin.js"></script>
+  <script type="text/javascript">
+
+			window.addEvent('domready', function() {
+				var modules = ['rt-block'];
+				var header = ['h3','h2','h1'];
+				GantryBuildSpans(modules, header);
+			});
+		InputsExclusion.push('.content_vote','#rt-popup')
+		        window.addEvent('load', function() {
+					new Fusion('ul.menutop', {
+						pill: 0,
+						effect: 'slide and fade',
+						opacity: 1,
+						hideDelay: 500,
+						centered: 0,
+						tweakInitial: {'x': -2, 'y': 0},
+        				tweakSubsequent: {'x': 0, 'y': -14},
+						menuFx: {duration: 200, transition: Fx.Transitions.Sine.easeOut},
+						pillFx: {duration: 400, transition: Fx.Transitions.Back.easeOut}
+					});
+	            });
+  </script>
+<!-- <script type="text/javascript" src="/sso/javascripts/langsync.js"></script> -->
+<!-- <script src="/templates/rt_quantive_j15/js/ossf.js"></script> -->
+<script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-4136519-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
+</head>
+	<body  class="backgroundlevel-low backgroundstyle-style8 bodylevel-med bodystyle-light cssstyle-style1 logostyle-dark font-family-helvetica font-size-is-default menu-type-fusionmenu col12 ">
+		<div id="rt-main-background">
+			<div class="rt-container">
+																<div id="rt-header">
+					<div class="rt-grid-7 rt-alpha">
+    			<div class="rt-block">
+    	    	<a href="../../index.html" id="rt-logo"></a>
+    		</div>
+	    
+</div>
+<div class="rt-grid-5 rt-omega">
+                    <div class="square9">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<div class="ofssologin_square9"><a href="../../index.html">Login</a>&nbsp;&nbsp|&nbsp;&nbsp;<span><a href="https://www.openfoundry.org/tw/news/8628?task=view" ><span lang="tw" xml:lang="tw">繁體中文</span></a></li></ul></span><!--Joom!fish V2.0.4 (Lightning)-->
+<!-- &copy; 2003-2009 Think Network, released under the GPL. -->
+<!-- More information: at http://www.joomfish.net -->
+<div class="ofssologin_search_square9">
+  <form id="of_search" action="https://www.openfoundry.org/of/openfoundry/search" method="get" onsubmit="of_search(); return false;">
+    <select id="of_search_type">
+      <option value="Projects"> Projects </option>
+      <option value="Content"> Content </option>
+      <option value="People"> People </option>
+    </select>
+    <input id="query" name="query" id="mod_search_searchword" maxlength="50" alt="search" class="inputbox" type="text" size="28" value="search..."  onblur="if(this.value=='') this.value='search...';" onfocus="if(this.value=='search...') this.value='';" />
+    <input type="hidden" name="commit" value="search" />
+  </form>
+</div></div>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		
+</div>
+					<div class="clear"></div>
+				</div>
+																<div id="rt-navigation"><div id="rt-navigation2"><div id="rt-navigation3">
+					
+<div class="nopill">
+	<ul class="menutop level1 " >
+						<li class="item1 root" >
+					<a class="orphan item bullet" href="../../index.html"  >
+				<span>
+			    				Home				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item32 root" >
+					<a class="orphan item bullet" href="../../archived.html"  >
+				<span>
+			    				Projects				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item186 root" >
+					<a class="orphan item bullet" href="../community.html"  >
+				<span>
+			    				Who&#039;s Who				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item4 root" >
+					<a class="orphan item bullet" href="../news.html"  >
+				<span>
+			    				News				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item5 root" >
+					<a class="orphan item bullet" href="../law-and-licensing.html"  >
+				<span>
+			    				Law &amp; Licensing				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item3 root" >
+					<a class="orphan item bullet" href="../activities.html"  >
+				<span>
+			    				Activities				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item2 root" >
+					<a class="orphan item bullet" href="../resourcecatalog.html"  >
+				<span>
+			    				Resource Catalog				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item45 root" >
+					<a class="orphan item bullet" href="../about.html"  >
+				<span>
+			    				About				   
+				</span>
+			</a>
+			
+			
+	</li>	
+				</ul>
+</div>
+
+				    <div class="clear"></div>
+				</div></div></div>
+								<div class="rt-surround"><div class="rt-surround2"><div class="rt-surround3">
+										<div id="rt-showcase-section">
+												<div id="rt-showcase">
+							<div class="rt-grid-12 rt-alpha rt-omega">
+    		<div class="clear"></div>
+		
+		
+                <div class="close-note">
+                    <div class="rt-block">
+               					<div class="module-content">
+                	<div style="font-size:medium; background-image:linear-gradient(120deg,#159957,#4298b2);color:white;padding:20px;margin:-10px -18px;">感謝您對「自由軟體鑄造場」的支持與愛護，十多年來「自由軟體鑄造場」受中央研究院支持，並在資訊科學研究所以及資訊科技創新研究中心執行，現已完成階段性的任務。 本網站預計持續維運至 2021年底，網站內容基本上不會再更動。<br />也紀念我們永遠的朋友 李士傑先生（Shih-Chieh Ilya Li）。</div>				</div>
+            </div>
+                </div>
+		
+</div>
+							<div class="clear"></div>
+						</div>
+																	</div>
+															<div id="rt-main-surround">
+												<div id="rt-breadcrumbs">
+								<div class="rt-breadcrumb-surround">
+		<a href="../../index.html" id="breadcrumbs-home"></a>
+		<span class="breadcrumbs pathway">
+<span class="no-link">News</span></span>
+	</div>
+	
+							<div class="clear"></div>
+						</div>
+																							              <div id="rt-main" class="sa3-mb9">
+                <div class="rt-main-inner">
+                    <div class="rt-grid-9 rt-push-3">
+                                                <div class="rt-block">
+                            							<div class="square1">
+							<div class="rt-module-surround">
+								<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+								<div class="rt-module-inner">
+		                            <div id="rt-mainbody">
+		                                
+<div class="rt-joomla ">
+	<div class="rt-article">
+		
+				<div class="rt-headline"><h1 class="rt-article-title">如何在 Linux 底下找到想找的東西？</h1>		</div>
+		<div class="clear"></div>
+		
+		
+		
+				<div class="rt-articleinfo">
+						<div class="rt-article-icons">
+								<a href="https://www.openfoundry.org/en/news/8628--linux-?tmpl=component&amp;print=1&amp;page=" title="Print" onclick="window.open(this.href,'win2','status=no,toolbar=no,scrollbars=yes,titlebar=no,menubar=no,resizable=yes,width=640,height=480,directories=no,location=no'); return false;" rel="nofollow"><span class="icon print"></span></a>																</div>
+			
+			<span class="rt-date-posted">
+						 Created at			Thursday, 01 March 2012 15:22						&nbsp;&nbsp;&nbsp;&nbsp;						Last Updated on Tuesday, 27 March 2012 09:58						</span>
+
+						<span class="rt-author">
+				Written by Carla Schroder / 文，蕭惟杰（RJ Hsiao）/ 翻譯			</span>
+				
+					</div>
+		
+		
+		<p>◎ 本文翻譯自 <a href="https://olex.openlogic.com/wazi/2011/how-to-find-anything-under-linux/" target="_blank">OLEX Wazi</a>，採 Creative Commons Attribution 3.0 Unported 授權釋出。</p>
+<p>在 Linux 底下，"find"、"grep" 及 "awk" 是精細且強大的檔案搜尋工具。透過它們，你可以找到系統上最大和最新的文件、微調搜索參數、搜尋文件內的文字，並執行一些華麗的用戶管理技巧。</p>
+
+<p>&nbsp;</p>
+<h2>搜尋最大或最新的檔案</h2>
+<p>只要你能弄清楚的話，"find" 指令幾乎可以做到任何事。下面的例子是一個能從小到大排序系統中十個最佔空間的檔案，並以人性化方便閱讀的格式顯示容量大小的範例：</p>
+<pre># find / -type f -exec du {} \; 2&gt;/dev/null | sort -n | tail -n 10 | xargs -n 1 du -h 2&gt;/dev/null &nbsp;<br />1.2G/home/carla/.local/share/Trash/files/download &nbsp;<br />1.3G/home/carla/sda1/carla/.VirtualBox/Machines/ubuntu-hoary/Snapshots/{671041dd-700c-4506-68a8-7edfcd0e3c58}.vdi &nbsp;<br />2.2G/home/carla/.local/share/Trash/files/dreamstudio.iso &nbsp;<br />[...]</pre>
+<p>這些結果提醒了我為什麼我不喜歡有個資源回收筒，因為當我刪除某些檔案的時候，我是十分認真的確定要刪除（但是檔案仍存在在資源回收筒中）。這個指令會強制搜尋整個檔案系統而且跑一次大概需要幾分鐘才會跑完，所以你可以趁機去外面走一走運動身體。當然，你可以修改指令來搜尋指定的資料夾；舉例來說，用 "find /var/" 來尋找肥大的日誌檔案。</p>
+<p>進一步了解這個指令將會發現 "find / -type f" 的意思是「搜尋根目錄中的所有檔案」。選項 "-exec" 是指加入其他指令，然而在這個範例中，加入的是 "du" 這個查詢磁碟使用量的 "-exec du {} \;" 代表「每個找到的檔案都用 du 指令執行以取得以 bytes 為單位的檔案大小資訊」。"2&gt;/dev/null" 是指將所有的錯誤訊息丟棄，使它們不會干擾你的結果。如果你還是想查看被丟棄的訊息的話，可以將範例指令中的兩個 "2&gt;/dev/null" 都刪掉並重新執行。"sort -n" 會將所有的檔案依大小列出，而 "tail -n 10" 則是顯示最後 10 筆，兩個指令合起來就會顯示出依大小排序的前 10 大檔案。你可以把指令打到這裡就執行，然後可以看到像下面那樣的輸出：</p>
+<pre>1206316 /home/carla/.local/share/Trash/files/download<br />2209784 /home/carla/.local/share/Trash/files/dreamstudio.iso</pre>
+<p>"xargs -n 1 du -h" 用來做最後的修飾，將檔案大小從以 bytes 為單位轉成比較好讀的格式。</p>
+<div>你可以輕鬆的尋找電腦中最後 5 分鐘內變動過的所有檔案：
+<pre># find / -mmin -5 -type f</pre>
+<p>下面的指令則用來找尋在最後 10 到 20 分鐘之間變動過的檔案：</p>
+<pre># find / -mmin +10 -mmin -20 -type f</pre>
+<p>"+10" 指的是 10 分鐘以前，而 "-20" 指最後 20 分鐘內。如果你不使用加號或減號，則表示恰好為那個數字。另外，也可以使用 "-mtime" 來以 n 天=n*24 小時為單位進行搜尋。如果你想找的是資料夾，則用 "-type d"。</p>
+<p>&nbsp;</p>
+<h2>在多個資料夾內搜尋</h2>
+<p>如下面範例所示，你可以列出任意多個要搜尋的資料夾：</p>
+<pre># find /etc /var /mnt /media -xdev -mmin -5 -type f</pre>
+<p>"-dev" 限制在所在的檔案系統內進行搜尋，而不會跨過其他掛載的檔案系統。"find" 預設不會隨著符號連結做深入搜尋，所以你只需要加入 "-dev" 使得搜尋侷限於指定的檔案系統而不會隨著網路共享空間及可移除裝置到處流浪。</p>
+<p>&nbsp;</p>
+<h2>排除指定目錄</h2>
+<p>你可以利用 "prune" 選項來排除指定目錄來達到縮小搜尋範圍的效果。"prune" 這個選項有點奇怪：你必須反向思考。下面的例子將會搜尋除了 /proc 及 /sys 這兩個虛擬目錄以外的整個檔案系統：</p>
+<pre># find /etc /var /mnt /media -xdev -mmin -5 -type f</pre>
+<p>首先，你要列出要被排除的目錄，"-o" 表示 "or"，然後記得要替括號加上溢出字元（反斜線）。然後，"-prune -o" 表示「不要去查看前面列出的目錄」。</p>
+<p>我喜歡利用 "prune" 選項來排除瀏覽器的暫存檔，因為這些檔案會混淆搜尋結果。下面的例子將能達到我前述的需求，並列出每個檔案的日期時間：</p>
+<pre>$ find / \( -name proc -o -name sys -o -name .mozilla -o -name chromium \) -prune -o -type f -mmin -10 -printf "%Ac\t%p\n"<br />Wed 28 Sep 2011 10:34:54 AM PDT /home/carla/.local/share/akonadi/db_data/ib_logfile0<br />Wed 28 Sep 2011 10:34:54 AM PDT /home/carla/.local/share/akonadi/db_data/ibdata1<br />Wed 28 Sep 2011 05:21:48 PM PDT /home/carla/articles/findgrep.html</pre>
+<p>其中 "printf" 這個選項代表「輸出格式」。當你想控制你的輸出格式時，請善用 "printf"。你可以指定斷行，日期與時間的格式，以及檔案屬性像是權限、所有者及時間戳記。加入 "%Ac" 將會輸出日期與時間，"\t" 則是跳到下一個定位點，"%p" 則會印出完整的檔案名稱，而 "\n" 則是加入斷行標記。</p>
+<p>如你所見，"find" 有許多使用者經常透過 "ls" 指令來完成工作的內建功能。</p>
+<p>&nbsp;</p>
+<h2>搜尋特定類型的檔案</h2>
+<p>利用檔案副檔名來搜尋是非常容易的。下列的例子將會在目前的目錄下搜尋三種不同的圖片格式：</p>
+<pre>$ find . -name "*.png" -o -name "*.jpg" -o -name "*.gif" -type f</pre>
+<p>利用 "-name" 舉例來說，想搜尋 *mysong.ogg*，你可以用檔名的任何一部分搭配一般 shell 的萬用字元，像 "mys*" 使用 "-iname" 來進行不區分大小寫的搜尋。</p>
+<p>&nbsp;</p>
+<h2>搜尋重複檔案</h2>
+<p>這邊介紹兩種可以搜尋重複檔案的方法。第一個方法透過下列指令來檢查檔案的 MD5 切細值 (hash)：</p>
+<pre>$ find . -type f -exec md5sum '{}' ';' | sort | uniq --all-repeated=separate -w 24</pre>
+<p>上述指令將會計算每個檔案的 MD5 切細值並藉此加以排序，分開顯示在不同的行上，並比對每個切細值的前 24 位數。</p>
+<p>第二種方法則是檢查檔案大小：</p>
+<pre>$ find . -type f -printf "%p - %s\n" | sort -nr -k3 | uniq -D -f1</pre>
+<p>兩種方法各有優缺，比對 MD5 切細值會得到非常精準的結果，可是比對檔案大小則速度比較快。</p>
+<p>&nbsp;</p>
+<h2>搜尋檔案內的文字</h2>
+<p>若要在文字檔案裡面找東西，"grep" 這個指令可以說是超級無敵好用的。假設你有一個資料夾放了滿滿的伺服器設定檔，而你想要在這些檔案之中搜尋你所有的測試項目。如果你很有先見之明的對那些測試項目都使用了 "test" 這個字，下面的指令可以幫你找到它們：</p>
+<pre># grep -inR -A2 test /etc/fooserver/</pre>
+<p>這個指令告訴 "grep" 以不區分大小寫及遞迴（遇到目錄則繼續搜尋目錄內的檔案）的方式在 /etc/fooserver/ 目錄下搜尋，並印出吻合條件的那一行及下兩行。"n" 選項表示印出行號，這對於大檔案來說是十分有用的。</p>
+<p>&nbsp;</p>
+<h2>搜尋文字區塊</h2>
+<p>"awk" 這個指令能夠進行 "grep" 不能做到的搜尋相關文字區塊的功能，透過一個簡單的語法：awk '/開始樣式/,/結束樣式/'。假設你想透過 "lspci" 指令來查看關於 Ethernet 裝置的擴展訊息：</p>
+<pre>$ lspci -v | awk '/[Ee]thernet/,/^$/<br />08:00.0 Ethernet controller: Realtek Semiconductor Co., Ltd. RTL8111/8168B PCI Express Gigabit Ethernet controller (rev 03)<br />Subsystem: Lenovo Device 2131<br />Flags: bus master, fast devsel, latency 0, IRQ 46<br />I/O ports at 3000 [size=256]<br />Memory at f2004000 (64-bit, prefetchable) [size=4K]<br />Memory at f2000000 (64-bit, prefetchable) [size=16K]<br />[virtual] Expansion ROM at f2020000 [disabled] [size=128K]<br />Capabilities:<br />Kernel driver in use: r8169<br />Kernel modules: r8169</pre>
+<p>你必須知道你所想看區塊的起始及結束，因此這是一個能夠將設定檔的一部分迅速抽出來看的偉大工具。</p>
+<p>下面的例子展現出用花括號做區塊分隔的優勢，並在 radiusd.conf 中迅速找到 "listen" 項目：</p>
+<pre># awk '/listen {/,/}/' /etc/freeradius/radiusd.conf<br />listen {<br />ipaddr = *<br /># ipv6addr = ::<br />port = 0<br />type = acct<br /># interface = eth0<br /># clients = per_socket_clients<br />}</pre>
+<p>&nbsp;</p>
+<h2>管理使用者及檔案</h2>
+<p>員工離職，造成組織裡系統檔案的檔案擁有者及權限搞得一團糟，"find" 可以幫你迅速搞定這一切。你可以找到屬於特定使用者的所有檔案：</p>
+<pre># find / -user carla</pre>
+<p>或是特定群組</p>
+<pre># find / -group admins</pre>
+<p>你也可以透過 "-uid" 及 "-gid" 選項來搜尋指定的 UID 及 GID。然後你可以利用使用者名稱或是 UID 將這使用者的所有檔案移交擁有者權限給另一個使用者：</p>
+<pre># find / -uid 1100 -ok chown -v 1200 {} \;<br /># find / -user carla -ok chown -v steven {} \;</pre>
+<p>當然也可以用來改變檔案的所屬群組：</p>
+<pre># find / -group carla -ok chgrp -v admins {} \;</pre>
+<p>使用 "-ok" 選項來要求你必須對所有的變動做確認。如果你對你做的變動有信心，那麼也可以改用 "-exec"。</p>
+<p>當員工離職，可能需要遵守政策來移除他們的檔案，而使用 "find" 可以輕鬆完成：</p>
+<pre># find / -user 1100 -exec rm {} \;</pre>
+<p>當然你必須非常確定你有權這樣做，因為 "find" 不會嘮叨的問你確不卻定要刪除。它只會單純的執行你下達的指令。</p>
+<p>"find"、"grep"及"awk"－讀者可以透過這篇文章中所提到的用法，以及參考它們的使用手冊中所給予的些許提示，如此一來，在 Linux 系統上找尋任何檔案就會變得非常容易。</p>
+</div>
+			<!-- Show relate article -->
+		<br><br><h4>You may be interested in the following articles:</h4><ul><li><a href='../../foss-programs/9280.html'>如何在 Linux 上加密電子郵件</a> - <span class='date-posted'>2014-08-20</span></li><li><a href='../../foss-programs/9009.html'>如何在 Linux 與 GnuCash 上使用 Awk 進行文字搜尋與排序</a> - <span class='date-posted'>2013-06-25</span></li></ul>		<!-- end -->
+		<div class="article_note">
+		<!-- Add tags use metakey, and show OSSF Newsletter tag: OSSFNL+NUM-->
+		<br><br> <hr style='border: 1px dashed #D2DADB;'><b>OSSF Newsletter&nbsp;:</b>&nbsp;<a href='../../previous-issue%3Ftask=view&amp;id=780.html'>第 191 期  開放源碼的安全演算法工具︰OpenSSL（2）- 對稱式加解密演算法</a><br><b>Tags:</b>&nbsp;<a href='../../index.php%3Foption=com_search&amp;Itemid=58&amp;searchphrase=exact_meta&amp;ordering=newest&amp;searchword=Linux.html'>Linux</a>,&nbsp;&nbsp;				<!-- End -->
+					<br>
+					<b>Category: </b><a href="../foss-programs.html">				FOSS Programs					</a>				</div>
+			 <!-- AddThis Button BEGIN ID 3001 is the front page article -->
+     			<br><br>
+       <div class="addthis_toolbox addthis_default_style addthis_32x32_style">
+       <a class="addthis_button_preferred_1"></a>
+       <a class="addthis_button_preferred_2"></a>
+       <a class="addthis_button_preferred_3"></a>
+       <a class="addthis_button_preferred_4"></a>
+       <a class="addthis_button_compact"></a>
+       <a class="addthis_counter addthis_bubble_style"></a>
+       </div>
+       <script type="text/javascript">var addthis_config = {"data_track_clickback":true};</script>
+       <script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js#pubid=openfoundry"></script>
+       <!-- AddThis Button END -->
+     <br>
+		<div class="totop" ><a class="rt-totop" href="8628%3Ftask=view.html#" style="outline: medium none;">↑ Top</a></div>
+            <!-- AddThis Button END -->
+
+			</div>
+</div>
+
+		                            </div>
+									<div class="clear"></div>
+								</div>
+								<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+							</div>
+							</div>
+                                                    </div>
+                                            </div>
+                                <div class="rt-grid-3 rt-pull-9">
+                <div id="rt-sidebar-a">
+                                    <div class="square4">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<ul class="menu"><li class="item56"><a href="../previous-issue.html"><span>Previous Issue</span></a></li><li class="item55"><a href="../about-newsletter.html"><span>About Newsletter</span></a></li></ul>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<ul class="menu"><li class="item115"><a href="../foss-news.html"><span>FOSS News</span></a></li><li class="item141"><a href="../case-job.html"><span>Case and Jobs</span></a></li></ul>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+        	                <div class="square1">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-title"><h2 class="title">Special</h2></div>
+						<div class="clear"></div>
+		                						<div class="module-content">
+		                	<ul class="menu"><li class="item37"><a href="../tech-column.html"><span>Tech Column</span></a></li><li class="item40"><a href="../foss-programs.html"><span>FOSS Programs</span></a></li><li class="item35"><a href="../legal-column.html"><span>Legal Column</span></a></li><li class="item154"><a href="../foss-forum.html"><span>FOSS Forum</span></a></li><li class="item162"><a href="../enterprise-application.html"><span>Enterprise Application</span></a></li><li class="item44"><a href="../foss-projects.html"><span>FOSS Projects</span></a></li></ul>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		                <div class="square1">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<p style="text-align: center;"><a href="../../news%3Fformat=feed&amp;type=rss" target="_black"><img src="../../images/M_images/news-rss-feed.png" border="0" /></a><br /><a href="https://www.openfoundry.org/rss-feed/Newsletter" target="_black"><img src="../../images/M_images/newsletter-rss-feed.png" border="0" /></a></p>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		
+                </div>
+            </div>
+
+                    <div class="clear"></div>
+                </div>
+            </div>
+																													</div>
+										<div id="rt-copyright">
+						<div class="rt-grid-12 rt-alpha rt-omega">
+                        <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<span class="nowrap">Open Source Software Foundry</span><span class="nowrap">‧</span><span class="nowrap"> </span><span class="nowrap">Best  Viewed with IE7.0 or Firefox2.0 above, 1024x768 Resolution. </span><strong>E-Mail</strong>：<a href="mailto:contact@openfoundry.org">contact@openfoundry.org</a> <br /><strong>Address</strong>：No.128, Sec.2, Academia Rd., Institute of Information Science, Academia Sinica, Nangang District, Taipei City 11529, Taiwan (R.O.C). <br /><a href="../privacy-policy.html">Privacy Policy</a>. <a href="../terms-of-use.html">Terms-of-use</a> <span style="position: relative; top: 8px; margin-top: -8px;"> <a href="../../about/8101.html"><img src="../../images/M_images/rss-feed-all.png" border="0" /></a></span>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+        	
+</div>
+						<div class="clear"></div>
+					</div>
+					<div class="rt-footer-bottom-wrap"><div class="rt-footer-bottom"><div class="rt-footer-bottom2"><div class="rt-footer-bottom3"></div></div></div></div>
+									</div></div></div>
+				<div class="rt-surround-bottom"><div class="rt-surround-bottom2"><div class="rt-surround-bottom3"></div></div></div>
+							</div>
+		</div>
+		<!--
+		<script id="aptureScript">
+						(function (){var a=document.createElement("script");a.defer="true";a.src="http://www.apture.com/js/apture.js?siteToken=vsJttrn";document.getElementsByTagName("head")[0].appendChild(a);})();
+     </script>
+-->
+
+<!-- Piwik -->
+<!-- 			<script type="text/javascript">
+			  var _paq = _paq || [];
+		  _paq.push(["trackPageView"]);
+		  _paq.push(["enableLinkTracking"]);
+
+		    (function() {
+			        var u=(("https:" == document.location.protocol) ? "https" : "https") + "://www.openfoundry.org/piwik/";
+				    _paq.push(["setTrackerUrl", u+"piwik.php"]);
+				    _paq.push(["setSiteId", "1"]);
+				        var d=document, g=d.createElement("script"), s=d.getElementsByTagName("script")[0]; g.type="text/javascript";
+				        g.defer=true; g.async=true; g.src=u+"piwik.js"; s.parentNode.insertBefore(g,s);
+					  })();
+		  </script> -->
+<!-- End Piwik Code -->
+	</body>
+</html>

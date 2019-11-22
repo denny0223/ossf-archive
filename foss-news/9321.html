@@ -1,0 +1,404 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="zh-tw" lang="zh-tw" >
+<head>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<link rel="shortcut icon" href="../images/favicon.ico" />
+	  <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+  <meta name="robots" content="index, follow" />
+  <meta name="keywords" content="OSSFNL867" />
+  <meta name="title" content="Microsoft 開源 .NET 的意涵" />
+  <meta name="description" content="本文翻譯自 life hacker，原作者為 David Glance：https://www.lifehacker.com.au/2014 /11/what-m icr osofts-shift-to-open-source-for-net-means/ 換作是幾年前，外界根本無法想像 Microsoft 會走這一步，該公司居然將它的開發平台免費公開，更準備在 Windows 之外，提供" />
+  <meta name="generator" content="" />
+  <title>Microsoft 開源 .NET 的意涵 - OpenFoundry</title>
+  <link href="../favicon.ico" rel="shortcut icon" type="image/x-icon" />
+  <link rel="stylesheet" href="../components/com_gantry/css/gantry.css" type="text/css" />
+  <link rel="stylesheet" href="../components/com_gantry/css/grid-12.css" type="text/css" />
+  <link rel="stylesheet" href="../components/com_gantry/css/joomla.css" type="text/css" />
+  <link rel="stylesheet" href="../templates/rt_quantive_j15/css/joomla.css" type="text/css" />
+  <link rel="stylesheet" href="../templates/rt_quantive_j15/css/style1.css" type="text/css" />
+  <link rel="stylesheet" href="../templates/rt_quantive_j15/css/light-body.css" type="text/css" />
+  <link rel="stylesheet" href="../templates/rt_quantive_j15/css/demo-styles.css" type="text/css" />
+  <link rel="stylesheet" href="../templates/rt_quantive_j15/css/template.css" type="text/css" />
+  <link rel="stylesheet" href="../templates/rt_quantive_j15/css/typography.css" type="text/css" />
+  <link rel="stylesheet" href="../templates/rt_quantive_j15/css/fusionmenu.css" type="text/css" />
+  <style type="text/css">
+    <!--
+#rt-main-surround ul.menu li.active > a, #rt-main-surround ul.menu li.active > .separator, #rt-main-surround ul.menu li.active > .item, #rt-main-surround .square4 ul.menu li:hover > a, #rt-main-surround .square4 ul.menu li:hover > .item, #rt-main-surround .square4 ul.menu li:hover > .separator, .roktabs-links ul li.active span {color:#0088B5;}
+a, #rt-main-surround ul.menu a:hover, #rt-main-surround ul.menu .separator:hover, #rt-main-surround ul.menu .item:hover {color:#0088B5;}
+    -->
+  </style>
+  <script type="text/javascript" src="../components/com_jcomments/js/jcomments-v2.1.js%3Fv=2"></script>
+  <script type="text/javascript" src="../components/com_jcomments/libraries/joomlatune/ajax.js"></script>
+  <script type="text/javascript" src="../media/system/js/mootools.js"></script>
+  <script type="text/javascript" src="../media/system/js/caption.js"></script>
+  <script type="text/javascript" src="../components/com_gantry/js/gantry-buildspans.js"></script>
+  <script type="text/javascript" src="../components/com_gantry/js/gantry-inputs.js"></script>
+  <script type="text/javascript" src="../templates/rt_quantive_j15/js/jquery.cookie.js"></script>
+  <script type="text/javascript" src="../modules/mod_roknavmenu/themes/fusion/js/fusion.js"></script>
+  <script type="text/javascript" src="../modules/mod_ofssologin/js/ofssologin.js"></script>
+  <script type="text/javascript">
+
+			window.addEvent('domready', function() {
+				var modules = ['rt-block'];
+				var header = ['h3','h2','h1'];
+				GantryBuildSpans(modules, header);
+			});
+		InputsExclusion.push('.content_vote','#rt-popup')
+		        window.addEvent('load', function() {
+					new Fusion('ul.menutop', {
+						pill: 0,
+						effect: 'slide and fade',
+						opacity: 1,
+						hideDelay: 500,
+						centered: 0,
+						tweakInitial: {'x': -2, 'y': 0},
+        				tweakSubsequent: {'x': 0, 'y': -14},
+						menuFx: {duration: 200, transition: Fx.Transitions.Sine.easeOut},
+						pillFx: {duration: 400, transition: Fx.Transitions.Back.easeOut}
+					});
+	            });
+  </script>
+<!-- <script type="text/javascript" src="/sso/javascripts/langsync.js"></script> -->
+<!-- <script src="/templates/rt_quantive_j15/js/ossf.js"></script> -->
+<script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-4136519-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
+</head>
+	<body  class="backgroundlevel-low backgroundstyle-style8 bodylevel-med bodystyle-light cssstyle-style1 logostyle-dark font-family-helvetica font-size-is-default menu-type-fusionmenu col12 ">
+		<div id="rt-main-background">
+			<div class="rt-container">
+																<div id="rt-header">
+					<div class="rt-grid-7 rt-alpha">
+    			<div class="rt-block">
+    	    	<a href="../index.html" id="rt-logo"></a>
+    		</div>
+	    
+</div>
+<div class="rt-grid-5 rt-omega">
+                    <div class="square9">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<div class="ofssologin_square9"><a href="../index.html">登入</a>&nbsp;&nbsp|&nbsp;&nbsp;<span><a href="../en/foss-news/9321.html" ><span lang="en" xml:lang="en">English</span></a></li></ul></span><!--Joom!fish V2.0.4 (Lightning)-->
+<!-- &copy; 2003-2009 Think Network, released under the GPL. -->
+<!-- More information: at http://www.joomfish.net -->
+<div class="ofssologin_search_square9">
+  <form id="of_search" action="https://www.openfoundry.org/of/openfoundry/search" method="get" onsubmit="of_search(); return false;">
+    <select id="of_search_type">
+      <option value="Projects"> 專案 </option>
+      <option value="Content"> 文章 </option>
+      <option value="People"> 人才 </option>
+    </select>
+    <input id="query" name="query" id="mod_search_searchword" maxlength="50" alt="search" class="inputbox" type="text" size="28" value="search..."  onblur="if(this.value=='') this.value='search...';" onfocus="if(this.value=='search...') this.value='';" />
+    <input type="hidden" name="commit" value="search" />
+  </form>
+</div></div>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		
+</div>
+					<div class="clear"></div>
+				</div>
+																<div id="rt-navigation"><div id="rt-navigation2"><div id="rt-navigation3">
+					
+<div class="nopill">
+	<ul class="menutop level1 " >
+						<li class="item1 root" >
+					<a class="orphan item bullet" href="../index.html"  >
+				<span>
+			    				首頁				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item32 root" >
+					<a class="orphan item bullet" href="../archived.html"  >
+				<span>
+			    				專案				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item186 root" >
+					<a class="orphan item bullet" href="../tw/community.html"  >
+				<span>
+			    				Who&#039;s Who				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item4 root" >
+					<a class="orphan item bullet" href="../tw/news.html"  >
+				<span>
+			    				新聞				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item5 root" >
+					<a class="orphan item bullet" href="../tw/law-and-licensing.html"  >
+				<span>
+			    				法律源地				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item3 root" >
+					<a class="orphan item bullet" href="../tw/activities.html"  >
+				<span>
+			    				活動				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item2 root" >
+					<a class="orphan item bullet" href="../tw/resourcecatalog%3FName=Value.html"  >
+				<span>
+			    				資源表列				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item45 root" >
+					<a class="orphan item bullet" href="../tw/about.html"  >
+				<span>
+			    				關於				   
+				</span>
+			</a>
+			
+			
+	</li>	
+				</ul>
+</div>
+
+				    <div class="clear"></div>
+				</div></div></div>
+								<div class="rt-surround"><div class="rt-surround2"><div class="rt-surround3">
+										<div id="rt-showcase-section">
+												<div id="rt-showcase">
+							<div class="rt-grid-12 rt-alpha rt-omega">
+    		<div class="clear"></div>
+		
+		
+                <div class="close-note">
+                    <div class="rt-block">
+               					<div class="module-content">
+                	<div style="font-size:medium; background-image:linear-gradient(120deg,#159957,#4298b2);color:white;padding:20px;margin:-10px -18px;">感謝您對「自由軟體鑄造場」的支持與愛護，十多年來「自由軟體鑄造場」受中央研究院支持，並在資訊科學研究所以及資訊科技創新研究中心執行，現已完成階段性的任務。 本網站預計持續維運至 2021年底，網站內容基本上不會再更動。<br />也紀念我們永遠的朋友 李士傑先生（Shih-Chieh Ilya Li）。</div>				</div>
+            </div>
+                </div>
+		
+</div>
+							<div class="clear"></div>
+						</div>
+																	</div>
+															<div id="rt-main-surround">
+												<div id="rt-breadcrumbs">
+								<div class="rt-breadcrumb-surround">
+		<a href="../index.html" id="breadcrumbs-home"></a>
+		<span class="breadcrumbs pathway">
+<a href="../tw/foss-news.html" class="pathway">源碼新聞</a> <img src="../templates/rt_quantive_j15/images/arrow.png" alt=""  /> <span class="no-link">Microsoft 開源 .NET 的意涵</span></span>
+	</div>
+	
+							<div class="clear"></div>
+						</div>
+																							              <div id="rt-main" class="sa3-mb9">
+                <div class="rt-main-inner">
+                    <div class="rt-grid-9 rt-push-3">
+                                                <div class="rt-block">
+                            							<div class="square1">
+							<div class="rt-module-surround">
+								<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+								<div class="rt-module-inner">
+		                            <div id="rt-mainbody">
+		                                
+<div class="rt-joomla ">
+	<div class="rt-article">
+		
+				<div class="rt-headline"><h1 class="rt-article-title">Microsoft 開源 .NET 的意涵</h1>		</div>
+		<div class="clear"></div>
+		
+		
+		
+				<div class="rt-articleinfo">
+						<div class="rt-article-icons">
+								<a href="../tw/foss-news/9321-ms-dot-net-open%3Ftmpl=component&amp;print=1&amp;layout=default&amp;page=.html" title="列印" onclick="window.open(this.href,'win2','status=no,toolbar=no,scrollbars=yes,titlebar=no,menubar=no,resizable=yes,width=640,height=480,directories=no,location=no'); return false;" rel="nofollow"><span class="icon print"></span></a>																</div>
+			
+			<span class="rt-date-posted">
+						建立日期			2014-12-17 16:00						&nbsp;&nbsp;&nbsp;&nbsp;						</span>
+
+						<span class="rt-author">
+				作者是 謝良奇／翻譯			</span>
+				
+					</div>
+		
+		
+		<p><strong>本文翻譯自 life hacker，原作者為 David Glance：<a href="https://www.lifehacker.com.au/2014/11/what-microsofts-shift-to-open-source-for-net-means/">https://www.lifehacker.com.au/2014/11/what-microsofts-shift-to-open-source-for-net-means/</a></strong></p>
+<p>換作是幾年前，外界根本無法想像 Microsoft 會走這一步，該公司居然將它的開發平台免費公開，更準備在 Windows 之外，提供 Macs, Linux、Apple、Google 行動手機平台的支援。在沒有 Microsoft 直接支援的情況下，Xamarin 等組織長久以來，為不同行動作業系統提供上述平台。Microsoft 接下來將和這些組織進行合作。</p>
+
+<p>Microsoft 的 dot Net 環境開源化，和該公司早在 2001 年即對開源運動展現出的厭惡，形成鮮明對比，該公司當時宣稱那是對智財權的威脅，並且是網絡泡沫後許多公司失敗的基本原因。</p>
+<p>前 Microsoft 執行長 Bill Gates 甚至曾經指稱，開放源碼要為失業負責。他認為人們自願花時間開發的軟體，是可以交給 Microsoft 的受薪僱員來做的。當然在此時，Microsoft 只是感受到 Linux 的崛起，對於他們透過 Windows 所掌握的霸權，已經成為了一項商業威脅。</p>
+<p>但是之後發生了許多事情。其中最重要的，要算是 Apple 與 Google 在行動手機領域的崛起，以及 Microsoft 在此領域的完全邊緣化。Microsoft 僅佔全球 2.5% 的智慧型手機出貨量。儘管有自己的智慧型手機平台，Microsoft 了解到現況是它的軟體必須在不同平台上運行才能確保其生存，而它必須接受這樣的世界。Microsoft 在 Apple 與 Android 手機和平板上，免費提供其 Office 軟體給非商業用途使用。今年稍早，Microsoft 讓手機和小型平板上免費使用 Windows。該公司承認它是要和 Google 的 Android 一拼，該平台在很大程度上是免費讓各公司在其硬體上使用的。</p>
+<p>技術圈裡的其他重大改變，就是雲端應用的興起，特別是雲端上的非 Windows 平台。過去曾經有段時間，你只能在 Windows 的機器上開發與運行企業系統。在 IBM 等公司從大型主機移往運行 Microsoft Windows 的伺服器之前，已經為此爭論多年。Amazon 這些公司證明事實上你可以跳脫出來，並且一舉成為了供應商業服務的領導者，要設定這些服務，只需幾下滑鼠的點選加上信用卡。設定與運行電腦系統不僅成為小事一樁，更讓在 Linux 伺服器上運行開源軟體變得極為簡單。</p>
+<p>Microsoft 為了因應 Amazon 領先的雲端風潮而推出了自己的 Azure 平台。和行動平台不同，Microsoft 在此要成功許多，某些證據顯示該公司甚至開始超越 Amazon。Microsoft 在此的持續成功，要歸功於接受並支持開源開發，以及在非 Windows  機器上運行軟體。</p>
+<p>Microsoft 這些動作雖然要付出代價，但這卻是在一個 Windows PC 不再佔有主導地位的世界中，不可避免的成本。在 Microsoft 股價創新高的同時，Microsoft 目前採取的方向顯然讓投資者感到放心，也使得該公司成為落在 Apple 後，全球第二大最有價值的公司。</p>
+<p>或許更重要的是，對於改變 Microsoft 被視為封閉且保守企業，只對維持 Windows 與 Office 控制權感興趣的消費者認知，這些動作可能有更大的影響。或許這反映了開源開發方式的成功，彰顯開放性與協同合作在商業實踐上，也和在發展高品質軟體上一樣可靠。</p>
+			<!-- Show relate article -->
+		<br><br><h4>您也許有興趣閱讀以下文章:</h4><ul><li><a href='9322.html'>Microsoft 開源 .Net 仍無法追趕上開源 Java</a> - <span class='date-posted'>2014-12-17</span></li><li><a href='9232.html'>CII 成立ーIntel、Google、Microsoft、Facebook、Dell、IBM 破天荒共同合作出資防堵自由開放源碼領域的安全漏洞</a> - <span class='date-posted'>2014-05-23</span></li><li><a href='9178.html'>Microsoft 向中國尋求開源協作</a> - <span class='date-posted'>2014-02-19</span></li><li><a href='8963.html'>Netflix 可望採用 HTML5 影片取代 Microsoft Silverlight</a> - <span class='date-posted'>2013-04-29</span></li><li><a href='8926.html'>Microsoft 發布德國慕尼黑市 Linux 轉換計畫調查報告與官方分析有明顯落差</a> - <span class='date-posted'>2013-02-25</span></li><li><a href='8768.html'>Microsoft 與商用 Linux 的軟體供應商 Amdocs 簽訂專利交互授權協議</a> - <span class='date-posted'>2012-08-07</span></li><li><a href='8666.html'> Microsoft 成為 Linux 貢獻商</a> - <span class='date-posted'>2012-04-06</span></li><li><a href='8568.html'>Microsoft 打開 Messenger 大門 開始支援 XMPP</a> - <span class='date-posted'>2011-12-26</span></li><li><a href='8522.html'>Samba 獲得 Microsoft 貢獻的程式碼</a> - <span class='date-posted'>2011-11-21</span></li><li><a href='8520.html'>AVM 控訴 Cybits 遭德國法院駁回 Barnes & Noble 要求美國司法部調查 Microsoft</a> - <span class='date-posted'>2011-11-21</span></li><li><a href='8486.html'>Microsoft 將從 Android 廠商賺得近 5 億美元授權金</a> - <span class='date-posted'>2011-10-17</span></li><li><a href='8435.html'>Microsoft 與中標軟件共同開發雲端解決方案</a> - <span class='date-posted'>2011-09-05</span></li><li><a href='8413.html'>Linux 3.0 版核心釋出 Microsoft 成為重要貢獻者</a> - <span class='date-posted'>2011-07-27</span></li><li><a href='8400.html'>Microsoft 與緯創簽署專利協議 範圍涵蓋 Android 與 Chrome</a> - <span class='date-posted'>2011-07-13</span></li><li><a href='8166.html'>Microsoft 新廣告大肆抨擊 OpenOffice</a> - <span class='date-posted'>2010-10-22</span></li></ul>		<!-- end -->
+		<div class="article_note">
+		<!-- Add tags use metakey, and show OSSF Newsletter tag: OSSFNL+NUM-->
+		<br><br> <hr style='border: 1px dashed #D2DADB;'><b>自由軟體鑄造場電子報&nbsp;:</b>&nbsp;<a href='../previous-issue%3Ftask=view&amp;id=867.html'>第 255 期 Docker 實作入門</a><br>				<!-- End -->
+					<br>
+					<b>分類: </b><a href="../tw/foss-news.html">				源碼新聞					</a>				</div>
+			 <!-- AddThis Button BEGIN ID 3001 is the front page article -->
+     			<br><br>
+       <div class="addthis_toolbox addthis_default_style addthis_32x32_style">
+       <a class="addthis_button_preferred_1"></a>
+       <a class="addthis_button_preferred_2"></a>
+       <a class="addthis_button_preferred_3"></a>
+       <a class="addthis_button_preferred_4"></a>
+       <a class="addthis_button_compact"></a>
+       <a class="addthis_counter addthis_bubble_style"></a>
+       </div>
+       <script type="text/javascript">var addthis_config = {"data_track_clickback":true};</script>
+       <script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js#pubid=openfoundry"></script>
+       <!-- AddThis Button END -->
+     <br>
+		<div class="totop" ><a class="rt-totop" href="9321.html#" style="outline: medium none;">↑ Top</a></div>
+            <!-- AddThis Button END -->
+
+			</div>
+</div>
+
+		                            </div>
+									<div class="clear"></div>
+								</div>
+								<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+							</div>
+							</div>
+                                                    </div>
+                                            </div>
+                                <div class="rt-grid-3 rt-pull-9">
+                <div id="rt-sidebar-a">
+                                    <div class="square4">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<ul class="menu"><li class="item56"><a href="../tw/previous-issue.html"><span>電子報總覽</span></a></li><li class="item55"><a href="../tw/about-newsletter.html"><span>關於本報</span></a></li></ul>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<ul class="menu"><li id="current" class="active item115"><a href="../tw/foss-news.html"><span>源碼新聞</span></a></li><li class="item141"><a href="../tw/case-job.html"><span>接案 / 工作</span></a></li></ul>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+        	                <div class="square1">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-title"><h2 class="title">專欄總覽</h2></div>
+						<div class="clear"></div>
+		                						<div class="module-content">
+		                	<ul class="menu"><li class="item37"><a href="../tw/tech-column.html"><span>技術專欄</span></a></li><li class="item40"><a href="../tw/foss-programs.html"><span>源碼秘技</span></a></li><li class="item35"><a href="../tw/legal-article-.html"><span>法律專欄</span></a></li><li class="item154"><a href="../tw/foss-forum.html"><span>自由專欄</span></a></li><li class="item162"><a href="../tw/enterprise-application.html"><span>企業應用</span></a></li><li class="item44"><a href="../tw/foss-projects.html"><span>源碼專案</span></a></li></ul>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		                <div class="square1">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<p style="text-align: center;"><a href="../news%3Fformat=feed&amp;type=rss" target="_black"><img src="../images/M_images/news-rss-feed.png" border="0" /></a><br /><a href="https://www.openfoundry.org/rss-feed/Newsletter" target="_black"><img src="../images/M_images/newsletter-rss-feed.png" border="0" /></a></p>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		
+                </div>
+            </div>
+
+                    <div class="clear"></div>
+                </div>
+            </div>
+																													</div>
+										<div id="rt-copyright">
+						<div class="rt-grid-12 rt-alpha rt-omega">
+                        <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<div id="desktop-mobile-version-switch"><span id="mobile-version" class="version-switch"><a href="9321.html#">行動版</a></span></div>
+自由軟體鑄造場 製作 最佳瀏覽狀態：IE7或Firefox2.0以上 (建議使用Firefox) ‧ 解析度1024*768 <br /> <strong>E-Mail</strong>：<a href="mailto:contact@openfoundry.org">contact@openfoundry.org</a> <strong>Address</strong>：台北市南港區研究院路2段128號 中央研究院資訊科學研究所 . <a href="../privacy-policy.html">隱私權條款</a>. <a href="../terms-of-use.html">使用條款</a><span style="position: relative; top: 8px; margin-top: -8px;"> <a href="../about/8101.html"><img src="../images/M_images/rss-feed-all.png" border="0" /></a></span>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+        	
+</div>
+						<div class="clear"></div>
+					</div>
+					<div class="rt-footer-bottom-wrap"><div class="rt-footer-bottom"><div class="rt-footer-bottom2"><div class="rt-footer-bottom3"></div></div></div></div>
+									</div></div></div>
+				<div class="rt-surround-bottom"><div class="rt-surround-bottom2"><div class="rt-surround-bottom3"></div></div></div>
+							</div>
+		</div>
+		<!--
+		<script id="aptureScript">
+						(function (){var a=document.createElement("script");a.defer="true";a.src="http://www.apture.com/js/apture.js?siteToken=vsJttrn";document.getElementsByTagName("head")[0].appendChild(a);})();
+     </script>
+-->
+
+<!-- Piwik -->
+<!-- 			<script type="text/javascript">
+			  var _paq = _paq || [];
+		  _paq.push(["trackPageView"]);
+		  _paq.push(["enableLinkTracking"]);
+
+		    (function() {
+			        var u=(("https:" == document.location.protocol) ? "https" : "https") + "://www.openfoundry.org/piwik/";
+				    _paq.push(["setTrackerUrl", u+"piwik.php"]);
+				    _paq.push(["setSiteId", "1"]);
+				        var d=document, g=d.createElement("script"), s=d.getElementsByTagName("script")[0]; g.type="text/javascript";
+				        g.defer=true; g.async=true; g.src=u+"piwik.js"; s.parentNode.insertBefore(g,s);
+					  })();
+		  </script> -->
+<!-- End Piwik Code -->
+	</body>
+</html>

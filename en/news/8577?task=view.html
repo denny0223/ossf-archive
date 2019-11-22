@@ -1,0 +1,533 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-gb" lang="en-gb" >
+<head>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<link rel="shortcut icon" href="../../images/favicon.ico" />
+	  <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+  <meta name="robots" content="index, follow" />
+  <meta name="keywords" content="oDesk, outsourcing, 外包, 平台, platform, soho,OSSFNL772" />
+  <meta name="title" content="透過 oDesk 建立虛擬團隊" />
+  <meta name="description" content="這年頭，資訊服務上了雲端，我們也能在雲端建立虛擬的軟體開發團隊嗎? 如何運用既有的線上服務管理虛擬團隊呢? 本文將介紹 oDesk 平台服務，以一個開放源碼為基礎的專案當作例子，說明 oDesk 的操作方式，並透過雇主 (employer) 和雇員 (contractor) 兩種角色，介紹專案執行流程裡要注意的事項。" />
+  <meta name="generator" content="" />
+  <title>透過 oDesk 建立虛擬團隊 - OpenFoundry</title>
+  <link href="../../favicon.ico" rel="shortcut icon" type="image/x-icon" />
+  <link rel="stylesheet" href="../../components/com_jcomments/tpl/default/style.css%3Fv=10.css" type="text/css" />
+  <link rel="stylesheet" href="../../components/com_gantry/css/gantry.css" type="text/css" />
+  <link rel="stylesheet" href="../../components/com_gantry/css/grid-12.css" type="text/css" />
+  <link rel="stylesheet" href="../../components/com_gantry/css/joomla.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/joomla.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/style1.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/light-body.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/demo-styles.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/template.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/typography.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/fusionmenu.css" type="text/css" />
+  <style type="text/css">
+    <!--
+#rt-main-surround ul.menu li.active > a, #rt-main-surround ul.menu li.active > .separator, #rt-main-surround ul.menu li.active > .item, #rt-main-surround .square4 ul.menu li:hover > a, #rt-main-surround .square4 ul.menu li:hover > .item, #rt-main-surround .square4 ul.menu li:hover > .separator, .roktabs-links ul li.active span {color:#0088B5;}
+a, #rt-main-surround ul.menu a:hover, #rt-main-surround ul.menu .separator:hover, #rt-main-surround ul.menu .item:hover {color:#0088B5;}
+    -->
+  </style>
+  <script type="text/javascript" src="../../components/com_jcomments/js/jcomments-v2.1.js%3Fv=2"></script>
+  <script type="text/javascript" src="../../components/com_jcomments/libraries/joomlatune/ajax.js"></script>
+  <script type="text/javascript" src="../../media/system/js/mootools.js"></script>
+  <script type="text/javascript" src="../../media/system/js/caption.js"></script>
+  <script type="text/javascript" src="../../components/com_gantry/js/gantry-buildspans.js"></script>
+  <script type="text/javascript" src="../../components/com_gantry/js/gantry-inputs.js"></script>
+  <script type="text/javascript" src="../../templates/rt_quantive_j15/js/jquery.cookie.js"></script>
+  <script type="text/javascript" src="../../modules/mod_roknavmenu/themes/fusion/js/fusion.js"></script>
+  <script type="text/javascript" src="../../modules/mod_ofssologin/js/ofssologin.js"></script>
+  <script type="text/javascript">
+
+			window.addEvent('domready', function() {
+				var modules = ['rt-block'];
+				var header = ['h3','h2','h1'];
+				GantryBuildSpans(modules, header);
+			});
+		InputsExclusion.push('.content_vote','#rt-popup')
+		        window.addEvent('load', function() {
+					new Fusion('ul.menutop', {
+						pill: 0,
+						effect: 'slide and fade',
+						opacity: 1,
+						hideDelay: 500,
+						centered: 0,
+						tweakInitial: {'x': -2, 'y': 0},
+        				tweakSubsequent: {'x': 0, 'y': -14},
+						menuFx: {duration: 200, transition: Fx.Transitions.Sine.easeOut},
+						pillFx: {duration: 400, transition: Fx.Transitions.Back.easeOut}
+					});
+	            });
+  </script>
+<!-- <script type="text/javascript" src="/sso/javascripts/langsync.js"></script> -->
+<!-- <script src="/templates/rt_quantive_j15/js/ossf.js"></script> -->
+<script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-4136519-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
+</head>
+	<body  class="backgroundlevel-low backgroundstyle-style8 bodylevel-med bodystyle-light cssstyle-style1 logostyle-dark font-family-helvetica font-size-is-default menu-type-fusionmenu col12 ">
+		<div id="rt-main-background">
+			<div class="rt-container">
+																<div id="rt-header">
+					<div class="rt-grid-7 rt-alpha">
+    			<div class="rt-block">
+    	    	<a href="../../index.html" id="rt-logo"></a>
+    		</div>
+	    
+</div>
+<div class="rt-grid-5 rt-omega">
+                    <div class="square9">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<div class="ofssologin_square9"><a href="../../index.html">Login</a>&nbsp;&nbsp|&nbsp;&nbsp;<span><a href="https://www.openfoundry.org/tw/news/8577?task=view" ><span lang="tw" xml:lang="tw">繁體中文</span></a></li></ul></span><!--Joom!fish V2.0.4 (Lightning)-->
+<!-- &copy; 2003-2009 Think Network, released under the GPL. -->
+<!-- More information: at http://www.joomfish.net -->
+<div class="ofssologin_search_square9">
+  <form id="of_search" action="https://www.openfoundry.org/of/openfoundry/search" method="get" onsubmit="of_search(); return false;">
+    <select id="of_search_type">
+      <option value="Projects"> Projects </option>
+      <option value="Content"> Content </option>
+      <option value="People"> People </option>
+    </select>
+    <input id="query" name="query" id="mod_search_searchword" maxlength="50" alt="search" class="inputbox" type="text" size="28" value="search..."  onblur="if(this.value=='') this.value='search...';" onfocus="if(this.value=='search...') this.value='';" />
+    <input type="hidden" name="commit" value="search" />
+  </form>
+</div></div>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		
+</div>
+					<div class="clear"></div>
+				</div>
+																<div id="rt-navigation"><div id="rt-navigation2"><div id="rt-navigation3">
+					
+<div class="nopill">
+	<ul class="menutop level1 " >
+						<li class="item1 root" >
+					<a class="orphan item bullet" href="../../index.html"  >
+				<span>
+			    				Home				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item32 root" >
+					<a class="orphan item bullet" href="../../archived.html"  >
+				<span>
+			    				Projects				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item186 root" >
+					<a class="orphan item bullet" href="../community.html"  >
+				<span>
+			    				Who&#039;s Who				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item4 root" >
+					<a class="orphan item bullet" href="../news.html"  >
+				<span>
+			    				News				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item5 root" >
+					<a class="orphan item bullet" href="../law-and-licensing.html"  >
+				<span>
+			    				Law &amp; Licensing				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item3 root" >
+					<a class="orphan item bullet" href="../activities.html"  >
+				<span>
+			    				Activities				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item2 root" >
+					<a class="orphan item bullet" href="../resourcecatalog.html"  >
+				<span>
+			    				Resource Catalog				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item45 root" >
+					<a class="orphan item bullet" href="../about.html"  >
+				<span>
+			    				About				   
+				</span>
+			</a>
+			
+			
+	</li>	
+				</ul>
+</div>
+
+				    <div class="clear"></div>
+				</div></div></div>
+								<div class="rt-surround"><div class="rt-surround2"><div class="rt-surround3">
+										<div id="rt-showcase-section">
+												<div id="rt-showcase">
+							<div class="rt-grid-12 rt-alpha rt-omega">
+    		<div class="clear"></div>
+		
+		
+                <div class="close-note">
+                    <div class="rt-block">
+               					<div class="module-content">
+                	<div style="font-size:medium; background-image:linear-gradient(120deg,#159957,#4298b2);color:white;padding:20px;margin:-10px -18px;">感謝您對「自由軟體鑄造場」的支持與愛護，十多年來「自由軟體鑄造場」受中央研究院支持，並在資訊科學研究所以及資訊科技創新研究中心執行，現已完成階段性的任務。 本網站預計持續維運至 2021年底，網站內容基本上不會再更動。<br />也紀念我們永遠的朋友 李士傑先生（Shih-Chieh Ilya Li）。</div>				</div>
+            </div>
+                </div>
+		
+</div>
+							<div class="clear"></div>
+						</div>
+																	</div>
+															<div id="rt-main-surround">
+												<div id="rt-breadcrumbs">
+								<div class="rt-breadcrumb-surround">
+		<a href="../../index.html" id="breadcrumbs-home"></a>
+		<span class="breadcrumbs pathway">
+<span class="no-link">News</span></span>
+	</div>
+	
+							<div class="clear"></div>
+						</div>
+																							              <div id="rt-main" class="sa3-mb9">
+                <div class="rt-main-inner">
+                    <div class="rt-grid-9 rt-push-3">
+                                                <div class="rt-block">
+                            							<div class="square1">
+							<div class="rt-module-surround">
+								<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+								<div class="rt-module-inner">
+		                            <div id="rt-mainbody">
+		                                
+<div class="rt-joomla ">
+	<div class="rt-article">
+		
+				<div class="rt-headline"><h1 class="rt-article-title">透過 oDesk 建立虛擬團隊</h1>		</div>
+		<div class="clear"></div>
+		
+		
+		
+				<div class="rt-articleinfo">
+						<div class="rt-article-icons">
+								<a href="https://www.openfoundry.org/en/news/8577-build-your-remote-team-through-odesk?tmpl=component&amp;print=1&amp;page=" title="Print" onclick="window.open(this.href,'win2','status=no,toolbar=no,scrollbars=yes,titlebar=no,menubar=no,resizable=yes,width=640,height=480,directories=no,location=no'); return false;" rel="nofollow"><span class="icon print"></span></a>																</div>
+			
+			<span class="rt-date-posted">
+						 Created at			Tuesday, 10 January 2012 09:42						&nbsp;&nbsp;&nbsp;&nbsp;						Last Updated on Friday, 17 February 2012 10:14						</span>
+
+						<span class="rt-author">
+				Written by marr			</span>
+				
+					</div>
+		
+		
+		<p>這年頭，資訊服務上了雲端，我們也能在雲端建立虛擬的軟體開發團隊嗎? 如何運用既有的線上服務管理虛擬團隊呢? 本文將介紹 oDesk 平台服務，以一個開放源碼為基礎的專案當作例子，說明 oDesk 的操作方式，並透過雇主 (employer) 和雇員 (contractor) 兩種角色，介紹專案執行流程裡要注意的事項。</p>
+<p>委外開發的種類很多，除了軟體案之外，還包括設計或行銷案等，本文打算只聚焦在個人經驗的分享，也就是以網站應用軟體的開發為例。</p>
+
+<h3>委外開發的動機</h3>
+<p>在台灣，高素質的軟體人員仍然不足，撇開有意自行創業的個體戶不提，純軟體公司很可能要跟硬體公司搶人，或是考慮召募年輕程式員，以培養經驗和革命情感，正因為 in-house 的成本和變數都難以降低，造成 outsoruce 經常成為軟體開發的評估選項之一。但是，這並不意味委外開發是條更經鬆的途徑，相反地，它的實質門檻更高，為了降低與管理這些門檻，委外開發的管理平台應運而生。</p>
+<p>台灣既有的委外平台，常見以「外包網」為名稱，並強調「可以降低企業成本，彈性補足公司資源，讓時間急迫的專案變成可能」，可惜的是，這些訴求的出發點，都是造成委外開發市場惡性循環的原因。另一方面，外包網經常一案多報，造就案量豐富的假象，並要求客戶要先付費成為會員，才能看到更多案源，這不僅讓人難以信服，如果付費後還是沒有優質案源，本質就是變相詐欺。最後，軟體開發的報價還算有憑有據，設計領域的行情顯得更混亂，合理的鑑價機制，成為改善委外產業的重要議題。</p>
+<p>國外的委外開發管理平台，不僅規模可觀，有些還致力促成市場良性循環，像 oDesk 就是知名平台之一，它的使用族群以程式員為大宗，廣受 soho 族喜愛，成功將「才能」轉換為「勞動力」，據說公司有潛力在近期內達到具備上市條件。</p>
+<h3>oDesk 的特色</h3>
+<p>「Hour Worked is Hour Billed/Paid.」是 oDesk 努力的口號之一，也就是說，雇主和雇員都滿意之後，oDesk 才會對雙方收取費用，在此之前，雇主和雇員同樣享有免費註冊、免費查詢、免費應徵的權利。平台的收費方式分成「時薪」和「固定費用」兩種，預設鼓勵使用時薪方式，雇主和雇員還可以提議新的時薪額度，做為商討的依據。</p>
+<p>完成工作後，雇主要在一週之內完成驗收，請特別留意，oDesk 提供爭議調處 (dispute) 機制，不過，僅限於採時薪制的案子，因此，新手優先選用時薪付款方式，容易獲得更多保障。</p>
+<p>註冊平台時，需要事先決定角色，主要就是分成「雇主」或「雇員」，也就是買方或賣方，如圖1所示。除了操作網站之外，還可以下載 desktop 或 mobile app 軟體，協助管理專案，詳細的報表和評比工具，都是媒合買賣雙方的好幫手。</p>
+<p><a href="../../images/120117/oDesk/01-role-choice.png" target="_blank"><img src="../../images/120117/oDesk/01-role-choice.png" alt="註冊過程需要選擇角色" border="0" width="500" /></a></p>
+<p>▲ 圖1 註冊過程需要選擇角色</p>
+<p>oDesk 對買賣雙方提供驗證或評比機制，例如既有合約的滿意度評分記錄，雇主是否完成付款方式的登記，雇員是否完成英文或程式語言的測驗，既有工時或合約款項的總額，這些公開資訊都有助於買賣雙方，進行基本的面試篩選。</p>
+<h3>張貼工作的流程</h3>
+<p>讓我們先以雇主身份認識張貼工作的步驟，首先要完成圖2所示的註冊表單內容。</p>
+<p><a href="../../images/120117/oDesk/02-employer.png" target="_blank"><img src="../../images/120117/oDesk/02-employer.png" alt="雇主身份的註冊表單" border="0" width="350" /></a></p>
+<p>▲ 圖2 雇主身份的註冊表單</p>
+<p>雇主的操作介面分成「Recruit」「Manage My Team」「Wallet」三大項，在 Recruit 裡點選「Post a Job」按鈕，填寫 Job 表單，就可以新增工作內容，如圖3所示。</p>
+<p><a href="../../images/120117/oDesk/03-post-job.png" target="_blank"><img src="../../images/120117/oDesk/03-post-job.png" alt="Job 說明表單" border="0" width="500" /></a></p>
+<p>▲ 圖3 Job 說明表單</p>
+<p>工作內容應力求明確，通常要包括開發環境及版本要求、技能要求、時限、示範畫面，如果編輯介面只能使用文字的話，可考慮另貼圖片網址，如圖4所示。</p>
+<p><a href="../../images/120117/oDesk/04-job-description.png" target="_blank"><img src="../../images/120117/oDesk/04-job-description.png" alt="Job 範例文字" border="0" width="400" /></a></p>
+<p>▲ 圖4 Job 範例文字</p>
+<p>雇主可以指定一週工時上限，雇員超過工時上限的話，並不會加收費用，如圖5所示。</p>
+<p><a href="../../images/120117/oDesk/05-hours-limit.png" target="_blank"><img src="../../images/120117/oDesk/05-hours-limit.png" alt="指定一週工時上限" border="0" width="450" /></a></p>
+<p>▲ 圖5 指定一週工時上限</p>
+<p>進階選項包括「英文流利程度的要求」，oDesk 提供多種測試，協助驗證雇員的各項能力程度，這些並不是強迫要求的選項，卻提供買賣雙方一個更具體的評估依據。</p>
+<h3>應徵工作的流程</h3>
+<p>雇員的註冊流程和雇主類似，差別在於個人履歷選項更多，如圖6所示。</p>
+<p><a href="../../images/120117/oDesk/06-profile-cheklist.png" target="_blank"><img src="../../images/120117/oDesk/06-profile-cheklist.png" alt="Profile 檢查列表" border="0" width="500" /></a></p>
+<p>▲ 圖6 Profile 檢查列表</p>
+<p>需要填寫的內容包括電子信箱、聯絡資訊、專長領域、每週工時等，其中的預設時薪是重要資訊之一，以 25美金為例，oDesk 會收取 10%的費用，因此雇主實際上要付 27.78美金。另外，剛加入平台時，每週最多能應徵兩個工作。參考圖7畫面。</p>
+<p><a href="../../images/120117/oDesk/07-account-summary.png"><img src="../../images/120117/oDesk/07-account-summary.png" alt="預設時薪和每週應徵數量上限" width="500" /></a></p>
+<p>▲ 圖7 預設時薪和每週應徵數量上限</p>
+<p>雇員的操作介面分成「Find Work」「My Jobs」「Wallet」三大項，查詢工作時可以使用關鍵字，也可以新增時間、專長等過濾條件，如圖8所示。</p>
+<p><a href="../../images/120117/oDesk/08-search-job.png" target="_blank"><img src="../../images/120117/oDesk/08-search-job.png" alt="Job 查詢畫面" border="0" width="500" /></a></p>
+<p>▲ 圖8 Job 查詢畫面</p>
+<p>應徵工作時，必須決定提議的時薪金額，系統會自動計算雇主的付款總額，填上 Cover Letter 內容，確認同意條款就能寄出應徵信，如圖9所示。</p>
+<p><a href="../../images/120117/oDesk/09-apply-job.png" target="_blank"><img src="../../images/120117/oDesk/09-apply-job.png" alt="Job 應徵表單" border="0" width="500" /></a></p>
+<p>▲ 圖9 Job 應徵表單</p>
+<p>雇員的應徵狀況清單分成三類，第一類是剛送出的應徵信，第二類是雇主有回應的討論信，第三類是雇主個別寄來的面試邀請信，如圖10所示。</p>
+<p><a href="../../images/120117/oDesk/10-applying-listing.png" target="_blank"><img src="../../images/120117/oDesk/10-applying-listing.png" alt="雇員的應徵狀況清單" border="0" width="500" /></a></p>
+<p>▲ 圖10 雇員的應徵狀況清單</p>
+<h3>面試的流程</h3>
+<p>雇主除了等待潛在雇員來應徵外，也可以主動發出面試邀請信，雇主的應徵狀況清單分成兩類，第一類是尚未回覆的應徵名單，第二類是有回應的討論信，如圖11所示。</p>
+<p><a href="../../images/120117/oDesk/11-applyed-listing.png" target="_blank"><img src="../../images/120117/oDesk/11-applyed-listing.png" alt="雇主的應徵狀況清單" border="0" width="500" /></a></p>
+<p>▲ 圖11 雇主的應徵狀況清單</p>
+<p>遇到合適人選應徵時，第一件事當然是寫信回應，如果雇主覺得報價太高，可以主動提議新的時薪，如圖12所示。</p>
+<p><a href="../../images/120117/oDesk/12-diff-offer.png" target="_blank"><img src="../../images/120117/oDesk/12-diff-offer.png" alt="雇主提議更改時薪" border="0" width="300" /></a></p>
+<p>▲ 圖12 雇主提議更改時薪</p>
+<p>配合上述情況，應徵者會收到時薪更新的提議，同意的話，可以按下「Accept this Job」按鈕，如圖13所示。</p>
+<p><a href="../../images/120117/oDesk/13-accept.png" target="_blank"><img src="../../images/120117/oDesk/13-accept.png" alt="應徵者的新時薪提議畫面" border="0" width="500" /></a></p>
+<p>▲ 圖13 應徵者的新時薪提議畫面</p>
+<p>確認合約後，買賣雙方會看到合約編號、生效日期、時薪金額、一週工時上限等資訊，如圖14所示。</p>
+<p><a href="../../images/120117/oDesk/14-apply-done.png" target="_blank"><img src="../../images/120117/oDesk/14-apply-done.png" alt="合約生效畫面" border="0" width="500" /></a></p>
+<p>▲ 圖14 合約生效畫面</p>
+<p>雇主會看到團隊成員的管理畫面，包括成員列表、每週累計工時、最近工作標題摘要、所在城市及時區，如圖15所示。</p>
+<p><a href="../../images/120117/oDesk/15-manage-team.png" target="_blank"><img src="../../images/120117/oDesk/15-manage-team.png" alt="成員管理畫面" border="0" width="500" /></a></p>
+<p>▲ 圖15 成員管理畫面</p>
+<h3>軟體工具的使用</h3>
+<p>想要事半功倍的話，可以到 https://www.odesk.com/downloads 下載 oDesk Team 工具軟體，目前有 Desktop 和 iPhone App 版本，如圖16所示。</p>
+<p><a href="../../images/120117/oDesk/16-download.png" target="_blank"><img src="../../images/120117/oDesk/16-download.png" alt="oDesk Team 下載網頁" border="0" width="500" /></a></p>
+<p>▲ 圖16 oDesk Team 下載網頁</p>
+<p>oDesk Team 類似即時通訊軟體，可以查看團隊成員的狀態，包括視訊功能的支援，如圖17所示。</p>
+<p><a href="../../images/120117/oDesk/17-team-room.png" target="_blank"><img src="../../images/120117/oDesk/17-team-room.png" alt="oDesk Team Room 畫面" border="0" width="450" /></a></p>
+<p>▲ 圖17 oDesk Team Room 畫面</p>
+<p>也可以用來線上討論工作，如圖18所示。</p>
+<p><a href="../../images/120117/oDesk/18-chat.png" target="_blank"><img src="../../images/120117/oDesk/18-chat.png" alt="oDesk Team 線上討論畫面" border="0" width="350" /></a></p>
+<p>▲ 圖18 oDesk Team 線上討論畫面</p>
+<p>oDesk Team 的特色是可以用來自動記錄工時，點選 Time tracking 的「Start」按鈕，代表雇員進入記時工作模式，系統每隔數分鐘會抓取桌面畫面，並記錄期間內，點按鍵盤和滑鼠的次數，雇員可以輸入 memo 記錄目前的工作摘要，如圖19所示。</p>
+<p><a href="../../images/120117/oDesk/19-memo.png" target="_blank"><img src="../../images/120117/oDesk/19-memo.png" alt="oDesk Team 記時工作模式" border="0" width="400" /></a></p>
+<p>▲ 圖19 oDesk Team 記時工作模式</p>
+<p>上述的桌面記錄，會自動傳送到 oDesk 網站，成為 Work Diary 的內容。Work Diary 採取月曆形式顯示工時，搭配 oDesk Team 軟體的話，工時會分成 auto-tracked 和 manual 兩種，auto-tracked 時段以綠底標題顯示，manual 時段以黃底標題顯示，兩者加總之後，就是記錄的總工時，如圖20所示。</p>
+<p><a href="../../images/120117/oDesk/20-work-diary-1.png" target="_blank"><img src="../../images/120117/oDesk/20-work-diary-1.png" alt="Work Diary 初始畫面" border="0" width="500" /></a></p>
+<p>▲ 圖20 Work Diary 初始畫面</p>
+<p>Work Diary 提供方格或條列兩種顯示方式，在方格顯示方式下，可以瀏覽記錄的桌面畫面，如圖21所示。</p>
+<p><a href="../../images/120117/oDesk/21-work-diary-2.png" target="_blank"><img src="../../images/120117/oDesk/21-work-diary-2.png" alt="Work Diary 方格顯示方式" border="0" width="500" /></a></p>
+<p>▲ 圖21 Work Diary 方格顯示方式</p>
+<h3>付款結案的流程</h3>
+<p>雇員完成工作後，系統會通知雇主查看 Work Diary，確認成果符合需求，一切無誤的話，預設在一個星期內，oDesk 會提供 Timelogs 報表，說明工時狀況和待付款項，如圖22所示。</p>
+<p><a href="../../images/120117/oDesk/22-timelogs.png" target="_blank"><img src="../../images/120117/oDesk/22-timelogs.png" alt="Timelogs 畫面" border="0" width="500" /></a></p>
+<p>▲ 圖22 Timelogs 畫面</p>
+<p>雇主如果想要提供額外獎金的話，可以點選「Give Bonus」來付款，如圖23所示。</p>
+<p><a href="../../images/120117/oDesk/23-bonus.png" target="_blank"><img src="../../images/120117/oDesk/23-bonus.png" alt="Give Bonus 畫面" border="0" width="500" /></a></p>
+<p>▲ 圖23 Give Bonus 畫面</p>
+<p>已經排定的付款項目，稱為 Pending Transaction，會在到期日 (Due Date) 從信用卡扣款，如圖24所示。</p>
+<p><a href="../../images/120117/oDesk/24-pending-transactions.png" target="_blank"><img src="../../images/120117/oDesk/24-pending-transactions.png" alt="Pending Transactions 畫面" border="0" width="500" /></a></p>
+<p>▲ 圖24 Pending Transactions 畫面</p>
+<p>完整的付款記錄，會以 Transaction History 報表顯示，如圖24所示。</p>
+<p><a href="../../images/120117/oDesk/25-transaction-history.png" target="_blank"><img src="../../images/120117/oDesk/25-transaction-history.png" alt="Transaction History 畫面" border="0" width="500" /></a></p>
+<p>▲ 圖25 Transaction History 畫面</p>
+<p>合約履行階段發生爭議的話，買賣雙方最好事先達成共識，例如雇員同意未達雇主要求，可以在 Contract 畫面，點選「Give refund」主動退選款項，如圖26所示。</p>
+<p><a href="../../images/120117/oDesk/26-give-refund.png" target="_blank"><img src="../../images/120117/oDesk/26-give-refund.png" alt="Give refund 畫面" border="0" width="500" /></a></p>
+<p>▲ 圖26 Give refund 畫面</p>
+<p>雇員填寫要退還的金額和說明文字，點選「Give Refund」按鈕就行，如圖27所示。</p>
+<p><a href="../../images/120117/oDesk/27-refund-give.png" target="_blank"><img src="../../images/120117/oDesk/27-refund-give.png" alt="決定退款的畫面" border="0" width="500" /></a></p>
+<p>▲ 圖27 決定退款的畫面</p>
+<p>合約順利完成，或是雇主更換雇員的話，都可以點選「End Contract」來結束合約，系統會詢問結束理由，買賣雙方對彼此的評價，以五星等級來評分，如圖28所示。</p>
+<p><a href="../../images/120117/oDesk/28-end-contract.png" target="_blank"><img src="../../images/120117/oDesk/28-end-contract.png" alt="合約結束的問卷畫面" border="0" width="500" /></a></p>
+<p>▲ 圖28 合約結束的問卷畫面</p>
+<h3>小結</h3>
+<p>在 <a href="https://www.odesk.com/oconomy/" target="_blank">https://www.odesk.com/oconomy/</a> 網址會定期公佈 oDesk 的統計資訊，以 2011 年 11 月為例，成交金額達兩千三百萬美金，平均一個案子金額是四千美金，規模最大的成交金額來自網站應用程式開發，其次是軟體開發。成交數量最多的時薪金額，大約在 30 美金，印度、菲律賓、東歐，依序是提供人力資源的最大宗，美國則是最大的需求國家。</p>
+<p>oDesk 目前提供近 344 項技能測驗，分成三十類，包括語文、程式語言、網路技術、軟硬體知識、資料庫等，每項測驗通常會有亂數產生四十個複選題，要在四十分鐘內完成，相隔三十天才能重新參加測驗，測驗通過率大約五成，如圖29所示。</p>
+<p><a href="../../images/120117/oDesk/29-qualification-test.png" target="_blank"><img src="../../images/120117/oDesk/29-qualification-test.png" alt="技能測驗畫面" border="0" width="500" /></a></p>
+<p>▲ 圖29 技能測驗畫面</p>
+<p>新手雇主初期的最大挑戰，在於「如何得知哪位應徵者才是能力最強，或是哪些人能力夠強」，通常要磨合互動後才能知道，難有捷徑，無法速成。找到具備默契的雇員之前，要求「密集快速互動」是很重要的步驟，雇員如果能夠先回覆部份的程式碼，不但能夠先檢查 coding style，也會避免「要 Python 給 PHP」的尷尬場面。</p>
+<p>工作期間除了要以英文做為溝通語言，程式模組最好也符合 i18n 架構基礎，讓雇員能在英文介面進行開發，雇主事後則自行完成 l10n 調整，或是再將 l10n 工作另行委外。另外，也值得考慮使用 SCM 工具管理程式碼。透過軟體工具提昇虛擬團隊的工作效率，是 oDesk 這類平台的未來發展方向，既有的模式之一，是透過看板 (Kanban) 管理，讓工作成果和瓶頸能被即時展現。</p>
+<p>就個人在 oDesk 委外網站應用程式開發工作的經驗而言，既有工作環境以 Plone 為基礎，合作滿意的雇員，都是 Plone 社群的資深程式員，社群資歷這項因素，對於以開放源碼為基礎的專案來說，應是高信度的人才篩選條件。相信這類平台工具所代表的商業模式，未來將對委外開發市場帶來巨變，演化中的程式員勞動交易方式，正在形塑知識工作者的前緣疆域。</p>
+			<!-- Show relate article -->
+				<!-- end -->
+		<div class="article_note">
+		<!-- Add tags use metakey, and show OSSF Newsletter tag: OSSFNL+NUM-->
+		<br><br> <hr style='border: 1px dashed #D2DADB;'><b>OSSF Newsletter&nbsp;:</b>&nbsp;<a href='../../previous-issue%3Ftask=view&amp;id=772.html'>第 188 期 PaaS：程式語言開發在雲端「Programming in Paas」（下）</a><br><b>Tags:</b>&nbsp;<a href='../../index.php%3Foption=com_search&amp;Itemid=58&amp;searchphrase=exact_meta&amp;ordering=newest&amp;searchword=oDesk.html'>oDesk</a>,&nbsp;&nbsp;<a href='../../index.php%3Foption=com_search&amp;Itemid=58&amp;searchphrase=exact_meta&amp;ordering=newest&amp;searchword=&#32;outsourcing.html'> outsourcing</a>,&nbsp;&nbsp;<a href='../../index.php%3Foption=com_search&amp;Itemid=58&amp;searchphrase=exact_meta&amp;ordering=newest&amp;searchword=&#32;外包.html'> 外包</a>,&nbsp;&nbsp;<a href='../../index.php%3Foption=com_search&amp;Itemid=58&amp;searchphrase=exact_meta&amp;ordering=newest&amp;searchword=&#32;平台.html'> 平台</a>,&nbsp;&nbsp;<a href='../../index.php%3Foption=com_search&amp;Itemid=58&amp;searchphrase=exact_meta&amp;ordering=newest&amp;searchword=&#32;platform.html'> platform</a>,&nbsp;&nbsp;<a href='../../index.php%3Foption=com_search&amp;Itemid=58&amp;searchphrase=exact_meta&amp;ordering=newest&amp;searchword=&#32;soho.html'> soho</a>,&nbsp;&nbsp;				<!-- End -->
+					<br>
+					<b>Category: </b><a href="../enterprise-application.html">				Enterprise Application					</a>				</div>
+			 <!-- AddThis Button BEGIN ID 3001 is the front page article -->
+     			<br><br>
+       <div class="addthis_toolbox addthis_default_style addthis_32x32_style">
+       <a class="addthis_button_preferred_1"></a>
+       <a class="addthis_button_preferred_2"></a>
+       <a class="addthis_button_preferred_3"></a>
+       <a class="addthis_button_preferred_4"></a>
+       <a class="addthis_button_compact"></a>
+       <a class="addthis_counter addthis_bubble_style"></a>
+       </div>
+       <script type="text/javascript">var addthis_config = {"data_track_clickback":true};</script>
+       <script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js#pubid=openfoundry"></script>
+       <!-- AddThis Button END -->
+     <br>
+		<div class="totop" ><a class="rt-totop" href="8577%3Ftask=view.html#" style="outline: medium none;">↑ Top</a></div>
+            <!-- AddThis Button END -->
+
+		<script type="text/javascript">
+var jcomments=new JComments(8577, 'com_content','https://openfoundry.org/index.php?option=com_jcomments&amp;tmpl=component&amp;lang=');
+jcomments.setList('comments-list');
+</script>
+<div id="jc">
+<div id="comments"><h4>Comments<a class="refresh" href="8577%3Ftask=view.html#" title="Refresh comments list" onclick="jcomments.showPage(8577,'com_content',0);return false;">&nbsp;</a></h4>
+<div id="comments-list" class="comments-list">
+        <div class="even" id="comment-item-371"><div class="rbox"><div class="rbox_tr"><div class="rbox_tl"><div class="rbox_t">&nbsp;</div></div></div><div class="rbox_m">
+<div class="comment-avatar"><img src="http://www.gravatar.com/avatar.php?gravatar_id=765006ed799e2cbd8ac667ded1c89e15&amp;default=https%3A%2F%2Fwww.openfoundry.org%2Fcomponents%2Fcom_jcomments%2Fimages%2Fno_avatar.png" alt="" /></div>
+<div class="comment-box avatar-indent">
+<span class="comments-vote">
+	<span id="comment-vote-holder-371">
+<a href="8577%3Ftask=view.html#" class="vote-good" title="Good comment!" onclick="jcomments.voteComment(371, 1);return false;"></a><a href="8577%3Ftask=view.html#" class="vote-poor" title="Poor comment!" onclick="jcomments.voteComment(371, -1);return false;"></a>
+<span class="vote-none">0</span>
+	</span>
+</span>
+<a class="comment-anchor" href="../enterprise-application/8577-build-your-remote-team-through-odesk.html#comment-371" id="comment-371">#1</a>
+<a class="author-homepage" href="https://blog.osslab.com.tw" rel="nofollow" title="alang">alang</a>
+<span class="comment-date">2013-02-18 14:15</span>
+<div class="comment-body" id="comment-body-371">好奇特，竟然在這裡會有 oDesk 的分享文。<br /><br />我也在 oDesk 上工作好幾年了，雖然還不能作為<span style="font-size:0px;padding:0;margin:0;"> </span>正職，不過多少也能為自己加薪，<span style="font-size:0px;padding:0;margin:0;"> </span>還有就是無形中能增進自己在業界<span style="font-size:0px;padding:0;margin:0;"> </span>的視野，因為雇主都是來自世界各<span style="font-size:0px;padding:0;margin:0;"> </span>地。</div>
+</div><div class="clear"></div>
+</div><div class="rbox_br"><div class="rbox_bl"><div class="rbox_b">&nbsp;</div></div></div></div>
+</div>
+</div>
+<div id="comments-list-footer"><a class="refresh" href="8577%3Ftask=view.html#" title="Refresh comments list" onclick="jcomments.showPage(8577,'com_content',0);return false;">Refresh comments list</a></div>
+</div>
+<div id="comments-footer" align="center"><a href="http://www.joomlatune.com" title="JComments" target="_blank">JComments</a></div>
+<script type="text/javascript">
+jcomments.setAntiCache(1,0,0);
+</script> 
+</div>	</div>
+</div>
+
+		                            </div>
+									<div class="clear"></div>
+								</div>
+								<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+							</div>
+							</div>
+                                                    </div>
+                                            </div>
+                                <div class="rt-grid-3 rt-pull-9">
+                <div id="rt-sidebar-a">
+                                    <div class="square4">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<ul class="menu"><li class="item56"><a href="../previous-issue.html"><span>Previous Issue</span></a></li><li class="item55"><a href="../about-newsletter.html"><span>About Newsletter</span></a></li></ul>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<ul class="menu"><li class="item115"><a href="../foss-news.html"><span>FOSS News</span></a></li><li class="item141"><a href="../case-job.html"><span>Case and Jobs</span></a></li></ul>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+        	                <div class="square1">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-title"><h2 class="title">Special</h2></div>
+						<div class="clear"></div>
+		                						<div class="module-content">
+		                	<ul class="menu"><li class="item37"><a href="../tech-column.html"><span>Tech Column</span></a></li><li class="item40"><a href="../foss-programs.html"><span>FOSS Programs</span></a></li><li class="item35"><a href="../legal-column.html"><span>Legal Column</span></a></li><li class="item154"><a href="../foss-forum.html"><span>FOSS Forum</span></a></li><li class="item162"><a href="../enterprise-application.html"><span>Enterprise Application</span></a></li><li class="item44"><a href="../foss-projects.html"><span>FOSS Projects</span></a></li></ul>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		                <div class="square1">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<p style="text-align: center;"><a href="../../news%3Fformat=feed&amp;type=rss" target="_black"><img src="../../images/M_images/news-rss-feed.png" border="0" /></a><br /><a href="https://www.openfoundry.org/rss-feed/Newsletter" target="_black"><img src="../../images/M_images/newsletter-rss-feed.png" border="0" /></a></p>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		
+                </div>
+            </div>
+
+                    <div class="clear"></div>
+                </div>
+            </div>
+																													</div>
+										<div id="rt-copyright">
+						<div class="rt-grid-12 rt-alpha rt-omega">
+                        <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<span class="nowrap">Open Source Software Foundry</span><span class="nowrap">‧</span><span class="nowrap"> </span><span class="nowrap">Best  Viewed with IE7.0 or Firefox2.0 above, 1024x768 Resolution. </span><strong>E-Mail</strong>：<a href="mailto:contact@openfoundry.org">contact@openfoundry.org</a> <br /><strong>Address</strong>：No.128, Sec.2, Academia Rd., Institute of Information Science, Academia Sinica, Nangang District, Taipei City 11529, Taiwan (R.O.C). <br /><a href="../privacy-policy.html">Privacy Policy</a>. <a href="../terms-of-use.html">Terms-of-use</a> <span style="position: relative; top: 8px; margin-top: -8px;"> <a href="../../about/8101.html"><img src="../../images/M_images/rss-feed-all.png" border="0" /></a></span>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+        	
+</div>
+						<div class="clear"></div>
+					</div>
+					<div class="rt-footer-bottom-wrap"><div class="rt-footer-bottom"><div class="rt-footer-bottom2"><div class="rt-footer-bottom3"></div></div></div></div>
+									</div></div></div>
+				<div class="rt-surround-bottom"><div class="rt-surround-bottom2"><div class="rt-surround-bottom3"></div></div></div>
+							</div>
+		</div>
+		<!--
+		<script id="aptureScript">
+						(function (){var a=document.createElement("script");a.defer="true";a.src="http://www.apture.com/js/apture.js?siteToken=vsJttrn";document.getElementsByTagName("head")[0].appendChild(a);})();
+     </script>
+-->
+
+<!-- Piwik -->
+<!-- 			<script type="text/javascript">
+			  var _paq = _paq || [];
+		  _paq.push(["trackPageView"]);
+		  _paq.push(["enableLinkTracking"]);
+
+		    (function() {
+			        var u=(("https:" == document.location.protocol) ? "https" : "https") + "://www.openfoundry.org/piwik/";
+				    _paq.push(["setTrackerUrl", u+"piwik.php"]);
+				    _paq.push(["setSiteId", "1"]);
+				        var d=document, g=d.createElement("script"), s=d.getElementsByTagName("script")[0]; g.type="text/javascript";
+				        g.defer=true; g.async=true; g.src=u+"piwik.js"; s.parentNode.insertBefore(g,s);
+					  })();
+		  </script> -->
+<!-- End Piwik Code -->
+	</body>
+</html>

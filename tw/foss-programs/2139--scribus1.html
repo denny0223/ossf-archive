@@ -1,0 +1,504 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="zh-tw" lang="zh-tw" >
+<head>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<link rel="shortcut icon" href="../../images/favicon.ico" />
+	  <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+  <meta name="robots" content="index, follow" />
+  <meta name="keywords" content=" Scribus,OSSFNL544" />
+  <meta name="title" content="開放源碼桌面排版軟體 Scribus（1）" />
+  <meta name="description" content="在出版實務上，我們雖然常利用文書處理軟體，如 Microsoft Word 等，來製作原稿，不過等到要輸出前，所有的文字都一定必須輸入到桌面排版軟體（Desktop Publishing Software）排版，因為桌面排版軟體對於版面的製作比 Word 來得更有彈性，能夠輸出較為美觀的版面。 目前常用的桌面排版軟體大多數是商業軟體，如 Quark、Adobe InDesign" />
+  <meta name="generator" content="" />
+  <title>開放源碼桌面排版軟體 Scribus（1） - OpenFoundry</title>
+  <link href="../../favicon.ico" rel="shortcut icon" type="image/x-icon" />
+  <link rel="stylesheet" href="../../components/com_jcomments/tpl/default/style.css%3Fv=10.css" type="text/css" />
+  <link rel="stylesheet" href="../../components/com_gantry/css/gantry.css" type="text/css" />
+  <link rel="stylesheet" href="../../components/com_gantry/css/grid-12.css" type="text/css" />
+  <link rel="stylesheet" href="../../components/com_gantry/css/joomla.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/joomla.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/style1.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/light-body.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/demo-styles.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/template.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/typography.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/fusionmenu.css" type="text/css" />
+  <style type="text/css">
+    <!--
+#rt-main-surround ul.menu li.active > a, #rt-main-surround ul.menu li.active > .separator, #rt-main-surround ul.menu li.active > .item, #rt-main-surround .square4 ul.menu li:hover > a, #rt-main-surround .square4 ul.menu li:hover > .item, #rt-main-surround .square4 ul.menu li:hover > .separator, .roktabs-links ul li.active span {color:#0088B5;}
+a, #rt-main-surround ul.menu a:hover, #rt-main-surround ul.menu .separator:hover, #rt-main-surround ul.menu .item:hover {color:#0088B5;}
+    -->
+  </style>
+  <script type="text/javascript" src="../../components/com_jcomments/js/jcomments-v2.1.js%3Fv=2"></script>
+  <script type="text/javascript" src="../../components/com_jcomments/libraries/joomlatune/ajax.js"></script>
+  <script type="text/javascript" src="../../media/system/js/mootools.js"></script>
+  <script type="text/javascript" src="../../media/system/js/caption.js"></script>
+  <script type="text/javascript" src="../../components/com_gantry/js/gantry-buildspans.js"></script>
+  <script type="text/javascript" src="../../components/com_gantry/js/gantry-inputs.js"></script>
+  <script type="text/javascript" src="../../templates/rt_quantive_j15/js/jquery.cookie.js"></script>
+  <script type="text/javascript" src="../../modules/mod_roknavmenu/themes/fusion/js/fusion.js"></script>
+  <script type="text/javascript" src="../../modules/mod_ofssologin/js/ofssologin.js"></script>
+  <script type="text/javascript">
+
+			window.addEvent('domready', function() {
+				var modules = ['rt-block'];
+				var header = ['h3','h2','h1'];
+				GantryBuildSpans(modules, header);
+			});
+		InputsExclusion.push('.content_vote','#rt-popup')
+		        window.addEvent('load', function() {
+					new Fusion('ul.menutop', {
+						pill: 0,
+						effect: 'slide and fade',
+						opacity: 1,
+						hideDelay: 500,
+						centered: 0,
+						tweakInitial: {'x': -2, 'y': 0},
+        				tweakSubsequent: {'x': 0, 'y': -14},
+						menuFx: {duration: 200, transition: Fx.Transitions.Sine.easeOut},
+						pillFx: {duration: 400, transition: Fx.Transitions.Back.easeOut}
+					});
+	            });
+  </script>
+<!-- <script type="text/javascript" src="/sso/javascripts/langsync.js"></script> -->
+<!-- <script src="/templates/rt_quantive_j15/js/ossf.js"></script> -->
+<script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-4136519-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
+</head>
+	<body  class="backgroundlevel-low backgroundstyle-style8 bodylevel-med bodystyle-light cssstyle-style1 logostyle-dark font-family-helvetica font-size-is-default menu-type-fusionmenu col12 ">
+		<div id="rt-main-background">
+			<div class="rt-container">
+																<div id="rt-header">
+					<div class="rt-grid-7 rt-alpha">
+    			<div class="rt-block">
+    	    	<a href="../../index.html" id="rt-logo"></a>
+    		</div>
+	    
+</div>
+<div class="rt-grid-5 rt-omega">
+                    <div class="square9">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<div class="ofssologin_square9"><a href="../../index.html">登入</a>&nbsp;&nbsp|&nbsp;&nbsp;<span><a href="../../en/foss-programs/2139--scribus1.html" ><span lang="en" xml:lang="en">English</span></a></li></ul></span><!--Joom!fish V2.0.4 (Lightning)-->
+<!-- &copy; 2003-2009 Think Network, released under the GPL. -->
+<!-- More information: at http://www.joomfish.net -->
+<div class="ofssologin_search_square9">
+  <form id="of_search" action="https://www.openfoundry.org/of/openfoundry/search" method="get" onsubmit="of_search(); return false;">
+    <select id="of_search_type">
+      <option value="Projects"> 專案 </option>
+      <option value="Content"> 文章 </option>
+      <option value="People"> 人才 </option>
+    </select>
+    <input id="query" name="query" id="mod_search_searchword" maxlength="50" alt="search" class="inputbox" type="text" size="28" value="search..."  onblur="if(this.value=='') this.value='search...';" onfocus="if(this.value=='search...') this.value='';" />
+    <input type="hidden" name="commit" value="search" />
+  </form>
+</div></div>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		
+</div>
+					<div class="clear"></div>
+				</div>
+																<div id="rt-navigation"><div id="rt-navigation2"><div id="rt-navigation3">
+					
+<div class="nopill">
+	<ul class="menutop level1 " >
+						<li class="item1 root" >
+					<a class="orphan item bullet" href="../../index.html"  >
+				<span>
+			    				首頁				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item32 root" >
+					<a class="orphan item bullet" href="../../archived.html"  >
+				<span>
+			    				專案				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item186 root" >
+					<a class="orphan item bullet" href="../community.html"  >
+				<span>
+			    				Who&#039;s Who				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item4 root" >
+					<a class="orphan item bullet" href="../news.html"  >
+				<span>
+			    				新聞				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item5 root" >
+					<a class="orphan item bullet" href="../law-and-licensing.html"  >
+				<span>
+			    				法律源地				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item3 root" >
+					<a class="orphan item bullet" href="../activities.html"  >
+				<span>
+			    				活動				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item2 root" >
+					<a class="orphan item bullet" href="../resourcecatalog%3FName=Value.html"  >
+				<span>
+			    				資源表列				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item45 root" >
+					<a class="orphan item bullet" href="../about.html"  >
+				<span>
+			    				關於				   
+				</span>
+			</a>
+			
+			
+	</li>	
+				</ul>
+</div>
+
+				    <div class="clear"></div>
+				</div></div></div>
+								<div class="rt-surround"><div class="rt-surround2"><div class="rt-surround3">
+										<div id="rt-showcase-section">
+												<div id="rt-showcase">
+							<div class="rt-grid-12 rt-alpha rt-omega">
+    		<div class="clear"></div>
+		
+		
+                <div class="close-note">
+                    <div class="rt-block">
+               					<div class="module-content">
+                	<div style="font-size:medium; background-image:linear-gradient(120deg,#159957,#4298b2);color:white;padding:20px;margin:-10px -18px;">感謝您對「自由軟體鑄造場」的支持與愛護，十多年來「自由軟體鑄造場」受中央研究院支持，並在資訊科學研究所以及資訊科技創新研究中心執行，現已完成階段性的任務。 本網站預計持續維運至 2021年底，網站內容基本上不會再更動。<br />也紀念我們永遠的朋友 李士傑先生（Shih-Chieh Ilya Li）。</div>				</div>
+            </div>
+                </div>
+		
+</div>
+							<div class="clear"></div>
+						</div>
+																	</div>
+															<div id="rt-main-surround">
+												<div id="rt-breadcrumbs">
+								<div class="rt-breadcrumb-surround">
+		<a href="../../index.html" id="breadcrumbs-home"></a>
+		<span class="breadcrumbs pathway">
+<a href="../foss-programs.html" class="pathway">源碼秘技</a> <img src="../../templates/rt_quantive_j15/images/arrow.png" alt=""  /> <span class="no-link">開放源碼桌面排版軟體 Scribus（1）</span></span>
+	</div>
+	
+							<div class="clear"></div>
+						</div>
+																							              <div id="rt-main" class="sa3-mb9">
+                <div class="rt-main-inner">
+                    <div class="rt-grid-9 rt-push-3">
+                                                <div class="rt-block">
+                            							<div class="square1">
+							<div class="rt-module-surround">
+								<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+								<div class="rt-module-inner">
+		                            <div id="rt-mainbody">
+		                                
+<div class="rt-joomla ">
+	<div class="rt-article">
+		
+				<div class="rt-headline"><h1 class="rt-article-title">開放源碼桌面排版軟體 Scribus（1）</h1>		</div>
+		<div class="clear"></div>
+		
+		
+		
+				<div class="rt-articleinfo">
+						<div class="rt-article-icons">
+								<a href="2139--scribus1%3Ftmpl=component&amp;print=1&amp;layout=default&amp;page=.html" title="列印" onclick="window.open(this.href,'win2','status=no,toolbar=no,scrollbars=yes,titlebar=no,menubar=no,resizable=yes,width=640,height=480,directories=no,location=no'); return false;" rel="nofollow"><span class="icon print"></span></a>																</div>
+			
+			<span class="rt-date-posted">
+						建立日期			2009-08-23 21:46						&nbsp;&nbsp;&nbsp;&nbsp;						最近更新在 2012-01-06 11:57						</span>
+
+						<span class="rt-author">
+				作者是 徐孟逵			</span>
+				
+					</div>
+		
+		
+		<p>在出版實務上，我們雖然常利用文書處理軟體，如 Microsoft Word 等，來製作原稿，不過等到要輸出前，所有的文字都一定必須輸入到桌面排版軟體（Desktop Publishing Software）排版，因為桌面排版軟體對於版面的製作比 Word 來得更有彈性，能夠輸出較為美觀的版面。</p>
+<p>目前常用的桌面排版軟體大多數是商業軟體，如 Quark、Adobe InDesign 等，不過我們今天要初步介紹一款開放源碼的桌面版排軟體 Scribus。Scribus 也許遠不如前述的商業軟體常見，不過基本的功能它一樣也不缺，非常適合作為排版學習或是非營利出版使用。</p>
+
+<p>在介紹 Scribus 之前，我們必須先弄清楚兩個基礎觀念：</p>
+<p><strong>一、桌面排版軟體不是文書處理軟體</strong>：如果你想用桌面排版軟體來撰寫文章、處理文字，那你可就找錯軟體了，雖然桌面排版軟體的版面編排功能強大，不過在文字輸入方面，卻遠不如文書處理軟體來得容易且方便，因此一般上，我們都會先使用文書處理軟體撰寫文字並存成純文字文件後，再輸入桌面排版軟體使用。使用純文字格式的原因是因為大多數桌面排版軟體都支援匯入這個格式。另外，由於純文字格式無法保存格式，因此必須在你撰寫的文字前加註以指示編排方式，例如大標題就在前面加上「大標：」。</p>
+<p><strong>二、版面編排是由塊狀拼湊而成</strong>：其實編排版面的原理很簡單，基本的版面是由幾個塊狀的區域拼湊而成，這點和文書處理軟體的條狀編排非常不同。你可以把它當成由文字區塊、圖片區塊、表格區塊和圖層所拼湊而成的拼圖，不過這張拼圖完成的模樣你必須先在腦子中規劃好，然後再使用桌面排版軟體慢慢地把它「拼」出來。</p>
+<p>有了以上兩點認識後，我們接下來就來看 Scribus 的基本操作吧！</p>
+<p><br /><strong>安裝 Scribus</strong></p>
+<p>1、在 Ubuntu 中安裝 Scribus 非常簡單，我們可以使用系統內建的 Synaptic 套件管理程式來安裝。請在主功能表中的【系統】->【Synaptic 套件管理程式】上按一下滑鼠左鍵。</p>
+<p><a href="../../images/090823/scri1.png" target="_blank"><img src="../../images/090823/scri1.png" height="375" hspace="5" align="absbottom" border="0" vspace="5" width="600" /></a><br /><br />2、然後在「Quick Search」區域中輸入「Scribus」，然後就會出現 Scribus 的相關套件。</p>
+<p><a href="../../images/090823/scri2.png" target="_blank"><img src="../../images/090823/scri2.png" height="473" hspace="5" align="absbottom" border="0" vspace="5" width="600" /></a><br /><br />3、在「scribus」上按一下滑鼠右鍵，並選擇【標記為安裝】。</p>
+<p><a href="../../images/090823/scri3.png" target="_blank"><img src="../../images/090823/scri3.png" height="473" hspace="5" align="absbottom" border="0" vspace="5" width="600" /></a><br /><br />4、然後 Synaptic 套件管理程式就會自動幫你把所需要的套件勾選起來，你也可以順便安裝 Scribus 的支援套件，如「scribus=template」這個額外的模版套件。選擇好後，請在〔套用〕按鈕上按一下滑鼠左鍵。</p>
+<p><a href="../../images/090823/scri4.png" target="_blank"><img src="../../images/090823/scri4.png" height="473" hspace="5" align="absbottom" border="0" vspace="5" width="600" /></a><br /><br />5、接著 Synaptic 套件管理程式會問你是否套用變更，請按一下〔套用〕按鈕。</p>
+<p><img src="../../images/090823/scri5.png" height="447" hspace="5" align="absbottom" border="0" vspace="5" width="424" /><br /><br />6、然後 Synaptic 套件管理程式就會自動開始安裝你所選的套件。</p>
+<p><img src="../../images/090823/scri6.png" height="220" hspace="5" align="absbottom" border="0" vspace="5" width="286" /><br /><br />7、安裝完成後，在〔關閉〕按鈕上按一下滑鼠左鍵即可完成安裝。</p>
+<p><img src="../../images/090823/scri7.png" height="248" hspace="5" align="absbottom" border="0" vspace="5" width="394" /></p>
+<p><br /><strong>啟動 Scribus</strong></p>
+<p>1、Scribus 安裝完成後，我們可以在主功能表中的【應用程式】->【美工繪圖】中找到「Scribus」，在上面按一下滑鼠左鍵即可啟動 Scribus。</p>
+<p><a href="../../images/090823/scri8.png" target="_blank"><img src="../../images/090823/scri8.png" height="375" hspace="5" align="absbottom" border="0" vspace="5" width="600" /></a><br /><br />2、啟動 Scribus 後，你會看到一個「新建檔案」視窗，今天我們來排一個單頁文件，熟悉一下 Scribus 中基礎的圖層、文字框、圖片框和表格的操作。因此我們就保持預設設定，並按一下〔確定〕按鈕即可，Scribus 會自動產生一個上下左右各留白 40pt 的 A4 文件。 <br /><br /><a href="../../images/090823/scri9.png" target="_blank"><img src="../../images/090823/scri9.png" height="398" hspace="5" align="absbottom" border="0" vspace="5" width="600" /></a></p>
+<p><br /><strong>圖片框的使用方式</strong></p>
+<p>在排版軟體中，要插入一張圖片，必須先插入一個圖片框，然後再將圖片置入。這可以讓你方便地改變圖片框的形狀，以符合排版的需求，例如你在排版時，突然想把一個方形的圖片框改為圓形，你只要調整圖片框的形狀，置入的圖就會隨著你的圖片框改變形狀。</p>
+<p><strong><span style="text-decoration: underline;">插入圖片框</span></strong></p>
+<p>1、空白文件產生後，首先我們先插入一個圖片框，用來作為標題的背景圖。請按一下功能表中的【插入】->【圖片框】。</p>
+<p><a href="../../images/090823/scri10.png" target="_blank"><img src="../../images/090823/scri10.png" height="361" hspace="5" align="absbottom" border="0" vspace="5" width="600" /></a><br />2、按下按鈕後，你的滑鼠指標會變成圖片框指標，我們可以用它在版面上拖曳出圖片框的範圍。</p>
+<p><a href="../../images/090823/scri11.png" target="_blank"><img src="../../images/090823/scri11.png" height="361" hspace="5" align="absbottom" border="0" vspace="5" width="600" /></a><br /><br />3、在所想要的位置拖曳出圖片框後，請在圖片框上按一下滑鼠右鍵，並選擇【匯入影像…】。</p>
+<p><a href="../../images/090823/scri12.png" target="_blank"><img src="../../images/090823/scri12.png" height="361" hspace="5" align="absbottom" border="0" vspace="5" width="600" /></a></p>
+<p><br /><strong><span style="text-decoration: underline;">匯入影像</span></strong></p>
+<p>1、按下【匯入影像…】後，你會看到一個「打開」視窗，讓你可以選擇所想要的圖片，選後好按一下〔打開〕按鈕即可。</p>
+<p><a href="../../images/090823/scri13.png" target="_blank"><img src="../../images/090823/scri13.png" height="255" hspace="5" align="absbottom" border="0" vspace="5" width="600" /></a><br />2、插入圖片後，你可以看到圖片以原來的大小插入圖片框的區域中，在圖片框的範圍裡按一下滑鼠右鍵，並選擇【屬性】來調整圖片的大小。</p>
+<p><a href="../../images/090823/scri14.png" target="_blank"><img src="../../images/090823/scri14.png" height="361" hspace="5" align="absbottom" border="0" vspace="5" width="600" /></a><br /><br />3、按下【屬性】後，你會看到一個「屬性」視窗，你可以在「圖片」區域中找到「自由縮放」選項，勾選後調整「X-縮放」和「Y-縮放」到適當的大小。</p>
+<p><img src="../../images/090823/scri15.png" height="503" hspace="5" align="absbottom" border="0" vspace="5" width="214" /><br /><br />4、調整好後，你可以看到圖片依你所調整的大小出現在圖片框中。接著為了美觀，我們來把圖片框的四個角改成圓角。請依前述方式叫出「屬性」視窗，然後你可以在「形狀」區域中找到「圓角」設定，設定你想要的弧度即可。</p>
+<p><a href="../../images/090823/scri16.png" target="_blank"><img src="../../images/090823/scri16.png" height="375" hspace="5" align="absbottom" border="0" vspace="5" width="600" /></a><br /><br />5、設定好後，你就可以在主畫面中看到你剛剛所插入的圖片框有了圓滑的角度了。</p>
+<p><a href="../../images/090823/scri17.png" target="_blank"><img src="../../images/090823/scri17.png" height="361" hspace="5" align="absbottom" border="0" vspace="5" width="600" /></a></p>
+<p><strong><span style="text-decoration: underline;">增加陰影</span></strong></p>
+<p>1、為了美觀和突顯這張圖片，我們可以用一個簡單的方式來為圖片框加上陰影，請在圖片框上按一下滑鼠右鍵，並選擇【複製】。</p>
+<p><a href="../../images/090823/scri18.png" target="_blank"><img src="../../images/090823/scri18.png" height="361" hspace="5" align="absbottom" border="0" vspace="5" width="600" /></a><br /><br />2、然後請在空白處按一下滑鼠右鍵，並選擇【貼上】，將剛剛複製的圖片框貼在空白處。</p>
+<p><a href="../../images/090823/scri19.png" target="_blank"><img src="../../images/090823/scri19.png" height="361" hspace="5" align="absbottom" border="0" vspace="5" width="600" /></a><br /><br />3、然後在剛剛複製的圖片框上按一下滑鼠右鍵，並選擇【轉換】->【多邊形】。</p>
+<p><a href="../../images/090823/scri20.png" target="_blank"><img src="../../images/090823/scri20.png" height="361" hspace="5" align="absbottom" border="0" vspace="5" width="600" /></a><br /><br />4、這個功能會依圖片框的形狀將圖片框轉換成一個多邊形。請在轉換好的多邊形上按一下滑鼠右鍵，並選擇【屬性】。</p>
+<p><a href="../../images/090823/scri21.png" target="_blank"><img src="../../images/090823/scri21.png" height="361" hspace="5" align="absbottom" border="0" vspace="5" width="600" /></a><br />5、接著你會看到一個「屬性」視窗，請在「顏色」區域中，選擇你要填入的顏色，並在「Opacity」欄位輸入你想要的透明度。</p>
+<p><img src="../../images/090823/scri22.png" height="503" hspace="5" align="absbottom" border="0" vspace="5" width="214" /><br /><br />6、然後在「線條」區域中，將「線條寬度」欄位設為「0pt」。</p>
+<p><img src="../../images/090823/scri23.png" height="503" hspace="5" align="absbottom" border="0" vspace="5" width="214" /><br />7、接下來將設定好的多邊形拖到原來的圖片框上，並調整好你想要的陰影位置，你可以使用「屬性」視窗中的「X, Y, Z」區域來作微調。</p>
+<p><a href="../../images/090823/scri24.png" target="_blank"><img src="../../images/090823/scri24.png" height="361" hspace="5" align="absbottom" border="0" vspace="5" width="600" /></a><br /><br />8、然後在多邊形上按一下滑鼠右鍵，並選擇【圖層】->【降低到底部】。</p>
+<p><a href="../../images/090823/scri25.png" target="_blank"><img src="../../images/090823/scri25.png" height="361" hspace="5" align="absbottom" border="0" vspace="5" width="600" /></a><br /><br />9、將多邊形送到最底圖層後，你就可以發現你的圖片邊緣多了淡淡的陰影了，不過這種方法純粹是方便而已，陰影邊緣卻過於明確，如果你想要有羽化模糊的陰影，就必須把圖片輸入到 GIMP 處理。今天我們暫且不提這部分。</p>
+<p><a href="../../images/090823/scri26.png" target="_blank"><img src="../../images/090823/scri26.png" height="361" hspace="5" align="absbottom" border="0" vspace="5" width="600" /></a></p>
+<p><br /><strong>文字框的使用</strong></p>
+<p>製作好標題背景圖後，接下來我們就要輸入標題了。在排版軟體中，除了裝飾性文字外，所有的文字都要放入文字框中，讓我們可以方便地以塊狀的方式來處理文字。今天我們就來排排常見的兩欄式排版。</p>
+<p><span style="text-decoration: underline;"><strong>插入文字框</strong></span></p>
+<p>1、要插入文字框，請在主功能表中選擇【插入】->【文字框】。</p>
+<p><a href="../../images/090823/scri27.png" target="_blank"><img src="../../images/090823/scri27.png" height="361" hspace="5" align="absbottom" border="0" vspace="5" width="600" /></a><br /><br />2、插入文字框後，我們可以先在文字框上按著滑鼠左鍵將它施曳到大概的位置。</p>
+<p><a href="../../images/090823/scri28.png" target="_blank"><img src="../../images/090823/scri28.png" height="361" hspace="5" align="absbottom" border="0" vspace="5" width="600" /></a><br /><br />3、由於標題的文字量較少，我們就來看看如何直接輸入文字吧。請在文字框上按一下滑鼠右鍵，並選擇【編輯文字…】。</p>
+<p><a href="../../images/090823/scri29.png" target="_blank"><img src="../../images/090823/scri29.png" height="361" hspace="5" align="absbottom" border="0" vspace="5" width="600" /></a><br /><br />4、然後你就可以看到一個「故事編輯器」視窗，我們可以在主要的空白區域中輸入我們要的文字，並使用上面的功能表來調整文字的格式和大小。</p>
+<p><a href="../../images/090823/scri30.png" target="_blank"><img src="../../images/090823/scri30.png" height="426" hspace="5" align="absbottom" border="0" vspace="5" width="600" /></a><br /><br />5、調整好後，你就可以看到文字出現在我們放置文字框的地方了。</p>
+<p><a href="../../images/090823/scri31.png" target="_blank"><img src="../../images/090823/scri31.png" height="361" hspace="5" align="absbottom" border="0" vspace="5" width="600" /></a></p>
+<p><strong><span style="text-decoration: underline;">置入大量文字</span></strong></p>
+<p>1、接下來我們要置入兩欄式文字的文字框，由於兩個文字框必須對齊，我們可以利用參考線的功能來幫助我們完成這項工作。請在版面左方依上面方式置入一長形的文字框後，然後從在主畫面上的尺規按住滑鼠左鍵，接著拖曳到你要產生參考線的地方。</p>
+<p><a href="../../images/090823/scri32.png" target="_blank"><img src="../../images/090823/scri32.png" height="361" hspace="5" align="absbottom" border="0" vspace="5" width="600" /></a><br /><br />2、接著我們在版面右方置入另一個長形的文字框，然後施曳它的底邊，使其對齊我們剛剛畫的參考線。要注意的是，這兩個文字框目前是獨立的兩個文字框，彼此互不相連。</p>
+<p><a href="../../images/090823/scri33.png" target="_blank"><img src="../../images/090823/scri33.png" height="361" hspace="5" align="absbottom" border="0" vspace="5" width="600" /></a><br /><br />3、接著我們就可以置入大量文字了，一般來說，我們可以在文字框上按一下滑鼠右鍵，並選擇【匯入文字…】，然後再選擇所要置入的純文字檔即可以將文字檔中的文字置入文字框中。不過今天我們用【範例文字】來代替。這個功能可以讓你在還沒有收到文字檔時，預先將文字置入，看看排出的效果，這在正式排版前用來確定版面的試排非常有用。</p>
+<p><a href="../../images/090823/scri34.png" target="_blank"><img src="../../images/090823/scri34.png" height="361" hspace="5" align="absbottom" border="0" vspace="5" width="600" /></a><br /><br />4、按下【範例文字】後，你就可以看到 Scribus 自動產生了一大串文字，並置入你所選擇的文字框中，這時我們可以在文字框的右下角發現一個小小的加號，這表示文字太多了，這個文字框放不下，所以沒有完全顯示。</p>
+<p><a href="../../images/090823/scri35.png" target="_blank"><img src="../../images/090823/scri35.png" height="361" hspace="5" align="absbottom" border="0" vspace="5" width="600" /></a><br /><br />5、這時如果我們想要將沒有顯示出來的文字顯示在另一個文字框中，就必須把兩個文字框串聯起來，讓文字可以依序排在下一個文字框中。請按住鍵盤上的〔Shift〕並在兩個文字框上按一下滑鼠左鍵就可以同時選取兩個文字框，接著按一下功能表上的〔串聯文字框〕按鈕。</p>
+<p><a href="../../images/090823/scri36.png" target="_blank"><img src="../../images/090823/scri36.png" height="361" hspace="5" align="absbottom" border="0" vspace="5" width="600" /></a><br /><br />6、然後這兩個文字框就會串聯起來，多出來無法顯示的字就會出現在下一個文字框中了，而其中的箭頭則表示文字的流向。重覆執行這個步驟，你就可以串聯更多文字框，這樣無論多長的文章都有辦法顯示出來了。</p>
+<p><a href="../../images/090823/scri37.png" target="_blank"><img src="../../images/090823/scri37.png" height="361" hspace="5" align="absbottom" border="0" vspace="5" width="600" /></a></p>
+<p><strong><span style="text-decoration: underline;">細部裝飾</span></strong></p>
+<p>接著我們可以做一下細部的裝飾，讓文字更容易閱讀。例如叫出「故事編輯器」將不同的段落中間空一行，並使首字變大，這可以讓各段落更明顯、更容易閱讀。</p>
+<p><a href="../../images/090823/scri38.png" target="_blank"><img src="../../images/090823/scri38.png" height="361" hspace="5" align="absbottom" border="0" vspace="5" width="600" /></a></p>
+<p><br /><strong>表格的使用</strong></p>
+<p>除了文字外，表格也是排版不可或缺的一部分，它可以使雜亂的資料以清楚明白的方式呈現，現在就讓我們來看看在 Scribus 中如何使用表格。</p>
+<p><span style="text-decoration: underline;"><strong>插入表格</strong></span></p>
+<p>1、請在主功能表中選擇【插入】->【表格】。</p>
+<p><a href="../../images/090823/scri39.png" target="_blank"><img src="../../images/090823/scri39.png" height="361" hspace="5" align="absbottom" border="0" vspace="5" width="600" /></a><br /><br />2、然後在版面上按住滑鼠左鍵並拖曳出表格所需要的範圍。</p>
+<p><a href="../../images/090823/scri40.png" target="_blank"><img src="../../images/090823/scri40.png" height="361" hspace="5" align="absbottom" border="0" vspace="5" width="600" /></a><br /><br />3、接著你可以看到「插入表格」視窗，請輸入你所需要的行數和列數後，按一下〔確定〕按鈕。</p>
+<p><img src="../../images/090823/scri41.png" height="154" hspace="5" align="absbottom" border="0" vspace="5" width="224" /><br /><br />4、接著你就可以在版面上看到表格了。</p>
+<p><a href="../../images/090823/scri42.png" target="_blank"><img src="../../images/090823/scri42.png" height="361" hspace="5" align="absbottom" border="0" vspace="5" width="600" /></a></p>
+<p><strong><span style="text-decoration: underline;">表格的輸入和裝飾</span></strong></p>
+<p>1、在 Scribus 中表格其實就是一組組合在一起的文字框，所以如果你要合併儲存格，只要解開群組後，並將不需要的儲存格刪除，再將留下來的儲存格調整至適當大小即可。圖中是調整過後，以和文字框相同的方式輸入文字後的表格。</p>
+<p><a href="../../images/090823/scri43.png" target="_blank"><img src="../../images/090823/scri43.png" height="361" hspace="5" align="absbottom" border="0" vspace="5" width="600" /></a><br /><br />2、這樣的表格好像還是不容易閱讀，因此我們可以在表格上按一下滑鼠右鍵，並選擇【屬性】叫出「屬性」視窗，並在「顏色」區域中，調整表格的顏色，讓它更容易閱讀。</p>
+<p><img src="../../images/090823/scri44.png" height="503" hspace="5" align="absbottom" border="0" vspace="5" width="214" /><br /><br />3、調整好表格的顏色後，一個包含圖片框、文字框、表格和圖層的單頁排版就完成了！</p>
+<p><a href="../../images/090823/scri45.png" target="_blank"><img src="../../images/090823/scri45.png" height="361" hspace="5" align="absbottom" border="0" vspace="5" width="600" /></a></p>
+<p> </p>
+<p>（待續）</p>
+			<!-- Show relate article -->
+		<br><br><h4>您也許有興趣閱讀以下文章:</h4><ul><li><a href='../../foss-programs/2228.html'>開放源碼桌面排版軟體 Scribus（2）</a> - <span class='date-posted'>2009-12-22</span></li></ul>		<!-- end -->
+		<div class="article_note">
+		<!-- Add tags use metakey, and show OSSF Newsletter tag: OSSFNL+NUM-->
+		<br><br> <hr style='border: 1px dashed #D2DADB;'><b>自由軟體鑄造場電子報&nbsp;:</b>&nbsp;<a href='../../previous-issue%3Ftask=view&amp;id=544.html'>第 133 期 在原始碼之外：編譯與安裝資訊的提供</a><br><b>標籤:</b>&nbsp;<a href='../../index.php%3Foption=com_search&amp;Itemid=58&amp;searchphrase=exact_meta&amp;ordering=newest&amp;searchword=&#32;Scribus.html'> Scribus</a>,&nbsp;&nbsp;				<!-- End -->
+					<br>
+					<b>分類: </b><a href="../foss-programs.html">				源碼秘技					</a>				</div>
+			 <!-- AddThis Button BEGIN ID 3001 is the front page article -->
+     			<br><br>
+       <div class="addthis_toolbox addthis_default_style addthis_32x32_style">
+       <a class="addthis_button_preferred_1"></a>
+       <a class="addthis_button_preferred_2"></a>
+       <a class="addthis_button_preferred_3"></a>
+       <a class="addthis_button_preferred_4"></a>
+       <a class="addthis_button_compact"></a>
+       <a class="addthis_counter addthis_bubble_style"></a>
+       </div>
+       <script type="text/javascript">var addthis_config = {"data_track_clickback":true};</script>
+       <script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js#pubid=openfoundry"></script>
+       <!-- AddThis Button END -->
+     <br>
+		<div class="totop" ><a class="rt-totop" href="2139--scribus1.html#" style="outline: medium none;">↑ Top</a></div>
+            <!-- AddThis Button END -->
+
+		<script type="text/javascript">
+var jcomments=new JComments(2139, 'com_content','https://openfoundry.org/index.php?option=com_jcomments&amp;tmpl=component&amp;lang=');
+jcomments.setList('comments-list');
+</script>
+<div id="jc">
+<div id="comments"><h4>評論<a class="refresh" href="2139--scribus1.html#" title="重新整理評論列表" onclick="jcomments.showPage(2139,'com_content',0);return false;">&nbsp;</a></h4>
+<div id="comments-list" class="comments-list">
+        <div class="even" id="comment-item-137"><div class="rbox"><div class="rbox_tr"><div class="rbox_tl"><div class="rbox_t">&nbsp;</div></div></div><div class="rbox_m">
+<div class="comment-avatar"><img src="http://www.gravatar.com/avatar.php?gravatar_id=e6f2ac34126e78e950589dd3412b4a5b&amp;default=https%3A%2F%2Fwww.openfoundry.org%2Fcomponents%2Fcom_jcomments%2Fimages%2Fno_avatar.png" alt="" /></div>
+<div class="comment-box avatar-indent">
+<span class="comments-vote">
+	<span id="comment-vote-holder-137">
+<a href="2139--scribus1.html#" class="vote-good" title="優質的評論" onclick="jcomments.voteComment(137, 1);return false;"></a><a href="2139--scribus1.html#" class="vote-poor" title="差勁的評論" onclick="jcomments.voteComment(137, -1);return false;"></a>
+<span class="vote-none">0</span>
+	</span>
+</span>
+<a class="comment-anchor" href="2139--scribus1.html#comment-137" id="comment-137">#1</a>
+<span class="comment-author">hohoya</span>
+<span class="comment-date">2011-06-03 21:21</span>
+<div class="comment-body" id="comment-body-137">您好!我只能用一種細明體 其他會出現紅色的框框<br />另外我已下載GIMP但是點選編 輯圖片都會顯示"GIMP遺失"<br />請幫助我!</div>
+</div><div class="clear"></div>
+</div><div class="rbox_br"><div class="rbox_bl"><div class="rbox_b">&nbsp;</div></div></div></div>
+</div>
+</div>
+<div id="comments-list-footer"><a class="refresh" href="2139--scribus1.html#" title="重新整理評論列表" onclick="jcomments.showPage(2139,'com_content',0);return false;">重新整理評論列表</a></div>
+</div>
+<div id="comments-footer" align="center"><a href="http://www.joomlatune.com" title="JComments" target="_blank">JComments</a></div>
+<script type="text/javascript">
+jcomments.setAntiCache(1,0,0);
+</script> 
+</div>	</div>
+</div>
+
+		                            </div>
+									<div class="clear"></div>
+								</div>
+								<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+							</div>
+							</div>
+                                                    </div>
+                                            </div>
+                                <div class="rt-grid-3 rt-pull-9">
+                <div id="rt-sidebar-a">
+                                    <div class="square4">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<ul class="menu"><li class="item56"><a href="../previous-issue.html"><span>電子報總覽</span></a></li><li class="item55"><a href="../about-newsletter.html"><span>關於本報</span></a></li></ul>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<ul class="menu"><li class="item115"><a href="../foss-news.html"><span>源碼新聞</span></a></li><li class="item141"><a href="../case-job.html"><span>接案 / 工作</span></a></li></ul>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+        	                <div class="square1">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-title"><h2 class="title">專欄總覽</h2></div>
+						<div class="clear"></div>
+		                						<div class="module-content">
+		                	<ul class="menu"><li class="item37"><a href="../tech-column.html"><span>技術專欄</span></a></li><li id="current" class="active item40"><a href="../foss-programs.html"><span>源碼秘技</span></a></li><li class="item35"><a href="../legal-article-.html"><span>法律專欄</span></a></li><li class="item154"><a href="../foss-forum.html"><span>自由專欄</span></a></li><li class="item162"><a href="../enterprise-application.html"><span>企業應用</span></a></li><li class="item44"><a href="../foss-projects.html"><span>源碼專案</span></a></li></ul>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		                <div class="square1">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<p style="text-align: center;"><a href="../../news%3Fformat=feed&amp;type=rss" target="_black"><img src="../../images/M_images/news-rss-feed.png" border="0" /></a><br /><a href="https://www.openfoundry.org/rss-feed/Newsletter" target="_black"><img src="../../images/M_images/newsletter-rss-feed.png" border="0" /></a></p>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		
+                </div>
+            </div>
+
+                    <div class="clear"></div>
+                </div>
+            </div>
+																													</div>
+										<div id="rt-copyright">
+						<div class="rt-grid-12 rt-alpha rt-omega">
+                        <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<div id="desktop-mobile-version-switch"><span id="mobile-version" class="version-switch"><a href="2139--scribus1.html#">行動版</a></span></div>
+自由軟體鑄造場 製作 最佳瀏覽狀態：IE7或Firefox2.0以上 (建議使用Firefox) ‧ 解析度1024*768 <br /> <strong>E-Mail</strong>：<a href="mailto:contact@openfoundry.org">contact@openfoundry.org</a> <strong>Address</strong>：台北市南港區研究院路2段128號 中央研究院資訊科學研究所 . <a href="../../privacy-policy.html">隱私權條款</a>. <a href="../../terms-of-use.html">使用條款</a><span style="position: relative; top: 8px; margin-top: -8px;"> <a href="../../about/8101.html"><img src="../../images/M_images/rss-feed-all.png" border="0" /></a></span>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+        	
+</div>
+						<div class="clear"></div>
+					</div>
+					<div class="rt-footer-bottom-wrap"><div class="rt-footer-bottom"><div class="rt-footer-bottom2"><div class="rt-footer-bottom3"></div></div></div></div>
+									</div></div></div>
+				<div class="rt-surround-bottom"><div class="rt-surround-bottom2"><div class="rt-surround-bottom3"></div></div></div>
+							</div>
+		</div>
+		<!--
+		<script id="aptureScript">
+						(function (){var a=document.createElement("script");a.defer="true";a.src="http://www.apture.com/js/apture.js?siteToken=vsJttrn";document.getElementsByTagName("head")[0].appendChild(a);})();
+     </script>
+-->
+
+<!-- Piwik -->
+<!-- 			<script type="text/javascript">
+			  var _paq = _paq || [];
+		  _paq.push(["trackPageView"]);
+		  _paq.push(["enableLinkTracking"]);
+
+		    (function() {
+			        var u=(("https:" == document.location.protocol) ? "https" : "https") + "://www.openfoundry.org/piwik/";
+				    _paq.push(["setTrackerUrl", u+"piwik.php"]);
+				    _paq.push(["setSiteId", "1"]);
+				        var d=document, g=d.createElement("script"), s=d.getElementsByTagName("script")[0]; g.type="text/javascript";
+				        g.defer=true; g.async=true; g.src=u+"piwik.js"; s.parentNode.insertBefore(g,s);
+					  })();
+		  </script> -->
+<!-- End Piwik Code -->
+	</body>
+</html>

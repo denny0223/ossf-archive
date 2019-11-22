@@ -1,0 +1,127 @@
+	<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+	<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="zh-tw" lang="zh-tw" >
+		<head>
+			  <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+  <meta name="robots" content="noindex, nofollow" />
+  <meta name="keywords" content="OSSFNL260" />
+  <meta name="title" content="jMock" />
+  <meta name="description" content="Java Opensources for Web Development Part I：Chapter 4 在 Java 中進行各種單元測試Lession 16 : jMock * Category: Test* Project Name: jMock* WebSite: https://www.jmock.org/* License: j Mock  project license* Last" />
+  <meta name="generator" content="" />
+  <title>jMock</title>
+  <link href="../../favicon.ico" rel="shortcut icon" type="image/x-icon" />
+  <link rel="stylesheet" href="../../components/com_gantry/css/gantry.css" type="text/css" />
+  <link rel="stylesheet" href="../../components/com_gantry/css/grid-12.css" type="text/css" />
+  <link rel="stylesheet" href="../../components/com_gantry/css/joomla.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/joomla.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/style1.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/light-body.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/demo-styles.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/template.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/typography.css" type="text/css" />
+  <style type="text/css">
+    <!--
+#rt-main-surround ul.menu li.active > a, #rt-main-surround ul.menu li.active > .separator, #rt-main-surround ul.menu li.active > .item, #rt-main-surround .square4 ul.menu li:hover > a, #rt-main-surround .square4 ul.menu li:hover > .item, #rt-main-surround .square4 ul.menu li:hover > .separator, .roktabs-links ul li.active span {color:#0088B5;}
+a, #rt-main-surround ul.menu a:hover, #rt-main-surround ul.menu .separator:hover, #rt-main-surround ul.menu .item:hover {color:#0088B5;}
+    -->
+  </style>
+  <script type="text/javascript" src="../../components/com_jcomments/js/jcomments-v2.1.js%3Fv=2"></script>
+  <script type="text/javascript" src="../../components/com_jcomments/libraries/joomlatune/ajax.js"></script>
+  <script type="text/javascript" src="../../media/system/js/mootools.js"></script>
+  <script type="text/javascript" src="../../media/system/js/caption.js"></script>
+  <script type="text/javascript" src="../../components/com_gantry/js/gantry-buildspans.js"></script>
+  <script type="text/javascript" src="../../components/com_gantry/js/gantry-inputs.js"></script>
+  <script type="text/javascript">
+
+			window.addEvent('domready', function() {
+				var modules = ['rt-block'];
+				var header = ['h3','h2','h1'];
+				GantryBuildSpans(modules, header);
+			});
+		InputsExclusion.push('.content_vote','#rt-popup')
+  </script>
+		</head>
+		<body  class="backgroundlevel-low backgroundstyle-style8 bodylevel-med bodystyle-light cssstyle-style1 logostyle-dark font-family-helvetica font-size-is-default menu-type-fusionmenu col12 ">
+			<div id="rt-main-surround">
+				<div class="rt-container">
+					<div class="rt-block">
+						<div id="rt-mainbody">
+					    	
+<div class="rt-joomla ">
+	<div class="rt-article">
+		
+				<div class="rt-headline"><h1 class="rt-article-title">jMock</h1>		</div>
+		<div class="clear"></div>
+		
+		
+		
+				<div class="rt-articleinfo">
+						<div class="rt-article-icons">
+				<a href="971%3Ftmpl=component&amp;print=1&amp;layout=default&amp;page=.html#" onclick="window.print();return false;"><span class="icon print"></span></a>									<span class="icon printscreen">
+						<a href="971%3Ftmpl=component&amp;print=1&amp;layout=default&amp;page=.html#" onclick="window.print();return false;"><img src="../../images/M_images/printButton.png" alt="列印"  /></a>					</span>
+							</div>
+			
+			<span class="rt-date-posted">
+						建立日期			2007-05-16 09:31						&nbsp;&nbsp;&nbsp;&nbsp;						最近更新在 2007-07-03 23:19						</span>
+
+						<span class="rt-author">
+				作者是 李日貴			</span>
+				
+					</div>
+		
+		
+		<p>Java Opensources for Web Development Part I：<br />Chapter 4 在 Java 中進行各種單元測試<br />Lession 16 : jMock</p>
+<p>* Category: Test<br />* Project Name: jMock<br />* WebSite: <a href="https://www.jmock.org/" target="_blank">https://www.jmock.org/</a><br />* License: jMock project license<br />* Last version: 2.0.0 stable, 2.1.0 (rc3)</p><p>當施行 Test Driven Development 的時候，我們未必會有實體的環境與資料源可以進行測試，所以我們必須模擬部分環境，與資料回應的狀態，如果僅僅使用 JUnit，我們產出的資料其實是回應在每個實作的 Object class 之中。</p>
+<p>例如 UserDAOImpl 是撰寫 存取資料庫的實作。 </p>
+<p>package com.softleader.unittest;<br />public class UserDAOImpl implements UserDAO{<br />&nbsp;public UserDAOImpl(){<br />&nbsp;&nbsp;// 連結資料庫<br />&nbsp;}<br />&nbsp;public void createUser(User user) {<br />&nbsp;&nbsp;// insert into user ( id, name ) values ( $id, $name );<br />&nbsp;&nbsp;<br />&nbsp;}<br />&nbsp;public User getUser(long id) {<br />&nbsp;&nbsp;// select * from user where id = $id;<br />&nbsp;&nbsp;return null;<br />&nbsp;}<br />&nbsp;public void removeUser(long id) {<br />&nbsp;&nbsp;// delete user where id = $id<br />&nbsp;&nbsp;<br />&nbsp;}<br />&nbsp;public void setUser(User user) {<br />&nbsp;&nbsp;// update user set name = $name where id = $id<br />&nbsp;&nbsp;<br />&nbsp;}&nbsp;<br />}</p>
+<p>User 是一個簡單的 ValueObject，目前設定簡單的屬性有 id 與 name。</p>
+<p>package com.softleader.unittest;</p>
+<p>import org.apache.commons.lang.builder.ToStringBuilder;</p>
+<p>public class User {<br />&nbsp;private long id;<br />&nbsp;private String name;<br />&nbsp;public long getId() {<br />&nbsp;&nbsp;return id;<br />&nbsp;}<br />&nbsp;public void setId(long id) {<br />&nbsp;&nbsp;this.id = id;<br />&nbsp;}<br />&nbsp;public String getName() {<br />&nbsp;&nbsp;return name;<br />&nbsp;}<br />&nbsp;public void setName(String name) {<br />&nbsp;&nbsp;this.name = name;<br />&nbsp;}<br />&nbsp;<br />&nbsp;public String toString() {<br />&nbsp;&nbsp;return ToStringBuilder.reflectionToString(this);<br />&nbsp;}<br />}</p>
+<p>如果僅使用 JUnit 測試 getUser()， 我們就需要把 UserDAOImpl 撰寫成為</p>
+<p>&nbsp;public User getUser(long id) {<br />&nbsp;&nbsp;User user = new User();<br />&nbsp;&nbsp;user.setId(1);<br />&nbsp;&nbsp;user.setName(&quot;jini&quot;);<br />&nbsp;&nbsp;<br />&nbsp;&nbsp;return user;<br />&nbsp;}</p>
+<p>不過，這方法在未來上線之前，變得還需要去修改 UserDAOImpl 轉為存取資料庫，所以我們會希望能夠在測試環境中，利用 interface 的自我實作方式，來進行模擬測試。</p>
+<p>UserBusinessDelegate 是一支呼叫 DAO 的程式，我們可以把模擬物件的 DAO 放到 Delegate 之中，讓 Delegate 進行模擬測試。在實際環境時，則是將真實的 DAO inject進來即可，這也是 IoC 的重要應用之一。</p>
+<p>package com.softleader.unittest;</p>
+<p>public class UserBusinessDelegate {<br />&nbsp;private UserDAO dao;<br />&nbsp;public void setDAO(UserDAO dao) {<br />&nbsp;&nbsp;this.dao = dao;<br />&nbsp;}<br />&nbsp;public void deleteUser(long id) {<br />&nbsp;&nbsp;dao.removeUser(id);<br />&nbsp;}<br />&nbsp;public User getUser(long id) {<br />&nbsp;&nbsp;return dao.getUser(id);<br />&nbsp;}<br />&nbsp;public void insertUser(User user) {<br />&nbsp;&nbsp;dao.createUser(user);<br />&nbsp;}<br />&nbsp;public void updateUser(User user) {<br />&nbsp;&nbsp;dao.setUser(user);<br />&nbsp;}<br />}</p>
+<p>package com.softleader.unittest;</p>
+<p>import org.jmock.Expectations;<br />import org.jmock.Mockery;<br />import org.jmock.integration.junit4.JUnit4Mockery;<br />import org.junit.Test;</p>
+<p>public class UserBussinessDelegateTest {<br />&nbsp;// Mockery 初始化<br />&nbsp;Mockery context = new JUnit4Mockery();<br />&nbsp;&nbsp;<br />&nbsp;&nbsp;&nbsp; @Test <br />&nbsp;&nbsp;&nbsp; public void testGetUser() {<br />&nbsp;&nbsp;&nbsp; &nbsp;// 利用 context 呼叫 UserDAO interface 產生模擬物件<br />&nbsp;&nbsp;&nbsp; &nbsp;final UserDAO dao = context.mock(UserDAO.class);<br />&nbsp;&nbsp;&nbsp; &nbsp;// 將 模擬 DAO 放到 Delegate 之中<br />&nbsp;&nbsp;&nbsp; &nbsp;UserBusinessDelegate delegate = new UserBusinessDelegate();<br />&nbsp;&nbsp;&nbsp; &nbsp;delegate.setDAO(dao);<br />&nbsp;&nbsp;&nbsp; &nbsp;// 建立一個模擬物件<br />&nbsp;&nbsp;&nbsp; &nbsp;final User testuser = new User();<br />&nbsp;&nbsp;&nbsp; &nbsp;testuser.setId(1);<br />&nbsp;&nbsp;&nbsp; &nbsp;testuser.setName(&quot;jini&quot;);<br />&nbsp;&nbsp;&nbsp; &nbsp;<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; // 設定期望的處理情況<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; context.checking(new Expectations() {{<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; one (dao).getUser(1);&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; will(returnValue(testuser));<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }});<br />&nbsp;&nbsp;&nbsp; &nbsp;<br />&nbsp;&nbsp;&nbsp; &nbsp;System.out.println(delegate.getUser(1));<br />&nbsp;&nbsp;&nbsp; }<br />}</p>
+<p>最後就會印出 <br />com.softleader.unittest.User@929206[id=1,name=jini]<br />換句話說，我們利用 jMock 創造出一個 User模擬物件 [id=1, name=jini]，在 delegate 呼叫 DAO 的時候，就會回傳該物件。</p>
+<p>在 jMock 的實作之中，比較簡單的回傳值，就直接使用 returnValue 即可，但是如果是回傳多筆資料，就需要利用 returnIterator() 的方式，更特殊的情況有可能是不同次呼叫時，回有不同的回傳值，就可以利用 onConsecutiveCalls(returnValue(&ldquo;firsttime&rdquo;), returnValue(&ldquo;secondtime&rdquo;), returnValue(&ldquo;thirdtime&rdquo;)) 的方式來設定依序的回傳值。</p>
+<p>回傳的情況除了數值與物件或是集合之外，當然也有可能是例外狀況。僅需要簡單地使用 will(throwException(new SomeException(&ldquo;you get an exception&rdquo;))); 的方式來檢測例外狀況是否發生。</p>
+<p>jMock 支援許多呼叫的方式，可以參考 jMock Cookbook (<a href="https://jmock.codehaus.org/cookbook.html">https://jmock.codehaus.org/cookbook.html</a> ) 仔細研究之即可。</p>
+<p>另外，在 SpringFramework 之中應用 jMock 可以參考 </p>
+<p><a href="https://appfuse.dev.java.net/TDDWithAppFuse.pdf">https://appfuse.dev.java.net/TDDWithAppFuse.pdf</a><br /></p>
+			<!-- Show relate article -->
+				<!-- end -->
+		<div class="article_note">
+		<!-- Add tags use metakey, and show OSSF Newsletter tag: OSSFNL+NUM-->
+		<br><br> <hr style='border: 1px dashed #D2DADB;'><b>自由軟體鑄造場電子報&nbsp;:</b>&nbsp;<a href='../../previous-issue%3Ftask=view&amp;id=260.html'>第 80 期 Sun 釋出 Java SE 源碼</a><br>				<!-- End -->
+					<br>
+					<b>分類: </b><a href="../tech-column.html">				技術專欄					</a>				</div>
+			 <!-- AddThis Button BEGIN ID 3001 is the front page article -->
+     			<br><br>
+       <div class="addthis_toolbox addthis_default_style addthis_32x32_style">
+       <a class="addthis_button_preferred_1"></a>
+       <a class="addthis_button_preferred_2"></a>
+       <a class="addthis_button_preferred_3"></a>
+       <a class="addthis_button_preferred_4"></a>
+       <a class="addthis_button_compact"></a>
+       <a class="addthis_counter addthis_bubble_style"></a>
+       </div>
+       <script type="text/javascript">var addthis_config = {"data_track_clickback":true};</script>
+       <script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js#pubid=openfoundry"></script>
+       <!-- AddThis Button END -->
+     <br>
+		<div class="totop" ><a class="rt-totop" href="971%3Ftmpl=component&amp;print=1&amp;layout=default&amp;page=.html#" style="outline: medium none;">↑ Top</a></div>
+            <!-- AddThis Button END -->
+
+			</div>
+</div>
+
+						</div>
+					</div>
+				</div>
+			</div>
+		</body>
+	</html>

@@ -1,0 +1,394 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-gb" lang="en-gb" >
+<head>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<link rel="shortcut icon" href="images/favicon.ico" />
+	  <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+  <meta name="robots" content="index, follow" />
+  <meta name="keywords" content="OSSFNL230" />
+  <meta name="title" content="iText" />
+  <meta name="description" content=" Java Opensources for Web Development Part I： 嘗試使用來自 Opensource 的小工具(1) Lession 6 : iText 上期我們使用 JasperReport 產生報表，然而，輸出的圖表與 PDF 都是使用其他 Opensource 的元件，我們常利用到 iText 來產生 PDF 檔案，有時候，我們也可以利用其他的 Java" />
+  <meta name="generator" content="" />
+  <title>iText - OpenFoundry</title>
+  <link href="favicon.ico" rel="shortcut icon" type="image/x-icon" />
+  <link rel="stylesheet" href="components/com_gantry/css/gantry.css" type="text/css" />
+  <link rel="stylesheet" href="components/com_gantry/css/grid-12.css" type="text/css" />
+  <link rel="stylesheet" href="components/com_gantry/css/joomla.css" type="text/css" />
+  <link rel="stylesheet" href="templates/rt_quantive_j15/css/joomla.css" type="text/css" />
+  <link rel="stylesheet" href="templates/rt_quantive_j15/css/style1.css" type="text/css" />
+  <link rel="stylesheet" href="templates/rt_quantive_j15/css/light-body.css" type="text/css" />
+  <link rel="stylesheet" href="templates/rt_quantive_j15/css/demo-styles.css" type="text/css" />
+  <link rel="stylesheet" href="templates/rt_quantive_j15/css/template.css" type="text/css" />
+  <link rel="stylesheet" href="templates/rt_quantive_j15/css/typography.css" type="text/css" />
+  <link rel="stylesheet" href="templates/rt_quantive_j15/css/fusionmenu.css" type="text/css" />
+  <style type="text/css">
+    <!--
+#rt-main-surround ul.menu li.active > a, #rt-main-surround ul.menu li.active > .separator, #rt-main-surround ul.menu li.active > .item, #rt-main-surround .square4 ul.menu li:hover > a, #rt-main-surround .square4 ul.menu li:hover > .item, #rt-main-surround .square4 ul.menu li:hover > .separator, .roktabs-links ul li.active span {color:#0088B5;}
+a, #rt-main-surround ul.menu a:hover, #rt-main-surround ul.menu .separator:hover, #rt-main-surround ul.menu .item:hover {color:#0088B5;}
+    -->
+  </style>
+  <script type="text/javascript" src="components/com_jcomments/js/jcomments-v2.1.js%3Fv=2"></script>
+  <script type="text/javascript" src="components/com_jcomments/libraries/joomlatune/ajax.js"></script>
+  <script type="text/javascript" src="media/system/js/mootools.js"></script>
+  <script type="text/javascript" src="media/system/js/caption.js"></script>
+  <script type="text/javascript" src="components/com_gantry/js/gantry-buildspans.js"></script>
+  <script type="text/javascript" src="components/com_gantry/js/gantry-inputs.js"></script>
+  <script type="text/javascript" src="templates/rt_quantive_j15/js/jquery.cookie.js"></script>
+  <script type="text/javascript" src="modules/mod_roknavmenu/themes/fusion/js/fusion.js"></script>
+  <script type="text/javascript" src="modules/mod_ofssologin/js/ofssologin.js"></script>
+  <script type="text/javascript">
+
+			window.addEvent('domready', function() {
+				var modules = ['rt-block'];
+				var header = ['h3','h2','h1'];
+				GantryBuildSpans(modules, header);
+			});
+		InputsExclusion.push('.content_vote','#rt-popup')
+		        window.addEvent('load', function() {
+					new Fusion('ul.menutop', {
+						pill: 0,
+						effect: 'slide and fade',
+						opacity: 1,
+						hideDelay: 500,
+						centered: 0,
+						tweakInitial: {'x': -2, 'y': 0},
+        				tweakSubsequent: {'x': 0, 'y': -14},
+						menuFx: {duration: 200, transition: Fx.Transitions.Sine.easeOut},
+						pillFx: {duration: 400, transition: Fx.Transitions.Back.easeOut}
+					});
+	            });
+  </script>
+<!-- <script type="text/javascript" src="/sso/javascripts/langsync.js"></script> -->
+<!-- <script src="/templates/rt_quantive_j15/js/ossf.js"></script> -->
+<script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-4136519-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
+</head>
+	<body  class="backgroundlevel-low backgroundstyle-style8 bodylevel-med bodystyle-light cssstyle-style1 logostyle-dark font-family-helvetica font-size-is-default menu-type-fusionmenu col12 ">
+		<div id="rt-main-background">
+			<div class="rt-container">
+																<div id="rt-header">
+					<div class="rt-grid-7 rt-alpha">
+    			<div class="rt-block">
+    	    	<a href="index.html" id="rt-logo"></a>
+    		</div>
+	    
+</div>
+<div class="rt-grid-5 rt-omega">
+                    <div class="square9">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<div class="ofssologin_square9"><a href="index.html">Login</a>&nbsp;&nbsp|&nbsp;&nbsp;<span><a href="tw/component/content/527%3Ftask=view.html" ><span lang="tw" xml:lang="tw">繁體中文</span></a></li></ul></span><!--Joom!fish V2.0.4 (Lightning)-->
+<!-- &copy; 2003-2009 Think Network, released under the GPL. -->
+<!-- More information: at http://www.joomfish.net -->
+<div class="ofssologin_search_square9">
+  <form id="of_search" action="https://www.openfoundry.org/of/openfoundry/search" method="get" onsubmit="of_search(); return false;">
+    <select id="of_search_type">
+      <option value="Projects"> Projects </option>
+      <option value="Content"> Content </option>
+      <option value="People"> People </option>
+    </select>
+    <input id="query" name="query" id="mod_search_searchword" maxlength="50" alt="search" class="inputbox" type="text" size="28" value="search..."  onblur="if(this.value=='') this.value='search...';" onfocus="if(this.value=='search...') this.value='';" />
+    <input type="hidden" name="commit" value="search" />
+  </form>
+</div></div>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		
+</div>
+					<div class="clear"></div>
+				</div>
+																<div id="rt-navigation"><div id="rt-navigation2"><div id="rt-navigation3">
+					
+<div class="nopill">
+	<ul class="menutop level1 " >
+						<li class="item1 root" >
+					<a class="orphan item bullet" href="index.html"  >
+				<span>
+			    				Home				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item32 root" >
+					<a class="orphan item bullet" href="archived.html"  >
+				<span>
+			    				Projects				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item186 root" >
+					<a class="orphan item bullet" href="en/community.html"  >
+				<span>
+			    				Who&#039;s Who				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item4 root" >
+					<a class="orphan item bullet" href="en/news.html"  >
+				<span>
+			    				News				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item5 root" >
+					<a class="orphan item bullet" href="en/law-and-licensing.html"  >
+				<span>
+			    				Law &amp; Licensing				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item3 root" >
+					<a class="orphan item bullet" href="en/activities.html"  >
+				<span>
+			    				Activities				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item2 root" >
+					<a class="orphan item bullet" href="en/resourcecatalog.html"  >
+				<span>
+			    				Resource Catalog				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item45 root" >
+					<a class="orphan item bullet" href="en/about.html"  >
+				<span>
+			    				About				   
+				</span>
+			</a>
+			
+			
+	</li>	
+				</ul>
+</div>
+
+				    <div class="clear"></div>
+				</div></div></div>
+								<div class="rt-surround"><div class="rt-surround2"><div class="rt-surround3">
+										<div id="rt-showcase-section">
+												<div id="rt-showcase">
+							<div class="rt-grid-12 rt-alpha rt-omega">
+    		<div class="clear"></div>
+		
+		
+                <div class="close-note">
+                    <div class="rt-block">
+               					<div class="module-content">
+                	<div style="font-size:medium; background-image:linear-gradient(120deg,#159957,#4298b2);color:white;padding:20px;margin:-10px -18px;">感謝您對「自由軟體鑄造場」的支持與愛護，十多年來「自由軟體鑄造場」受中央研究院支持，並在資訊科學研究所以及資訊科技創新研究中心執行，現已完成階段性的任務。 本網站預計持續維運至 2021年底，網站內容基本上不會再更動。<br />也紀念我們永遠的朋友 李士傑先生（Shih-Chieh Ilya Li）。</div>				</div>
+            </div>
+                </div>
+		
+</div>
+							<div class="clear"></div>
+						</div>
+																	</div>
+															<div id="rt-main-surround">
+												<div id="rt-breadcrumbs">
+								<div class="rt-breadcrumb-surround">
+		<a href="index.html" id="breadcrumbs-home"></a>
+		<span class="breadcrumbs pathway">
+<span class="no-link">Previous Issue</span></span>
+	</div>
+	
+							<div class="clear"></div>
+						</div>
+																							              <div id="rt-main" class="sa3-mb9">
+                <div class="rt-main-inner">
+                    <div class="rt-grid-9 rt-push-3">
+                                                <div class="rt-block">
+                            							<div class="square1">
+							<div class="rt-module-surround">
+								<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+								<div class="rt-module-inner">
+		                            <div id="rt-mainbody">
+		                                
+<div class="rt-joomla ">
+	<div class="rt-article">
+		
+				<div class="rt-headline"><h1 class="rt-article-title">iText</h1>		</div>
+		<div class="clear"></div>
+		
+		
+		
+				<div class="rt-articleinfo">
+						<div class="rt-article-icons">
+								<a href="https://www.openfoundry.org/en/component/content/527?tmpl=component&amp;print=1&amp;page=" title="Print" onclick="window.open(this.href,'win2','status=no,toolbar=no,scrollbars=yes,titlebar=no,menubar=no,resizable=yes,width=640,height=480,directories=no,location=no'); return false;" rel="nofollow"><span class="icon print"></span></a>																</div>
+			
+			<span class="rt-date-posted">
+						 Created at			Sunday, 20 August 2006 08:00						&nbsp;&nbsp;&nbsp;&nbsp;						Last Updated on Thursday, 15 February 2007 22:08						</span>
+
+						<span class="rt-author">
+				Written by 李日貴			</span>
+				
+					</div>
+		
+		
+		<p> Java Opensources for Web Development Part I： 嘗試使用來自 Opensource 的小工具(1)<br /> Lession 6 : iText </p><p> 上期我們使用 JasperReport 產生報表，然而，輸出的圖表與 PDF 都是使用其他 Opensource 的元件，我們常利用到 iText 來產生 PDF 檔案，有時候，我們也可以利用其他的 Java opensource 來建立 PDF，例如 pdfbox 。 </p>在金融資訊服務之中，我們常常會遇到客戶需要一些不可修改的文件備查，PDF 是 Adobe 公司的公開文件格式，非常適合應用在這方面。雖然 PDF 的保密編碼方式還是有點漏洞，可以遭到破解，但是比起其他的文件格式來說，PDF 可以方便列印與檔案保存，只要妥善地利用，也可以作為相關的文件版本控管。所以當我們無法利用 Jasper-Report 來產生適當的報表之時，我們就必須直接利用 iText 來打造自己的 pdf 輸出。 <p> ◎ 利用 iText 作最簡單的 PDF 輸出 </p><p> 所有開發都是得先說 Hello World ， 讓我們首先就來製作 HelloWorld.PDF 吧。 </p><pre>package com.softleader.pdf;<br /><br />import java.io.FileOutputStream;<br /><br />import com.lowagie.text.Document;<br />import com.lowagie.text.Paragraph;<br />import com.lowagie.text.pdf.PdfWriter;<br /><br />public class HelloWorldPDF {<br />    public static void main(String[] args) {<br />    	  Document doc = new Document();  // (1) <br />        try {<br />            <br />            PdfWriter.getInstance(doc, new FileOutputStream(&quot;HelloWorld.pdf&quot;));  // (2)<br />            doc.open(); // (3)<br />            doc.add(new Paragraph(&quot;Hello World&quot;)); // (4) <br />            <br />        } catch ( Exception ex ) {<br />            System.out.println(ex);<br />        } finally {<br />        	doc.close(); // (5)<br />        }<br />    }<br />   <br />}<br /></pre>在程式後面我加入數字註解，為了就是說明 iText 五個步驟，(1) 文件 -&gt; (2) 輸出 -&gt; (3) 開啟 -&gt; (4) 內容 -&gt; (5) 關閉。稍微對照程式碼，就不難了解產生的方式。 主要來說，我們將著重於 (4) 內容的調整，例如可以放入各式各樣的文字或是圖檔，也可以產生表格。另外，也可以加入 XmlParser 匯入 XML/XHTML 格式的檔案，相關的應用，就給讀者自行上網查詢。另外，我們使用 PDF 的時候，必須使用附加中文字型，我們必須放入 iTextAsian.jar 來使用 CJK fonts（中日韓表意文字）在 classpath 之中，如果要附加其他字型，也可利用 TTF fonts。（文鼎的字型有支援 pdf，大多的華康字型是無法使用的）。 <pre>BaseFont.createFont(&quot;\\kaiu.ttf&quot;, BaseFont.IDENTITY_H, BaseFont.EMBEDDED);<br /></pre> ◎ 利用 Servlet 輸出利用 iText 產出的 PDF <p> 最後，必須要說明的是，因為我們要放在網頁之中，有時候不想存放實體檔案，希望直接匯到客戶端出去。所以可以利用下面這方式利用 Servlet 輸出。 </p><pre>ByteArrayOutputStream baosPDF = // 產生 PDF<br />String pdfname = &ldquo;helloworld.pdf&rdquo;;<br />//設定 HttpHeaders<br />response.setHeader(&quot;Expires&quot;, &quot;0&quot;);<br />response.setHeader(&quot;Cache-Control&quot;, &quot;must-revalidate, post-check=0, pre-check=0&quot;);<br />response.setHeader(&quot;Pragma&quot;, &quot;public&quot;);<br />//設定 ContentType 為 &lsquo;application/pdf&rdquo;<br />res.setContentType(&quot;application/pdf&quot;);<br />// M$ IE 需要 輸出的 size()<br />res.setContentLength(baosPDF.size());<br />// write ByteArrayOutputStream to the ServletOutputStream<br />ServletOutputStream out = res.getOutputStream();<br />baosPDF.writeTo(out);<br />out.flush();<br /></pre>
+			<!-- Show relate article -->
+				<!-- end -->
+		<div class="article_note">
+		<!-- Add tags use metakey, and show OSSF Newsletter tag: OSSFNL+NUM-->
+		<br><br> <hr style='border: 1px dashed #D2DADB;'><b>OSSF Newsletter&nbsp;:</b>&nbsp;<a href='previous-issue%3Ftask=view&amp;id=230.html'>第 64 期 GPL3 草案修改要點解析</a><br>				<!-- End -->
+					<br>
+					<b>Category: </b><a href="en/tech-column.html">				Tech Column					</a>				</div>
+			 <!-- AddThis Button BEGIN ID 3001 is the front page article -->
+     			<br><br>
+       <div class="addthis_toolbox addthis_default_style addthis_32x32_style">
+       <a class="addthis_button_preferred_1"></a>
+       <a class="addthis_button_preferred_2"></a>
+       <a class="addthis_button_preferred_3"></a>
+       <a class="addthis_button_preferred_4"></a>
+       <a class="addthis_button_compact"></a>
+       <a class="addthis_counter addthis_bubble_style"></a>
+       </div>
+       <script type="text/javascript">var addthis_config = {"data_track_clickback":true};</script>
+       <script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js#pubid=openfoundry"></script>
+       <!-- AddThis Button END -->
+     <br>
+		<div class="totop" ><a class="rt-totop" href="index.php%3Foption=com_content&amp;task=view&amp;id=527&amp;Itemid=56.html#" style="outline: medium none;">↑ Top</a></div>
+            <!-- AddThis Button END -->
+
+			</div>
+</div>
+
+		                            </div>
+									<div class="clear"></div>
+								</div>
+								<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+							</div>
+							</div>
+                                                    </div>
+                                            </div>
+                                <div class="rt-grid-3 rt-pull-9">
+                <div id="rt-sidebar-a">
+                                    <div class="square4">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<ul class="menu"><li id="current" class="active item56"><a href="en/previous-issue.html"><span>Previous Issue</span></a></li><li class="item55"><a href="en/about-newsletter.html"><span>About Newsletter</span></a></li></ul>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<ul class="menu"><li class="item115"><a href="en/foss-news.html"><span>FOSS News</span></a></li><li class="item141"><a href="en/case-job.html"><span>Case and Jobs</span></a></li></ul>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+        	                <div class="square1">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-title"><h2 class="title">Special</h2></div>
+						<div class="clear"></div>
+		                						<div class="module-content">
+		                	<ul class="menu"><li class="item37"><a href="en/tech-column.html"><span>Tech Column</span></a></li><li class="item40"><a href="en/foss-programs.html"><span>FOSS Programs</span></a></li><li class="item35"><a href="en/legal-column.html"><span>Legal Column</span></a></li><li class="item154"><a href="en/foss-forum.html"><span>FOSS Forum</span></a></li><li class="item162"><a href="en/enterprise-application.html"><span>Enterprise Application</span></a></li><li class="item44"><a href="en/foss-projects.html"><span>FOSS Projects</span></a></li></ul>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		                <div class="square1">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<p style="text-align: center;"><a href="news%3Fformat=feed&amp;type=rss" target="_black"><img src="images/M_images/news-rss-feed.png" border="0" /></a><br /><a href="https://www.openfoundry.org/rss-feed/Newsletter" target="_black"><img src="images/M_images/newsletter-rss-feed.png" border="0" /></a></p>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		
+                </div>
+            </div>
+
+                    <div class="clear"></div>
+                </div>
+            </div>
+																													</div>
+										<div id="rt-copyright">
+						<div class="rt-grid-12 rt-alpha rt-omega">
+                        <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<span class="nowrap">Open Source Software Foundry</span><span class="nowrap">‧</span><span class="nowrap"> </span><span class="nowrap">Best  Viewed with IE7.0 or Firefox2.0 above, 1024x768 Resolution. </span><strong>E-Mail</strong>：<a href="mailto:contact@openfoundry.org">contact@openfoundry.org</a> <br /><strong>Address</strong>：No.128, Sec.2, Academia Rd., Institute of Information Science, Academia Sinica, Nangang District, Taipei City 11529, Taiwan (R.O.C). <br /><a href="en/privacy-policy.html">Privacy Policy</a>. <a href="en/terms-of-use.html">Terms-of-use</a> <span style="position: relative; top: 8px; margin-top: -8px;"> <a href="about/8101.html"><img src="images/M_images/rss-feed-all.png" border="0" /></a></span>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+        	
+</div>
+						<div class="clear"></div>
+					</div>
+					<div class="rt-footer-bottom-wrap"><div class="rt-footer-bottom"><div class="rt-footer-bottom2"><div class="rt-footer-bottom3"></div></div></div></div>
+									</div></div></div>
+				<div class="rt-surround-bottom"><div class="rt-surround-bottom2"><div class="rt-surround-bottom3"></div></div></div>
+							</div>
+		</div>
+		<!--
+		<script id="aptureScript">
+						(function (){var a=document.createElement("script");a.defer="true";a.src="http://www.apture.com/js/apture.js?siteToken=vsJttrn";document.getElementsByTagName("head")[0].appendChild(a);})();
+     </script>
+-->
+
+<!-- Piwik -->
+<!-- 			<script type="text/javascript">
+			  var _paq = _paq || [];
+		  _paq.push(["trackPageView"]);
+		  _paq.push(["enableLinkTracking"]);
+
+		    (function() {
+			        var u=(("https:" == document.location.protocol) ? "https" : "https") + "://www.openfoundry.org/piwik/";
+				    _paq.push(["setTrackerUrl", u+"piwik.php"]);
+				    _paq.push(["setSiteId", "1"]);
+				        var d=document, g=d.createElement("script"), s=d.getElementsByTagName("script")[0]; g.type="text/javascript";
+				        g.defer=true; g.async=true; g.src=u+"piwik.js"; s.parentNode.insertBefore(g,s);
+					  })();
+		  </script> -->
+<!-- End Piwik Code -->
+	</body>
+</html>

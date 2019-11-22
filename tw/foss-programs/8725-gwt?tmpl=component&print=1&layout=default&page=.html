@@ -1,0 +1,305 @@
+	<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+	<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="zh-tw" lang="zh-tw" >
+		<head>
+			  <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+  <meta name="robots" content="noindex, nofollow" />
+  <meta name="keywords" content="OSSFNL795" />
+  <meta name="title" content="GWT (1) - 使用 GWT Eclipse Plugin 與 GWT 基礎架構" />
+  <meta name="description" content="GWT 是一個由 Google 所開發的開源 AJAX 網路開發框架。由於許多傳統 Java 的開發人員及後端工程師，並不見得有前端工程師或網路開發者一樣的技術背景和經驗， 因此開發網站往往對他們來講有著陡峭的學習曲線。GWT 便是為了簡化開發人員使用 Java 作為橫跨前後端的技術整合及溝通之實作語言。 GWT 將 Java 作為開發的主要語言，因而 Java 的資源都成為 GWT" />
+  <meta name="generator" content="" />
+  <title>GWT (1) - 使用 GWT Eclipse Plugin 與 GWT 基礎架構</title>
+  <link href="../../favicon.ico" rel="shortcut icon" type="image/x-icon" />
+  <link rel="stylesheet" href="../../components/com_gantry/css/gantry.css" type="text/css" />
+  <link rel="stylesheet" href="../../components/com_gantry/css/grid-12.css" type="text/css" />
+  <link rel="stylesheet" href="../../components/com_gantry/css/joomla.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/joomla.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/style1.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/light-body.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/demo-styles.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/template.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/typography.css" type="text/css" />
+  <style type="text/css">
+    <!--
+#rt-main-surround ul.menu li.active > a, #rt-main-surround ul.menu li.active > .separator, #rt-main-surround ul.menu li.active > .item, #rt-main-surround .square4 ul.menu li:hover > a, #rt-main-surround .square4 ul.menu li:hover > .item, #rt-main-surround .square4 ul.menu li:hover > .separator, .roktabs-links ul li.active span {color:#0088B5;}
+a, #rt-main-surround ul.menu a:hover, #rt-main-surround ul.menu .separator:hover, #rt-main-surround ul.menu .item:hover {color:#0088B5;}
+    -->
+  </style>
+  <script type="text/javascript" src="../../components/com_jcomments/js/jcomments-v2.1.js%3Fv=2"></script>
+  <script type="text/javascript" src="../../components/com_jcomments/libraries/joomlatune/ajax.js"></script>
+  <script type="text/javascript" src="../../media/system/js/mootools.js"></script>
+  <script type="text/javascript" src="../../media/system/js/caption.js"></script>
+  <script type="text/javascript" src="../../components/com_gantry/js/gantry-buildspans.js"></script>
+  <script type="text/javascript" src="../../components/com_gantry/js/gantry-inputs.js"></script>
+  <script type="text/javascript">
+
+			window.addEvent('domready', function() {
+				var modules = ['rt-block'];
+				var header = ['h3','h2','h1'];
+				GantryBuildSpans(modules, header);
+			});
+		InputsExclusion.push('.content_vote','#rt-popup')
+  </script>
+		</head>
+		<body  class="backgroundlevel-low backgroundstyle-style8 bodylevel-med bodystyle-light cssstyle-style1 logostyle-dark font-family-helvetica font-size-is-default menu-type-fusionmenu col12 ">
+			<div id="rt-main-surround">
+				<div class="rt-container">
+					<div class="rt-block">
+						<div id="rt-mainbody">
+					    	
+<div class="rt-joomla ">
+	<div class="rt-article">
+		
+				<div class="rt-headline"><h1 class="rt-article-title">GWT (1) - 使用 GWT Eclipse Plugin 與 GWT 基礎架構</h1>		</div>
+		<div class="clear"></div>
+		
+		
+		
+				<div class="rt-articleinfo">
+						<div class="rt-article-icons">
+				<a href="8725-gwt%3Ftmpl=component&amp;print=1&amp;layout=default&amp;page=.html#" onclick="window.print();return false;"><span class="icon print"></span></a>									<span class="icon printscreen">
+						<a href="8725-gwt%3Ftmpl=component&amp;print=1&amp;layout=default&amp;page=.html#" onclick="window.print();return false;"><img src="../../images/M_images/printButton.png" alt="列印"  /></a>					</span>
+							</div>
+			
+			<span class="rt-date-posted">
+						建立日期			2012-06-11 14:40						&nbsp;&nbsp;&nbsp;&nbsp;						最近更新在 2012-07-10 15:20						</span>
+
+						<span class="rt-author">
+				作者是 Kent			</span>
+				
+					</div>
+		
+		
+		<p>GWT 是一個由 Google 所開發的開源 AJAX 網路開發框架。由於許多傳統 Java 的開發人員及後端工程師，並不見得有前端工程師或網路開發者一樣的技術背景和經驗， 因此開發網站往往對他們來講有著陡峭的學習曲線。GWT 便是為了簡化開發人員使用 Java 作為橫跨前後端的技術整合及溝通之實作語言。</p>
+<p>GWT 將 Java 作為開發的主要語言，因而 Java 的資源都成為 GWT 開發人員可以享受的工具。且團隊可以很輕易地找到會寫 Java 的開發者，亦可使用 Eclipse 的開發工具來實現 GWT。GWT 讓開發人員編寫 Java 代碼在透過 GWT 編譯器，把 Java 轉成高效的 JavaScript 代碼。GWT 的內建函式庫跟其所提供的框架延展性，讓開發人員可以快速地寫成互動性強的應用程式。</p>
+
+<p>從本篇開始，筆者將開始連載一系列的 GWT 的相關文章.透過解說、實例、實作來幫助讀者了解 GWT。</p>
+<p>作為系列文章的第一文，本文是熱身，將介紹一些 GWT 的入門知識，並帶領讀者使用 Google 所做的 Eclipse 外掛來實作運用 GWT。&nbsp;</p>
+<h2>安裝說明</h2>
+<p>先前有提到 GWT 因使用 Java 加上 Google 釋出的相關開發工具，而編寫 GWT 最便利的方式就是用在 Java 世界裡被廣泛使用的 Eclipse 開發環境。Eclipse 具有非常多內建的工具，加上它的套件管理系統跟維護社群，開發者可以很輕易的使用現有的工具來達到有效開發的目的。本文所使用的工具是 Eclipse 所以基本上只要環境支援 Eclipse 即可。以下範例將使用 Eclipse 3.6。</p>
+<h3>安裝 Eclipse</h3>
+<p>請先至 Eclipse <a target="_blank" href="https://www.eclipse.org/downloads/">官網</a>，依照您的作業系統下載安裝檔，並執行安裝，安裝過程相當容易，請依照安裝套件下一步即可。</p>
+<p>若您的系統為 Ubuntu 即可使用以下指令直接安裝即可。</p>
+<pre>apt-get install eclipse</pre>
+<h3>開啟相關套件</h3>
+<p>開啟 Eclipse，於上排功能列，選擇 [Help -&gt; Install New Software] 將會開啟如下圖操作畫面，並於 Work with 欄位輸入以下網址 <a target="_blank" href="https://dl.google.com/eclipse/plugin/3.6">https://dl.google.com/eclipse/plugin/3.6</a>。</p>
+<img alt="img1" src="../../images/RC/GWT/img1.png" height="323" width="550" />
+<p>▲ 圖1</p>
+<p>若您的 Eclipse 的版本不是 3.6，則您可依具您的版本號輸入不同的網址。例如： 若為 Eclipse 3.5 則可輸入 <a target="_blank" href="https://dl.google.com/eclipse/plugin/3.5">https://dl.google.com/eclipse/plugin/3.5</a>。 在短暫的搜尋之後，Eclipse 會列出幾個套件。為了簡化流程，讀者可以全部勾選。安裝好了以後，重啓 Eclipse 即可。</p>
+<h2>使用說明</h2>
+<p>以下的篇幅為說明 GWT 的基本架構跟用法。首先新創一個 "Web Application Project" 的專案。</p>
+<img alt="img2" src="../../images/RC/GWT/img2.png" height="324" width="550" />
+<p>▲ 圖2</p>
+<p>輸入想要的專案名稱.本文將會用 test 這個名字。</p>
+<img alt="img3" src="../../images/RC/GWT/img3.png" height="324" width="550" />
+<p>▲ 圖3</p>
+<p>Google 的 Eclipse Plugin 在生成新的專案時會產生一個範例專案。我們先試著執行這個專案以確定安裝程序都順利。若是一切都順利（設定維持預設），讀者應該可以開啓瀏覽器後輸入 "https://127.0.0.1:8888/Test.html?gwt.codesvr=127.0.0.1:9997"，即可看到以下畫面：</p>
+<img alt="img4" src="../../images/RC/GWT/img4.png" height="285" width="467" />
+<p>▲ 圖4</p>
+<p>輸入名字後會看到以下畫面：</p>
+<img alt="img5" src="../../images/RC/GWT/img5.png" height="466" width="463" />
+<p>▲ 圖5</p>
+<p>接下來，我們試著理解這個 GWT 專案是如何運作的。</p>
+<p>開啟 Eclipse 的 Package Explorer 至您的專案下，以本專案 test 下的 src/com.kent.app.clent 開啓 Test.java。可以先注意到 Test 這個類別是實作 EntryPoint 這個介面。在一個 GWT 專案中，實作 EntryPoint 的類別會是第一個被載入的程式。從實作的函式 onModuleLoad 這個名稱就可以猜到一二。現在我們進入這個函式裡一探究竟。</p>
+<p>曾經有 Java 使用者圖形界面 (GUI) 編程經驗的讀者，應該會對代碼有一定的熟悉感，因為 GWT 的內建函式庫有承襲一些 Java GUI 編程的規律。內建的 Button 類別在宣告以後，可以在傳入一個 ClickHandler 的類別來決定使用者按完按鈕後的後續動作。</p>
+<p>在 GWT 裡，有一個叫做 RootPanel 的物件，此物件，在 GWT 主要用來放置各種界面工具 (widget)。透過 RootPanel.get("x").add(widget) 這行代碼，GWT 會把 widget 加到頁面上，更具體地說，加到HTML id 是 "x" 的地方 (主頁HTML的代碼可以在war這個資料夾下找到)。GWT 有各式各樣的內建界面工具可以使用，在本實作專案中我們只有用到少數幾個，有興趣的讀者可以自己玩玩看不同的工具。</p>
+<p>最後，筆者將介紹一下 GWT 的 RPC (遠端過程調用)。作為一個網路應用程式，客戶端程式需要與伺服器溝通。 GWT 的 RPC 便是要讓應用程式透過 HTTP 交換 Java 物件的這個過程更加容易。您也許注意到這行代碼：</p>
+<pre>private final GreetingServiceAsync greetingService = GWT
+            .create(GreetingService.class);
+</pre>
+<p>此外，之後程序也有使用到 greetService 這個變數。這個便是應用到 RPC 的實例。在客戶端，開發者需要編寫 stub 函式，用意在於讓程式知道函式的各種輸入（請看GreetingServiceAsync.java）。實際的處理代碼則是編寫在伺服器端（見GreetingServiceImpl.java）。注意，這個伺服器端的代碼需要繼承 RemoteServiceServlet，然後，實作 GreetingService。</p>
+<p>RemoteServiceServlet 的繼承使得程序員不需要處理序列化的問題而交由內建已經實做的類別來執行以增加開發效率跟降低出錯率。透過這樣的方式,開發人員能夠輕鬆寫出與伺服器互動的程序。</p>
+<p>*以下是我的專案的代碼:</p>
+<pre>package com.kent.app.client;
+
+import com.kent.app.shared.FieldVerifier;
+import com.google.gwt.core.client.EntryPoint;
+import com.google.gwt.core.client.GWT;
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.event.dom.client.KeyCodes;
+import com.google.gwt.event.dom.client.KeyUpEvent;
+import com.google.gwt.event.dom.client.KeyUpHandler;
+import com.google.gwt.user.client.rpc.AsyncCallback;
+import com.google.gwt.user.client.ui.Button;
+import com.google.gwt.user.client.ui.DialogBox;
+import com.google.gwt.user.client.ui.HTML;
+import com.google.gwt.user.client.ui.Label;
+import com.google.gwt.user.client.ui.RootPanel;
+import com.google.gwt.user.client.ui.TextBox;
+import com.google.gwt.user.client.ui.VerticalPanel;
+
+/**
+ * Entry point classes define onModuleLoad().
+ */
+public class Test implements EntryPoint {
+    /**
+     * The message displayed to the user when the server cannot be reached or
+     * returns an error.
+     */
+    private static final String SERVER_ERROR = "An error occurred while "
+            + "attempting to contact the server. Please check your network "
+            + "connection and try again.";
+
+    /**
+     * Create a remote service proxy to talk to the server-side Greeting service.
+     */
+    private final GreetingServiceAsync greetingService = GWT
+            .create(GreetingService.class);
+
+    /**
+     * This is the entry point method.
+     */
+    public void onModuleLoad() {
+        final Button sendButton = new Button("Send");
+        final TextBox nameField = new TextBox();
+        nameField.setText("GWT User");
+        final Label errorLabel = new Label();
+
+        // We can add style names to widgets
+        sendButton.addStyleName("sendButton");
+
+        // Add the nameField and sendButton to the RootPanel
+        // Use RootPanel.get() to get the entire body element
+        RootPanel.get("nameFieldContainer").add(nameField);
+        RootPanel.get("sendButtonContainer").add(sendButton);
+        RootPanel.get("errorLabelContainer").add(errorLabel);
+
+        // Focus the cursor on the name field when the app loads
+        nameField.setFocus(true);
+        nameField.selectAll();
+
+        // Create the popup dialog box
+        final DialogBox dialogBox = new DialogBox();
+        dialogBox.setText("Remote Procedure Call");
+        dialogBox.setAnimationEnabled(true);
+        final Button closeButton = new Button("Close");
+        // We can set the id of a widget by accessing its Element
+        closeButton.getElement().setId("closeButton");
+        final Label textToServerLabel = new Label();
+        final HTML serverResponseLabel = new HTML();
+        VerticalPanel dialogVPanel = new VerticalPanel();
+        dialogVPanel.addStyleName("dialogVPanel");
+        dialogVPanel.add(new HTML("Sending name to the server:"));
+        dialogVPanel.add(textToServerLabel);
+        dialogVPanel.add(new HTML("Server replies:"));
+        dialogVPanel.add(serverResponseLabel);
+        dialogVPanel.setHorizontalAlignment(VerticalPanel.ALIGN_RIGHT);
+        dialogVPanel.add(closeButton);
+        dialogBox.setWidget(dialogVPanel);
+
+        // Add a handler to close the DialogBox
+        closeButton.addClickHandler(new ClickHandler() {
+            public void onClick(ClickEvent event) {
+                dialogBox.hide();
+                sendButton.setEnabled(true);
+                sendButton.setFocus(true);
+            }
+        });
+
+        // Create a handler for the sendButton and nameField
+        class MyHandler implements ClickHandler, KeyUpHandler {
+            /**
+             * Fired when the user clicks on the sendButton.
+             */
+            public void onClick(ClickEvent event) {
+                sendNameToServer();
+            }
+
+            /**
+             * Fired when the user types in the nameField.
+             */
+            public void onKeyUp(KeyUpEvent event) {
+                if (event.getNativeKeyCode() == KeyCodes.KEY_ENTER) {
+                    sendNameToServer();
+                }
+            }
+
+            /**
+             * Send the name from the nameField to the server and wait for a response.
+             */
+            private void sendNameToServer() {
+                // First, we validate the input.
+                errorLabel.setText("");
+                String textToServer = nameField.getText();
+                if (!FieldVerifier.isValidName(textToServer)) {
+                    errorLabel.setText("Please enter at least four characters");
+                    return;
+                }
+
+                // Then, we send the input to the server.
+                sendButton.setEnabled(false);
+                textToServerLabel.setText(textToServer);
+                serverResponseLabel.setText("");
+                greetingService.greetServer(textToServer,
+                        new AsyncCallback() {
+                            public void onFailure(Throwable caught) {
+                                // Show the RPC error message to the user
+                                dialogBox
+                                        .setText("Remote Procedure Call - Failure");
+                                serverResponseLabel
+                                        .addStyleName("serverResponseLabelError");
+                                serverResponseLabel.setHTML(SERVER_ERROR);
+                                dialogBox.center();
+                                closeButton.setFocus(true);
+                            }
+
+                            public void onSuccess(String result) {
+                                dialogBox.setText("Remote Procedure Call");
+                                serverResponseLabel
+                                        .removeStyleName("serverResponseLabelError");
+                                serverResponseLabel.setHTML(result);
+                                dialogBox.center();
+                                closeButton.setFocus(true);
+                            }
+                        });
+            }
+        }
+
+        // Add a handler to send the name to the server
+        MyHandler handler = new MyHandler();
+        sendButton.addClickHandler(handler);
+        nameField.addKeyUpHandler(handler);
+    }
+}</pre>
+<h2>結論</h2>
+<p>本文介紹了 GWT 的一些相關知識以及基本的運作結構。透過 GWT，開發人員可以利用 Java 編寫前端跟後端的代碼。這使得代碼的統一性比混合式的架構更好。</p>
+<h2>後續</h2>
+<p>下次，筆者將帶讀者實踐一個利用更多 GWT 函式庫的專案。</p>
+<h2>參考資料</h2>
+<ol>
+<li>GWT 官方網站<br /><a target="_blank" href="https://developers.google.com/web-toolkit/">https://developers.google.com/web-toolkit/</a></li>
+<li>GWT RPC 官方介紹<br /><a href="https://developers.google.com/web-toolkit/doc/latest/tutorial/RPC">https://developers.google.com/web-toolkit/doc/latest/tutorial/RPC</a></li>
+</ol>
+			<!-- Show relate article -->
+				<!-- end -->
+		<div class="article_note">
+		<!-- Add tags use metakey, and show OSSF Newsletter tag: OSSFNL+NUM-->
+		<br><br> <hr style='border: 1px dashed #D2DADB;'><b>自由軟體鑄造場電子報&nbsp;:</b>&nbsp;<a href='../../previous-issue%3Ftask=view&amp;id=795.html'>第 197 期 GWT (1) - 使用 GWT Eclipse Plugin 與 GWT 基礎架構</a><br>				<!-- End -->
+					<br>
+					<b>分類: </b><a href="../foss-programs.html">				源碼秘技					</a>				</div>
+			 <!-- AddThis Button BEGIN ID 3001 is the front page article -->
+     			<br><br>
+       <div class="addthis_toolbox addthis_default_style addthis_32x32_style">
+       <a class="addthis_button_preferred_1"></a>
+       <a class="addthis_button_preferred_2"></a>
+       <a class="addthis_button_preferred_3"></a>
+       <a class="addthis_button_preferred_4"></a>
+       <a class="addthis_button_compact"></a>
+       <a class="addthis_counter addthis_bubble_style"></a>
+       </div>
+       <script type="text/javascript">var addthis_config = {"data_track_clickback":true};</script>
+       <script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js#pubid=openfoundry"></script>
+       <!-- AddThis Button END -->
+     <br>
+		<div class="totop" ><a class="rt-totop" href="8725-gwt%3Ftmpl=component&amp;print=1&amp;layout=default&amp;page=.html#" style="outline: medium none;">↑ Top</a></div>
+            <!-- AddThis Button END -->
+
+			</div>
+</div>
+
+						</div>
+					</div>
+				</div>
+			</div>
+		</body>
+	</html>

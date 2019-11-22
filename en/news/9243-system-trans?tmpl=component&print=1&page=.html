@@ -1,0 +1,125 @@
+	<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+	<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-gb" lang="en-gb" >
+		<head>
+			  <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+  <meta name="robots" content="noindex, nofollow" />
+  <meta name="keywords" content="OSSFNL855" />
+  <meta name="title" content="改換 Linux 卻能免於資料丟失 - 在生產環境中管理系統轉換" />
+  <meta name="description" content="本文翻譯自 Linux IT，原作者為 Simon Mitchell：https://www.linuxit.com/linux-blog /bid/34" />
+  <meta name="generator" content="" />
+  <title>改換 Linux 卻能免於資料丟失 - 在生產環境中管理系統轉換</title>
+  <link href="../../favicon.ico" rel="shortcut icon" type="image/x-icon" />
+  <link rel="stylesheet" href="../../components/com_gantry/css/gantry.css" type="text/css" />
+  <link rel="stylesheet" href="../../components/com_gantry/css/grid-12.css" type="text/css" />
+  <link rel="stylesheet" href="../../components/com_gantry/css/joomla.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/joomla.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/style1.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/light-body.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/demo-styles.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/template.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/typography.css" type="text/css" />
+  <style type="text/css">
+    <!--
+#rt-main-surround ul.menu li.active > a, #rt-main-surround ul.menu li.active > .separator, #rt-main-surround ul.menu li.active > .item, #rt-main-surround .square4 ul.menu li:hover > a, #rt-main-surround .square4 ul.menu li:hover > .item, #rt-main-surround .square4 ul.menu li:hover > .separator, .roktabs-links ul li.active span {color:#0088B5;}
+a, #rt-main-surround ul.menu a:hover, #rt-main-surround ul.menu .separator:hover, #rt-main-surround ul.menu .item:hover {color:#0088B5;}
+    -->
+  </style>
+  <script type="text/javascript" src="../../components/com_jcomments/js/jcomments-v2.1.js%3Fv=2"></script>
+  <script type="text/javascript" src="../../components/com_jcomments/libraries/joomlatune/ajax.js"></script>
+  <script type="text/javascript" src="../../media/system/js/mootools.js"></script>
+  <script type="text/javascript" src="../../media/system/js/caption.js"></script>
+  <script type="text/javascript" src="../../components/com_gantry/js/gantry-buildspans.js"></script>
+  <script type="text/javascript" src="../../components/com_gantry/js/gantry-inputs.js"></script>
+  <script type="text/javascript">
+
+			window.addEvent('domready', function() {
+				var modules = ['rt-block'];
+				var header = ['h3','h2','h1'];
+				GantryBuildSpans(modules, header);
+			});
+		InputsExclusion.push('.content_vote','#rt-popup')
+  </script>
+		</head>
+		<body  class="backgroundlevel-low backgroundstyle-style8 bodylevel-med bodystyle-light cssstyle-style1 logostyle-dark font-family-helvetica font-size-is-default menu-type-fusionmenu col12 ">
+			<div id="rt-main-surround">
+				<div class="rt-container">
+					<div class="rt-block">
+						<div id="rt-mainbody">
+					    	
+<div class="rt-joomla ">
+	<div class="rt-article">
+		
+				<div class="rt-headline"><h1 class="rt-article-title">改換 Linux 卻能免於資料丟失 - 在生產環境中管理系統轉換</h1>		</div>
+		<div class="clear"></div>
+		
+		
+		
+				<div class="rt-articleinfo">
+						<div class="rt-article-icons">
+				<a href="9243-system-trans%3Ftmpl=component&amp;print=1&amp;page=.html#" onclick="window.print();return false;"><span class="icon print"></span></a>									<span class="icon printscreen">
+						<a href="9243-system-trans%3Ftmpl=component&amp;print=1&amp;page=.html#" onclick="window.print();return false;"><img src="../../images/M_images/printButton.png" alt="Print"  /></a>					</span>
+							</div>
+			
+			<span class="rt-date-posted">
+						 Created at			Wednesday, 11 June 2014 11:49						&nbsp;&nbsp;&nbsp;&nbsp;						Last Updated on Wednesday, 11 June 2014 11:53						</span>
+
+						<span class="rt-author">
+				Written by 謝良奇／翻譯			</span>
+				
+					</div>
+		
+		
+		<p><strong>本文翻譯自 Linux IT，原作者為 Simon Mitchell：<a href="https://www.linuxit.com/linux-blog/bid/345746/Migrating-to-Linux-Without-Losing-Your-Data-Managing-Migration-in-Production-Environments?utm_source=feedburner&utm_medium=feed&utm_campaign=Feed%3A+LinuxIT+%28LinuxIT+Blog%29">https://www.linuxit.com/linux-blog/bid/345746/Migrating-to-Linux-Without-Losing-Your-Data-Managing-Migration-in-Production-Environments?utm<em>source=feedburner&utm</em>medium=feed&utm_campaign=Feed%3A+LinuxIT+%28LinuxIT+Blog%29</a></strong></p>
+<p>沒有電腦系統可以恆久永存。升級只能撐得了一時：增添原來系統設計者想像不到的額外硬體、新的軟體和更大的資料庫，可以延長舊系統的使用期限，特別是對於優先考慮業務持續性的環境而言。</p>
+<p>當這可敬且多次修補的老舊 UNIX 系統到了該汰換的時間點，由現代的 Linux 系統加以取代時，即使最富經驗的資訊長，都會因為資料丟失的可能性而感到暈眩。</p>
+
+<h3>資料丟失</h3>
+<p>可能導致資料丟失的可能問題包括：</p>
+<ul>
+<li>未能正確地從舊系統將資料複製到新系統，因此遭到某種程度的毀損，甚至完全丟失。</li>
+<li>失去對資料的控制，因此雖然你成功複製了資料，卻也讓其他人得以存取。</li>
+<li>未能定義轉換所需的資料。</li>
+<li>在實際資料轉換前測試不足。</li>
+</ul>
+<p>第一點可以癱瘓任何一家企業。如果資料重要性不高，第二點或許無關緊要，但如果你處在金融服務或是經營電子商務，未能保障用戶資料的法律後果會很嚴重。</p>
+<p>資料轉移專案越複雜，誤差幅度就越大。這就是遵循最佳實踐之所以能夠減少資料丟失或毀損，並且最小化對組織可能衝擊的原因。</p>
+<h3>尋求協助</h3>
+<p>設計新系統與轉移管理是專業工作。你由開發者與維護者組成的 IT 團隊，在維持現有系統運作的日常任務之外，並不適合這個工作。你需要尋求協助。</p>
+<p>有大小型組織經驗的專責 Linux 與開源軟體 IT 顧問，能協助你選擇正確系統並管理轉換過程，讓損失降到最低。</p>
+<h3>選擇工具</h3>
+<p>好的顧問公司與許多領先的開源軟體供應商應該有策略夥伴關係，才能夠取用轉換管理所需的最佳工具。</p>
+<p>防範資料丟失的關鍵是備份。任何轉移過程的第一階段，應該是為你所有的資料建立雲端備份，不只是最明顯的資料庫，更包括你所有的軟體、授權與組態設定。</p>
+<p>轉移管理的確複雜，但不要因為資料丟失的恐懼讓你止步不前。</p>
+			<!-- Show relate article -->
+				<!-- end -->
+		<div class="article_note">
+		<!-- Add tags use metakey, and show OSSF Newsletter tag: OSSFNL+NUM-->
+		<br><br> <hr style='border: 1px dashed #D2DADB;'><b>OSSF Newsletter&nbsp;:</b>&nbsp;<a href='../../previous-issue%3Ftask=view&amp;id=855.html'>第 243 期 LiveReload - 網頁開發者必備的自動重新整理外掛</a><br>				<!-- End -->
+					<br>
+					<b>Category: </b><a href="../foss-forum.html">				FOSS Forum					</a>				</div>
+			 <!-- AddThis Button BEGIN ID 3001 is the front page article -->
+     			<br><br>
+       <div class="addthis_toolbox addthis_default_style addthis_32x32_style">
+       <a class="addthis_button_preferred_1"></a>
+       <a class="addthis_button_preferred_2"></a>
+       <a class="addthis_button_preferred_3"></a>
+       <a class="addthis_button_preferred_4"></a>
+       <a class="addthis_button_compact"></a>
+       <a class="addthis_counter addthis_bubble_style"></a>
+       </div>
+       <script type="text/javascript">var addthis_config = {"data_track_clickback":true};</script>
+       <script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js#pubid=openfoundry"></script>
+       <!-- AddThis Button END -->
+     <br>
+		<div class="totop" ><a class="rt-totop" href="9243-system-trans%3Ftmpl=component&amp;print=1&amp;page=.html#" style="outline: medium none;">↑ Top</a></div>
+            <!-- AddThis Button END -->
+
+			</div>
+</div>
+
+						</div>
+					</div>
+				</div>
+			</div>
+		</body>
+	</html>

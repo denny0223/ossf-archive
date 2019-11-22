@@ -1,0 +1,406 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-gb" lang="en-gb" >
+<head>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<link rel="shortcut icon" href="images/favicon.ico" />
+	  <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+  <meta name="robots" content="index, follow" />
+  <meta name="keywords" content="OSSFNL556" />
+  <meta name="title" content="Google 的開放源碼程式語言 Go 起跑" />
+  <meta name="description" content="Google 似乎永不滿足於現狀，已經是搜尋、線上文件協同合作、電子郵件等領域的領導者，這次跨足到程式設計上。Google 發表了新的開放源碼物件導向程式語言 Go，強調能夠與 C 匹敵的執行效率，語法的表達能力更為強大，編譯速度也更快。 每個電腦程式設計者針對所使用的程式語言，都可以列出一大串有待改進的選項。畢竟語法甜頭 (syntactic" />
+  <meta name="generator" content="" />
+  <title>Google 的開放源碼程式語言 Go 起跑 - OpenFoundry</title>
+  <link href="favicon.ico" rel="shortcut icon" type="image/x-icon" />
+  <link rel="stylesheet" href="components/com_gantry/css/gantry.css" type="text/css" />
+  <link rel="stylesheet" href="components/com_gantry/css/grid-12.css" type="text/css" />
+  <link rel="stylesheet" href="components/com_gantry/css/joomla.css" type="text/css" />
+  <link rel="stylesheet" href="templates/rt_quantive_j15/css/joomla.css" type="text/css" />
+  <link rel="stylesheet" href="templates/rt_quantive_j15/css/style1.css" type="text/css" />
+  <link rel="stylesheet" href="templates/rt_quantive_j15/css/light-body.css" type="text/css" />
+  <link rel="stylesheet" href="templates/rt_quantive_j15/css/demo-styles.css" type="text/css" />
+  <link rel="stylesheet" href="templates/rt_quantive_j15/css/template.css" type="text/css" />
+  <link rel="stylesheet" href="templates/rt_quantive_j15/css/typography.css" type="text/css" />
+  <link rel="stylesheet" href="templates/rt_quantive_j15/css/fusionmenu.css" type="text/css" />
+  <style type="text/css">
+    <!--
+#rt-main-surround ul.menu li.active > a, #rt-main-surround ul.menu li.active > .separator, #rt-main-surround ul.menu li.active > .item, #rt-main-surround .square4 ul.menu li:hover > a, #rt-main-surround .square4 ul.menu li:hover > .item, #rt-main-surround .square4 ul.menu li:hover > .separator, .roktabs-links ul li.active span {color:#0088B5;}
+a, #rt-main-surround ul.menu a:hover, #rt-main-surround ul.menu .separator:hover, #rt-main-surround ul.menu .item:hover {color:#0088B5;}
+    -->
+  </style>
+  <script type="text/javascript" src="components/com_jcomments/js/jcomments-v2.1.js%3Fv=2"></script>
+  <script type="text/javascript" src="components/com_jcomments/libraries/joomlatune/ajax.js"></script>
+  <script type="text/javascript" src="media/system/js/mootools.js"></script>
+  <script type="text/javascript" src="media/system/js/caption.js"></script>
+  <script type="text/javascript" src="components/com_gantry/js/gantry-buildspans.js"></script>
+  <script type="text/javascript" src="components/com_gantry/js/gantry-inputs.js"></script>
+  <script type="text/javascript" src="templates/rt_quantive_j15/js/jquery.cookie.js"></script>
+  <script type="text/javascript" src="modules/mod_roknavmenu/themes/fusion/js/fusion.js"></script>
+  <script type="text/javascript" src="modules/mod_ofssologin/js/ofssologin.js"></script>
+  <script type="text/javascript">
+
+			window.addEvent('domready', function() {
+				var modules = ['rt-block'];
+				var header = ['h3','h2','h1'];
+				GantryBuildSpans(modules, header);
+			});
+		InputsExclusion.push('.content_vote','#rt-popup')
+		        window.addEvent('load', function() {
+					new Fusion('ul.menutop', {
+						pill: 0,
+						effect: 'slide and fade',
+						opacity: 1,
+						hideDelay: 500,
+						centered: 0,
+						tweakInitial: {'x': -2, 'y': 0},
+        				tweakSubsequent: {'x': 0, 'y': -14},
+						menuFx: {duration: 200, transition: Fx.Transitions.Sine.easeOut},
+						pillFx: {duration: 400, transition: Fx.Transitions.Back.easeOut}
+					});
+	            });
+  </script>
+<!-- <script type="text/javascript" src="/sso/javascripts/langsync.js"></script> -->
+<!-- <script src="/templates/rt_quantive_j15/js/ossf.js"></script> -->
+<script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-4136519-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
+</head>
+	<body  class="backgroundlevel-low backgroundstyle-style8 bodylevel-med bodystyle-light cssstyle-style1 logostyle-dark font-family-helvetica font-size-is-default menu-type-fusionmenu col12 ">
+		<div id="rt-main-background">
+			<div class="rt-container">
+																<div id="rt-header">
+					<div class="rt-grid-7 rt-alpha">
+    			<div class="rt-block">
+    	    	<a href="index.html" id="rt-logo"></a>
+    		</div>
+	    
+</div>
+<div class="rt-grid-5 rt-omega">
+                    <div class="square9">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<div class="ofssologin_square9"><a href="index.html">Login</a>&nbsp;&nbsp|&nbsp;&nbsp;<span><a href="tw/component/content/2210%3Ftask=view.html" ><span lang="tw" xml:lang="tw">繁體中文</span></a></li></ul></span><!--Joom!fish V2.0.4 (Lightning)-->
+<!-- &copy; 2003-2009 Think Network, released under the GPL. -->
+<!-- More information: at http://www.joomfish.net -->
+<div class="ofssologin_search_square9">
+  <form id="of_search" action="https://www.openfoundry.org/of/openfoundry/search" method="get" onsubmit="of_search(); return false;">
+    <select id="of_search_type">
+      <option value="Projects"> Projects </option>
+      <option value="Content"> Content </option>
+      <option value="People"> People </option>
+    </select>
+    <input id="query" name="query" id="mod_search_searchword" maxlength="50" alt="search" class="inputbox" type="text" size="28" value="search..."  onblur="if(this.value=='') this.value='search...';" onfocus="if(this.value=='search...') this.value='';" />
+    <input type="hidden" name="commit" value="search" />
+  </form>
+</div></div>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		
+</div>
+					<div class="clear"></div>
+				</div>
+																<div id="rt-navigation"><div id="rt-navigation2"><div id="rt-navigation3">
+					
+<div class="nopill">
+	<ul class="menutop level1 " >
+						<li class="item1 root" >
+					<a class="orphan item bullet" href="index.html"  >
+				<span>
+			    				Home				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item32 root" >
+					<a class="orphan item bullet" href="archived.html"  >
+				<span>
+			    				Projects				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item186 root" >
+					<a class="orphan item bullet" href="en/community.html"  >
+				<span>
+			    				Who&#039;s Who				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item4 root" >
+					<a class="orphan item bullet" href="en/news.html"  >
+				<span>
+			    				News				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item5 root" >
+					<a class="orphan item bullet" href="en/law-and-licensing.html"  >
+				<span>
+			    				Law &amp; Licensing				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item3 root" >
+					<a class="orphan item bullet" href="en/activities.html"  >
+				<span>
+			    				Activities				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item2 root" >
+					<a class="orphan item bullet" href="en/resourcecatalog.html"  >
+				<span>
+			    				Resource Catalog				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item45 root" >
+					<a class="orphan item bullet" href="en/about.html"  >
+				<span>
+			    				About				   
+				</span>
+			</a>
+			
+			
+	</li>	
+				</ul>
+</div>
+
+				    <div class="clear"></div>
+				</div></div></div>
+								<div class="rt-surround"><div class="rt-surround2"><div class="rt-surround3">
+										<div id="rt-showcase-section">
+												<div id="rt-showcase">
+							<div class="rt-grid-12 rt-alpha rt-omega">
+    		<div class="clear"></div>
+		
+		
+                <div class="close-note">
+                    <div class="rt-block">
+               					<div class="module-content">
+                	<div style="font-size:medium; background-image:linear-gradient(120deg,#159957,#4298b2);color:white;padding:20px;margin:-10px -18px;">感謝您對「自由軟體鑄造場」的支持與愛護，十多年來「自由軟體鑄造場」受中央研究院支持，並在資訊科學研究所以及資訊科技創新研究中心執行，現已完成階段性的任務。 本網站預計持續維運至 2021年底，網站內容基本上不會再更動。<br />也紀念我們永遠的朋友 李士傑先生（Shih-Chieh Ilya Li）。</div>				</div>
+            </div>
+                </div>
+		
+</div>
+							<div class="clear"></div>
+						</div>
+																	</div>
+															<div id="rt-main-surround">
+												<div id="rt-breadcrumbs">
+								<div class="rt-breadcrumb-surround">
+		<a href="index.html" id="breadcrumbs-home"></a>
+		<span class="breadcrumbs pathway">
+<span class="no-link">Previous Issue</span></span>
+	</div>
+	
+							<div class="clear"></div>
+						</div>
+																							              <div id="rt-main" class="sa3-mb9">
+                <div class="rt-main-inner">
+                    <div class="rt-grid-9 rt-push-3">
+                                                <div class="rt-block">
+                            							<div class="square1">
+							<div class="rt-module-surround">
+								<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+								<div class="rt-module-inner">
+		                            <div id="rt-mainbody">
+		                                
+<div class="rt-joomla ">
+	<div class="rt-article">
+		
+				<div class="rt-headline"><h1 class="rt-article-title">Google 的開放源碼程式語言 Go 起跑</h1>		</div>
+		<div class="clear"></div>
+		
+		
+		
+				<div class="rt-articleinfo">
+						<div class="rt-article-icons">
+								<a href="https://www.openfoundry.org/en/component/content/2210?tmpl=component&amp;print=1&amp;page=" title="Print" onclick="window.open(this.href,'win2','status=no,toolbar=no,scrollbars=yes,titlebar=no,menubar=no,resizable=yes,width=640,height=480,directories=no,location=no'); return false;" rel="nofollow"><span class="icon print"></span></a>																</div>
+			
+			<span class="rt-date-posted">
+						 Created at			Thursday, 12 November 2009 08:00						&nbsp;&nbsp;&nbsp;&nbsp;						</span>
+
+						<span class="rt-author">
+				Written by 謝良奇/編譯			</span>
+				
+					</div>
+		
+		
+		Google 似乎永不滿足於現狀，已經是搜尋、線上文件協同合作、電子郵件等領域的領導者，這次跨足到程式設計上。Google 發表了新的開放源碼物件導向程式語言 Go，強調能夠與 C 匹敵的執行效率，語法的表達能力更為強大，編譯速度也更快。<br /><p>每個電腦程式設計者針對所使用的程式語言，都可以列出一大串有待改進的選項。畢竟語法甜頭 (syntactic sugar)、更好的執行效能、更快的編譯速度，有誰不想要？因為如此，才會有這麼多種程式語言。更別提軟體產業中不少領導廠商會打造自己的程式語言，或是擴展現有的程式語言。</p>
+<p>Google 認為，現有的主要程式語言如 C/C++、Java、C#，都是基於類似的語法，這些語言的更新與加強只有不斷增加的程式庫，鮮少對語言核心做出改變。Google 所想要的，並非只是添加新的程式庫。</p>
+<p>自從 C 語言出現以來，電腦運算的面貌已經改變許多。Google 認為現在的電腦速度大幅提升，相對的軟體開發並沒有隨之加速。程式語言必須改變以支援如平行處理等概念。</p>
+<p>根據 Google 的部落格，Go 結合了 Python 等動態語言的開發速度，以及 C 或 C++ 等編譯語言的效能與安全性。Go 提供了表達式型別系統、快速編譯、高執行效能，以及有助簡化多緒程式設計與並行處理的內建語言功能。</p>
+<p>Go 程式語言從 2007 年 9 月開始發展，一開始是 Google 的 20% 專案，也就是 Google 工程師允許投入自由選擇的實驗專案。專案最後成了全時的任務項目。Google 以 BSD 授權釋出 Go 的原始程式碼，希望藉此形成參與該計畫的社群，讓該程式語言成為軟體開發的新選擇。</p>
+<p>Google 釋出的 Go 編譯器，包括針對 64 位元架構的 6g 與 x86 的 8g，執行速度飛快，此外，也有基於 GNU Compiler Collection (GCC) 的編譯器 Gccgo。基於 GCC 的編譯器雖然速度不快，但可以產生更有效率的程式碼。令人訝異的是，精通 Low-Level Virtual Machine (LLVM) 編譯器架構，並且在 Python 最佳化上大量運用 LLVM 的 Google，並沒有在 Go 編譯器上使用 LLVM。Google 工程師 Rob Pike 表示，Go 專案的初期階段考慮過 LLVM，但其編譯時期效能仍不足。</p>
+<p>Pike 表示，Go 語言與其現有實作已經相對成熟，但仍不適於在產品環境中使用。程式語言整套開發系統尚未完備，目前沒有 IDE 整合，標準程式庫仍過於單薄，也沒有足夠的實際程式碼範例。將 Go 開放給程式開發社群將有助加速上述部份的發展。</p>
+<p>Go 有許多令人印象深刻的特色。該語言編譯快速，可以在數秒內於單一機器上編譯大型程式。其設計可簡化運用到現今多核處理器之應用軟體的編寫。Go 支援並行執行，和並行程序間的原生通訊，以及完整的垃圾回收 (garbage collection) 功能。</p>
+<p>並行化是 Go 的設計重點，該語言引入了可並行執行的 goroutine 概念。任何函式在呼叫前加上 &ldquo;go&rdquo; 關鍵字，即可以 goroutine 形式執行。該語言提供了 &ldquo;channel&rdquo; 機制，讓 goroutine 彼此進行安全的資料傳輸。</p>
+<p>不像其他物件導向語言，Go 大幅簡化了型別結構，不提供物件繼承功能。開發者可以定義結構型別，然後建立操作該型別的方法。像 Java 一樣，Go 允許定義介面 (interface)，不過，開發者無法手動指定一個類別所實作的介面。Pike 表示，此一介面機制給予開發者鴨子型別 (duck-typing) 的部份彈性，但是進一步提供了編譯時期檢查的好處。</p>
+<p>除此之外，Go 的語法乍看與 C 相似，for 迴圈、函式、標準條件表示式等功能都存在，只不過或多或少加入了一些修改。例如支援簡單型別推斷 (type inference) 的變數指定簡略語法。Go 也擁有了匿名函式提供 closure 功能。似乎是受到 Python 的影響，而且 Python 又是 Google 偏好的程式語言之一，Go 語言也有 array slice 與 map 型別等類似 Python 的特色。</p>
+<p>作為語言的展示，Google 開發者運用 Go 寫了運行該專案網站的 Web 伺服器。除此之外，Go 尚未運用在 Google 其他產品中。就如 Google 所有產品一樣，Go 處於 beta 階段而不適用於產品使用。透過釋出 Go，Google 希望藉此拉攏圍繞 Go 語言的社群，並且該語言最終能作為該公司廣泛運用的 C++ 語言的替代方案。</p>
+<p><br />相關網址：<br />1.<a href="https://arstechnica.com/open-source/news/2009/11/go-new-open-source-programming-language-from-google.ars" target="_blank">Go: 來自 Google 的新開放源碼程式語言</a><br />2.<a href="https://www.pcmag.com/article2/0,2817,2355748,00.asp" target="_blank">Google Go: 開放源碼程式語言<br /></a>3.<a href="https://www.thinkdigit.com/Features/Go-Googles-new-open-source-programming-language_3695.html" target="_blank">Go: Google 的新開放源碼程式語言</a><br /></p>
+			<!-- Show relate article -->
+		<br><br><h4>You may be interested in the following articles:</h4><ul><li><a href='foss-news/9091.html'>Google 的 Gmail 關鍵字掃瞄可能違反竊聽法</a> - <span class='date-posted'>2013-10-23</span></li></ul>		<!-- end -->
+		<div class="article_note">
+		<!-- Add tags use metakey, and show OSSF Newsletter tag: OSSFNL+NUM-->
+		<br><br> <hr style='border: 1px dashed #D2DADB;'><b>OSSF Newsletter&nbsp;:</b>&nbsp;<a href='previous-issue%3Ftask=view&amp;id=556.html'>第 139 期 Vim - CPAN 模組搜尋之整合</a><br>				<!-- End -->
+					<br>
+					<b>Category: </b><a href="en/foss-news.html">				FOSS News					</a>				</div>
+			 <!-- AddThis Button BEGIN ID 3001 is the front page article -->
+     			<br><br>
+       <div class="addthis_toolbox addthis_default_style addthis_32x32_style">
+       <a class="addthis_button_preferred_1"></a>
+       <a class="addthis_button_preferred_2"></a>
+       <a class="addthis_button_preferred_3"></a>
+       <a class="addthis_button_preferred_4"></a>
+       <a class="addthis_button_compact"></a>
+       <a class="addthis_counter addthis_bubble_style"></a>
+       </div>
+       <script type="text/javascript">var addthis_config = {"data_track_clickback":true};</script>
+       <script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js#pubid=openfoundry"></script>
+       <!-- AddThis Button END -->
+     <br>
+		<div class="totop" ><a class="rt-totop" href="index.php%3Foption=com_content&amp;task=view&amp;id=2210&amp;Itemid=56%3Bisletter=1.html#" style="outline: medium none;">↑ Top</a></div>
+            <!-- AddThis Button END -->
+
+			</div>
+</div>
+
+		                            </div>
+									<div class="clear"></div>
+								</div>
+								<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+							</div>
+							</div>
+                                                    </div>
+                                            </div>
+                                <div class="rt-grid-3 rt-pull-9">
+                <div id="rt-sidebar-a">
+                                    <div class="square4">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<ul class="menu"><li id="current" class="active item56"><a href="en/previous-issue.html"><span>Previous Issue</span></a></li><li class="item55"><a href="en/about-newsletter.html"><span>About Newsletter</span></a></li></ul>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<ul class="menu"><li class="item115"><a href="en/foss-news.html"><span>FOSS News</span></a></li><li class="item141"><a href="en/case-job.html"><span>Case and Jobs</span></a></li></ul>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+        	                <div class="square1">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-title"><h2 class="title">Special</h2></div>
+						<div class="clear"></div>
+		                						<div class="module-content">
+		                	<ul class="menu"><li class="item37"><a href="en/tech-column.html"><span>Tech Column</span></a></li><li class="item40"><a href="en/foss-programs.html"><span>FOSS Programs</span></a></li><li class="item35"><a href="en/legal-column.html"><span>Legal Column</span></a></li><li class="item154"><a href="en/foss-forum.html"><span>FOSS Forum</span></a></li><li class="item162"><a href="en/enterprise-application.html"><span>Enterprise Application</span></a></li><li class="item44"><a href="en/foss-projects.html"><span>FOSS Projects</span></a></li></ul>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		                <div class="square1">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<p style="text-align: center;"><a href="news%3Fformat=feed&amp;type=rss" target="_black"><img src="images/M_images/news-rss-feed.png" border="0" /></a><br /><a href="https://www.openfoundry.org/rss-feed/Newsletter" target="_black"><img src="images/M_images/newsletter-rss-feed.png" border="0" /></a></p>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		
+                </div>
+            </div>
+
+                    <div class="clear"></div>
+                </div>
+            </div>
+																													</div>
+										<div id="rt-copyright">
+						<div class="rt-grid-12 rt-alpha rt-omega">
+                        <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<span class="nowrap">Open Source Software Foundry</span><span class="nowrap">‧</span><span class="nowrap"> </span><span class="nowrap">Best  Viewed with IE7.0 or Firefox2.0 above, 1024x768 Resolution. </span><strong>E-Mail</strong>：<a href="mailto:contact@openfoundry.org">contact@openfoundry.org</a> <br /><strong>Address</strong>：No.128, Sec.2, Academia Rd., Institute of Information Science, Academia Sinica, Nangang District, Taipei City 11529, Taiwan (R.O.C). <br /><a href="en/privacy-policy.html">Privacy Policy</a>. <a href="en/terms-of-use.html">Terms-of-use</a> <span style="position: relative; top: 8px; margin-top: -8px;"> <a href="about/8101.html"><img src="images/M_images/rss-feed-all.png" border="0" /></a></span>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+        	
+</div>
+						<div class="clear"></div>
+					</div>
+					<div class="rt-footer-bottom-wrap"><div class="rt-footer-bottom"><div class="rt-footer-bottom2"><div class="rt-footer-bottom3"></div></div></div></div>
+									</div></div></div>
+				<div class="rt-surround-bottom"><div class="rt-surround-bottom2"><div class="rt-surround-bottom3"></div></div></div>
+							</div>
+		</div>
+		<!--
+		<script id="aptureScript">
+						(function (){var a=document.createElement("script");a.defer="true";a.src="http://www.apture.com/js/apture.js?siteToken=vsJttrn";document.getElementsByTagName("head")[0].appendChild(a);})();
+     </script>
+-->
+
+<!-- Piwik -->
+<!-- 			<script type="text/javascript">
+			  var _paq = _paq || [];
+		  _paq.push(["trackPageView"]);
+		  _paq.push(["enableLinkTracking"]);
+
+		    (function() {
+			        var u=(("https:" == document.location.protocol) ? "https" : "https") + "://www.openfoundry.org/piwik/";
+				    _paq.push(["setTrackerUrl", u+"piwik.php"]);
+				    _paq.push(["setSiteId", "1"]);
+				        var d=document, g=d.createElement("script"), s=d.getElementsByTagName("script")[0]; g.type="text/javascript";
+				        g.defer=true; g.async=true; g.src=u+"piwik.js"; s.parentNode.insertBefore(g,s);
+					  })();
+		  </script> -->
+<!-- End Piwik Code -->
+	</body>
+</html>

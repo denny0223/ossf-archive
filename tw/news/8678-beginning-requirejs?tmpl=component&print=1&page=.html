@@ -1,0 +1,571 @@
+	<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+	<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="zh-tw" lang="zh-tw" >
+		<head>
+			  <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+  <meta name="robots" content="noindex, nofollow" />
+  <meta name="keywords" content="RequireJS, OSSFNL788" />
+  <meta name="title" content="初探 RequireJS" />
+  <meta name="description" content="一直以來，我們都習慣使用 script 這個 HTML 標籤來載入 JavaScript 檔案。這種方式有兩種缺點： 無法在 JavaScript 程式中直接管理相依性，必須在 HTML 中處理。 雖然目前新式瀏覽器已經能夠以非同步的方式來載入 js 檔案，但是舊型瀏覽器還是會有阻塞 (blocking) 問題。 終於 CommonJS 提出了 AMD 這個 API 規範，用以讓我們的" />
+  <meta name="generator" content="" />
+  <title>初探 RequireJS</title>
+  <link href="../../favicon.ico" rel="shortcut icon" type="image/x-icon" />
+  <link rel="stylesheet" href="../../components/com_gantry/css/gantry.css" type="text/css" />
+  <link rel="stylesheet" href="../../components/com_gantry/css/grid-12.css" type="text/css" />
+  <link rel="stylesheet" href="../../components/com_gantry/css/joomla.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/joomla.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/style1.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/light-body.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/demo-styles.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/template.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/typography.css" type="text/css" />
+  <style type="text/css">
+    <!--
+#rt-main-surround ul.menu li.active > a, #rt-main-surround ul.menu li.active > .separator, #rt-main-surround ul.menu li.active > .item, #rt-main-surround .square4 ul.menu li:hover > a, #rt-main-surround .square4 ul.menu li:hover > .item, #rt-main-surround .square4 ul.menu li:hover > .separator, .roktabs-links ul li.active span {color:#0088B5;}
+a, #rt-main-surround ul.menu a:hover, #rt-main-surround ul.menu .separator:hover, #rt-main-surround ul.menu .item:hover {color:#0088B5;}
+    -->
+  </style>
+  <script type="text/javascript" src="../../components/com_jcomments/js/jcomments-v2.1.js%3Fv=2"></script>
+  <script type="text/javascript" src="../../components/com_jcomments/libraries/joomlatune/ajax.js"></script>
+  <script type="text/javascript" src="../../media/system/js/mootools.js"></script>
+  <script type="text/javascript" src="../../media/system/js/caption.js"></script>
+  <script type="text/javascript" src="../../components/com_gantry/js/gantry-buildspans.js"></script>
+  <script type="text/javascript" src="../../components/com_gantry/js/gantry-inputs.js"></script>
+  <script type="text/javascript">
+
+			window.addEvent('domready', function() {
+				var modules = ['rt-block'];
+				var header = ['h3','h2','h1'];
+				GantryBuildSpans(modules, header);
+			});
+		InputsExclusion.push('.content_vote','#rt-popup')
+  </script>
+		</head>
+		<body  class="backgroundlevel-low backgroundstyle-style8 bodylevel-med bodystyle-light cssstyle-style1 logostyle-dark font-family-helvetica font-size-is-default menu-type-fusionmenu col12 ">
+			<div id="rt-main-surround">
+				<div class="rt-container">
+					<div class="rt-block">
+						<div id="rt-mainbody">
+					    	
+<div class="rt-joomla ">
+	<div class="rt-article">
+		
+				<div class="rt-headline"><h1 class="rt-article-title">初探 RequireJS</h1>		</div>
+		<div class="clear"></div>
+		
+		
+		
+				<div class="rt-articleinfo">
+						<div class="rt-article-icons">
+				<a href="8678-beginning-requirejs%3Ftmpl=component&amp;print=1&amp;page=.html#" onclick="window.print();return false;"><span class="icon print"></span></a>									<span class="icon printscreen">
+						<a href="8678-beginning-requirejs%3Ftmpl=component&amp;print=1&amp;page=.html#" onclick="window.print();return false;"><img src="../../images/M_images/printButton.png" alt="列印"  /></a>					</span>
+							</div>
+			
+			<span class="rt-date-posted">
+						建立日期			2012-04-20 13:26						&nbsp;&nbsp;&nbsp;&nbsp;						最近更新在 2012-10-04 22:47						</span>
+
+						<span class="rt-author">
+				作者是 Jace Ju			</span>
+				
+					</div>
+		
+		
+		<p>一直以來，我們都習慣使用 <code>script</code> 這個 HTML 標籤來載入 JavaScript 檔案。這種方式有兩種缺點：</p>
+<ul>
+<li>
+<p>無法在 JavaScript 程式中直接管理相依性，必須在 HTML 中處理。</p>
+</li>
+<li>
+<p>雖然目前新式瀏覽器已經能夠以非同步的方式來載入 js 檔案，但是舊型瀏覽器還是會有阻塞 (blocking) 問題。</p>
+</li>
+</ul>
+<p>終於 <a href="https://www.commonjs.org/">CommonJS</a> 提出了 <a href="https://wiki.commonjs.org/wiki/Modules/AsynchronousDefinition">AMD</a> 這個 API 規範，用以讓我們的 JavaScript 程式可以模組化，並同時解決 js 檔案載入時的阻塞問題。</p>
+<p>目前已經有許多實作 AMD 規範的 JavaScript Library 了，而 <a href="https://requirejs.org/">RequireJS</a> 則是目前討論最多，應用最廣的其中一個實作。</p>
+<p>以下是我在研究 RequireJS 時的筆記，若有謬誤還請大家指正。</p>
+<h2>起手式</h2>
+<p>先來看看我們的程式目錄架構：</p>
+<pre><code><project></project>
+├── index.html
+├── js
+│&nbsp;&nbsp; ├── app.js
+│&nbsp;&nbsp; └── main.js
+└── lib
+    ├── backbone
+    │&nbsp;&nbsp; ├── backbone-min.js
+    │&nbsp;&nbsp; └── wrapper.js
+    ├── jquery
+    │&nbsp;&nbsp; ├── jquery-min.js
+    │&nbsp;&nbsp; └── wrapper.js
+    ├── underscore
+    │&nbsp;&nbsp; ├── underscore-min.js
+    │&nbsp;&nbsp; └── wrapper.js
+    └── requirejs
+        ├── order.js
+        └── require.js
+</code></pre>
+<p>其中 index.html 的內容如下：</p>
+<span>index.html </span>
+<table>
+<tbody>
+<tr>
+<td>
+<pre>1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+</pre>
+</td>
+<td>
+<pre>＜!doctype html＞
+＜html lang="en"＞
+＜head＞
+  ＜meta charset="utf-8" /＞
+  ＜title＞Beginning Require.JS＜/title＞
+  ＜script data-main="js/main" src="/lib/requirejs/require.js"＞＜/script＞
+＜/head＞
+＜body＞
+＜/body＞
+＜/html＞
+</pre>
+</td>
+</tr>
+</tbody>
+</table>
+<p>你會發現，我們只需要用一個 script 標籤來載入 <code>lib/requirejs/require.js</code> 即可，剩下的 js 檔案都可以讓 RequireJS 來幫我們載入。</p>
+<p>可是 RequireJS 怎麼知道要載入哪些檔案呢？注意 script 標籤上的 <code>data-main</code> 屬性，它指向了 <code>js/main.js</code> (可以將 js 副檔名省略) 。在 js/main.js 中，我們就可以指定我們要載入的模組：</p>
+<span>js/main.js </span>
+<table>
+<tbody>
+<tr>
+<td>
+<pre>1
+2
+3
+4
+5
+</pre>
+</td>
+<td>
+<pre>require([
+  '../lib/jquery/jquery-min'
+], function () {
+  console.log($);
+});
+</pre>
+</td>
+</tr>
+</tbody>
+</table>
+<p><strong>所以一切都是從 <code>js/main.js</code> 開始執行。</strong></p>
+<p>在 <code>js/main.js</code> 裡，我們用到了 <code>require</code> 這個 RequireJS 中最主要的 API ，它的基本用法如下：</p>
+<table>
+<tbody>
+<tr>
+<td>
+<pre>1
+</pre>
+</td>
+<td>
+<pre><code class="javascript"><span class="line"><span class="nx">require</span><span class="p">(</span><span class="nx">dependencies</span><span class="p">,</span> <span class="nx">callback</span><span class="p">);</span> </span></code></pre>
+</td>
+</tr>
+</tbody>
+</table>
+<p>其中 <code>dependencies</code> 的格式必須為陣列， <code>callback</code> 則為函式。</p>
+<p><code>dependencies</code> 表示我們要載入的 js ，而其路徑則是相對於 <code>js/main.js</code> ，而且一樣不需要寫副檔名。</p>
+<p>因此在 <code>dependencies</code> 中，我們就可以將所有會用到的 js 載入，然後在 <code>callback</code> 中撰寫我們真正要處理的程式邏輯。</p>
+<h2>模組化</h2>
+<p>當然把所有的程式邏輯都寫在 <code>js/main.js</code> 的 <code>callback</code> 裡面是沒問題的，但那就沒辦法達到我們想要的模組化了。</p>
+<p>而 RequireJS 也實作 AMD 所定義的 <code>define</code> API 方法，所以我們就可以用它來實現程式的模組化。 define 的 API 如下：</p>
+<table>
+<tbody>
+<tr>
+<td>
+<pre>1</pre>
+</td>
+<td>
+<pre>define(id?, dependencies?, factory);</pre>
+</td>
+</tr>
+</tbody>
+</table>
+<p>其中 <code>id</code> 格式為字串，代表模組的名稱，可以不寫。如果要寫的話，就必須是相對於 <code>js/main.js</code> 的檔案路徑，但不用加上 <code>js</code> 副檔名，例如 <code>../lib/foo</code> 或 <code>./js/bar</code> 。</p>
+<p>而 <code>dependencies</code> 格式為陣列，作用與 <code>require</code> 中的 <code>dependencies</code> 相同。一般來說如果我們在 <code>js/main.js</code> 中定義好相依性後，這裡可以不需要特別指定。</p>
+<p>最後的 <code>factory</code> 則為一個工廠方法，它必須回傳一個物件，也就是我們的模組。</p>
+<p>接著我們把原來 <code>require</code> API 中的 <code>callback</code> 改成模組，並將它放到 <code>js/app.js</code> 中：</p>
+<span>js/app.js </span>
+<table>
+<tbody>
+<tr>
+<td>
+<pre>1
+2
+3
+4
+5
+6
+7
+</pre>
+</td>
+<td>
+<pre>define(function () {
+  return {
+    initialize: function () {
+      console.log($);
+    }
+  }
+});
+</pre>
+</td>
+</tr>
+</tbody>
+</table>
+<p><code>js/app.js</code> 會回傳一個包含 <code>initialize</code> 方法的物件模組，而這個方法就是我們前面的 <code>callback</code> 。注意這個例子裡並沒有設定模組的 <code>id</code> 。</p>
+<p>接下來我們把 <code>js/app.js</code> 加到 <code>require</code> 的第一個參數中，特別注意這裡的 <code>app</code> 是指 <code>js/app.js</code> ，而不是模組名稱。</p>
+<span>js/main.js </span>
+<table>
+<tbody>
+<tr>
+<td>
+<pre>1
+2
+3
+4
+5
+6
+</pre>
+</td>
+<td>
+<pre>require([
+  'app',
+  '../lib/jquery/jquery-min'
+], function (App) {
+  App.initialize();
+});
+</pre>
+</td>
+</tr>
+</tbody>
+</table>
+<p>在 <code>callback</code> 的第一個參數 <code>App</code> 會對應到 <code>js/app.js</code> 中所回傳的物件，這意謂著我們可以為該物件指定新的 namespace 。</p>
+<p>到這裡其實可以應付很多基本的應用了，不過如果當 library 間有相依性問題時，這樣的寫法就可能會出錯了。</p>
+<h2>順序問題</h2>
+<p>因為使用非同步的載入方式，所以用 <code>require</code> 載入套件時，是有可能會造成相依性上的問題。 所幸 RequireJS 提供了一個 <code>order</code> plugin ，讓我們可以依序載入正確的套件。</p>
+<p>以 Backbone 為例，我們需要依序載入 jQuery 、 underscore 及 Backbone 等三個套件，方法如下：</p>
+<span>js/main.js </span>
+<table>
+<tbody>
+<tr>
+<td>
+<pre>1
+2
+3
+4
+5
+6
+7
+8
+</pre>
+</td>
+<td>
+<pre>require([
+  'app',
+  '../lib/requirejs/order!../lib/jquery/jquery-min',
+  '../lib/requirejs/order!../lib/underscore/underscore-min',
+  '../lib/requirejs/order!../lib/backbone/backbone-min'
+], function (App) {
+  App.initialize();
+});
+</pre>
+</td>
+</tr>
+</tbody>
+</table>
+<p>如上面的範例所示，在每一行載入 js 的字串中，我們先載入 plugin ，然後利用 <code>!</code> 符號來將 library 的位置傳給 plugin 。</p>
+<p>其他有用的 plugin ，可以在官方網站的 <a href="https://requirejs.org/docs/download.html#plugins">Plugins</a> 頁找到。</p>
+<h2>路徑別名</h2>
+<p>不過每次都要輸入這麼長的路徑實在是很麻煩，還好 RequireJS 也提供了 <code>paths</code> 讓我們設定路徑的別名，就不需要輸入這麼多字：</p>
+<span>js/main.js </span>
+<table>
+<tbody>
+<tr>
+<td>
+<pre>1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+</pre>
+</td>
+<td>
+<pre>require({
+  paths: {
+    "order": "../lib/requirejs/order",
+    "lib": "../lib"
+  }
+});
+
+require([
+  'app',
+  'order!lib/jquery/jquery-min',
+  'order!lib/underscore/underscore-min',
+  'order!lib/backbone/backbone-min'
+], function (App) {
+  App.initialize();
+});
+</pre>
+</td>
+</tr>
+</tbody>
+</table>
+<p>要特別注意的是，這裡設定的別名，也會影響到其他模組裡所使用的 <code>define</code> API 。</p>
+<p><code>require</code> 還有其他設定，請參考官方文件的 <a href="https://requirejs.org/docs/api.html#config">Configuration Options</a> 。</p>
+<h2>Namespace</h2>
+<p>前面提到 <code>require</code> API 可以讓我們對載入的 js 檔案所回傳的模組物件做 namespace 對應，也就是上述例子的 <code>App</code> 。事實上我們可以針對每個模組都設定一個 namespace ，例如：</p>
+<span>js/main.js </span>
+<table>
+<tbody>
+<tr>
+<td>
+<pre>1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+</pre>
+</td>
+<td>
+<pre>require([
+  '../lib/a',
+  '../lib/b',
+  '../lib/c',
+  '../lib/d'
+], function (moduleA, moduleB, moduleC) {
+  moduleA.doSomething();
+  moduleB.doSomething();
+  moduleC.doSomething();
+  namespaceD.doSomething();
+});
+</pre>
+</td>
+</tr>
+</tbody>
+</table>
+<p>可以看到 <code>'../lib/a'</code> 這個模組對應到 <code>moduleA</code> 這個 namespace ，<code>'../lib/b'</code> 則對應到 <code>moduleB</code> ，以此類推。</p>
+<p>但是 <code>namespaceD</code> 並沒有在 <code>require</code> 方法的 <code>callback</code> 參數中，那為什麼我們可以取用呢？</p>
+<p>回到一開始我們用 <code>require</code> 載入第三方套件的方式，其實可以看到我們是直接利用該套件定義好的 namespace ，例如 jQuery 的 <code>$</code> 符號，或是 underscore.js 的 <code>_</code> 符號。</p>
+<p>而我們並沒有再為這些套件指定新的 namespace ，是因為這些 namespace 已經被綁在 global 變數裡了 (在瀏覽器環境下是指 window 變數) ，所以我們可以直接取用。</p>
+<p>所以 <code>namespaceD</code> 其實就是 <code>lib/d.js</code> 裡已經定義好的，例如：</p>
+<span>lib/d.js </span>
+<table>
+<tbody>
+<tr>
+<td>
+<pre>1
+2
+3
+4
+5
+6
+7
+8
+</pre>
+</td>
+<td>
+<pre>define(function () {
+  var namespaceD = window.namespaceD = {
+    doSomething: function () {
+      console.log('namespaceD.doSomething()');
+    }
+  };
+  return namespaceD;
+});
+</pre>
+</td>
+</tr>
+</tbody>
+</table>
+<p>瞭解這個回到我們前面所提到的 Backbone.js 範例，有些文章的例子會教大家這麼用：</p>
+<span>js/main.js </span>
+<table>
+<tbody>
+<tr>
+<td>
+<pre>1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+</pre>
+</td>
+<td>
+<pre>require([
+  'order!lib/jquery/jquery-min',
+  'order!lib/underscore/underscore-min',
+  'order!lib/backbone/backbone-min',
+  'order!app'
+], function ($, _, Backbone, App) {
+  console.log($);
+  console.log(_);
+  console.log(Backbone);
+  console.log(App);
+});
+</pre>
+</td>
+</tr>
+</tbody>
+</table>
+<p>如果各位是使用 Underscore.js 及 Backbone.js 的官方版本時，這樣做是錯誤的，你會發現 <code>callback</code> 裡的 <code>_</code>, <code>Backbone</code> 都會是 null 值。為什麼呢？主要是因為這兩個套件目前不支援 AMD 架構，所以無法正確回傳對應的 Underscore.js 及 Backbone.js 物件回來。所以很多人在透過 RequireJS 使用這兩個套件時，就會在這裡卡關。</p>
+<p>最簡單的方式就是不要再為這些第三方套件設定一個 namespace ，也就是一開始為大家介紹的用法。</p>
+<p>另一種方式就是直接使用 RequireJS 所 fork 出來的 <a href="https://github.com/amdjs/underscore">Underscore.js</a> 及 <a href="https://github.com/amdjs/backbone">Backbone.js</a> 的 AMD 版本。</p>
+<p>還有一種方法是為這些套件的官方版本定義一個 <code>wrapper</code> ，以 Underscore.js 為例：</p>
+<span>lib/underscore/wrapper.js </span>
+<table>
+<tbody>
+<tr>
+<td>
+<pre>1
+2
+3
+4
+5
+</pre>
+</td>
+<td>
+<pre>define([
+  'lib/underscore/underscore-min'
+], function(){
+  return _.noConflict();
+});
+</pre>
+</td>
+</tr>
+</tbody>
+</table>
+<p>這樣在 <code>js/main.js</code> 裡就可以重新使用 Underscore.js 的 namespace 了，例如：</p>
+<span>js/main.js </span>
+<table>
+<tbody>
+<tr>
+<td>
+<pre>1
+2
+3
+4
+5
+</pre>
+</td>
+<td>
+<pre>require([
+  'order!lib/underscore/wrapper'
+], function (_) {
+  console.log(_);
+})
+</pre>
+</td>
+</tr>
+</tbody>
+</table>
+<p>不過因為非同步載入的關係，要使用 <code>wrapper</code> 方法處理套件相依性時，其流程就稍微複雜些了，大家可以參考 <a href="https://backbonetutorials.com/organizing-backbone-using-modules/">Organizing your application using Modules (require.js)</a> 一文的介紹。</p>
+<h2>編譯</h2>
+<p>當我們把 JavaScript 拆成這麼多模組檔案後，那麼不就會讓 HTTP Request 變多了嗎？有沒有什麼方法可以幫我們把這些檔案再組合成為一支檔案呢？</p>
+<p>RequireJS 就提供了一個好用的工具，叫做 <code>r.js</code> 。它必須透過 node.js 的套件管理系統來安裝，也就是 <code>npm</code> ；安裝方法如下：</p>
+<pre><code>npm -g install requirejs
+</code></pre>
+<p>若無錯誤的話，應該會出現以下畫面：</p>
+<pre><code>npm http GET https://registry.npmjs.org/requirejs
+npm http 200 https://registry.npmjs.org/requirejs
+npm http GET https://registry.npmjs.org/requirejs/-/requirejs-1.0.7.tgz
+npm http 200 https://registry.npmjs.org/requirejs/-/requirejs-1.0.7.tgz
+/usr/local/bin/r.js -&gt; /usr/local/lib/node_modules/requirejs/bin/r.js
+requirejs@1.0.7 /usr/local/lib/node_modules/requirejs
+</code></pre>
+<p><code>r.js</code> 會幫我們處理以 <code>require</code> 或 <code>define</code> 所定義的模組，再參照其相依性把所有檔案合併為單一的 JavaScript 檔案。用法如下：</p>
+<pre><code>r.js -o name=js/main out=js/main-built.js baseUrl=. paths.order="lib/requirejs/order"
+</code></pre>
+<p>其中 <code>-o</code> 為最佳化； <code>name</code> 則為要處理的 JavaScript 檔案； <code>out</code> 則是輸出的檔案名稱； <code>baseUrl</code> 為指定 <code>r.js</code> 在處理相依性時所要參考的相對路徑； <code>paths.order</code> 是路徑別名，但不相對於 <code>js/main.js</code> ，而是相對於 <code>baseUrl</code> 。</p>
+<p>處理完成後，我們就可以直接改用以下方式載入：</p>
+<span>index.html </span>
+<table>
+<tbody>
+<tr>
+<td>
+<pre>1
+</pre>
+</td>
+<td>
+<pre><code class="html"><span class="line"><span class="nt">＜script </span><span class="na">data-main=</span><span class="s">"js/main-built"</span> <span class="na">src=</span><span class="s">"lib/requirejs/require.js"＞＜</span><span class="nt">/script＞</span></span></code></pre>
+</td>
+</tr>
+</tbody>
+</table>
+<p>當然聰明如你，應該想到該怎麼讓開發和上線環境使用不同的 JavaScript 檔案了吧？</p>
+<h2>心得</h2>
+<p>以往在寫 JavaScript 時，雖然都會儘可能模組化，但變數的管理還有程式拆解不易的狀況，都是自己在維護 JavaScript 程式時很大的痛處。</p>
+<p>在瞭解 RequireJS 的強大後，我相信以這樣的模組化方式再搭配 Backbone.js 的架構，一定可以讓系統在開發與維護上更為有組織性。</p>
+<h2>參考</h2>
+<ul>
+<li><a target="_blank" href="https://backbonetutorials.com/organizing-backbone-using-modules/">Organizing your application using Modules (require.js)</a></li>
+<li><a target="_blank" href="https://blog.csdn.net/dojotoolkit/article/details/6076668">AMD 規範：簡單而優雅的動態載入 JavaScript 代碼</a></li>
+<li><a target="_blank" href="https://www.ruanyifeng.com/blog/2011/10/javascript_loading.html">Javascript 文件加載： LABjs 和 RequireJS</a></li>
+</ul>
+			<!-- Show relate article -->
+				<!-- end -->
+		<div class="article_note">
+		<!-- Add tags use metakey, and show OSSF Newsletter tag: OSSFNL+NUM-->
+		<br><br> <hr style='border: 1px dashed #D2DADB;'><b>自由軟體鑄造場電子報&nbsp;:</b>&nbsp;<a href='../../previous-issue%3Ftask=view&amp;id=788.html'>第 194 期 初探 RequireJS</a><br><b>標籤:</b>&nbsp;<a href='../../index.php%3Foption=com_search&amp;Itemid=58&amp;searchphrase=exact_meta&amp;ordering=newest&amp;searchword=RequireJS.html'>RequireJS</a>,&nbsp;&nbsp;				<!-- End -->
+					<br>
+					<b>分類: </b><a href="../tech-column.html">				技術專欄					</a>				</div>
+			 <!-- AddThis Button BEGIN ID 3001 is the front page article -->
+     			<br><br>
+       <div class="addthis_toolbox addthis_default_style addthis_32x32_style">
+       <a class="addthis_button_preferred_1"></a>
+       <a class="addthis_button_preferred_2"></a>
+       <a class="addthis_button_preferred_3"></a>
+       <a class="addthis_button_preferred_4"></a>
+       <a class="addthis_button_compact"></a>
+       <a class="addthis_counter addthis_bubble_style"></a>
+       </div>
+       <script type="text/javascript">var addthis_config = {"data_track_clickback":true};</script>
+       <script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js#pubid=openfoundry"></script>
+       <!-- AddThis Button END -->
+     <br>
+		<div class="totop" ><a class="rt-totop" href="8678-beginning-requirejs%3Ftmpl=component&amp;print=1&amp;page=.html#" style="outline: medium none;">↑ Top</a></div>
+            <!-- AddThis Button END -->
+
+			</div>
+</div>
+
+						</div>
+					</div>
+				</div>
+			</div>
+		</body>
+	</html>

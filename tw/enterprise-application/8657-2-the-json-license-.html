@@ -1,0 +1,449 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="zh-tw" lang="zh-tw" >
+<head>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<link rel="shortcut icon" href="../../images/favicon.ico" />
+	  <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+  <meta name="robots" content="index, follow" />
+  <meta name="keywords" content="json, 授權" />
+  <meta name="title" content="授權流言終結者#2︰The JSON License 的分析與探討" />
+  <meta name="description" content="前言 JSON，英文全名為 JavaScript Object Notation，是一種輕量級的資料交換格式。 這裡指的輕量級，通常是與 XML 或 SOAP (Simple Object Access Protocol) 等標準化的資料交換格式比較。因為 JSON 相較於 XML 或 SOAP 擁有易於讓人閱讀及編寫的特性，而且也容易讓電腦程式解析與執行。同時，JSON 資料交換格式屬於" />
+  <meta name="generator" content="" />
+  <title>授權流言終結者#2︰The JSON License 的分析與探討 - OpenFoundry</title>
+  <link href="../../favicon.ico" rel="shortcut icon" type="image/x-icon" />
+  <link rel="stylesheet" href="../../components/com_gantry/css/gantry.css" type="text/css" />
+  <link rel="stylesheet" href="../../components/com_gantry/css/grid-12.css" type="text/css" />
+  <link rel="stylesheet" href="../../components/com_gantry/css/joomla.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/joomla.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/style1.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/light-body.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/demo-styles.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/template.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/typography.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/fusionmenu.css" type="text/css" />
+  <style type="text/css">
+    <!--
+#rt-main-surround ul.menu li.active > a, #rt-main-surround ul.menu li.active > .separator, #rt-main-surround ul.menu li.active > .item, #rt-main-surround .square4 ul.menu li:hover > a, #rt-main-surround .square4 ul.menu li:hover > .item, #rt-main-surround .square4 ul.menu li:hover > .separator, .roktabs-links ul li.active span {color:#0088B5;}
+a, #rt-main-surround ul.menu a:hover, #rt-main-surround ul.menu .separator:hover, #rt-main-surround ul.menu .item:hover {color:#0088B5;}
+    -->
+  </style>
+  <script type="text/javascript" src="../../components/com_jcomments/js/jcomments-v2.1.js%3Fv=2"></script>
+  <script type="text/javascript" src="../../components/com_jcomments/libraries/joomlatune/ajax.js"></script>
+  <script type="text/javascript" src="../../media/system/js/mootools.js"></script>
+  <script type="text/javascript" src="../../media/system/js/caption.js"></script>
+  <script type="text/javascript" src="../../components/com_gantry/js/gantry-buildspans.js"></script>
+  <script type="text/javascript" src="../../components/com_gantry/js/gantry-inputs.js"></script>
+  <script type="text/javascript" src="../../templates/rt_quantive_j15/js/jquery.cookie.js"></script>
+  <script type="text/javascript" src="../../modules/mod_roknavmenu/themes/fusion/js/fusion.js"></script>
+  <script type="text/javascript" src="../../modules/mod_ofssologin/js/ofssologin.js"></script>
+  <script type="text/javascript">
+
+			window.addEvent('domready', function() {
+				var modules = ['rt-block'];
+				var header = ['h3','h2','h1'];
+				GantryBuildSpans(modules, header);
+			});
+		InputsExclusion.push('.content_vote','#rt-popup')
+		        window.addEvent('load', function() {
+					new Fusion('ul.menutop', {
+						pill: 0,
+						effect: 'slide and fade',
+						opacity: 1,
+						hideDelay: 500,
+						centered: 0,
+						tweakInitial: {'x': -2, 'y': 0},
+        				tweakSubsequent: {'x': 0, 'y': -14},
+						menuFx: {duration: 200, transition: Fx.Transitions.Sine.easeOut},
+						pillFx: {duration: 400, transition: Fx.Transitions.Back.easeOut}
+					});
+	            });
+  </script>
+<!-- <script type="text/javascript" src="/sso/javascripts/langsync.js"></script> -->
+<!-- <script src="/templates/rt_quantive_j15/js/ossf.js"></script> -->
+<script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-4136519-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
+</head>
+	<body  class="backgroundlevel-low backgroundstyle-style8 bodylevel-med bodystyle-light cssstyle-style1 logostyle-dark font-family-helvetica font-size-is-default menu-type-fusionmenu col12 ">
+		<div id="rt-main-background">
+			<div class="rt-container">
+																<div id="rt-header">
+					<div class="rt-grid-7 rt-alpha">
+    			<div class="rt-block">
+    	    	<a href="../../index.html" id="rt-logo"></a>
+    		</div>
+	    
+</div>
+<div class="rt-grid-5 rt-omega">
+                    <div class="square9">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<div class="ofssologin_square9"><a href="../../index.html">登入</a>&nbsp;&nbsp|&nbsp;&nbsp;<span><a href="../../en/enterprise-application/8657-2-the-json-license-.html" ><span lang="en" xml:lang="en">English</span></a></li></ul></span><!--Joom!fish V2.0.4 (Lightning)-->
+<!-- &copy; 2003-2009 Think Network, released under the GPL. -->
+<!-- More information: at http://www.joomfish.net -->
+<div class="ofssologin_search_square9">
+  <form id="of_search" action="https://www.openfoundry.org/of/openfoundry/search" method="get" onsubmit="of_search(); return false;">
+    <select id="of_search_type">
+      <option value="Projects"> 專案 </option>
+      <option value="Content"> 文章 </option>
+      <option value="People"> 人才 </option>
+    </select>
+    <input id="query" name="query" id="mod_search_searchword" maxlength="50" alt="search" class="inputbox" type="text" size="28" value="search..."  onblur="if(this.value=='') this.value='search...';" onfocus="if(this.value=='search...') this.value='';" />
+    <input type="hidden" name="commit" value="search" />
+  </form>
+</div></div>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		
+</div>
+					<div class="clear"></div>
+				</div>
+																<div id="rt-navigation"><div id="rt-navigation2"><div id="rt-navigation3">
+					
+<div class="nopill">
+	<ul class="menutop level1 " >
+						<li class="item1 root" >
+					<a class="orphan item bullet" href="../../index.html"  >
+				<span>
+			    				首頁				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item32 root" >
+					<a class="orphan item bullet" href="../../archived.html"  >
+				<span>
+			    				專案				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item186 root" >
+					<a class="orphan item bullet" href="../community.html"  >
+				<span>
+			    				Who&#039;s Who				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item4 root" >
+					<a class="orphan item bullet" href="../news.html"  >
+				<span>
+			    				新聞				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item5 root" >
+					<a class="orphan item bullet" href="../law-and-licensing.html"  >
+				<span>
+			    				法律源地				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item3 root" >
+					<a class="orphan item bullet" href="../activities.html"  >
+				<span>
+			    				活動				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item2 root" >
+					<a class="orphan item bullet" href="../resourcecatalog%3FName=Value.html"  >
+				<span>
+			    				資源表列				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item45 root" >
+					<a class="orphan item bullet" href="../about.html"  >
+				<span>
+			    				關於				   
+				</span>
+			</a>
+			
+			
+	</li>	
+				</ul>
+</div>
+
+				    <div class="clear"></div>
+				</div></div></div>
+								<div class="rt-surround"><div class="rt-surround2"><div class="rt-surround3">
+										<div id="rt-showcase-section">
+												<div id="rt-showcase">
+							<div class="rt-grid-12 rt-alpha rt-omega">
+    		<div class="clear"></div>
+		
+		
+                <div class="close-note">
+                    <div class="rt-block">
+               					<div class="module-content">
+                	<div style="font-size:medium; background-image:linear-gradient(120deg,#159957,#4298b2);color:white;padding:20px;margin:-10px -18px;">感謝您對「自由軟體鑄造場」的支持與愛護，十多年來「自由軟體鑄造場」受中央研究院支持，並在資訊科學研究所以及資訊科技創新研究中心執行，現已完成階段性的任務。 本網站預計持續維運至 2021年底，網站內容基本上不會再更動。<br />也紀念我們永遠的朋友 李士傑先生（Shih-Chieh Ilya Li）。</div>				</div>
+            </div>
+                </div>
+		
+</div>
+							<div class="clear"></div>
+						</div>
+																	</div>
+															<div id="rt-main-surround">
+												<div id="rt-breadcrumbs">
+								<div class="rt-breadcrumb-surround">
+		<a href="../../index.html" id="breadcrumbs-home"></a>
+		<span class="breadcrumbs pathway">
+<a href="../enterprise-application.html" class="pathway">企業應用</a> <img src="../../templates/rt_quantive_j15/images/arrow.png" alt=""  /> <span class="no-link">授權流言終結者#2︰The JSON License 的分析與探討</span></span>
+	</div>
+	
+							<div class="clear"></div>
+						</div>
+																							              <div id="rt-main" class="sa3-mb9">
+                <div class="rt-main-inner">
+                    <div class="rt-grid-9 rt-push-3">
+                                                <div class="rt-block">
+                            							<div class="square1">
+							<div class="rt-module-surround">
+								<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+								<div class="rt-module-inner">
+		                            <div id="rt-mainbody">
+		                                
+<div class="rt-joomla ">
+	<div class="rt-article">
+		
+				<div class="rt-headline"><h1 class="rt-article-title">授權流言終結者#2︰The JSON License 的分析與探討</h1>		</div>
+		<div class="clear"></div>
+		
+		
+		
+				<div class="rt-articleinfo">
+						<div class="rt-article-icons">
+								<a href="8657-2-the-json-license-%3Ftmpl=component&amp;print=1&amp;layout=default&amp;page=.html" title="列印" onclick="window.open(this.href,'win2','status=no,toolbar=no,scrollbars=yes,titlebar=no,menubar=no,resizable=yes,width=640,height=480,directories=no,location=no'); return false;" rel="nofollow"><span class="icon print"></span></a>																</div>
+			
+			<span class="rt-date-posted">
+						建立日期			2012-03-29 14:55						&nbsp;&nbsp;&nbsp;&nbsp;						最近更新在 2012-07-06 14:13						</span>
+
+						<span class="rt-author">
+				作者是 義峰 曾			</span>
+				
+					</div>
+		
+		
+		<h2>前言</h2>
+<p>JSON，英文全名為 JavaScript Object Notation，是一種輕量級的資料交換格式。</p>
+<p>這裡指的輕量級，通常是與 XML 或 SOAP (Simple Object Access Protocol) 等標準化的資料交換格式比較。因為 JSON 相較於 XML 或 SOAP 擁有易於讓人閱讀及編寫的特性，而且也容易讓電腦程式解析與執行。同時，JSON 資料交換格式屬於 1999 年 JavaScript 程式語言 Standard ECMA-262 第三版中的一個子集合，是標準的一部分。</p>
+
+<p>接下來，本篇文章將探討「The JSON License」常見的誤解，以及面對或使用此授權時需要特別注意的事項。</p>
+<h2>常見的誤解及探討</h2>
+<p>1. 「The JSON License」指的不是實作 JSON 規格的授權</p>
+<p>目前遇過最多的問題是誤將「The JSON License」與「JSON 規格」(JSON specification) 之間劃上了等號。原因出自於 <a href="https://www.json.org/" target="_blank">JSON.org 官方網站</a>針對「The JSON License」有一專屬的說明頁面，如下圖，</p>
+<p><a href="../../images/120410/2012-03-16_thejsonlicense_at_jsonorg.png" target="_blank"><img src="../../images/120410/2012-03-16_thejsonlicense_at_jsonorg.png" border="0" width="500" /></a></p>
+<p>▲ 圖1: JSON.org 官方網站上的「The JSON License」聲明 (<a href="https://www.json.org/license.html" target="_blank">https://www.json.org/license.html</a>)</p>
+<p>因為該頁面標示為「The JSON License」又同時刊於 JSON.org 官方網站上，使得很多人誤以為這是「JSON 規格」的授權聲明。</p>
+<p>當實作一個功能時，必須先區分何謂「方法」及「目的」。舉個例子，當我們利用 <a href="https://code.google.com/p/google-gson/" target="_blank">google-gson</a> 函式庫 (提供 Java 程式語言處理 JSON 格式的函式庫) 實作出標準 JSON 規格的應用時，此時的 JSON 規格即為「目的」，而 google-gson 函式庫則是為了該「目的」而實踐的其中一個「方法」。</p>
+<p>回到問題本身，上述 JSON.org 官方網站的授權聲明，指的不是「JSON 規格」本身，而僅是「The JSON License」的授權全文內容。所以當我們實作「JSON 規格」時，並不需要遵守「The JSON License」的規定，而是唯有使用任何依據「The JSON License」聲明散佈的程式時才有遵守的權利及義務。</p>
+<p>簡言之，當我們使用 google-gson 函式庫來實作 JSON 時，只需要遵守 google-gson 函式庫的授權要求，而不是因為實作 JSON 而需符合「The JSON License」的規定。</p>
+<p>2. 不是所有 JSON.org 官方網站列出的函式庫都必須是「The JSON License」</p>
+<p>雖然 JSON.org 官方網站上有標明著「<a href="https://www.json.org/license.html" target="_blank">The JSON License</a>」的頁面，但並不表示所有列在官方網站上的 JSON 函式庫都是使用「The JSON License」的授權條款。</p>
+<p><a href="../../images/120410/2012-03-16_json_libraries_at_jsonorg.png" target="_blank"><img src="../../images/120410/2012-03-16_json_libraries_at_jsonorg.png" border="0" width="500" /></a></p>
+<p>▲ 圖2: JSON.org 官方網站上所列的 JSON 函式庫列表 (<a href="https://www.json.org/" target="_blank">https://www.json.org/</a>)</p>
+<p>例如其中的 google-gson 使用的是 <a href="https://www.apache.org/licenses/LICENSE-2.0" target="_blank">Apache License 2.0</a>，而不是「The JSON License」的授權條款。我們可以從 google-gson 專案的首頁中可以查證，</p>
+<p><a href="../../images/120410/2012-03-16_google-gson_license.png" target="_blank"><img src="../../images/120410/2012-03-16_google-gson_license.png" border="0" /></a></p>
+<p>▲ 圖3: Google Gson 專案授權聲明 (<a href="https://code.google.com/p/google-gson/" target="_blank">https://code.google.com/p/google-gson/</a>)</p>
+<p>因此在使用官方列表中的 JSON 函式庫時，仍然需要視各別函式庫的授權條款而定，並不是所有 JSON.org 官方網站列出的函式庫都必須依據「The JSON License」。</p>
+<p>3. 「The JSON License」非自由軟體基金會／開放源碼促進會所定義的「自由／開放源碼軟體」授權條款「<a href="https://www.fsf.org/" target="_blank">自由軟體基金會</a>」(Free Software Foundation) 提供「自由軟體授權條款」的定義及規範之服務，而「<a href="https://www.opensource.org/" target="_blank">開放源碼促進會</a>」(Open Source Initiative) 則提供審核「開放源碼授權條款」的服務。但是「The JSON License」都不符合兩組織所定義的「自由軟體授權條款」及「開放源碼授權條款」之要求。主要原因是「The JSON License」在其條款內容中有「For Good Not Evil」的要求，如下圖紅色區塊所示，</p>
+<p><a href="../../images/120410/2012-03-16_thejsonlicense_notevil_statement.png" target="_blank"><img src="../../images/120410/2012-03-16_thejsonlicense_notevil_statement.png" border="0" width="500" /></a></p>
+<p>▲ 圖4: 「The JSON License」的「For Good Not Evil」要求 (<a href="https://www.json.org/license.html" target="_blank">https://www.json.org/license.html</a>)</p>
+<p>「The JSON License」全文其實是衍生自「<a href="https://en.wikipedia.org/wiki/MIT_License" target="_blank">MIT License</a>」，不同之處在於「The JSON License」額外添增了下列的授權聲明，</p>
+<p>The Software shall be used for Good, not Evil.</p>
+<p>這中文意指「此軟體僅能行善，不得從惡」。意謂著任何使用此軟體（以「The JSON License」為其授權條款）的人，僅能利用該軟體從事任何為善之目的，而不得為惡。可是問題在於「善」與「惡」的範圍要如何界定？這在「The JSON License」中也並未特別說明清楚，這使得每個人可以對於「善」與「惡」進行各自表態。</p>
+<p>因此「自由軟體基金會」認為「For Good Not Evil」的要求，違反了自由軟體 (Free Software) <a href="https://www.gnu.org/philosophy/free-sw.html" target="_blank">四大精神</a>中的第 0 條，</p>
+<p>The freedom to run the program, for any purpose (freedom 0).</p>
+<p>並且在其官方網站上也特別說明「自由軟體基金會」對於「The JSON License」的看法，截圖如下，</p>
+<p><a href="../../images/120410/2012-03-16_fsf_explain_json_license.png" target="_blank"><img src="../../images/120410/2012-03-16_fsf_explain_json_license.png" border="0" width="450" /></a></p>
+<p>▲ 圖5: 自由軟體基金會官方網站對於「The JSON License」的看法 (<a href="https://www.gnu.org/licenses/license-list.html" target="_blank">https://www.gnu.org/licenses/license-list.html</a>)</p>
+<p>同樣地，「For Good Not Evil」的要求，也無法滿足「開放源碼促進會」<a href="https://opensource.org/docs/osd" target="_blank">十大開放源碼定義</a>中的第 6 條，截圖如下，</p>
+<p><a href="../../images/120410/2012-03-16_osi_osd_six_definition.png" target="_blank"><img src="../../images/120410/2012-03-16_osi_osd_six_definition.png" border="0" width="450" /></a></p>
+<p>▲ 圖6: 開放源碼促進會的十大開放源碼定義之第 6 條 (<a href="https://opensource.org/docs/osd" target="_blank">https://opensource.org/docs/osd</a>)</p>
+<p>正因「善」與「惡」可能因地域、文化、風俗、民情等不同而有不一樣的界定，所以「For Good Not Evil」的要求潛藏著過多限制自由的可能，也因此使得無論是「自由軟體基金會」亦或是「開放源碼促進會」都不認為「The JSON License」是個合乎於「自由」或「開放源碼」的授權精神。</p>
+<h2>面對或使用「The JSON License」的注意事項</h2>
+<p>無論是授權者（撰寫程式供他人利用之人），或是被授權者（利用他人所授權程式之人），在面對或使用「The JSON License」的程式時，都有一些需要特別注意的事項。</p>
+<p>1. 需要特別注意各別授權條款中是否有「For Good Not Evil」的聲明</p>
+<p>因為「The JSON License」與常見的「MIT License」幾乎類似。見下列的比較圖，</p>
+<p><a href="../../images/120410/json-mit.png" target="_blank"><img src="../../images/120410/json-mit.png" border="0" /></a></p>
+<p>▲ 圖7: 「The JSON License」及「MIT License」授權全文比較圖</p>
+<p>唯獨「The JSON License」多了下列聲明，</p>
+<p>The Software shall be used for Good, not Evil.</p>
+<p>因為「MIT License」是個常見的授權條款，所以在蒐集與整理專案中各程式及函式庫的授權清單時，很容易遺漏或忽略「The JSON License」額外的「這一行」，而誤將「The JSON License」授權之程式誤判為「MIT License」。這不僅將錯誤資料植入於專案的「第三方程式授權清單列表」，也同時可能會衍生出後續法律遵行上的問題與盲點。所以在整理授權清單時，務必比對各條款中是否有額外「多餘」的聲明。</p>
+<p>2. 「The JSON License」的授權相容性問題</p>
+<p>實務上，一個專案中存有多種不同授權的程式已是常態，在開發過程中除了要注意第三方程式的授權內容外，還需要分析該授權是否與專案中其它相關程式的授權存有相容性的問題。</p>
+<p>授權相容性指的是，彼此授權的要求是否具有衝突。意即，若甲授權要求不得進行某行為，而乙授權要求必須從事該行為時，代表著甲授權與乙授權有衝突性，即不具相容性。此時，甲授權與乙授權的程式很可能不得存在於同一專案或產品中，這也意謂著此產品將不得進行散布或銷售。</p>
+<p>然而，從本篇文章前述之探討中，我們已知「The JSON License」並不符合自由軟體基金會／開放源碼促進會所定義的「自由／開放源碼軟體」授權條款。這同時也意謂著「The JSON License」與其它「自由／開放源碼軟體」間可能存在著授權相容性的問題。</p>
+<p>舉個例子，由於「The JSON License」不符合「自由軟體基金會」對於自由軟體的定義，因此很可能無法與 GNU General Public License (GPL) 及 GNU Lesser General Public License (LGPL) 類的「自由軟體授權條款」，共同存在於具有互動關係的專案或產品中。</p>
+<p>簡言之，如果我們撰寫出一程式，而且使用「The JSON License」聲明散布時，則可能會因為授權相容性的問題，而使得他人無法與此一程式共存於相同專案中，降低了我們程式的推廣及可利用性。反之，當我們專案中欲使用「The JSON License」聲明散布的程式時，需要特別注意該授權是否會與目前專案中其它相關程式的授權，存在著授權相容性的問題。</p>
+<h2>結語</h2>
+<p>隨著 JSON 資料交換格式的流行，愈來愈多相關的授權流言浮出檯面。在本篇文章中，整理了目前親自處理過的 JSON 實務問題，以及網路上常見的誤解，並進一步對於「The JSON License」潛藏的陷阱提供見解，希望能夠給予讀者一些參考依據。</p>
+<p>最後，建議讀者參閱林珈宏先生於 2010 年所撰寫的『<a href="../../news/2245.html" target="_blank">自由軟體授權條款的附加限制-從被 Google 拒絕的「善行條款」談起</a>』一文。該文中所提及的 JSMin-PHP，即是以「The JSON License」為其授權條款的軟體專案，從其面臨的法律問題中，可進一步供我們在實務運作上有所參詢。</p>
+			<!-- Show relate article -->
+		<br><br><h4>您也許有興趣閱讀以下文章:</h4><ul><li><a href='../../enterprise-application/8738.html'>授權流言終結者#5：Neo4j 授權的分析與探討</a> - <span class='date-posted'>2012-06-26</span></li><li><a href='../../enterprise-application/8687.html'>授權流言終結者#4：MongoDB 授權的分析與探討（雙重授權模式 2.0）</a> - <span class='date-posted'>2012-04-29</span></li><li><a href='../../enterprise-application/8680.html'>授權流言終結者#3：jQuery 授權的分析與探討</a> - <span class='date-posted'>2012-04-23</span></li><li><a href='../../enterprise-application/8636.html'>授權流言終結者#1︰VirtualBox 授權分析與探討</a> - <span class='date-posted'>2012-03-08</span></li></ul>		<!-- end -->
+		<div class="article_note">
+		<!-- Add tags use metakey, and show OSSF Newsletter tag: OSSFNL+NUM-->
+		<br><br> <hr style='border: 1px dashed #D2DADB;'><b>標籤:</b>&nbsp;<a href='../../index.php%3Foption=com_search&amp;Itemid=58&amp;searchphrase=exact_meta&amp;ordering=newest&amp;searchword=json.html'>json</a>,&nbsp;&nbsp;<a href='../../index.php%3Foption=com_search&amp;Itemid=58&amp;searchphrase=exact_meta&amp;ordering=newest&amp;searchword=&#32;授權.html'> 授權</a>				<!-- End -->
+					<br>
+					<b>分類: </b><a href="../enterprise-application.html">				企業應用					</a>				</div>
+			 <!-- AddThis Button BEGIN ID 3001 is the front page article -->
+     			<br><br>
+       <div class="addthis_toolbox addthis_default_style addthis_32x32_style">
+       <a class="addthis_button_preferred_1"></a>
+       <a class="addthis_button_preferred_2"></a>
+       <a class="addthis_button_preferred_3"></a>
+       <a class="addthis_button_preferred_4"></a>
+       <a class="addthis_button_compact"></a>
+       <a class="addthis_counter addthis_bubble_style"></a>
+       </div>
+       <script type="text/javascript">var addthis_config = {"data_track_clickback":true};</script>
+       <script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js#pubid=openfoundry"></script>
+       <!-- AddThis Button END -->
+     <br>
+		<div class="totop" ><a class="rt-totop" href="8657-2-the-json-license-.html#" style="outline: medium none;">↑ Top</a></div>
+            <!-- AddThis Button END -->
+
+			</div>
+</div>
+
+		                            </div>
+									<div class="clear"></div>
+								</div>
+								<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+							</div>
+							</div>
+                                                    </div>
+                                            </div>
+                                <div class="rt-grid-3 rt-pull-9">
+                <div id="rt-sidebar-a">
+                                    <div class="square4">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<ul class="menu"><li class="item56"><a href="../previous-issue.html"><span>電子報總覽</span></a></li><li class="item55"><a href="../about-newsletter.html"><span>關於本報</span></a></li></ul>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<ul class="menu"><li class="item115"><a href="../foss-news.html"><span>源碼新聞</span></a></li><li class="item141"><a href="../case-job.html"><span>接案 / 工作</span></a></li></ul>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+        	                <div class="square1">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-title"><h2 class="title">專欄總覽</h2></div>
+						<div class="clear"></div>
+		                						<div class="module-content">
+		                	<ul class="menu"><li class="item37"><a href="../tech-column.html"><span>技術專欄</span></a></li><li class="item40"><a href="../foss-programs.html"><span>源碼秘技</span></a></li><li class="item35"><a href="../legal-article-.html"><span>法律專欄</span></a></li><li class="item154"><a href="../foss-forum.html"><span>自由專欄</span></a></li><li id="current" class="active item162"><a href="../enterprise-application.html"><span>企業應用</span></a></li><li class="item44"><a href="../foss-projects.html"><span>源碼專案</span></a></li></ul>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		                <div class="square1">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<p style="text-align: center;"><a href="../../news%3Fformat=feed&amp;type=rss" target="_black"><img src="../../images/M_images/news-rss-feed.png" border="0" /></a><br /><a href="https://www.openfoundry.org/rss-feed/Newsletter" target="_black"><img src="../../images/M_images/newsletter-rss-feed.png" border="0" /></a></p>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		
+                </div>
+            </div>
+
+                    <div class="clear"></div>
+                </div>
+            </div>
+																													</div>
+										<div id="rt-copyright">
+						<div class="rt-grid-12 rt-alpha rt-omega">
+                        <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<div id="desktop-mobile-version-switch"><span id="mobile-version" class="version-switch"><a href="8657-2-the-json-license-.html#">行動版</a></span></div>
+自由軟體鑄造場 製作 最佳瀏覽狀態：IE7或Firefox2.0以上 (建議使用Firefox) ‧ 解析度1024*768 <br /> <strong>E-Mail</strong>：<a href="mailto:contact@openfoundry.org">contact@openfoundry.org</a> <strong>Address</strong>：台北市南港區研究院路2段128號 中央研究院資訊科學研究所 . <a href="../../privacy-policy.html">隱私權條款</a>. <a href="../../terms-of-use.html">使用條款</a><span style="position: relative; top: 8px; margin-top: -8px;"> <a href="../../about/8101.html"><img src="../../images/M_images/rss-feed-all.png" border="0" /></a></span>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+        	
+</div>
+						<div class="clear"></div>
+					</div>
+					<div class="rt-footer-bottom-wrap"><div class="rt-footer-bottom"><div class="rt-footer-bottom2"><div class="rt-footer-bottom3"></div></div></div></div>
+									</div></div></div>
+				<div class="rt-surround-bottom"><div class="rt-surround-bottom2"><div class="rt-surround-bottom3"></div></div></div>
+							</div>
+		</div>
+		<!--
+		<script id="aptureScript">
+						(function (){var a=document.createElement("script");a.defer="true";a.src="http://www.apture.com/js/apture.js?siteToken=vsJttrn";document.getElementsByTagName("head")[0].appendChild(a);})();
+     </script>
+-->
+
+<!-- Piwik -->
+<!-- 			<script type="text/javascript">
+			  var _paq = _paq || [];
+		  _paq.push(["trackPageView"]);
+		  _paq.push(["enableLinkTracking"]);
+
+		    (function() {
+			        var u=(("https:" == document.location.protocol) ? "https" : "https") + "://www.openfoundry.org/piwik/";
+				    _paq.push(["setTrackerUrl", u+"piwik.php"]);
+				    _paq.push(["setSiteId", "1"]);
+				        var d=document, g=d.createElement("script"), s=d.getElementsByTagName("script")[0]; g.type="text/javascript";
+				        g.defer=true; g.async=true; g.src=u+"piwik.js"; s.parentNode.insertBefore(g,s);
+					  })();
+		  </script> -->
+<!-- End Piwik Code -->
+	</body>
+</html>

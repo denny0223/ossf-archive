@@ -1,0 +1,447 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="zh-tw" lang="zh-tw" >
+<head>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<link rel="shortcut icon" href="images/favicon.ico" />
+	  <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+  <meta name="robots" content="index, follow" />
+  <meta name="keywords" content="OSSFNL790" />
+  <meta name="title" content="Google 轉換至 OpenFlow 網路，下一個挑戰是用戶 SDN" />
+  <meta name="description" content="向來對基礎架構保密到家的網路巨人 Google，日前罕見地由技術基礎架構資深副總裁 Urs Hölzle，對外揭露其內部資料中心網路的一角。Hölzle 公佈 Google 已重新打造龐大內部網路，為該公司帶來效率與降低成本。Google 骨幹網路流量如今已運行在採用開放源碼技術 OpenFlow 打造的軟體定義網路 (software-defined network, SDN)。此舉也展示" />
+  <meta name="generator" content="" />
+  <title>Google 轉換至 OpenFlow 網路，下一個挑戰是用戶 SDN - OpenFoundry</title>
+  <link href="favicon.ico" rel="shortcut icon" type="image/x-icon" />
+  <link rel="stylesheet" href="components/com_jcomments/tpl/default/style.css%3Fv=10.css" type="text/css" />
+  <link rel="stylesheet" href="components/com_gantry/css/gantry.css" type="text/css" />
+  <link rel="stylesheet" href="components/com_gantry/css/grid-12.css" type="text/css" />
+  <link rel="stylesheet" href="components/com_gantry/css/joomla.css" type="text/css" />
+  <link rel="stylesheet" href="templates/rt_quantive_j15/css/joomla.css" type="text/css" />
+  <link rel="stylesheet" href="templates/rt_quantive_j15/css/style1.css" type="text/css" />
+  <link rel="stylesheet" href="templates/rt_quantive_j15/css/light-body.css" type="text/css" />
+  <link rel="stylesheet" href="templates/rt_quantive_j15/css/demo-styles.css" type="text/css" />
+  <link rel="stylesheet" href="templates/rt_quantive_j15/css/template.css" type="text/css" />
+  <link rel="stylesheet" href="templates/rt_quantive_j15/css/typography.css" type="text/css" />
+  <link rel="stylesheet" href="templates/rt_quantive_j15/css/fusionmenu.css" type="text/css" />
+  <style type="text/css">
+    <!--
+#rt-main-surround ul.menu li.active > a, #rt-main-surround ul.menu li.active > .separator, #rt-main-surround ul.menu li.active > .item, #rt-main-surround .square4 ul.menu li:hover > a, #rt-main-surround .square4 ul.menu li:hover > .item, #rt-main-surround .square4 ul.menu li:hover > .separator, .roktabs-links ul li.active span {color:#0088B5;}
+a, #rt-main-surround ul.menu a:hover, #rt-main-surround ul.menu .separator:hover, #rt-main-surround ul.menu .item:hover {color:#0088B5;}
+    -->
+  </style>
+  <script type="text/javascript" src="components/com_jcomments/js/jcomments-v2.1.js%3Fv=2"></script>
+  <script type="text/javascript" src="components/com_jcomments/libraries/joomlatune/ajax.js"></script>
+  <script type="text/javascript" src="media/system/js/mootools.js"></script>
+  <script type="text/javascript" src="media/system/js/caption.js"></script>
+  <script type="text/javascript" src="components/com_gantry/js/gantry-buildspans.js"></script>
+  <script type="text/javascript" src="components/com_gantry/js/gantry-inputs.js"></script>
+  <script type="text/javascript" src="templates/rt_quantive_j15/js/jquery.cookie.js"></script>
+  <script type="text/javascript" src="modules/mod_roknavmenu/themes/fusion/js/fusion.js"></script>
+  <script type="text/javascript" src="modules/mod_ofssologin/js/ofssologin.js"></script>
+  <script type="text/javascript">
+
+			window.addEvent('domready', function() {
+				var modules = ['rt-block'];
+				var header = ['h3','h2','h1'];
+				GantryBuildSpans(modules, header);
+			});
+		InputsExclusion.push('.content_vote','#rt-popup')
+		        window.addEvent('load', function() {
+					new Fusion('ul.menutop', {
+						pill: 0,
+						effect: 'slide and fade',
+						opacity: 1,
+						hideDelay: 500,
+						centered: 0,
+						tweakInitial: {'x': -2, 'y': 0},
+        				tweakSubsequent: {'x': 0, 'y': -14},
+						menuFx: {duration: 200, transition: Fx.Transitions.Sine.easeOut},
+						pillFx: {duration: 400, transition: Fx.Transitions.Back.easeOut}
+					});
+	            });
+  </script>
+<!-- <script type="text/javascript" src="/sso/javascripts/langsync.js"></script> -->
+<!-- <script src="/templates/rt_quantive_j15/js/ossf.js"></script> -->
+<script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-4136519-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
+</head>
+	<body  class="backgroundlevel-low backgroundstyle-style8 bodylevel-med bodystyle-light cssstyle-style1 logostyle-dark font-family-helvetica font-size-is-default menu-type-fusionmenu col12 ">
+		<div id="rt-main-background">
+			<div class="rt-container">
+																<div id="rt-header">
+					<div class="rt-grid-7 rt-alpha">
+    			<div class="rt-block">
+    	    	<a href="index.html" id="rt-logo"></a>
+    		</div>
+	    
+</div>
+<div class="rt-grid-5 rt-omega">
+                    <div class="square9">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<div class="ofssologin_square9"><a href="index.html">登入</a>&nbsp;&nbsp|&nbsp;&nbsp;<span><a href="en/news/8692%3Ftask=view.html" ><span lang="en" xml:lang="en">English</span></a></li></ul></span><!--Joom!fish V2.0.4 (Lightning)-->
+<!-- &copy; 2003-2009 Think Network, released under the GPL. -->
+<!-- More information: at http://www.joomfish.net -->
+<div class="ofssologin_search_square9">
+  <form id="of_search" action="https://www.openfoundry.org/of/openfoundry/search" method="get" onsubmit="of_search(); return false;">
+    <select id="of_search_type">
+      <option value="Projects"> 專案 </option>
+      <option value="Content"> 文章 </option>
+      <option value="People"> 人才 </option>
+    </select>
+    <input id="query" name="query" id="mod_search_searchword" maxlength="50" alt="search" class="inputbox" type="text" size="28" value="search..."  onblur="if(this.value=='') this.value='search...';" onfocus="if(this.value=='search...') this.value='';" />
+    <input type="hidden" name="commit" value="search" />
+  </form>
+</div></div>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		
+</div>
+					<div class="clear"></div>
+				</div>
+																<div id="rt-navigation"><div id="rt-navigation2"><div id="rt-navigation3">
+					
+<div class="nopill">
+	<ul class="menutop level1 " >
+						<li class="item1 root" >
+					<a class="orphan item bullet" href="index.html"  >
+				<span>
+			    				首頁				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item32 root" >
+					<a class="orphan item bullet" href="archived.html"  >
+				<span>
+			    				專案				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item186 root" >
+					<a class="orphan item bullet" href="tw/community.html"  >
+				<span>
+			    				Who&#039;s Who				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item4 active root" >
+					<a class="orphan item bullet" href="tw/news.html"  >
+				<span>
+			    				新聞				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item5 root" >
+					<a class="orphan item bullet" href="tw/law-and-licensing.html"  >
+				<span>
+			    				法律源地				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item3 root" >
+					<a class="orphan item bullet" href="tw/activities.html"  >
+				<span>
+			    				活動				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item2 root" >
+					<a class="orphan item bullet" href="tw/resourcecatalog%3FName=Value.html"  >
+				<span>
+			    				資源表列				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item45 root" >
+					<a class="orphan item bullet" href="tw/about.html"  >
+				<span>
+			    				關於				   
+				</span>
+			</a>
+			
+			
+	</li>	
+				</ul>
+</div>
+
+				    <div class="clear"></div>
+				</div></div></div>
+								<div class="rt-surround"><div class="rt-surround2"><div class="rt-surround3">
+										<div id="rt-showcase-section">
+												<div id="rt-showcase">
+							<div class="rt-grid-12 rt-alpha rt-omega">
+    		<div class="clear"></div>
+		
+		
+                <div class="close-note">
+                    <div class="rt-block">
+               					<div class="module-content">
+                	<div style="font-size:medium; background-image:linear-gradient(120deg,#159957,#4298b2);color:white;padding:20px;margin:-10px -18px;">感謝您對「自由軟體鑄造場」的支持與愛護，十多年來「自由軟體鑄造場」受中央研究院支持，並在資訊科學研究所以及資訊科技創新研究中心執行，現已完成階段性的任務。 本網站預計持續維運至 2021年底，網站內容基本上不會再更動。<br />也紀念我們永遠的朋友 李士傑先生（Shih-Chieh Ilya Li）。</div>				</div>
+            </div>
+                </div>
+		
+</div>
+							<div class="clear"></div>
+						</div>
+																	</div>
+															<div id="rt-main-surround">
+												<div id="rt-breadcrumbs">
+								<div class="rt-breadcrumb-surround">
+		<a href="index.html" id="breadcrumbs-home"></a>
+		<span class="breadcrumbs pathway">
+<span class="no-link">新聞</span></span>
+	</div>
+	
+							<div class="clear"></div>
+						</div>
+																							              <div id="rt-main" class="sa3-mb9">
+                <div class="rt-main-inner">
+                    <div class="rt-grid-9 rt-push-3">
+                                                <div class="rt-block">
+                            							<div class="square1">
+							<div class="rt-module-surround">
+								<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+								<div class="rt-module-inner">
+		                            <div id="rt-mainbody">
+		                                
+<div class="rt-joomla ">
+	<div class="rt-article">
+		
+				<div class="rt-headline"><h1 class="rt-article-title">Google 轉換至 OpenFlow 網路，下一個挑戰是用戶 SDN</h1>		</div>
+		<div class="clear"></div>
+		
+		
+		
+				<div class="rt-articleinfo">
+						<div class="rt-article-icons">
+								<a href="tw/news/8692-google-openflow-sdn%3Ftmpl=component&amp;print=1&amp;page=.html" title="列印" onclick="window.open(this.href,'win2','status=no,toolbar=no,scrollbars=yes,titlebar=no,menubar=no,resizable=yes,width=640,height=480,directories=no,location=no'); return false;" rel="nofollow"><span class="icon print"></span></a>																</div>
+			
+			<span class="rt-date-posted">
+						建立日期			2012-05-12 01:05						&nbsp;&nbsp;&nbsp;&nbsp;						最近更新在 2012-05-12 01:21						</span>
+
+						<span class="rt-author">
+				作者是 謝良奇／編譯			</span>
+				
+					</div>
+		
+		
+		<p>向來對基礎架構保密到家的網路巨人 Google，日前罕見地由技術基礎架構資深副總裁 Urs Hölzle，對外揭露其內部資料中心網路的一角。Hölzle 公佈 Google 已重新打造龐大內部網路，為該公司帶來效率與降低成本。Google 骨幹網路流量如今已運行在採用開放源碼技術 OpenFlow 打造的軟體定義網路 (software-defined network, SDN)。此舉也展示 OpenFlow 標準已為商業用途準備就緒。</p>
+
+<p>Hölzle 日前在第二屆年度開放網路高峰會 (Open Networking Summit) 發表演說，主題放在 Google 如何在其網路上運用 OpenFlow 降低成本與減少複雜度。在演說中 Hölzle 指出 Google 希望在今年能夠開始將這種可程式化網路，延伸至用戶面向網路上，這個 SDN 能夠處理更為複雜且重要的流量。</p>
+<p>Hölzle 表示在此一方向所取得的進展，是 Google 在網路方面最重要的改變。此外他也首次證實，曾經因為打造自用伺服器出了名的 Google，也已經設計並製造了該公司的網路設備。Hölzle 表示建造網路硬體並不困難，真正難的是軟體部份。</p>
+<p>在演說中，Hölzle 解說了 Google 在2010 年為建構此一 OpenFlow 網路所開發的設備。那是利用商用矽晶 (merchant silicon) 的基本交換器，幾乎不執行什麼軟體，只有開機所需的軟體以及 OpenFlow 代理程式。其他一切全都交由控制器掌管。</p>
+<p>Google 經常需要在資料中心之間搬移以 petabytes 為單位計算的資料，儘管 Google 掌握了內部流量的排程，卻在流量工程上遭遇到困難。OpenFlow 是 Google 為此找到的答案，這是由美國史丹福大學與加州大學柏克萊分校的科學家共同發展的開放源碼系統，OpenFlow 運用 SDN 方式，透過分隔網路設備中封包交換和管理兩大功能，大大提升了網路營運者的控制能力。</p>
+<p>這項技術透過在集中式電腦伺服器上執行的軟體，來控制網路作業，藉此節省成本、時間、電力耗損。Hölzle 表示，當時他們已經朝這個方向進行，用拙劣的方式發展 SDN，看到 OpenFlow 的那一刻，他們很清楚這個就是他們要的。</p>
+<p>Google 也加入了推廣 OpenFlow 的開放網路基金會 (Open Networking Foundation)，其他成員包括 Yahoo、Microsoft、Facebook、Verizon、Deutsche Telekom，和一家新創公司 Nicira。但是上述成員至今未曾發表過任何有如 Google 這般規模的實作。</p>
+<p>一旦 OpenFlow 普及之後，將可能影響到如 Alcatel-Lucent 和 Cisco Systems 這樣的主要路由器與交換器製造商，以及他們所使用的 ASIC 晶片與嵌入式處理器。這一次 Google 要用其軟體專長顛覆目前的網路典範。</p>
+<p>在其網路上使用 OpenFlow，Google 得以達成集中式流量工程。Hölzle 指出，在網路設備中僅配有少許記憶體的嵌入式處理器上，難以做到的事，如今可以輕易完成。</p>
+<p>為了在被稱為 G 規模 (G-Scale) 網路上實現 OpenFlow 而打造路由器，並非 Google 首次嘗試動手製作這類設備。一位前 Google 員工曾透露該公司早在 2005 年就開始自行設計設備。 Hölzle 表示，2010 年當時他們開始此一專案時，根本買不到任何適用的設備。</p>
+<p>儘管如此，Hölzle 並不希望外界過分看待 Google 製造網路交換器一事。他強調不要為此而斷定 Google 有意和 Cisco 與 Juniper 競爭。他希望隨著更多大型營運商開始採用 OpenFlow，網路設備製造商可以開始設計支援此一技術的設備。如此一來，Google 會是可能買家之一。</p>
+Hölzle 表示，他希望 Google 能在今年開始著手將用戶面向網路移往 SDN 上。雖然這不表示此一轉換會很快發生，但終究會如此。Google 僅在 2 年內就將所有內部網路流量，轉換到 OpenFlow 網路上。
+<p>此一轉換的重要性，在於 Google 在內部網路看到的成本節省，最終有助降低用戶寬頻網路的傳輸成本，幫助 ISP 們壓低成本。對 Hölzle 來說，讓軟硬體與 ISP 產業了解到，此一方向能讓他們因此受惠，才是他演說的真正理由。</p>
+<br />
+<h3>相關網址</h3>
+<p>Google’s next OpenFlow challenge: taking SDNs to the consumer.</p>
+<p><a href="https://gigaom.com/cloud/googles-next-openflow-challenge-taking-sdns-to-the-consumer/" target="_blank">https://gigaom.com/cloud/googles-next-openflow-challenge-taking-sdns-to-the-consumer/</a></p>
+<p>Going With the Flow: Google’s Secret Switch to the Next Wave of Networking.</p>
+<p><a href="https://www.wired.com/wiredenterprise/2012/04/going-with-the-flow-google/all/1" target="_blank">https://www.wired.com/wiredenterprise/2012/04/going-with-the-flow-google/all/1</a></p>
+<p>Google describes its OpenFlow network.</p>
+<p><a href="https://www.eetimes.com/electronics-news/4371179/Google-describes-its-OpenFlow-network" target="_blank">https://www.eetimes.com/electronics-news/4371179/Google-describes-its-OpenFlow-network</a></p>
+			<!-- Show relate article -->
+				<!-- end -->
+		<div class="article_note">
+		<!-- Add tags use metakey, and show OSSF Newsletter tag: OSSFNL+NUM-->
+		<br><br> <hr style='border: 1px dashed #D2DADB;'><b>自由軟體鑄造場電子報&nbsp;:</b>&nbsp;<a href='previous-issue%3Ftask=view&amp;id=790.html'>第 195 期 利用 RequireJs 將 Backbone.js 程式模組化</a><br>				<!-- End -->
+					<br>
+					<b>分類: </b><a href="tw/foss-news.html">				源碼新聞					</a>				</div>
+			 <!-- AddThis Button BEGIN ID 3001 is the front page article -->
+     			<br><br>
+       <div class="addthis_toolbox addthis_default_style addthis_32x32_style">
+       <a class="addthis_button_preferred_1"></a>
+       <a class="addthis_button_preferred_2"></a>
+       <a class="addthis_button_preferred_3"></a>
+       <a class="addthis_button_preferred_4"></a>
+       <a class="addthis_button_compact"></a>
+       <a class="addthis_counter addthis_bubble_style"></a>
+       </div>
+       <script type="text/javascript">var addthis_config = {"data_track_clickback":true};</script>
+       <script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js#pubid=openfoundry"></script>
+       <!-- AddThis Button END -->
+     <br>
+		<div class="totop" ><a class="rt-totop" href="index.php%3Foption=com_content&amp;task=view&amp;id=8692&amp;Itemid=4%3Bisletter=1.html#" style="outline: medium none;">↑ Top</a></div>
+            <!-- AddThis Button END -->
+
+		<script type="text/javascript">
+var jcomments=new JComments(8692, 'com_content','https://openfoundry.org/index.php?option=com_jcomments&amp;tmpl=component&amp;lang=');
+jcomments.setList('comments-list');
+</script>
+<div id="jc">
+<div id="comments"><h4>評論<a class="refresh" href="index.php%3Foption=com_content&amp;task=view&amp;id=8692&amp;Itemid=4%3Bisletter=1.html#" title="重新整理評論列表" onclick="jcomments.showPage(8692,'com_content',0);return false;">&nbsp;</a></h4>
+<div id="comments-list" class="comments-list">
+        <div class="even" id="comment-item-438"><div class="rbox"><div class="rbox_tr"><div class="rbox_tl"><div class="rbox_t">&nbsp;</div></div></div><div class="rbox_m">
+<div class="comment-avatar"><img src="http://www.gravatar.com/avatar.php?gravatar_id=782ebaabebccd8fdff09f7c2dc6106c1&amp;default=https%3A%2F%2Fwww.openfoundry.org%2Fcomponents%2Fcom_jcomments%2Fimages%2Fno_avatar.png" alt="" /></div>
+<div class="comment-box avatar-indent">
+<span class="comments-vote">
+	<span id="comment-vote-holder-438">
+<a href="index.php%3Foption=com_content&amp;task=view&amp;id=8692&amp;Itemid=4%3Bisletter=1.html#" class="vote-good" title="優質的評論" onclick="jcomments.voteComment(438, 1);return false;"></a><a href="index.php%3Foption=com_content&amp;task=view&amp;id=8692&amp;Itemid=4%3Bisletter=1.html#" class="vote-poor" title="差勁的評論" onclick="jcomments.voteComment(438, -1);return false;"></a>
+<span class="vote-poor">-1</span>
+	</span>
+</span>
+<a class="comment-anchor" href="tw/foss-news/8692-google-openflow-sdn.html#comment-438" id="comment-438">#1</a>
+<span class="comment-author">HsiaoTing Wang</span>
+<span class="comment-date">2013-07-09 16:49</span>
+<div class="comment-body" id="comment-body-438">SDN 商機無窮。 :)</div>
+</div><div class="clear"></div>
+</div><div class="rbox_br"><div class="rbox_bl"><div class="rbox_b">&nbsp;</div></div></div></div>
+</div>
+</div>
+<div id="comments-list-footer"><a class="refresh" href="index.php%3Foption=com_content&amp;task=view&amp;id=8692&amp;Itemid=4%3Bisletter=1.html#" title="重新整理評論列表" onclick="jcomments.showPage(8692,'com_content',0);return false;">重新整理評論列表</a></div>
+</div>
+<div id="comments-footer" align="center"><a href="http://www.joomlatune.com" title="JComments" target="_blank">JComments</a></div>
+<script type="text/javascript">
+jcomments.setAntiCache(1,0,0);
+</script> 
+</div>	</div>
+</div>
+
+		                            </div>
+									<div class="clear"></div>
+								</div>
+								<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+							</div>
+							</div>
+                                                    </div>
+                                            </div>
+                                <div class="rt-grid-3 rt-pull-9">
+                <div id="rt-sidebar-a">
+                                    <div class="square4">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<ul class="menu"><li class="item56"><a href="tw/previous-issue.html"><span>電子報總覽</span></a></li><li class="item55"><a href="tw/about-newsletter.html"><span>關於本報</span></a></li></ul>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<ul class="menu"><li class="item115"><a href="tw/foss-news.html"><span>源碼新聞</span></a></li><li class="item141"><a href="tw/case-job.html"><span>接案 / 工作</span></a></li></ul>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+        	                <div class="square1">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-title"><h2 class="title">專欄總覽</h2></div>
+						<div class="clear"></div>
+		                						<div class="module-content">
+		                	<ul class="menu"><li class="item37"><a href="tw/tech-column.html"><span>技術專欄</span></a></li><li class="item40"><a href="tw/foss-programs.html"><span>源碼秘技</span></a></li><li class="item35"><a href="tw/legal-article-.html"><span>法律專欄</span></a></li><li class="item154"><a href="tw/foss-forum.html"><span>自由專欄</span></a></li><li class="item162"><a href="tw/enterprise-application.html"><span>企業應用</span></a></li><li class="item44"><a href="tw/foss-projects.html"><span>源碼專案</span></a></li></ul>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		                <div class="square1">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<p style="text-align: center;"><a href="news%3Fformat=feed&amp;type=rss" target="_black"><img src="images/M_images/news-rss-feed.png" border="0" /></a><br /><a href="https://www.openfoundry.org/rss-feed/Newsletter" target="_black"><img src="images/M_images/newsletter-rss-feed.png" border="0" /></a></p>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		
+                </div>
+            </div>
+
+                    <div class="clear"></div>
+                </div>
+            </div>
+																													</div>
+										<div id="rt-copyright">
+						<div class="rt-grid-12 rt-alpha rt-omega">
+                        <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<div id="desktop-mobile-version-switch"><span id="mobile-version" class="version-switch"><a href="index.php%3Foption=com_content&amp;task=view&amp;id=8692&amp;Itemid=4%3Bisletter=1.html#">行動版</a></span></div>
+自由軟體鑄造場 製作 最佳瀏覽狀態：IE7或Firefox2.0以上 (建議使用Firefox) ‧ 解析度1024*768 <br /> <strong>E-Mail</strong>：<a href="mailto:contact@openfoundry.org">contact@openfoundry.org</a> <strong>Address</strong>：台北市南港區研究院路2段128號 中央研究院資訊科學研究所 . <a href="privacy-policy.html">隱私權條款</a>. <a href="terms-of-use.html">使用條款</a><span style="position: relative; top: 8px; margin-top: -8px;"> <a href="about/8101.html"><img src="images/M_images/rss-feed-all.png" border="0" /></a></span>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+        	
+</div>
+						<div class="clear"></div>
+					</div>
+					<div class="rt-footer-bottom-wrap"><div class="rt-footer-bottom"><div class="rt-footer-bottom2"><div class="rt-footer-bottom3"></div></div></div></div>
+									</div></div></div>
+				<div class="rt-surround-bottom"><div class="rt-surround-bottom2"><div class="rt-surround-bottom3"></div></div></div>
+							</div>
+		</div>
+		<!--
+		<script id="aptureScript">
+						(function (){var a=document.createElement("script");a.defer="true";a.src="http://www.apture.com/js/apture.js?siteToken=vsJttrn";document.getElementsByTagName("head")[0].appendChild(a);})();
+     </script>
+-->
+
+<!-- Piwik -->
+<!-- 			<script type="text/javascript">
+			  var _paq = _paq || [];
+		  _paq.push(["trackPageView"]);
+		  _paq.push(["enableLinkTracking"]);
+
+		    (function() {
+			        var u=(("https:" == document.location.protocol) ? "https" : "https") + "://www.openfoundry.org/piwik/";
+				    _paq.push(["setTrackerUrl", u+"piwik.php"]);
+				    _paq.push(["setSiteId", "1"]);
+				        var d=document, g=d.createElement("script"), s=d.getElementsByTagName("script")[0]; g.type="text/javascript";
+				        g.defer=true; g.async=true; g.src=u+"piwik.js"; s.parentNode.insertBefore(g,s);
+					  })();
+		  </script> -->
+<!-- End Piwik Code -->
+	</body>
+</html>

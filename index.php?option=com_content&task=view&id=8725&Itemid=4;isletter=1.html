@@ -1,0 +1,626 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="zh-tw" lang="zh-tw" >
+<head>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<link rel="shortcut icon" href="images/favicon.ico" />
+	  <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+  <meta name="robots" content="index, follow" />
+  <meta name="keywords" content="OSSFNL795" />
+  <meta name="title" content="GWT (1) - 使用 GWT Eclipse Plugin 與 GWT 基礎架構" />
+  <meta name="description" content="GWT 是一個由 Google 所開發的開源 AJAX 網路開發框架。由於許多傳統 Java 的開發人員及後端工程師，並不見得有前端工程師或網路開發者一樣的技術背景和經驗， 因此開發網站往往對他們來講有著陡峭的學習曲線。GWT 便是為了簡化開發人員使用 Java 作為橫跨前後端的技術整合及溝通之實作語言。 GWT 將 Java 作為開發的主要語言，因而 Java 的資源都成為 GWT" />
+  <meta name="generator" content="" />
+  <title>GWT (1) - 使用 GWT Eclipse Plugin 與 GWT 基礎架構 - OpenFoundry</title>
+  <link href="favicon.ico" rel="shortcut icon" type="image/x-icon" />
+  <link rel="stylesheet" href="components/com_jcomments/tpl/default/style.css%3Fv=10.css" type="text/css" />
+  <link rel="stylesheet" href="components/com_gantry/css/gantry.css" type="text/css" />
+  <link rel="stylesheet" href="components/com_gantry/css/grid-12.css" type="text/css" />
+  <link rel="stylesheet" href="components/com_gantry/css/joomla.css" type="text/css" />
+  <link rel="stylesheet" href="templates/rt_quantive_j15/css/joomla.css" type="text/css" />
+  <link rel="stylesheet" href="templates/rt_quantive_j15/css/style1.css" type="text/css" />
+  <link rel="stylesheet" href="templates/rt_quantive_j15/css/light-body.css" type="text/css" />
+  <link rel="stylesheet" href="templates/rt_quantive_j15/css/demo-styles.css" type="text/css" />
+  <link rel="stylesheet" href="templates/rt_quantive_j15/css/template.css" type="text/css" />
+  <link rel="stylesheet" href="templates/rt_quantive_j15/css/typography.css" type="text/css" />
+  <link rel="stylesheet" href="templates/rt_quantive_j15/css/fusionmenu.css" type="text/css" />
+  <style type="text/css">
+    <!--
+#rt-main-surround ul.menu li.active > a, #rt-main-surround ul.menu li.active > .separator, #rt-main-surround ul.menu li.active > .item, #rt-main-surround .square4 ul.menu li:hover > a, #rt-main-surround .square4 ul.menu li:hover > .item, #rt-main-surround .square4 ul.menu li:hover > .separator, .roktabs-links ul li.active span {color:#0088B5;}
+a, #rt-main-surround ul.menu a:hover, #rt-main-surround ul.menu .separator:hover, #rt-main-surround ul.menu .item:hover {color:#0088B5;}
+    -->
+  </style>
+  <script type="text/javascript" src="components/com_jcomments/js/jcomments-v2.1.js%3Fv=2"></script>
+  <script type="text/javascript" src="components/com_jcomments/libraries/joomlatune/ajax.js"></script>
+  <script type="text/javascript" src="media/system/js/mootools.js"></script>
+  <script type="text/javascript" src="media/system/js/caption.js"></script>
+  <script type="text/javascript" src="components/com_gantry/js/gantry-buildspans.js"></script>
+  <script type="text/javascript" src="components/com_gantry/js/gantry-inputs.js"></script>
+  <script type="text/javascript" src="templates/rt_quantive_j15/js/jquery.cookie.js"></script>
+  <script type="text/javascript" src="modules/mod_roknavmenu/themes/fusion/js/fusion.js"></script>
+  <script type="text/javascript" src="modules/mod_ofssologin/js/ofssologin.js"></script>
+  <script type="text/javascript">
+
+			window.addEvent('domready', function() {
+				var modules = ['rt-block'];
+				var header = ['h3','h2','h1'];
+				GantryBuildSpans(modules, header);
+			});
+		InputsExclusion.push('.content_vote','#rt-popup')
+		        window.addEvent('load', function() {
+					new Fusion('ul.menutop', {
+						pill: 0,
+						effect: 'slide and fade',
+						opacity: 1,
+						hideDelay: 500,
+						centered: 0,
+						tweakInitial: {'x': -2, 'y': 0},
+        				tweakSubsequent: {'x': 0, 'y': -14},
+						menuFx: {duration: 200, transition: Fx.Transitions.Sine.easeOut},
+						pillFx: {duration: 400, transition: Fx.Transitions.Back.easeOut}
+					});
+	            });
+  </script>
+<!-- <script type="text/javascript" src="/sso/javascripts/langsync.js"></script> -->
+<!-- <script src="/templates/rt_quantive_j15/js/ossf.js"></script> -->
+<script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-4136519-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
+</head>
+	<body  class="backgroundlevel-low backgroundstyle-style8 bodylevel-med bodystyle-light cssstyle-style1 logostyle-dark font-family-helvetica font-size-is-default menu-type-fusionmenu col12 ">
+		<div id="rt-main-background">
+			<div class="rt-container">
+																<div id="rt-header">
+					<div class="rt-grid-7 rt-alpha">
+    			<div class="rt-block">
+    	    	<a href="index.html" id="rt-logo"></a>
+    		</div>
+	    
+</div>
+<div class="rt-grid-5 rt-omega">
+                    <div class="square9">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<div class="ofssologin_square9"><a href="index.html">登入</a>&nbsp;&nbsp|&nbsp;&nbsp;<span><a href="en/news/8725%3Ftask=view.html" ><span lang="en" xml:lang="en">English</span></a></li></ul></span><!--Joom!fish V2.0.4 (Lightning)-->
+<!-- &copy; 2003-2009 Think Network, released under the GPL. -->
+<!-- More information: at http://www.joomfish.net -->
+<div class="ofssologin_search_square9">
+  <form id="of_search" action="https://www.openfoundry.org/of/openfoundry/search" method="get" onsubmit="of_search(); return false;">
+    <select id="of_search_type">
+      <option value="Projects"> 專案 </option>
+      <option value="Content"> 文章 </option>
+      <option value="People"> 人才 </option>
+    </select>
+    <input id="query" name="query" id="mod_search_searchword" maxlength="50" alt="search" class="inputbox" type="text" size="28" value="search..."  onblur="if(this.value=='') this.value='search...';" onfocus="if(this.value=='search...') this.value='';" />
+    <input type="hidden" name="commit" value="search" />
+  </form>
+</div></div>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		
+</div>
+					<div class="clear"></div>
+				</div>
+																<div id="rt-navigation"><div id="rt-navigation2"><div id="rt-navigation3">
+					
+<div class="nopill">
+	<ul class="menutop level1 " >
+						<li class="item1 root" >
+					<a class="orphan item bullet" href="index.html"  >
+				<span>
+			    				首頁				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item32 root" >
+					<a class="orphan item bullet" href="archived.html"  >
+				<span>
+			    				專案				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item186 root" >
+					<a class="orphan item bullet" href="tw/community.html"  >
+				<span>
+			    				Who&#039;s Who				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item4 active root" >
+					<a class="orphan item bullet" href="tw/news.html"  >
+				<span>
+			    				新聞				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item5 root" >
+					<a class="orphan item bullet" href="tw/law-and-licensing.html"  >
+				<span>
+			    				法律源地				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item3 root" >
+					<a class="orphan item bullet" href="tw/activities.html"  >
+				<span>
+			    				活動				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item2 root" >
+					<a class="orphan item bullet" href="tw/resourcecatalog%3FName=Value.html"  >
+				<span>
+			    				資源表列				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item45 root" >
+					<a class="orphan item bullet" href="tw/about.html"  >
+				<span>
+			    				關於				   
+				</span>
+			</a>
+			
+			
+	</li>	
+				</ul>
+</div>
+
+				    <div class="clear"></div>
+				</div></div></div>
+								<div class="rt-surround"><div class="rt-surround2"><div class="rt-surround3">
+										<div id="rt-showcase-section">
+												<div id="rt-showcase">
+							<div class="rt-grid-12 rt-alpha rt-omega">
+    		<div class="clear"></div>
+		
+		
+                <div class="close-note">
+                    <div class="rt-block">
+               					<div class="module-content">
+                	<div style="font-size:medium; background-image:linear-gradient(120deg,#159957,#4298b2);color:white;padding:20px;margin:-10px -18px;">感謝您對「自由軟體鑄造場」的支持與愛護，十多年來「自由軟體鑄造場」受中央研究院支持，並在資訊科學研究所以及資訊科技創新研究中心執行，現已完成階段性的任務。 本網站預計持續維運至 2021年底，網站內容基本上不會再更動。<br />也紀念我們永遠的朋友 李士傑先生（Shih-Chieh Ilya Li）。</div>				</div>
+            </div>
+                </div>
+		
+</div>
+							<div class="clear"></div>
+						</div>
+																	</div>
+															<div id="rt-main-surround">
+												<div id="rt-breadcrumbs">
+								<div class="rt-breadcrumb-surround">
+		<a href="index.html" id="breadcrumbs-home"></a>
+		<span class="breadcrumbs pathway">
+<span class="no-link">新聞</span></span>
+	</div>
+	
+							<div class="clear"></div>
+						</div>
+																							              <div id="rt-main" class="sa3-mb9">
+                <div class="rt-main-inner">
+                    <div class="rt-grid-9 rt-push-3">
+                                                <div class="rt-block">
+                            							<div class="square1">
+							<div class="rt-module-surround">
+								<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+								<div class="rt-module-inner">
+		                            <div id="rt-mainbody">
+		                                
+<div class="rt-joomla ">
+	<div class="rt-article">
+		
+				<div class="rt-headline"><h1 class="rt-article-title">GWT (1) - 使用 GWT Eclipse Plugin 與 GWT 基礎架構</h1>		</div>
+		<div class="clear"></div>
+		
+		
+		
+				<div class="rt-articleinfo">
+						<div class="rt-article-icons">
+								<a href="tw/news/8725-gwt%3Ftmpl=component&amp;print=1&amp;page=.html" title="列印" onclick="window.open(this.href,'win2','status=no,toolbar=no,scrollbars=yes,titlebar=no,menubar=no,resizable=yes,width=640,height=480,directories=no,location=no'); return false;" rel="nofollow"><span class="icon print"></span></a>																</div>
+			
+			<span class="rt-date-posted">
+						建立日期			2012-06-11 14:40						&nbsp;&nbsp;&nbsp;&nbsp;						最近更新在 2012-07-10 15:20						</span>
+
+						<span class="rt-author">
+				作者是 Kent			</span>
+				
+					</div>
+		
+		
+		<p>GWT 是一個由 Google 所開發的開源 AJAX 網路開發框架。由於許多傳統 Java 的開發人員及後端工程師，並不見得有前端工程師或網路開發者一樣的技術背景和經驗， 因此開發網站往往對他們來講有著陡峭的學習曲線。GWT 便是為了簡化開發人員使用 Java 作為橫跨前後端的技術整合及溝通之實作語言。</p>
+<p>GWT 將 Java 作為開發的主要語言，因而 Java 的資源都成為 GWT 開發人員可以享受的工具。且團隊可以很輕易地找到會寫 Java 的開發者，亦可使用 Eclipse 的開發工具來實現 GWT。GWT 讓開發人員編寫 Java 代碼在透過 GWT 編譯器，把 Java 轉成高效的 JavaScript 代碼。GWT 的內建函式庫跟其所提供的框架延展性，讓開發人員可以快速地寫成互動性強的應用程式。</p>
+
+<p>從本篇開始，筆者將開始連載一系列的 GWT 的相關文章.透過解說、實例、實作來幫助讀者了解 GWT。</p>
+<p>作為系列文章的第一文，本文是熱身，將介紹一些 GWT 的入門知識，並帶領讀者使用 Google 所做的 Eclipse 外掛來實作運用 GWT。&nbsp;</p>
+<h2>安裝說明</h2>
+<p>先前有提到 GWT 因使用 Java 加上 Google 釋出的相關開發工具，而編寫 GWT 最便利的方式就是用在 Java 世界裡被廣泛使用的 Eclipse 開發環境。Eclipse 具有非常多內建的工具，加上它的套件管理系統跟維護社群，開發者可以很輕易的使用現有的工具來達到有效開發的目的。本文所使用的工具是 Eclipse 所以基本上只要環境支援 Eclipse 即可。以下範例將使用 Eclipse 3.6。</p>
+<h3>安裝 Eclipse</h3>
+<p>請先至 Eclipse <a target="_blank" href="https://www.eclipse.org/downloads/">官網</a>，依照您的作業系統下載安裝檔，並執行安裝，安裝過程相當容易，請依照安裝套件下一步即可。</p>
+<p>若您的系統為 Ubuntu 即可使用以下指令直接安裝即可。</p>
+<pre>apt-get install eclipse</pre>
+<h3>開啟相關套件</h3>
+<p>開啟 Eclipse，於上排功能列，選擇 [Help -&gt; Install New Software] 將會開啟如下圖操作畫面，並於 Work with 欄位輸入以下網址 <a target="_blank" href="https://dl.google.com/eclipse/plugin/3.6">https://dl.google.com/eclipse/plugin/3.6</a>。</p>
+<img alt="img1" src="images/RC/GWT/img1.png" height="323" width="550" />
+<p>▲ 圖1</p>
+<p>若您的 Eclipse 的版本不是 3.6，則您可依具您的版本號輸入不同的網址。例如： 若為 Eclipse 3.5 則可輸入 <a target="_blank" href="https://dl.google.com/eclipse/plugin/3.5">https://dl.google.com/eclipse/plugin/3.5</a>。 在短暫的搜尋之後，Eclipse 會列出幾個套件。為了簡化流程，讀者可以全部勾選。安裝好了以後，重啓 Eclipse 即可。</p>
+<h2>使用說明</h2>
+<p>以下的篇幅為說明 GWT 的基本架構跟用法。首先新創一個 "Web Application Project" 的專案。</p>
+<img alt="img2" src="images/RC/GWT/img2.png" height="324" width="550" />
+<p>▲ 圖2</p>
+<p>輸入想要的專案名稱.本文將會用 test 這個名字。</p>
+<img alt="img3" src="images/RC/GWT/img3.png" height="324" width="550" />
+<p>▲ 圖3</p>
+<p>Google 的 Eclipse Plugin 在生成新的專案時會產生一個範例專案。我們先試著執行這個專案以確定安裝程序都順利。若是一切都順利（設定維持預設），讀者應該可以開啓瀏覽器後輸入 "https://127.0.0.1:8888/Test.html?gwt.codesvr=127.0.0.1:9997"，即可看到以下畫面：</p>
+<img alt="img4" src="images/RC/GWT/img4.png" height="285" width="467" />
+<p>▲ 圖4</p>
+<p>輸入名字後會看到以下畫面：</p>
+<img alt="img5" src="images/RC/GWT/img5.png" height="466" width="463" />
+<p>▲ 圖5</p>
+<p>接下來，我們試著理解這個 GWT 專案是如何運作的。</p>
+<p>開啟 Eclipse 的 Package Explorer 至您的專案下，以本專案 test 下的 src/com.kent.app.clent 開啓 Test.java。可以先注意到 Test 這個類別是實作 EntryPoint 這個介面。在一個 GWT 專案中，實作 EntryPoint 的類別會是第一個被載入的程式。從實作的函式 onModuleLoad 這個名稱就可以猜到一二。現在我們進入這個函式裡一探究竟。</p>
+<p>曾經有 Java 使用者圖形界面 (GUI) 編程經驗的讀者，應該會對代碼有一定的熟悉感，因為 GWT 的內建函式庫有承襲一些 Java GUI 編程的規律。內建的 Button 類別在宣告以後，可以在傳入一個 ClickHandler 的類別來決定使用者按完按鈕後的後續動作。</p>
+<p>在 GWT 裡，有一個叫做 RootPanel 的物件，此物件，在 GWT 主要用來放置各種界面工具 (widget)。透過 RootPanel.get("x").add(widget) 這行代碼，GWT 會把 widget 加到頁面上，更具體地說，加到HTML id 是 "x" 的地方 (主頁HTML的代碼可以在war這個資料夾下找到)。GWT 有各式各樣的內建界面工具可以使用，在本實作專案中我們只有用到少數幾個，有興趣的讀者可以自己玩玩看不同的工具。</p>
+<p>最後，筆者將介紹一下 GWT 的 RPC (遠端過程調用)。作為一個網路應用程式，客戶端程式需要與伺服器溝通。 GWT 的 RPC 便是要讓應用程式透過 HTTP 交換 Java 物件的這個過程更加容易。您也許注意到這行代碼：</p>
+<pre>private final GreetingServiceAsync greetingService = GWT
+            .create(GreetingService.class);
+</pre>
+<p>此外，之後程序也有使用到 greetService 這個變數。這個便是應用到 RPC 的實例。在客戶端，開發者需要編寫 stub 函式，用意在於讓程式知道函式的各種輸入（請看GreetingServiceAsync.java）。實際的處理代碼則是編寫在伺服器端（見GreetingServiceImpl.java）。注意，這個伺服器端的代碼需要繼承 RemoteServiceServlet，然後，實作 GreetingService。</p>
+<p>RemoteServiceServlet 的繼承使得程序員不需要處理序列化的問題而交由內建已經實做的類別來執行以增加開發效率跟降低出錯率。透過這樣的方式,開發人員能夠輕鬆寫出與伺服器互動的程序。</p>
+<p>*以下是我的專案的代碼:</p>
+<pre>package com.kent.app.client;
+
+import com.kent.app.shared.FieldVerifier;
+import com.google.gwt.core.client.EntryPoint;
+import com.google.gwt.core.client.GWT;
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.event.dom.client.KeyCodes;
+import com.google.gwt.event.dom.client.KeyUpEvent;
+import com.google.gwt.event.dom.client.KeyUpHandler;
+import com.google.gwt.user.client.rpc.AsyncCallback;
+import com.google.gwt.user.client.ui.Button;
+import com.google.gwt.user.client.ui.DialogBox;
+import com.google.gwt.user.client.ui.HTML;
+import com.google.gwt.user.client.ui.Label;
+import com.google.gwt.user.client.ui.RootPanel;
+import com.google.gwt.user.client.ui.TextBox;
+import com.google.gwt.user.client.ui.VerticalPanel;
+
+/**
+ * Entry point classes define onModuleLoad().
+ */
+public class Test implements EntryPoint {
+    /**
+     * The message displayed to the user when the server cannot be reached or
+     * returns an error.
+     */
+    private static final String SERVER_ERROR = "An error occurred while "
+            + "attempting to contact the server. Please check your network "
+            + "connection and try again.";
+
+    /**
+     * Create a remote service proxy to talk to the server-side Greeting service.
+     */
+    private final GreetingServiceAsync greetingService = GWT
+            .create(GreetingService.class);
+
+    /**
+     * This is the entry point method.
+     */
+    public void onModuleLoad() {
+        final Button sendButton = new Button("Send");
+        final TextBox nameField = new TextBox();
+        nameField.setText("GWT User");
+        final Label errorLabel = new Label();
+
+        // We can add style names to widgets
+        sendButton.addStyleName("sendButton");
+
+        // Add the nameField and sendButton to the RootPanel
+        // Use RootPanel.get() to get the entire body element
+        RootPanel.get("nameFieldContainer").add(nameField);
+        RootPanel.get("sendButtonContainer").add(sendButton);
+        RootPanel.get("errorLabelContainer").add(errorLabel);
+
+        // Focus the cursor on the name field when the app loads
+        nameField.setFocus(true);
+        nameField.selectAll();
+
+        // Create the popup dialog box
+        final DialogBox dialogBox = new DialogBox();
+        dialogBox.setText("Remote Procedure Call");
+        dialogBox.setAnimationEnabled(true);
+        final Button closeButton = new Button("Close");
+        // We can set the id of a widget by accessing its Element
+        closeButton.getElement().setId("closeButton");
+        final Label textToServerLabel = new Label();
+        final HTML serverResponseLabel = new HTML();
+        VerticalPanel dialogVPanel = new VerticalPanel();
+        dialogVPanel.addStyleName("dialogVPanel");
+        dialogVPanel.add(new HTML("Sending name to the server:"));
+        dialogVPanel.add(textToServerLabel);
+        dialogVPanel.add(new HTML("Server replies:"));
+        dialogVPanel.add(serverResponseLabel);
+        dialogVPanel.setHorizontalAlignment(VerticalPanel.ALIGN_RIGHT);
+        dialogVPanel.add(closeButton);
+        dialogBox.setWidget(dialogVPanel);
+
+        // Add a handler to close the DialogBox
+        closeButton.addClickHandler(new ClickHandler() {
+            public void onClick(ClickEvent event) {
+                dialogBox.hide();
+                sendButton.setEnabled(true);
+                sendButton.setFocus(true);
+            }
+        });
+
+        // Create a handler for the sendButton and nameField
+        class MyHandler implements ClickHandler, KeyUpHandler {
+            /**
+             * Fired when the user clicks on the sendButton.
+             */
+            public void onClick(ClickEvent event) {
+                sendNameToServer();
+            }
+
+            /**
+             * Fired when the user types in the nameField.
+             */
+            public void onKeyUp(KeyUpEvent event) {
+                if (event.getNativeKeyCode() == KeyCodes.KEY_ENTER) {
+                    sendNameToServer();
+                }
+            }
+
+            /**
+             * Send the name from the nameField to the server and wait for a response.
+             */
+            private void sendNameToServer() {
+                // First, we validate the input.
+                errorLabel.setText("");
+                String textToServer = nameField.getText();
+                if (!FieldVerifier.isValidName(textToServer)) {
+                    errorLabel.setText("Please enter at least four characters");
+                    return;
+                }
+
+                // Then, we send the input to the server.
+                sendButton.setEnabled(false);
+                textToServerLabel.setText(textToServer);
+                serverResponseLabel.setText("");
+                greetingService.greetServer(textToServer,
+                        new AsyncCallback() {
+                            public void onFailure(Throwable caught) {
+                                // Show the RPC error message to the user
+                                dialogBox
+                                        .setText("Remote Procedure Call - Failure");
+                                serverResponseLabel
+                                        .addStyleName("serverResponseLabelError");
+                                serverResponseLabel.setHTML(SERVER_ERROR);
+                                dialogBox.center();
+                                closeButton.setFocus(true);
+                            }
+
+                            public void onSuccess(String result) {
+                                dialogBox.setText("Remote Procedure Call");
+                                serverResponseLabel
+                                        .removeStyleName("serverResponseLabelError");
+                                serverResponseLabel.setHTML(result);
+                                dialogBox.center();
+                                closeButton.setFocus(true);
+                            }
+                        });
+            }
+        }
+
+        // Add a handler to send the name to the server
+        MyHandler handler = new MyHandler();
+        sendButton.addClickHandler(handler);
+        nameField.addKeyUpHandler(handler);
+    }
+}</pre>
+<h2>結論</h2>
+<p>本文介紹了 GWT 的一些相關知識以及基本的運作結構。透過 GWT，開發人員可以利用 Java 編寫前端跟後端的代碼。這使得代碼的統一性比混合式的架構更好。</p>
+<h2>後續</h2>
+<p>下次，筆者將帶讀者實踐一個利用更多 GWT 函式庫的專案。</p>
+<h2>參考資料</h2>
+<ol>
+<li>GWT 官方網站<br /><a target="_blank" href="https://developers.google.com/web-toolkit/">https://developers.google.com/web-toolkit/</a></li>
+<li>GWT RPC 官方介紹<br /><a href="https://developers.google.com/web-toolkit/doc/latest/tutorial/RPC">https://developers.google.com/web-toolkit/doc/latest/tutorial/RPC</a></li>
+</ol>
+			<!-- Show relate article -->
+				<!-- end -->
+		<div class="article_note">
+		<!-- Add tags use metakey, and show OSSF Newsletter tag: OSSFNL+NUM-->
+		<br><br> <hr style='border: 1px dashed #D2DADB;'><b>自由軟體鑄造場電子報&nbsp;:</b>&nbsp;<a href='previous-issue%3Ftask=view&amp;id=795.html'>第 197 期 GWT (1) - 使用 GWT Eclipse Plugin 與 GWT 基礎架構</a><br>				<!-- End -->
+					<br>
+					<b>分類: </b><a href="tw/foss-programs.html">				源碼秘技					</a>				</div>
+			 <!-- AddThis Button BEGIN ID 3001 is the front page article -->
+     			<br><br>
+       <div class="addthis_toolbox addthis_default_style addthis_32x32_style">
+       <a class="addthis_button_preferred_1"></a>
+       <a class="addthis_button_preferred_2"></a>
+       <a class="addthis_button_preferred_3"></a>
+       <a class="addthis_button_preferred_4"></a>
+       <a class="addthis_button_compact"></a>
+       <a class="addthis_counter addthis_bubble_style"></a>
+       </div>
+       <script type="text/javascript">var addthis_config = {"data_track_clickback":true};</script>
+       <script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js#pubid=openfoundry"></script>
+       <!-- AddThis Button END -->
+     <br>
+		<div class="totop" ><a class="rt-totop" href="index.php%3Foption=com_content&amp;task=view&amp;id=8725&amp;Itemid=4%3Bisletter=1.html#" style="outline: medium none;">↑ Top</a></div>
+            <!-- AddThis Button END -->
+
+		<script type="text/javascript">
+var jcomments=new JComments(8725, 'com_content','https://openfoundry.org/index.php?option=com_jcomments&amp;tmpl=component&amp;lang=');
+jcomments.setList('comments-list');
+</script>
+<div id="jc">
+<div id="comments"><h4>評論<a class="refresh" href="index.php%3Foption=com_content&amp;task=view&amp;id=8725&amp;Itemid=4%3Bisletter=1.html#" title="重新整理評論列表" onclick="jcomments.showPage(8725,'com_content',0);return false;">&nbsp;</a></h4>
+<div id="comments-list" class="comments-list">
+        <div class="even" id="comment-item-292"><div class="rbox"><div class="rbox_tr"><div class="rbox_tl"><div class="rbox_t">&nbsp;</div></div></div><div class="rbox_m">
+<div class="comment-avatar"><img src="http://www.gravatar.com/avatar.php?gravatar_id=24d2ef8dfc2ba5361ddb2f6b74dfec7c&amp;default=https%3A%2F%2Fwww.openfoundry.org%2Fcomponents%2Fcom_jcomments%2Fimages%2Fno_avatar.png" alt="" /></div>
+<div class="comment-box avatar-indent">
+<span class="comments-vote">
+	<span id="comment-vote-holder-292">
+<a href="index.php%3Foption=com_content&amp;task=view&amp;id=8725&amp;Itemid=4%3Bisletter=1.html#" class="vote-good" title="優質的評論" onclick="jcomments.voteComment(292, 1);return false;"></a><a href="index.php%3Foption=com_content&amp;task=view&amp;id=8725&amp;Itemid=4%3Bisletter=1.html#" class="vote-poor" title="差勁的評論" onclick="jcomments.voteComment(292, -1);return false;"></a>
+<span class="vote-none">0</span>
+	</span>
+</span>
+<a class="comment-anchor" href="tw/foss-programs/8725-gwt.html#comment-292" id="comment-292">#1</a>
+<span class="comment-author">Apostal Chen</span>
+<span class="comment-date">2012-06-13 15:29</span>
+<div class="comment-body" id="comment-body-292">在eclipse創建一個goo<span style="font-size:0px;padding:0;margin:0;"> </span>gle web application project在你的範例為te<span style="font-size:0px;padding:0;margin:0;"> </span>st 文章裡說到執行<br /><br /><a href="https://127.0.0.1:8888/Test.html?gwt.codesvr=127.0.0.1:9997" target="_blank" rel="external nofollow">127.0.0.1:8888/.../</a><br /><br />就可得到測試首頁<br /><br />但似乎少了一點說明<br />如何啟動dev_appserv<span style="font-size:0px;padding:0;margin:0;"> </span>er並關聯到test web project 不然web server如何知道test project<br />在哪裡 還望你做說明 謝謝</div>
+</div><div class="clear"></div>
+</div><div class="rbox_br"><div class="rbox_bl"><div class="rbox_b">&nbsp;</div></div></div></div>
+</div>
+</div>
+<div id="comments-list-footer"><a class="refresh" href="index.php%3Foption=com_content&amp;task=view&amp;id=8725&amp;Itemid=4%3Bisletter=1.html#" title="重新整理評論列表" onclick="jcomments.showPage(8725,'com_content',0);return false;">重新整理評論列表</a></div>
+</div>
+<div id="comments-footer" align="center"><a href="http://www.joomlatune.com" title="JComments" target="_blank">JComments</a></div>
+<script type="text/javascript">
+jcomments.setAntiCache(1,0,0);
+</script> 
+</div>	</div>
+</div>
+
+		                            </div>
+									<div class="clear"></div>
+								</div>
+								<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+							</div>
+							</div>
+                                                    </div>
+                                            </div>
+                                <div class="rt-grid-3 rt-pull-9">
+                <div id="rt-sidebar-a">
+                                    <div class="square4">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<ul class="menu"><li class="item56"><a href="tw/previous-issue.html"><span>電子報總覽</span></a></li><li class="item55"><a href="tw/about-newsletter.html"><span>關於本報</span></a></li></ul>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<ul class="menu"><li class="item115"><a href="tw/foss-news.html"><span>源碼新聞</span></a></li><li class="item141"><a href="tw/case-job.html"><span>接案 / 工作</span></a></li></ul>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+        	                <div class="square1">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-title"><h2 class="title">專欄總覽</h2></div>
+						<div class="clear"></div>
+		                						<div class="module-content">
+		                	<ul class="menu"><li class="item37"><a href="tw/tech-column.html"><span>技術專欄</span></a></li><li class="item40"><a href="tw/foss-programs.html"><span>源碼秘技</span></a></li><li class="item35"><a href="tw/legal-article-.html"><span>法律專欄</span></a></li><li class="item154"><a href="tw/foss-forum.html"><span>自由專欄</span></a></li><li class="item162"><a href="tw/enterprise-application.html"><span>企業應用</span></a></li><li class="item44"><a href="tw/foss-projects.html"><span>源碼專案</span></a></li></ul>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		                <div class="square1">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<p style="text-align: center;"><a href="news%3Fformat=feed&amp;type=rss" target="_black"><img src="images/M_images/news-rss-feed.png" border="0" /></a><br /><a href="https://www.openfoundry.org/rss-feed/Newsletter" target="_black"><img src="images/M_images/newsletter-rss-feed.png" border="0" /></a></p>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		
+                </div>
+            </div>
+
+                    <div class="clear"></div>
+                </div>
+            </div>
+																													</div>
+										<div id="rt-copyright">
+						<div class="rt-grid-12 rt-alpha rt-omega">
+                        <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<div id="desktop-mobile-version-switch"><span id="mobile-version" class="version-switch"><a href="index.php%3Foption=com_content&amp;task=view&amp;id=8725&amp;Itemid=4%3Bisletter=1.html#">行動版</a></span></div>
+自由軟體鑄造場 製作 最佳瀏覽狀態：IE7或Firefox2.0以上 (建議使用Firefox) ‧ 解析度1024*768 <br /> <strong>E-Mail</strong>：<a href="mailto:contact@openfoundry.org">contact@openfoundry.org</a> <strong>Address</strong>：台北市南港區研究院路2段128號 中央研究院資訊科學研究所 . <a href="privacy-policy.html">隱私權條款</a>. <a href="terms-of-use.html">使用條款</a><span style="position: relative; top: 8px; margin-top: -8px;"> <a href="about/8101.html"><img src="images/M_images/rss-feed-all.png" border="0" /></a></span>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+        	
+</div>
+						<div class="clear"></div>
+					</div>
+					<div class="rt-footer-bottom-wrap"><div class="rt-footer-bottom"><div class="rt-footer-bottom2"><div class="rt-footer-bottom3"></div></div></div></div>
+									</div></div></div>
+				<div class="rt-surround-bottom"><div class="rt-surround-bottom2"><div class="rt-surround-bottom3"></div></div></div>
+							</div>
+		</div>
+		<!--
+		<script id="aptureScript">
+						(function (){var a=document.createElement("script");a.defer="true";a.src="http://www.apture.com/js/apture.js?siteToken=vsJttrn";document.getElementsByTagName("head")[0].appendChild(a);})();
+     </script>
+-->
+
+<!-- Piwik -->
+<!-- 			<script type="text/javascript">
+			  var _paq = _paq || [];
+		  _paq.push(["trackPageView"]);
+		  _paq.push(["enableLinkTracking"]);
+
+		    (function() {
+			        var u=(("https:" == document.location.protocol) ? "https" : "https") + "://www.openfoundry.org/piwik/";
+				    _paq.push(["setTrackerUrl", u+"piwik.php"]);
+				    _paq.push(["setSiteId", "1"]);
+				        var d=document, g=d.createElement("script"), s=d.getElementsByTagName("script")[0]; g.type="text/javascript";
+				        g.defer=true; g.async=true; g.src=u+"piwik.js"; s.parentNode.insertBefore(g,s);
+					  })();
+		  </script> -->
+<!-- End Piwik Code -->
+	</body>
+</html>

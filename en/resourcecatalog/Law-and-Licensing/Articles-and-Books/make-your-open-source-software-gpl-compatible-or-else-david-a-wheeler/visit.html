@@ -1,0 +1,1675 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html lang="en-US">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>Make Your Open Source Software GPL-Compatible. Or Else.</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="author" content="David A. Wheeler">
+<meta http-equiv="copyright" content="2001-2007">
+<meta name="keywords" content="GPL, General Public License, GPL-compatible, GPL compatible, GPL incompatible, development, license proliferation, open source, open source software, free software, libre software, libre, Linux, freedom, software, free, software free, software libre, GPLv2, GPLv3, release, FLOSS, FOSS, FLOS, OSS, FS, OSS/FS, GNU, GNU/Linux, Microsoft, Wheeler, David A. Wheeler, David Wheeler, Creative Commons, CC-BY-SA, GFDL, GNU Free Documentation License, OPL, Fedora, Wikipedia">
+<meta name="description" content="This essay argues that developers of open source software / Free Software should use an existing widely-used license compatible with the General Public License (GPL). It also argues against FLOSS license proliferation.">
+<meta name="subject" content="This essay argues that developers of open source software / Free Software should use an existing widely-used license compatible with the General Public License (GPL). It also argues against FLOSS license proliferation.">
+<meta name="generator" content="vim">
+<link rel="stylesheet" type="text/css" href="https://dwheeler.com/essays/paper.css">
+</head>
+
+<body bgcolor="#FFFFFF">
+<center>
+<h1 class="title">Make Your Open Source Software GPL-Compatible. Or Else.</h1>
+<h2 class="author">by <a href="https://dwheeler.com/contactme.html">David A. Wheeler</a></h2>
+<h2 class="date">Released 2002-05-06, revised 2014-02-16</h2>
+</center>
+
+
+<p>
+<i>
+This essay argues that developers of Free-libre /
+open source software (FLOSS, aka OSS/FS) should use
+an existing widely-used license compatible with the
+General Public License (GPL), particularly
+the GPL, LGPL, MIT/X, or BSD-new licenses.
+It also argues against FLOSS license proliferation; where possible,
+you should only select FLOSS licenses from that list (with the possible
+addition of Apache 2.0).
+This article was previously printed, with a number of changes, as
+an article at OsOpinion.
+<!--
+<a href="http://www.osopinion.com/perl/story/17201.html">
+http://www.crmdaily.com/perl/story/17201.html
+-->
+</i>
+
+<h1>Introduction</h1>
+<p>
+This essay is a call to all those developers who are developing
+<a href="http://www.gnu.org/philosophy/free-sw.html">Free-libre</a> /
+<a href="http://www.opensource.org/osd.html">open source software</a>
+(FLOSS, aka FOSS or OSS/FS).
+Developers: Please, where possible, <b>use an existing widely-used (standard)
+license for your software, one that is known to be compatible with the
+<a href="http://www.fsf.org/licenses/gpl.html">GNU General Public License (GPL)</a></b>.
+In particular, please select the
+<a href="http://www.fsf.org/licenses/gpl.html">GPL</a>,
+<a href="http://www.fsf.org/licenses/lgpl.html">LGPL</a>,
+the
+<a href="http://www.opensource.org/licenses/mit-license.html">MIT/X</a>, or
+<a href="http://www.opensource.org/licenses/bsd-license.html">BSD-new</a>
+license
+(or possibly the Apache 2.0 license).
+If you create your own license -
+<a href="http://www.oreilly.com/catalog/opensources/book/perens.html">and
+please try very hard to not create a new license</a> -
+at least make sure that your new license is compatible with the GPL.
+You don&#8217;t need to <i>use</i> the GPL -
+not even the
+<a href="http://www.fsf.org">Free Software Foundation (FSF)</a>,
+the developer of the GPL and its most avid proponent,
+claims that absolutely all software must be GPL-licensed.
+(For example, see
+<a href="http://lwn.net/2001/0301/a/rms-ov-license.php3">
+the endorsement by FSF&#8217;s Richard Stallman of Ogg Vorbis license
+changes</a>, and note that the FSF developed and maintains the
+<a href="http://www.gnu.org/licenses/why-not-lgpl.html">
+Lesser GPL</a> as a compromise license.)
+<!--
+The
+<a href="http://www.vorbis.com/press/20010226.txt">Vorbis press release</a>
+makes it clear this was LGPL->BSD, but the text clearly states that
+GPL is _NOT_ their end-goal, which is my point.
+-->
+But make sure that your FLOSS software&#8217;s license is GPL-compatible,
+i.e., that
+<a href="http://www.gnu.org/licenses/gpl-faq.html#WhatDoesCompatMean">
+you can combine your code with code released under the GPL into
+one larger program</a>, and select one of the &#8220;standard&#8221; FLOSS licenses.
+The rest of this essay explains why and how to do so.
+
+<h1>GPL-incompatible licenses risk lack of support (GPL most popular)</h1>
+<p>
+Why a GPL-compatible license?  Because if your FLOSS
+project isn&#8217;t GPL-compatible,
+there&#8217;s a significant risk that you&#8217;ll fail to receive
+enough support from other developers to sustain your project.
+
+<p>
+Many FLOSS developers prefer the GPL, because they believe
+the GPL (1) provides
+a better quid-pro-quo for developers,
+(2) establishes collaboration between people and companies
+better than consortia,
+(3) <a href="http://www.linuxdevices.com/articles/AT4739816141.html">
+protects their work in today&#8217;s less-than-kind environment</a>,
+and/or (4) encourages increasing the amount of
+<a href="http://www.gnu.org/philosophy/free-sw.html">Free Software</a>.
+Examples of such thinking include
+<a href="http://tuxdeluxe.org/node/99">Jeremy Allison&#8217;s
+&#8220;Freedom Fighters&#8221;</a> (which points out that NetApp&#8217;s improvements to
+BSD-licensed code are not contributed back but its improvements to
+GPL-licensed code have been),
+<a href="http://www.itpro.co.uk/605847/strip-mining-of-open-source">ITPro&#8217;s &#8220;Strip Mining of Open Source&#8221;</a>, and
+<a href="http://lwn.net/Articles/235397/">
+Eben Moglen&#8217;s claims that BSD-style licenses are
+&#8220;a really good license for your competitor to use&#8221;</a>.
+Moglen&#8217;s point is that he believes a business should use a license
+which requires others to give back their changes (like the GPL)
+if it does not want to provide a free lunch to its competitors.
+<a href="http://www.bbc.com/news/technology-18419231">Linus Torvalds'
+BBC interview</a> explains why some developersa and organizations
+like the GPL (in his case version 2)</a>, as he believes it
+"is a very simple 'tit-for-tat' model: I'll give you my improvements,
+if you promise to give your improvements back.  It's a fundamentally fair licence, and you don't have to worry about somebody else then coming along and taking advantage of your work.  And the thing that then seemed to surprise people, is that that notion of 'fairness' actually scales very well...  if your competition doesn't put in the same kind of effort that you do, then they can't reap the same kinds of rewards you can: if they don't contribute, they don't get to control the direction of the project, and they won't have the same kind of knowledge and understanding of it that you do".
+Many people <a href="http://www.gnu.org/philosophy/pragmatic.html">argue
+for the GPL</a>, though
+the view that the GPL is a good or necessary license is
+<i>not</i> a universally-held position by FLOSS developers
+(e.g., see <a href="http://www.freebsd.org/doc/en_US.ISO8859-1/articles/bsdl-gpl/index.html">Montague</a>).
+The paper
+<a href="http://www.econ-pol.unisi.it/dipartimento/it/node/753">"Copyright vs. Copyleft Licensing and Software Development" (Massimo D'Antoni and Maria Alessandra Rossi)</a>
+developed a theoretical model and found that, according to their model,
+"1. the GPL is better suited than the BSD to coordinate and encourage
+joint effort[s] by many (possibly small) developers
+[e.g., end-user application development]; while
+2. the BSD is better suited than the GPL to generate positive spillovers
+to other developers, when no feedback is required
+[e.g., standard-setting]."
+
+<p>
+But even if you don&#8217;t like the GPL yourself, many potential co-developers
+do... and your project is more likely to be successful if you accommodate them.
+Usually even avid GPL proponents will
+support FLOSS programs with other GPL-compatible licenses, if you
+choose to not use the GPL.
+For example, the FSF has long supported the X Window System (X11),
+even though it&#8217;s released under the MIT/X license.
+However, if your license isn&#8217;t GPL-compatible,
+developers may create a competitor instead so
+they can take advantage of GPL&#8217;ed code.
+
+<p>
+And there&#8217;s a <i>lot</i> of GPL&#8217;ed code to take advantage of:
+<ol>
+<li>
+Freshmeat.net (now <a href="http://freecode.com">freecode.com</a>)
+reported on
+<a href="https://dwheeler.com/frozen/freshmeat-stats-20031110.html">November 10, 2003</a>
+that 69.66%
+of the 32,592
+software branches (packages) it tracked are GPL-licensed
+(the next two most popular licenses were the LGPL, 5.29%,
+and the BSD licenses which combined to 4.82%).
+Some Freshmeat branches are proprietary, but clearly the GPL is the
+leading FLOSS license in this set.
+<a href="http://freshmeat.net/stats/#license">You can also see the
+latest Freshmeat.net statistics.</a>
+<li>
+SourceForge.net reported on
+<a href="https://dwheeler.com/frozen/sourceforge-stats-20031110.html">November 10, 2003</a>
+that the GPL accounted for 71% of the 45,736
+projects it hosted with OSI-approved open source licenses
+(next most popular were the LGPL, 10%, and the BSD licenses, 7%).
+Not all SourceForge projects are active or have produced much code,
+but nevertheless this gives reasonable evidence that
+the GPL is widely used.
+<a href="http://sourceforge.net/softwaremap/trove_list.php?form_cat=14">You can also see the latest SourceForge.net statistics.</a>
+<!--
+ license = # projects / total
+ GPL = 32641 / 45736 = 71%
+ LGPL = 4889 / 45736 = 11%
+ BSD = 3261  / 45736 = 7%
+ Artistic = 1061 / 45736 / 45736
+ MIT = 807 / 45736
+ Apache = 800 / 45736
+
+
+Total =
+98+ 800+ 37+ 1061+ 6+ 3261+ 214+ 9+ 9+ 2+ 0+ 32641+ 4889+ 5+ 61+ 19+ 33+ 0+ 807+ 5+ 0+ 255+ 470+ 1+ 22+ 6+ 0+ 13+ 151+ 17+ 156+ 72+ 189+ 0+ 8+ 6+ 8+ 42+ 37+ 1+ 29+ 6+ 18+ 30+ 2+ 219+ 21
+= 45736
+
+-->
+Another way to get SourceForge statistics - and many others - is through
+<a href="http://ossmole.sourceforge.net/">FLOSSmole</a>.
+FLOSSmole is a tool for querying data about FLOSS repositories,
+and they make it easy to analyze data from many sources.
+
+<li>
+In my paper
+<a href="https://dwheeler.com/sloc"><i>More than a Gigabuck:
+Estimating GNU/Linux&#8217;s Size</i></a>,
+I found that Red Hat Linux, one of the most popular GNU/Linux
+distributions, had over 30 million physical source lines of code
+in version 7.1, and that
+<a href="https://dwheeler.com/sloc/redhat71-v1/summary">
+50.36% of the lines of code were licensed solely under the GPL</a>
+(the next most common were the MIT license, 8.28%, and the LGPL, 7.64%).
+If you consider the lines that are dual licensed (licensed under both
+the GPL and another license, allowing users and developers to pick
+the license to use), the total lines of code under the GPL
+accounts for 55.3% of the total.
+<li>
+<a href="http://savannah.gnu.org/docs/?item=How_is_the_registration_process.txt">Savannah</a> hosts 1,986 mostly-GPL projects (as of November 11, 2003) and
+strongly encourages GPL-compatible licenses.
+<li>
+The <a href="http://www.gnu.org/directory">FSF&#8217;s free software directory</a>
+lists FLOSS software.
+On September 24, 2002, I downloaded their entire directory, and found
+that it had 1550 entries, of which 1363 (87.9%) used the GPL license,
+103 (6.6%) used the LGPL license,
+32 (2.0%) used a BSD or BSD-like license, 29 (1.9%) used the Artistic license,
+5 (0.3%) used the MIT license, with other licenses being even rarer.
+<!--
+ Here are the exact results:
+   1363	[GPL]
+    103	[LGPL]
+     30	[BSD]
+     29	[Artistic]
+      5	[MIT]
+      3	[Apache]
+      2	[QPL]
+      2	[MIT/X11]
+      1	[Zope]
+      1	[X11/MIT]
+      1	[Perl]
+      1	[OpenSource]
+      1	[MPL]
+      1	[http://www.opensource.org/lice]
+      1	[GPL/MPL]
+      1	[GPL/LGPL]
+      1	[Freeware]
+      1	[BSD-type]
+      1	[BSD-like]
+      1	[bison]
+      1	[]
+-->
+The FSF prefers the GPL license, so the FSF directory statistic
+may be biased in the percentage of GPLed software it registers, but
+the directory still provides strong additional
+evidence that the GPL is a widely used license for FLOSS.
+
+<li>
+Eric S. Raymond&#8217;s
+&#8220;Homesteading the Noosphere&#8221; (section 2) reported that in July 1997
+about half the software packages with explicit license terms
+at North Carolina&#8217;s Metalab (formerly Sunsite) used the GPL.
+At the time Metalab was the largest FLOSS software archive.
+<li>The
+<a href="http://widi.berlios.de/paper/study.html">Who is Doing It (WIDI)</a>
+study examined the BerliOS SourceWell list of applications.
+Of the 1136 applications tracked at that time,
+the top three were the
+GPL at 85.9% (976/1136), LGPL at 4.6% (52/1136), and BSD-style at
+2.8% (32/1136).
+<li>
+What about what&#8217;s <i>used</i>, rather than what&#8217;s <i>developed</i>?
+A
+<a href="http://terrybollinger.com/index.html#dodfoss">
+2003 MITRE survey of U.S. Department of Defense (DoD) use of FLOSS</a>
+found that 52% of the reported FLOSS applications were released under the GPL;
+the next-largest licenses were BSD (6%), Apache (5%), various &#8220;Community&#8221; (4%),
+and LGPL (3%).
+Even if you claimed that all non-GPL licenses were simply BSD variants
+(which is not true), the GPL had a simple majority of the licenses of
+FLOSS in use.
+<li><a href="http://www.firstmonday.org/issues/issue9_11/shimizu/">
+A survey of FLOSS developers in Asia by Shimizu et al. in 2003-2004</a>
+found that across Asia, 64.7% preferred &#8220;GPL-compatible&#8221; licenses
+(presumably they meant GPL or LGPL licenses)
+while 15% preferred BSD-style, and
+in Japan, 42% preferred &#8220;GPL-compatible&#8221; licenses
+while 30.2% preferred BSD style licenses.
+<li>
+<a href="http://osrc.blackducksoftware.com/data/licenses/">
+Black Duck Software's "Open Source License Data"</a> reports that
+the most popular licenses (in order for those above 2%) are
+GPLv2 (32.65%), Apache 2.0 (12.84%), GPLv3 (11.62%), MIT (11.28%),
+BSD license 2.0 (6.83%), Artistic (6.27%),
+LGPL 2.1 (6.19%), and LGPL 3.0 (2.62%).
+<a href="http://www.blackducksoftware.com/resources/data/top-20-open-source-licenses">Here's the top 20 licenses in Black Duck's database</a>.
+<li>
+<a href="https://lwn.net/Articles/547400/">Surveying open source licenses
+(lwn.net article, April 2013)</a>
+discusses license survey challenges (it's hard to do)
+and some efforts to measure licenses anyway.
+The article includes results from Walter van Holst,
+who examined the software index
+Freecode (formerly Freshmeat)
+and determined that in 2013
+58% of the OSS code uses some version of the GPL.
+</ol>
+
+<p>
+<a href="http://producingoss.com/en/index.html">
+Karl Fogel&#8217;s
+&#8220;Producing Open Source Software:
+How to Run a Successful Free Software Project</a>
+says that
+<a href="http://producingoss.com/en/license-compatibility.html">
+&#8220;If you want your code to be able to be mixed freely with GPLed code &mdash;
+and there&#8217;s a lot of GPLed code out there - 
+you should pick a GPL-compatible license.&#8221;</a>
+
+<p>
+You ignore this amount of code and support at your project&#8217;s peril.
+
+<h1>Other projects and license authors show GPL compatibility important</h1>
+<p>
+Want more evidence that GPL compatibility is important?
+Several large, high-profile FLOSS projects have undergone often-painful
+changes to make themselves GPL-compatible, and the same is true for
+organizations that write licenses:
+<ol>
+<li>The widely-used
+<a href="http://www.python.org/2.1/fsf.html">Python</a> language
+underwent major license changes in 2001 so that
+version 2.1 and on would be GPL-compatible.
+<li>The popular text editor
+<a href="http://vim.sourceforge.net/about.php">vim</a>
+became GPL-compatible, after a
+<a href="http://lists.debian.org/debian-legal/2002/debian-legal-200201/msg00000.html">long legal discussion</a>.
+Linux Journal magazine has awarded vim as the most popular editor
+multiple times, so this isn&#8217;t an obscure program.
+<li><a href="http://www.mozilla.org/MPL/relicensing-faq.html">Mozilla</a>
+also underwent a complex relicensing scheme, again, to resolve
+perceived incompatibilities between their older licenses (particularly
+the MPL) and the GPL.
+As discussed below, they eventually rewrote their MPL license to make it
+GPL-compatible.
+<li><a href="http://www.zope.org">Zope</a> also transitioned from their
+&#8220;Zope Public License version 1&#8221; (which was GPL-incompatible) to a
+GPL-compatible license.
+<li>The University of California at Berkeley released a large quantity of
+code (the Berkeley Software Distribution, BSD)
+that became the basis of the various *BSD systems.
+The original BSD license included an awkward advertizing requirement
+that was GPL-incompatible.
+After many requests (including notes that the license was GPL-incompatible),
+Berkeley decided to change the license in 1999, making
+this code GPL-compatible
+(the
+<a href="http://www.gnu.org/philosophy/bsd.html">FSF has a page
+discussing the original BSD advertizing clause</a> from their perspective).
+<li>Apache changed their license to &#8220;version 2.0&#8221;, and one of their
+goals was to be &#8220;compatible with other open source licenses,
+such as the GPL&#8221;.
+Unfortunately, the
+<a href="http://www.apache.org/licenses">Apache Software Foundation
+believes Apache License version 2.0 is compatible with the GPL version 2</a>,
+while the
+<a href="http://www.gnu.org/philosophy/license-list.html">Free
+Software Foundation&#8217;s legal team asserts that Apache License version 2.0
+is not GPL-compatible</a>.
+Since that time, the FSF and Apache Software Foundation have worked
+together, and GPL version 3 is <i>known</i> to be compatible
+with the Apache License version 2.0
+(<a href="http://www.informationweek.com/blog/main/archives/2007/07/apache_foundati.html">Apache co-founder Brian Behlendorf is delighted by
+the Apache 2.0 / GPLv3 license compatibility</a>).
+This long history makes it clear that both sides believe
+that GPL compatibility is an important advantage in a FLOSS license.
+<li>The toolkit
+<a href="http://www.linuxplanet.com/linuxplanet/reports/2269/1">Qt</a>
+(the basis of KDE) originally had a GPL-incompatible license.
+Its owners now dual-license Qt with the GPL so that
+Qt is GPL-compatible.
+<li>As noted in
+<a href="http://www.winehq.com/site/history">Wine history</a>, the
+<a href="http://www.winehq.com/">Wine project&#8217;s</a>
+&#8220;history of licensing has sparked many debates.&#8221;
+The WINE project originally had the BSD-old license, a GPL-incompatible license;
+this incompatibility with the GPL drove the developers to switch to the GPL-compatible X11
+license in January 2000.
+Many developers expressed concern about appropriation of the code by commercial entities,
+so in March 2002 the developers agreed to switch Wine to the LGPL license.
+The &#8220;ReWind&#8221; project was created for those who wanted an X11-licensed codebase, but
+most developers decided to focus their efforts on synchronizing with the LGPL&#8217;ed Wine,
+and the vast majority of development and new features appear there first.
+The Wine project reports that
+shortly after changing the license to the LGPL, development began to pick up at a greater pace
+(more patches began to appear, the leader Alexandre made more CVS commits,
+and more applications were reported to work).
+<li><a href="http://www.devxnews.com/article.php/3661711">
+Alfresco relicensed their enterprise content management program</a>
+from the MPL to the GPL (both FLOSS licenses, but MPL versions before 2.0 are GPL-incompatible).
+<a href="http://news.zdnet.com/2100-3513_22-6161579.html">
+Stephen Shankland&#8217;s article on Alfresco</a> reports
+Matt Asay (Alfresco&#8217;s vice president of marketing) saying that
+moving to the GPL removes some barriers,
+and allows Alfresco able to easily integrate with other GPL projects.
+It also quotes 451 Group analyst Raven Zachary saying that,
+&#8220;Alfresco&#8217;s use of the GPL license for its Community Edition allows
+for potentially greater community contributions due to
+license familiarity and established standards.&#8221;
+<li><a href="http://www.cecill.info/index.en.html">
+Three French public research organisations launched a project that wrote
+new Free Software licenses conforming to French law</a>:
+CeCILL, CeCILL-B, and CeCILL-C.
+They considered GPL-compatibility important, even when creating a new
+licenses.
+The CeCILL license is very similar to the GPL and is explicitly
+compatible with the GPL.
+The <a href="http://www.cecill.info/faq.en.html">
+CeCILL Frequently Asked Questions (FAQ)</a> (from its authors) says,
+&#8220;CeCILL is nevertheless compatible with the GNU GPL: when a software
+under CeCILL is integrated with a software under the GPL, the resulting
+work can be distributed under the GNU GPL.&#8221;
+Note that the
+<a href="http://www.fsf.org/licensing/licenses/">
+FSF agrees that the CeCILL is compatible with the GPL.</a>
+<li>
+In June 2010
+<a href="http://webmproject.blogspot.com/2010/06/changes-to-webm-open-source-license.html">
+Google relicensed their WebM implementation of the VP8 multimedia codec</a>,
+in part because the old license was GPLv3 and GPLv2 incompatible.
+<li>
+In late 2011, the
+Mozilla foundation released MPL version 2.0 license
+and one of the key changes is that the
+<a href="http://www.mozilla.org/MPL/2.0/FAQ.html#mpl-and-lgpl">
+new MPL is GPL-compatible</a>
+(see also the
+<a href="http://www.fsf.org/blogs/licensing/mpl-2.0-release">
+FSF statement about the MPL</a>).
+<li>
+In December 2012 it was announced that the
+<a href="https://joinup.ec.europa.eu/news/european-unions-open-source-licence-become-compatible-gplv3">
+European Union's "EUPL" open source licence will be updated
+to become compatible with GPLv3</a>.
+One report said that,
+"the main reason to update the licence is to remove barriers [of]
+using software licensed under the EUPL", and that "Making it explicitly
+compatible with the GPLv3 should increase interoperability".
+<li>
+In 2014 <a href="http://akaros.cs.berkeley.edu/files/Plan9License">Plan 9</a>
+was relicensed from the Lucent Public License to GPL version 2.
+The
+<a href="https://www.gnu.org/philosophy/license-list.html#lucent102">
+Lucent license is believed to be GPL-incompatible</a>.
+</ol>
+
+
+<p>
+Multiple major projects don&#8217;t undergo painful
+license changes unless they have a reason to do so.
+The GPL is so popular that GPL compatibility is now an important requirement
+in a license.
+Eirik Eng, president of Trolltech
+(owner of Qt), explained Trolltech&#8217;s actions by saying,
+&#8220;lately the GPL has been used more and more for newly opened source [software].&#8221;
+The article
+<a href="http://www.linux.com/article.pl?sid=06/09/18/1623244">
+&#8220;Replacing init with Upstart&#8221;</a>
+notes that when the authors were starting their &#8220;Upstart&#8221; project, they looked
+at existing systems as a starting point, and Sun&#8217;s SMF and
+Apple&#8217;s program &#8216;launchd&#8217; &#8220;were immediately ruled out due to licence issues.
+It was important for us that the solution be uncontroversially free so
+that other distributions might adopt it; many had already rejected
+these for GPL incompatibility reasons.&#8221;
+
+<p>
+Sun&#8217;s Solaris operating system was released under the
+CDDL, a GPL-incompatible FLOSS license.
+Sun has every right to release their software under whatever license they
+choose (within the law), of course.
+However,
+<a href="http://www.groklaw.net/article.php?story=20050205022937327">
+Groklaw&#8217;s 2005 article &#8220;Sun Responds to Criticism of CDDL&#8221;</a> states that
+because the CDDL is not GPL-compatible,
+Sun will not gain the community support it hopes to garner from using
+the CDDL.
+The article predicts that
+&#8220;The result will be, though, that Linux will continue to develop
+more quickly and it will bury Sun&#8217;s license and its code...
+Sun is free to cut itself off from that, if it so chooses, but it
+will reap what it sows. If they imagined that the world would drop
+the GPL and adopt the CDDL instead,
+I trust by now they realize that isn&#8217;t going to happen...
+I seriously doubt that any license that is GPL/LGPL incompatible will
+be widely adopted.&#8221;
+Which was a remarkably accurate prediction.
+In 2008,
+<a href="http://thunk.org/tytso/blog/2008/04/19/what-sun-was-trying-to-do-with-open-solaris/">
+Theodore Ts&#8217;o noted that
+&#8220;Open Solaris [has failed to develop] an
+Open Source development community...
+from a business standpoint, I wonder if Sun will really be
+able to sustain their Solaris engineering team
+if they will really be doing all of the work themselves...
+With Linux, we have a major advantage in that kernel improvements are
+coming from multiple companies in the ecosystem, instead of being paid
+for by a single company...  it&#8217;s not clear how Sun justifies
+their Solaris engineering costs to their shareholders.&#8221;
+</a>
+Indeed,
+<a href="http://www.ratliff.net/blog/index.php/2008/02/14/not-with-a-bang-but-a-whimper/">
+Emily Ratliff did a few calculations and found that
+&#8220;Linus [Torvalds] gets more patches [for Linux]
+while he is brushing his teeth than OpenSolaris gets in a week&#8221;</a>.
+<a href="http://tech.slashdot.org/article.pl?sid=08/04/24/1723226">
+Solaris&#8217; failure to gain a wider development community
+became a major Slashdot discussion topic in April 2008
+when Roy Fielding resigned</a>.
+This failure to gain a community is certainly caused by more than licensing
+issues, but license incompatibilities appear to be part of the story, as
+<a href="http://www.michaeldolan.com/1171">Michael Dolan notes in 2008</a>.
+
+<p>
+In November 2006 Sun announced that they would be
+releasing their implementation of Java.  The license? The GPL, along
+with a few LGPL-like-exceptions for their library - and <i>not</i>
+the CDDL, which they had used earlier in the Solaris release.
+When gaining confidence of a community mattered, a GPL-compatible
+license was chosen.
+
+<p>
+Here&#8217;s more evidence: Some projects who
+tried to switch from a GPL-compatible license
+to a GPL-incompatible license have been forked, with their original
+leaders essentially removed from office.
+A &#8220;fork&#8221; is an attempt to create a competing project by copying
+from an existing project and convincing developers and users to switch
+to the competing project instead.
+Forks in the FLOSS world
+are essentially like a &#8220;vote of no confidence&#8221; in a parliament.
+The <i>ability</i> to have a fork is an important safeguard in FLOSS,
+because the ability to fork prevents leaders from becoming tyrannical.
+But forks rarely succeed; the situation has to be remarkably bad to
+cause the overwhelming majority of developers and distributors to switch
+to something else.
+(I am <i>not</i> talking about version control branches, which are sometimes
+called forks especially with git; there has to be an intent to cause people
+to stop using the previous project, and switch to the new project instead.
+<a href="http://linuxmafia.com/faq/Licensing_and_Law/forking.html">Rick Moen has an article about forking, if you want more details</a>.)
+Yet there have been successful forks caused because the project lead
+attempted to impose a GPL-incompatible license on others.
+That&#8217;s compelling evidence that GPL-compatibility is critically
+important to other developers and users.
+
+<p>
+XFree86 is perhaps the best-known example of a fork caused by
+an attempt to change licenses.
+The XFree86 project historically led development of a popular X server,
+and traditionally the vast majority of its code used the simple
+&#8220;MIT/X&#8221; open source license that is GPL-compatible.
+The XFree86 president, David Dawes, decided to change the
+XFree86 license in 2004 to one that wasn&#8217;t GPL-compatible, primarily
+to give developers more credit.
+The problem wasn&#8217;t giving credit; the problem was GPL incompatibility.
+This attempted change led to a mass exodus from XFree86,
+as nearly all developers and users immediately abandoned XFree86.
+See <a href="visit.html#xfree86">my appendix on XFree86</a> for more detailed
+information about this.
+
+<!--
+Note: The text below is a summary about cdrtools.
+Jörg Schilling (author of cdrtools) disputes it, per an email to me 2013-10-19.
+If the text really needs correction, I'm happy to correct it, but
+I just haven't had time to independently examine the claims from all sides.
+Most importantly to me, this text is not necessary for the essay at all.
+So for now I'll just remove the text below.  Hopefully in the future
+I'll be able to spend the time to do the investigative journalism.
+
+Sadly, some people don&#8217;t learn.
+Essentially the same thing happened in 2006, when the
+author of &#8220;cdrtools&#8221; tried to switch to a GPL-incompatible
+license; all major distributors started and switched to a new project
+(<a href="http://www.cdrkit.org/">cdrkit</a>) instead.
+The original cdrtools suite is a set of tools for writing information
+to CDs and DVDs.
+In this case,
+<a href="http://lwn.net/Articles/199061/">
+Jörg Schilling (author of cdrtools)
+changed his license from the GPL to the GPL-incompatible CDDL</a>.
+Jörg Schilling claimed that there was no issue, but this is simply nonsense.
+Jörg is not a lawyer, while all lawyers who examined the issue, as well as
+the developers of both the CDDL and GPL licenses,
+agreed that the licenses are incompatible.
+Debian immediately created a fork of the project named cdrkit.
+Fedora, Gentoo Linux, Mandriva Linux, openSUSE and Ubuntu
+have since all switched to cdrkit.
+<a href="http://lists.debian.org/debian-devel-announce/2006/09/msg00002.html">
+Debian&#8217;s announcement of the switch</a> made it clear that the <i>sole</i>
+reason for this (successful) fork was incompatibility with the GPL:
+&#8220;So, why the fork? CD/DVD burning is a complicated business that needs a
+lot of knowledge, so forking such a big collection isn&#8217;t a step to be
+taken lightly. It requires a lot of development effort that could be put to
+better use elsewhere.
+In the past, we, the Debian maintainers of cdrtools, had a good and
+mutually cooperative relationship with Jörg Schilling...
+[but then] Jörg Schilling
+released parts of recent versions of cdrtools under [the CDDL] license.
+The CDDL is incompatible with the GPL.  The FSF itself says that this
+is the case as do people who helped draft the CDDL...
+[Since the author] has basically
+ignored what we have said, we have no choice but to fork...&#8221;.
+At this point, almost no one cares what the original author does with
+his version; the version people actually <i>use</i> is controlled by others.
+-->
+
+<!--
+<p>
+Incompatibilities can cause problems and loss of support.
+The
+<a href="http://www.openssl.org/support/faq.html#LEGAL">OpenSSL cryptographic
+library uses a GPL-incompatible license</a>, and although there
+are workarounds for some situations,
+their suggestion to try relicensing programs is often impractical.
+As a result, some projects decide to
+<a href="http://www.gnu.org/software/gnutls">switch to GNU TLS instead</a>.
+-->
+<!-- http://mail.gnu.org/archive/html/gnu-arch-users/2004-03/msg00439.html -->
+
+<p>
+Samba&#8217;s
+<a href="http://www.eweek.com/article2/0,1759,1777493,00.asp">
+Volker Lendecke</a>
+stated that any European Commission remedies involving Microsoft&#8217;s
+release of data would require the use of a GPL-compatible license.
+So even data releases - not just software code - are being examined
+to see if they are GPL-compatible.
+
+<p>
+More recently, in 2011 the
+<a href="http://www.groklaw.net/article.php?story=20110420141724403">
+US Department of Justice and the German Federal Cartel Office directed
+CPTN
+(a holding company owned by Microsoft Inc., Oracle Corp.,
+Apple Inc. and EMC Corp.) had to
+change how they acquired Novell&#8217;s software patents
+so that the open source community is protected</a>, and in particular,
+the Wall Street Journal reported that the
+&#8220;all of the patents acquired will be subject
+to the GNU General Public License (GPL)&#8221;.
+This makes it appear that one requirement will be that
+patents must be granted for use to any program released under the GPL...
+but perhaps not for programs not compatible with the GPL.
+
+
+<h1>Some GPL-incompatible licenses to avoid</h1>
+<p>
+There are many
+GPL-incompatible licenses that you should avoid releasing software
+under if at all possible.
+Here are some examples:
+<ol>
+<li>Avoid the original (&#8220;4-clause&#8221;) BSD license.
+The original BSD license included a clause now called
+the &#8220;obnoxious BSD advertising clause&#8221;.
+This stated that:
+<pre>
+    All advertising materials mentioning features or use of
+    this software must display the following acknowledgement:
+      This product includes software developed by the University of
+      California, Berkeley and its contributors."
+</pre>
+This made it incompatible with the GPL, as well as introducing
+<a href="http://www.gnu.org/philosophy/bsd.html">practical problems
+noted by the FSF</a>.
+The problem is that when code is merged together (and it is), and everyone
+adds their own name (they did), people couldn&#8217;t advertize without
+listing potentially hundreds of people - making this completely
+clause impractical as software scaled.
+In June 1999, after two years of discussions, the
+University of California removed this clause from the license of BSD.
+Thus, this is an obsolete license that should no longer be used; use licenses
+such as the &#8220;new BSD&#8221; aka &#8220;modified BSD&#8221; or &#8220;3-clause BSD&#8221; license instead.
+
+<li>Avoid the &#8220;Academic Free License&#8221; (AFL).
+It has been claimed that the AFL was a
+&#8220;compatible upgrade&#8221; from &#8220;licenses such as BSD and MIT&#8221;, but
+this is a misleading claim; as the FSF notes,
+&#8220;the modified BSD license and the X11 license (aka MIT) are GPL-compatible,
+but the AFL is not.&#8221; (at least version 1.1 and 2.1 are incompatible,
+and I believe that AFL version 3 is incompatible as well).
+<!-- At _LEAST_ because of the choice of law issues -->
+The AFL has some nice properties from a legal point of view,
+but its GPL-incompatibility is a serious failing
+that completely dwarfs those advantages.
+Projects such as
+<a href="http://gisdeveloper.tripod.com/2003/04/back-in-december-i-sent-my-license-for.html">
+SHPTRANS</a> have
+noted the AFL incompatibility as a serious problem, and have chosen to not
+use the AFL for this reason.
+At one time some people in the OSI recommended the AFL, but
+as of July 30, 2007 the OSI lists the AFL license as
+being &#8220;redundant with more popular licenses&#8221;, and pointedly does
+<i>not</i> include it with
+&#8220;Licenses that are popular and widely used or with strong communities&#8221;.
+
+<li>For now, avoid the &#8220;Common Public License&#8221; 1.0 (CPL),
+though this may change.
+The CPL is not nearly as popular as the GPL, LGPL, BSD-new, or MIT/X11 licenses,
+but it has more uses than most other licenses.
+The CPL is even in the OSI&#8217;s list of
+&#8220;Licenses that are popular and widely used or with strong communities&#8221;.
+Some other licenses, such as the Eclipse license, are based on the CPL.
+It is known that the CPL is incompatible with GPLv2, so for the moment
+it is probably best avoided.
+However, it is possible that the CPL is compatible with GPL version 3, which
+would make it much more palatible and similar to the Apache 2.0 license
+(which is incompatible with GPLv2 but compatible with GPLv3).
+At the moment, I&#8217;d wait until there&#8217;s been lengthy legal analysis to
+settle the matter.
+
+<li>Avoid the &#8220;Open Software License&#8221; (OSL).
+This is supposed to be a strongly protective license like the GPL.
+But it&#8217;s incompatible with the GPL, and almost no one uses this license,
+so any such code cannot use or be used by the vast majority of FLOSS projects.
+<a href="http://www.gnu.org/philosophy/license-list.html">
+The FSF also believes that the distribution terms make normal
+development processes illegal, creating a severe practical problem.</a>
+</a>
+Again, at one time some people in the OSI recommended the OSL, but
+as of July 30, 2007 the OSI lists the OSL license as
+being in the category &#8220;Other/Miscellaneous licenses&#8221;, and pointedly does
+<i>not</i> include it with
+&#8220;Licenses that are popular and widely used or with strong communities&#8221;.
+
+<li>Avoid the &#8220;Artistic 1.0&#8221; license (from Perl).
+Although intended to be an OSS license, the Artistic 1.0 license
+is a poorly crafted license that creates all sorts of legal problems.
+The Free Software Foundation (FSF) says it is not a free license
+because its text is vague and open to misinterpretation.
+<a href="http://www.perlfoundation.org/artistic_license_2_0">
+The Perl community, which developed it, agreed with this assessment</a>
+and rewrote the Artistic license to resolve all the identified problems.
+<!--
+<a href="http://lawandlifesiliconvalley.blogspot.com/2007/08/new-open-source-legal-decision-jacobsen.html">
+This license recently went to trial in the US and lost;
+the judge interpreted it in a very negative way</a>.
+-->
+<a href="http://opensource.org/licenses/artistic-license-1.0.php">
+The OSI has &#8220;superseded&#8221; the license, recommending strongly that all users move to Artistic 2.0.</a>.
+Fedora (a very popular Linux distribution) no longer permits projects
+that use Artistic 1.0, and for
+<a href="https://fedoraproject.org/wiki/Features/Artistic1Removal">
+Fedora 10 plans to remove all
+projects that use only the Artistic 1.0 license</a>.
+Actually, this license is <i>probably</i> compatible with the GPL,
+but it&#8217;s so hard to figure out what it means that I include it here.
+I recommend using the MIT or BSD-new licenses instead of the Artistic licenses
+where you reasonably can.
+
+<li>Avoid using the &#8220;Creative Commons&#8221; licenses for software.
+The
+<a href="http://wiki.creativecommons.org/FAQ#Can_I_use_a_Creative_Commons_license_for_software.3F">
+Creative Commons FAQ says,
+&#8220;Creative Commons licenses are not intended to apply to software.
+They should not be used for software...
+[they don&#8217;t distinguish, as needed,] between object and source code...
+We strongly encourage you to use one of the very good software licenses
+available today [instead].&#8221;</a>
+<a href="http://jay.tuley.name/articles/2006/03/27/5-reasons-not-to-choose-a-creative-commons-license-for-code">
+Jay Tuley&#8217;s &#8220;5 reasons to not choose a CC license for code&#8221;</a>
+explains more.
+The
+<a href="http://people.debian.org/~evan/ccsummary.html">
+debian-legal Summary of Creative Commons 2.0 Licenses</a>
+recommends that authors who wish to create works compatible with Debian&#8217;s
+&#8220;Debian Free Software Guidelines&#8221;
+should not use any of the licenses in the Creative Commons license suite;
+licenses with the 
+&#8220;NonCommercial&#8221; or &#8220;NoDerivs&#8221; license elements are fundamentally incompatible
+with FLOSS,
+authors who use or are planning to use the Attribution 2.0 license
+should consider a similar Free Software license such as
+a BSD- or MIT-style license..., and
+Authors who use or are planning to use the Attribution-ShareAlike 2.0
+license should consider a similar Free Software license such as
+the GNU General Public License [GPL].
+The Creative Commons has
+&#8220;wrapped&#8221; the
+<a href="http://creativecommons.org/license/cc-gpl?lang=en">GPL</a> and
+<a href="http://creativecommons.org/license/cc-lgpl?lang=en">LGPL</a>
+if you want to use the Creative Commons search engine.
+
+<li>Avoid the Mozilla Public License (MPL) version 1.0, version 1.1, and the Incompatible With Secondary Licenses clause of version 2.0.
+The Mozilla Public License (MPL)
+was originally created by Mozilla, but its GPL-incompatibility caused
+so many problems that Mozilla eventually re-licensed their work under a
+GPL/LGPL/MPL triple license.
+Other former MPL users like
+<a href="http://www.devxnews.com/article.php/3661711">Alfresco</a> have
+abandoned the MPL.
+It's important to note that even the original creator of the MPL 1.0 and 1.1
+abandoned it as their sole license,
+because of GPL-incompatibility; don&#8217;t duplicate their mistake.
+<a href="http://www.theregister.co.uk/2008/07/25/googlecode_bans_mpl/">Google no longer lists the MPL as a recommended license,
+even though they once did</a>.
+Indeed, there was a time when Google code would not accept MPL projects;
+<a href="http://googlecode.blogspot.com/2010/09/license-evolution-and-hosting-projects.html">Google code now allows any OSS license, but it still
+does not include the MPL as a recommended license</a>.
+The more recent MPL version 2.0 <i>is</i> compatible with the GPL,
+due to a lot of hard license analysis work...
+making the MPL compatible with the GPL was one of the main reasons the MPL
+was updated.
+However, MPL version 2.0 has optional
+"incompatible With secondary licenses" clause, and if you include it the
+software is no longer GPL-compatible
+(so do not include that clause).
+
+<!--
+http://blogs.computerworlduk.com/simon-says/2010/09/google-ends-agpl-embargo/index.htm
+-->
+
+<li>Avoid the CDDL.
+This Sun creation is similar to the MPL.  Yet the original creator of the
+MPL no longer uses it (exclusively), and the experience of OpenSolaris
+shows that the license is a real stumblingblock.
+CDDL-based projects tend to have relatively small levels of
+participation, and I think a key reason is the license.
+
+<li>Avoid the &#8220;NASA Open Source Agreement&#8221; version 1.3.
+This is one of those rare cases where the OSI has accepted a license
+as being an open source software license
+(per the open source definition), but the FSF has determined
+that the license is <i>not</i> a Free Software license
+(per the Free Software definition).
+The problem is that it requires that changes be your &#8220;original creation&#8221;.
+FLOSS software development depends on combining code from third parties,
+so if that is interpreted literally,
+this agreement would prohibit practically all
+real work and would certainly be GPL-incompatible.
+It&#8217;s best to avoid this license.
+NASA has told me that they are in the process of changing this license
+to remove this silly restriction; that would make it better, though I
+do not know if their result will be GPL-compatible.
+</ol>
+
+
+
+<h1>Consider GPL incompatibility carefully</h1>
+
+<p>
+There are reasons for a FLOSS project to be GPL-incompatible, but
+weigh any such notions with an extremely critical eye.
+Sometimes a program or library was originally proprietary, and can only be
+released as FLOSS under GPL-incompatible conditions.
+If so, the code had better be good and essentially
+complete when it&#8217;s released,
+because many developers won&#8217;t get involved with it.
+Many FLOSS projects are already saddled with a GPL-incompatible license,
+and it&#8217;s just too hard to change.
+Some include other requirements they believe are critical,
+such as adding more patent clauses
+for licenses, defense, or mutual termination
+(such as the IBM public license).
+
+<p>
+But remember that these supposed benefits may not outweigh
+their many disadvantages.
+Note all the projects listed above that switched from a GPL-incompatible
+license to a GPL-compatible one.
+
+<!--
+GPLv2 interpretations where OpenSSL is considered
+"part of the operating system" and GPLv3 may have rendered this less
+important.  I'm not sure, but until I am, let's not complicate things.
+
+An example of the problems - in fact, one of the more important ones -
+is that the 
+<a href="http://www.gnome.org/~markmc/openssl-and-the-gpl.html">
+OpenSSL license is widely viewed as being GPL-incompatible</a>
+(including by FSF lawyers, GNOME, and Debian, based on detailed
+independent analysis).
+While the
+<a href="http://www.ethereal.com/lists/ethereal-dev/200108/msg00120.html">
+OpenSSL developers claim it&#8217;s GPL-compatible</a>
+and &#8220;support&#8221; the use of OpenSSL by GPL&#8217;ed software, the legal minefields
+are such that OpenSSL often has to worked around, or abandoned by
+<a href="http://lists.debian.org/debian-legal/2003/01/msg00025.html">
+switching to a different program (as CUPS did)</a>.
+The usual alternatives for OpenSSL are
+<a href="http://www.mozilla.org/projects/security/pki/nss/">Mozilla
+Network Security Services (NSS)</a> and
+<a href="http://www.gnu.org/software/gnutls/">
+GNU Transport Layer Security (GNU TLS)</a>.
+-->
+
+<!--
+Could discuss patent mutual defense, including
+"mutual termination for patent action". See:
+Interview with Rosen:
+ http://www.linuxplanet.com/linuxplanet/interviews/4575/1/
+Bruce Perens:
+ http://www.desktoplinux.com/news/NS8892037958.html
+
+http://www.openpatents.org/links/
+http://freepatents.org
+http://lpf.ai.mit.edu/Patents/mutual-def.html
+-->
+
+<h1>License proliferation considered harmful</h1>
+<p>
+Indeed,
+<a href="http://news.com.com/Open-source+board+eyes+fewer+licenses/2100-7344_3-5578799.html">
+the proliferation of FLOSS licenses in general
+has been identified by many as a problem to be resolved.</a>
+It was an issue noted in
+<a href="http://news.zdnet.com/2100-3513_22-5577604.html?tag=zdnn.alert">
+HP Vice President Martin Fink&#8217;s LinuxWorld 2005 address</a>,
+and others supported this view such as
+<a href="http://www.groklaw.net/article.php?story=20050215181423997">Groklaw</a>.
+Customers find a long list of licenses completely bewildering;
+it&#8217;s hard to figure out what can be legally combined, and corporations can
+easily find themselves spending huge sums of money on legal advice if they
+have to start to examine more than the top few licenses.
+As noted in
+<a href="http://www.informationweek.com/blog/main/archives/2008/08/the_open_source_2.html;jsessionid=CAF1P2FI32GOXQE1GHPSKH4ATMY32JVN">
+Serdar Yegulalp&#8217;s &#8220;The Open Source Licensing Implosion&#8221;</a>
+(<i>InformationWeek</i>, Aug 8, 2008),
+&#8220;It&#8217;s not just that there are &#8220;too many open source licenses,&#8221; but that the consequences for blithely creating new ones are finally becoming concrete...
+It was easier to get away with a broad proliferation of licenses back when open source was still a relatively rare and exotic variety of bird in the software bestiary. Now that open source is becoming (gasp) a mainstream phenomenon, using one of the less-common licenses or coming up with one of your own works against you more often than not...
+It&#8217;s not the programmers that will determine what open source licenses are the best -- it&#8217;s the software consumers. They&#8217;ll be the ones narrowing down the forest of licensing to a few well-pruned and -maintained trees. The better for us all not to get lost amongst them.&#8221;
+
+
+<p>
+This is not a new observation;
+<a href="http://www.oreilly.com/catalog/opensources/book/perens.html">
+Bruce Perens noted back in 1999,</a>
+&#8220;Do not write a new license if it is possible to use one of the ones
+listed here. The propagation of many different and incompatible licenses
+works to the detriment of Open Source software because fragments of one
+program cannot be used in another program with an incompatible license.&#8221;
+<a href="http://en.tldp.org/HOWTO/Software-Release-Practice-HOWTO/licensepractice.html">Eric S. Raymond&#8217;s
+Software Release Practice HOWTO</a>
+strongly states (as a heading!)
+&#8220;don&#8217;t write your own license if you can possibly avoid it,&#8221;
+and he suggests that developers use
+&#8220;one of the standard licenses carried on the OSI site if at all possible.&#8221;
+
+<p>
+If you doubt that license proliferation can be a problem, just look at
+<a href="http://fedoraproject.org/wiki/Packaging/LicensingGuidelines">
+Fedora&#8217;s Licensing Guidelines</a> and
+<a href="http://fedoraproject.org/wiki/Licensing">
+Fedora&#8217;s Licensing page</a> - they are setting up complex licensing
+documentation that can be electronically recorded and analyzed, just to
+assure license compliance. They also specifically consider if a license
+is GPLv2 and GPLv3 compatible, clearly demonstrating the importance
+of GPL compatibility.
+
+<p>
+Fink&#8217;s complaint did cause some improvement, e.g.,
+<a href="http://news.cnet.com/Intel-to-stop-using-open-source-license/2100-7344_3-5648518.html">Intel publicly abandoned its own FLOSS license</a> so
+standard licenses would be used instead.
+<a href="http://opensource.org/proliferation-report">
+The Open Source Initiative&#8217;s License Proliferation Committee Report</a>,
+a group kicked off after Fink&#8217;s comments,
+recommended addressing this by categorizing licenses.
+Unsurprisingly the category
+&#8220;Licenses that are popular and widely used or with strong communities&#8221;
+included the MIT/X, BSD-new, LGPL, and GPL licenses.
+Their full list, as of 2006-09-19, was
+Apache License 2.0, new and simplified BSD licenses,
+GPL, LGPL, MIT, MPL, CDDL, CPL 1.0, and Eclipse Public License (EPL).
+Even this list is overlong; the MPL, CDDL, CPL, and EPL have a vanishingly
+small numbers of projects that use them.
+
+<p>
+Similarly,
+<a href="http://home.ccil.org/~cowan/floss/">John Cowan&#8217;s FLOSS license
+wizard</a> (as of August 2008) only recommends a few FLOSS licenses,
+depending on your purposes.
+The only FLOSS licenses it will recommend are the
+GPLv3, LGPLv3, revised BSD, and Apache 2.0 licenses.
+
+<p>
+On August 14, 2008, I did a quick check of Google Code, and found
+that they only permit the following licenses:
+Apache 2.0, Artistic/GPL, GPLv2, GPLv3, LGPL, MIT, and new BSD.
+Note that all of them are GPL-compatible
+(Apache 2.0 is only compatible with GPLv3 though not GPLv2).
+As noted above, they once accepted the GPL-incompatible MPL 1.1, but no longer.
+
+<p>
+<a href="http://www.informationweek.com/blog/main/archives/2008/08/the_open_source_2.html">InformationWeek&#8217;s &#8220;The Open Source Licensing Implosion&#8221;</a>
+of August 2008 correctly notes that
+&#8220;the consequences for blithely creating new [FLOSS licenses]
+are finally becoming concrete [for many]...
+the vast majority of open source products out there use a
+small handful of licenses... The rest tend to be outriders or derivatives...
+It was easier to get away with a broad proliferation of licenses
+back when open source was still a relatively rare and exotic variety...
+Now that open source is becoming (gasp) a mainstream phenomenon,
+using one of the less-common licenses or coming up with [your own license]
+works against you more often than not...  [communities will be concerned]
+if you&#8217;re using a license that hasn&#8217;t been given a public shakedown of sorts...
+software consumers [will narrow] down the forest of licensing
+to a few well-pruned and -maintained trees.
+The better for us all not to get lost amongst them.&#8221;
+
+<h1>Other things to consider</h1>
+<p>
+While it&#8217;s possible to relicense FLOSS software to make
+it GPL-compatible, it
+can be quite difficult &mdash; you&#8217;re much better off avoiding a mistake,
+and starting off GPL-compatible in the first place.
+Changing licenses usually requires approval of the relicensing
+from every copyright holder
+and a rewrite of the code where the approval wasn&#8217;t granted.
+When FLOSS projects get large this is incredibly difficult, because after
+many years it&#8217;s often impossible to contact all of the contributors.
+Thankfully, many projects don&#8217;t have to endure this transformation,
+because they&#8217;ve avoided it to start with.
+The W3C, for example,
+<a href="http://www.w3.org/Status">explicitly states that
+all its software releases are FLOSS and are compatible
+with the GPL</a>.
+This statement shows that they believe GPL compatibility is
+very important, and this policy eliminates the problems that would
+come from GPL incompatibility.
+
+<p>
+It&#8217;s worth noting that the GPL has a very strong legal basis, which is
+especially attractive to many developers.
+The GPL is easy to comply with (it doesn&#8217;t even require money to do so),
+but people do need take its (few) requirements seriously.
+<a href="http://www.gnu.org/philosophy/enforcing-gpl.html">Eben Moglen
+is a lawyer who&#8217;s been enforcing the GPL for years</a>, and has
+excellent evidence that the GPL really is enforceable.
+He also explain&#8217;s the GPL&#8217;s legal basis, which turns out to be very strong.
+Paralegal
+<a href="http://lwn.net/Articles/61292">Pamela Jones has written
+another explanation of the GPL&#8217;s legal basis for laymen</a>; as both note,
+the GPL is a license, not a contract, which makes it unusually easy to enforce.
+<a href="http://www.open-bar.org/docs/GPL-enforceability.pdf">
+&#8220;Taking the Case: Is the GPL Enforceable?&#8221;
+by Jason B. Wacha (General Counsel, MontaVista Software)</a>
+is a detailed legal analysis by a lawyer showing that
+&#8220;the GPL is an enforceable agreement.&#8221;
+A <a href="http://www.groklaw.net/article.php?story=20040725150736471">German
+court has found that the GPL is legally enforceable</a>,
+for the very reasons Moglen and Jones stated.
+This was in response to some
+<a href="http://lwn.net/Articles/80734">enforcement actions by netfilter</a>.
+<a href="http://www.groklaw.net/article.php?story=20100403103524185">
+&#8220;Enforcement of the GNU GPL in Germany and Europe&#8221; by Till Jaeger
+</a> shows that the GPL is quite enforceable there.
+More recently,
+<a href="http://fsfe.org/news/2013/news-20130626-01.en.html">in June 2013
+the German Regional Court of Hamburg [Landgericht Hamburg] found FANTEC GmbH
+guilty of violating the GNU GPL in their media player FANTEC 3DFHDL</a>.
+In 2006, a U.S. court found that the GPL was quite legitimate;
+Daniel Wallace tried to invalidate the GPL in
+<a href="http://www.groklaw.net/article.php?story=20060320201540127">
+Daniel Wallace vs. Free Software Foundation</a>, and not only was Wallace&#8217;s
+suit dismissed, but Wallace was ordered to pay costs as well.
+In this case, the judge (John Daniel Tinder, United States District Court)
+also declared that
+&#8220;[T]he GPL encourages, rather than discourages, free competition
+and the distribution of computer operating systems, the benefits
+of which directly pass to consumers.
+These benefits include lower prices, better access and more innovation.&#8221;
+This was appealed, and the
+<a href="http://lxer.com/module/newswire/ext_link.php?rid=74865">
+U.S. Court of Appeals (7th circuit) formally ruled in 2006 that the GPL does
+not violate U.S. antitrust rules, and that
+&#8220;the GPL and open-source software have nothing to fear
+from the antitrust laws&#8221;</a> - creating an even stronger
+defense against future cases.
+The proven legal strength of the GPL is attractive to many people
+who must choose a license for their open source software.
+But this strength comes from taking its requirements seriously - which means
+that people must take incompatibility seriously too.
+<p>
+More generally, there is increasing evidence that FLOSS licenses
+really are enforceable.
+<a href="http://online.wsj.com/article/SB121868078709939557.html">
+Robert A. Guth&#8217;s &#8220;Ruling Bolsters Open-Source Software:
+A Licensing Agreement Is Declared Enforceable Under Copyright Law&#8221;
+(<i>Wall Street Journal</i>, August 14, 2008; Page B6)</a>
+reported that
+the Court of Appeals for the Federal Court
+ruled in August 2008 that another license
+(the Artistic License) was enforceable under copyright law.
+This supported &#8220;a basic tenet
+behind open-source software and other creations that the general
+public is allowed to freely modify and distribute...
+Some legal experts said the ruling could help support the legal
+underpinnings of other open-source projects. &#8216;It&#8217;s a clear statement
+that if someone doesn&#8217;t follow the conditions you put into an open-
+source license, you have a copyright claim,&#8217; said Wendy Seltzer, a
+fellow at the Berkman Center for Internet &amp; Society at Harvard Law
+School.&#8221;
+<a href="http://www.cafc.uscourts.gov/opinions/08-1001.pdf">Here&#8217;s
+the ruling</a>;
+<a href="http://itmanagement.earthweb.com/osrc/article.php/3775446/Bruce+Perens:+A+Big+Change+for+Open+Source.htm">here is Bruce Perens&#8217; summary</a>.
+<a href="http://www.infoworld.com/d/open-source-software/why-the-gpl-licensing-cops-are-the-good-guys-194565?page=0,0">"Why the GPL licensing cops are the good guys" by Simon Phipps (InfoWorld, June 1, 2012)</a>
+explains for most people (like most enterprises)
+following the GPL is a non-problem, but those who develop and distribute
+software (e.g., electronics manufacturers) do need to pay attention to
+(and follow!) the license... and that people who develop GPL'ed software
+are successfully defending their rights.
+<p>
+But the GPL&#8217;s wide use also makes it easy to find help in how to
+comply with it.
+<a href="http://www.softwarefreedom.org/resources/2008/compliance-guide.html">
+The Software Freedom Law Center&#8217;s
+&#8220;A Practical Guide to GPL Compliance&#8221;</a>
+shows the simple steps that nearly all organizations can easily apply
+so they can stay compliant.
+The rules are actually pretty simple.
+
+<!-- This section added 2009-10-06: -->
+
+<h1>A related issue: Use the standard license (CC-BY-SA) for other works</h1>
+<p>
+As a related issue, copyrighted works other than software
+(such as documentation) should be released
+under a standard license if you intend for it to be freely reusable.
+Years ago, it wasn&#8217;t clear what that license would be;
+<a href="http://shearer.org/Open_Content_Licensing_Mess">open content
+licensing was a mess</a>.
+<p>
+However, as of 2009,
+it appears that the emerging common &#8220;consensus&#8221; license for
+copyrighted works other than software is the
+<a href="http://creativecommons.org/">
+Creative Commons (CC)</a>
+<a href="http://creativecommons.org/licenses/by-sa/3.0/">
+Attribution-Share Alike (CC-BY-SA) license</a>.
+So, make sure that the
+<a href="http://creativecommons.org/licenses/by-sa/3.0/">
+CC-BY-SA license (unported version 3.0)</a>, or a license compatible with it,
+is one of the licenses you use to release freely reusable material.
+<p>
+Historically, <a href="http://www.wikipedia.org">Wikipedia</a> and related
+projects were released under the GNU Free Documentation License (GFDL),
+but as of May 2009
+<a href="http://blog.wikimedia.org/2009/05/21/wikimedia-community-approves-license-migration/">Wikipedia switched to using the CC-BY-SA license as its
+primary license</a>.
+Most Wikipedia material is now dual-licensed (it is available
+under both the GFDL and CC-BY-SA license), but the CC-BY-SA is the only
+license that applies to <i>all</i> of its material.
+One rationale for making this change was that:
+&#8220;Without the change, we could not share text with projects that use
+the Creative Commons Attribution/Share-Alike Licenses. The Creative
+Commons licenses are used by hundreds of thousands of authors world-wide
+(see statistics), having quickly become the most widely used legal tool
+to release rights on works other than software. This interoperability
+barrier with other non-profit organizations and online communities who
+share knowledge freely is therefore counter to Wikimedia&#8217;s mission.&#8221;
+It&#8217;s interesting to note that Richard Stallman and the FSF, the
+author of the GFDL, specifically worked to make this change possible.
+<p>
+In 2009,
+<a href="https://fedoraproject.org/wiki/Relicensing_OPL_to_CC_BY_SA">
+Fedora did a massive relicense
+(including the Fedora wiki and guides) to CC-BY-SA</a>,
+saying, &#8220;Why? Because it is vital that Fedora get off a content island and join
+the rest of the world... To be honest, this change is probably a bit overdue&#8221;.
+Some of the reasons given were:
+<ul>
+<li>
+We are relicensing from the OPL (Open Publications License) 1.0.
+<a href="http://opencontent.org/blog/archives/329">
+The author and once-and-only-ever maintainer of the OPL wrote two years ago why people should stop using his license in favor of the CC licenses</a>.
+Please read that, it is well reasoned and makes compelling arguments,
+even more so because it is from the OPL&#8217;s author. He wrote that two
+years ago, but quotes himself from 2003 when he recommended using a
+Creative Commons license instead. &#8216;Nuff said.
+<li>
+We are on an island nearly alone with the OPL... we can move from a tiny archipelago to the largest continent of open content under the flag of the CC BY SA.
+<li>
+Other organizations that have content we can reuse in Fedora and contribute back to, such as Wikipedia and GNOME, have switched or are switching to the CC BY SA...
+<li>
+If you&#8217;ve never looked at how much open content there is on e.g. flickr.com and Wikicommons, please look. For content authors, this is going from practically zero useful open media available to tens of millions of photographs, diagrams, and so forth that we can not only freely reuse, but we can contribute back to...
+</ul>
+<p>
+Again, there&#8217;s no requirement that CC-BY-SA be the <i>only</i> such license,
+but in nearly all cases it is unwise to use a license that is <i>not</i>
+compatible with the common standard license... for all the same reasons
+as apply to software.
+For example, there are lots of negatives to using the GFDL, the OPL,
+or the various Creative Commons &#8220;non-commericial&#8221; (-NC) licenses
+(for more on the latter, see <a href="http://freedomdefined.org/Licenses/NC">
+The Case for Free Use: Reasons Not to Use a Creative Commons -NC License</a>)
+if your goal is to enable use of others&#8217; work and future reuse of your work.
+In short, by using a standard license, or a license compatible with one,
+your work can use and be combined with others&#8217; work.
+<p>
+It&#8217;s interesting to note that
+<a href="http://opencontent.org/blog/archives/1103">
+an open textbook bill</a>
+has been
+<a href="http://www.govtrack.us/congress/billtext.xpd?bill=s111-1714">
+introduced by Senator Durbin</a>.
+These suggest we will be seeing a lot more open content in the future.
+<p>
+So, how can you do this?
+You can do this by releasing your copyrighted work under CC-BY-SA
+as at least one of its licenses.
+You can also do this by releasing it under a compatible license,
+such as the
+CC-BY (Creative Commons-Attribution) license and the
+<a href="http://wiki.creativecommons.org/CC0">CC0 license</a>
+(CC0 is essentially a release to the public domain, in a way that
+is legally meaningful in all jurisdictions).
+<p>
+A similar problem happens with fonts.
+<a href="https://lwn.net/Articles/502371/">Red Hat commissioned development
+of the "Liberation" fonts, and
+Bitstream created the Bistream Vera font family</a> - but
+because their licenses were peculiar, and there was no effort to create
+a community to improve them (e.g., for internationalization), these fonts
+are being supplanted by other fonts with more standard licenses and
+supportive communities.
+<p>
+Now, getting back to software...
+
+
+<h1>Making your FLOSS software GPL-compatible</h1>
+<p>
+So, how do you make sure that your software is GPL-compatible?
+Fortunately, there are three easy ways to do this:
+<ol>
+<li>One way, of course, is to use the
+<a href="http://www.fsf.org/licenses/gpl.html">GPL</a>.
+<li>Another is to use a different
+license that is known to be GPL-compatible, in particular the
+<a href="http://www.fsf.org/licenses/lgpl.html">LGPL</a>,
+<a href="http://www.opensource.org/licenses/mit-license.html">MIT/X</a>, or
+<a href="http://www.opensource.org/licenses/bsd-license.html">BSD-new</a>
+(modified BSD) licenses.
+Obviusly there are several licenses you can choose while remaining
+GPL-compatible.
+<a href="http://www.gnu.org/licenses/license-list.html#GPLCompatibleLicenses">
+The FSF maintains a list of licenses it has determined to be GPL-compatible.</a>
+The
+<a href="http://fedoraproject.org/wiki/Licensing">Fedora Core Licensing
+page</a> has a really helpful table showing licenses and whether or not
+they are compatible.
+<a href="http://www.gnu.org/philosophy/bsd.html">
+Don&#8217;t use the old/original BSD license, which is generally accepted as being
+GPL-incompatible and has many practical problems</a>;
+even
+<a href="ftp://ftp.cs.berkeley.edu/pub/4bsd/README.Impt.License.Change">Berkeley
+has switched to the new BSD license for their software</a>.
+You might also consider using the Apache 2.0, but note that while it is
+compatible with GPL version 3, the developers of the GPL are confident that it
+is not compatible with GPL version 2.
+<p>
+If you&#8217;re considering the BSD-new license,
+<a href="http://www.oreilly.com/catalog/opensources/book/perens.html">
+Bruce Perens</a>,
+<a href="http://www.gnu.org/philosophy/license-list.html">the FSF</a>, and
+I recommend using the MIT/X license instead (the FSF calls this the
+X11 license).
+There are several reasons to prefer the MIT/X license over BSD-new.
+First, MIT/X is much simpler, a good thing in a license.
+Second, a few non-lawyers have claimed that BSD-new isn&#8217;t GPL-compatible;
+I don&#8217;t think this is a real issue, but is instead a misunderstanding
+of the law, since expert lawyers on the topic
+from both Red Hat and the Free Software Foundation have refuted this claim.
+Finally, there isn&#8217;t the confusion of having two different
+common licenses with the same name.
+<p>
+You can use another pre-existing license known to be GPL-compatible, though
+using an unusual license risks causing developers to not support your
+project (some developers won&#8217;t want the risk and trouble
+of working under an unfamiliar and unusual license).
+My
+<a href="https://dwheeler.com/essays/floss-license-slide.html">FLOSS License Slide</a> shows how several common licenses are compatible (or not).
+<li>A third alternative is to dual license (or even triple license)
+the program.
+That is, release it under more than one license simultaneously,
+one of which is GPL-compatible (such as the GPL or LGPL),
+and let the user pick which license they&#8217;ll use.
+Widely-used projects such as Perl, Mozilla, and Qt do this.
+(the <a href="http://www.mozilla.org/MPL/license-policy.html">
+Mozilla project even uses a <i>triple</i> license (MPL/GPL/LGPL)</a>).
+<!--
+ http://www.mozilla.org/MPL/NPL-1.0M-FAQ.html
+ notes that Stallman specifically asked people to NOT fork on just one license
+ in Mozilla.
+-->
+The <a href="http://people.debian.org/~bap/dfsg-faq.html">
+Debian Free Software Guidelines (DFSG) FAQ</a>
+notes that
+&#8220;The GPL is particularly common in dual licenses because it allows the
+code to link with the large body of GPLed code available including
+many important libraries, and to be incorporated into other GPLed works...
+This is almost always due to a project starting with a home-brewed
+GPL-incompatible license, then realizing they&#8217;d made a mistake
+and finding relicensing in this fashion to be the most convenient resolution.&#8221;
+One problem with dual licensing is that
+you can <i>only</i> incorporate code from elsewhere that is compatible with
+<i>all</i> of the licenses.
+Thus, dual licensing can make it impossible
+to legally use some potentially useful code for as long as you maintain the
+multiple licenses.
+It&#8217;s one of the more reasonable ways to fix a mistake, but it&#8217;s better
+to avoid mistakes in the first place... especially when there&#8217;s
+clear evidence that using a GPL-incompatible license is a mistake
+for FLOSS projects.
+</a>
+</ol>
+
+<p>
+If you can&#8217;t use any of these easier approaches,
+then it&#8217;s still possible to use a
+GPL-compatible license, but at that point you need a lawyer&#8217;s help -
+and in general I do not recommend it.
+That&#8217;s because license analysis can quickly become very complicated.
+For example,
+the FSF developed the GPL and maintains a
+<a href="http://www.gnu.org/licenses/license-list.html#GPLCompatibleLicenses">
+list of licenses that it believes to be
+compatible and not compatible with the GPL</a>.
+Note the number of subtle points brought out in their analysis!
+My point isn&#8217;t to debate their legal analysis (which not everyone
+agrees with);
+I just want to show that determining GPL compatibility can be complicated,
+so there are excellent reasons to keep things simple.
+<a href="http://www.gnu.org/licenses/license-list.html#GPLCompatibleLicenses">Some advice is available from the FSF</a>, but since
+they may not be the owners of the software,
+there may be more room for disagreement than you might think.
+And in addition, when revisions of the GPL are released, new problems are
+likely to arise.
+It is likely to be much more difficult to upgrade licenses if you have an
+odd one-off license.
+In short,
+the best way to make a program GPL-compatible is to keep things simple.
+
+
+<p>
+If you&#8217;re submitting changes to an existing FLOSS project that uses
+a GPL-incompatible license, include a note in your submission that
+you&#8217;re dual-licensing your changes with a GPL-compatible
+license (such as the GPL, LGPL, or MIT/X license);
+that will make it much easier for the project to
+dual-license the entire program later.
+
+<p>
+If you release software under the GPL (solely or as a dual-license),
+you should include the &#8220;version X or later&#8221; clause as recommended
+in the GPL itself and used by nearly all GPL users.
+Using the &#8220;version X or later&#8221; phrase makes transition to updated GPL text
+really easy, and guarantees future compatibility as the GPL gets updated
+and clarified as new situations arise.
+Other text in the GPL limits what those later versions will say,
+and new versions of the GPL
+cannot <i>decrease</i> what you can do with the original work.
+Most proprietary licenses of today have clauses anticipating changes in terms
+as years go by - adding &#8220;or later&#8221; is just a different way to do it.
+A few companies just cannot bring themselves to say &#8216;version 2 or later&#8217;
+though; in such cases, they should designate a proxy who will be authorized
+to release the code under a later version of the license as those
+new versions become available, and establish a process to examine the
+later versions and give permission once review determines it&#8217;s okay.
+But I believe the &#8220;version X or later&#8221; approach is really the better approach
+if you choose to use the GPL;
+the whole point of the GPL is to ensure that you can gain access to later
+improvements to a program, and GPL revisions are
+created specifically to protect against attacks on that access.
+
+<p>
+If you choose the GPL, which version of the GPL should be your base?
+For many years, GPL version 2 was the only
+real choice, but in 2007 GPL version 3 was released.
+GPL version 3 has a number of improvements if your goal is to ensure
+that recipients can modify their software;
+for example, it
+eases international enforcement (by changing U.S.-centric terms to
+broader terms), adds better patent defenses,
+is compatible with more licenses (in particular the
+Apache Public License and the Affero GPL),
+and counters &#8220;Tivoization&#8221; (users must be able to modify GPL&#8217;ed software they
+receive).
+More detailed commentary on GPLv3 is available, including those by
+<a href="http://www.linuxjournal.com/node/1000246">
+Glyn Moody</a>,
+<a href="http://lawandlifesiliconvalley.blogspot.com/2007/07/general-public-license-version-3-legal.html">Mark Radcliffe</a>,
+and
+<a href="http://tieguy.org/blog/2007/06/26/gpl-v3-the-qa-part-1-the-license/">
+Luis Villa</a>.
+<a href="http://gpl3.palamida.com:8080/index.jsp">Palamida is tracking
+which projects are updating to GPL version 3</a>,
+a process which seems to be
+<a href="http://fsfe.org/en/fellows/ciaran/ciaran_s_free_software_notes/one_month_on_gplv3_adoption_going_very_smoothly">going well</a>.
+&#8220;GPL version 2 or later&#8221; gives maximum compatibility, but since nearly all
+projects have the &#8220;or later&#8221; clause, it isn&#8217;t really much more compatible
+than &#8220;GPL version 3 or later&#8221; for most people.
+I expect that there will be a gradual migration of many projects from
+&#8220;GPL version 2 or later&#8221; to &#8220;GPL version 3 or later&#8221;.
+So for most projects, &#8220;GPL version 3 or later&#8221; is probably the best choice,
+since it lets you take advantage of the GPL version 3 improvements.
+
+<!--
+<p>
+The point of this essay is not to always use the GPL.
+People have different motivations for creating FLOSS projects, and
+licenses express those motivations.
+<a href="http://radar.oreilly.com/archives/2007/04/gplv3_microsoft.html">
+Allison Randal</a> notes that both BSD-style and GPL licenses are
+concerned with software freedom,
+but the BSD license puts more weight on freedom of use,
+while the GPL puts more weight on freedom of access.
+-->
+<!--
+As a result, each sacrifices on the aspect of software freedom that the other considers most important. The BSD license loses a bit on the side of freedom of access, since it doesn't require people to release their changes, but depends on their good will to grant access. The GPL loses a bit on the side of freedom of use, since requiring people to release their changes constrains some of the environments where they might use it. There's room for both philosophies in the pursuit of software freedom.
+-->
+
+<p>
+In short, make sure that your FLOSS software is GPL-compatible,
+and that you use one of the few standard FLOSS licenses
+(GPL, LGPL, BSD-new, MIT, and possibly the Apache 2.0 license).
+Otherwise, your FLOSS project may never have the support you hoped for.
+
+<p>
+<hr>
+<p>
+<h1><a name="xfree86">Appendix A: The Cautionary Tale of XFree86</a></h1>
+
+<p>
+If you&#8217;re looking for a cautionary tale of how things can go badly
+because of a GPL-incompatible license,
+you need look no further than the tragic story of XFree86&#8217;s demise.
+The XFree86 project historically led development of a popular X server,
+and traditionally the vast majority of its code used the simple
+&#8220;MIT/X&#8221; open source license that is GPL-compatible.
+At one time, if you used a Unix-like system and a graphical user interface,
+you were very likely to be using XFree86... that&#8217;s how widespread it was.
+<p>
+The XFree86 president, David Dawes, decided to change the
+XFree86 license to one that wasn&#8217;t GPL-compatible, primarily
+to give developers more credit.
+This proposed license change caused a serious uproar.
+<a href="http://www.xfree86.org/pipermail/forum/2004-February/003945.html">
+Jim Gettys, a well-respected developer and co-founder of X,
+strongly opposed this change to the XFree86 license,</a> even though he&#8217;s
+not a strong advocate of the GPL.
+<a href="http://www.xfree86.org/pipermail/forum/2004-February/003974.html">
+Richard Stallman asked that something be worked out</a>.
+An article at
+<a href="http://linuxtoday.com/developer/2004021803026NWDTLL">
+Linux Today</a>
+<!--  XFree86 License Causes Distros to Rethink Plans,
+ by Brian Proffitt (Managing Editor)
+ Feb 18, 2004, 19 :00 UTC. -->
+and a <a href="http://freedesktop.org/pipermail/x-packagers/2004-February/000001.html">discussion at Freedesktop.org</a>
+showed that Red Hat, Debian, SuSE, Gentoo, Mandrake, and OpenBSD
+planned to drop XFree86 if they switched to this new license.
+<p>
+Not all parties objected because of GPL incompatibility;
+OpenBSD&#8217;s Theo de Raadt&#8217;s objection was that the new license made
+the code &#8220;less free&#8221;, rather than specifically about GPL compatibility.
+But many others specifically protested this proposed change on the grounds
+that a GPL-incompatible license is unacceptable.
+Branden Robinson performed a detailed XFree86 license analysis
+(available from the mailing lists of
+<a href="http://www.xfree86.org/pipermail/forum/2004-February/003986.html">
+XFree86</a> and
+<a href="http://www.opengroup.org/sophocles/show_mail.tpl?source=L&amp;listname=xorg_foundation&amp;id=172">The Open Group</a>;
+a shorter version was posted by
+<a href="http://lists.debian.org/debian-legal/2004/debian-legal-200402/msg00075.html">Debian</a>).
+In this detailed analysis, he pleaded that
+XFree86 repair the few licensing problems currently
+in the code base and keep the program GPL-compatible, saying,
+&#8220;The path to clearing away GPL-incompatibilities due to the BSD
+advertising clause for the entire XFree86 source tree (as of XFree86
+4.3.0, anyway) seems fairly short.  Given that, it seems a shame to
+entrench a similar incompatibility both broadly and deeply.&#8221;
+<!-- also at:
+ <a href="http://www.xfree86.org/pipermail/forum/2004-February/003987.html">
+-->
+The
+<a href="http://www.xfree86.org/pipermail/forum/2004-February">
+XFree86 mailing list from February 2004</a> includes many statements from
+individuals stating that GPL compatibility is important to them.
+<p>
+Since the XFree86 folks wouldn&#8217;t switch to a GPL-compatible license,
+<a href="http://lwn.net/Articles/79302/">
+the X.Org Foundation (formed January 2004) announced its own
+version of X on April 6, 2004</a>.
+One of its key enhancements was that
+&#8220;only files without the new XFree86 1.1 license are included
+in the X11R6.7.0 release.&#8221;
+The
+<a href="http://freedesktop.org/XOrg">X.org foundation home</a>
+made it even clearer that GPL compatibility was the key problem;
+it says that
+&#8220;The X.Org repository is based on XFree86 4.4 RC2. Just before
+its 4.4 release, XFree86 adopted a new license possibly incompatible with
+the GPL. For this reason, we have recreated its tree
+as closely as possible without importing files affected by the new license.&#8221;
+<p>
+<a href="https://dwheeler.com/oss_fs_why.html#forking">
+Most forks get little support and soon die</a>, but
+the X.Org foundation fork was immediately endorsed by many key
+organizations, including
+Novell&#8217;s SUSE, Red Hat, HP, TrollTech, and FSF Europe among others.
+<a href="http://lists.freebsd.org/pipermail/freebsd-current/2004-July/032267.html">FreeBSD later left XFree86</a>, and as noted above, the leader
+of OpenBSD had already stated that he did not support XFree86&#8217;s approach.
+By
+<a href="http://lwn.net/Articles/94763/">July 2004, Linux Weekly News (LWN)
+could honestly report that nearly all XFree86 developers had switched over
+to the new GPL-compatible fork</a>, leaving XFree86 mostly dead.
+The primary discussion topic in the new fork&#8217;s mailing list
+was what new features and design improvements should be made first,
+with the presumption that whatever XFree86 did was irrelevant.
+The transition was swift, and can be shown by examining the
+&#8220;XFree86 forum&#8221; mailing list; the
+<a href="http://www.xfree86.org/pipermail/forum/2003-June/">June 2003</a>
+archive of this list had 20 messages about XFree86
+(plus 13 irrelevant spam), and all 20 were technical discussions related
+to improving the program.
+By <a href="http://www.xfree86.org/pipermail/forum/2004-June/">June 2004</a>
+there were only 13 relevant postings in the whole month
+(plus 62 spam messages), and instead of being
+all technical discussions, many of those messages were acknowledgements
+between list members
+that XFree86 had been abandoned by most of its developers and users or
+were a discussion about how FreeBSD might possibly stay with XFree86
+(<a href="http://lists.freebsd.org/pipermail/freebsd-current/2004-July/032267.html">FreeBSD later left XFree86, quashing this hope</a>).
+For example, William M. Quarles re-posted
+an instant messaging conversation stating that
+&#8220;Most of the major distributions have either left 
+XFree86 behind and switched to X.org, or are [still] using XFree86 4.3
+[the old unmaintained version].&#8221;
+<p>
+Now it&#8217;s true that there were more issues than GPL incompatibility.
+There had been various calls for restructuring the organization of
+developers, and for opening up (and speeding up) development.
+But none of those issues caused a sudden exodus of developers and users.
+All projects (proprietary and FLOSS ) have discussions about
+their structure and progress, and rarely do they lead to an immediate
+abandonment by all users and developers at once.
+The issue (or at least the final straw)
+that caused the mass exodus by users from XFree86
+was the effort to switch to a GPL-incompatible license.
+It&#8217;s clear that trying to switch a popular FLOSS program
+from a GPL-compatible license
+to a GPL-incompatible license can be met with stiff and swift resistance.
+
+
+<p>
+<h1><a name="gpl-info">Appendix B: Information about the GPL and other Licenses</a></h1>
+
+<p>
+There are many information resources about the GNU General Public Licence
+(aka GPL).
+<a href="http://www.gnu.org/licenses/licenses.html#GPL">
+The GPL itself</a> is available on-line.
+<a href="http://www.gnu.org/licenses/gpl-faq.html">The GPL Frequently
+Asked Questions (FAQ)</a> has more information from its author.
+<a href="http://www.groklaw.net/staticpages/index.php?page=20050131065655645">
+Groklaw maintains a page of resources about the GPL</a>.
+<a href="http://www.bu.edu/law/lawreview/v85n5/Stoltz.pdf">
+Mitchell L. Stoltz&#8217;s &#8220;The Penguin Paradox: How the Scope
+of Derivative Works in Copyright Affects the Effectiveness of
+the GNU GPL, 85 B.U. L. Rev. 1439 (2005)</a> discusses the GPL and the
+law&#8217;s definitions of derivative works.
+<p>
+If you are <i>using or modifying</i> software released under the GPL,
+look at
+<a href="http://www.software.org">The Software Freedom Law Center (SFLC)</a>&#8217;s
+<a href="http://www.softwarefreedom.org/resources/2008/compliance-guide.html">
+A Practical Guide to GPL Compliance</a>.
+As noted in
+<a href="http://www.h-online.com/open/How-the-GPL-is-enforced--/features/113355">
+How the GPL is enforced</a>, a depressing number of companies simply
+take GPL-licensed software and use it in ways not permitted
+by the license, even though they sell products with far more complex licenses
+that they expect their users to follow.
+&#8220;The numerous cases in recent times... all followed the same pattern:
+a manufacturer uses GPL-licensed software in his device firmware,
+but neither advises device purchasers of their rights to the software,
+nor gives them access to the source code, as the GPL requires.
+An offender is initially contacted directly, without publicity, and an
+attempt is made to settle the matter amicably...
+[and if one is not reached, a complaint is made and]
+in the end there&#8217;s usually an agreement and no court verdict...
+All of the agreements look very similar: the company admits the
+infringement, retrospectively informs its customers, has to appoint
+a responsible person to prevent any future infringements of the GPL,
+and pays compensation...
+Companies really shouldn&#8217;t fall into the trap again and again...
+[because guidance like the SFLC&#8217;s is available].&#8221;
+
+<p>
+There are a large number of FLOSS licenses that exist, though the
+vast majority of software is covered by the five most common ones.
+Some are &#8220;protective&#8221;, like the GPL or Affero GPL - they work to protect
+the software from being turned into a proprietary product, including as
+part of a larger work.
+Some are &#8220;permissive&#8221;, such as the BSD-new and MIT/X license; they
+permit turning the program into a proprietary work.
+and some licenses like the
+LGPL are compromises between &#8220;protective&#8221; and &#8220;permissive&#8221; -
+the LGPL, for example, protects the component (usually a library) but
+permits its insertion into a larger proprietary work.
+<a href="http://www.gnu.org/licenses/license-list.html">
+The FSF maintains a list of licenses and some analyses of them.</a>
+The
+<a href="http://opensource.org/licenses">Open Source Initiative&#8217;s
+license list</a> lists licenses that it has determined are
+open source software licenses.
+<a href="http://fossology.org/home">FOSSology</a> is a FLOSS tool that
+reports licenses identified in source code.
+
+<p>
+<h1><a name="gnu-non-gpl">Appendix C: GNU projects not under a copyleft license</a></h1>
+<p>
+The Free Software Foundation (FSF) advocates use of the
+GNU General Public License (GPL), but even they gladly accept the use of
+software not under the GPL as part of their GNU project.
+<p>
+The following are &#8220;GNU packages&#8221; not under a copyleft license:
+<ul>
+<li>Kawa [fsf.org]: licensed under the Kawa License [gnu.org], which is an X-11/MIT style license. Kawa is a Scheme/Emacs Lisp environment that runs on Java.
+<li>GNU less [fsf.org]: the latest tarball from ftp.gnu.org is GPL, but older versions are non-copyleft.
+<li>Ncurses [gnu.org], which is distributed under an X11-style license.
+<li>Proto [fsf.org], which is a software development tool for finding C and C++ function prototypes, and is in the public domain.
+<!-- This one is not downloadable from the GNU ftp, but I guess that, if they list it as a GNU project, it must be.-->
+<li>Quexo [fsf.org], xquery implementation using Kawa to compile to java bytecode. Under the Kawa license, which means an X11-style license.
+<li>Speex [fsf.org], an audio compression codec for voice, under the Xiph.org license (a modified BSD)
+</ul>
+(My thanks to
+<a href="http://yro.slashdot.org/comments.pl?sid=225606&amp;cid=18272276">
+Javier Candeira</a> who identified many of these.)
+<!--
+At least one other non-GNU programs is listed as being GNU on the directory, like Slib [fsf.org], a portable scheme library, which under a simple permissive non-warranty license.
+-->
+
+
+
+<!-- End of main essay, below is "about the author" -->
+<p>
+<hr>
+<p>
+<table>
+<tr>
+<td>
+<i>
+<a href="https://dwheeler.com">David A. Wheeler</a> enjoys
+learning and writing about FLOSS and IT security,
+and spends far too much of his spare time on them.
+He is the author of papers such as
+<a href="https://dwheeler.com/oss_fs_why.html"><i>Why
+Open Source Software / Free Software (OSS/FS or FLOSS)? Look at the Numbers!</i></a>,
+<a href="https://dwheeler.com/oss_eval.html"><i>How to Evaluate Open Source Software/Free Software (OSS/FS) Programs</i></a>,
+<a href="https://dwheeler.com/essays/oss-government-acquisitions.html">
+Open Source Software (OSS) in U.S. Government Acquisitions</a>,
+<a href="https://dwheeler.com/essays/floss-license-slide.html"><i>FLOSS License Slide</i></a>,
+<a href="https://dwheeler.com/oss_fs_refs.html"><i>Open Source Software/Free Software (OSS/FS) References</i></a>, and the
+<a href="https://dwheeler.com/secure-programs"><i>Secure Programming
+for Linux and Unix HOWTO</i></a>.
+He has also developed several FLOSS programs such as
+<a href="https://dwheeler.com/flawfinder">flawfinder</a> and
+<a href="https://dwheeler.com/sloccount">sloccount</a>.
+He also plays the piano and guitar.
+It is rumored that he doesn&#8217;t actually sleep, which would explain a lot.
+You can see his web page at
+<a href="https://dwheeler.com">https://dwheeler.com</a>
+for additional evidence of this.
+<p>
+</i>
+</td>
+<td>
+<img src="https://dwheeler.com/dwheeler2003b.jpg" alt="Picture of David A. Wheeler" width="150" height="240">
+</td>
+</tr>
+</table>
+
+</body>
+</html>
+

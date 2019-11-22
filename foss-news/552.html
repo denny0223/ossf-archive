@@ -1,0 +1,424 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="zh-tw" lang="zh-tw" >
+<head>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<link rel="shortcut icon" href="../images/favicon.ico" />
+	  <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+  <meta name="robots" content="index, follow" />
+  <meta name="keywords" content="OSSFNL179" />
+  <meta name="title" content="五則嵌入式 Linux 成功案例" />
+  <meta name="description" content="你會想到家中的水塔裡，就可能有嵌入式 Linux 的蹤跡嗎？這僅是嵌入式 Linux 可能的應用之一。隨著計算環境的更替與世代演進，嵌入式、小型化、隨處可見的計算及連線裝置，將圍繞在人們四周。這類型裝置上講求小而美，強調快速而富彈 性的開發及部署能力，嵌入式的連線機能，特別是網際網路連線能力，為不可缺少的關鍵成份。開放源碼作業系統，如嵌入式" />
+  <meta name="generator" content="" />
+  <title>五則嵌入式 Linux 成功案例 - OpenFoundry</title>
+  <link href="../favicon.ico" rel="shortcut icon" type="image/x-icon" />
+  <link rel="stylesheet" href="../components/com_gantry/css/gantry.css" type="text/css" />
+  <link rel="stylesheet" href="../components/com_gantry/css/grid-12.css" type="text/css" />
+  <link rel="stylesheet" href="../components/com_gantry/css/joomla.css" type="text/css" />
+  <link rel="stylesheet" href="../templates/rt_quantive_j15/css/joomla.css" type="text/css" />
+  <link rel="stylesheet" href="../templates/rt_quantive_j15/css/style1.css" type="text/css" />
+  <link rel="stylesheet" href="../templates/rt_quantive_j15/css/light-body.css" type="text/css" />
+  <link rel="stylesheet" href="../templates/rt_quantive_j15/css/demo-styles.css" type="text/css" />
+  <link rel="stylesheet" href="../templates/rt_quantive_j15/css/template.css" type="text/css" />
+  <link rel="stylesheet" href="../templates/rt_quantive_j15/css/typography.css" type="text/css" />
+  <link rel="stylesheet" href="../templates/rt_quantive_j15/css/fusionmenu.css" type="text/css" />
+  <style type="text/css">
+    <!--
+#rt-main-surround ul.menu li.active > a, #rt-main-surround ul.menu li.active > .separator, #rt-main-surround ul.menu li.active > .item, #rt-main-surround .square4 ul.menu li:hover > a, #rt-main-surround .square4 ul.menu li:hover > .item, #rt-main-surround .square4 ul.menu li:hover > .separator, .roktabs-links ul li.active span {color:#0088B5;}
+a, #rt-main-surround ul.menu a:hover, #rt-main-surround ul.menu .separator:hover, #rt-main-surround ul.menu .item:hover {color:#0088B5;}
+    -->
+  </style>
+  <script type="text/javascript" src="../components/com_jcomments/js/jcomments-v2.1.js%3Fv=2"></script>
+  <script type="text/javascript" src="../components/com_jcomments/libraries/joomlatune/ajax.js"></script>
+  <script type="text/javascript" src="../media/system/js/mootools.js"></script>
+  <script type="text/javascript" src="../media/system/js/caption.js"></script>
+  <script type="text/javascript" src="../components/com_gantry/js/gantry-buildspans.js"></script>
+  <script type="text/javascript" src="../components/com_gantry/js/gantry-inputs.js"></script>
+  <script type="text/javascript" src="../templates/rt_quantive_j15/js/jquery.cookie.js"></script>
+  <script type="text/javascript" src="../modules/mod_roknavmenu/themes/fusion/js/fusion.js"></script>
+  <script type="text/javascript" src="../modules/mod_ofssologin/js/ofssologin.js"></script>
+  <script type="text/javascript">
+
+			window.addEvent('domready', function() {
+				var modules = ['rt-block'];
+				var header = ['h3','h2','h1'];
+				GantryBuildSpans(modules, header);
+			});
+		InputsExclusion.push('.content_vote','#rt-popup')
+		        window.addEvent('load', function() {
+					new Fusion('ul.menutop', {
+						pill: 0,
+						effect: 'slide and fade',
+						opacity: 1,
+						hideDelay: 500,
+						centered: 0,
+						tweakInitial: {'x': -2, 'y': 0},
+        				tweakSubsequent: {'x': 0, 'y': -14},
+						menuFx: {duration: 200, transition: Fx.Transitions.Sine.easeOut},
+						pillFx: {duration: 400, transition: Fx.Transitions.Back.easeOut}
+					});
+	            });
+  </script>
+<!-- <script type="text/javascript" src="/sso/javascripts/langsync.js"></script> -->
+<!-- <script src="/templates/rt_quantive_j15/js/ossf.js"></script> -->
+<script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-4136519-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
+</head>
+	<body  class="backgroundlevel-low backgroundstyle-style8 bodylevel-med bodystyle-light cssstyle-style1 logostyle-dark font-family-helvetica font-size-is-default menu-type-fusionmenu col12 ">
+		<div id="rt-main-background">
+			<div class="rt-container">
+																<div id="rt-header">
+					<div class="rt-grid-7 rt-alpha">
+    			<div class="rt-block">
+    	    	<a href="../index.html" id="rt-logo"></a>
+    		</div>
+	    
+</div>
+<div class="rt-grid-5 rt-omega">
+                    <div class="square9">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<div class="ofssologin_square9"><a href="../index.html">登入</a>&nbsp;&nbsp|&nbsp;&nbsp;<span><a href="https://www.openfoundry.org/en/foss-news/552" ><span lang="en" xml:lang="en">English</span></a></li></ul></span><!--Joom!fish V2.0.4 (Lightning)-->
+<!-- &copy; 2003-2009 Think Network, released under the GPL. -->
+<!-- More information: at http://www.joomfish.net -->
+<div class="ofssologin_search_square9">
+  <form id="of_search" action="https://www.openfoundry.org/of/openfoundry/search" method="get" onsubmit="of_search(); return false;">
+    <select id="of_search_type">
+      <option value="Projects"> 專案 </option>
+      <option value="Content"> 文章 </option>
+      <option value="People"> 人才 </option>
+    </select>
+    <input id="query" name="query" id="mod_search_searchword" maxlength="50" alt="search" class="inputbox" type="text" size="28" value="search..."  onblur="if(this.value=='') this.value='search...';" onfocus="if(this.value=='search...') this.value='';" />
+    <input type="hidden" name="commit" value="search" />
+  </form>
+</div></div>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		
+</div>
+					<div class="clear"></div>
+				</div>
+																<div id="rt-navigation"><div id="rt-navigation2"><div id="rt-navigation3">
+					
+<div class="nopill">
+	<ul class="menutop level1 " >
+						<li class="item1 root" >
+					<a class="orphan item bullet" href="../index.html"  >
+				<span>
+			    				首頁				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item32 root" >
+					<a class="orphan item bullet" href="../archived.html"  >
+				<span>
+			    				專案				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item186 root" >
+					<a class="orphan item bullet" href="../tw/community.html"  >
+				<span>
+			    				Who&#039;s Who				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item4 root" >
+					<a class="orphan item bullet" href="../tw/news.html"  >
+				<span>
+			    				新聞				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item5 root" >
+					<a class="orphan item bullet" href="../tw/law-and-licensing.html"  >
+				<span>
+			    				法律源地				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item3 root" >
+					<a class="orphan item bullet" href="../tw/activities.html"  >
+				<span>
+			    				活動				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item2 root" >
+					<a class="orphan item bullet" href="../tw/resourcecatalog%3FName=Value.html"  >
+				<span>
+			    				資源表列				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item45 root" >
+					<a class="orphan item bullet" href="../tw/about.html"  >
+				<span>
+			    				關於				   
+				</span>
+			</a>
+			
+			
+	</li>	
+				</ul>
+</div>
+
+				    <div class="clear"></div>
+				</div></div></div>
+								<div class="rt-surround"><div class="rt-surround2"><div class="rt-surround3">
+										<div id="rt-showcase-section">
+												<div id="rt-showcase">
+							<div class="rt-grid-12 rt-alpha rt-omega">
+    		<div class="clear"></div>
+		
+		
+                <div class="close-note">
+                    <div class="rt-block">
+               					<div class="module-content">
+                	<div style="font-size:medium; background-image:linear-gradient(120deg,#159957,#4298b2);color:white;padding:20px;margin:-10px -18px;">感謝您對「自由軟體鑄造場」的支持與愛護，十多年來「自由軟體鑄造場」受中央研究院支持，並在資訊科學研究所以及資訊科技創新研究中心執行，現已完成階段性的任務。 本網站預計持續維運至 2021年底，網站內容基本上不會再更動。<br />也紀念我們永遠的朋友 李士傑先生（Shih-Chieh Ilya Li）。</div>				</div>
+            </div>
+                </div>
+		
+</div>
+							<div class="clear"></div>
+						</div>
+																	</div>
+															<div id="rt-main-surround">
+												<div id="rt-breadcrumbs">
+								<div class="rt-breadcrumb-surround">
+		<a href="../index.html" id="breadcrumbs-home"></a>
+		<span class="breadcrumbs pathway">
+<a href="../tw/foss-news.html" class="pathway">源碼新聞</a> <img src="../templates/rt_quantive_j15/images/arrow.png" alt=""  /> <span class="no-link">五則嵌入式 Linux 成功案例</span></span>
+	</div>
+	
+							<div class="clear"></div>
+						</div>
+																							              <div id="rt-main" class="sa3-mb9">
+                <div class="rt-main-inner">
+                    <div class="rt-grid-9 rt-push-3">
+                                                <div class="rt-block">
+                            							<div class="square1">
+							<div class="rt-module-surround">
+								<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+								<div class="rt-module-inner">
+		                            <div id="rt-mainbody">
+		                                
+<div class="rt-joomla ">
+	<div class="rt-article">
+		
+				<div class="rt-headline"><h1 class="rt-article-title">五則嵌入式 Linux 成功案例</h1>		</div>
+		<div class="clear"></div>
+		
+		
+		
+				<div class="rt-articleinfo">
+						<div class="rt-article-icons">
+								<a href="https://www.openfoundry.org/tw/foss-news/552--linux-?tmpl=component&amp;print=1&amp;layout=default&amp;page=" title="列印" onclick="window.open(this.href,'win2','status=no,toolbar=no,scrollbars=yes,titlebar=no,menubar=no,resizable=yes,width=640,height=480,directories=no,location=no'); return false;" rel="nofollow"><span class="icon print"></span></a>																</div>
+			
+			<span class="rt-date-posted">
+						建立日期			2004-05-14 08:00						&nbsp;&nbsp;&nbsp;&nbsp;						最近更新在 2011-01-11 22:45						</span>
+
+						<span class="rt-author">
+				作者是 謝良奇			</span>
+				
+					</div>
+		
+		
+		<p class="MsoNormal"><span style="font-family: 新細明體">你會想到家中的水塔裡，就可能有嵌入式<span> Linux 的蹤跡嗎？這僅是嵌入式 Linux 可能的應用之一。隨著計算環境的更替與世代演進，嵌入式、小型化、隨處可見的計算及連線裝置，將圍繞在人們四周。這類型裝置上講求小而美，強調快速而富彈 性的開發及部署能力，嵌入式的連線機能，特別是網際網路連線能力，為不可缺少的關鍵成份。開放源碼作業系統，如嵌入式 Linux，針對不同硬體的模組化適應性、低成本、低記憶體需求，再加上其原生的穩健網際網路實作架構，可說是嵌入式計算和網路連線裝置最佳的實作基石。 台灣過去在資訊產業，特別是硬體製造、生產上，累積了可觀的優勢能量，作為未來發展嵌入式設備的籌碼，再好不過，嵌入式 Linux 的開放性與適任性，正好補足台灣在軟體層面的不足之處。以下五則國外成功案例，描述如何將嵌入式 Linux 結合到自身產品上，運用在生活周遭各個層面，達成令人亮眼的表現。這些成功案例，足可作為台灣跨足嵌入式產業此一新興市場，一個可茲借鑒的參考。</span></span></p>
+<br /> 
+
+<p class="MsoNormal"><span style="font-family: 新細明體">◎ 嵌入式網際網路系統運用於即時現場生產管理</span></p>
+<p class="MsoNormal"><span style="font-family: 新細明體">Mytron 公司將嵌入式 Linux 運用到現場生產（shop floor）上，讓現場生產能透過網際網路執行計畫排定、管理及報表功能。為其現有產品加入網際網路、企業網路（Intranet）等功能，公司員工藉由 Mytron 這項技術，能夠遠端存取最新產品資訊，並依賴即時資料執行有效管理決策。此外，客戶得以閱覽產品狀態資訊，也能進一步改善供應鏈規劃效率。</span></p>
+<p class="MsoNormal"><span style="font-family: 新細明體">使用微處理器之控制、儀器設備的設計、製造、安裝，是<span> Mytron 的專精領域。該公司現有的產品線稱為動態程序分析（Dynamic Process Analysis）系統。Mytron 便是運用開放源碼技術來改善此一產品，提供具備完整的網際網路、企業網路功能的系統。</span></span></p>
+<p class="MsoNormal"><span style="font-family: 新細明體">該公司決定在未來產品開發上採用開放源碼軟體，在多種可用技術中，最後決定採用<span> Linux，所使用的套件版本為 Red Hat 7.0。為了在目標平台上提供所需功能，需要部署一個 on-board Web 伺服器，儘管 Apache 是相當普及的 Web 伺服器，但該公司僅需符合產品規格和設計需求的 Java Servlets 及 Java Server Pages。來自 Apache Jakarta 專案的 Tomcat 成為 Mytron 的最終選擇。</span></span></p>
+<p class="MsoNormal"><span style="font-family: 新細明體">Java Servlets 提供該公司所需，供擴充 Web 伺服器及存取現有企業系統的簡單、平台獨立機制。開發程序中採用的是 Sun Java 1.4.1 版，並使用了基於開放源碼 Java Comms 模組的 Java Serial Comms 模組。</span></p>
+<p class="MsoNormal"><span style="font-family: 新細明體">採行網際網路通訊協定及<span> Linux 系統，新的 DPA 系統更容易為個別需求進行調整，並可作為公司、團體的管理決策支援工具。新 DPA 系統的技術優勢給了該公司一個重要的成長契機。新產品納入的遠端診斷及升級功能，大幅降低 Mytron 產品支援上的困難。這一點有效地消除該公司持續成長面臨的障礙。Mytron 預估此專案在二十個月內就可回收，未來三年的投資報酬率更可超過 250%。</span></span></p>
+<p class="MsoNormal"><span style="font-family: 新細明體">◎ 都市環境監控系統</span></p>
+<p class="MsoNormal"><span style="font-family: 新細明體">AMES 公司的 ADVA User Experiment，是一項在斯洛文尼亞（Slovenia）建置都市環境監控系統的計畫，其中運用了嵌入式 Linux 以及其他開放源碼技術。</span></p>
+<p class="MsoNormal"><span style="font-family: 新細明體">AMES 專門開發及製造各式氣象感測器、儀器、以微電腦為基礎的自動量測站，以及包括放射線探測器在內的全電腦化測量系統。該公司的現有系統工業嵌入式系統 （industrial embedded systems，IES），架構在微軟 Windows 上，由於技術問題和授權策略，讓許多用戶推動該公司採用開放源碼軟體。</span></p>
+<p class="MsoNormal"><span style="font-family: 新細明體">Linux 滿足了 AMES 健全、支援完善作業系統的需求。AMES 採用了 Red Hat Linux v8.0 及 Linux Suse v8.2。以 Linux 為基礎的 IES 系統要求將所有基本系統元件轉移到新環境上，這些元件的用途包括資料擷取、資料儲存、伺服器和展示程式，新的系統並要求使用開放源碼資料庫管理系統，如 MySQL，以及開放源碼 ODBC 驅動程式管理器 unixODBC。量測站及量測中心間的資料通訊，一律採用 TCP/IP。</span></p>
+<p class="MsoNormal"><span style="font-family: 新細明體">採用了嵌入式開放源碼及<span> TCP/IP 技術，User Experiment 使得 AMES 得以發展新一代，具備改良客戶支援的環境監控系統。ADVA 專案的約可在十六個月後回收，並為 AMES 到 2005 年時帶來超過 450% 的投資報酬率。</span></span></p>
+<p class="MsoNormal"><span style="font-family: 新細明體">◎ 應用嵌入式 Linux 及 TCP/IP 的都市廢棄物管理系統</span></p>
+<p class="MsoNormal"><span style="font-family: 新細明體">Gb.com，位於北義大利，在各種領域提供流程自動化及自動化解決方案的私人公司，將開放源碼嵌入式 Linux 系統及 TCP/IP 技術，運用到網路功能及產品改良中。</span></p>
+<p class="MsoNormal"><span style="font-family: 新細明體">除此之外，由於對生態、能源領域的高度關注，該公司也生產光電伏特（<span>photovoltaic）能源生產自動化元件，過去該公司已開發十五套以 Windows 為基礎的廢棄物管理系統。為了因應新的廢棄物管理及稅務法，產品必須包含網路功能。</span></span></p>
+<p class="MsoNormal"><span style="font-family: 新細明體">在嵌入式單板電腦中採納低記憶體需求的開放源碼嵌入式<span> Linux，能確實縮短上市時間、達成低風險設計、低成本，並可在短期內，在無風險的前提下實現 TCP/IP 連線功能，並可設計完善之使用界面。此外，該系統未來可輕易升級。TCP/IP 技術讓設備得以透過標準服務與伺服器連線，並可達成遠端除錯和軟體升級目的。</span></span></p>
+<p class="MsoNormal"><span style="font-family: 新細明體">產品中採用的主要開放源碼軟體為升級至<span> 2.4.20 的 Linux 核心、升級後的 SysLinux、PPP 伺服器和 Login shell 等。Gb.com 認為此一基於嵌入式 Linux 的嶄新系統，可作為達成生態島（ecological islands）之親和且具成本效益的解決方案。</span></span></p>
+<p class="MsoNormal"><span style="font-family: 新細明體">◎ 自動化生物監視及控制系統</span></p>
+<p class="MsoNormal"><span style="font-family: 新細明體">在引入嵌入式<span> Linux 及開放源碼軟體前，水冷卻塔的生物活動必須由技術人員親自走訪，執行測量，當生物活動過盛，在水中加入 biocide。Biotrace 公司藉由引入上述技術的連續流照度計（Continuous Flow Luminometer），成功地由遠端監視並控制水冷卻塔中的生物活動，消除了不必要的作業成本後。</span></span></p>
+<p class="MsoNormal"><span style="font-family: 新細明體">Biotrace 專精於設計、製造及開發供食品預加工、健康產品、工業及軍事應用市場的化學及衛生監控應用儀器。引入基於開放源碼的嵌入式網際網路技術，降低了水塔監控的作業成本，藉此開啟的新市場，為該公司帶來重要的銷售成長契機。</span></p>
+<p class="MsoNormal"><span style="font-family: 新細明體">開放源碼除了帶來以上利益，<span>Biotrace 也藉由採用開放源碼軟體，達成減少開發成本的目標，開發時程僅耗時原先評估工程天的 80%。其他好處尚包括可重用的作業軟體程式碼、社群線上支援和高品質的程式碼等。</span></span></p>
+<p class="MsoNormal"><span style="font-family: 新細明體">該公司過去<span> CFL 的設計，需要人工操作以提供使用者回覆及控制功能。在產品中納入嵌入式 x86 板後，該產品可單獨運作，加上以網際網路為基礎的報表及控制功能，便不再需要本地支援。改良後的監控系統包含許多 CFL 元件，並透過網際網路和公用伺服器相連。這些子系統全都架構在 Linux 和其他開放源碼軟體之上。此一改良系統開啟英國四萬五千個水冷卻塔的全新市場，預期報酬率將可達成 347%。</span></span></p>
+<p class="MsoNormal"><span style="font-family: 新細明體">◎ 加油站遠端監控系統</span></p>
+<p class="MsoNormal"><span style="font-family: 新細明體">Malte Products AB 從 1909 年起便投入燃油幫浦設備的開發及製造，掌握了此類產品及技術中，最先進的相關知識。Malte Products AB 為加油站提供電子化的儲油槽監控系統，目前約有 15-20% 的加油站已經建置此類系統，然而，至今這些系統仍採用有線的連線方式。其安裝成本相當可觀。</span></p>
+<p class="MsoNormal"><span style="font-family: 新細明體">Malte Products AB 運用嵌入式 Linux、藍芽及蜂巢式服務，發展出可遠端監督及控制加油站燃料資訊的無線系統。此一系統可作為儲油槽存量及價格標示應用。新系統藉由藍芽通訊技術及站 內電腦和 PDA，提供相當高的使用彈性，在無站內電腦的情況下，該系統更可透過GSM 提供服務。嵌入式的 web 伺服器則提供網際網路、企業網路連線功能。</span></p>
+<p class="MsoNormal"><span style="font-family: 新細明體">Linux 提供 Malte Products AB 低成本、簡易的 TCP/IP 實作及嵌入式網際網路功能，採用 Linux 確保了可靠且具完善支援，並且與微處理器選擇相獨立的作業系統。這套新的 RemVRS 系統，為該公司替加油站提供完整的遠端存取服務套件。預估該系統的回收期是二十四個月，投資報酬率約為 200%。</span></p>
+<p class="MsoNormal"><span style="font-family: 新細明體">相關網址：<span><br /> 1.案例研究: 產業嵌入式系統中的 Linux<br /> <a href="https://linuxdevices.com/articles/AT2352793488.html">https://linuxdevices.com/articles/AT2352793488.html</a><br /> 2.Mytron 動態程序分析<br /> <a href="https://www.mytron.co.uk/overview.htm">https://www.mytron.co.uk/overview.htm</a><br /> 3.AMES D.O.O.<br /> <a href="https://www.ames.si/">https://www.ames.si/</a><br /> 4.Biotrace<br /> <a href="https://www.biotrace.co.uk/index.php">https://www.biotrace.co.uk/index.php</a></span></span></p>
+<p class="MsoNormal"><span> </span></p>
+			<!-- Show relate article -->
+				<!-- end -->
+		<div class="article_note">
+		<!-- Add tags use metakey, and show OSSF Newsletter tag: OSSFNL+NUM-->
+		<br><br> <hr style='border: 1px dashed #D2DADB;'><b>自由軟體鑄造場電子報&nbsp;:</b>&nbsp;<a href='../previous-issue%3Ftask=view&amp;id=179.html'>第 14 期 嵌入式系統(上)</a><br>				<!-- End -->
+					<br>
+					<b>分類: </b><a href="../tw/foss-news.html">				源碼新聞					</a>				</div>
+			 <!-- AddThis Button BEGIN ID 3001 is the front page article -->
+     			<br><br>
+       <div class="addthis_toolbox addthis_default_style addthis_32x32_style">
+       <a class="addthis_button_preferred_1"></a>
+       <a class="addthis_button_preferred_2"></a>
+       <a class="addthis_button_preferred_3"></a>
+       <a class="addthis_button_preferred_4"></a>
+       <a class="addthis_button_compact"></a>
+       <a class="addthis_counter addthis_bubble_style"></a>
+       </div>
+       <script type="text/javascript">var addthis_config = {"data_track_clickback":true};</script>
+       <script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js#pubid=openfoundry"></script>
+       <!-- AddThis Button END -->
+     <br>
+		<div class="totop" ><a class="rt-totop" href="552.html#" style="outline: medium none;">↑ Top</a></div>
+            <!-- AddThis Button END -->
+
+			</div>
+</div>
+
+		                            </div>
+									<div class="clear"></div>
+								</div>
+								<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+							</div>
+							</div>
+                                                    </div>
+                                            </div>
+                                <div class="rt-grid-3 rt-pull-9">
+                <div id="rt-sidebar-a">
+                                    <div class="square4">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<ul class="menu"><li class="item56"><a href="../tw/previous-issue.html"><span>電子報總覽</span></a></li><li class="item55"><a href="../tw/about-newsletter.html"><span>關於本報</span></a></li></ul>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<ul class="menu"><li id="current" class="active item115"><a href="../tw/foss-news.html"><span>源碼新聞</span></a></li><li class="item141"><a href="../tw/case-job.html"><span>接案 / 工作</span></a></li></ul>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+        	                <div class="square1">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-title"><h2 class="title">專欄總覽</h2></div>
+						<div class="clear"></div>
+		                						<div class="module-content">
+		                	<ul class="menu"><li class="item37"><a href="../tw/tech-column.html"><span>技術專欄</span></a></li><li class="item40"><a href="../tw/foss-programs.html"><span>源碼秘技</span></a></li><li class="item35"><a href="../tw/legal-article-.html"><span>法律專欄</span></a></li><li class="item154"><a href="../tw/foss-forum.html"><span>自由專欄</span></a></li><li class="item162"><a href="../tw/enterprise-application.html"><span>企業應用</span></a></li><li class="item44"><a href="../tw/foss-projects.html"><span>源碼專案</span></a></li></ul>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		                <div class="square1">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<p style="text-align: center;"><a href="../news%3Fformat=feed&amp;type=rss" target="_black"><img src="../images/M_images/news-rss-feed.png" border="0" /></a><br /><a href="https://www.openfoundry.org/rss-feed/Newsletter" target="_black"><img src="../images/M_images/newsletter-rss-feed.png" border="0" /></a></p>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		
+                </div>
+            </div>
+
+                    <div class="clear"></div>
+                </div>
+            </div>
+																													</div>
+										<div id="rt-copyright">
+						<div class="rt-grid-12 rt-alpha rt-omega">
+                        <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<div id="desktop-mobile-version-switch"><span id="mobile-version" class="version-switch"><a href="552.html#">行動版</a></span></div>
+自由軟體鑄造場 製作 最佳瀏覽狀態：IE7或Firefox2.0以上 (建議使用Firefox) ‧ 解析度1024*768 <br /> <strong>E-Mail</strong>：<a href="mailto:contact@openfoundry.org">contact@openfoundry.org</a> <strong>Address</strong>：台北市南港區研究院路2段128號 中央研究院資訊科學研究所 . <a href="../privacy-policy.html">隱私權條款</a>. <a href="../terms-of-use.html">使用條款</a><span style="position: relative; top: 8px; margin-top: -8px;"> <a href="../about/8101.html"><img src="../images/M_images/rss-feed-all.png" border="0" /></a></span>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+        	
+</div>
+						<div class="clear"></div>
+					</div>
+					<div class="rt-footer-bottom-wrap"><div class="rt-footer-bottom"><div class="rt-footer-bottom2"><div class="rt-footer-bottom3"></div></div></div></div>
+									</div></div></div>
+				<div class="rt-surround-bottom"><div class="rt-surround-bottom2"><div class="rt-surround-bottom3"></div></div></div>
+							</div>
+		</div>
+		<!--
+		<script id="aptureScript">
+						(function (){var a=document.createElement("script");a.defer="true";a.src="http://www.apture.com/js/apture.js?siteToken=vsJttrn";document.getElementsByTagName("head")[0].appendChild(a);})();
+     </script>
+-->
+
+<!-- Piwik -->
+<!-- 			<script type="text/javascript">
+			  var _paq = _paq || [];
+		  _paq.push(["trackPageView"]);
+		  _paq.push(["enableLinkTracking"]);
+
+		    (function() {
+			        var u=(("https:" == document.location.protocol) ? "https" : "https") + "://www.openfoundry.org/piwik/";
+				    _paq.push(["setTrackerUrl", u+"piwik.php"]);
+				    _paq.push(["setSiteId", "1"]);
+				        var d=document, g=d.createElement("script"), s=d.getElementsByTagName("script")[0]; g.type="text/javascript";
+				        g.defer=true; g.async=true; g.src=u+"piwik.js"; s.parentNode.insertBefore(g,s);
+					  })();
+		  </script> -->
+<!-- End Piwik Code -->
+	</body>
+</html>

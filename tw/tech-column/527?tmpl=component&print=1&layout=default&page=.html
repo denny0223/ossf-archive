@@ -1,0 +1,105 @@
+	<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+	<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="zh-tw" lang="zh-tw" >
+		<head>
+			  <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+  <meta name="robots" content="noindex, nofollow" />
+  <meta name="keywords" content="OSSFNL230" />
+  <meta name="title" content="iText" />
+  <meta name="description" content=" Java Opensources for Web Development Part I： 嘗試使用來自 Opensource 的小工具(1) Lession 6 : iText 上期我們使用 JasperReport 產生報表，然而，輸出的圖表與 PDF 都是使用其他 Opensource 的元件，我們常利用到 iText 來產生 PDF 檔案，有時候，我們也可以利用其他的 Java" />
+  <meta name="generator" content="" />
+  <title>iText</title>
+  <link href="../../favicon.ico" rel="shortcut icon" type="image/x-icon" />
+  <link rel="stylesheet" href="../../components/com_gantry/css/gantry.css" type="text/css" />
+  <link rel="stylesheet" href="../../components/com_gantry/css/grid-12.css" type="text/css" />
+  <link rel="stylesheet" href="../../components/com_gantry/css/joomla.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/joomla.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/style1.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/light-body.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/demo-styles.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/template.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/typography.css" type="text/css" />
+  <style type="text/css">
+    <!--
+#rt-main-surround ul.menu li.active > a, #rt-main-surround ul.menu li.active > .separator, #rt-main-surround ul.menu li.active > .item, #rt-main-surround .square4 ul.menu li:hover > a, #rt-main-surround .square4 ul.menu li:hover > .item, #rt-main-surround .square4 ul.menu li:hover > .separator, .roktabs-links ul li.active span {color:#0088B5;}
+a, #rt-main-surround ul.menu a:hover, #rt-main-surround ul.menu .separator:hover, #rt-main-surround ul.menu .item:hover {color:#0088B5;}
+    -->
+  </style>
+  <script type="text/javascript" src="../../components/com_jcomments/js/jcomments-v2.1.js%3Fv=2"></script>
+  <script type="text/javascript" src="../../components/com_jcomments/libraries/joomlatune/ajax.js"></script>
+  <script type="text/javascript" src="../../media/system/js/mootools.js"></script>
+  <script type="text/javascript" src="../../media/system/js/caption.js"></script>
+  <script type="text/javascript" src="../../components/com_gantry/js/gantry-buildspans.js"></script>
+  <script type="text/javascript" src="../../components/com_gantry/js/gantry-inputs.js"></script>
+  <script type="text/javascript">
+
+			window.addEvent('domready', function() {
+				var modules = ['rt-block'];
+				var header = ['h3','h2','h1'];
+				GantryBuildSpans(modules, header);
+			});
+		InputsExclusion.push('.content_vote','#rt-popup')
+  </script>
+		</head>
+		<body  class="backgroundlevel-low backgroundstyle-style8 bodylevel-med bodystyle-light cssstyle-style1 logostyle-dark font-family-helvetica font-size-is-default menu-type-fusionmenu col12 ">
+			<div id="rt-main-surround">
+				<div class="rt-container">
+					<div class="rt-block">
+						<div id="rt-mainbody">
+					    	
+<div class="rt-joomla ">
+	<div class="rt-article">
+		
+				<div class="rt-headline"><h1 class="rt-article-title">iText</h1>		</div>
+		<div class="clear"></div>
+		
+		
+		
+				<div class="rt-articleinfo">
+						<div class="rt-article-icons">
+				<a href="527%3Ftmpl=component&amp;print=1&amp;layout=default&amp;page=.html#" onclick="window.print();return false;"><span class="icon print"></span></a>									<span class="icon printscreen">
+						<a href="527%3Ftmpl=component&amp;print=1&amp;layout=default&amp;page=.html#" onclick="window.print();return false;"><img src="../../images/M_images/printButton.png" alt="列印"  /></a>					</span>
+							</div>
+			
+			<span class="rt-date-posted">
+						建立日期			2006-08-20 08:00						&nbsp;&nbsp;&nbsp;&nbsp;						最近更新在 2007-02-15 22:08						</span>
+
+						<span class="rt-author">
+				作者是 李日貴			</span>
+				
+					</div>
+		
+		
+		<p> Java Opensources for Web Development Part I： 嘗試使用來自 Opensource 的小工具(1)<br /> Lession 6 : iText </p><p> 上期我們使用 JasperReport 產生報表，然而，輸出的圖表與 PDF 都是使用其他 Opensource 的元件，我們常利用到 iText 來產生 PDF 檔案，有時候，我們也可以利用其他的 Java opensource 來建立 PDF，例如 pdfbox 。 </p>在金融資訊服務之中，我們常常會遇到客戶需要一些不可修改的文件備查，PDF 是 Adobe 公司的公開文件格式，非常適合應用在這方面。雖然 PDF 的保密編碼方式還是有點漏洞，可以遭到破解，但是比起其他的文件格式來說，PDF 可以方便列印與檔案保存，只要妥善地利用，也可以作為相關的文件版本控管。所以當我們無法利用 Jasper-Report 來產生適當的報表之時，我們就必須直接利用 iText 來打造自己的 pdf 輸出。 <p> ◎ 利用 iText 作最簡單的 PDF 輸出 </p><p> 所有開發都是得先說 Hello World ， 讓我們首先就來製作 HelloWorld.PDF 吧。 </p><pre>package com.softleader.pdf;<br /><br />import java.io.FileOutputStream;<br /><br />import com.lowagie.text.Document;<br />import com.lowagie.text.Paragraph;<br />import com.lowagie.text.pdf.PdfWriter;<br /><br />public class HelloWorldPDF {<br />    public static void main(String[] args) {<br />    	  Document doc = new Document();  // (1) <br />        try {<br />            <br />            PdfWriter.getInstance(doc, new FileOutputStream(&quot;HelloWorld.pdf&quot;));  // (2)<br />            doc.open(); // (3)<br />            doc.add(new Paragraph(&quot;Hello World&quot;)); // (4) <br />            <br />        } catch ( Exception ex ) {<br />            System.out.println(ex);<br />        } finally {<br />        	doc.close(); // (5)<br />        }<br />    }<br />   <br />}<br /></pre>在程式後面我加入數字註解，為了就是說明 iText 五個步驟，(1) 文件 -&gt; (2) 輸出 -&gt; (3) 開啟 -&gt; (4) 內容 -&gt; (5) 關閉。稍微對照程式碼，就不難了解產生的方式。 主要來說，我們將著重於 (4) 內容的調整，例如可以放入各式各樣的文字或是圖檔，也可以產生表格。另外，也可以加入 XmlParser 匯入 XML/XHTML 格式的檔案，相關的應用，就給讀者自行上網查詢。另外，我們使用 PDF 的時候，必須使用附加中文字型，我們必須放入 iTextAsian.jar 來使用 CJK fonts（中日韓表意文字）在 classpath 之中，如果要附加其他字型，也可利用 TTF fonts。（文鼎的字型有支援 pdf，大多的華康字型是無法使用的）。 <pre>BaseFont.createFont(&quot;\\kaiu.ttf&quot;, BaseFont.IDENTITY_H, BaseFont.EMBEDDED);<br /></pre> ◎ 利用 Servlet 輸出利用 iText 產出的 PDF <p> 最後，必須要說明的是，因為我們要放在網頁之中，有時候不想存放實體檔案，希望直接匯到客戶端出去。所以可以利用下面這方式利用 Servlet 輸出。 </p><pre>ByteArrayOutputStream baosPDF = // 產生 PDF<br />String pdfname = &ldquo;helloworld.pdf&rdquo;;<br />//設定 HttpHeaders<br />response.setHeader(&quot;Expires&quot;, &quot;0&quot;);<br />response.setHeader(&quot;Cache-Control&quot;, &quot;must-revalidate, post-check=0, pre-check=0&quot;);<br />response.setHeader(&quot;Pragma&quot;, &quot;public&quot;);<br />//設定 ContentType 為 &lsquo;application/pdf&rdquo;<br />res.setContentType(&quot;application/pdf&quot;);<br />// M$ IE 需要 輸出的 size()<br />res.setContentLength(baosPDF.size());<br />// write ByteArrayOutputStream to the ServletOutputStream<br />ServletOutputStream out = res.getOutputStream();<br />baosPDF.writeTo(out);<br />out.flush();<br /></pre>
+			<!-- Show relate article -->
+				<!-- end -->
+		<div class="article_note">
+		<!-- Add tags use metakey, and show OSSF Newsletter tag: OSSFNL+NUM-->
+		<br><br> <hr style='border: 1px dashed #D2DADB;'><b>自由軟體鑄造場電子報&nbsp;:</b>&nbsp;<a href='../../previous-issue%3Ftask=view&amp;id=230.html'>第 64 期 GPL3 草案修改要點解析</a><br>				<!-- End -->
+					<br>
+					<b>分類: </b><a href="../tech-column.html">				技術專欄					</a>				</div>
+			 <!-- AddThis Button BEGIN ID 3001 is the front page article -->
+     			<br><br>
+       <div class="addthis_toolbox addthis_default_style addthis_32x32_style">
+       <a class="addthis_button_preferred_1"></a>
+       <a class="addthis_button_preferred_2"></a>
+       <a class="addthis_button_preferred_3"></a>
+       <a class="addthis_button_preferred_4"></a>
+       <a class="addthis_button_compact"></a>
+       <a class="addthis_counter addthis_bubble_style"></a>
+       </div>
+       <script type="text/javascript">var addthis_config = {"data_track_clickback":true};</script>
+       <script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js#pubid=openfoundry"></script>
+       <!-- AddThis Button END -->
+     <br>
+		<div class="totop" ><a class="rt-totop" href="527%3Ftmpl=component&amp;print=1&amp;layout=default&amp;page=.html#" style="outline: medium none;">↑ Top</a></div>
+            <!-- AddThis Button END -->
+
+			</div>
+</div>
+
+						</div>
+					</div>
+				</div>
+			</div>
+		</body>
+	</html>

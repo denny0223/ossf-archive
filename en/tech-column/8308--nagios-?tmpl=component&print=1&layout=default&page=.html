@@ -1,0 +1,200 @@
+	<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+	<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-gb" lang="en-gb" >
+		<head>
+			  <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+  <meta name="robots" content="noindex, nofollow" />
+  <meta name="keywords" content="nagios,https,email,告知管理者,當發現所監控系統服務異常時,監控管理者所設定的系統服務,linux,監控系統的主要程式,vshell,nagios的,downloads,exchange,nagiosvshell,assets,fedoraproject,能即時通知管理者的監控系統,是每個網管人員所迫切需要的,而在開源碼社群中,功能完善的,當遇到系統服務發生異常時" />
+  <meta name="title" content="以 NAGIOS 實作服務監控系統" />
+  <meta name="description" content="前言 我想一個稱職的網管人員，確保系統服務不中斷是最基本的職責。但受限於人力的考量，網管人員不可能 24 小時隨時監控系統服務的運作。當遇到系統服務發生異常時，能即時通知管理者的監控系統，是每個網管人員所迫切需要的。而在開源碼社群中，功能完善的 Nagios 就能幫助網管人員即時監控系統服務的狀態。並在系統服務發生異狀時，以email通知管理者。 所需的套件如下表示： 軟體名稱 官方網址 說明" />
+  <meta name="generator" content="" />
+  <title>以 NAGIOS 實作服務監控系統</title>
+  <link href="../../favicon.ico" rel="shortcut icon" type="image/x-icon" />
+  <link rel="stylesheet" href="../../components/com_gantry/css/gantry.css" type="text/css" />
+  <link rel="stylesheet" href="../../components/com_gantry/css/grid-12.css" type="text/css" />
+  <link rel="stylesheet" href="../../components/com_gantry/css/joomla.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/joomla.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/style1.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/light-body.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/demo-styles.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/template.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/typography.css" type="text/css" />
+  <style type="text/css">
+    <!--
+#rt-main-surround ul.menu li.active > a, #rt-main-surround ul.menu li.active > .separator, #rt-main-surround ul.menu li.active > .item, #rt-main-surround .square4 ul.menu li:hover > a, #rt-main-surround .square4 ul.menu li:hover > .item, #rt-main-surround .square4 ul.menu li:hover > .separator, .roktabs-links ul li.active span {color:#0088B5;}
+a, #rt-main-surround ul.menu a:hover, #rt-main-surround ul.menu .separator:hover, #rt-main-surround ul.menu .item:hover {color:#0088B5;}
+    -->
+  </style>
+  <script type="text/javascript" src="../../components/com_jcomments/js/jcomments-v2.1.js%3Fv=2"></script>
+  <script type="text/javascript" src="../../components/com_jcomments/libraries/joomlatune/ajax.js"></script>
+  <script type="text/javascript" src="../../media/system/js/mootools.js"></script>
+  <script type="text/javascript" src="../../media/system/js/caption.js"></script>
+  <script type="text/javascript" src="../../components/com_gantry/js/gantry-buildspans.js"></script>
+  <script type="text/javascript" src="../../components/com_gantry/js/gantry-inputs.js"></script>
+  <script type="text/javascript">
+
+			window.addEvent('domready', function() {
+				var modules = ['rt-block'];
+				var header = ['h3','h2','h1'];
+				GantryBuildSpans(modules, header);
+			});
+		InputsExclusion.push('.content_vote','#rt-popup')
+  </script>
+		</head>
+		<body  class="backgroundlevel-low backgroundstyle-style8 bodylevel-med bodystyle-light cssstyle-style1 logostyle-dark font-family-helvetica font-size-is-default menu-type-fusionmenu col12 ">
+			<div id="rt-main-surround">
+				<div class="rt-container">
+					<div class="rt-block">
+						<div id="rt-mainbody">
+					    	
+<div class="rt-joomla ">
+	<div class="rt-article">
+		
+				<div class="rt-headline"><h1 class="rt-article-title">以 NAGIOS 實作服務監控系統</h1>		</div>
+		<div class="clear"></div>
+		
+		
+		
+				<div class="rt-articleinfo">
+						<div class="rt-article-icons">
+				<a href="8308--nagios-%3Ftmpl=component&amp;print=1&amp;layout=default&amp;page=.html#" onclick="window.print();return false;"><span class="icon print"></span></a>									<span class="icon printscreen">
+						<a href="8308--nagios-%3Ftmpl=component&amp;print=1&amp;layout=default&amp;page=.html#" onclick="window.print();return false;"><img src="../../images/M_images/printButton.png" alt="Print"  /></a>					</span>
+							</div>
+			
+			<span class="rt-date-posted">
+						 Created at			Thursday, 21 April 2011 17:25						&nbsp;&nbsp;&nbsp;&nbsp;						Last Updated on Monday, 25 April 2011 18:28						</span>
+
+						<span class="rt-author">
+				Written by 老薯條 (https://vulscan.wynetech.com.tw) 			</span>
+				
+					</div>
+		
+		
+		<h3>前言</h3>
+<br />我想一個稱職的網管人員，確保系統服務不中斷是最基本的職責。<br /><br />但受限於人力的考量，網管人員不可能 24 小時隨時監控系統服務的運作。當遇到系統服務發生異常時，能即時通知管理者的監控系統，是每個網管人員所迫切需要的。而在開源碼社群中，功能完善的 Nagios 就能幫助網管人員即時監控系統服務的狀態。並在系統服務發生異狀時，以email通知管理者。               
+
+<br />所需的套件如下表示：<br /><br /> 
+<table id="customers" border="1" cellspacing="0" cellpadding="3" width="100%">
+<tbody>
+<tr valign="top">
+<th width="20%"> 軟體名稱 </th> <th width="40%"> 官方網址 </th> <th width="40%"> 說明 </th>
+</tr>
+<tr valign="top">
+<td width="20%">Fedora 11</td>
+<td width="40%"><a href="https://fedoraproject.org/" target="_blank">https://fedoraproject.org/</a></td>
+<td width="40%">Linux 作業系統</td>
+</tr>
+<tr valign="top">
+<td width="20%">Nagios</td>
+<td width="40%"><a href="https://www.nagios.org/" target="_blank">https://www.nagios.org/</a></td>
+<td width="40%">監控系統的主要程式，監控管理者所設定的系統服務，當發現所監控系統服務異常時，即發送 Email 告知管理者</td>
+</tr>
+<tr valign="top">
+<td width="20%">vshell</td>
+<td width="20%"><a href="https://assets.nagios.com/downloads/exchange/nagiosvshell/" target="_blank">https://assets.nagios.com/downloads/exchange/nagiosvshell/</a></td>
+<td width="20%">Nagios的 Web 監控介面</td>
+</tr>
+</tbody>
+</table>
+<br /> <br />
+<h3>介紹 Nagios 基本名詞</h3>
+<br />在開始安裝使用 Nagios 之前，我們先來了解 Nagios 的基本名詞。<br /><br /> 
+<ul>
+<li>主機 (Host)：Nagios 監視的主體，只要列入 Nagios 監視清單內的機器均可視為主機的角色。</li>
+<li>服務 (Service)：這算是主機角色的下層角色，通常一個主機會運作多個服務（如 HTTP、FTP 服務等等，Nagios 可針對某個服務來進行監控）。</li>
+<li>指令 (Command)：設定用來監控主機、監控服務或通知聯絡人的程式。Nagios 採用 plugin 的方式，可無限擴充監控的能力。</li>
+<li>聯絡人 (Contact)：設定當所監控的主機或服務發生異常時要通知的聯絡人資訊（可在此設定聯絡人 Email 等相關資訊）。</li>
+<li>狀態：即是 Nagios 監控回覆的結果。可分為針對主機狀態的回覆，與針對服務狀態的回覆：</li>
+</ul>
+<blockquote>
+<ul>
+<li>針對主機部份的狀態，如下所示：</li>
+</ul>
+</blockquote>
+<ul>
+<li> 
+<ul>
+<li> 
+<ul>
+<li>OK：主機運作正常，無任何異狀。</li>
+<li>Unreachable：被監控主機無法回應 icmp 指令，通常是網路出問題了，或被監控主機關閉 icmp 的回應。</li>
+<li>UP：主機重新啟動了（通常在主機從關閉到啟動會呈現此種狀態）。</li>
+<li>Down：主機停止運作（除了主機當掉以外，剛加入監控的主機，也會呈現此狀態）。</li>
+</ul>
+</li>
+<li>針對服務部份的狀態，如下所示：             
+<ul>
+<li>OK：服務運作正常，無任何異狀。</li>
+<li>Warning：服務出現異狀（但是情節輕微是可被忽略的）。</li>
+<li>Critical：服務出現嚴重問題（需要立即處理的情況）。</li>
+<li>Unknown：服務狀態不明（最常見的情況為偵測不到服務）。</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>監控期間 (Time Period)：可設定監控的時間區間（如僅在上班時間進行監控）。</li>
+</ul>
+<br />
+<h3>安裝 Nagios</h3>
+<br />接下來進行安裝作業。首先請讀者新增 Nagios 使用者帳號（Nagios 預設執行的權限），再來下載最新版本的 Nagios，接著執行安裝指定。操作如以下步驟：<br /><br />1. wget <a href="https://prdownloads.sourceforge.net/sourceforge/nagios/nagios-3.2.3.tar.gz" target="_blank">https://prdownloads.sourceforge.net/sourceforge/nagios/nagios-3.2.3.tar.gz</a>。<br /><br />2. /configure –prefix=/usr/local/nagios    #設定安裝的目錄為 /usr/local/nagios。<br /><br />3. make all         #編譯 Nagios 。<br /><br />4. make install        #將 Nagios 相關程式安裝在 /usr/local/nagios的目錄下。<br /><br />5. wget <a href="https://prdownloads.sourceforge.net/sourceforge/nagiosplug/nagios-plugins-1.4.15.tar.gz" target="_blank">https://prdownloads.sourceforge.net/sourceforge/nagiosplug/nagios-plugins-1.4.15.tar.gz</a> #取得 plugin 相關程式。<br /><br />6. ./configure --prefix=/usr/local/nagios && make all && make install        編譯並安裝 plugin。<br /><br />在安裝完成後，讀者可檢查在 /usr/local/nagios/plugins/libexec/ 的目錄下是否有相關的 plugin 程式。例如，以 check_http，檢查 HTTP 服務是否存在。其實，每個 pluign 即為一獨立的程式，讀者可單獨拿來運用。<br /><br />以下筆者用一小段篇輻，簡單的介紹檢查 check_http 程式的用法，該程式可用於檢查 Web 服務是否存在。check_http 可使用的參數如下所述：<br /><br />-H：欲監控的網站網域名稱（如 www.example.com ）。<br /><br />-I：如果無法使用 DNS 服務，即可利用 IP 資訊來進行監控。此選項即是用來輸入欲監控的 IP 資訊。<br /><br />-p：設定欲監控的埠資訊（預設為 80）。<br /><br />-u：可直接設定預設監控該網站的 URL 位址，預設為（/根目錄）。<br /><br />-w：設定警告 (warn) 狀態的回應時間，單位為秒。<br /><br />-c：設定嚴重錯誤 (critical) 狀態的回應時間，單位為秒。<br /><br />-t：設定連接測試的時間 (timeout)，預設為 10 秒（即 10 秒內無法跟對方建立連線即判定對方無法連線）。<br /><br />-P：在測試的過程中，同時以 POST 的方式發出參數資訊。<br /><br />-r：可以正規表示法 (Regulator express) 設定，來判別網站伺服器是否存在。如首頁的內容含有「資訊安全」字樣，即可設定比對回傳值中含有資訊安全的字樣，才算網站伺服器還存活著，這會比單純測試埠狀態還要精準。<br /><br />讀者可利用 ./check_http -I xxx.xxx.xxx.xxx 來檢查網站伺服器是否存活。程式的回應會如以下的三種狀況：<br /><br />１. 正常存活情況：回應資訊會告知 OK 及相關資訊，如回應時間等。<br /><br />HTTP OK: HTTP/1.1 200 OK - 16770 bytes in 0.005 second response<br /><br />time |time=0.004792s;;;0.000000 size=16770B;;;0<br /><br />２. 警告 (warn) 情況：回應資訊會告知 WARNING 及相關資訊，如回應時間等。以下實例是一個需認證方可使用的網站伺服器。<br /><br />HTTP WARNING: HTTP/1.1 401 Authorization Required - 798 bytes in 0.001 second response time |time=0.000990s;;;0.000000 size=798B;;;0<br /><br />３. 嚴重 (critical) 情況：回應資訊會告知 critical 及相關資訊，如回應時間等。以下例子是一個已停止運作的網站伺服器的回應訊息。<br /><br />HTTP CRITICAL - Unable to open TCP socket<br /><br />
+<h3>設定 Nagios 組態檔</h3>
+<br />接下來，我們繼續設定 Nagios 組態檔。在此以設定監控一個網站伺服器為例，讀者可從 sample-config 目錄下取得相關組態檔的範例，並複製到 /usr/local/nagios/etc 的目錄下。相關組態檔設定如下所述：<br /><br />* nagios.cfg：Nagios 的主要組態檔，設定方式條列如下。<br /><br />cfg_file=/usr/local/nagios/etc/localhost.cfg     #在此檔設定主機及服務等相關資訊<br /><br />cfg_file=/usr/local/nagios/etc/commands.cfg     #在此檔設定查指令的參數<br /><br />cfg_file=/usr/local/nagios/etc/contacts.cfg     #在此檔定義聯絡人的相關資訊<br /><br />cfg_file=/usr/local/nagios/etc/timeperiods.cfg      #在此檔定義監控的時間區間<br /><br />cfg_file=/usr/local/nagios/etc/templates.cfg     #在此檔設定相關行為的樣版，可利用樣版方式來減低規則設定的複雜性<br /><br />log_file=/usr/local/nagios/log/nagios.log      #設定 Nagios 的log資訊存放的檔案位置<br /><br />resource_file=/usr/local/nagios/etc/resource.cfg     #設定相關的資源檔位置<br /><br />status_file=/usr/local/nagios/log/status.dat    #設定儲存 Nagios 的偵測結果檔案，在本方案中所使用的web程式即是解析此檔案來取得相關的結果，並顯示在網頁上<br /><br />status_update_interval=10    #設定 Nagios 偵測結果狀態更新的時間區隔，以秒為單位，此例即為 10 秒更新一次<br /><br />nagios_user=nagios    #Nagios 執行時所使用的身份<br /> <br />nagios_group=nagios<br /><br />use_syslog=1    #設定也使用 syslog 機制，同時會將 Nagios 的相關 log 資訊寫入 messages 檔案中<br /><br />log_service_retries 1     #Nagios 系統服務容錯機制，可設定需重試幾次偵測服務異常後，才判定服務 (service) 失敗而寫入 log 檔案中<br /><br />log_host_retries=1     #Nagios 主機服務容錯機制，可設定需重試幾次偵測主機異常後才判定主機 (service) 異常而寫入 log 檔案中<br /><br />lock_file=/tmp/nagios.pid     #設定 Nagios 執行時，儲存 PID 資訊的檔案位置<br /><br />temp_file=/tmp/nagios.tmp     #設定 Nagios 執行時，暫存檔案的檔案位置<br /><br />temp_path=/tmp         #設定 Nagios 執行時，暫存檔案的目錄位置<br /><br /><br />* templates.cfg：是設定相關行為的樣版，以供相關的主機服務或系統服務來套用，以下以定義 Linux 主機及 HTTP 服務為例。<br /><br />define host{　　　　　　　　; 定義此為主機服務的樣版<br /><br /> name  linux-server  ; template 樣版的名稱<br /><br /> use   generic-host  ; 繼承 generic-host 樣版的特性<br /><br /> check_period 24x7  ; 設定每天 24 小時的監控<br /><br /> check_interval 5 ; 設定每 5 分鐘重新檢查一次<br /><br /> retry_interval 1  ; 設定如果檢查失敗，隔一分鐘即重新檢查一次<br /><br /> max_check_attempts 10  ; 設定如果重新檢查超過 10 次即判定為主機當掉<br /><br /> check_command check-host-alive ; 設定檢查主機是否存在所使用的程式<br /><br /> notification_period workhours ; <br /><br /> notification_interval 120 ; 設定每兩個小時，重新寄送通知給管理者<br /><br /> notification_options d,u,r ; 設定當主機符合相關狀態時，才寄發通知，告知管理者；u = 當主機為無法連線時（UNREACHABLE，常見原因為網路中斷）即通知管理者；r = 主機重新啟動成功後，通知管理者；f = 當主機啟動或停止時，通知管理者；n = 不管主機在任何情況下，均不通知管理者<br /> contact_groups admins admin; 當監控到主機異常時所要通知的管理者，在此為通知位於 admin 群組的人員，管理者相關資訊定義在 contact.cfg 檔案中       <br /> }<br /><br />define service{　　　　　　 ;定義系統服務的樣版　　<br /><br /> name  generic-service         ; 樣版的名稱<br /><br /> active_checks_enabled 1 ; 接受主動檢查功能，1 表示啟用<br /><br /> passive_checks_enabled  1; 接受被動檢查功能<br /><br /> parallelize_check  1 ; 開啟平行處理的功能        　<br /><br />obsess_over_service 1; 是否啓用主機操作系統探測，check_freshness 0; 停用 freshness 功能，freshness 僅用於被動測試模式的主機而言的，其作用是定期檢查該主機報告的狀態信息，如果該狀態信息已經過期，freshness 將會強制作主機檢查。<br /><br /> notifications_enabled 1; 當服務發生異常時，需發出通知給管理者<br /><br />contact_groups  admins ; 通知管理者的資訊，定義在conact.cfg          <br /><br />event_handler_enabled 1;  Service event handler is enabled<br /><br /> flap_detection_enabled 1; 啟動是否需偵測 flap 現像，flap 指的是網路不斷的的離線及上線，就像拍翅一樣<br /><br /> check_period  24x7; 檢查時間區間為全年無休 (7*24)    <br /><br /> max_check_attempts 3  ; Nagios 的容錯機制，如果偵測服務失敗三次，才判別服務失敗<br /><br /> normal_check_interval 10; 檢查的時間區隔(單位為分)，本例即為每 10 分鐘偵測一次<br /><br /> retry_check_interval 2; 檢查服務失敗後，重新檢查的時間區間，在本例為檢查服務失敗後，在隔兩分鐘後再重新檢查<br /><br /> notification_options w,u,c,r; 設定要發通知告知管理者的事件等級，其中 w 為 warning 等級，u 為 Unknown 等級，c 為 critical 等級，r 為 recovery 等級<br /><br /> notification_interval  60; 通知發送的時間區隔（單位為小時）<br /><br /> notification_period 24x7; 通知發送的時間，在本例即為 24 小時均可發送通知給管理者      <br /><br /><br />*   localhost.cfg：設定欲監控的主機及服務等相關資訊。設定如下所示。<br /><br /> define host{　　　　　　     #設定主機服務　<br /><br /> use   linux-server      #採用 linux-sever 的樣版             <br /><br /> host_name  http-xxx-xxx-xxx     #設定主機名稱<br /><br /> alias  fedro 9       #設定別名  <br /><br /> address   xxx.xxx.xxx.xx     #設定此主機的 IP   <br /><br /> }<br /><br /> define service{          #設定系統服務<br /><br /> use local-service      #使用 local-service 的樣版<br /><br /> host_name  http-xxx-xxx-xxx          #設定主機名稱，需與 host 設定對應，即表示此服務為所設定主機名稱的服務<br /><br /> service_description　HTTP     #描述服務<br /><br /> check_command    check_http     #偵測用的程式，在這裏使用 check_http<br /><br /> notifications_enabled １      #設定當服務異常時，通知管理員<br /><br /> check_period 24*7     #監控的時間為全天候 24 小時（24*7 定義在 timeperoid.cfg 檔案中)　<br /> }<br /><br />*commands.cfg：用來定義指令的行為，需將程式所需的參數設定於此檔案中。<br /><br />define command{<br /><br /> command_name    check_http　    #程式名稱<br /><br /> command_line    $USER1$/check_http -I $HOSTADDRESS$ $ARG1$       #參數資訊，其中 $USER1$ 等變數內容定義在 resource.cfg<br /> }<br /><br />*contacts.cfg：定義聯絡人的相關資訊。<br /><br />define contact{<br /><br /> contact_name  nagiosadmin; 設定連絡人名稱<br /><br /> use generic-contact ; 使用 generic-contact 的樣本(已定義在 template.conf 中)<br /><br /> email   
+ <script language='JavaScript' type='text/javascript'>
+ <!--
+ var prefix = 'm&#97;&#105;lt&#111;:';
+ var suffix = '';
+ var attribs = '';
+ var path = 'hr' + 'ef' + '=';
+ var addy81069 = 'xxx' + '&#64;';
+ addy81069 = addy81069 + 'xxx' + '&#46;' + 'xxx' + '&#46;' + 'xxx';
+ document.write( '<a ' + path + '\'' + prefix + addy81069 + suffix + '\'' + attribs + '>' );
+ document.write( addy81069 );
+ document.write( '<\/a>' );
+ //-->
+ </script> <script language='JavaScript' type='text/javascript'>
+ <!--
+ document.write( '<span style=\'display: none;\'>' );
+ //-->
+ </script>This e-mail address is being protected from spambots. You need JavaScript enabled to view it
+ <script language='JavaScript' type='text/javascript'>
+ <!--
+ document.write( '</' );
+ document.write( 'span>' );
+ //-->
+ </script>; 定義連絡人的 email<br /> }<br /><br />*timeperiods.cfg：定義規則有效的時間區間資訊。<br /><br />define timeperiod{<br /><br /> timeperiod_name 24x7       #樣版的名稱<br /><br /> alias           24 Hours A Day, 7 Days A Week     #別名<br /><br /> sunday          00:00-24:00      #定義星期一至星期日的監控有效時間<br /><br /> monday          00:00-24:00<br /><br /> tuesday         00:00-24:00<br /><br /> wednesday       00:00-24:00<br /><br /> thursday        00:00-24:00<br /><br /> friday          00:00-24:00<br /><br /> saturday        00:00-24:00<br /><br /> }<br /><br />* resource.cfg：定義相關變數的資源。<br /><br />$USER1$=/usr/local/nagios/plugins/libexec/         #定義 $USER1$ 變數內容<br />$USER2$=@libexecdir@/eventhandlers      #定義 $USER2 變數內容<br /><br />在設定完成組態檔後，讀者可利用 Nagios –v 來驗證組態檔的參數設定是否正確。如果一切設定無誤，即可啟動 Nagios 監控主程式。請讀者依序下達下列指令：<br /><br />chown nagios:nagios /usr/local/nagios/     #重設 Nagios 安裝目錄下的檔案權限，以避免權限問題<br /><br />/usr/local/nagios/bin/nagios -d /usr/local/nagios/etc/nagios.cfg     #以 daemon 方式啟動<br /><br /><br />
+<h3>安裝 Web 顯示狀態介面軟體</h3>
+<br />Vshell 是 Nagios 所提供的 Web 介面軟體（以 PHP 語言實作），可即時的查看所監看的主機或系統服務的目前狀態。安裝過程相當簡單，請讀者至下列網址取得最新版本的 vshell：<br /><br /><a href="https://assets.nagios.com/downloads/exchange/nagiosvshell/vshell.tar.gz" target="_blank">https://assets.nagios.com/downloads/exchange/nagiosvshell/vshell.tar.gz</a><br /><br />下載網頁程式後，直接將程式拷貝至網頁根目錄，並修改 constants.inc.php 內的 STATUSFILE 等相關資訊（需調整成與 nagios.cfg 所設定 status_file 的值一致）如下所示：<br /><br />define("STATUSFILE", "/usr/local/nagios/log/status.dat"); <br /><br /># Nagios 會將監控結果寫入 staus.dat，而 vshell 即是讀取此檔內容並在網頁上顯示出來 define("OBJECTSFILE", "/usr/local/nagios/log/objects.cache");<br /><br />define("CGICFG", "/usr/local/nagios/etc/cgi.cfg");<br /><br />安裝完成後，以瀏覽器瀏覽應可看到如下圖的監控畫面。<br /><br /><a href="../../images/110412/Nagios/nagios_01.png" target="_blank"><img src="../../images/110412/Nagios/nagios_01.png" border="0" width="500" /></a><br />▲圖1<br /><br />至此，一個完整的服務監控系統已完成。<br /><br /><br />
+<h3>結論</h3>
+<br />維持主機服務的運作，是每個網管人員最基本的職責。而 Nagios 應算是監控系統中最適當的解決方案，沒有華麗的介面，只是簡單明確的告知主機服務目前的存活 (alive) 狀態。最令筆者激賞的是所提供的 plugin 程式均是單獨可執行的程式，只要具備一點程式設計能力，即可讓網管人員很方便的嵌入自行開發的軟體中，以建立一套符合自己環境的監控系統。
+			<!-- Show relate article -->
+				<!-- end -->
+		<div class="article_note">
+		<!-- Add tags use metakey, and show OSSF Newsletter tag: OSSFNL+NUM-->
+		<br><br> <hr style='border: 1px dashed #D2DADB;'>		<!-- End -->
+					<br>
+					<b>Category: </b><a href="../tech-column.html">				Tech Column					</a>				</div>
+			 <!-- AddThis Button BEGIN ID 3001 is the front page article -->
+     			<br><br>
+       <div class="addthis_toolbox addthis_default_style addthis_32x32_style">
+       <a class="addthis_button_preferred_1"></a>
+       <a class="addthis_button_preferred_2"></a>
+       <a class="addthis_button_preferred_3"></a>
+       <a class="addthis_button_preferred_4"></a>
+       <a class="addthis_button_compact"></a>
+       <a class="addthis_counter addthis_bubble_style"></a>
+       </div>
+       <script type="text/javascript">var addthis_config = {"data_track_clickback":true};</script>
+       <script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js#pubid=openfoundry"></script>
+       <!-- AddThis Button END -->
+     <br>
+		<div class="totop" ><a class="rt-totop" href="8308--nagios-%3Ftmpl=component&amp;print=1&amp;layout=default&amp;page=.html#" style="outline: medium none;">↑ Top</a></div>
+            <!-- AddThis Button END -->
+
+			</div>
+</div>
+
+						</div>
+					</div>
+				</div>
+			</div>
+		</body>
+	</html>

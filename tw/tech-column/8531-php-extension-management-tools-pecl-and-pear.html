@@ -1,0 +1,760 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="zh-tw" lang="zh-tw" >
+<head>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<link rel="shortcut icon" href="../../images/favicon.ico" />
+	  <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+  <meta name="robots" content="index, follow" />
+  <meta name="keywords" content="PHP, Pecl, Pear, 延伸模組, extension management tools, OSSFNL765" />
+  <meta name="title" content="PHP extension management tools - Pecl and Pear" />
+  <meta name="description" content="簡介 PHP 從 1995 年發展至今已有十多年的歷史。因為學習門檻低，許多人在摸索一段時間後即可快速上手，PHP 就成為許多人第一次接觸 web base 程式設計時所使用的程式語言。隨著網路興起，越來越多程式語言加入 web base 的開發行列。其中，JAVA 程式語言因為擁有豐富的 API 可以直接套用在 JSP 及 Servlet 中，讓已經熟悉開發 JAVA" />
+  <meta name="generator" content="" />
+  <title>PHP extension management tools - Pecl and Pear - OpenFoundry</title>
+  <link href="../../favicon.ico" rel="shortcut icon" type="image/x-icon" />
+  <link rel="stylesheet" href="../../components/com_jcomments/tpl/default/style.css%3Fv=10.css" type="text/css" />
+  <link rel="stylesheet" href="../../components/com_gantry/css/gantry.css" type="text/css" />
+  <link rel="stylesheet" href="../../components/com_gantry/css/grid-12.css" type="text/css" />
+  <link rel="stylesheet" href="../../components/com_gantry/css/joomla.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/joomla.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/style1.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/light-body.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/demo-styles.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/template.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/typography.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/fusionmenu.css" type="text/css" />
+  <style type="text/css">
+    <!--
+#rt-main-surround ul.menu li.active > a, #rt-main-surround ul.menu li.active > .separator, #rt-main-surround ul.menu li.active > .item, #rt-main-surround .square4 ul.menu li:hover > a, #rt-main-surround .square4 ul.menu li:hover > .item, #rt-main-surround .square4 ul.menu li:hover > .separator, .roktabs-links ul li.active span {color:#0088B5;}
+a, #rt-main-surround ul.menu a:hover, #rt-main-surround ul.menu .separator:hover, #rt-main-surround ul.menu .item:hover {color:#0088B5;}
+    -->
+  </style>
+  <script type="text/javascript" src="../../components/com_jcomments/js/jcomments-v2.1.js%3Fv=2"></script>
+  <script type="text/javascript" src="../../components/com_jcomments/libraries/joomlatune/ajax.js"></script>
+  <script type="text/javascript" src="../../media/system/js/mootools.js"></script>
+  <script type="text/javascript" src="../../media/system/js/caption.js"></script>
+  <script type="text/javascript" src="../../components/com_gantry/js/gantry-buildspans.js"></script>
+  <script type="text/javascript" src="../../components/com_gantry/js/gantry-inputs.js"></script>
+  <script type="text/javascript" src="../../templates/rt_quantive_j15/js/jquery.cookie.js"></script>
+  <script type="text/javascript" src="../../modules/mod_roknavmenu/themes/fusion/js/fusion.js"></script>
+  <script type="text/javascript" src="../../modules/mod_ofssologin/js/ofssologin.js"></script>
+  <script type="text/javascript">
+
+			window.addEvent('domready', function() {
+				var modules = ['rt-block'];
+				var header = ['h3','h2','h1'];
+				GantryBuildSpans(modules, header);
+			});
+		InputsExclusion.push('.content_vote','#rt-popup')
+		        window.addEvent('load', function() {
+					new Fusion('ul.menutop', {
+						pill: 0,
+						effect: 'slide and fade',
+						opacity: 1,
+						hideDelay: 500,
+						centered: 0,
+						tweakInitial: {'x': -2, 'y': 0},
+        				tweakSubsequent: {'x': 0, 'y': -14},
+						menuFx: {duration: 200, transition: Fx.Transitions.Sine.easeOut},
+						pillFx: {duration: 400, transition: Fx.Transitions.Back.easeOut}
+					});
+	            });
+  </script>
+<!-- <script type="text/javascript" src="/sso/javascripts/langsync.js"></script> -->
+<!-- <script src="/templates/rt_quantive_j15/js/ossf.js"></script> -->
+<script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-4136519-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
+</head>
+	<body  class="backgroundlevel-low backgroundstyle-style8 bodylevel-med bodystyle-light cssstyle-style1 logostyle-dark font-family-helvetica font-size-is-default menu-type-fusionmenu col12 ">
+		<div id="rt-main-background">
+			<div class="rt-container">
+																<div id="rt-header">
+					<div class="rt-grid-7 rt-alpha">
+    			<div class="rt-block">
+    	    	<a href="../../index.html" id="rt-logo"></a>
+    		</div>
+	    
+</div>
+<div class="rt-grid-5 rt-omega">
+                    <div class="square9">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<div class="ofssologin_square9"><a href="../../index.html">登入</a>&nbsp;&nbsp|&nbsp;&nbsp;<span><a href="../../en/tech-column/8531-php-extension-management-tools-pecl-and-pear.html" ><span lang="en" xml:lang="en">English</span></a></li></ul></span><!--Joom!fish V2.0.4 (Lightning)-->
+<!-- &copy; 2003-2009 Think Network, released under the GPL. -->
+<!-- More information: at http://www.joomfish.net -->
+<div class="ofssologin_search_square9">
+  <form id="of_search" action="https://www.openfoundry.org/of/openfoundry/search" method="get" onsubmit="of_search(); return false;">
+    <select id="of_search_type">
+      <option value="Projects"> 專案 </option>
+      <option value="Content"> 文章 </option>
+      <option value="People"> 人才 </option>
+    </select>
+    <input id="query" name="query" id="mod_search_searchword" maxlength="50" alt="search" class="inputbox" type="text" size="28" value="search..."  onblur="if(this.value=='') this.value='search...';" onfocus="if(this.value=='search...') this.value='';" />
+    <input type="hidden" name="commit" value="search" />
+  </form>
+</div></div>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		
+</div>
+					<div class="clear"></div>
+				</div>
+																<div id="rt-navigation"><div id="rt-navigation2"><div id="rt-navigation3">
+					
+<div class="nopill">
+	<ul class="menutop level1 " >
+						<li class="item1 root" >
+					<a class="orphan item bullet" href="../../index.html"  >
+				<span>
+			    				首頁				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item32 root" >
+					<a class="orphan item bullet" href="../../archived.html"  >
+				<span>
+			    				專案				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item186 root" >
+					<a class="orphan item bullet" href="../community.html"  >
+				<span>
+			    				Who&#039;s Who				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item4 root" >
+					<a class="orphan item bullet" href="../news.html"  >
+				<span>
+			    				新聞				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item5 root" >
+					<a class="orphan item bullet" href="../law-and-licensing.html"  >
+				<span>
+			    				法律源地				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item3 root" >
+					<a class="orphan item bullet" href="../activities.html"  >
+				<span>
+			    				活動				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item2 root" >
+					<a class="orphan item bullet" href="../resourcecatalog%3FName=Value.html"  >
+				<span>
+			    				資源表列				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item45 root" >
+					<a class="orphan item bullet" href="../about.html"  >
+				<span>
+			    				關於				   
+				</span>
+			</a>
+			
+			
+	</li>	
+				</ul>
+</div>
+
+				    <div class="clear"></div>
+				</div></div></div>
+								<div class="rt-surround"><div class="rt-surround2"><div class="rt-surround3">
+										<div id="rt-showcase-section">
+												<div id="rt-showcase">
+							<div class="rt-grid-12 rt-alpha rt-omega">
+    		<div class="clear"></div>
+		
+		
+                <div class="close-note">
+                    <div class="rt-block">
+               					<div class="module-content">
+                	<div style="font-size:medium; background-image:linear-gradient(120deg,#159957,#4298b2);color:white;padding:20px;margin:-10px -18px;">感謝您對「自由軟體鑄造場」的支持與愛護，十多年來「自由軟體鑄造場」受中央研究院支持，並在資訊科學研究所以及資訊科技創新研究中心執行，現已完成階段性的任務。 本網站預計持續維運至 2021年底，網站內容基本上不會再更動。<br />也紀念我們永遠的朋友 李士傑先生（Shih-Chieh Ilya Li）。</div>				</div>
+            </div>
+                </div>
+		
+</div>
+							<div class="clear"></div>
+						</div>
+																	</div>
+															<div id="rt-main-surround">
+												<div id="rt-breadcrumbs">
+								<div class="rt-breadcrumb-surround">
+		<a href="../../index.html" id="breadcrumbs-home"></a>
+		<span class="breadcrumbs pathway">
+<a href="../tech-column.html" class="pathway">技術專欄</a> <img src="../../templates/rt_quantive_j15/images/arrow.png" alt=""  /> <span class="no-link">PHP extension management tools - Pecl and Pear</span></span>
+	</div>
+	
+							<div class="clear"></div>
+						</div>
+																							              <div id="rt-main" class="sa3-mb9">
+                <div class="rt-main-inner">
+                    <div class="rt-grid-9 rt-push-3">
+                                                <div class="rt-block">
+                            							<div class="square1">
+							<div class="rt-module-surround">
+								<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+								<div class="rt-module-inner">
+		                            <div id="rt-mainbody">
+		                                
+<div class="rt-joomla ">
+	<div class="rt-article">
+		
+				<div class="rt-headline"><h1 class="rt-article-title">PHP extension management tools - Pecl and Pear</h1>		</div>
+		<div class="clear"></div>
+		
+		
+		
+				<div class="rt-articleinfo">
+						<div class="rt-article-icons">
+								<a href="8531-php-extension-management-tools-pecl-and-pear%3Ftmpl=component&amp;print=1&amp;layout=default&amp;page=.html" title="列印" onclick="window.open(this.href,'win2','status=no,toolbar=no,scrollbars=yes,titlebar=no,menubar=no,resizable=yes,width=640,height=480,directories=no,location=no'); return false;" rel="nofollow"><span class="icon print"></span></a>																</div>
+			
+			<span class="rt-date-posted">
+						建立日期			2011-11-30 09:28						&nbsp;&nbsp;&nbsp;&nbsp;						最近更新在 2012-06-01 14:26						</span>
+
+						<span class="rt-author">
+				作者是 黃崇閔			</span>
+				
+					</div>
+		
+		
+		<h3>簡介</h3>
+<p><img src="../../images/111213/Pear/pecl_logo.gif" alt="Pecl Logo" title="Pecl Logo" style="border: 0; float: left;" border="0" height="49" width="101" /> <img src="../../images/111213/Pear/pear_logo.png" alt="Pear Logo" title="Pear Logo" style="border: 0; float: left; margin-left: 3px; margin-right: 3px;" border="0" height="49" width="110" />PHP 從 1995 年發展至今已有十多年的歷史。因為學習門檻低，許多人在摸索一段時間後即可快速上手，PHP 就成為許多人第一次接觸 web base 程式設計時所使用的程式語言。隨著網路興起，越來越多程式語言加入 web base 的開發行列。其中，JAVA 程式語言因為擁有豐富的 API 可以直接套用在 JSP 及 Servlet 中，讓已經熟悉開發 JAVA 應用程式的程式設計師可以無痛轉移到 web base 的開發行列。而使用 Asp.Net 的開發者，也可以結合 C# 及 VB 等程式語言直接進行 web base 開發。</p>
+<p>面對其他程式語言的競爭，PHP 陣營提供了許多套件供開發者直接使用，Pear (PHP Extension and Application Repository) 的作者 Stig S. Bakken 於 1999 年底推出 Pear，目的是讓 PHP 的開發者能重複利用相同功能的元件，有效減少開發過程中繁雜的工作內容，進而達到事半功倍的效果。從 Pear 問世至今，除了 Pear 這套函式庫外，也發展了許多其他的函式庫，例如 CodeIgniter 及 Zend Framework 等。這些工具除了讓 PHP 開發者擁有多元的選擇性外，每個套件也各有其愛好者。</p>
+<p>除了 Pear 外，還有 Pecl 的 PHP 擴展模組方式。兩者的不同之處在於，Pear 是純粹用 PHP 程式語言撰寫的擴展模組，而 Pecl 則是用 C 或 C++ 程式語言撰寫的。</p>
+
+<p> </p>
+<h3>事前準備</h3>
+<p>這篇文章的作業系統使用 Ubuntu，請讀者先行安裝 Ubuntu 再進行下列操作。以下是在 Ubuntu 作業系統內安裝 Pear 及 Pecl 的步驟。</p>
+<p>請於命令列模式下輸入下列指令：</p>
+<pre><code>$ sudo apt-get install php5 php5-cli php-pear
+</code></pre>
+<p>php-pear 套件包括了 Pear 及 Pecl。</p>
+<h3>Pear - PHP Extension and Application Repository</h3>
+<h4><ol style="list-style-type: decimal;">
+<li>安裝 Pear</li>
+</ol></h4>
+<p>除了先前介紹的 "php-pear" 安裝方式外，Pear 也可以經由下列方式安裝。請依序輸入下列兩行命令列即可安裝完成。</p>
+<pre><code>$ wget https://pear.php.net/go-pear.phar
+$ php go-pear.phar
+</code></pre>
+<p>詢問相關設定資訊時，請 Enter 保持預設設定，即可安裝完成。</p>
+<h4><ol style="list-style-type: decimal;">
+<li>Pear 使用範例</li>
+</ol></h4>
+<h5>I. 列出頻道 (Channel) 清單</h5>
+<p>頻道 (Channel) 指的是 Pear 訂閱的套件清單來源。</p>
+<p>請於命令列模式下輸入下列指令：</p>
+<pre><code>$ pear list-channels
+====================
+Channel      Alias   Summary
+doc.php.net  phpdocs PHP Documentation Team
+pear.php.net pear    PHP Extension and Application Repository
+pecl.php.net pecl    PHP Extension Community Library
+__uri        __uri   Pseudo-channel for static packages
+</code></pre>
+<h5><ol style="list-style-type: upper-roman;">
+<li>列出頻道的資訊</li>
+</ol></h5>
+<p>請於命令列模式下輸入下列指令：</p>
+<pre><code>$ pear channel-info pear.php.net
+Channel pear.php.net Information:
+=================================
+Name and Server         pear.php.net
+Alias                   pear
+Summary                 PHP Extension and Application Repository
+Validation Package Name PEAR_Validate
+Validation Package      default
+(略)
+
+</code></pre>
+<h5><ol style="list-style-type: upper-roman;">
+<li>新增頻道 (Channel)</li>
+</ol></h5>
+<p>除了 Pear 官方提供的預設頻道外，還可以額外新增安裝的套件來源。例如知名的 PHPUnit 套件是建立於 "pear.phpunit.de" 頻道上。</p>
+<p>因此，若要加入 "pear.phpunit.de" 的列表。請於命令列模式下輸入下列指令：</p>
+<pre><code>$ pear channel-discover pear.phpunit.de
+</code></pre>
+<p>除此之外，若已下載了頻道的 XML 資訊，也可以使用下列指令新增：</p>
+<pre><code>$ pear channel-add sample-channel.xml
+</code></pre>
+<h5><ol style="list-style-type: upper-roman;">
+<li>更新頻道 (Channel)</li>
+</ol></h5>
+<p>訂閱的頻道內容可能已過時，若需要更新清單，以取得更新版的套件時，請於命令列模式下輸入下列指令：</p>
+<pre><code>$ pear channel-update [頻道名稱]
+</code></pre>
+<p>例如更新 "pear.phunit.de"，則：</p>
+<pre><code>$ pear channel-update pear.phpunit.de
+</code></pre>
+<p>若要更新所有的頻道，則：</p>
+<pre><code>$ pear update-channels
+</code></pre>
+<h5>V. 移除頻道(Channel)</h5>
+<p>請於命令列模式下輸入下列指令：</p>
+<pre><code>$ pear channel-delete [頻道名稱]
+</code></pre>
+<p>例如移除 "pear.phunit.de"，則：</p>
+<pre><code>$ pear channel-delete pear.phpunit.de
+</code></pre>
+<h5><ol style="list-style-type: upper-roman;">
+<li>列出已安裝的套件清單</li>
+</ol></h5>
+<p>安裝了 Pear 的電腦可以使用下列指令查詢目前已經安裝完成的套件清單：</p>
+<pre><code>$ pear list
+</code></pre>
+<a href="../../images/111213/Pear/01_pear_list.png" target="_blank"><img src="../../images/111213/Pear/01_pear_list.png" alt="pear list 的輸出範例" border="0" width="500" /></a>
+<p>▲ 圖1：pear list 的輸出範例</p>
+<h5><ol style="list-style-type: upper-roman;">
+<li>搜尋可安裝的套件清單</li>
+</ol></h5>
+<p>請於命令列模式下輸入下列指令：</p>
+<pre><code>$ pear search [套件的關鍵字]
+</code></pre>
+<p>例如，搜尋 Benchmark 相關的套件，則：</p>
+<pre><code>$ pear search benchmark
+Matched packages, channel pear.php.net:
+=======================================
+Package   Stable/(Latest) Local
+Benchmark 1.2.8 (stable)  1.2.7 Framework to benchmark PHP scripts or function calls.
+</code></pre>
+<h5><ol style="list-style-type: upper-roman;">
+<li>安裝套件</li>
+</ol></h5>
+<p>請於命令列模式下輸入下列指令：</p>
+<pre><code>$ pear install [套件名稱]
+</code></pre>
+<p>例如本文將介紹使用 Pear 套件來安裝 Benchmark_Timer，這是一套用來檢視網頁執行時間的工具。請於命令列模式下輸入下列指令：</p>
+<pre><code>$ pear install benchmark
+</code></pre>
+<p>除此之外，也可以指定安裝的版本。以 <code>phpunit</code> 為例，可以先列出所有 phpunit 的套件：</p>
+<pre><code>$ pear remote-list -c phpunit
+</code></pre>
+<p>接著，再從清單中選擇特定版本安裝：</p>
+<pre><code>$ pear install phpunit/package_name-1.0.0  # 安裝 1.0.0 的版本
+$ pear install phpunit/package_name-beta   # 安裝 beta 的版本
+</code></pre>
+<h5><ol style="list-style-type: upper-roman;">
+<li>升級套件</li>
+</ol></h5>
+<p>升級前可以先查詢可升級的清單列表。請於命令列模式下輸入下列指令：</p>
+<pre><code>$ pear list-upgrades
+</code></pre>
+<p>確定升級的套件後，請於命令列模式下輸入下列指令：</p>
+<pre><code>$ pear upgrade [套件名稱]
+
+</code></pre>
+<p>例如升級已安裝的 Benchmark_Timer，則：</p>
+<pre><code>$ pear upgrade benchmark
+</code></pre>
+<p>若要一次升級所有已安裝的套件，則可以改用參數 "upgrade-all" 如下：</p>
+<pre><code>$ pear upgrade-all
+</code></pre>
+<h5>X. 移除套件</h5>
+<p>請於命令列模式下輸入下列指令：</p>
+<pre><code>$ pear uninstall [套件名稱]
+</code></pre>
+<p>例如移除已安裝的 Benchmark_Timer，則：</p>
+<pre><code>$ pear uninstall benchmark
+</code></pre>
+<h3>Pecl - PHP Extension Community Library</h3>
+<h4><ol style="list-style-type: decimal;">
+<li>列出頻道 (Channel) 清單</li>
+</ol></h4>
+<p>頻道 (Channel) 指的是 Pecl/Pear 訂閱的套件清單來源。</p>
+<p>請於命令列模式下輸入下列指令：</p>
+<pre><code>$ pecl list-channels
+====================
+Channel      Alias   Summary
+doc.php.net  phpdocs PHP Documentation Team
+pear.php.net pear    PHP Extension and Application Repository
+pecl.php.net pecl    PHP Extension Community Library
+__uri        __uri   Pseudo-channel for static packages
+
+</code></pre>
+<h4><ol style="list-style-type: decimal;">
+<li>列出頻道的資訊</li>
+</ol></h4>
+<p>請於命令列模式下輸入下列指令：</p>
+<pre><code>$ pecl channel-info pecl.php.net
+Channel pecl.php.net Information:
+=================================
+Name and Server         pecl.php.net
+Alias                   pecl
+Summary                 PHP Extension Community Library
+Validation Package Name PEAR_Validator_PECL
+Validation Package      1.0
+(略)
+</code></pre>
+<h4><ol style="list-style-type: decimal;">
+<li>新增頻道 (Channel)</li>
+</ol></h4>
+<p>除了 Pecl/Pear 官方提供的預設頻道外，還可以額外新增安裝的套件來源。例如 Pango 套件是建立於 "pecl.mgdm.net" 頻道上。</p>
+<p>因此，若要加入 "pecl.mgdm.net" 的列表。請於命令列模式下輸入下列指令：</p>
+<pre><code>$ pecl channel-discover pecl.mgdm.net
+</code></pre>
+<p>除此之外，若已下載了頻道的 XML 資訊，也可以使用下列指令新增：</p>
+<pre><code>$ pecl channel-add sample-channel.xml
+</code></pre>
+<h4><ol style="list-style-type: decimal;">
+<li>更新頻道 (Channel)</li>
+</ol></h4>
+<p>訂閱的頻道內容可能已過時，若需要更新清單，以取得更新版的套件時，請於命令列模式下輸入下列指令：</p>
+<pre><code>$ pecl channel-update [頻道名稱]
+</code></pre>
+<p>例如更新 "pecl.mgdm.net"，則：</p>
+<pre><code>$ pecl channel-update pecl.mgdm.net
+
+</code></pre>
+<p>若要更新所有的頻道，則：</p>
+<pre><code>$ pecl update-channels
+</code></pre>
+<h4><ol style="list-style-type: decimal;">
+<li>移除頻道 (Channel)</li>
+</ol></h4>
+<p>請於命令列模式下輸入下列指令：</p>
+<pre><code>$ pecl channel-delete [頻道名稱]
+</code></pre>
+<p>例如移除 "pecl.mgdm.net"，則：</p>
+<pre><code>$ pecl channel-delete pecl.mgdm.net
+</code></pre>
+<h4><ol style="list-style-type: decimal;">
+<li>列出已安裝的套件清單</li>
+</ol></h4>
+<p>已安裝 pecl 的電腦可以使用下列指令查詢目前已經安裝完成的套件清單：</p>
+<pre><code>$ pecl list
+</code></pre>
+<h4><ol style="list-style-type: decimal;">
+<li>搜尋可安裝的套件清單</li>
+</ol></h4>
+<p>請於命令列模式下輸入下列指令：</p>
+<pre><code>$ pecl search [套件的關鍵字]
+</code></pre>
+<p>例如，搜尋 http 相關的套件，則：</p>
+<pre><code>$ pecl search http
+Matched packages, channel pecl.php.net:
+=======================================
+Package   Stable/(Latest)   Local
+pecl_http 2.0.0dev2 (devel)       Extended HTTP Support
+
+</code></pre>
+<h4><ol style="list-style-type: decimal;">
+<li>安裝套件</li>
+</ol></h4>
+<p>請於命令列模式下輸入下列指令：</p>
+<pre><code>$ pecl install [套件名稱]
+</code></pre>
+<p>例如安裝 "pecl_http"。請於命令列模式下輸入下列指令：</p>
+<pre><code>$ pecl install pecl_http
+</code></pre>
+<p>除此之外，也可以指定安裝的版本。可以先列出所有在 "pecl.php.net" channel 的套件：</p>
+<pre><code>$ pecl remote-list -c pecl.php.net
+Channel pecl Available packages:
+================================
+Package         Version
+KTaglib         -n/a-
+FliteTTS        -n/a-
+Ovrimos         -n/a-
+radius          1.2.5
+sasl            -n/a-
+PAM             1.0.3
+(略)
+</code></pre>
+<p>接著，再從清單中選擇特定版本安裝：</p>
+<pre><code>$ pecl install pecl_http-1.7.1   # 安裝 1.7.1 版本
+</code></pre>
+<h4><ol style="list-style-type: decimal;">
+<li>升級套件</li>
+</ol></h4>
+<p>升級前可以先查詢可升級的清單列表。請於命令列模式下輸入下列指令：</p>
+<pre><code>$ pecl list-upgrades
+</code></pre>
+<p>確定升級的套件後，請於命令列模式下輸入下列指令：</p>
+<pre><code>$ pecl upgrade [套件名稱]
+</code></pre>
+<p>例如升級已安裝的 pecl_http，則：</p>
+<pre><code>$ pecl upgrade pecl_http
+
+</code></pre>
+<p>若要一次升級所有已安裝的套件，則可以改用參數 "upgrade-all"如下：</p>
+<pre><code>$ pecl upgrade-all
+</code></pre>
+<h4><ol style="list-style-type: decimal;">
+<li>移除套件</li>
+</ol></h4>
+<p>請於命令列模式下輸入下列指令：</p>
+<pre><code>$ pecl uninstall [套件名稱]
+</code></pre>
+<p>例如移除已安裝的 pecl_http，則：</p>
+<pre><code>$ pecl uninstall pecl_http
+</code></pre>
+<h3>Pear: Benchmark_Timer 套件安裝範例</h3>
+<h4><ol style="list-style-type: decimal;">
+<li>事前準備</li>
+</ol></h4>
+<p>我們將在 Ubuntu 作業系統內安裝 Apache2，以及先前已安裝的 PHP 5.3 和 Pear。接著安裝 Benchmark 套件，並撰寫簡單的程式碼來了解 Pear 的運作。</p>
+<h5>I. 安裝 Apache2</h5>
+<p>請於命令列模式下輸入下列指令：</p>
+<pre><code>$ sudo apt-get install apache2
+
+</code></pre>
+<h5><ol style="list-style-type: upper-roman;">
+<li>安裝 PHP5</li>
+</ol></h5>
+<p>請於命令列模式下輸入下列指令：</p>
+<pre><code>$ sudo apt-get install php5 php5-cli php-pear
+</code></pre>
+<h5><ol style="list-style-type: upper-roman;">
+<li>驗證網站伺服器安裝</li>
+</ol></h5>
+<p>為了要確定 Apache2 以及 PHP5 安裝正確，請先完成下列操作，以確認本機網站伺服器的安裝過程正確無誤。</p>
+<p>請先透過下列指令編輯檔案，完成後請儲存檔案，除了 <code>vi</code> 之外也可使用自己熟悉的編輯器。</p>
+<pre><code>$ sudo vi /var/www/phpinfo.php
+</code></pre>
+<a href="../../images/111213/Pear/02_phpinfo_e.png" target="_blank"><img src="../../images/111213/Pear/02_phpinfo_e.png" alt="phpinfo.php 的內容" border="0" /></a>
+<p>▲ 圖2：phpinfo.php 的內容</p>
+<h4><ol style="list-style-type: decimal;">
+<li>Benchmark_Timer 使用範例</li>
+</ol></h4>
+<p>接著請使用瀏覽器開啟網址 "https://127.0.0.1/phpinfo.php"，正確執行以上設定即可看到類似下圖內容。</p>
+<a href="../../images/111213/Pear/03_phpinfo.png" target="_blank"><img src="../../images/111213/Pear/03_phpinfo.png" alt="phpinfo.php 於瀏覽器上的顯示畫面" border="0" width="500" /></a>
+<p>▲ 圖3：phpinfo.php 於瀏覽器上的顯示畫面</p>
+<p>接下來請透過下列指令編輯檔案，完成後請儲存檔案，除了 <code>vi</code> 之外也可使用自己熟悉的編輯器。</p>
+<pre><code>$ sudo vi /var/www/benchmark.php
+
+</code></pre>
+<a href="../../images/111213/Pear/04_code.png" target="_blank"><img src="../../images/111213/Pear/04_code.png" alt="benchmark.php 的內容" border="0" height="228" width="400" /></a>
+<p>▲ 圖4：benchmark.php 的內容</p>
+<p>最後在瀏覽器輸入網址 https://127.0.0.1/benchmark.php，即可看到成果如下，裡面的資訊包含了程式執行過程所需要的時間，而這些操作都是透過 Benchmark_Timer 這個類別完成，其中的 Benchmark_Timer 就是 Pear 的其中一個函式庫。</p>
+<a href="../../images/111213/Pear/05_benchmark.png" target="_blank"><img src="../../images/111213/Pear/05_benchmark.png" alt="benchmark.php 於瀏覽器上的顯示畫面" border="0" /></a>
+<p>▲ 圖5：benchmark.php 於瀏覽器上的顯示畫面</p>
+<p>除了 Benchmark 之外，讀者也可到 Pear 的函式庫頁面 ( https://pear.php.net/packages.php ) 查看，點選每個套件類別都有安裝說明及使用方式。</p>
+<a href="../../images/111213/Pear/06_benchmark_page.png" target="_blank"><img src="../../images/111213/Pear/06_benchmark_page.png" alt="Pear 網站上的 benchmark 專案" border="0" /></a>
+<p>▲ 圖6：Pear 網站上的 benchmark 專案</p>
+<h3>結語</h3>
+<p>對於剛接觸 PHP 的使用者而言，查詢 PHP 官方網站的線上函式清單是練功的好方法。然而有些功能需透過一個以上的函式才能達成，例如本文所介紹的 Benchmark功能，也可以透過兩次的 timestamp 相差計算出來，加上些數學運算即可得到類似的功能。若經常要使用同樣的功能，相信許多人會將這些程式的內容包到一個類別中，當有需要時，只要宣告出一個新的物件即可。這是物件導向程式設計的優點，也是Pear 開發者所想要達成的目的之一。因此 Pear 為 PHP 開發者集結了許多套件，透過簡單的安裝過程即可馬上使用，輕鬆完成原本需要大費周章的工作。</p>
+<p>對於有經驗的 PHP 開發者而言，Pear 提供的套件可以輔助開發過程所遇到的瓶頸。Pear 官方網站提供的套件數量相當龐大，每個套件都有相關的使用範例及說明文件，因此，PHP 開發者可以用像在 PHP 官方網站查詢函式使用說明的方式瀏覽 Pear 網站，透過本文簡單的介紹，相信各位能夠盡情遨遊在 Pear 的世界。</p>
+<p>最後，PHP 官方目前希望逐步以 Pear2（第二代的 Pear）來取代舊有的 Pear，未來將以 <code>pyrus</code> 指令替換原本使用的 <code>pear</code>。第二代的設計上採用 "Phar"（類似於 Java 的 jar）的方式來包裝與管理擴展模組，而 "Phar" 僅於 PHP 5.3 及其後版本才有支援。此舉勢必影響到 PHP 版本間的相容性，但相對地也擺拖了部分歷史的沉重包栿。更多的介紹，請見 <a href="https://pear.php.net/manual/en/" target="_blank">Pear 官方網站</a>。</p>
+<h3>作者簡介</h3>
+<p>黃崇閔，現任職自由軟體鑄造場，擔任軟體工程師，喜歡透過自動化的程式，解決枯燥乏味的工作內容。</p>
+			<!-- Show relate article -->
+				<!-- end -->
+		<div class="article_note">
+		<!-- Add tags use metakey, and show OSSF Newsletter tag: OSSFNL+NUM-->
+		<br><br> <hr style='border: 1px dashed #D2DADB;'><b>自由軟體鑄造場電子報&nbsp;:</b>&nbsp;<a href='../../previous-issue%3Ftask=view&amp;id=765.html'>第 186 期 程式語言延伸模組管理系統</a><br><b>標籤:</b>&nbsp;<a href='../../index.php%3Foption=com_search&amp;Itemid=58&amp;searchphrase=exact_meta&amp;ordering=newest&amp;searchword=PHP.html'>PHP</a>,&nbsp;&nbsp;<a href='../../index.php%3Foption=com_search&amp;Itemid=58&amp;searchphrase=exact_meta&amp;ordering=newest&amp;searchword=&#32;Pecl.html'> Pecl</a>,&nbsp;&nbsp;<a href='../../index.php%3Foption=com_search&amp;Itemid=58&amp;searchphrase=exact_meta&amp;ordering=newest&amp;searchword=&#32;Pear.html'> Pear</a>,&nbsp;&nbsp;<a href='../../index.php%3Foption=com_search&amp;Itemid=58&amp;searchphrase=exact_meta&amp;ordering=newest&amp;searchword=&#32;延伸模組.html'> 延伸模組</a>,&nbsp;&nbsp;<a href='../../index.php%3Foption=com_search&amp;Itemid=58&amp;searchphrase=exact_meta&amp;ordering=newest&amp;searchword=&#32;extension&#32;management&#32;tools.html'> extension management tools</a>,&nbsp;&nbsp;				<!-- End -->
+					<br>
+					<b>分類: </b><a href="../tech-column.html">				技術專欄					</a>				</div>
+			 <!-- AddThis Button BEGIN ID 3001 is the front page article -->
+     			<br><br>
+       <div class="addthis_toolbox addthis_default_style addthis_32x32_style">
+       <a class="addthis_button_preferred_1"></a>
+       <a class="addthis_button_preferred_2"></a>
+       <a class="addthis_button_preferred_3"></a>
+       <a class="addthis_button_preferred_4"></a>
+       <a class="addthis_button_compact"></a>
+       <a class="addthis_counter addthis_bubble_style"></a>
+       </div>
+       <script type="text/javascript">var addthis_config = {"data_track_clickback":true};</script>
+       <script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js#pubid=openfoundry"></script>
+       <!-- AddThis Button END -->
+     <br>
+		<div class="totop" ><a class="rt-totop" href="8531-php-extension-management-tools-pecl-and-pear.html#" style="outline: medium none;">↑ Top</a></div>
+            <!-- AddThis Button END -->
+
+		<script type="text/javascript">
+var jcomments=new JComments(8531, 'com_content','https://openfoundry.org/index.php?option=com_jcomments&amp;tmpl=component&amp;lang=');
+jcomments.setList('comments-list');
+</script>
+<div id="jc">
+<div id="comments"><h4>評論<a class="refresh" href="8531-php-extension-management-tools-pecl-and-pear.html#" title="重新整理評論列表" onclick="jcomments.showPage(8531,'com_content',0);return false;">&nbsp;</a></h4>
+<div id="comments-list" class="comments-list">
+        <div class="even" id="comment-item-289"><div class="rbox"><div class="rbox_tr"><div class="rbox_tl"><div class="rbox_t">&nbsp;</div></div></div><div class="rbox_m">
+<div class="comment-avatar"><img src="http://www.gravatar.com/avatar.php?gravatar_id=49784414a10aa46431b5e256b127d4f3&amp;default=https%3A%2F%2Fwww.openfoundry.org%2Fcomponents%2Fcom_jcomments%2Fimages%2Fno_avatar.png" alt="" /></div>
+<div class="comment-box avatar-indent">
+<span class="comments-vote">
+	<span id="comment-vote-holder-289">
+<a href="8531-php-extension-management-tools-pecl-and-pear.html#" class="vote-good" title="優質的評論" onclick="jcomments.voteComment(289, 1);return false;"></a><a href="8531-php-extension-management-tools-pecl-and-pear.html#" class="vote-poor" title="差勁的評論" onclick="jcomments.voteComment(289, -1);return false;"></a>
+<span class="vote-good">+1</span>
+	</span>
+</span>
+<a class="comment-anchor" href="8531-php-extension-management-tools-pecl-and-pear.html#comment-289" id="comment-289">#1</a>
+<span class="comment-author">toksea</span>
+<span class="comment-date">2012-06-01 13:10</span>
+<div class="comment-body" id="comment-body-289">您好! 这篇文章很实用, 但有条命令写错了, 应该是<br /><br />$ pear channel-discover pear.phpunit.de<br /><br />而不是<br /><br />$ pear channel-discover<u>y</u> pear.phpunit.de</div>
+</div><div class="clear"></div>
+</div><div class="rbox_br"><div class="rbox_bl"><div class="rbox_b">&nbsp;</div></div></div></div>
+</div>
+        <div class="odd" id="comment-item-290"><div class="rbox"><div class="rbox_tr"><div class="rbox_tl"><div class="rbox_t">&nbsp;</div></div></div><div class="rbox_m">
+<div class="comment-avatar"><img src="http://www.gravatar.com/avatar.php?gravatar_id=13a27cc300ebc63cffde83a9372fa972&amp;default=https%3A%2F%2Fwww.openfoundry.org%2Fcomponents%2Fcom_jcomments%2Fimages%2Fno_avatar.png" alt="" /></div>
+<div class="comment-box avatar-indent">
+<span class="comments-vote">
+	<span id="comment-vote-holder-290">
+<a href="8531-php-extension-management-tools-pecl-and-pear.html#" class="vote-good" title="優質的評論" onclick="jcomments.voteComment(290, 1);return false;"></a><a href="8531-php-extension-management-tools-pecl-and-pear.html#" class="vote-poor" title="差勁的評論" onclick="jcomments.voteComment(290, -1);return false;"></a>
+<span class="vote-none">0</span>
+	</span>
+</span>
+<a class="comment-anchor" href="8531-php-extension-management-tools-pecl-and-pear.html#comment-290" id="comment-290">#2</a>
+<span class="comment-author">洪華超</span>
+<span class="comment-date">2012-06-01 14:27</span>
+<div class="comment-body" id="comment-body-290">您好，已經修正，謝謝您！<br /><br />OSSF-ROCK</div>
+</div><div class="clear"></div>
+</div><div class="rbox_br"><div class="rbox_bl"><div class="rbox_b">&nbsp;</div></div></div></div>
+</div>
+</div>
+<div id="comments-list-footer"><a class="refresh" href="8531-php-extension-management-tools-pecl-and-pear.html#" title="重新整理評論列表" onclick="jcomments.showPage(8531,'com_content',0);return false;">重新整理評論列表</a></div>
+</div>
+<div id="comments-footer" align="center"><a href="http://www.joomlatune.com" title="JComments" target="_blank">JComments</a></div>
+<script type="text/javascript">
+jcomments.setAntiCache(1,0,0);
+</script> 
+</div>	</div>
+</div>
+
+		                            </div>
+									<div class="clear"></div>
+								</div>
+								<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+							</div>
+							</div>
+                                                    </div>
+                                            </div>
+                                <div class="rt-grid-3 rt-pull-9">
+                <div id="rt-sidebar-a">
+                                    <div class="square4">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<ul class="menu"><li class="item56"><a href="../previous-issue.html"><span>電子報總覽</span></a></li><li class="item55"><a href="../about-newsletter.html"><span>關於本報</span></a></li></ul>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<ul class="menu"><li class="item115"><a href="../foss-news.html"><span>源碼新聞</span></a></li><li class="item141"><a href="../case-job.html"><span>接案 / 工作</span></a></li></ul>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+        	                <div class="square1">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-title"><h2 class="title">專欄總覽</h2></div>
+						<div class="clear"></div>
+		                						<div class="module-content">
+		                	<ul class="menu"><li id="current" class="active item37"><a href="../tech-column.html"><span>技術專欄</span></a></li><li class="item40"><a href="../foss-programs.html"><span>源碼秘技</span></a></li><li class="item35"><a href="../legal-article-.html"><span>法律專欄</span></a></li><li class="item154"><a href="../foss-forum.html"><span>自由專欄</span></a></li><li class="item162"><a href="../enterprise-application.html"><span>企業應用</span></a></li><li class="item44"><a href="../foss-projects.html"><span>源碼專案</span></a></li></ul>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		                <div class="square1">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<p style="text-align: center;"><a href="../../news%3Fformat=feed&amp;type=rss" target="_black"><img src="../../images/M_images/news-rss-feed.png" border="0" /></a><br /><a href="https://www.openfoundry.org/rss-feed/Newsletter" target="_black"><img src="../../images/M_images/newsletter-rss-feed.png" border="0" /></a></p>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		
+                </div>
+            </div>
+
+                    <div class="clear"></div>
+                </div>
+            </div>
+																													</div>
+										<div id="rt-copyright">
+						<div class="rt-grid-12 rt-alpha rt-omega">
+                        <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<div id="desktop-mobile-version-switch"><span id="mobile-version" class="version-switch"><a href="8531-php-extension-management-tools-pecl-and-pear.html#">行動版</a></span></div>
+自由軟體鑄造場 製作 最佳瀏覽狀態：IE7或Firefox2.0以上 (建議使用Firefox) ‧ 解析度1024*768 <br /> <strong>E-Mail</strong>：<a href="mailto:contact@openfoundry.org">contact@openfoundry.org</a> <strong>Address</strong>：台北市南港區研究院路2段128號 中央研究院資訊科學研究所 . <a href="../../privacy-policy.html">隱私權條款</a>. <a href="../../terms-of-use.html">使用條款</a><span style="position: relative; top: 8px; margin-top: -8px;"> <a href="../../about/8101.html"><img src="../../images/M_images/rss-feed-all.png" border="0" /></a></span>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+        	
+</div>
+						<div class="clear"></div>
+					</div>
+					<div class="rt-footer-bottom-wrap"><div class="rt-footer-bottom"><div class="rt-footer-bottom2"><div class="rt-footer-bottom3"></div></div></div></div>
+									</div></div></div>
+				<div class="rt-surround-bottom"><div class="rt-surround-bottom2"><div class="rt-surround-bottom3"></div></div></div>
+							</div>
+		</div>
+		<!--
+		<script id="aptureScript">
+						(function (){var a=document.createElement("script");a.defer="true";a.src="http://www.apture.com/js/apture.js?siteToken=vsJttrn";document.getElementsByTagName("head")[0].appendChild(a);})();
+     </script>
+-->
+
+<!-- Piwik -->
+<!-- 			<script type="text/javascript">
+			  var _paq = _paq || [];
+		  _paq.push(["trackPageView"]);
+		  _paq.push(["enableLinkTracking"]);
+
+		    (function() {
+			        var u=(("https:" == document.location.protocol) ? "https" : "https") + "://www.openfoundry.org/piwik/";
+				    _paq.push(["setTrackerUrl", u+"piwik.php"]);
+				    _paq.push(["setSiteId", "1"]);
+				        var d=document, g=d.createElement("script"), s=d.getElementsByTagName("script")[0]; g.type="text/javascript";
+				        g.defer=true; g.async=true; g.src=u+"piwik.js"; s.parentNode.insertBefore(g,s);
+					  })();
+		  </script> -->
+<!-- End Piwik Code -->
+	</body>
+</html>

@@ -1,0 +1,500 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="zh-tw" lang="zh-tw" >
+<head>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<link rel="shortcut icon" href="../../../../../images/favicon.ico" />
+	  <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+  <meta name="robots" content="index, follow" />
+  <meta name="keywords" content="subversion,system,的web瀏覽,專案的版本控制頁面,版本控制系統,專案則提供viewvc,versions,concurrent,一種opensource版本控制軟體,使用站內提供的svn,而在選擇版本控制時有以下五種選項,並複製到站內版本庫,使用站外版本庫,使用站內提供的cvs,system以下稱,control,版本控制系統version,openfoundry,選擇版本控制系統,鑄造廠專案開發平台使用者以下稱" />
+  <meta name="title" content="4.鑄造場提供的版本控制服務" />
+  <meta name="description" content=" 名詞縮寫 版本控制系統version control system以下稱'vcs' Subversion ，一種opensource版本控制軟體，以下稱'svn' Concurrent Versions System ，一種opensource版本控制軟體，以下稱'cvs' OSSF OpenFoundry 鑄造場專案開發平台以下稱'鑄造場' 鑄造廠專案開發平台使用者以下稱'使用者'" />
+  <meta name="generator" content="" />
+  <title>4.鑄造場提供的版本控制服務 - OpenFoundry</title>
+  <link href="../../../../../favicon.ico" rel="shortcut icon" type="image/x-icon" />
+  <link rel="stylesheet" href="../../../../../components/com_gantry/css/gantry.css" type="text/css" />
+  <link rel="stylesheet" href="../../../../../components/com_gantry/css/grid-12.css" type="text/css" />
+  <link rel="stylesheet" href="../../../../../components/com_gantry/css/joomla.css" type="text/css" />
+  <link rel="stylesheet" href="../../../../../templates/rt_quantive_j15/css/joomla.css" type="text/css" />
+  <link rel="stylesheet" href="../../../../../templates/rt_quantive_j15/css/style1.css" type="text/css" />
+  <link rel="stylesheet" href="../../../../../templates/rt_quantive_j15/css/light-body.css" type="text/css" />
+  <link rel="stylesheet" href="../../../../../templates/rt_quantive_j15/css/demo-styles.css" type="text/css" />
+  <link rel="stylesheet" href="../../../../../templates/rt_quantive_j15/css/template.css" type="text/css" />
+  <link rel="stylesheet" href="../../../../../templates/rt_quantive_j15/css/typography.css" type="text/css" />
+  <link rel="stylesheet" href="../../../../../templates/rt_quantive_j15/css/fusionmenu.css" type="text/css" />
+  <style type="text/css">
+    <!--
+#rt-main-surround ul.menu li.active > a, #rt-main-surround ul.menu li.active > .separator, #rt-main-surround ul.menu li.active > .item, #rt-main-surround .square4 ul.menu li:hover > a, #rt-main-surround .square4 ul.menu li:hover > .item, #rt-main-surround .square4 ul.menu li:hover > .separator, .roktabs-links ul li.active span {color:#0088B5;}
+a, #rt-main-surround ul.menu a:hover, #rt-main-surround ul.menu .separator:hover, #rt-main-surround ul.menu .item:hover {color:#0088B5;}
+    -->
+  </style>
+  <script type="text/javascript" src="../../../../../components/com_jcomments/js/jcomments-v2.1.js%3Fv=2"></script>
+  <script type="text/javascript" src="../../../../../components/com_jcomments/libraries/joomlatune/ajax.js"></script>
+  <script type="text/javascript" src="../../../../../media/system/js/mootools.js"></script>
+  <script type="text/javascript" src="../../../../../media/system/js/caption.js"></script>
+  <script type="text/javascript" src="../../../../../components/com_gantry/js/gantry-buildspans.js"></script>
+  <script type="text/javascript" src="../../../../../components/com_gantry/js/gantry-inputs.js"></script>
+  <script type="text/javascript" src="../../../../../templates/rt_quantive_j15/js/jquery.cookie.js"></script>
+  <script type="text/javascript" src="../../../../../modules/mod_roknavmenu/themes/fusion/js/fusion.js"></script>
+  <script type="text/javascript" src="../../../../../modules/mod_ofssologin/js/ofssologin.js"></script>
+  <script type="text/javascript">
+
+			window.addEvent('domready', function() {
+				var modules = ['rt-block'];
+				var header = ['h3','h2','h1'];
+				GantryBuildSpans(modules, header);
+			});
+		InputsExclusion.push('.content_vote','#rt-popup')
+		        window.addEvent('load', function() {
+					new Fusion('ul.menutop', {
+						pill: 0,
+						effect: 'slide and fade',
+						opacity: 1,
+						hideDelay: 500,
+						centered: 0,
+						tweakInitial: {'x': -2, 'y': 0},
+        				tweakSubsequent: {'x': 0, 'y': -14},
+						menuFx: {duration: 200, transition: Fx.Transitions.Sine.easeOut},
+						pillFx: {duration: 400, transition: Fx.Transitions.Back.easeOut}
+					});
+	            });
+  </script>
+<!-- <script type="text/javascript" src="/sso/javascripts/langsync.js"></script> -->
+<!-- <script src="/templates/rt_quantive_j15/js/ossf.js"></script> -->
+<script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-4136519-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
+</head>
+	<body  class="backgroundlevel-low backgroundstyle-style8 bodylevel-med bodystyle-light cssstyle-style1 logostyle-dark font-family-helvetica font-size-is-default menu-type-fusionmenu col12">
+		<div id="rt-main-background">
+			<div class="rt-container">
+																<div id="rt-header">
+					<div class="rt-grid-7 rt-alpha">
+    			<div class="rt-block">
+    	    	<a href="../../../../../index.html" id="rt-logo"></a>
+    		</div>
+	    
+</div>
+<div class="rt-grid-5 rt-omega">
+                    <div class="square9">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<div class="ofssologin_square9"><a href="../../../../../index.html">登入</a>&nbsp;&nbsp|&nbsp;&nbsp;<span><a href="https://www.openfoundry.org/component/content/article/2375-4?lang=en" ><span lang="en" xml:lang="en">English</span></a></li></ul></span><!--Joom!fish V2.0.4 (Lightning)-->
+<!-- &copy; 2003-2009 Think Network, released under the GPL. -->
+<!-- More information: at http://www.joomfish.net -->
+<div class="ofssologin_search_square9">
+  <form id="of_search" action="https://www.openfoundry.org/of/openfoundry/search" method="get" onsubmit="of_search(); return false;">
+    <select id="of_search_type">
+      <option value="Projects"> 專案 </option>
+      <option value="Content"> 文章 </option>
+      <option value="People"> 人才 </option>
+    </select>
+    <input id="query" name="query" id="mod_search_searchword" maxlength="50" alt="search" class="inputbox" type="text" size="28" value="search..."  onblur="if(this.value=='') this.value='search...';" onfocus="if(this.value=='search...') this.value='';" />
+    <input type="hidden" name="commit" value="search" />
+  </form>
+</div></div>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		
+</div>
+					<div class="clear"></div>
+				</div>
+																<div id="rt-navigation"><div id="rt-navigation2"><div id="rt-navigation3">
+					
+<div class="nopill">
+	<ul class="menutop level1 " >
+						<li class="item1 root" >
+					<a class="orphan item bullet" href="../../../../../index.html"  >
+				<span>
+			    				首頁				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item32 root" >
+					<a class="orphan item bullet" href="../../../../../archived.html"  >
+				<span>
+			    				專案				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item186 root" >
+					<a class="orphan item bullet" href="../../../../community.html"  >
+				<span>
+			    				Who&#039;s Who				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item4 root" >
+					<a class="orphan item bullet" href="../../../../news.html"  >
+				<span>
+			    				新聞				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item5 root" >
+					<a class="orphan item bullet" href="../../../../law-and-licensing.html"  >
+				<span>
+			    				法律源地				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item3 root" >
+					<a class="orphan item bullet" href="../../../../activities.html"  >
+				<span>
+			    				活動				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item2 root" >
+					<a class="orphan item bullet" href="../../../../resourcecatalog%3FName=Value.html"  >
+				<span>
+			    				資源表列				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item45 root" >
+					<a class="orphan item bullet" href="../../../../about.html"  >
+				<span>
+			    				關於				   
+				</span>
+			</a>
+			
+			
+	</li>	
+				</ul>
+</div>
+
+				    <div class="clear"></div>
+				</div></div></div>
+								<div class="rt-surround"><div class="rt-surround2"><div class="rt-surround3">
+										<div id="rt-showcase-section">
+												<div id="rt-showcase">
+							<div class="rt-grid-12 rt-alpha rt-omega">
+    		<div class="clear"></div>
+		
+		
+                <div class="close-note">
+                    <div class="rt-block">
+               					<div class="module-content">
+                	<div style="font-size:medium; background-image:linear-gradient(120deg,#159957,#4298b2);color:white;padding:20px;margin:-10px -18px;">感謝您對「自由軟體鑄造場」的支持與愛護，十多年來「自由軟體鑄造場」受中央研究院支持，並在資訊科學研究所以及資訊科技創新研究中心執行，現已完成階段性的任務。 本網站預計持續維運至 2021年底，網站內容基本上不會再更動。<br />也紀念我們永遠的朋友 李士傑先生（Shih-Chieh Ilya Li）。</div>				</div>
+            </div>
+                </div>
+		
+</div>
+							<div class="clear"></div>
+						</div>
+																	</div>
+															<div id="rt-main-surround">
+																							              <div id="rt-main" class="mb12">
+                <div class="rt-main-inner">
+                    <div class="rt-grid-12 ">
+                                                <div class="rt-block">
+                            							<div class="square1">
+							<div class="rt-module-surround">
+								<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+								<div class="rt-module-inner">
+		                            <div id="rt-mainbody">
+		                                
+<div class="rt-joomla ">
+	<div class="rt-article">
+		
+				<div class="rt-headline"><h1 class="rt-article-title">4.鑄造場提供的版本控制服務</h1>		</div>
+		<div class="clear"></div>
+		
+		
+		
+				<div class="rt-articleinfo">
+						<div class="rt-article-icons">
+								<a href="https://www.openfoundry.org/tw/component/content/article/2375-4?tmpl=component&amp;print=1&amp;page=" title="列印" onclick="window.open(this.href,'win2','status=no,toolbar=no,scrollbars=yes,titlebar=no,menubar=no,resizable=yes,width=640,height=480,directories=no,location=no'); return false;" rel="nofollow"><span class="icon print"></span></a>																</div>
+			
+			<span class="rt-date-posted">
+						建立日期			2010-06-11 19:29						&nbsp;&nbsp;&nbsp;&nbsp;						最近更新在 2010-07-14 20:32						</span>
+
+						<span class="rt-author">
+				作者是 webmaster			</span>
+				
+					</div>
+		
+		
+		<hr />
+<h3><span> <span style="color: #0000ff;">名詞縮寫</span> </span></h3>
+<ul>
+<li> 版本控制系統version control system以下稱"vcs" </li>
+<li> <a href="https://subversion.tigris.org/" title="Subversion">Subversion</a> ，一種opensource版本控制軟體，以下稱"svn" </li>
+<li> <a href="https://www.nongnu.org/cvs/" title="Concurrent Versions System">Concurrent     Versions System</a> ，一種opensource版本控制軟體，以下稱"cvs" </li>
+<li> <a href="https://rt.openfoundry.org/" title="OSSF OpenFoundry">OSSF     OpenFoundry</a> 鑄造場專案開發平台以下稱"鑄造場" </li>
+<li> 鑄造廠專案開發平台使用者以下稱"使用者" </li>
+</ul>
+<h3><span style="color: #0000ff;">選擇版本控制系統</span></h3>
+<p>鑄造場所提供的版本控制系統有Subversion 及 CVS，而在選擇版本控制時有以下五種選項：</p>
+<ol>
+<li>Subversion(讀寫)</li>
+使用站內提供的svn(subversion)版本控制系統，專案則提供viewvc(專案的版本控制頁面)的web瀏覽。
+<li>CVS(讀寫)</li>
+使用站內提供的cvs(Concurrent Versions System)版本控制系統，專案則提供viewvc(專案的版本控制頁面)的web瀏覽。
+<li>站外(讀寫) =&gt; Subversion(唯讀)</li>
+使用站外版本庫，並複製到站內版本庫(唯讀)提供專案viewvc(專案的版本控制頁面)的web瀏覽，請輸入「站外版本庫」欄位的版本庫網址。<br />ps.目前停止複製到站內，因此和使用「站外版本庫」選項是相同的。
+<li>站外版本庫</li>
+使用站外版本庫，並請輸入「站外版本庫」欄位的版本庫網址。
+<li>（請選擇）</li>
+不使用版本庫的意思</ol>
+<h3><span style="color: #0000ff;">透過命令列存取SVN檔案庫</span></h3>
+<p>鑄造場所使用的svn版本為1.4，svn的安裝方式請參閱svn官方網站。使用者有兩種方式連結svn檔案庫，一種為 http，此種方式可供讀取及寫入(read &amp; write)。 也可匿名讀取(anonymous read)，不需要帳號密碼，連結網址: https://svn.openfoundry.org/[專案名稱]。</p>
+<p><strong>範例: 從鑄造場取出檔案至工作複本</strong><br />以下 [專案名稱]，'/home/checkout' 為範例文字，使用者可自行變更<br />我們可以透過 svn指令 checkout (簡寫: co ) 取出專案的工作複本<br />指令: svn co https://svn.openfoundry.org/[專案名稱] /home/checkout</p>
+<p><strong>範例: 檢視鑄造場svn檔案庫</strong><br />以下 [專案名稱]，[路徑] 為範例文字，使用者可自行變更<br />透過svn指令 list ( 簡寫: ls ) 檢視鑄造場svn檔案庫[路徑]下的內容。<br />指令: svn list https://svn.openfoundry.org/[專案名稱]/[路徑]<br />另一種為https，此種方式讀取寫入皆可(read &amp; write)，連結網址: https://svn.openfoundry.org/[專案名稱]。<br />注意：寫入檔案庫需要輸入帳號密碼，此組帳號密碼與鑄造場相同。變更密碼需稍待5分鍾後才會生效。<br />注意：在此建議使用者以https的方式存取svn檔案庫，https是經過加密的連線，安全性較http高。原來使用http的工作複本也可以使用relocate指令重新指定檔案庫位址到https上，詳見FAQ。<br />注意：在此之前請先匯入中研院資訊所的憑證，以免出現警示訊息。</p>
+<p><strong>範例: 提交工作複本到鑄造場svn檔案庫裡</strong><br />提交svn工作複本不需要給額外的連結網址，svn會自動使用取出的時候的連結。<br />我們可以透過 svn指令 commit (簡寫: ci ) 把工作複本的更動寫進鑄造場svn檔案庫<br />以下 '/home/checkout'為範例文字，使用者可自行變更<br />加上 --username [帳號] 指定帳號，--password [密碼] 指定密碼<br />指令：svn ci /home/checkout</p>
+<p><strong>範例: 傳送未納入版本控制的專案到鑄造場svn</strong><br />透過svn指令 import 檢視鑄造場svn儲存槽<br />以下 [專案名稱]，[路徑]，'/home/myprog' 為範例文字，使用者可自行變更<br />加上 --username [帳號] 指定帳號，--password [密碼] 指定密碼<br />指令：svn import /home/myprog https://svn.openfoundry.org/[專案名稱]/[路徑]</p>
+<h3><span style="color: #0000ff;">簡介SVN視窗化應用程式- TortoiseSVN</span></h3>
+<p>安裝TortoiseSVN詳細步驟請參閱官方網站。</p>
+<p><strong>範例:取出工作複本</strong><br />操作01:在空白目錄下叫出右鍵選單，選"SVN Checkout..."</p>
+<p><input src="https://www.openfoundry.org/images/freashmen/svn/tortoisesvn_checkout1.png" type="image" /></p>
+<p><span>操作02:在"URL of  respository"欄打上連結路徑"https://svn.openfoundry.org/testproject04"，其中testproject04為範例專案。</span></p>
+<p><img src="https://www.openfoundry.org/images/freashmen/svn/tortoisesvn_checkout2.png" border="0" width="600" height="461" /></p>
+<p><span>操作03:完成，看的到取出的版本號</span></p>
+<p> </p>
+<p><img src="https://www.openfoundry.org/images/freashmen/svn/tortoisesvn_checkout3.png" border="0" width="600" height="463" /></p>
+<p><strong>範例:新增檔案至工作複本</strong><br />操作01:在欲加入版本控制的檔案上叫出右鍵選單，選取"TortoiseSVN"-&gt;"Add"。</p>
+<p><img src="https://www.openfoundry.org/images/freashmen/svn/tortoisesvn_add1.png" border="0" width="600" height="461" /></p>
+<p><span>操作02:勾選要加入的檔案或目錄後，按下"OK"。</span></p>
+<p> </p>
+<p><img src="https://www.openfoundry.org/images/freashmen/svn/tortoisesvn_add2.png" border="0" width="600" height="463" /></p>
+<p><span>操作03:完成，顯示加入了哪些檔案。</span></p>
+<p> </p>
+<p><img src="https://www.openfoundry.org/images/freashmen/svn/tortoisesvn_add3.png" border="0" width="600" height="463" /></p>
+<p><strong>範例:把對工作複本所作的變更寫回檔案庫</strong><br />操作01:在工作複本的目錄中叫出右鍵選單，選"SVN Commit..."。</p>
+<p><img src="https://www.openfoundry.org/images/freashmen/svn/tortoisesvn_commit1.png" border="0" width="600" height="463" /></p>
+<p>操作02:輸入版本更動的明細(可留白)，按下"OK"。</p>
+<p><img src="https://www.openfoundry.org/images/freashmen/svn/tortoisesvn_commit2.png" border="0" width="600" height="463" /></p>
+<p>操作03:因為是寫入，需要填入帳號密碼。</p>
+<p><img src="https://www.openfoundry.org/images/freashmen/svn/tortoisesvn_commit3.png" border="0" width="600" height="463" /></p>
+<p>操作04:完成，顯示改了哪些檔案及目前的版本號。</p>
+<p><img src="https://www.openfoundry.org/images/freashmen/svn/tortoisesvn_commit4.png" border="0" width="600" height="463" /></p>
+<h3><span style="color: #0000ff;">透過命令列存取CVS檔案庫</span></h3>
+<p>使用者連結cvs僅提供ssh連線方式，此種方式讀取寫入皆可(read and write)，也可匿名讀取(anonymous read)，鑄造場cvs檔案庫的匿名帳號: "cvs"。<br />基本指令: cvs -d :ext:[帳號]@cvs.openfoundry.org:/cvs [cvs指令]</p>
+<p><strong>範例: 從鑄造場取出檔案至工作複本</strong><br />以下 [專案名稱]，'/home/checkout' 為範例文字，使用者可自行變更<br />我們可以透過cvs指令 checkout (簡寫: co，get ) 取出專案的工作複本<br />注意: 帳號"cvs"為匿名帳號。<br />指令: cvs -d :ext:
+ <script language='JavaScript' type='text/javascript'>
+ <!--
+ var prefix = 'm&#97;&#105;lt&#111;:';
+ var suffix = '';
+ var attribs = '';
+ var path = 'hr' + 'ef' + '=';
+ var addy66116 = 'cvs' + '&#64;';
+ addy66116 = addy66116 + 'cvs' + '&#46;' + '&#111;p&#101;nf&#111;&#117;ndry' + '&#46;' + '&#111;rg';
+ document.write( '<a ' + path + '\'' + prefix + addy66116 + suffix + '\'' + attribs + '>' );
+ document.write( addy66116 );
+ document.write( '<\/a>' );
+ //-->
+ </script> <script language='JavaScript' type='text/javascript'>
+ <!--
+ document.write( '<span style=\'display: none;\'>' );
+ //-->
+ </script>這個 E-mail 地址已經被防止灌水惡意程式保護，您需要啟用 Java Script 才能觀看
+ <script language='JavaScript' type='text/javascript'>
+ <!--
+ document.write( '</' );
+ document.write( 'span>' );
+ //-->
+ </script>:/cvs co [專案名稱]</p>
+<p><strong>範例: 檢視鑄造場cvs檔案庫</strong><br />以下 [專案名稱]，[路徑] 為範例文字，使用者可自行變更<br />透過cvs指令 list ( 簡寫: ls ) 檢視鑄造場cvs檔案庫<br />注意: 帳號"cvs"為匿名帳號。<br />指令: cvs -d :ext:
+ <script language='JavaScript' type='text/javascript'>
+ <!--
+ var prefix = 'm&#97;&#105;lt&#111;:';
+ var suffix = '';
+ var attribs = '';
+ var path = 'hr' + 'ef' + '=';
+ var addy8606 = 'cvs' + '&#64;';
+ addy8606 = addy8606 + 'cvs' + '&#46;' + '&#111;p&#101;nf&#111;&#117;ndry' + '&#46;' + '&#111;rg';
+ document.write( '<a ' + path + '\'' + prefix + addy8606 + suffix + '\'' + attribs + '>' );
+ document.write( addy8606 );
+ document.write( '<\/a>' );
+ //-->
+ </script> <script language='JavaScript' type='text/javascript'>
+ <!--
+ document.write( '<span style=\'display: none;\'>' );
+ //-->
+ </script>這個 E-mail 地址已經被防止灌水惡意程式保護，您需要啟用 Java Script 才能觀看
+ <script language='JavaScript' type='text/javascript'>
+ <!--
+ document.write( '</' );
+ document.write( 'span>' );
+ //-->
+ </script>:/cvs ls [專案名稱]/[路徑]</p>
+<p><strong>範例: 提交工作複本到鑄造場cvs檔案庫裡</strong><br />提交cvs工作複本不需要給額外的連結網址，cvs會自動使用取出的時候的連結。<br />我們可以透過 cvs指令 commit (簡寫: ci ) 把工作複本的更動寫進鑄造場cvs檔案庫<br />指令: cvs ci /home/checkout</p>
+<p><strong>範例: 傳送未納入版本控制的專案到鑄造場</strong><br />透過cvs指令 import 檢視鑄造場svn檔案庫<br />指令:  cvs -d :ext:[帳號]@cvs.openfoundry.org:/cvs import [專案名稱]/[路徑]</p>
+<h3><span style="color: #0000ff;">簡介CVS視窗化應用程式- WinCVS</span></h3>
+<p>安裝WinCVS的詳細步驟請參閱官方網站 。</p>
+<p><strong>範例:取出工作複本</strong><br />操作01:選取選單"Remote"-&gt;"Checkout module..."。</p>
+<p><img src="https://www.openfoundry.org/images/freashmen/svn/wincvs_01.png" border="0" width="600" height="462" /></p>
+<p>操作02:在"Module name(s) and path on the server"欄填入專案名稱，在此為測試專案testcvs，接著勾選"CVSROOT"，填入":extssh:
+ <script language='JavaScript' type='text/javascript'>
+ <!--
+ var prefix = 'm&#97;&#105;lt&#111;:';
+ var suffix = '';
+ var attribs = '';
+ var path = 'hr' + 'ef' + '=';
+ var addy72937 = 'k&#97;w&#111;r&#117;' + '&#64;';
+ addy72937 = addy72937 + 'cvs' + '&#46;' + '&#111;p&#101;nf&#111;&#117;ndry' + '&#46;' + '&#111;rg';
+ document.write( '<a ' + path + '\'' + prefix + addy72937 + suffix + '\'' + attribs + '>' );
+ document.write( addy72937 );
+ document.write( '<\/a>' );
+ //-->
+ </script> <script language='JavaScript' type='text/javascript'>
+ <!--
+ document.write( '<span style=\'display: none;\'>' );
+ //-->
+ </script>這個 E-mail 地址已經被防止灌水惡意程式保護，您需要啟用 Java Script 才能觀看
+ <script language='JavaScript' type='text/javascript'>
+ <!--
+ document.write( '</' );
+ document.write( 'span>' );
+ //-->
+ </script>:/cvs"，請"kaworu"將換成您的帳號名稱。</p>
+<p><img src="https://www.openfoundry.org/images/freashmen/svn/wincvs_02.png" border="0" width="600" height="461" /></p>
+<p><span>操作03:輸入密碼。</span></p>
+<p> </p>
+<p><img src="https://www.openfoundry.org/images/freashmen/svn/wincvs_03.png" border="0" width="600" height="460" /></p>
+<p><span>操作04:完成，取出工作複本。</span></p>
+<p> </p>
+<p><img src="https://www.openfoundry.org/images/freashmen/svn/wincvs_04.png" border="0" width="600" height="460" /></p>
+<p><strong> 範例:新增檔案至工作複本</strong><br />操作01:先左鍵選擇欲加入的檔案，接著按下工具列按鈕上的"Add selected"。</p>
+<p><img src="https://www.openfoundry.org/images/freashmen/svn/wincvs_add01.png" border="0" width="600" height="460" /></p>
+<p>操作02:輸入密碼。</p>
+<p><img src="https://www.openfoundry.org/images/freashmen/svn/wincvs_add02.png" border="0" width="600" height="460" /></p>
+<p>操作03:新增完成，顯示檔案版本號０。</p>
+<p><img src="https://www.openfoundry.org/images/freashmen/svn/wincvs_add03.png" border="0" width="600" height="462" /></p>
+<p><span><strong>範例:把對工作複本所作的變更寫回檔案庫</strong><br />操作01:左鍵選取欲寫入的檔案，按下工具列的按鈕"Commit selected"。</span></p>
+<p> </p>
+<p><img src="https://www.openfoundry.org/images/freashmen/svn/wincvs_commit01.png" border="0" width="600" height="462" /></p>
+<p>操作02:輸入版本變更的明細(可以空白)，按下"確定"。</p>
+<p><img src="https://www.openfoundry.org/images/freashmen/svn/wincvs_commit02.png" border="0" width="600" height="462" /></p>
+<p>操作03:輸入密碼。</p>
+<p><img src="https://www.openfoundry.org/images/freashmen/svn/wincvs_commit03.png" border="0" width="600" height="462" /></p>
+<p>操作04:成功，顯示版本號1.1。</p>
+<p><img src="https://www.openfoundry.org/images/freashmen/svn/wincvs_commit04.png" border="0" width="600" height="462" /></p>
+<h3><span style="color: #0000ff;">使用VIEWVC瀏覽鑄造場檔案庫</span></h3>
+<p>使用者欲使用viewvc瀏覽各個版本，可透過網址 https://viewvc.of.openfoundry.org/viewvc</p>
+<p><strong>範例: 瀏覽svn檔案庫</strong></p>
+<p><strong> </strong>操作:使用瀏覽器開啟網址"https://viewvc.of.openfoundry.org/viewvc"，接著在"Repository"中選擇欲瀏覽的專案。</p>
+<p><img src="https://www.openfoundry.org/images/freashmen/svn/view_vc01.png" border="0" width="600" height="463" /></p>
+<p>操作: 在"Sticky Revision"可輸入版本號。</p>
+<p><img src="https://www.openfoundry.org/images/freashmen/svn/view_vc02.png" border="0" width="600" height="463" /></p>
+<p><strong>範例: 瀏覽cvs檔案庫</strong><br />操作:使用瀏覽器開啟網址"https://viewvc.of.oopenfoundry.org/viewvc"，並在"Repository"欄選"cvs"，再選擇欲瀏覽的專案。</p>
+<p><img src="https://www.openfoundry.org/images/freashmen/svn/view_vc03.png" border="0" width="600" height="462" /></p>
+<p><span>可在"Sticky Tag"中選擇版本號。</span></p>
+<p> </p>
+<p><img src="https://www.openfoundry.org/images/freashmen/svn/view_vc04.png" border="0" width="600" height="463" /></p>
+<h3><span style="color: #0000ff;"> FAQ</span></h3>
+<p>Q1:<br />我使用的是svn檔案庫，我原本專案是從https://...的連結抓出來，如果我想改用https://...的連結比較安全，我該怎麼操作呢?<br />A1:<br />假設你想將連結從https://svn.openfoundry.org/alert，搬到https://svn.openfoudnry.org/alert，那麼請在你的工作複本的目錄底下打: svn switch --relocate FROM TO 。其中的FROM即是https://svn.openfoundry.org/alert，TO即是https://svn.openfoudnry.org/alert. 你可以試著打svn info可以看到工作複本的路徑已經變更。 更詳細的說明請參考指令svn help switch。<br />Q2:<br />我已經在鑄造場網頁上更改了密碼，為什麼在登入svn/cvs檔案庫時卻還是使用舊密碼呢?<br />A2:<br />在鑄造場網頁上更改密碼之後，請稍等5分鍾，待資料庫更新完畢，即可使用新密碼。<br />Q3:<br />我想將鑄造場上的檔案庫搬到其他地方，或是從其他地方搬版本資料到鑄造場，我該怎麼做呢?<br />A3:<br />如果你是想要匯入或是匯出尚未納入版本資訊的檔案的話，請參閱Q4。 如果你是想要將檔案連同版本資訊一併搬動的話，建議的做法是將檔案庫轉存成文字檔，再將此文字檔存回其他檔案庫即可。 真的有需要的話，請聯絡鑄造場的維護人員，我們會為您操作。<br />Q4:<br />我原本有在自己的電腦裡寫程式，想要試試鑄造場提供的檔案庫，我該怎麼將程式放入檔案庫裡?<br />A4:<br />以svn 為例，假設你的程式放在/myprog/裡面，尚未納入版本控制，想要將目錄下所有檔案都放入檔案庫，指令: svn import /myprog https://svn.openfoundry.org/[專案名稱]，但是要記住，還要從檔案庫裡再取出一份有版本資訊的工作複本，你對工作複本所做 的變更才會有紀錄留下。<br />而cvs為例，指令為: cvs -d :ext:[帳號]@cvs.openfoundry.org:/cvs import /myprog/<br />Q5:<br />請問鑄造場有上的資料有備份嗎?<br />A5:<br />有的，鑄造場系統的維護時間是UTC+8時區的3:00~4:00am，會備份當天的資料差異，那段時間之內的鑄造場系統操作會稍微慢一點。</p>
+			<!-- Show relate article -->
+				<!-- end -->
+		<div class="article_note">
+		<!-- Add tags use metakey, and show OSSF Newsletter tag: OSSFNL+NUM-->
+		<br><br> <hr style='border: 1px dashed #D2DADB;'>		<!-- End -->
+					<br>
+					<b>分類: </b><a href="https://www.openfoundry.org/tw/component/content/category/502-subversion">				Subversion					</a>				</div>
+			 <!-- AddThis Button BEGIN ID 3001 is the front page article -->
+     			<br><br>
+       <div class="addthis_toolbox addthis_default_style addthis_32x32_style">
+       <a class="addthis_button_preferred_1"></a>
+       <a class="addthis_button_preferred_2"></a>
+       <a class="addthis_button_preferred_3"></a>
+       <a class="addthis_button_preferred_4"></a>
+       <a class="addthis_button_compact"></a>
+       <a class="addthis_counter addthis_bubble_style"></a>
+       </div>
+       <script type="text/javascript">var addthis_config = {"data_track_clickback":true};</script>
+       <script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js#pubid=openfoundry"></script>
+       <!-- AddThis Button END -->
+     <br>
+		<div class="totop" ><a class="rt-totop" href="2375-4.html#" style="outline: medium none;">↑ Top</a></div>
+            <!-- AddThis Button END -->
+
+			</div>
+</div>
+
+		                            </div>
+									<div class="clear"></div>
+								</div>
+								<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+							</div>
+							</div>
+                                                    </div>
+                                            </div>
+                                        <div class="clear"></div>
+                </div>
+            </div>
+																													</div>
+										<div id="rt-copyright">
+						<div class="rt-grid-12 rt-alpha rt-omega">
+                        <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<div id="desktop-mobile-version-switch"><span id="mobile-version" class="version-switch"><a href="2375-4.html#">行動版</a></span></div>
+自由軟體鑄造場 製作 最佳瀏覽狀態：IE7或Firefox2.0以上 (建議使用Firefox) ‧ 解析度1024*768 <br /> <strong>E-Mail</strong>：<a href="mailto:contact@openfoundry.org">contact@openfoundry.org</a> <strong>Address</strong>：台北市南港區研究院路2段128號 中央研究院資訊科學研究所 . <a href="../../../../../privacy-policy.html">隱私權條款</a>. <a href="../../../../../terms-of-use.html">使用條款</a><span style="position: relative; top: 8px; margin-top: -8px;"> <a href="../../../../../about/8101.html"><img src="../../../../../images/M_images/rss-feed-all.png" border="0" /></a></span>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+        	
+</div>
+						<div class="clear"></div>
+					</div>
+					<div class="rt-footer-bottom-wrap"><div class="rt-footer-bottom"><div class="rt-footer-bottom2"><div class="rt-footer-bottom3"></div></div></div></div>
+									</div></div></div>
+				<div class="rt-surround-bottom"><div class="rt-surround-bottom2"><div class="rt-surround-bottom3"></div></div></div>
+							</div>
+		</div>
+		<!--
+		<script id="aptureScript">
+						(function (){var a=document.createElement("script");a.defer="true";a.src="http://www.apture.com/js/apture.js?siteToken=vsJttrn";document.getElementsByTagName("head")[0].appendChild(a);})();
+     </script>
+-->
+
+<!-- Piwik -->
+<!-- 			<script type="text/javascript">
+			  var _paq = _paq || [];
+		  _paq.push(["trackPageView"]);
+		  _paq.push(["enableLinkTracking"]);
+
+		    (function() {
+			        var u=(("https:" == document.location.protocol) ? "https" : "https") + "://www.openfoundry.org/piwik/";
+				    _paq.push(["setTrackerUrl", u+"piwik.php"]);
+				    _paq.push(["setSiteId", "1"]);
+				        var d=document, g=d.createElement("script"), s=d.getElementsByTagName("script")[0]; g.type="text/javascript";
+				        g.defer=true; g.async=true; g.src=u+"piwik.js"; s.parentNode.insertBefore(g,s);
+					  })();
+		  </script> -->
+<!-- End Piwik Code -->
+	</body>
+</html>

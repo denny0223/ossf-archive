@@ -1,0 +1,105 @@
+	<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+	<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="zh-tw" lang="zh-tw" >
+		<head>
+			  <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+  <meta name="robots" content="noindex, nofollow" />
+  <meta name="keywords" content="OSSFNL234" />
+  <meta name="title" content="連結池設計" />
+  <meta name="description" content=" Java Opensources for Web Development Part I：Chapter 2 Java Opensource Database Lession 9 : 連結池設計 在中大型企業系統的開發設計之中，往往會遇到資料庫的存取瓶頸，除了調校資料庫存取的 SQL 指令之外，避免一次性存取大量的資料等技巧之外" />
+  <meta name="generator" content="" />
+  <title>連結池設計</title>
+  <link href="../../favicon.ico" rel="shortcut icon" type="image/x-icon" />
+  <link rel="stylesheet" href="../../components/com_gantry/css/gantry.css" type="text/css" />
+  <link rel="stylesheet" href="../../components/com_gantry/css/grid-12.css" type="text/css" />
+  <link rel="stylesheet" href="../../components/com_gantry/css/joomla.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/joomla.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/style1.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/light-body.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/demo-styles.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/template.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/typography.css" type="text/css" />
+  <style type="text/css">
+    <!--
+#rt-main-surround ul.menu li.active > a, #rt-main-surround ul.menu li.active > .separator, #rt-main-surround ul.menu li.active > .item, #rt-main-surround .square4 ul.menu li:hover > a, #rt-main-surround .square4 ul.menu li:hover > .item, #rt-main-surround .square4 ul.menu li:hover > .separator, .roktabs-links ul li.active span {color:#0088B5;}
+a, #rt-main-surround ul.menu a:hover, #rt-main-surround ul.menu .separator:hover, #rt-main-surround ul.menu .item:hover {color:#0088B5;}
+    -->
+  </style>
+  <script type="text/javascript" src="../../components/com_jcomments/js/jcomments-v2.1.js%3Fv=2"></script>
+  <script type="text/javascript" src="../../components/com_jcomments/libraries/joomlatune/ajax.js"></script>
+  <script type="text/javascript" src="../../media/system/js/mootools.js"></script>
+  <script type="text/javascript" src="../../media/system/js/caption.js"></script>
+  <script type="text/javascript" src="../../components/com_gantry/js/gantry-buildspans.js"></script>
+  <script type="text/javascript" src="../../components/com_gantry/js/gantry-inputs.js"></script>
+  <script type="text/javascript">
+
+			window.addEvent('domready', function() {
+				var modules = ['rt-block'];
+				var header = ['h3','h2','h1'];
+				GantryBuildSpans(modules, header);
+			});
+		InputsExclusion.push('.content_vote','#rt-popup')
+  </script>
+		</head>
+		<body  class="backgroundlevel-low backgroundstyle-style8 bodylevel-med bodystyle-light cssstyle-style1 logostyle-dark font-family-helvetica font-size-is-default menu-type-fusionmenu col12 ">
+			<div id="rt-main-surround">
+				<div class="rt-container">
+					<div class="rt-block">
+						<div id="rt-mainbody">
+					    	
+<div class="rt-joomla ">
+	<div class="rt-article">
+		
+				<div class="rt-headline"><h1 class="rt-article-title">連結池設計</h1>		</div>
+		<div class="clear"></div>
+		
+		
+		
+				<div class="rt-articleinfo">
+						<div class="rt-article-icons">
+				<a href="532%3Ftmpl=component&amp;print=1&amp;layout=default&amp;page=.html#" onclick="window.print();return false;"><span class="icon print"></span></a>									<span class="icon printscreen">
+						<a href="532%3Ftmpl=component&amp;print=1&amp;layout=default&amp;page=.html#" onclick="window.print();return false;"><img src="../../images/M_images/printButton.png" alt="列印"  /></a>					</span>
+							</div>
+			
+			<span class="rt-date-posted">
+						建立日期			2006-10-29 08:00						&nbsp;&nbsp;&nbsp;&nbsp;						最近更新在 2007-03-09 18:26						</span>
+
+						<span class="rt-author">
+				作者是 李日貴			</span>
+				
+					</div>
+		
+		
+		<p> Java Opensources for Web Development Part I：Chapter 2 Java Opensource Database<br /> Lession 9 : 連結池設計 </p><p> 在中大型企業系統的開發設計之中，往往會遇到資料庫的存取瓶頸，除了調校資料庫存取的 SQL 指令之外，避免一次性存取大量的資料等技巧之外 ，我們還可以利用連結池設計的方式，先預設建立與資料庫連結，這方法，最主要的是減少與資料庫存取前的溝通與資料驗證等手續。現在在各主要的 JavaEE Application Server，都預設了這方面的功能，可以透過 JNDI 取得相關的 Datasource，進行資料庫的存取作業。</p>但是很多 Pooling 技巧與方法，都是由 Opensources 所引領風範的， 例如 <a href="https://proxool.sourceforge.net/">proxool</a>、<a href="https://sourceforge.net/projects/c3p0">c3p0</a>、或是 jakarta 之中的 <a href="https://jakarta.apache.org/commons/dbcp/">commons-dbcp</a> 都是其中的代表性專案。以完整度來說，proxool 很適合一般的需求與應用，c3p0是 Hibernate 內建的 Connection Pooling 機制，然而 jakarta commons-dbcp 則是應用在 Tomcat 的標準模組之內。 <p> 我們可以參考 commons-dbcp 的設計之中，是使用 commons-pool 的一些暫借與歸還的觀念，實作出 PoolingDataSource，各種的 DataSource 都是實作 J2SE 1.4 之後 javax.sql.DataSource 這個介面。主要來說，我們需要得到的是資料庫的 Connection，所以 getConnection() 是不可或缺的一個 method。所以我們在程式之中，應該就是 </p><pre>&lt;%<br />	DataSource ds = JNDI.lookup(&ldquo;jdbc/SampleDataSource&rdquo;);<br />	Connection conn = ds.getConnection();<br />%&gt;<br /></pre>的方式來取得 Connection，另外加上我們將 DataSource 設定在 Application Server 之中，可以調整相關的 Connection Pooling 設定值之外，還可以調整相關資料庫的 URL 或是其他設定（如帳號、密碼等等），可以避免資料庫設定變更，需要進行大規模的程式異動。 <p>至於 proxool 的變化更多，除了使用各種設定檔格式將相關的設定 connection pooling 之外，也可利用 ProxoolFacade 去註冊相關的設定。另外比較吸引我的功能，應該是可以監看目前 Pooling 的使用狀況，因為常常會要進行效能檢視，商業的 Application Server 通常會有提供，至於類似 tomcat 這種 opensources 的 JSP/Servlet Container，就缺乏類似的 GUI 操作介面，因此，不想使用 Application Server 內建的機制，就可以考慮採用 proxool。 </p><p>最後，由 mchange 這間公司所提供的 opensource connection pooling &ndash; c3p0 ，隨著 Hibernate 的流行，讓 c3p0 也大放異采。基本上，只要在 hibernate 的設定檔 &ndash; hibernate.cfg.xml 之中設定。 </p><pre>&lt;property name=&quot;c3p0.acquire_increment&quot;&gt;1&lt;/property&gt; <br /><br />&lt;property name=&quot;c3p0.idle_test_period&quot;&gt;100&lt;/property&gt; <br /><br />&lt;property name=&quot;c3p0.max_size&quot;&gt;100&lt;/property&gt; <br /><br />&lt;property name=&quot;c3p0.max_statements&quot;&gt;0&lt;/property&gt; <br /><br />&lt;property name=&quot;c3p0.min_size&quot;&gt;10&lt;/property&gt; <br /><br />&lt;property name=&quot;c3p0.timeout&quot;&gt;100&lt;/property&gt;<br /></pre>便可以使用到相關的連結池功能。當然，如果你希望使用 proxool 和 commons-dbcp 作為 hibernate 的 pooling 機制，也是可以的。或是當你希望自行撰寫更適合自己的 connection pooling 機制，只要 implements net.sf.hibernate.connection.ConnectionProvider 這個介面即可。 <p> 總之，利用連結池，就是希望我們有更好資料庫連結效能，有了這些小工具，搭配壓力測試來調整相關 Max 與 Min （初始）的設定值， 加上資料庫的效能評估，應該就能讓你的系統不花吹灰之力，就可以減少許多資料存取的負擔。</p>
+			<!-- Show relate article -->
+				<!-- end -->
+		<div class="article_note">
+		<!-- Add tags use metakey, and show OSSF Newsletter tag: OSSFNL+NUM-->
+		<br><br> <hr style='border: 1px dashed #D2DADB;'><b>自由軟體鑄造場電子報&nbsp;:</b>&nbsp;<a href='../../previous-issue%3Ftask=view&amp;id=234.html'>第 68 期 GPL 最新案例剖析</a><br>				<!-- End -->
+					<br>
+					<b>分類: </b><a href="../tech-column.html">				技術專欄					</a>				</div>
+			 <!-- AddThis Button BEGIN ID 3001 is the front page article -->
+     			<br><br>
+       <div class="addthis_toolbox addthis_default_style addthis_32x32_style">
+       <a class="addthis_button_preferred_1"></a>
+       <a class="addthis_button_preferred_2"></a>
+       <a class="addthis_button_preferred_3"></a>
+       <a class="addthis_button_preferred_4"></a>
+       <a class="addthis_button_compact"></a>
+       <a class="addthis_counter addthis_bubble_style"></a>
+       </div>
+       <script type="text/javascript">var addthis_config = {"data_track_clickback":true};</script>
+       <script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js#pubid=openfoundry"></script>
+       <!-- AddThis Button END -->
+     <br>
+		<div class="totop" ><a class="rt-totop" href="532%3Ftmpl=component&amp;print=1&amp;layout=default&amp;page=.html#" style="outline: medium none;">↑ Top</a></div>
+            <!-- AddThis Button END -->
+
+			</div>
+</div>
+
+						</div>
+					</div>
+				</div>
+			</div>
+		</body>
+	</html>

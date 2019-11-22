@@ -1,0 +1,121 @@
+	<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+	<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="zh-tw" lang="zh-tw" >
+		<head>
+			  <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+  <meta name="robots" content="noindex, nofollow" />
+  <meta name="keywords" content="OSSFNL751" />
+  <meta name="title" content="用自由軟體 Plone 來架設網站(9)－多媒體結合" />
+  <meta name="description" content="依照內容資料的脈絡，Plone 有幾種不同的顯示方法：套用 Archetypes 的內容型別，擁有獨立配套的管理方式；單獨的網頁，可以用 Browser View 來控制；常見的個別表單，可以用 PloneFormGen 來處理。不管是哪種方法，結合 AJAX、Flash 之類的工具，混搭式地呈現內容，已經是主流作法。之前介紹過的 Faceted Navigation 模組，內部使用大量" />
+  <meta name="generator" content="" />
+  <title>用自由軟體 Plone 來架設網站(9)－多媒體結合</title>
+  <link href="../../favicon.ico" rel="shortcut icon" type="image/x-icon" />
+  <link rel="stylesheet" href="../../components/com_gantry/css/gantry.css" type="text/css" />
+  <link rel="stylesheet" href="../../components/com_gantry/css/grid-12.css" type="text/css" />
+  <link rel="stylesheet" href="../../components/com_gantry/css/joomla.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/joomla.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/style1.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/light-body.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/demo-styles.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/template.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/typography.css" type="text/css" />
+  <style type="text/css">
+    <!--
+#rt-main-surround ul.menu li.active > a, #rt-main-surround ul.menu li.active > .separator, #rt-main-surround ul.menu li.active > .item, #rt-main-surround .square4 ul.menu li:hover > a, #rt-main-surround .square4 ul.menu li:hover > .item, #rt-main-surround .square4 ul.menu li:hover > .separator, .roktabs-links ul li.active span {color:#0088B5;}
+a, #rt-main-surround ul.menu a:hover, #rt-main-surround ul.menu .separator:hover, #rt-main-surround ul.menu .item:hover {color:#0088B5;}
+    -->
+  </style>
+  <script type="text/javascript" src="../../components/com_jcomments/js/jcomments-v2.1.js%3Fv=2"></script>
+  <script type="text/javascript" src="../../components/com_jcomments/libraries/joomlatune/ajax.js"></script>
+  <script type="text/javascript" src="../../media/system/js/mootools.js"></script>
+  <script type="text/javascript" src="../../media/system/js/caption.js"></script>
+  <script type="text/javascript" src="../../components/com_gantry/js/gantry-buildspans.js"></script>
+  <script type="text/javascript" src="../../components/com_gantry/js/gantry-inputs.js"></script>
+  <script type="text/javascript">
+
+			window.addEvent('domready', function() {
+				var modules = ['rt-block'];
+				var header = ['h3','h2','h1'];
+				GantryBuildSpans(modules, header);
+			});
+		InputsExclusion.push('.content_vote','#rt-popup')
+  </script>
+		</head>
+		<body  class="backgroundlevel-low backgroundstyle-style8 bodylevel-med bodystyle-light cssstyle-style1 logostyle-dark font-family-helvetica font-size-is-default menu-type-fusionmenu col12 ">
+			<div id="rt-main-surround">
+				<div class="rt-container">
+					<div class="rt-block">
+						<div id="rt-mainbody">
+					    	
+<div class="rt-joomla ">
+	<div class="rt-article">
+		
+				<div class="rt-headline"><h1 class="rt-article-title">用自由軟體 Plone 來架設網站(9)－多媒體結合</h1>		</div>
+		<div class="clear"></div>
+		
+		
+		
+				<div class="rt-articleinfo">
+						<div class="rt-article-icons">
+				<a href="8402--plone-9%3Ftmpl=component&amp;print=1&amp;page=.html#" onclick="window.print();return false;"><span class="icon print"></span></a>									<span class="icon printscreen">
+						<a href="8402--plone-9%3Ftmpl=component&amp;print=1&amp;page=.html#" onclick="window.print();return false;"><img src="../../images/M_images/printButton.png" alt="列印"  /></a>					</span>
+							</div>
+			
+			<span class="rt-date-posted">
+						建立日期			2011-07-25 17:13						&nbsp;&nbsp;&nbsp;&nbsp;						最近更新在 2011-10-12 11:35						</span>
+
+						<span class="rt-author">
+				作者是 marr			</span>
+				
+					</div>
+		
+		
+		依照內容資料的脈絡，Plone 有幾種不同的顯示方法：套用 Archetypes 的內容型別，擁有獨立配套的管理方式；單獨的網頁，可以用 Browser View 來控制；常見的個別表單，可以用 PloneFormGen 來處理。不管是哪種方法，結合 AJAX、Flash 之類的工具，混搭式地呈現內容，已經是主流作法。之前介紹過的 Faceted Navigation 模組，內部使用大量 jQuery 函式庫，我們將延續介紹其他常見的應用方式，例如批次上傳檔案，內嵌方式顯示圖檔、影片、PDF，或是其他線上服務的內容。 <br /> <br />另外，訊息中文化的方法，也是許多朋友關心的議題，本文將介紹常見的訊息翻譯步驟和技巧，說明如何利用 i18ndude 和 gettext 協助中文化。 <br /> 
+
+<br />
+<h3>允許 HTML 標籤</h3>
+<br />為了系統安全及外觀風格一致的因素，Plone 預設會過濾特定的 HTML 標籤，會被過濾的標籤清單，請由 Site Setup → HTML Filtering 檢視設定畫面，如圖1 所示。 <br /> <br /><a href="../../images/110726/plone9/01.png" target="_blank"><img src="../../images/110726/plone9/01.png" border="0" /></a><br />▲ 圖1 會被過濾的 HTML 標籤清單  <br /> <br />舉例來說，編輯內容時，即使指定使用 embed 或 object 之類的 HTML 標籤，存檔之後仍然消失，原因就是被過濾掉了。該怎樣啟用這些 HTML 標籤呢? <br /> <br />最安全的方式，是使用模組，在檔案系統裡指定這些操作行為。如果你的網站僅開放帳號給特定人員，而且他們都能被信任，則可以考慮直接取消過濾清楚的限制。方法是勾選要取消的項目，點選 Remove selected items 按鈕，最後要再點選最下方的 Save 按鈕，才真正完成生效。 <br /> <br />以嵌入 Flickr 照片為例，點選 Share 後，從 Grab the embed HTML 複製程式碼，如圖2 所示。 <br /> <br /><a href="../../images/110726/plone9/02.png" target="_blank"><img src="../../images/110726/plone9/02.png" border="0" /></a><br />▲ 圖2 Flickr 內嵌程式碼範例 <br /> <br />在 Plone 編輯介面，點選 HTML 按鈕，把複製的 HTML 程式碼，貼到 HTML 編輯器裡，如圖3 所示。 <br /> <a href="../../images/110726/plone9/03.png" target="_blank"><img src="../../images/110726/plone9/03.png" border="0" width="500" style="border: 0;" /></a><br />▲ 圖3 複製程式碼到 HTML 編輯器的範例 <br /> <br />完成的畫面類似圖4 所示。 <br /> <br /><a href="../../images/110726/plone9/04.png" target="_blank"><img src="../../images/110726/plone9/04.png" border="0" /></a><br />▲ 圖4 內嵌 Flickr 照片的範例畫面 <br /> <br />同樣的道理，類似 iframe 之類的標籤，並不是 XHTML 的定義項目，想要使用它們的話，必須額外指定，方法是在 Custom tags 設定欄位，先點選 Add Custom tags 按鈕，再填入 iframe 設定值，記得再點選 Save 按鈕完成生效。如圖5 所示。 <br /> <br /><a href="../../images/110726/plone9/05.png" target="_blank"><img src="../../images/110726/plone9/05.png" border="0" /></a><br />▲ 圖5 新增 iframe 成為允許的標籤 <br /> <br />
+<h3>使用模組展示圖檔</h3>
+<br />支援圖檔展示的模組很多，collective.plonetruegallery 是佼佼者，以 Plone 4.1 環境為例，安裝方式只要在 eggs 參數設定值，加上 collective.plonetruegallery[all] 就行，如圖6 所示。最後面的 [all] 代表同時支援 Flickr 和 Picasa 服務。 <br /> <br /><a href="../../images/110726/plone9/06.png" target="_blank"><img src="../../images/110726/plone9/06.png" border="0" /></a><br />▲ 圖6 在 develop.cfg 新增 PloneTrueGallery 模組 <br /> <br />執行 bin/buildout -c develop.cfg 後，會安裝 flickrapi 和 gdata 相依模組，在 Site Setup 的 Add-ons 啟用模組後，就可以在目錄的 Display 下拉選單，看到 galleryview 選項，如圖7 所示。 <br /> <br /><a href="../../images/110726/plone9/07.png" target="_blank"><img src="../../images/110726/plone9/07.png" border="0" width="500" style="border: 0;" /></a><br />▲ 圖7 點選 galleryview 可以啟用新的檢視功能 <br /> <br />顯示圖檔的管理單位是目錄，啟用 galleryview 檢視功能後，會新增 Gallery Settings 頁籤，如圖8 所示。 <br /> <br /><a href="../../images/110726/plone9/08.png" target="_blank"><img src="../../images/110726/plone9/08.png" border="0" width="500" style="border: 0;" /></a><br />▲ 圖8 Plone 目錄圖檔的顯示畫面 <br /> <br />在設定主頁面可以看見支援 Plone、Flickr、Picasa 三種類型，還有許多選項和 AJAX 特效可以設定，如圖9 所示。 <br /> <br /><a href="../../images/110726/plone9/09.png" target="_blank"><img src="../../images/110726/plone9/09.png" border="0" width="500" style="border: 0;" /></a><br />▲ 圖9 Gallery 設定主頁面 <br /> <br />想要選用 Flickr 類型的話，先在 Main 頁籤的 Type 選擇 Flickr，再到 Type Settings 頁籤，填寫 Flickr 的帳號和 Set 名稱，如圖10 所示。 <br /> <br /><a href="../../images/110726/plone9/10.png" target="_blank"><img src="../../images/110726/plone9/10.png" border="0" /></a><br />▲ 圖10 設定 Flickr 帳號和 Set 名稱 <br /> <br />目錄輪播的圖片換成來自 Flickr 的圖檔，如圖11 所示。 <br /> <br /><a href="../../images/110726/plone9/11.png" target="_blank"><img src="../../images/110726/plone9/11.png" border="0" width="500" style="border: 0;" /></a><br />▲ 圖11 輪播 Flickr 圖片的畫面 <br /> <br />你還可以用 Gallery Portlet 來顯示圖片，設定範例如圖12 所示。 <br /> <br /><a href="../../images/110726/plone9/12.png" target="_blank"><img src="../../images/110726/plone9/12.png" border="0" /></a><br />▲ 圖12 Gallery Portlet 設定畫面 <br /> <br />
+<h3>使用模組展示影片</h3>
+<br />試用過 redturtle.video 模組，它提供影片展示的功能，並支援 Youtube 之類的外部服務。安裝方式是在 eggs 參數設定值，加上 redturtle.video 就行，執行 buildout 會再安裝 collective.flowplayer、hachoir-core、hachoir-metadata、hachoir-parser 等，成功啟用後的模組範例如圖13 所示。在 Plone 4.1 環境，可能會遇到 formlib 問題，修改 from Products.Five.formlib import formbase 成為 from five.formlib import formbase 就行。 <br /> <br /><a href="../../images/110726/plone9/13.png" target="_blank"><img src="../../images/110726/plone9/13.png" border="0" /></a><br />▲ 圖13 RedTurtle Video 模組啟用畫面 <br /> <br />啟用 RedTurtle Video 後，在內容項目的新增選單，可以看到 Video file 和 Video link 兩個型別，如圖14 所示。 <br /> <br /><a href="../../images/110726/plone9/14.png" target="_blank"><img src="../../images/110726/plone9/14.png" border="0" /></a><br />▲ 圖14 Video file 和 link 新型別 <br /> <br />以新增 Video file 為例，必填的欄位包括 Title 和 Video file 檔案位置，如圖15 所示。 <br /> <br /><a href="../../images/110726/plone9/15.png" target="_blank"><img src="../../images/110726/plone9/15.png" border="0" /></a><br />▲ 圖15 Video file 編輯畫面 <br /> <br />Video file 的顯示畫面，包括一個 FlowPlayer 播放區域，並顯示影片長度，如圖16 所示。 <br /> <br /><a href="../../images/110726/plone9/16.png" target="_blank"><img src="../../images/110726/plone9/16.png" border="0" /></a><br />▲ 圖16 Video file 顯示畫面 <br /> <br />接著，在目錄的 Display 下拉選單，可以看到 flowplayer 選項，點選之後，目錄裡的影片檔案會併列顯示，並直接在 FlowPlayer 播放，如圖17 所示。 <br /> <br /><a href="../../images/110726/plone9/17.png" target="_blank"><img src="../../images/110726/plone9/17.png" border="0" width="500" style="border: 0;" /></a><br />▲ 圖17 啟用 flowplayer 顯示方式的目錄畫面 <br /> <br />顧名思義，Video link 就是用來播放外部影片服務的型別，圖18 是搭配 Vimeo 的編輯畫面，想要使用 Youtube 服務的話，要再安裝 collective.rtvideo.youtube 模組。 <br /> <br /><a href="../../images/110726/plone9/18.png" target="_blank"><img src="../../images/110726/plone9/18.png" border="0" /></a><br />▲ 圖18 Video link 編輯畫面 <br /> <br />
+<h3>使用模組批次上傳</h3>
+<br />想要批次上傳多個檔案，可以借助 Plone Quick Upload 模組，在 eggs 參數設定值加進 collective.quickupload 執行 buildout 就搞定安裝。在 Site Setup 的 Add-on Configuration 會看到 Quick Upload 的設定選項，如圖19 所示。 <br /> <br /><a href="../../images/110726/plone9/19.png" target="_blank"><img src="../../images/110726/plone9/19.png" border="0" /></a><br />▲ 圖19 Quick Upload 設定選項 <br /> <br />Quick Upload 搭配 Portlet 來顯示批次上傳的操作介面，稱為 Quick Upload Portlet，設定畫面如圖20 所示。 <br /> <br /><a href="../../images/110726/plone9/20.png" target="_blank"><img src="../../images/110726/plone9/20.png" border="0" /></a><br />▲ 圖20 Quick Upload Portlet 設定畫面 <br /> <br />操作介面支援 JavaScript 和 Flash 兩種方式，預設是使用 JavaScript。選定檔案後，預設可以指定標題，如圖21 所示。 <br /> <br /><a href="../../images/110726/plone9/21.png" target="_blank"><img src="../../images/110726/plone9/21.png" border="0" /></a><br />▲ 圖21 Quick Upload 操作介面 <br /> <br />
+<h3>中文訊息的支援機制</h3>
+<br />Plone 內部使用 gettext 工具處理多國語文的支援，翻譯的內容先存在 .po 檔案裡，經過系統編譯成 .mo 檔案，就可以直接被 Plone 讀取。系統翻譯檔由 plone.app.locales 模組管理，正體中文的翻譯檔位於 locales/zh_TW/LC_MESSAGES 目錄裡。 <br /> <br />想要設定訊息語系為正體中文，請到 Site Setup 的 Language 指定，要記得勾選 Show country-specific language variants，這樣才會出現 Chinese (Taiwan) 選項，如圖22 所示。 <br /> <br /><a href="../../images/110726/plone9/22.png" target="_blank"><img src="../../images/110726/plone9/22.png" border="0" /></a><br />▲ 圖22 設定訊息語系為正體中文 <br /> <br />以之前的 mysite.eventfolder 模組為例，在 mysite/eventfolder/__init__.py 檔案裡，看得到它載入 zope.i18nmessageid 的 MessageFactory，透過 message factory 可以把程式碼裡以「特殊符號」標記的訊息字串，萃取成為待翻譯的內容。如圖23 所示。 <br /> <br /><a href="../../images/110726/plone9/23.png" target="_blank"><img src="../../images/110726/plone9/23.png" border="0" width="500" style="border: 0;" /></a><br />▲ 圖23 message factory 的宣告範例 <br /> <br />所謂特殊符號標記的訊息字串，常見有兩種，一種是以「底線符號」來標記，如圖24 所示。 <br /> <br /><a href="../../images/110726/plone9/24.png" target="_blank"><img src="../../images/110726/plone9/24.png" border="0" width="500" style="border: 0;" /></a><br />▲ 圖24 底線符號標記的訊息字串 <br /> <br />另一種是以「i18n:」字樣來標記，包括 i18n:domain 和 i18n:translate 等，如圖25 所示。 <br /> <br /><a href="../../images/110726/plone9/25.png" target="_blank"><img src="../../images/110726/plone9/25.png" border="0" width="500" style="border: 0;" /></a><br />▲ 圖25 i18n: 字樣標記的訊息字串 <br /> <br />利用 i18ndude 模組，可以協助我們萃取和管理訊息字串，在 develop.cfg 新增一個 i18ndude 設定區段，內容如圖26 所示。執行 bin/buildout -c develop.cfg 後，就可以在 bin 目錄裡找到 i18ndude 工具程式。 <br /> <br /><a href="../../images/110726/plone9/26.png" target="_blank"><img src="../../images/110726/plone9/26.png" border="0" /></a><br />▲ 圖26 i18ndude 設定區段範例內容 <br /> <br />接著，我們要確認 mysite/eventfolder/configure.zcml 檔案裡，完成 ＜i18n:registerTranslations directory="locales" /＞ 的設定，如圖27 所示。 <br /> <br /><a href="../../images/110726/plone9/27.png" target="_blank"><img src="../../images/110726/plone9/27.png" border="0" width="500" style="border: 0;" /></a><br />▲ 圖27 configure.zcml 的 i18n 設定範例 <br /> <br />同時也要建立 locales 相關的目錄，它們用來存放 .po 檔案，如圖28 所示。 <br /> <br /><a href="../../images/110726/plone9/28.png" target="_blank"><img src="../../images/110726/plone9/28.png" border="0" /></a><br />▲ 圖28 建立 locales 相關目錄 <br /> <br />
+<h3>訊息字串的翻譯</h3>
+<br />首先，使用 i18ndude rebuild-pot 建立 .pot 檔案，它是產生 .po 檔案的基礎，再用 i18ndude sync 建立 .po 檔案的內容，如圖29 所示。注意到 i18ndude rebuild-pot 指令最後接的是一個「點符號」，代表現行目錄的位置。 <br /> <br /><a href="../../images/110726/plone9/29.png" target="_blank"><img src="../../images/110726/plone9/29.png" border="0" width="500" style="border: 0;" /></a><br />▲ 圖29 使用 i18ndude 建立 .po 檔案的範例 <br /> <br />接著，編輯 locales/zh_TW/LC_MESSAGES/mysite.eventfolder.po 的內容，除了記錄人員和時間的資料外，就是要按 msgid 的英文字串，在 msgstr 填入對應的中文字串。如圖30 所示。 <br /> <br /><a href="../../images/110726/plone9/30.png" target="_blank"><img src="../../images/110726/plone9/30.png" border="0" /></a><br />▲ 圖30 編輯 .po 內容的範例 <br /> <br />編輯完成後，再用 msgfmt 指令把 .po 檔案編譯成 .mo 檔案，指令細節如圖31 所示。 <br /> <br /><a href="../../images/110726/plone9/31.png" target="_blank"><img src="../../images/110726/plone9/31.png" border="0" width="500" style="border: 0;" /></a><br />▲ 圖31 使用 msgfmt 編譯 .po 成為 .mo 檔案 <br /> <br />重啟系統後，就可以看到上述訊息翻譯的成果，如圖32 所示。 <br /> <br /><a href="../../images/110726/plone9/32.png" target="_blank"><img src="../../images/110726/plone9/32.png" border="0" /></a><br />▲ 圖32 mysite.eventfolder 訊息中譯範例 <br /> <br />
+<h3>結論</h3>
+<br />我們示範了幾個展示多媒體的模組，更多應用，留待讀者探索，例如，想要線上顯示 PDF 檔案的話，可以安裝 wc.pageturner 模組。有了圖片和影片的展示模組，結合 Faceted Navigation 之後，就可以做到批次顯示多媒體的搜尋結果。 <br /> <br />訊息字串的中文化，需要建立 .po 檔案並進行編譯，如果想把內容也進行中文化，就得借助 Products.LinguaPlone 模組。另外，JavaScript 檔案也有獨立的訊息中文化方式，必須在 browser/configure.zcml 檔案裡指定要額外讀取的 .js 檔案位置。 <br /> <br />下次，我們將介紹外部資料庫的連結方式，讓 Plone 的整合功能更上層樓。 <br />
+			<!-- Show relate article -->
+		<br><br><h4>您也許有興趣閱讀以下文章:</h4><ul><li><a href='../../foss-programs/8411.html'>用自由軟體 Plone 來架設網站(10)－連接資料庫</a> - <span class='date-posted'>2011-08-05</span></li><li><a href='../../foss-programs/8392.html'>用自由軟體 Plone 來架設網站(8)－內容查詢</a> - <span class='date-posted'>2011-07-12</span></li><li><a href='../../foss-programs/8380.html'>用自由軟體 Plone 來架設網站(7)－版型調整</a> - <span class='date-posted'>2011-06-28</span></li><li><a href='../../foss-programs/8353.html'>用自由軟體 Plone 來架設網站 (6)－動態網頁</a> - <span class='date-posted'>2011-06-09</span></li><li><a href='../../foss-programs/8346.html'>用自由軟體 Plone 來架設網站 (5)－元件架構</a> - <span class='date-posted'>2011-05-20</span></li><li><a href='../../foss-programs/8320.html'>用自由軟體 Plone 來架設網站 (4)－建立專案</a> - <span class='date-posted'>2011-05-04</span></li><li><a href='../../foss-programs/8318.html'>用自由軟體 Plone 來架設網站 (3)— 內部設定</a> - <span class='date-posted'>2011-04-25</span></li><li><a href='../../foss-programs/8294.html'>用自由軟體 Plone 來架設網站 (2)— 內容管理</a> - <span class='date-posted'>2011-04-11</span></li><li><a href='../../foss-programs/8288.html'>用自由軟體 Plone 來架設網站 (1)— 基礎安裝</a> - <span class='date-posted'>2011-03-21</span></li></ul>		<!-- end -->
+		<div class="article_note">
+		<!-- Add tags use metakey, and show OSSF Newsletter tag: OSSFNL+NUM-->
+		<br><br> <hr style='border: 1px dashed #D2DADB;'><b>自由軟體鑄造場電子報&nbsp;:</b>&nbsp;<a href='../../previous-issue%3Ftask=view&amp;id=751.html'>第 177 期 善用自由軟體資訊清單有效降低法律糾紛的風險</a><br>				<!-- End -->
+					<br>
+					<b>分類: </b><a href="../foss-programs.html">				源碼秘技					</a>				</div>
+			 <!-- AddThis Button BEGIN ID 3001 is the front page article -->
+     			<br><br>
+       <div class="addthis_toolbox addthis_default_style addthis_32x32_style">
+       <a class="addthis_button_preferred_1"></a>
+       <a class="addthis_button_preferred_2"></a>
+       <a class="addthis_button_preferred_3"></a>
+       <a class="addthis_button_preferred_4"></a>
+       <a class="addthis_button_compact"></a>
+       <a class="addthis_counter addthis_bubble_style"></a>
+       </div>
+       <script type="text/javascript">var addthis_config = {"data_track_clickback":true};</script>
+       <script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js#pubid=openfoundry"></script>
+       <!-- AddThis Button END -->
+     <br>
+		<div class="totop" ><a class="rt-totop" href="8402--plone-9%3Ftmpl=component&amp;print=1&amp;page=.html#" style="outline: medium none;">↑ Top</a></div>
+            <!-- AddThis Button END -->
+
+			</div>
+</div>
+
+						</div>
+					</div>
+				</div>
+			</div>
+		</body>
+	</html>

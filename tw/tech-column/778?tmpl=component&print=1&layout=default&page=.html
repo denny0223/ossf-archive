@@ -1,0 +1,105 @@
+	<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+	<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="zh-tw" lang="zh-tw" >
+		<head>
+			  <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+  <meta name="robots" content="noindex, nofollow" />
+  <meta name="keywords" content="OSSFNL230" />
+  <meta name="title" content="Zope 虛擬主機的實例教學" />
+  <meta name="description" content=" ◎ 目的與原理 Zope 預設都是執行在 port:8080 ，因此在瀏覽 Zope 網站時，都必須指定如 https://www.pwchi.info:8080/ 這樣的網址。 如果想在原有的 Apache Web Server 基礎上，能夠不需 另外指定  port，就能讓使用者直接透過 https://www.pwchi.info/zope 瀏覽 Zope 網站，而不是用原本" />
+  <meta name="generator" content="" />
+  <title>Zope 虛擬主機的實例教學</title>
+  <link href="../../favicon.ico" rel="shortcut icon" type="image/x-icon" />
+  <link rel="stylesheet" href="../../components/com_gantry/css/gantry.css" type="text/css" />
+  <link rel="stylesheet" href="../../components/com_gantry/css/grid-12.css" type="text/css" />
+  <link rel="stylesheet" href="../../components/com_gantry/css/joomla.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/joomla.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/style1.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/light-body.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/demo-styles.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/template.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/typography.css" type="text/css" />
+  <style type="text/css">
+    <!--
+#rt-main-surround ul.menu li.active > a, #rt-main-surround ul.menu li.active > .separator, #rt-main-surround ul.menu li.active > .item, #rt-main-surround .square4 ul.menu li:hover > a, #rt-main-surround .square4 ul.menu li:hover > .item, #rt-main-surround .square4 ul.menu li:hover > .separator, .roktabs-links ul li.active span {color:#0088B5;}
+a, #rt-main-surround ul.menu a:hover, #rt-main-surround ul.menu .separator:hover, #rt-main-surround ul.menu .item:hover {color:#0088B5;}
+    -->
+  </style>
+  <script type="text/javascript" src="../../components/com_jcomments/js/jcomments-v2.1.js%3Fv=2"></script>
+  <script type="text/javascript" src="../../components/com_jcomments/libraries/joomlatune/ajax.js"></script>
+  <script type="text/javascript" src="../../media/system/js/mootools.js"></script>
+  <script type="text/javascript" src="../../media/system/js/caption.js"></script>
+  <script type="text/javascript" src="../../components/com_gantry/js/gantry-buildspans.js"></script>
+  <script type="text/javascript" src="../../components/com_gantry/js/gantry-inputs.js"></script>
+  <script type="text/javascript">
+
+			window.addEvent('domready', function() {
+				var modules = ['rt-block'];
+				var header = ['h3','h2','h1'];
+				GantryBuildSpans(modules, header);
+			});
+		InputsExclusion.push('.content_vote','#rt-popup')
+  </script>
+		</head>
+		<body  class="backgroundlevel-low backgroundstyle-style8 bodylevel-med bodystyle-light cssstyle-style1 logostyle-dark font-family-helvetica font-size-is-default menu-type-fusionmenu col12 ">
+			<div id="rt-main-surround">
+				<div class="rt-container">
+					<div class="rt-block">
+						<div id="rt-mainbody">
+					    	
+<div class="rt-joomla ">
+	<div class="rt-article">
+		
+				<div class="rt-headline"><h1 class="rt-article-title">Zope 虛擬主機的實例教學</h1>		</div>
+		<div class="clear"></div>
+		
+		
+		
+				<div class="rt-articleinfo">
+						<div class="rt-article-icons">
+				<a href="778%3Ftmpl=component&amp;print=1&amp;layout=default&amp;page=.html#" onclick="window.print();return false;"><span class="icon print"></span></a>									<span class="icon printscreen">
+						<a href="778%3Ftmpl=component&amp;print=1&amp;layout=default&amp;page=.html#" onclick="window.print();return false;"><img src="../../images/M_images/printButton.png" alt="列印"  /></a>					</span>
+							</div>
+			
+			<span class="rt-date-posted">
+						建立日期			2006-08-17 08:00						&nbsp;&nbsp;&nbsp;&nbsp;						最近更新在 2007-02-15 00:40						</span>
+
+						<span class="rt-author">
+				作者是 pwchi			</span>
+				
+					</div>
+		
+		
+		<div class="blogbody">  <h3 class="title">◎ 目的與原理 </h3> <div class="storyintro"><p> Zope 預設都是執行在 port:8080 ，因此在瀏覽 Zope 網站時，都必須指定如 https://www.pwchi.info:8080/ 這樣的網址。 </p><p> 如果想在原有的 Apache Web Server 基礎上，能夠不需另外指定 port，就能讓使用者直接透過 https://www.pwchi.info/zope 瀏覽 Zope 網站，而不是用原本 https://www.pwchi.info:8080/ 這樣的怪異網址。那麼就需要使用 Zope 的 Virtual Host Monster 物件，搭配 Apache 的 Rewrite 和 Proxy 模組來完成。 </p></div>   <div class="storybody">在這個例子當中，概要的運作過程如下圖。 <p>&nbsp;</p></div>   </div><img src="https://blog.pwchi.info/wp-content/uploads/2006/08/zope_vhm_flowchart.png" alt="" /> <p>&nbsp;</p><ol><li>首先，使用者發出 HTTP 請求 https://www.pwchi.info/zope 給 Apache。</li><li>請求會經過 Apache 的 Rewrite 模組重新組合。</li><li>Rewrite 參照設定好的規則，將請求導向 https://www.pwchi.info:8080/ 。</li><li>接著 Zope 對請求做出回應。</li></ol> 對使用者而言，他並不會感受到轉送過程的存在，使用者的 Browser 網址列仍舊是 https://www.pwchi.info/zope 。 <p> ◎ 實作方法 </p><p> Apache 提供三種方式達成這樣的功能： </p><ol><li>mod_rewrite method</li><li>mod_proxy Method</li><li>Fast CGI / Persistent CGI Method</li></ol> 其中 FCGI/PCGI 的方式，會嚴重影響執行效能，因此已經很少使用且不建議。這裡將以前面提到的例子，介紹 mod_rewirte 與 mod_proxy 兩種使用方式。 <p> 由於接下來的示範均為 Apache 的設定語法，因此必須有修改 Apache 設定檔的權限，並且在設定完成之後，重新啟動 Apache 使設定生效。 </p><p> 開始之前，請先確定已經安裝了 Zope 與 Apache 2 ，並載入 mod_rewrite、mod_proxy 和 mod_proxy_http 模組。 </p><p> ◎ Zope VHM </p><p> 要讓 Apache 導引到新的 URL ，我們當然要先知道新的 URL 到底是什麼。下列是新的 URL 模樣。一時之間可能無法理解，接下來本文將分段說明。 </p><p>&nbsp;</p><div class="igBar"><span><a href="../../article.pl%3Fsid=06%252F08%252F20%252F1637204&amp;mode=thread&amp;issue=64&amp;extra_header=第&#32;64&#32;期&#32;GPL3&#32;草案修改要點解析.html#" onclick="javascript:showPlainTxt(&#39;code-1&#39;); return false;">PLAIN TEXT</a></span></div> <div class="syntax_hilite"><span class="langName">CODE:</span><br /> <div id="code-1"> <div class="code"> <ol><li style="font-family: &#39;Courier New&#39;,Courier,monospace; font-weight: normal; font-style: normal; color: #3a6a8b"> <div style="font-family: &#39;Courier New&#39;,Courier,monospace; font-weight: normal">https:<span style="color: #ff9933; font-style: italic">//localhost:8080/VirtualHostBase/http/www.pwchi.info:80/zope/VirtualHostRoot/_vh_zope </span></div>  </li></ol> </div> </div> </div> <ul><li>https://localhost:8080<br /> 這是 Zope 所在主機的位址，如果有防火牆控管，必須使用內部網路的主機位址，如 192.168.1.1。</li><li>/VirtualHostBase/http/www.pwchi.info:80/zope<br /> VirtualHostBase 是 Zope 的一個物件。需要注意的地方是 www.pwchi.info:80/zope ，這是使用者到時候輸入的虛擬網址。不過必須特別標明 port。</li><li>/VirtualHostRoot/_vh_zope<br />當 用 www.pwchi.info/zope 作為 zope 的連結位址時，zope 當中所有的連結，也都必須要調整成 www.pwchi.info/zope/ 開頭的連結位址。所以必須加上 _vh_zope 作為開頭路徑，這樣 zope 就會自動為所有的網頁連結的路徑開頭加上 /zope/。</li></ul> ◎ Apache mod_rewrite <p> mod_rewrite 是一個強大的 URL 重導向模組。因為他使用正規表示式作為比對規則的方法，因此幾乎提供無限的可能性，就看你怎麼活用正規表示式。 </p><p><strong>設定內容</strong></p><p>&nbsp;</p><div class="igBar"><span><a href="../../article.pl%3Fsid=06%252F08%252F20%252F1637204&amp;mode=thread&amp;issue=64&amp;extra_header=第&#32;64&#32;期&#32;GPL3&#32;草案修改要點解析.html#" onclick="javascript:showPlainTxt(&#39;code-2&#39;); return false;">PLAIN TEXT</a></span></div> <div class="syntax_hilite"><span class="langName">CODE:</span><br /> <div id="code-2">  <div class="code"> <ol><li style="font-family: &#39;Courier New&#39;,Courier,monospace; font-weight: normal; font-style: normal; color: #3a6a8b"> <div style="font-family: &#39;Courier New&#39;,Courier,monospace; font-weight: normal">RewriteEngine On RewriteRule ^/zope<span style="color: #006600; font-weight: bold">(</span>.*<span style="color: #006600; font-weight: bold">)</span> https:<span style="color: #ff9933; font-style: italic">//localhost:8080/VirtualHostBase/http/www.pwchi.info:80/zope/VirtualHostRoot/_vh_zope$1 [L,P] </span></div> </li></ol> </div> </div> </div> <ul><li>RewriteEngine 是用來啟動或關閉 Rewrite 功能，預設為 Off。<br />因此必須先用 RewriteEngine On 來開啟 Rewrite 功能。</li><li>RewriteRule 是實際進行 URL 重導向的語法。<br /> 語法：RewriteRule &lt;比對規則&gt; &lt;要導向的網址&gt; [旗標]。<br /> 比對規則中的 ^/zope(.*) 是一個正規表示式，代表只要請求的 URL 中有 /zope 就算符合。當符合規則時，就會被重新導向到新的網址。</li><li>$1 表示將 /zope 以後的字串，接在替換後的URL後面。</li><li>[L,P] 則是控制旗標<br /> &quot;L&quot; 表示立即停止規則的運算，如果後面有其他的 RewriteRule 規則設定，就不會被干擾。<br /> &quot;P&quot; 表示將替換後的 URL 提出代理請求。為了不讓使用者察覺不同，如果不加 P ，瀏覽器網址列會直接被指向新網址。</li></ul> ◎ Apache mod_proxy <p> Proxy 的設定相對於 Rewrite 簡單許多。如果沒有需要很複雜的判斷規則，建議使用 Proxy 方式即可。 </p><p> 特別注意，除了 mod_proxy 以外，也需要一同載入給 HTTP 協動用的 mod_proxy_http 模組。 </p><p><strong>設定內容</strong></p><p>&nbsp;</p><div class="igBar"><span><a href="../../article.pl%3Fsid=06%252F08%252F20%252F1637204&amp;mode=thread&amp;issue=64&amp;extra_header=第&#32;64&#32;期&#32;GPL3&#32;草案修改要點解析.html#" onclick="javascript:showPlainTxt(&#39;code-3&#39;); return false;">PLAIN TEXT</a></span></div> <div class="syntax_hilite"><span class="langName">CODE:</span><br /> <div id="code-3"> <div class="code"> <ol><li style="font-family: &#39;Courier New&#39;,Courier,monospace; font-weight: normal; font-style: normal; color: #3a6a8b"> <div style="font-family: &#39;Courier New&#39;,Courier,monospace; font-weight: normal">ProxyPass /zope https:<span style="color: #ff9933; font-style: italic">//localhost:8080/VirtualHostBase/http/giant.twlinux.net:80/zope/VirtualHostRoot/_vh_zope </span></div> </li></ol> </div> </div> </div> <ul><li>ProxyPass 用來將指定的位址，映射到指定位址。<br /> 語法：ProxyPass &lt;相對URL&gt; &lt;目的URL&gt;</li></ul> ◎ 結論 <p> Zope 是一個功能強大的 Application Server ，如果再配合本次介紹的 rewrite 與 proxy 模組，就可以架構出實用的 Zope 的虛擬主機解決方案了。  </p><p> 關於作者：<br /> 嗨，我是 Po-Wen Chi (紀博文)。一個自由軟體鬥士，我沒有萬能伙計，只有一台 NB。我在網路上的 ID 是 「pwchi」。研究興趣是Linux 作業系統、OpenSource CMS、資訊安全與數位學習，目前主要參與 Plone CMS 網站專案的相關測試與維護工作。接下來在開放鑄造場電子報的技術專欄中，會陸續跟大家分享這幾個領域的研究心得或實作講解。</p>
+			<!-- Show relate article -->
+				<!-- end -->
+		<div class="article_note">
+		<!-- Add tags use metakey, and show OSSF Newsletter tag: OSSFNL+NUM-->
+		<br><br> <hr style='border: 1px dashed #D2DADB;'><b>自由軟體鑄造場電子報&nbsp;:</b>&nbsp;<a href='../../previous-issue%3Ftask=view&amp;id=230.html'>第 64 期 GPL3 草案修改要點解析</a><br>				<!-- End -->
+					<br>
+					<b>分類: </b><a href="../tech-column.html">				技術專欄					</a>				</div>
+			 <!-- AddThis Button BEGIN ID 3001 is the front page article -->
+     			<br><br>
+       <div class="addthis_toolbox addthis_default_style addthis_32x32_style">
+       <a class="addthis_button_preferred_1"></a>
+       <a class="addthis_button_preferred_2"></a>
+       <a class="addthis_button_preferred_3"></a>
+       <a class="addthis_button_preferred_4"></a>
+       <a class="addthis_button_compact"></a>
+       <a class="addthis_counter addthis_bubble_style"></a>
+       </div>
+       <script type="text/javascript">var addthis_config = {"data_track_clickback":true};</script>
+       <script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js#pubid=openfoundry"></script>
+       <!-- AddThis Button END -->
+     <br>
+		<div class="totop" ><a class="rt-totop" href="778%3Ftmpl=component&amp;print=1&amp;layout=default&amp;page=.html#" style="outline: medium none;">↑ Top</a></div>
+            <!-- AddThis Button END -->
+
+			</div>
+</div>
+
+						</div>
+					</div>
+				</div>
+			</div>
+		</body>
+	</html>

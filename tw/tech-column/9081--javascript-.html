@@ -1,0 +1,481 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="zh-tw" lang="zh-tw" >
+<head>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<link rel="shortcut icon" href="../../images/favicon.ico" />
+	  <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+  <meta name="robots" content="index, follow" />
+  <meta name="keywords" content="OSSFNL837" />
+  <meta name="title" content="給年輕開發者的 JavaScript 除錯手冊" />
+  <meta name="description" content="我們最近完成了報社的實習計劃，這不禁讓我想起，當我還是年輕開發者時，有什麼是我想學的。答案是，我希望我更懂除錯。 如何使用各種瀏覽器開發工具之類的資源多不勝數，每天都有新工具出現。它們都很棒，作為一個多年前學過 JavaScript 的人，我很羨慕新開發者能有這些工具。在瀏覽器中設定中斷點，檢視環境中的所有數值，走訪傳呼堆疊，真是一大變革。" />
+  <meta name="generator" content="" />
+  <title>給年輕開發者的 JavaScript 除錯手冊 - OpenFoundry</title>
+  <link href="../../favicon.ico" rel="shortcut icon" type="image/x-icon" />
+  <link rel="stylesheet" href="../../components/com_gantry/css/gantry.css" type="text/css" />
+  <link rel="stylesheet" href="../../components/com_gantry/css/grid-12.css" type="text/css" />
+  <link rel="stylesheet" href="../../components/com_gantry/css/joomla.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/joomla.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/style1.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/light-body.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/demo-styles.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/template.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/typography.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/fusionmenu.css" type="text/css" />
+  <style type="text/css">
+    <!--
+#rt-main-surround ul.menu li.active > a, #rt-main-surround ul.menu li.active > .separator, #rt-main-surround ul.menu li.active > .item, #rt-main-surround .square4 ul.menu li:hover > a, #rt-main-surround .square4 ul.menu li:hover > .item, #rt-main-surround .square4 ul.menu li:hover > .separator, .roktabs-links ul li.active span {color:#0088B5;}
+a, #rt-main-surround ul.menu a:hover, #rt-main-surround ul.menu .separator:hover, #rt-main-surround ul.menu .item:hover {color:#0088B5;}
+    -->
+  </style>
+  <script type="text/javascript" src="../../components/com_jcomments/js/jcomments-v2.1.js%3Fv=2"></script>
+  <script type="text/javascript" src="../../components/com_jcomments/libraries/joomlatune/ajax.js"></script>
+  <script type="text/javascript" src="../../media/system/js/mootools.js"></script>
+  <script type="text/javascript" src="../../media/system/js/caption.js"></script>
+  <script type="text/javascript" src="../../components/com_gantry/js/gantry-buildspans.js"></script>
+  <script type="text/javascript" src="../../components/com_gantry/js/gantry-inputs.js"></script>
+  <script type="text/javascript" src="../../templates/rt_quantive_j15/js/jquery.cookie.js"></script>
+  <script type="text/javascript" src="../../modules/mod_roknavmenu/themes/fusion/js/fusion.js"></script>
+  <script type="text/javascript" src="../../modules/mod_ofssologin/js/ofssologin.js"></script>
+  <script type="text/javascript">
+
+			window.addEvent('domready', function() {
+				var modules = ['rt-block'];
+				var header = ['h3','h2','h1'];
+				GantryBuildSpans(modules, header);
+			});
+		InputsExclusion.push('.content_vote','#rt-popup')
+		        window.addEvent('load', function() {
+					new Fusion('ul.menutop', {
+						pill: 0,
+						effect: 'slide and fade',
+						opacity: 1,
+						hideDelay: 500,
+						centered: 0,
+						tweakInitial: {'x': -2, 'y': 0},
+        				tweakSubsequent: {'x': 0, 'y': -14},
+						menuFx: {duration: 200, transition: Fx.Transitions.Sine.easeOut},
+						pillFx: {duration: 400, transition: Fx.Transitions.Back.easeOut}
+					});
+	            });
+  </script>
+<!-- <script type="text/javascript" src="/sso/javascripts/langsync.js"></script> -->
+<!-- <script src="/templates/rt_quantive_j15/js/ossf.js"></script> -->
+<script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-4136519-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
+</head>
+	<body  class="backgroundlevel-low backgroundstyle-style8 bodylevel-med bodystyle-light cssstyle-style1 logostyle-dark font-family-helvetica font-size-is-default menu-type-fusionmenu col12 ">
+		<div id="rt-main-background">
+			<div class="rt-container">
+																<div id="rt-header">
+					<div class="rt-grid-7 rt-alpha">
+    			<div class="rt-block">
+    	    	<a href="../../index.html" id="rt-logo"></a>
+    		</div>
+	    
+</div>
+<div class="rt-grid-5 rt-omega">
+                    <div class="square9">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<div class="ofssologin_square9"><a href="../../index.html">登入</a>&nbsp;&nbsp|&nbsp;&nbsp;<span><a href="../../en/tech-column/9081--javascript-.html" ><span lang="en" xml:lang="en">English</span></a></li></ul></span><!--Joom!fish V2.0.4 (Lightning)-->
+<!-- &copy; 2003-2009 Think Network, released under the GPL. -->
+<!-- More information: at http://www.joomfish.net -->
+<div class="ofssologin_search_square9">
+  <form id="of_search" action="https://www.openfoundry.org/of/openfoundry/search" method="get" onsubmit="of_search(); return false;">
+    <select id="of_search_type">
+      <option value="Projects"> 專案 </option>
+      <option value="Content"> 文章 </option>
+      <option value="People"> 人才 </option>
+    </select>
+    <input id="query" name="query" id="mod_search_searchword" maxlength="50" alt="search" class="inputbox" type="text" size="28" value="search..."  onblur="if(this.value=='') this.value='search...';" onfocus="if(this.value=='search...') this.value='';" />
+    <input type="hidden" name="commit" value="search" />
+  </form>
+</div></div>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		
+</div>
+					<div class="clear"></div>
+				</div>
+																<div id="rt-navigation"><div id="rt-navigation2"><div id="rt-navigation3">
+					
+<div class="nopill">
+	<ul class="menutop level1 " >
+						<li class="item1 root" >
+					<a class="orphan item bullet" href="../../index.html"  >
+				<span>
+			    				首頁				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item32 root" >
+					<a class="orphan item bullet" href="../../archived.html"  >
+				<span>
+			    				專案				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item186 root" >
+					<a class="orphan item bullet" href="../community.html"  >
+				<span>
+			    				Who&#039;s Who				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item4 root" >
+					<a class="orphan item bullet" href="../news.html"  >
+				<span>
+			    				新聞				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item5 root" >
+					<a class="orphan item bullet" href="../law-and-licensing.html"  >
+				<span>
+			    				法律源地				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item3 root" >
+					<a class="orphan item bullet" href="../activities.html"  >
+				<span>
+			    				活動				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item2 root" >
+					<a class="orphan item bullet" href="../resourcecatalog%3FName=Value.html"  >
+				<span>
+			    				資源表列				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item45 root" >
+					<a class="orphan item bullet" href="../about.html"  >
+				<span>
+			    				關於				   
+				</span>
+			</a>
+			
+			
+	</li>	
+				</ul>
+</div>
+
+				    <div class="clear"></div>
+				</div></div></div>
+								<div class="rt-surround"><div class="rt-surround2"><div class="rt-surround3">
+										<div id="rt-showcase-section">
+												<div id="rt-showcase">
+							<div class="rt-grid-12 rt-alpha rt-omega">
+    		<div class="clear"></div>
+		
+		
+                <div class="close-note">
+                    <div class="rt-block">
+               					<div class="module-content">
+                	<div style="font-size:medium; background-image:linear-gradient(120deg,#159957,#4298b2);color:white;padding:20px;margin:-10px -18px;">感謝您對「自由軟體鑄造場」的支持與愛護，十多年來「自由軟體鑄造場」受中央研究院支持，並在資訊科學研究所以及資訊科技創新研究中心執行，現已完成階段性的任務。 本網站預計持續維運至 2021年底，網站內容基本上不會再更動。<br />也紀念我們永遠的朋友 李士傑先生（Shih-Chieh Ilya Li）。</div>				</div>
+            </div>
+                </div>
+		
+</div>
+							<div class="clear"></div>
+						</div>
+																	</div>
+															<div id="rt-main-surround">
+												<div id="rt-breadcrumbs">
+								<div class="rt-breadcrumb-surround">
+		<a href="../../index.html" id="breadcrumbs-home"></a>
+		<span class="breadcrumbs pathway">
+<a href="../tech-column.html" class="pathway">技術專欄</a> <img src="../../templates/rt_quantive_j15/images/arrow.png" alt=""  /> <span class="no-link">給年輕開發者的 JavaScript 除錯手冊</span></span>
+	</div>
+	
+							<div class="clear"></div>
+						</div>
+																							              <div id="rt-main" class="sa3-mb9">
+                <div class="rt-main-inner">
+                    <div class="rt-grid-9 rt-push-3">
+                                                <div class="rt-block">
+                            							<div class="square1">
+							<div class="rt-module-surround">
+								<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+								<div class="rt-module-inner">
+		                            <div id="rt-mainbody">
+		                                
+<div class="rt-joomla ">
+	<div class="rt-article">
+		
+				<div class="rt-headline"><h1 class="rt-article-title">給年輕開發者的 JavaScript 除錯手冊</h1>		</div>
+		<div class="clear"></div>
+		
+		
+		
+				<div class="rt-articleinfo">
+						<div class="rt-article-icons">
+								<a href="9081--javascript-%3Ftmpl=component&amp;print=1&amp;layout=default&amp;page=.html" title="列印" onclick="window.open(this.href,'win2','status=no,toolbar=no,scrollbars=yes,titlebar=no,menubar=no,resizable=yes,width=640,height=480,directories=no,location=no'); return false;" rel="nofollow"><span class="icon print"></span></a>																</div>
+			
+			<span class="rt-date-posted">
+						建立日期			2013-10-07 14:19						&nbsp;&nbsp;&nbsp;&nbsp;						最近更新在 2013-12-24 14:20						</span>
+
+						<span class="rt-author">
+				作者是 謝良奇／編譯			</span>
+				
+					</div>
+		
+		
+		<p>我們最近完成了報社的實習計劃，這不禁讓我想起，當我還是年輕開發者時，有什麼是我想學的。答案是，我希望我更懂除錯。</p>
+
+<p>如何使用各種瀏覽器開發工具之類的資源多不勝數，每天都有新工具出現。它們都很棒，作為一個多年前學過 JavaScript 的人，我很羨慕新開發者能有這些工具。在瀏覽器中設定中斷點，檢視環境中的所有數值，走訪傳呼堆疊，真是一大變革。</p>
+<p>然而，你最強大的除錯工具其實是雙耳之間的腦袋。世界上所有神秘的除錯祕訣，都不足以取代你對自己所寫下程式的了解。</p>
+<p>開發工作一定會犯錯</p>
+<p>撰寫程式碼必定會犯錯。你所遇見最棒的開發者也要為臭蟲負責。他們坐在電腦前，搔著頭狐疑著，問題出在哪裡？</p>
+<p>開發者通常認為寫程式就是解決問題，其實寫程式比較像是下廚。就像煮東西一樣，沒有完美的程式，只有比較好或比較差。你可以試試不同的香料，你可以用火雞肉取代雞肉，你可以用大火或小火。這裡沒有盡善盡美，只有盡力而為。晚餐在你開動之時就結束了。</p>
+<p>要掌握除錯一事，你必須預期會有臭蟲存在。如果有人報告有臭蟲，你得接受它。有程式碼自然就會有臭蟲。</p>
+<p>臭蟲來自何處</p>
+<p>假如你是寫程式的新手，最可能造成臭蟲的，是你對平台的瞭解不足。如果你對陣列運作方式沒有精確的了解，你很可能錯用陣列，導致臭蟲。只有經驗能幫你。</p>
+<p>這份手冊假定你已經有某種程度的專業知識，會有臭蟲並非因為你不了解特定功能的運作。別擔心，就算這樣你還是會製造臭蟲。</p>
+<p>你可能會遇到兩種棘手的臭蟲：</p>
+<ol>
+<li>容易疏忽的錯別字</li>
+<li>錯誤的物件型別</li>
+</ol><br />
+<p>每當你要說，我不了解為何 x 會，這樣的句子時，請停止，並回想起假如 x 做了某件事，那對 x 絕對是合理的。只是 x 的行為對你而言令人費解罷了。</p>
+<p>從電腦與程式的角度來看，所有行為都正如預期。如果你不了解為何你的程式會有這個結果，問題出在你瞭解的不夠。</p>
+<p>電腦永遠是對的。電腦永遠是對的。電腦永遠是對的。某個寫了 10 年以上程式的人說：這機器的運算機制沒有一次故障。</p>
+<p>容易疏忽的錯別字</p>
+<p>大部份的錯別字都很醒目，給出不存在的名稱，而丟出變數未定義的錯誤。你的工具會出現紅字，所以很容易抓到。有害的臭蟲來自打進一個定義過，但卻不是你想要的名稱或數值。你可以把 linter 納入你的工具中，不過不能依賴它來抓到所有錯誤。</p>
+<p>例如說，你有一個雜湊。在 JavaScript 裡，雜湊中的變數如果沒有值的話，會傳回 null。如果這個值是個有方法的物件，呼叫不存在的物件應該會出現有意義的錯誤。四處出現的紅色錯誤很有幫助。不過如果你只是存取一個剛好是 null 的值，你可能會拿到不易追蹤的錯誤數學數值。我的 console 告訴我，null - 3 == -3。</p>
+<p>錯誤的物件型別</p>
+<p>在 Gmail 與 Facebook 的年代裡，用戶應用程式可能有成千上萬行程式碼，彼此間有複雜的物件階層。由框架控制器控制的傳輸物件，會遞交資料模型給模版引擎來呈現。</p>
+<p>現代應用程式有許多物件型別，如果你剛好使用了錯誤的型別，如果型別彼此相似，又或者是其父或子類別的話，大部份會運作無誤，不過有些情況則不是這樣。重要的是檢查產生臭蟲的物件，是不是你預期中的型別，而在該物件內你使用的所有變數，其型別是否如你預期。</p>
+<p>舉例而言，假設你把一些重要的資料存在某個雜湊裡。留意，以下的範例是 CoffeeScript，不過僅具示意性。把它們看作要執行的虛擬程式碼 (pseudocode)：</p>
+<pre>Animals =
+    "Fido": DogObject("Fido")
+    "Samantha": CatObject("Samantha")
+    ...
+</pre>
+<p>你的程式有時預期看到 key，有時則是實際物件。常見的錯誤之一是拿到預期外的東西：</p>
+<pre># 這是物件還是字串 Fido？
+addAgeToAnimal: (animal, age) -> animal.setAge(age)
+</pre>
+<p>或者假定 DogObject 繼承了 AnimalObject，而你正從資料庫抓取資料。你產生許多 AnimalObject 物件並自動填入資料。在呼叫該方法時，有時該方法會取得實際的 DogObject，有時則是填入狗的資料的 AnimalObject。但是你之後要改變 DogObject 時，你手動的 AnimalObject 物件們卻缺乏現在所需的資料。要找出這個問題有點棘手。</p>
+<pre># AnimalObject 沒有 buyBone 方法。
+buyDogNewBone: (dog) -＞ dog.buyBone()
+</pre>
+<p>下一步：問題所在</p>
+<p>一旦你找出問題所在，你得確定數值為何錯誤。</p>
+<ol>
+<li>Async</li>
+<p>你的腦袋或許不太能理解非同步操作。就算不把時間納入考量時，追蹤龐大的應用程式狀態樹已經夠困難的了。然而，非同步操作卻是 JavaScript 應用程式中的王道。如果某個物件型別有誤或數值不對，很有可能出在非同步操作（AJAX 呼叫、非同步資料庫或 worker 呼叫）產生的競賽情況 (race condition)。或者你可能只是在使用 Node。</p>
+<p># a 的值為何？得看你什麼時候問。</p>
+<pre>@a = "Default"
+
+jQuery.getJSON destinationUrl, (data) =＞
+    @a = data.people[0].firstName
+
+@a = "Bob"
+</pre>
+<p>當某臭蟲出現，你需要在你的除錯器中使用中斷點來暫停執行，並檢視不同時間點的應用程式狀態。如果找不出問題，你可能必須檢查同一份程式碼好幾遍。可從非同步取得的資料來開始著手。</p>
+<li>計數問題與 Off By One</li>
+<p>這常見於在程式設計師笑談中。當依次訪問某個物件時，確認該物件的型別如你預期，包含所有你預期的屬性，且具有一致性。如果元件之間共享狀態，像是上述的非同步情況中，迴圈有可能在迴圈執行間遭到破壞。如果你快取了某個記數值，並在沒有檢查其內容是否有效前就用以執行迴圈，將大大增加迴圈錯誤的機會。如果你同時在以 1 為基礎的系統與以 0 為基礎的陣列中進行記數，臭蟲出現的機會將迅速提高。</p>
+<pre>jQuery.getJSON remoteUrl, (data) =＞
+    ###
+    # 資料的形式為: [
+    #    {
+    #       "id": 1,
+    #       "first": "Bob",
+    #       "last": "Smith"
+    # }...
+    #]
+    ###
+    names = []
+    data.forEach (item) =＞ names[item.id] = item.first + ' ' + item.last
+###
+# 噢噢。此處有賴於 id 得以 0 為基礎。但是這裡的 id 是以 1 為
+# 基礎，但陣列不是。
+# for (var i=0, len=... 就會發生預期之外的結果。
+###
+</pre>
+<li>範圍 (Scope)</li>
+<p>變數作用範圍在許多環境下都是個問題，只不過在 JavaScript 中這個問題特別討厭。一個變數取得預期之外數值的最簡單方式之一，就是其作用範圍和預期不同。假如你定義了一個 local 變數卻沒有使用 var，其值將泄露到封閉範圍。JavaScript 關鍵字 this 的意義有時和你預期的有所不同。當暫停在中斷點時，確認 this 是你預期中的物件。最容易出錯的是在事件處理函式或 setTimeout 之中。在這兩種情況下，預設 this 會是全域的 window 物件。我自己的解決方法是使用 CoffeeScript 與寬箭頭 (fat arrow)。下一代的 JavaScript 也就是 ES6，也有解決方案。</p>
+<pre># 在 setTimeout 中，這裡會被轉譯為 window.removeFlag
+unflag = -＞ @removeFlag()
+setTimeout(unflag, 500)
+</pre>
+</ol><br />
+<p>跟其他人討教</p>
+<p>最後，或許更重要的，是你應該和別人討論你的臭蟲。我聽說它有很多代號，不過對我來說，它叫做鴨子除錯。做法是在你的電腦旁放隻橡皮鴨，當你遇上臭蟲時，跟鴨子解釋一下。不過，最好還是跟其他開發者談談。</p>
+<p>你經常會發現，透過將問題口頭表達，聽你說話的人在開口前，你的腦袋就已經把問題解決了。</p>
+<p>臭蟲是程式設計的基本面向。在你的職涯中你還是會持續製造它們。修復臭蟲是我們身為開發者最重要的任務。越快解決臭蟲，你就能越快回到有趣的功能與程式碼設計上。</p>
+<p>臭蟲代表你對問題的理解不夠完全或錯誤。現實是最後的仲裁者。在盯著螢幕一整天後，你總會遇上想把螢幕丟出窗外的那種時刻。之後，不知何故，或許是透過鴨子除錯，或許只是偶然的運氣，你會打破僵局。這就是你的獎勵。得來不易的知識，會在你的心中迸發，你會對圍繞你的世界有更多的了解。我無法說明這種感覺是多麼美好。你已經向遙不可及的完美更進一步。</p>
+<p>恭喜你。你已經是個除錯員了。</p>
+<p>◎本文翻譯自 The New York Times，原作者為 Andre Behrens：<a target="_blank" href="https://open.blogs.nytimes.com/2013/08/27/the-young-developers-guide-to-debugging-javascript/?_r=1">https://open.blogs.nytimes.com/2013/08/27/the-young-developers-guide-to-debugging-javascript/?_r=1</a></p>
+			<!-- Show relate article -->
+				<!-- end -->
+		<div class="article_note">
+		<!-- Add tags use metakey, and show OSSF Newsletter tag: OSSFNL+NUM-->
+		<br><br> <hr style='border: 1px dashed #D2DADB;'><b>自由軟體鑄造場電子報&nbsp;:</b>&nbsp;<a href='../../previous-issue%3Ftask=view&amp;id=837.html'>第 228 期 給年輕開發者的 JavaScript 除錯手冊</a><br>				<!-- End -->
+					<br>
+					<b>分類: </b><a href="../tech-column.html">				技術專欄					</a>				</div>
+			 <!-- AddThis Button BEGIN ID 3001 is the front page article -->
+     			<br><br>
+       <div class="addthis_toolbox addthis_default_style addthis_32x32_style">
+       <a class="addthis_button_preferred_1"></a>
+       <a class="addthis_button_preferred_2"></a>
+       <a class="addthis_button_preferred_3"></a>
+       <a class="addthis_button_preferred_4"></a>
+       <a class="addthis_button_compact"></a>
+       <a class="addthis_counter addthis_bubble_style"></a>
+       </div>
+       <script type="text/javascript">var addthis_config = {"data_track_clickback":true};</script>
+       <script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js#pubid=openfoundry"></script>
+       <!-- AddThis Button END -->
+     <br>
+		<div class="totop" ><a class="rt-totop" href="9081--javascript-.html#" style="outline: medium none;">↑ Top</a></div>
+            <!-- AddThis Button END -->
+
+			</div>
+</div>
+
+		                            </div>
+									<div class="clear"></div>
+								</div>
+								<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+							</div>
+							</div>
+                                                    </div>
+                                            </div>
+                                <div class="rt-grid-3 rt-pull-9">
+                <div id="rt-sidebar-a">
+                                    <div class="square4">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<ul class="menu"><li class="item56"><a href="../previous-issue.html"><span>電子報總覽</span></a></li><li class="item55"><a href="../about-newsletter.html"><span>關於本報</span></a></li></ul>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<ul class="menu"><li class="item115"><a href="../foss-news.html"><span>源碼新聞</span></a></li><li class="item141"><a href="../case-job.html"><span>接案 / 工作</span></a></li></ul>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+        	                <div class="square1">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-title"><h2 class="title">專欄總覽</h2></div>
+						<div class="clear"></div>
+		                						<div class="module-content">
+		                	<ul class="menu"><li id="current" class="active item37"><a href="../tech-column.html"><span>技術專欄</span></a></li><li class="item40"><a href="../foss-programs.html"><span>源碼秘技</span></a></li><li class="item35"><a href="../legal-article-.html"><span>法律專欄</span></a></li><li class="item154"><a href="../foss-forum.html"><span>自由專欄</span></a></li><li class="item162"><a href="../enterprise-application.html"><span>企業應用</span></a></li><li class="item44"><a href="../foss-projects.html"><span>源碼專案</span></a></li></ul>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		                <div class="square1">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<p style="text-align: center;"><a href="../../news%3Fformat=feed&amp;type=rss" target="_black"><img src="../../images/M_images/news-rss-feed.png" border="0" /></a><br /><a href="https://www.openfoundry.org/rss-feed/Newsletter" target="_black"><img src="../../images/M_images/newsletter-rss-feed.png" border="0" /></a></p>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		
+                </div>
+            </div>
+
+                    <div class="clear"></div>
+                </div>
+            </div>
+																													</div>
+										<div id="rt-copyright">
+						<div class="rt-grid-12 rt-alpha rt-omega">
+                        <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<div id="desktop-mobile-version-switch"><span id="mobile-version" class="version-switch"><a href="9081--javascript-.html#">行動版</a></span></div>
+自由軟體鑄造場 製作 最佳瀏覽狀態：IE7或Firefox2.0以上 (建議使用Firefox) ‧ 解析度1024*768 <br /> <strong>E-Mail</strong>：<a href="mailto:contact@openfoundry.org">contact@openfoundry.org</a> <strong>Address</strong>：台北市南港區研究院路2段128號 中央研究院資訊科學研究所 . <a href="../../privacy-policy.html">隱私權條款</a>. <a href="../../terms-of-use.html">使用條款</a><span style="position: relative; top: 8px; margin-top: -8px;"> <a href="../../about/8101.html"><img src="../../images/M_images/rss-feed-all.png" border="0" /></a></span>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+        	
+</div>
+						<div class="clear"></div>
+					</div>
+					<div class="rt-footer-bottom-wrap"><div class="rt-footer-bottom"><div class="rt-footer-bottom2"><div class="rt-footer-bottom3"></div></div></div></div>
+									</div></div></div>
+				<div class="rt-surround-bottom"><div class="rt-surround-bottom2"><div class="rt-surround-bottom3"></div></div></div>
+							</div>
+		</div>
+		<!--
+		<script id="aptureScript">
+						(function (){var a=document.createElement("script");a.defer="true";a.src="http://www.apture.com/js/apture.js?siteToken=vsJttrn";document.getElementsByTagName("head")[0].appendChild(a);})();
+     </script>
+-->
+
+<!-- Piwik -->
+<!-- 			<script type="text/javascript">
+			  var _paq = _paq || [];
+		  _paq.push(["trackPageView"]);
+		  _paq.push(["enableLinkTracking"]);
+
+		    (function() {
+			        var u=(("https:" == document.location.protocol) ? "https" : "https") + "://www.openfoundry.org/piwik/";
+				    _paq.push(["setTrackerUrl", u+"piwik.php"]);
+				    _paq.push(["setSiteId", "1"]);
+				        var d=document, g=d.createElement("script"), s=d.getElementsByTagName("script")[0]; g.type="text/javascript";
+				        g.defer=true; g.async=true; g.src=u+"piwik.js"; s.parentNode.insertBefore(g,s);
+					  })();
+		  </script> -->
+<!-- End Piwik Code -->
+	</body>
+</html>

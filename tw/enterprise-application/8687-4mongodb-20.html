@@ -1,0 +1,515 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="zh-tw" lang="zh-tw" >
+<head>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<link rel="shortcut icon" href="../../images/favicon.ico" />
+	  <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+  <meta name="robots" content="index, follow" />
+  <meta name="keywords" content="MongoDB, 授權, 雙重授權, OSSFNL790" />
+  <meta name="title" content="授權流言終結者#4：MongoDB 授權的分析與探討（雙重授權模式 2.0）" />
+  <meta name="description" content="1. 前言 MongoDB 是一種文件導向的 NoSQL [註] 資料庫系統 (document-oriented NoSQL database system)。主要使用 C++ 程式語言撰寫，並以 BSON（類似於 JSON 的格式）為其儲存資料結構的架構。 MongoDB 專案始於 2007 年 10 月，由 10gen 團隊主導核心的開發。於 2009 年首度以產品的形式推出，並改以" />
+  <meta name="generator" content="" />
+  <title>授權流言終結者#4：MongoDB 授權的分析與探討（雙重授權模式 2.0） - OpenFoundry</title>
+  <link href="../../favicon.ico" rel="shortcut icon" type="image/x-icon" />
+  <link rel="stylesheet" href="../../components/com_jcomments/tpl/default/style.css%3Fv=10.css" type="text/css" />
+  <link rel="stylesheet" href="../../components/com_gantry/css/gantry.css" type="text/css" />
+  <link rel="stylesheet" href="../../components/com_gantry/css/grid-12.css" type="text/css" />
+  <link rel="stylesheet" href="../../components/com_gantry/css/joomla.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/joomla.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/style1.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/light-body.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/demo-styles.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/template.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/typography.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/fusionmenu.css" type="text/css" />
+  <style type="text/css">
+    <!--
+#rt-main-surround ul.menu li.active > a, #rt-main-surround ul.menu li.active > .separator, #rt-main-surround ul.menu li.active > .item, #rt-main-surround .square4 ul.menu li:hover > a, #rt-main-surround .square4 ul.menu li:hover > .item, #rt-main-surround .square4 ul.menu li:hover > .separator, .roktabs-links ul li.active span {color:#0088B5;}
+a, #rt-main-surround ul.menu a:hover, #rt-main-surround ul.menu .separator:hover, #rt-main-surround ul.menu .item:hover {color:#0088B5;}
+    -->
+  </style>
+  <script type="text/javascript" src="../../components/com_jcomments/js/jcomments-v2.1.js%3Fv=2"></script>
+  <script type="text/javascript" src="../../components/com_jcomments/libraries/joomlatune/ajax.js"></script>
+  <script type="text/javascript" src="../../media/system/js/mootools.js"></script>
+  <script type="text/javascript" src="../../media/system/js/caption.js"></script>
+  <script type="text/javascript" src="../../components/com_gantry/js/gantry-buildspans.js"></script>
+  <script type="text/javascript" src="../../components/com_gantry/js/gantry-inputs.js"></script>
+  <script type="text/javascript" src="../../templates/rt_quantive_j15/js/jquery.cookie.js"></script>
+  <script type="text/javascript" src="../../modules/mod_roknavmenu/themes/fusion/js/fusion.js"></script>
+  <script type="text/javascript" src="../../modules/mod_ofssologin/js/ofssologin.js"></script>
+  <script type="text/javascript">
+
+			window.addEvent('domready', function() {
+				var modules = ['rt-block'];
+				var header = ['h3','h2','h1'];
+				GantryBuildSpans(modules, header);
+			});
+		InputsExclusion.push('.content_vote','#rt-popup')
+		        window.addEvent('load', function() {
+					new Fusion('ul.menutop', {
+						pill: 0,
+						effect: 'slide and fade',
+						opacity: 1,
+						hideDelay: 500,
+						centered: 0,
+						tweakInitial: {'x': -2, 'y': 0},
+        				tweakSubsequent: {'x': 0, 'y': -14},
+						menuFx: {duration: 200, transition: Fx.Transitions.Sine.easeOut},
+						pillFx: {duration: 400, transition: Fx.Transitions.Back.easeOut}
+					});
+	            });
+  </script>
+<!-- <script type="text/javascript" src="/sso/javascripts/langsync.js"></script> -->
+<!-- <script src="/templates/rt_quantive_j15/js/ossf.js"></script> -->
+<script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-4136519-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
+</head>
+	<body  class="backgroundlevel-low backgroundstyle-style8 bodylevel-med bodystyle-light cssstyle-style1 logostyle-dark font-family-helvetica font-size-is-default menu-type-fusionmenu col12 ">
+		<div id="rt-main-background">
+			<div class="rt-container">
+																<div id="rt-header">
+					<div class="rt-grid-7 rt-alpha">
+    			<div class="rt-block">
+    	    	<a href="../../index.html" id="rt-logo"></a>
+    		</div>
+	    
+</div>
+<div class="rt-grid-5 rt-omega">
+                    <div class="square9">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<div class="ofssologin_square9"><a href="../../index.html">登入</a>&nbsp;&nbsp|&nbsp;&nbsp;<span><a href="../../en/enterprise-application/8687-4mongodb-20.html" ><span lang="en" xml:lang="en">English</span></a></li></ul></span><!--Joom!fish V2.0.4 (Lightning)-->
+<!-- &copy; 2003-2009 Think Network, released under the GPL. -->
+<!-- More information: at http://www.joomfish.net -->
+<div class="ofssologin_search_square9">
+  <form id="of_search" action="https://www.openfoundry.org/of/openfoundry/search" method="get" onsubmit="of_search(); return false;">
+    <select id="of_search_type">
+      <option value="Projects"> 專案 </option>
+      <option value="Content"> 文章 </option>
+      <option value="People"> 人才 </option>
+    </select>
+    <input id="query" name="query" id="mod_search_searchword" maxlength="50" alt="search" class="inputbox" type="text" size="28" value="search..."  onblur="if(this.value=='') this.value='search...';" onfocus="if(this.value=='search...') this.value='';" />
+    <input type="hidden" name="commit" value="search" />
+  </form>
+</div></div>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		
+</div>
+					<div class="clear"></div>
+				</div>
+																<div id="rt-navigation"><div id="rt-navigation2"><div id="rt-navigation3">
+					
+<div class="nopill">
+	<ul class="menutop level1 " >
+						<li class="item1 root" >
+					<a class="orphan item bullet" href="../../index.html"  >
+				<span>
+			    				首頁				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item32 root" >
+					<a class="orphan item bullet" href="../../archived.html"  >
+				<span>
+			    				專案				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item186 root" >
+					<a class="orphan item bullet" href="../community.html"  >
+				<span>
+			    				Who&#039;s Who				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item4 root" >
+					<a class="orphan item bullet" href="../news.html"  >
+				<span>
+			    				新聞				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item5 root" >
+					<a class="orphan item bullet" href="../law-and-licensing.html"  >
+				<span>
+			    				法律源地				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item3 root" >
+					<a class="orphan item bullet" href="../activities.html"  >
+				<span>
+			    				活動				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item2 root" >
+					<a class="orphan item bullet" href="../resourcecatalog%3FName=Value.html"  >
+				<span>
+			    				資源表列				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item45 root" >
+					<a class="orphan item bullet" href="../about.html"  >
+				<span>
+			    				關於				   
+				</span>
+			</a>
+			
+			
+	</li>	
+				</ul>
+</div>
+
+				    <div class="clear"></div>
+				</div></div></div>
+								<div class="rt-surround"><div class="rt-surround2"><div class="rt-surround3">
+										<div id="rt-showcase-section">
+												<div id="rt-showcase">
+							<div class="rt-grid-12 rt-alpha rt-omega">
+    		<div class="clear"></div>
+		
+		
+                <div class="close-note">
+                    <div class="rt-block">
+               					<div class="module-content">
+                	<div style="font-size:medium; background-image:linear-gradient(120deg,#159957,#4298b2);color:white;padding:20px;margin:-10px -18px;">感謝您對「自由軟體鑄造場」的支持與愛護，十多年來「自由軟體鑄造場」受中央研究院支持，並在資訊科學研究所以及資訊科技創新研究中心執行，現已完成階段性的任務。 本網站預計持續維運至 2021年底，網站內容基本上不會再更動。<br />也紀念我們永遠的朋友 李士傑先生（Shih-Chieh Ilya Li）。</div>				</div>
+            </div>
+                </div>
+		
+</div>
+							<div class="clear"></div>
+						</div>
+																	</div>
+															<div id="rt-main-surround">
+												<div id="rt-breadcrumbs">
+								<div class="rt-breadcrumb-surround">
+		<a href="../../index.html" id="breadcrumbs-home"></a>
+		<span class="breadcrumbs pathway">
+<a href="../enterprise-application.html" class="pathway">企業應用</a> <img src="../../templates/rt_quantive_j15/images/arrow.png" alt=""  /> <span class="no-link">授權流言終結者#4：MongoDB 授權的分析與探討（雙重授權模式 2.0）</span></span>
+	</div>
+	
+							<div class="clear"></div>
+						</div>
+																							              <div id="rt-main" class="sa3-mb9">
+                <div class="rt-main-inner">
+                    <div class="rt-grid-9 rt-push-3">
+                                                <div class="rt-block">
+                            							<div class="square1">
+							<div class="rt-module-surround">
+								<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+								<div class="rt-module-inner">
+		                            <div id="rt-mainbody">
+		                                
+<div class="rt-joomla ">
+	<div class="rt-article">
+		
+				<div class="rt-headline"><h1 class="rt-article-title">授權流言終結者#4：MongoDB 授權的分析與探討（雙重授權模式 2.0）</h1>		</div>
+		<div class="clear"></div>
+		
+		
+		
+				<div class="rt-articleinfo">
+						<div class="rt-article-icons">
+								<a href="8687-4mongodb-20%3Ftmpl=component&amp;print=1&amp;layout=default&amp;page=.html" title="列印" onclick="window.open(this.href,'win2','status=no,toolbar=no,scrollbars=yes,titlebar=no,menubar=no,resizable=yes,width=640,height=480,directories=no,location=no'); return false;" rel="nofollow"><span class="icon print"></span></a>																</div>
+			
+			<span class="rt-date-posted">
+						建立日期			2012-04-29 15:47						&nbsp;&nbsp;&nbsp;&nbsp;						最近更新在 2012-05-15 16:46						</span>
+
+						<span class="rt-author">
+				作者是 義峰 曾			</span>
+				
+					</div>
+		
+		
+		<h2>1. 前言</h2>
+<p><a href="https://www.mongodb.org/" target="_blank">MongoDB</a> 是一種文件導向的 NoSQL [註] 資料庫系統 (document-oriented NoSQL database system)。主要使用 C++ 程式語言撰寫，並以 BSON（類似於 JSON 的格式）為其儲存資料結構的架構。</p>
+<p>MongoDB 專案始於 2007 年 10 月，由 <a href="https://www.10gen.com/" target="_blank">10gen</a> 團隊主導核心的開發。於 2009 年首度以產品的形式推出，並改以 <a href="https://www.gnu.org/licenses/agpl-3.0.html" target="_blank">AGPL-3.0</a> 為其軟體之授權條款進行散布。這種雙重授權方式與過去我們所知的 <a href="https://www.mysql.com/" target="_blank">MySQL</a> 類似，但本質上卻帶著很不一樣的時代背景與商業思維，為了與 MySQL 類有所區別，故此我稱之為「雙重授權模式 2.0」。不過在本篇文章中不會討論商業思維的部分，而是著重於授權案例的應用。</p>
+
+<p>隨著 NoSQL 資料庫系統概念的興起及推動，現今採用 MongoDB 的使用者也有愈來愈多的趨勢。本篇文章將以 MongoDB 專案為實例，蒐集並探討常見的問題及誤解。</p>
+<br />
+<h2>2. MongoDB 的授權分析</h2>
+<p>根據&nbsp;<a href="https://www.mongodb.org/display/DOCS/Licensing" target="_blank">MongoDB 官方網站的著作權授權專頁</a>說明。MongoDB 將整體的專案分成三大部分，並分別使用不同的授權聲明。</p>
+<p><a href="../../images/120508/myth04/2012-03-26_mongodb_official_license_page.png" target="_blank"><img src="../../images/120508/myth04/2012-03-26_mongodb_official_license_page.png" border="0" width="680" /></a></p>
+<p>▲ 圖1：MongoDB 官方網站的著作權授權專頁</p>
+<p>其一，若使用 MongoDB 專案中核心資料庫系統的部分，其授權是 AGPL-3.0 及商業授權的雙重授權模式。代表著，使用該部分的專案時，我們可以選擇 AGPL-3.0 為其授權條款並遵循之，或者向 10gen 公司另行購買商業授權。</p>
+<p>其二，若使用 MongoDB 官方提供的資料庫驅動元件 (Database Driver)，其授權是 <a href="https://www.apache.org/licenses/LICENSE-2.0.html" target="_blank">Apache-2.0</a> 的授權模式。代表著，使用該部分的專案時，我們僅需遵守 Apache-2.0 授權條款之義務，即可對等取得該授權之權利。另外，需要特別注意的是，假如使用的資料庫驅動元件為非 MongoDB 官方所提供的，我們則需要特別注意該元件的授權內容。</p>
+<p>其三，MongoDB 官方文件使用的是 <a href="https://creativecommons.org/licenses/by-nc-sa/3.0/" target="_blank">Creative Commons BY-NC-SA 3.0</a>（Creative Commons 姓名標示-非商業性-相同分享方式 3.0）授權。代表著，使用該部分的專案時，需要符合以下要件：明確標示其著作權人、不可利用於商業行為，以及文件內容需延用相同分享的方式進行改作及散布。</p>
+<p>因此在利用 MongoDB 前，必須先行由「使用之部分」來確立其「授權條款」，並依據其權利義務分別遵循。舉例而言，如果使用到 MongoDB 核心資料庫功能，則必須依據使用的需求，來決定採用的是 AGPL-3.0 授權亦或是付費購買商業授權；同時，若使用 MongoDB 官方資料庫驅動元件進行資料庫操作時，該部分則必須遵循 Apache-2.0 授權，反之若使用的是非官方的元件，那麼就必須視該元件之授權而為之。</p>
+<p><a href="../../images/120508/myth04/2012-03-26_mongodb_official_driver_list.png" target="_blank"><img src="../../images/120508/myth04/2012-03-26_mongodb_official_driver_list.png" border="0" width="680" /></a></p>
+<p>▲ 圖2：<a href="https://www.mongodb.org/display/DOCS/Drivers" target="_blank">MongoDB 官方網站所提供的官方及非官方資料庫驅動元件</a></p>
+<br />
+<h2>3. MongoDB 授權常見的誤解及探討</h2>
+<h3>3-1. 是否只要使用 MongoDB，即必須提供專案原始碼？</h3>
+<p>這是一個涵蓋範圍很廣的議題，同時也是 MongoDB 最常見的問題之一。</p>
+<p>首先，根據本篇文章第 2 部分「MongoDB 的授權分析」所述，我們必須先行了解使用的是 MongoDB 的何部分，及其該部分的授權。另外，為了避免本文過於冗長，接下來僅以下列虛擬案例的情況來具體說明。</p>
+<p>假如我們有一專案，其資料庫使用的是 MongoDB 的核心資料庫系統，並且選擇 AGPL-3.0 為其授權模式，而非商業授權。另有一應用程式，該應用程式使用的是 MongoDB 官方提供的 PHP 資料庫驅動元件，使其得以與 MongoDB 核心資料庫系統進行溝通。此時所繪製的授權分析圖為如下，</p>
+<p><a href="../../images/120508/myth04/mongodb_license_example.png" target="_blank"><img src="../../images/120508/myth04/mongodb_license_example.png" border="0" width="450" /></a></p>
+<p>▲ 圖3：MongoDB 虛擬案例的授權分析圖</p>
+<p>以下將以不同的情況來分別敘述之。</p>
+<h3>3-1-1. 網頁服務為公開的網站形態</h3>
+<p>如果該專案所提供的服務為公開的電腦網路環境，例如提供一個公開的網站服務，則授權分析圖為如下，</p>
+<p><a href="../../images/120508/myth04/mongodb_license_example_public.png" target="_blank"><img src="../../images/120508/myth04/mongodb_license_example_public.png" border="0" width="600" /></a></p>
+<p>▲ 圖4：MongoDB 虛擬案例的授權分析圖--公開的網站形態</p>
+<p>此時若僅考慮 MongoDB 核心資料庫系統之 AGPL-3.0 及資料庫驅動程式之 Apache-2.0 的授權時，在一般的使用下，即未修改 MongoDB 核心資料庫系統（上圖中紅色的部分）及資料庫驅動程式（上圖中綠色的部分）的情形，我們並不需要將專案中相關的程式原始碼公開，也就是不需要公開網站自行開發的應用程式（上圖中藍色的部分），甚至連 MongoDB 核心資料庫系統及資料庫驅動程式的程式原始碼也不需要額外在網站服務中提供給外部下載。</p>
+<p>再者，同上所述，如果僅修改 MongoDB PHP 資料庫驅動程式時，我們同樣不需要將專案中相關的程式原始碼公開，因為該修改的部分屬於 Apache-2.0 授權，在 Apache-2.0 授權中並未要求此修改行為需要公開該部分或甚至專案中相關部分的程式原始碼，當然也就無需公開網站自行開發的應用程式。此時的授權分析圖如下，</p>
+<p><a href="../../images/120508/myth04/mongodb_license_example_public_modified_mongodb_driver.png" target="_blank"><img src="../../images/120508/myth04/mongodb_license_example_public_modified_mongodb_driver.png" border="0" width="600" /></a></p>
+<p>▲ 圖5：MongoDB 虛擬案例的授權分析圖--公開的網站形態（僅修改 MongoDB 資料庫驅動程式）</p>
+<p>反之，同上所述，如果修改的是 MongoDB 核心資料庫系統時，此時的授權分析圖如下，</p>
+<p><a href="../../images/120508/myth04/mongodb_license_example_public_modified_mongodb_core.png" target="_blank"><img src="../../images/120508/myth04/mongodb_license_example_public_modified_mongodb_core.png" border="0" width="600" /></a></p>
+<p>▲ 圖6：MongoDB 虛擬案例的授權分析圖--公開的網站形態（修改 MongoDB 核心資料庫系統）</p>
+<p>因修改的部分屬於 AGPL-3.0，同時利用之方式符合遠端電腦網路之互動行為，所以需要根據 AGPL-3.0 第 13 節之內容遵循相關的義務要求，其內容原文如下，</p>
+<br />
+<pre>13. Remote Network Interaction; Use with the GNU General Public License.<br />Notwithstanding any other provision of this License, if you modify the<br />Program, your modified version must prominently offer all users<br />interacting with it remotely through a computer network (if your version<br />supports such interaction) an opportunity to receive the Corresponding<br />Source of your version by providing access to the Corresponding Source<br />from a network server at no charge, through some standard or customary<br />means of facilitating copying of software. &nbsp;This Corresponding Source<br />shall include the Corresponding Source for any work covered by version 3<br />of the GNU General Public License that is incorporated pursuant to the<br />following paragraph.<br />Notwithstanding any other provision of this License, you have<br />permission to link or combine any covered work with a work licensed<br />under version 3 of the GNU General Public License into a single<br />combined work, and to convey the resulting work. &nbsp;The terms of this<br />License will continue to apply to the part which is the covered work,<br />but the work with which it is combined will remain governed by version<br />3 of the GNU General Public License.</pre>
+<br />
+<p>簡言之，此時我們除了要提供修改 MongoDB 核心資料庫系統的程式外，其它所有與該部分相關的對應原始碼 (Corresponding Source) 也都需要公開並提供所有得以使用此網站服務的人。換句話說，除了核心修改的部分外，連帶其它與 MongoDB 核心資料庫系統有相關的部分，都很可能需要開放並對外公開提供下載的管道。</p>
+<h3>3-1-2. 網頁服務為公司內部的網站形態</h3>
+<p>如果該專案所提供的服務為公司內部的電腦網路環境，例如提供一個僅允許公司內部使用的網站服務，則繪製的授權分析圖為如下，</p>
+<p><a href="../../images/120508/myth04/mongodb_license_example_internal.png" target="_blank"><img src="../../images/120508/myth04/mongodb_license_example_internal.png" border="0" width="600" /></a></p>
+<p>▲ 圖7：MongoDB 虛擬案例的授權分析圖--公司內部的網站形態</p>
+<p>此時無論是否有修改 MongoDB 核心資料庫系統或是資料庫驅動程式，一般而言是不需要提供相關程式原始碼之義務。</p>
+<h3>3-1-3. 服務性質為 OEM／ISV 形態</h3>
+<p>如果該專案所提供的服務為 OEM（Original Equipment Manufacturing, 妥託代工）或 ISV（Independent Software Vendor, 獨立軟體開發商）型式時，此時無論是否有對 MongoDB 核心資料庫系統或資料庫驅動程式進行修改，整體專案很可能都需要提供相關的程式原始碼予後續的合作廠商及購買設備的消費者，這也同時意謂著，網站自行撰寫的應用程式通常也含括其中且允予開放下載。</p>
+<br />
+<h3>3-2. 專案非商業利用，是否也要提供程式原始碼？</h3>
+<p>這裡無關乎網站是否具有商業利用行為，只要合乎上述 3-1 部分所述的任何條件，不管屬於非商業利用或社會公益行為，皆同時需要符合該部分中所描述的對等義務要求。</p>
+<br />
+<h3>3-3. 資料庫中的資料是否需要公開？</h3>
+<p>根據 AGPL-3.0 或 Apache-2.0 內容，資料庫中的資料（如會員資料，交易資料等）都不符合其要求之程式 (Program) 或原始碼 (Source code) 的定義範圍，因此無論是否需要公開網站原始碼，網站資料庫中之資料通常都可以不對外進行公開揭示。</p>
+<br />
+<h3>3-4. 使用 AGPL-3.0 的 MongoDB 為資料庫時，客戶端程式是否也會變成 AGPL-3.0？</h3>
+<p>在專案中，若選擇以 AGPL-3.0 為 MongoDB 的使用授權時，一般而言是不會連帶影響客戶端程式的授權狀態。舉例而言，無論是否使用 MongoDB 官方提供的資料庫驅動元件，或是其它社群提供之元件，甚至是自行開發的元件，都不會因為透過電腦網路與遠端 AGPL-3.0 的 MongoDB 溝通而影響到原本的授權狀態。</p>
+<p>我們可以從 <a href="https://blog.mongodb.org/post/103832439/the-agpl" target="_blank">MongoDB 官方部落格的文章</a>得知官方的認定標準。</p>
+<p><a href="../../images/120508/myth04/2012-03-26_mongodb_official_blog_the_agpl.png" target="_blank"><img src="../../images/120508/myth04/2012-03-26_mongodb_official_blog_the_agpl.png" border="0" /></a></p>
+<p>▲ 圖8：MongoDB 官方對於 AGPL 的看法</p>
+<p>特別是其中的這一段，</p>
+<pre>Note however that it is NOT required that applications using mongo be published.<br />The copyleft applies only to the mongod and mongos database programs. &nbsp;This is<br />why Mongo DB drivers are all licensed under an Apache license. &nbsp;You application,<br />even though it talks to the database, is a separate program and "work".</pre>
+<p>該段意指，AGPL-3.0 的部分只涵蓋於 mongod 與 mongos 的資料庫程式，而官方 MongoDB 資料庫驅動元件皆是採用 Apache-2.0 授權。因此，當應用程式經由 Apache-2.0 的資料庫驅動元件與 AGPL-3.0 的核心資料庫溝通時，可以合理視為彼此分開的獨立著作，不需要受到 MongoDB 核心資料庫授權 AGPL-3.0 的影響。</p>
+<br />
+<h3>3-5. 如果不想或不得公開自行開發的程式碼時，該怎麼辦？</h3>
+<p>根據本篇文章第 2 部分「MongoDB 的授權分析」所述，針對 MongoDB 核心資料庫系統的部分，其授權是 AGPL-3.0 及商業授權的雙重授權模式。因此，除了 AGPL-3.0 外，我們還可以額外購買商業授權。所以，在面對必須公開專案中不想或不得公開之程式碼時，是可以改向 10gen 團隊以客戶服務的方式，或是<a href="https://www.10gen.com/oem" target="_blank">線上申請</a>的方式，來談及商業授權版本的費用。</p>
+<p>此問題通常針對的是 MongoDB 核心資料庫系統之 AGPL-3.0 的授權，而不是 MongoDB 資料庫驅動程式之 Apache-2.0。因為 Apache-2.0 相較於 AGPL-3.0 而言，互惠性要求範圍較小，相對於後續商業利用的友善程度較高，所以比較不會面臨到類似的問題。但若對於 Apache-2.0 授權的範圍外有特別的需求，也可以向 10gen 團隊談及商業授權，即使 <a href="https://www.mongodb.org/display/DOCS/Licensing" target="_blank">MongoDB 官方網站的著作權授權專頁</a>並沒有提到這點。</p>
+<br />
+<h2>4. 結語</h2>
+<p>許多人對於利用 GPL 類的相關程式時皆會心生畏懼，更無論乎是互惠性要求範圍更廣的 AGPL-3.0。其實無論是 GPL-2.0 還是 AGPL-3.0，都並非不可理喻的授權條款，也唯有在「知彼」後，我們才能更得心應手，而有所因應。</p>
+<p>此外，MongoDB 與過去普遍比較熟知的 MySQL 雙重授權的商業模式不太一樣。MySQL 使用的是「GPL-2.0」與「商業授權」的雙重模式，但是 MongoDB 則是使用「AGPL-3.0」與「商業授權」的雙重模式。</p>
+<p>兩者在商業模式的核心想法及應用上有著很大的不同，但其中不難看出 MongoDB 面對時代背景變遷所作出的改變，進而更能契合 SOA（Service-Oriented Architecture，服務導向架構）及雲端的時代。為了區別兩者間明顯的變遷，我們可以把 MySQL 的商業模式稱為「雙重授權模式 1.0」，而 MongoDB 的案例應用則稱為「雙重授權模式 2.0」。</p>
+<br />
+<p>[註] NoSQL (Not only SQL) 是一種有別於典型關聯式資料庫系統 (RDBMS) 的設計方式。其資料的儲存不需要固定的資料表結構，通常也不支援 "join" 的 SQL 語法，甚至不保證資料異動的 ACID (Atomicity/Consistency/Isolation/Durability) 原則，但是較關聯式資料庫擁有更佳的橫向擴展優勢。</p>
+			<!-- Show relate article -->
+		<br><br><h4>您也許有興趣閱讀以下文章:</h4><ul><li><a href='../../enterprise-application/8738.html'>授權流言終結者#5：Neo4j 授權的分析與探討</a> - <span class='date-posted'>2012-06-26</span></li><li><a href='../../enterprise-application/8680.html'>授權流言終結者#3：jQuery 授權的分析與探討</a> - <span class='date-posted'>2012-04-23</span></li><li><a href='../../enterprise-application/8657.html'>授權流言終結者#2︰The JSON License 的分析與探討</a> - <span class='date-posted'>2012-03-29</span></li><li><a href='../../enterprise-application/8636.html'>授權流言終結者#1︰VirtualBox 授權分析與探討</a> - <span class='date-posted'>2012-03-08</span></li></ul>		<!-- end -->
+		<div class="article_note">
+		<!-- Add tags use metakey, and show OSSF Newsletter tag: OSSFNL+NUM-->
+		<br><br> <hr style='border: 1px dashed #D2DADB;'><b>自由軟體鑄造場電子報&nbsp;:</b>&nbsp;<a href='../../previous-issue%3Ftask=view&amp;id=790.html'>第 195 期 利用 RequireJs 將 Backbone.js 程式模組化</a><br><b>標籤:</b>&nbsp;<a href='../../index.php%3Foption=com_search&amp;Itemid=58&amp;searchphrase=exact_meta&amp;ordering=newest&amp;searchword=MongoDB.html'>MongoDB</a>,&nbsp;&nbsp;<a href='../../index.php%3Foption=com_search&amp;Itemid=58&amp;searchphrase=exact_meta&amp;ordering=newest&amp;searchword=&#32;授權.html'> 授權</a>,&nbsp;&nbsp;<a href='../../index.php%3Foption=com_search&amp;Itemid=58&amp;searchphrase=exact_meta&amp;ordering=newest&amp;searchword=&#32;雙重授權.html'> 雙重授權</a>,&nbsp;&nbsp;				<!-- End -->
+					<br>
+					<b>分類: </b><a href="../enterprise-application.html">				企業應用					</a>				</div>
+			 <!-- AddThis Button BEGIN ID 3001 is the front page article -->
+     			<br><br>
+       <div class="addthis_toolbox addthis_default_style addthis_32x32_style">
+       <a class="addthis_button_preferred_1"></a>
+       <a class="addthis_button_preferred_2"></a>
+       <a class="addthis_button_preferred_3"></a>
+       <a class="addthis_button_preferred_4"></a>
+       <a class="addthis_button_compact"></a>
+       <a class="addthis_counter addthis_bubble_style"></a>
+       </div>
+       <script type="text/javascript">var addthis_config = {"data_track_clickback":true};</script>
+       <script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js#pubid=openfoundry"></script>
+       <!-- AddThis Button END -->
+     <br>
+		<div class="totop" ><a class="rt-totop" href="8687-4mongodb-20.html#" style="outline: medium none;">↑ Top</a></div>
+            <!-- AddThis Button END -->
+
+		<script type="text/javascript">
+var jcomments=new JComments(8687, 'com_content','https://openfoundry.org/index.php?option=com_jcomments&amp;tmpl=component&amp;lang=');
+jcomments.setList('comments-list');
+</script>
+<div id="jc">
+<div id="comments"><h4>評論<a class="refresh" href="8687-4mongodb-20.html#" title="重新整理評論列表" onclick="jcomments.showPage(8687,'com_content',0);return false;">&nbsp;</a></h4>
+<div id="comments-list" class="comments-list">
+        <div class="even" id="comment-item-284"><div class="rbox"><div class="rbox_tr"><div class="rbox_tl"><div class="rbox_t">&nbsp;</div></div></div><div class="rbox_m">
+<div class="comment-avatar"><img src="http://www.gravatar.com/avatar.php?gravatar_id=cc2b578a1e3d77073573a09e8c9a30fc&amp;default=https%3A%2F%2Fwww.openfoundry.org%2Fcomponents%2Fcom_jcomments%2Fimages%2Fno_avatar.png" alt="" /></div>
+<div class="comment-box avatar-indent">
+<span class="comments-vote">
+	<span id="comment-vote-holder-284">
+<a href="8687-4mongodb-20.html#" class="vote-good" title="優質的評論" onclick="jcomments.voteComment(284, 1);return false;"></a><a href="8687-4mongodb-20.html#" class="vote-poor" title="差勁的評論" onclick="jcomments.voteComment(284, -1);return false;"></a>
+<span class="vote-none">0</span>
+	</span>
+</span>
+<a class="comment-anchor" href="8687-4mongodb-20.html#comment-284" id="comment-284">#1</a>
+<span class="comment-author">Vik</span>
+<span class="comment-date">2012-05-15 16:37</span>
+<div class="comment-body" id="comment-body-284">請問，若換個角度來看，Mong<span style="font-size:0px;padding:0;margin:0;"> </span>oDB採Apache2.0授權，MongoDB PHP Driver採AGPL 3.0授權，則自行開發的Web程式<span style="font-size:0px;padding:0;margin:0;"> </span>使用了此Driver去連結Mo<span style="font-size:0px;padding:0;margin:0;"> </span>ngoDB時，依據AGPL的規<span style="font-size:0px;padding:0;margin:0;"> </span>定，則自行開發的Web程式就得<span style="font-size:0px;padding:0;margin:0;"> </span>提供原始碼囉?</div>
+</div><div class="clear"></div>
+</div><div class="rbox_br"><div class="rbox_bl"><div class="rbox_b">&nbsp;</div></div></div></div>
+</div>
+        <div class="odd" id="comment-item-285"><div class="rbox"><div class="rbox_tr"><div class="rbox_tl"><div class="rbox_t">&nbsp;</div></div></div><div class="rbox_m">
+<div class="comment-avatar"><img src="http://www.gravatar.com/avatar.php?gravatar_id=7afe24370fb019ca47384a3af091bd4b&amp;default=https%3A%2F%2Fwww.openfoundry.org%2Fcomponents%2Fcom_jcomments%2Fimages%2Fno_avatar.png" alt="" /></div>
+<div class="comment-box avatar-indent">
+<span class="comments-vote">
+	<span id="comment-vote-holder-285">
+<a href="8687-4mongodb-20.html#" class="vote-good" title="優質的評論" onclick="jcomments.voteComment(285, 1);return false;"></a><a href="8687-4mongodb-20.html#" class="vote-poor" title="差勁的評論" onclick="jcomments.voteComment(285, -1);return false;"></a>
+<span class="vote-none">0</span>
+	</span>
+</span>
+<a class="comment-anchor" href="8687-4mongodb-20.html#comment-285" id="comment-285">#2</a>
+<span class="comment-author">I_am_ant</span>
+<span class="comment-date">2012-05-17 17:51</span>
+<div class="comment-body" id="comment-body-285">@Vik,<br /><br />倘若「自行開發的程式」使用了 AGPL-3.0 的程式(例如 Database Driver) 來連結資料庫，那麼「自行開發的<span style="font-size:0px;padding:0;margin:0;"> </span>程式」必須遵循 AGPL-3.0 的義務性規定，其中包含同時提供<span style="font-size:0px;padding:0;margin:0;"> </span>完整原始碼的散布。</div>
+</div><div class="clear"></div>
+</div><div class="rbox_br"><div class="rbox_bl"><div class="rbox_b">&nbsp;</div></div></div></div>
+</div>
+</div>
+<div id="comments-list-footer"><a class="refresh" href="8687-4mongodb-20.html#" title="重新整理評論列表" onclick="jcomments.showPage(8687,'com_content',0);return false;">重新整理評論列表</a></div>
+</div>
+<div id="comments-footer" align="center"><a href="http://www.joomlatune.com" title="JComments" target="_blank">JComments</a></div>
+<script type="text/javascript">
+jcomments.setAntiCache(1,0,0);
+</script> 
+</div>	</div>
+</div>
+
+		                            </div>
+									<div class="clear"></div>
+								</div>
+								<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+							</div>
+							</div>
+                                                    </div>
+                                            </div>
+                                <div class="rt-grid-3 rt-pull-9">
+                <div id="rt-sidebar-a">
+                                    <div class="square4">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<ul class="menu"><li class="item56"><a href="../previous-issue.html"><span>電子報總覽</span></a></li><li class="item55"><a href="../about-newsletter.html"><span>關於本報</span></a></li></ul>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<ul class="menu"><li class="item115"><a href="../foss-news.html"><span>源碼新聞</span></a></li><li class="item141"><a href="../case-job.html"><span>接案 / 工作</span></a></li></ul>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+        	                <div class="square1">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-title"><h2 class="title">專欄總覽</h2></div>
+						<div class="clear"></div>
+		                						<div class="module-content">
+		                	<ul class="menu"><li class="item37"><a href="../tech-column.html"><span>技術專欄</span></a></li><li class="item40"><a href="../foss-programs.html"><span>源碼秘技</span></a></li><li class="item35"><a href="../legal-article-.html"><span>法律專欄</span></a></li><li class="item154"><a href="../foss-forum.html"><span>自由專欄</span></a></li><li id="current" class="active item162"><a href="../enterprise-application.html"><span>企業應用</span></a></li><li class="item44"><a href="../foss-projects.html"><span>源碼專案</span></a></li></ul>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		                <div class="square1">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<p style="text-align: center;"><a href="../../news%3Fformat=feed&amp;type=rss" target="_black"><img src="../../images/M_images/news-rss-feed.png" border="0" /></a><br /><a href="https://www.openfoundry.org/rss-feed/Newsletter" target="_black"><img src="../../images/M_images/newsletter-rss-feed.png" border="0" /></a></p>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		
+                </div>
+            </div>
+
+                    <div class="clear"></div>
+                </div>
+            </div>
+																													</div>
+										<div id="rt-copyright">
+						<div class="rt-grid-12 rt-alpha rt-omega">
+                        <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<div id="desktop-mobile-version-switch"><span id="mobile-version" class="version-switch"><a href="8687-4mongodb-20.html#">行動版</a></span></div>
+自由軟體鑄造場 製作 最佳瀏覽狀態：IE7或Firefox2.0以上 (建議使用Firefox) ‧ 解析度1024*768 <br /> <strong>E-Mail</strong>：<a href="mailto:contact@openfoundry.org">contact@openfoundry.org</a> <strong>Address</strong>：台北市南港區研究院路2段128號 中央研究院資訊科學研究所 . <a href="../../privacy-policy.html">隱私權條款</a>. <a href="../../terms-of-use.html">使用條款</a><span style="position: relative; top: 8px; margin-top: -8px;"> <a href="../../about/8101.html"><img src="../../images/M_images/rss-feed-all.png" border="0" /></a></span>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+        	
+</div>
+						<div class="clear"></div>
+					</div>
+					<div class="rt-footer-bottom-wrap"><div class="rt-footer-bottom"><div class="rt-footer-bottom2"><div class="rt-footer-bottom3"></div></div></div></div>
+									</div></div></div>
+				<div class="rt-surround-bottom"><div class="rt-surround-bottom2"><div class="rt-surround-bottom3"></div></div></div>
+							</div>
+		</div>
+		<!--
+		<script id="aptureScript">
+						(function (){var a=document.createElement("script");a.defer="true";a.src="http://www.apture.com/js/apture.js?siteToken=vsJttrn";document.getElementsByTagName("head")[0].appendChild(a);})();
+     </script>
+-->
+
+<!-- Piwik -->
+<!-- 			<script type="text/javascript">
+			  var _paq = _paq || [];
+		  _paq.push(["trackPageView"]);
+		  _paq.push(["enableLinkTracking"]);
+
+		    (function() {
+			        var u=(("https:" == document.location.protocol) ? "https" : "https") + "://www.openfoundry.org/piwik/";
+				    _paq.push(["setTrackerUrl", u+"piwik.php"]);
+				    _paq.push(["setSiteId", "1"]);
+				        var d=document, g=d.createElement("script"), s=d.getElementsByTagName("script")[0]; g.type="text/javascript";
+				        g.defer=true; g.async=true; g.src=u+"piwik.js"; s.parentNode.insertBefore(g,s);
+					  })();
+		  </script> -->
+<!-- End Piwik Code -->
+	</body>
+</html>

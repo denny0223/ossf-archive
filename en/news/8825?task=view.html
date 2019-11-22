@@ -1,0 +1,448 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-gb" lang="en-gb" >
+<head>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<link rel="shortcut icon" href="../../images/favicon.ico" />
+	  <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+  <meta name="robots" content="index, follow" />
+  <meta name="keywords" content="OSSFNL806" />
+  <meta name="title" content="3D 除錯新視界：xDIVA 專案報導" />
+  <meta name="description" content="對程式設計師，工程師以及許多科技資訊工作者而言，除錯器 (Debugger) 是不可或缺的一項工具。除錯器的主要功能，在於幫助使用者在程式運作時找出臭蟲 (bug) ，並予以排除；然而，身為工具，必然存在著某種限制。 由中央大學資工系鄭永斌教授所主持的「xDIVA ──" />
+  <meta name="generator" content="" />
+  <title>3D 除錯新視界：xDIVA 專案報導 - OpenFoundry</title>
+  <link href="../../favicon.ico" rel="shortcut icon" type="image/x-icon" />
+  <link rel="stylesheet" href="../../components/com_gantry/css/gantry.css" type="text/css" />
+  <link rel="stylesheet" href="../../components/com_gantry/css/grid-12.css" type="text/css" />
+  <link rel="stylesheet" href="../../components/com_gantry/css/joomla.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/joomla.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/style1.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/light-body.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/demo-styles.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/template.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/typography.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/fusionmenu.css" type="text/css" />
+  <style type="text/css">
+    <!--
+#rt-main-surround ul.menu li.active > a, #rt-main-surround ul.menu li.active > .separator, #rt-main-surround ul.menu li.active > .item, #rt-main-surround .square4 ul.menu li:hover > a, #rt-main-surround .square4 ul.menu li:hover > .item, #rt-main-surround .square4 ul.menu li:hover > .separator, .roktabs-links ul li.active span {color:#0088B5;}
+a, #rt-main-surround ul.menu a:hover, #rt-main-surround ul.menu .separator:hover, #rt-main-surround ul.menu .item:hover {color:#0088B5;}
+    -->
+  </style>
+  <script type="text/javascript" src="../../components/com_jcomments/js/jcomments-v2.1.js%3Fv=2"></script>
+  <script type="text/javascript" src="../../components/com_jcomments/libraries/joomlatune/ajax.js"></script>
+  <script type="text/javascript" src="../../media/system/js/mootools.js"></script>
+  <script type="text/javascript" src="../../media/system/js/caption.js"></script>
+  <script type="text/javascript" src="../../components/com_gantry/js/gantry-buildspans.js"></script>
+  <script type="text/javascript" src="../../components/com_gantry/js/gantry-inputs.js"></script>
+  <script type="text/javascript" src="../../templates/rt_quantive_j15/js/jquery.cookie.js"></script>
+  <script type="text/javascript" src="../../modules/mod_roknavmenu/themes/fusion/js/fusion.js"></script>
+  <script type="text/javascript" src="../../modules/mod_ofssologin/js/ofssologin.js"></script>
+  <script type="text/javascript">
+
+			window.addEvent('domready', function() {
+				var modules = ['rt-block'];
+				var header = ['h3','h2','h1'];
+				GantryBuildSpans(modules, header);
+			});
+		InputsExclusion.push('.content_vote','#rt-popup')
+		        window.addEvent('load', function() {
+					new Fusion('ul.menutop', {
+						pill: 0,
+						effect: 'slide and fade',
+						opacity: 1,
+						hideDelay: 500,
+						centered: 0,
+						tweakInitial: {'x': -2, 'y': 0},
+        				tweakSubsequent: {'x': 0, 'y': -14},
+						menuFx: {duration: 200, transition: Fx.Transitions.Sine.easeOut},
+						pillFx: {duration: 400, transition: Fx.Transitions.Back.easeOut}
+					});
+	            });
+  </script>
+<!-- <script type="text/javascript" src="/sso/javascripts/langsync.js"></script> -->
+<!-- <script src="/templates/rt_quantive_j15/js/ossf.js"></script> -->
+<script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-4136519-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
+</head>
+	<body  class="backgroundlevel-low backgroundstyle-style8 bodylevel-med bodystyle-light cssstyle-style1 logostyle-dark font-family-helvetica font-size-is-default menu-type-fusionmenu col12 ">
+		<div id="rt-main-background">
+			<div class="rt-container">
+																<div id="rt-header">
+					<div class="rt-grid-7 rt-alpha">
+    			<div class="rt-block">
+    	    	<a href="../../index.html" id="rt-logo"></a>
+    		</div>
+	    
+</div>
+<div class="rt-grid-5 rt-omega">
+                    <div class="square9">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<div class="ofssologin_square9"><a href="../../index.html">Login</a>&nbsp;&nbsp|&nbsp;&nbsp;<span><a href="https://www.openfoundry.org/tw/news/8825?task=view" ><span lang="tw" xml:lang="tw">繁體中文</span></a></li></ul></span><!--Joom!fish V2.0.4 (Lightning)-->
+<!-- &copy; 2003-2009 Think Network, released under the GPL. -->
+<!-- More information: at http://www.joomfish.net -->
+<div class="ofssologin_search_square9">
+  <form id="of_search" action="https://www.openfoundry.org/of/openfoundry/search" method="get" onsubmit="of_search(); return false;">
+    <select id="of_search_type">
+      <option value="Projects"> Projects </option>
+      <option value="Content"> Content </option>
+      <option value="People"> People </option>
+    </select>
+    <input id="query" name="query" id="mod_search_searchword" maxlength="50" alt="search" class="inputbox" type="text" size="28" value="search..."  onblur="if(this.value=='') this.value='search...';" onfocus="if(this.value=='search...') this.value='';" />
+    <input type="hidden" name="commit" value="search" />
+  </form>
+</div></div>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		
+</div>
+					<div class="clear"></div>
+				</div>
+																<div id="rt-navigation"><div id="rt-navigation2"><div id="rt-navigation3">
+					
+<div class="nopill">
+	<ul class="menutop level1 " >
+						<li class="item1 root" >
+					<a class="orphan item bullet" href="../../index.html"  >
+				<span>
+			    				Home				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item32 root" >
+					<a class="orphan item bullet" href="../../archived.html"  >
+				<span>
+			    				Projects				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item186 root" >
+					<a class="orphan item bullet" href="../community.html"  >
+				<span>
+			    				Who&#039;s Who				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item4 root" >
+					<a class="orphan item bullet" href="../news.html"  >
+				<span>
+			    				News				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item5 root" >
+					<a class="orphan item bullet" href="../law-and-licensing.html"  >
+				<span>
+			    				Law &amp; Licensing				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item3 root" >
+					<a class="orphan item bullet" href="../activities.html"  >
+				<span>
+			    				Activities				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item2 root" >
+					<a class="orphan item bullet" href="../resourcecatalog.html"  >
+				<span>
+			    				Resource Catalog				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item45 root" >
+					<a class="orphan item bullet" href="../about.html"  >
+				<span>
+			    				About				   
+				</span>
+			</a>
+			
+			
+	</li>	
+				</ul>
+</div>
+
+				    <div class="clear"></div>
+				</div></div></div>
+								<div class="rt-surround"><div class="rt-surround2"><div class="rt-surround3">
+										<div id="rt-showcase-section">
+												<div id="rt-showcase">
+							<div class="rt-grid-12 rt-alpha rt-omega">
+    		<div class="clear"></div>
+		
+		
+                <div class="close-note">
+                    <div class="rt-block">
+               					<div class="module-content">
+                	<div style="font-size:medium; background-image:linear-gradient(120deg,#159957,#4298b2);color:white;padding:20px;margin:-10px -18px;">感謝您對「自由軟體鑄造場」的支持與愛護，十多年來「自由軟體鑄造場」受中央研究院支持，並在資訊科學研究所以及資訊科技創新研究中心執行，現已完成階段性的任務。 本網站預計持續維運至 2021年底，網站內容基本上不會再更動。<br />也紀念我們永遠的朋友 李士傑先生（Shih-Chieh Ilya Li）。</div>				</div>
+            </div>
+                </div>
+		
+</div>
+							<div class="clear"></div>
+						</div>
+																	</div>
+															<div id="rt-main-surround">
+												<div id="rt-breadcrumbs">
+								<div class="rt-breadcrumb-surround">
+		<a href="../../index.html" id="breadcrumbs-home"></a>
+		<span class="breadcrumbs pathway">
+<span class="no-link">News</span></span>
+	</div>
+	
+							<div class="clear"></div>
+						</div>
+																							              <div id="rt-main" class="sa3-mb9">
+                <div class="rt-main-inner">
+                    <div class="rt-grid-9 rt-push-3">
+                                                <div class="rt-block">
+                            							<div class="square1">
+							<div class="rt-module-surround">
+								<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+								<div class="rt-module-inner">
+		                            <div id="rt-mainbody">
+		                                
+<div class="rt-joomla ">
+	<div class="rt-article">
+		
+				<div class="rt-headline"><h1 class="rt-article-title">3D 除錯新視界：xDIVA 專案報導</h1>		</div>
+		<div class="clear"></div>
+		
+		
+		
+				<div class="rt-articleinfo">
+						<div class="rt-article-icons">
+								<a href="https://www.openfoundry.org/en/news/8825-3d-xdiva-?tmpl=component&amp;print=1&amp;page=" title="Print" onclick="window.open(this.href,'win2','status=no,toolbar=no,scrollbars=yes,titlebar=no,menubar=no,resizable=yes,width=640,height=480,directories=no,location=no'); return false;" rel="nofollow"><span class="icon print"></span></a>																</div>
+			
+			<span class="rt-date-posted">
+						 Created at			Thursday, 04 October 2012 15:03						&nbsp;&nbsp;&nbsp;&nbsp;						Last Updated on Wednesday, 15 May 2013 13:06						</span>
+
+						<span class="rt-author">
+				Written by 自由軟體鑄造場電子報			</span>
+				
+					</div>
+		
+		
+		<p>對程式設計師，工程師以及許多科技資訊工作者而言，除錯器 (Debugger) 是不可或缺的一項工具。除錯器的主要功能，在於幫助使用者在程式運作時找出臭蟲 (bug) ，並予以排除；然而，身為工具，必然存在著某種限制。</p>
+<p>由中央大學資工系鄭永斌教授所主持的「<a href="https://www.openfoundry.org/of/projects/1084" target="_blank">xDIVA ── 具備可合成與互動之除錯資訊視覺化軟體工具</a>」自由軟體專案，從協助資訊工程工作者的立場出發，力圖跨越工具的有限性，探索跨界與創新的可能空間。</p>
+
+<p><a href="../../images/120910/p1040565.jpg" target="_blank"><img src="../../images/120910/p1040565.jpg" alt="alt" width="500" /></a></p>
+<h3>一、「活」的軟體，而非「死」的工具</h3>
+<p>「 xDIVA ── 具備可合成與互動之除錯資訊視覺化軟體工具」是一個總共為期四年的專案，由中央大學資工系鄭永斌教授主持，主要研發目的，是開發一個能夠跨領域，甚至跨界域的除錯工具。</p>
+<p>一般來說，資訊軟體的開發通常必須用到諸多不同的工具，除錯器便是其中非常重要的一項，因為在程式開發中，不免會遭遇一些錯誤，此時，便需要除錯器的協助，才能順利校正修補。</p>
+<p>鄭教授表示，近十幾年來，除錯器就工具本身的演進並未呈現出顯著的改進，「因為我研究的領域正好是軟體工程，從理念發想、產生樣品，到真正推出產品，這段流程需要走過一段滿長的距離，最快的測試方式，就是釋放在網路平臺上，讓人們自由分享與使用，但如果真的要做到產品化規格，便不只是測試與修改那麼簡單。許多的學研專案都停留在完成樣品的階段就結案，但我們這個專案不同的地方，在於我們是真心地想做出穩定的產品，讓程式設計師、工程師與資訊工作者能夠實用！」</p>
+<p>鄭教授說道，不同的軟體程式與專題領域，有其個別相應不同的除錯需求，鄭教授援引自己在中央研究院的經驗為例，當時鄭教授主要研究「光學文字辨認」，簡單來講，就是將文字或影像透過光學掃描轉換成數位檔案，也時常有修改程式的需要，但一旦修改，就發現錯誤率頓時提高，這時便需要一項一項地分別除錯，不僅耗時間也耗心力。於是，鄭教授的作法是以互動性為概念，重新寫一個屬於該專題專用的視覺化除錯器程式。</p>
+<p>由於每個應用領域都擁有自己專用的除錯器，基於領域限制，研發出來的除錯器的無法進行跨領域的普遍應用，鄭教授說道：「我的腦中開始孕育一個想法：如果可以做出一個能夠跨領域應用的除錯器，可以通用於所有的軟體程式與專題領域，比如影像處理、Layout 設計、工業領域等等，都可以使用同一個除錯器，來輕鬆地協助使用者普遍應用，可以節省許多力氣。」而這正是 xDIVA 誕生的源頭。</p>
+<br />
+<h3>二、創新，從腳踏實地開始</h3>
+<p>鄭教授說道，當初決定做這個題目時瀏覽過許多相關研究資料，包括目前被稱為「二元樹」的資料結構，但這類資料結構多被運用在資訊教育上，作為老師給學生練習之用，無法應付程式設計師的需求；加上每個領域的資料結構各有差異，產生了視覺化的套用問題，除錯器在設計上往往為了應對某個程式而被寫死，一旦程式變化，立即發生不適用問題，這也是視覺化程式的通病，也正是 xDIVA 面對的燙手山芋。</p>
+<p>「我想做的不是去特定寫死一個程式，而是提供許多基本的視覺元素，來兜合出新的視覺化效果。換句話說， xDIVA 提供的內涵有如物理學中的基本粒子，是一種包含了各種基本元素的系統，你可以依照自己的需求去編輯、組織，依照不同的資料結構來自由組合，就好像樂高積木有許多元件，可供人去發揮創意，組合成想像中的形體。」</p>
+<p>xDIVA 利用人類視覺感官的直覺運作，提供了視覺化與隱喻性的多重組合。傳統除錯器是利用文字及數值來顯示變數，但文字或數值的理解還需經過視覺與大腦的轉換，「用眼睛看就能夠了解的東西，用文字反而卻無法看見。以影像程式來說，影像具有 RGB 三個值，若是將某個像素的 RGB 印在紙上，其實你光看數值，只能自己判斷這個到底是什麼顏色，但如果運用 3D 視覺化工具，就能當場以互動的方式展現出來。」鄭教授笑道：「年輕時我自己也寫過很多程式，光是一個 bug 就要花很多時間處理，除錯這個概念，除了使用者本身的經驗與功力，如果有一個跨領域的好工具則會更加實用。講得偉大一點，我想要顛覆現在既有的除錯器，提供一種新式的 3D 視覺化除錯器！」</p>
+<br />
+<h3>三、產學合作，創造跨界新價值</h3>
+<p>以比喻法來說，鄭教授認為：「 xDIVA 就像 iPad ，使用者不用特地去學 3D 影像化互動技術，直接就能一目暸然；而傳統除錯器就像 DOS ，單純只是純文字互動，必須下很多結構化的指令。」</p>
+<p>從純粹的學術研究興趣，到實際的研究成果，「 xDIVA ── 具備可合成與互動之除錯資訊視覺化軟體工具」的研發成就已成功獲得學術界的肯定，但鄭教授更希望在實用層面上有所提升，是故展開與業界合作的嘗試。試用對象主要為 EDA（Electronic Design Automation ，電子設計自動化）廠商，由於一般企業對資訊軟體的需求通常傾向直接購買套裝軟體，而這些軟體大都由 EDA 廠商開發寫成，而 xDIVA 主要提供給 EDA 廠商試用，這些廠商雖然自己也有寫除錯工具，但問題是，因為是特地針對某個程式所寫的，一旦除錯情境變動，工具就必須整體更新，所費成本不貲。</p>
+<p>目前， xDIVA 多提供科技業試用，鎖定資料結構複雜度高的產業，並在中研院資創中心的自由軟體鑄造場 (Open Source Software Foundry, OSSF) 所提供的 OpenFoundry 專案開發平臺上開放程式源碼，期望能吸引更多資訊相關工作者來試用及修改，以期使 xDIVA 的穩定度與完整度再上層樓。鄭教授的策略，是先找到 EDA 廠商的對口工程師，提供 xDIVA 的最新版本請他們試用，同時調查企業的除錯需求，如果該廠商的工程師覺得實用，就能漸漸發揮推廣之效。「理想的作法是從龍頭公司著手，目前已經和首屈一指的外商公司 Synopsys 連接上，請基層工程師試用，如果用得上手，其他公司也會接續跟進。」鄭教授說道，產品若要真正上軌道，穩定度是首要考量，這也是產業界與學術界的主要差異，「對學術界而言，價值通常建立在長遠的研究目標與通用性之上，但對產業來說，企業考量的是：產品是否能有效解決他們的問題、產生利潤，這是產學雙方考量上的差異。」</p>
+<br />
+<h3>四、教育，是臺灣資訊產業的未來</h3>
+<p>除了產業合作， xDIVA 的 3D 視覺化與互動特性亦能在資訊教育發揮效用。鄭教授舉例說明，在臺大資工系開設演算法課程的呂學一教授，在課堂中使用 PowerPoint 動畫，利用視覺化進行教學而頗受好評，鄭教授由此發想認為，亦可在教學時套用 xDIVA 。「人類是視覺化的動物， xDIVA 則能自動對應程式來呈現 3D 動畫，在設計教學動畫上非常有幫助。」鄭教授表示。</p>
+<p>就價值產生面而言，「 xDIVA ── 具備可合成與互動之除錯資訊視覺化軟體工具」對學校與研究單位而言，可以產生出技術移轉資金，讓業界主動有興趣投入，產學彼此合作，便有成立新公司的可能，也能聘用更多工程師，製造就業機會與產業新機；若技轉合作模式成熟，便可有更多人才培養的資源，形成正面的產學互動循環。</p>
+<p>鄭教授強調，自己的理念，是顛覆除錯領域的未來，但推廣與成熟需要時間的培養，「我相信，試用階段是必須的，唯有讓第三者出現，才能發揮具體效果發，而不斷的改進，才能導致真正的進步！」</p>
+<p>「臺灣的軟體產業現在其實都在賺辛苦錢。」鄭教授以蘋果公司的成功為例，「蘋果的成功並不是靠硬體或是漂亮的設計，而是靠整合度極強的軟體系統。軟體產業的特性是，一旦你有了新的研發，就必須趕快切進市場，切入後再來改進，這樣子後面的人便永遠追不上，因為你自己也同時在不停前進。」</p>
+<p>回到教育面，鄭教授認為，若要研發、修改大型複雜的程式源碼，學生的資訊能力必須要有一定程度，這正是人才培養之所以重要的原因，但臺灣的教育現在仍然以升學考試為取向，導致學生的實作能力貧弱，在大學時，老師們努力幫學生建立基礎，但到了大四，學生紛紛去補習、考研究所、拼學歷。「身為資訊科技領域的學生，卻沒有紮實的實作能力，這樣的人才進入產業，自然會影響到產業素質。」鄭教授說道。</p>
+<p>教育、人才與產業發展，是彼此緊密連扣的環節鏈，臺灣的資訊軟體產業若要拓展光明前景，教育環境與觀念便必須先行有所改革，教育扮演著人才培養的關鍵角色，也是臺灣科技資訊產業發展不可或缺的基礎！</p>
+<h3>【技術文件摘要說明】</h3>
+<table style="border-width=1px; border: solid;">
+<tbody>
+<tr>
+<td>
+<h4>xDIVA 簡介</h4>
+<p>3D 軟體除錯視覺化工具 xDIVA 之建構計畫，提出一個除錯視覺化雛形工具 xDIVA (eXtreme Debugging Information Visualization Assistant) 的研究。其主要目的著眼於處理無窮廣泛的資料種類 VM 的對映。 xDIVA 導入新穎嚴格的物件導向 觀念，使 VM 可以互相溝通、組合，且和資料完全分離，達到最低的耦合。換言之，一個複雜的 VM 可以由許多基礎 VM 組合而成，每一個都是獨立且可替代的。資料型態和 VM 之間的對映可以依客戶需求訂做，重新裝配，讓使用者在不需要撰寫任何的程式碼，或者規則語言 (rule-like language) 就可以從既有的 VM 材料庫中，組合出符合期望的視覺化結果。</p>
+<h4>系統需求</h4>
+<ul>
+<li class="c1">具備 debugger 的 GUI 前端程式。</li>
+<li class="c1">GUI 必須具備基本功能包括瀏覽程式碼，設定中斷點，執行除錯，以文字模式顯現出變數。</li>
+<li class="c1">允許使用者藉由 GUI 介面對 DIVA 發出變數視覺化的指令。</li>
+<li class="c1">DIVA 可由除錯器端取得程式變數的數值以進行的使用者要求的視覺化。</li>
+<li class="c1">DIVA 必須具備讓使用者進行 VM 調整 （譬如資訊與 VM 如何對應、數量龐大時如何排列等）的使用者介面，並將 VM 以 3D 的方式呈現在螢幕上。</li>
+</ul>
+<h4>系統架構</h4>
+<p>xDIVA 主要由除錯器前端 (Minerva) 以及視覺化子系統 (DIVA) 所組成。<br />在本系統當中，除錯前端子系統 (Minerva, Visual Studio add-in,Eclipse add-in) 即除錯器介面，使用者對除錯前端子系統下達除錯動作的指令會透過網路部分與 DIVA 端的 Command Agent 作互動，而 Command Agent 會依照使用者的指令對 WOPM 以及 DIVA UI 作動作。 WOPM 會依照變數的型態以及 Mapping Dialog 連結的結果提供連結方式給 Mapping Engine，Mapping Engine 負責將連結的結果合併成 Mapping Tree 提供給 DIVA 查詢以及視覺化使用。而 DIVAUI 分為兩個部分，一個是視覺化的視窗，另一個是 Mapping Dialog 的部分， Mapping Dialog 是讓使用者來自行調整 VM 與欲視覺化變數之間的關聯關係，以及調整 VM 屬性的 Dialog。</p>
+<p>xDIVA 的視覺化子系統 DIVA 有相當多個重要元件，第一個是 Watched Object Pool Module (WOPM)，WOPM 儲存所有等待 DIVA 視覺化的變數、指標、和物件。這些資料由其除錯器前端 (Minerva) 取得，當中斷點改變時會改變其值。前端負責通知程式狀態的改變，有一些複雜的程序在這時後啟動來確保 WOPM 和 debugger 的資料同步。Command Agent 元件用來處理同步的程序，舉例來說，當接受到 visualize p 這個指令的時後，Command Agent 會送出一連串的指令向前端要求 p 的資訊，當資訊取得後，Command Agent 則在 WOPM 建立一個物件。- 10 -在 visualization metaphor 和 WOPM 之間有個重要的元件叫 Mapping Engine，它負責維持 WOPM 裡的物件和 VM 的映射，也允許使用者手動設定如何映射。</p>
+<center>
+<div><a href="../../images/121009/xDIVA/xDIVA.jpg" target="_blank"><img src="../../images/121009/xDIVA/xDIVA.jpg" alt="alt" width="500" /></a></div>
+</center><center>▲圖：xDIVA 系統架構圖</center>
+<p>視覺化子系統 DIVA 和前端處理器 Minerva 的溝通是透過網路交換訊息，因為 Minerva 是由 Java 實做完成，這個設計甚至使得程式設計人員也可以在 Linux 下 debug 程式，然後將結果呈現在 Windows 平台上。</p>
+<p>xDIVA 運用 Open Source 3D 引擎 OGRE 來進行 3D 繪圖。OGRE 是個物件導向的 3D 引擎，相較於其他 3D 開發平台如：OPENGL 或 DIRECTX，ORGE 的程式設計門檻比較低。因此，ORGE 作為一個 3D 繪圖引擎，可以降低相當多的程式開發時間和功夫。ORGE 提供相當多的 3D 特效，有助於增進的視覺化的多樣性，提升視覺化的品質，超越過去視覺化系統只依賴基本的顏色與圖形。</p>
+</td>
+</tr>
+</tbody>
+</table>
+			<!-- Show relate article -->
+				<!-- end -->
+		<div class="article_note">
+		<!-- Add tags use metakey, and show OSSF Newsletter tag: OSSFNL+NUM-->
+		<br><br> <hr style='border: 1px dashed #D2DADB;'><b>OSSF Newsletter&nbsp;:</b>&nbsp;<a href='../../previous-issue%3Ftask=view&amp;id=806.html'>第 205 期 3D 除錯新視界：xDIVA 專案報導</a><br>				<!-- End -->
+					<br>
+					<b>Category: </b><a href="../foss-projects.html">				FOSS Projects					</a>				</div>
+			 <!-- AddThis Button BEGIN ID 3001 is the front page article -->
+     			<br><br>
+       <div class="addthis_toolbox addthis_default_style addthis_32x32_style">
+       <a class="addthis_button_preferred_1"></a>
+       <a class="addthis_button_preferred_2"></a>
+       <a class="addthis_button_preferred_3"></a>
+       <a class="addthis_button_preferred_4"></a>
+       <a class="addthis_button_compact"></a>
+       <a class="addthis_counter addthis_bubble_style"></a>
+       </div>
+       <script type="text/javascript">var addthis_config = {"data_track_clickback":true};</script>
+       <script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js#pubid=openfoundry"></script>
+       <!-- AddThis Button END -->
+     <br>
+		<div class="totop" ><a class="rt-totop" href="8825%3Ftask=view.html#" style="outline: medium none;">↑ Top</a></div>
+            <!-- AddThis Button END -->
+
+			</div>
+</div>
+
+		                            </div>
+									<div class="clear"></div>
+								</div>
+								<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+							</div>
+							</div>
+                                                    </div>
+                                            </div>
+                                <div class="rt-grid-3 rt-pull-9">
+                <div id="rt-sidebar-a">
+                                    <div class="square4">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<ul class="menu"><li class="item56"><a href="../previous-issue.html"><span>Previous Issue</span></a></li><li class="item55"><a href="../about-newsletter.html"><span>About Newsletter</span></a></li></ul>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<ul class="menu"><li class="item115"><a href="../foss-news.html"><span>FOSS News</span></a></li><li class="item141"><a href="../case-job.html"><span>Case and Jobs</span></a></li></ul>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+        	                <div class="square1">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-title"><h2 class="title">Special</h2></div>
+						<div class="clear"></div>
+		                						<div class="module-content">
+		                	<ul class="menu"><li class="item37"><a href="../tech-column.html"><span>Tech Column</span></a></li><li class="item40"><a href="../foss-programs.html"><span>FOSS Programs</span></a></li><li class="item35"><a href="../legal-column.html"><span>Legal Column</span></a></li><li class="item154"><a href="../foss-forum.html"><span>FOSS Forum</span></a></li><li class="item162"><a href="../enterprise-application.html"><span>Enterprise Application</span></a></li><li class="item44"><a href="../foss-projects.html"><span>FOSS Projects</span></a></li></ul>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		                <div class="square1">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<p style="text-align: center;"><a href="../../news%3Fformat=feed&amp;type=rss" target="_black"><img src="../../images/M_images/news-rss-feed.png" border="0" /></a><br /><a href="https://www.openfoundry.org/rss-feed/Newsletter" target="_black"><img src="../../images/M_images/newsletter-rss-feed.png" border="0" /></a></p>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		
+                </div>
+            </div>
+
+                    <div class="clear"></div>
+                </div>
+            </div>
+																													</div>
+										<div id="rt-copyright">
+						<div class="rt-grid-12 rt-alpha rt-omega">
+                        <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<span class="nowrap">Open Source Software Foundry</span><span class="nowrap">‧</span><span class="nowrap"> </span><span class="nowrap">Best  Viewed with IE7.0 or Firefox2.0 above, 1024x768 Resolution. </span><strong>E-Mail</strong>：<a href="mailto:contact@openfoundry.org">contact@openfoundry.org</a> <br /><strong>Address</strong>：No.128, Sec.2, Academia Rd., Institute of Information Science, Academia Sinica, Nangang District, Taipei City 11529, Taiwan (R.O.C). <br /><a href="../privacy-policy.html">Privacy Policy</a>. <a href="../terms-of-use.html">Terms-of-use</a> <span style="position: relative; top: 8px; margin-top: -8px;"> <a href="../../about/8101.html"><img src="../../images/M_images/rss-feed-all.png" border="0" /></a></span>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+        	
+</div>
+						<div class="clear"></div>
+					</div>
+					<div class="rt-footer-bottom-wrap"><div class="rt-footer-bottom"><div class="rt-footer-bottom2"><div class="rt-footer-bottom3"></div></div></div></div>
+									</div></div></div>
+				<div class="rt-surround-bottom"><div class="rt-surround-bottom2"><div class="rt-surround-bottom3"></div></div></div>
+							</div>
+		</div>
+		<!--
+		<script id="aptureScript">
+						(function (){var a=document.createElement("script");a.defer="true";a.src="http://www.apture.com/js/apture.js?siteToken=vsJttrn";document.getElementsByTagName("head")[0].appendChild(a);})();
+     </script>
+-->
+
+<!-- Piwik -->
+<!-- 			<script type="text/javascript">
+			  var _paq = _paq || [];
+		  _paq.push(["trackPageView"]);
+		  _paq.push(["enableLinkTracking"]);
+
+		    (function() {
+			        var u=(("https:" == document.location.protocol) ? "https" : "https") + "://www.openfoundry.org/piwik/";
+				    _paq.push(["setTrackerUrl", u+"piwik.php"]);
+				    _paq.push(["setSiteId", "1"]);
+				        var d=document, g=d.createElement("script"), s=d.getElementsByTagName("script")[0]; g.type="text/javascript";
+				        g.defer=true; g.async=true; g.src=u+"piwik.js"; s.parentNode.insertBefore(g,s);
+					  })();
+		  </script> -->
+<!-- End Piwik Code -->
+	</body>
+</html>

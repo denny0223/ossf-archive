@@ -1,0 +1,159 @@
+	<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+	<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="zh-tw" lang="zh-tw" >
+		<head>
+			  <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+  <meta name="robots" content="noindex, nofollow" />
+  <meta name="keywords" content="OSSFNL860" />
+  <meta name="title" content="如何在 Linux 上加密電子郵件" />
+  <meta name="description" content="本文翻譯自 Linux.com，原作者為 C arla Schroder：https://www.linux.com/learn/tutori als/7 84165-how-to-encrypt-email-in-linux/ 如果你曾想過要加密你的電子郵件，眾多的電郵服務與郵件程式可能已經把你搞得一頭霧水。有兩種不同層次的加密：SSL/TLS" />
+  <meta name="generator" content="" />
+  <title>如何在 Linux 上加密電子郵件</title>
+  <link href="../../favicon.ico" rel="shortcut icon" type="image/x-icon" />
+  <link rel="stylesheet" href="../../components/com_gantry/css/gantry.css" type="text/css" />
+  <link rel="stylesheet" href="../../components/com_gantry/css/grid-12.css" type="text/css" />
+  <link rel="stylesheet" href="../../components/com_gantry/css/joomla.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/joomla.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/style1.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/light-body.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/demo-styles.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/template.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/typography.css" type="text/css" />
+  <style type="text/css">
+    <!--
+#rt-main-surround ul.menu li.active > a, #rt-main-surround ul.menu li.active > .separator, #rt-main-surround ul.menu li.active > .item, #rt-main-surround .square4 ul.menu li:hover > a, #rt-main-surround .square4 ul.menu li:hover > .item, #rt-main-surround .square4 ul.menu li:hover > .separator, .roktabs-links ul li.active span {color:#0088B5;}
+a, #rt-main-surround ul.menu a:hover, #rt-main-surround ul.menu .separator:hover, #rt-main-surround ul.menu .item:hover {color:#0088B5;}
+    -->
+  </style>
+  <script type="text/javascript" src="../../components/com_jcomments/js/jcomments-v2.1.js%3Fv=2"></script>
+  <script type="text/javascript" src="../../components/com_jcomments/libraries/joomlatune/ajax.js"></script>
+  <script type="text/javascript" src="../../media/system/js/mootools.js"></script>
+  <script type="text/javascript" src="../../media/system/js/caption.js"></script>
+  <script type="text/javascript" src="../../components/com_gantry/js/gantry-buildspans.js"></script>
+  <script type="text/javascript" src="../../components/com_gantry/js/gantry-inputs.js"></script>
+  <script type="text/javascript">
+
+			window.addEvent('domready', function() {
+				var modules = ['rt-block'];
+				var header = ['h3','h2','h1'];
+				GantryBuildSpans(modules, header);
+			});
+		InputsExclusion.push('.content_vote','#rt-popup')
+  </script>
+		</head>
+		<body  class="backgroundlevel-low backgroundstyle-style8 bodylevel-med bodystyle-light cssstyle-style1 logostyle-dark font-family-helvetica font-size-is-default menu-type-fusionmenu col12 ">
+			<div id="rt-main-surround">
+				<div class="rt-container">
+					<div class="rt-block">
+						<div id="rt-mainbody">
+					    	
+<div class="rt-joomla ">
+	<div class="rt-article">
+		
+				<div class="rt-headline"><h1 class="rt-article-title">如何在 Linux 上加密電子郵件</h1>		</div>
+		<div class="clear"></div>
+		
+		
+		
+				<div class="rt-articleinfo">
+						<div class="rt-article-icons">
+				<a href="9280-how-to-encrypt-email-on-linux%3Ftmpl=component&amp;print=1&amp;layout=default&amp;page=.html#" onclick="window.print();return false;"><span class="icon print"></span></a>									<span class="icon printscreen">
+						<a href="9280-how-to-encrypt-email-on-linux%3Ftmpl=component&amp;print=1&amp;layout=default&amp;page=.html#" onclick="window.print();return false;"><img src="../../images/M_images/printButton.png" alt="列印"  /></a>					</span>
+							</div>
+			
+			<span class="rt-date-posted">
+						建立日期			2014-08-21 00:00						&nbsp;&nbsp;&nbsp;&nbsp;						最近更新在 2014-09-10 15:58						</span>
+
+						<span class="rt-author">
+				作者是 謝良奇／翻譯			</span>
+				
+					</div>
+		
+		
+		<p><strong>本文翻譯自 Linux.com，原作者為 Carla Schroder：<a href="https://www.linux.com/learn/tutorials/784165-how-to-encrypt-email-in-linux/">https://www.linux.com/learn/tutorials/784165-how-to-encrypt-email-in-linux/</a></strong></p>
+<p>如果你曾想過要加密你的電子郵件，眾多的電郵服務與郵件程式可能已經把你搞得一頭霧水。有兩種不同層次的加密：SSL/TLS 加密用來保障你登入電郵伺服器的帳號和密碼。GnuPG 則是標準的強 Linux 加密工具，可以用來加密與驗證你的訊息。最好你能自行管理你的 GPG 加密，而不需假手他人，我們稍後會加以討論。</p>
+<p>由於郵件標頭必須保持原狀，加密訊息仍然無法讓你免於遭到流量分析。這使得 Tor 網路這類能夠隱藏你在網路上行蹤的工具成為必須。就讓我們來檢視各種郵件服務與程式，以及其中的優缺點。</p>
+
+<h3 id="-webmail-">忘掉 Webmail 吧</h3>
+<p>如果你使用 GMail、Yahoo、Hotmail 或其他網路郵件供應商，忘了它們吧。你在網路瀏覽器敲下的每一個字，都暴露在 JavaScript 攻擊的危險，以及服務供應商從事的壞勾當之中。GMail、Yahoo、Hotmail 全都提供了 SSL/TLS 加密來保障你的訊息不被竊取。但是它們的保護並不及於它們自己的資料挖掘作業，因此它們不提供端對端的加密。Yahoo 與 Google 都宣稱會在明年推出端對端的加密。對此我抱持存疑態度，因為資料挖掘可說是它們的核心業務，受到干預等於影響它們的存續。</p>
+<p>有若干第三方的電郵安全服務如 Virtru 與 SafeMess，宣稱能夠為所有類型的電郵提供安全加密。對此我再次抱持存疑，因為掌握你加密金鑰的人可以存取你的訊息，因此你仍然依賴對它們的信賴而非技術本身。</p>
+<p>端點傳訊 (Peer messaging) 可以避免掉使用集中式服務的缺陷。RetroShare 和 Bitmessage 是其中比較有名的例子。我不清楚它們是否做到了宣稱的功能，不過這個概念的確有其優點。</p>
+<p>那麼 Android 與 iOS 呢？最安全的假設是，大多數的 Android 與 iOS 應用程式對你都是有所圖的。不過我說的不一定都是對的，閱讀它們的服務條款並檢視它們安裝時要求的權限。即使你第一次安裝時它們的條款看來無害，鑑於單方面更改服務條款可說是產業標準，最好還是設想最壞的情況。</p>
+<h3 id="-">一無所悉</h3>
+<p>Proton Mail 是一個宣稱零知 (zero-knowledge) 訊息加密的新電郵服務。認證與訊息加密是兩個不同的程序，Proton 受到瑞士隱私法管轄，他們並不記錄用戶的活動。零知加密提供了真正的安全性。這表示只有你握有你的加密金鑰，一旦你搞丟了金鑰，你的訊息將無法回復。</p>
+<p>有許多加密電郵服務宣稱會保障你的隱私。留意閱讀條款下的小字，注意可能有問題的部分，例如有限的使用者資料收集、夥伴共享、與執法部門的合作等等。這意味著他們會收集並分享使用者資料，並且存取你的加密金鑰來讀取你的訊息。</p>
+<h3 id="linux-">Linux 郵件程式</h3>
+<p>獨立的開源郵件程式，如 KMail、Thunderbird、Mutt、Claws、Evolution、Sylpheed、Alpine，在設定好你的 GnuPG 金鑰後，可以給你最多的保障。設定更安全的郵件與上網環境，最簡單的方式就是使用 TAILS 即用 Linux 散佈套件。</p>
+<p>不論你用的是 TAILS 或標準 Linux 散佈套件，管理 GnuPG 的方法都是一樣的。接下來讓我們看看如何用 GnuPG 加密訊息。</p>
+<h3 id="-gnupg">如何使用 GnuPG</h3>
+<p>一開始先介紹一下各種用語。OpenPGP 是開放的電郵加密與認證協定，其基礎是 Phil Zimmerman 的 Pretty Good Privacy (PGP)。GNU Privacy Guard (GnuPG 或 GPG) 是 OpenPGP 的 GPL 實作。GnuPG 使用了對稱式公開金鑰加密技術。你會設定一對金鑰：包括一把公開金鑰可以讓其他人用來加密要寄給你的訊息，以及一把你才有的私有金鑰，可用以解密訊息。GnuPG 執行兩種不同的功能：加密訊息，以及對訊息加以數位簽章，可以證明訊息的確出自於你。所有人都可以讀取經過你數位簽章的訊息，但是只有和你交換過金鑰的人，才能讀取你加密過的訊息。記得，絕對不要公開你的私有金鑰，只有公開金鑰才能給別人。</p>
+<p>Seahorse 是 GNOME 的 GnuPG 圖形化前端，KGpg 則是 KDE 的 GnuPG 圖形化工具。</p>
+<p>現在讓我們練習一次用產生與管理 GnuPG 金鑰的基本程序。產生新金鑰的指令是：</p>
+<pre><code>    $ gpg --gen-key
+</code></pre>
+<p>這個程序有很多步驟。只管回答所有問題，多數人用預設答案即可。當你產生你的密碼時，將其寫下並收在安全的地方，一旦你遺失該密碼，你就無法執行解密了。有關不要寫下密碼的所有建議都是錯的。我們大多數人都有十幾個帳號密碼要記得，包括一些很少用到的，要記得所有帳號密碼事實上是強人所難。你知道當人們選擇不寫下密碼時會發生什麼事嗎？他們會挑很簡單的密碼並重複使用。你存在電腦上的所有東西都可能被竊取。即使一部放在上鎖抽屜裡的小筆電，也難以免於物理入侵。</p>
+<p>你得自行設定你的電郵程式來使用你的新金鑰，因為每一套程式都不一樣。你可以列出你所有的金鑰：</p>
+<pre><code>    $ gpg --list-keys
+    /home/carla/.gnupg/pubring.gpg
+    ------------------------------
+    pub   2048R/587DD0F5 2014-08-13
+    uid                  Carla Schroder (my gpg key) 
+    sub   2048R/AE05E1E4 2014-08-13
+</code></pre>
+<p>這是一個快速找出必要資訊的方式，像是你的金鑰的所在位置、你的金鑰名稱，也就是 UID。假設你現在要把你的公開金鑰上傳的某個金鑰伺服器，以我的範例金鑰，就像這樣：</p>
+<pre><code>    $ gpg --send-keys 'Carla Schroder' --keyserver https://example.com
+</code></pre>
+<p>當你為了上傳到公開金鑰伺服器而建立新的金鑰時，你應該同時產生撤銷憑證 (revocation certificate)。不要事後才做，當你產生金鑰時就做。你可以給它指定任意名稱，因此你可以給它一個有描述力的名稱像是 mycodeproject.asc，而非 revoke.asc：</p>
+<pre><code>    $ gpg --output revoke.asc --gen-revoke 'Carla Schroder'
+</code></pre>
+<p>當你的金鑰遭到洩露，你可以把撤銷憑證匯入鑰匙圈 (keyring) 來撤銷它：</p>
+<pre><code>    $ gpg --import ~/.gnupg/revoke.asc
+</code></pre>
+<p>接著再產生並上傳新的金鑰作為取代。使用你的舊金鑰的使用者，當他們更新金鑰資料庫時會收到通知。</p>
+<p>你必須用和私有金鑰同樣態度來保管你的撤銷憑證。把它複製到 CD 或 USB 隨身碟然後鎖起來，並且從電腦裡刪除。因為它是純文字的金鑰，因此你甚至可以印到紙上。</p>
+<p>如果你需要複製與貼上用的金鑰，例如在公開鑰匙圈上，以便把金鑰貼到網站表單上，或者你希望把你的公開金鑰發佈在你的網站上，那麼你必須為你的公開金鑰產生 ASCII 版本：</p>
+<pre><code>    $ gpg --output carla-pubkey.asc --export -a 'Carla Schroder'
+</code></pre>
+<p>這樣做產生的純文字公開金鑰，你可能看過，就像這個縮短後的例子：</p>
+<pre><code>    -----BEGIN PGP PUBLIC KEY BLOCK-----
+    Version: GnuPG v1
+    mQENBFPrn4gBCADeEXKdrDOV3AFXL7QQQ+i61rMOZKwFTxlJlNbAVczpawkWRC3l
+    IrWeeJiy2VyoMQ2ZXpBLDwGEjVQ5H7/UyjUsP8h2ufIJt01NO1pQJMwaOMcS5yTS
+    [...]
+    I+LNrbP23HEvgAdNSBWqa8MaZGUWBietQP7JsKjmE+ukalm8jY8mdWDyS4nMhZY=
+    =QL65
+    -----END PGP PUBLIC KEY BLOCK-----
+</code></pre>
+<p>以上應該可以作為你學習 GnuPG 的開始。<a href="https://www.gnupg.org/documentation/manuals.html">GnuPG</a> 手冊有使用 GnuPG 的完整細節與所有選項。</p>
+			<!-- Show relate article -->
+		<br><br><h4>您也許有興趣閱讀以下文章:</h4><ul><li><a href='../../foss-programs/9009.html'>如何在 Linux 與 GnuCash 上使用 Awk 進行文字搜尋與排序</a> - <span class='date-posted'>2013-06-25</span></li><li><a href='../../foss-programs/8628.html'>如何在 Linux 底下找到想找的東西？</a> - <span class='date-posted'>2012-03-01</span></li></ul>		<!-- end -->
+		<div class="article_note">
+		<!-- Add tags use metakey, and show OSSF Newsletter tag: OSSFNL+NUM-->
+		<br><br> <hr style='border: 1px dashed #D2DADB;'><b>自由軟體鑄造場電子報&nbsp;:</b>&nbsp;<a href='../../previous-issue%3Ftask=view&amp;id=860.html'>第 248 期 專訪台科大「基於時脈偏移的裝置識別技術於雲端服務之研究」</a><br>				<!-- End -->
+					<br>
+					<b>分類: </b><a href="../foss-programs.html">				源碼秘技					</a>				</div>
+			 <!-- AddThis Button BEGIN ID 3001 is the front page article -->
+     			<br><br>
+       <div class="addthis_toolbox addthis_default_style addthis_32x32_style">
+       <a class="addthis_button_preferred_1"></a>
+       <a class="addthis_button_preferred_2"></a>
+       <a class="addthis_button_preferred_3"></a>
+       <a class="addthis_button_preferred_4"></a>
+       <a class="addthis_button_compact"></a>
+       <a class="addthis_counter addthis_bubble_style"></a>
+       </div>
+       <script type="text/javascript">var addthis_config = {"data_track_clickback":true};</script>
+       <script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js#pubid=openfoundry"></script>
+       <!-- AddThis Button END -->
+     <br>
+		<div class="totop" ><a class="rt-totop" href="9280-how-to-encrypt-email-on-linux%3Ftmpl=component&amp;print=1&amp;layout=default&amp;page=.html#" style="outline: medium none;">↑ Top</a></div>
+            <!-- AddThis Button END -->
+
+			</div>
+</div>
+
+						</div>
+					</div>
+				</div>
+			</div>
+		</body>
+	</html>

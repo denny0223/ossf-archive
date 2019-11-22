@@ -1,0 +1,129 @@
+	<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+	<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-gb" lang="en-gb" >
+		<head>
+			  <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+  <meta name="robots" content="noindex, nofollow" />
+  <meta name="keywords" content="OSSFNL822" />
+  <meta name="title" content="Hurd 究竟出了什麼事？GNU OS 背後的故事" />
+  <meta name="description" content="雖然 GNU 作業系統最初發想是在 1983 年，自由軟體基金會也早在 1987 年便首次宣布有意在 GNU 作業系統核心上採用 Mach 微核心，但是由卡內基梅隆大學 (Carnegie Mellon University，CMU) 開發的 Mach 微核心的程式碼，一直到 1991 年都未能以適當的授權加以釋出。Linus Torvalds 在那時開始著手為 IBM 386 撰寫" />
+  <meta name="generator" content="" />
+  <title>Hurd 究竟出了什麼事？GNU OS 背後的故事</title>
+  <link href="../../favicon.ico" rel="shortcut icon" type="image/x-icon" />
+  <link rel="stylesheet" href="../../components/com_gantry/css/gantry.css" type="text/css" />
+  <link rel="stylesheet" href="../../components/com_gantry/css/grid-12.css" type="text/css" />
+  <link rel="stylesheet" href="../../components/com_gantry/css/joomla.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/joomla.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/style1.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/light-body.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/demo-styles.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/template.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/typography.css" type="text/css" />
+  <style type="text/css">
+    <!--
+#rt-main-surround ul.menu li.active > a, #rt-main-surround ul.menu li.active > .separator, #rt-main-surround ul.menu li.active > .item, #rt-main-surround .square4 ul.menu li:hover > a, #rt-main-surround .square4 ul.menu li:hover > .item, #rt-main-surround .square4 ul.menu li:hover > .separator, .roktabs-links ul li.active span {color:#0088B5;}
+a, #rt-main-surround ul.menu a:hover, #rt-main-surround ul.menu .separator:hover, #rt-main-surround ul.menu .item:hover {color:#0088B5;}
+    -->
+  </style>
+  <script type="text/javascript" src="../../components/com_jcomments/js/jcomments-v2.1.js%3Fv=2"></script>
+  <script type="text/javascript" src="../../components/com_jcomments/libraries/joomlatune/ajax.js"></script>
+  <script type="text/javascript" src="../../media/system/js/mootools.js"></script>
+  <script type="text/javascript" src="../../media/system/js/caption.js"></script>
+  <script type="text/javascript" src="../../components/com_gantry/js/gantry-buildspans.js"></script>
+  <script type="text/javascript" src="../../components/com_gantry/js/gantry-inputs.js"></script>
+  <script type="text/javascript">
+
+			window.addEvent('domready', function() {
+				var modules = ['rt-block'];
+				var header = ['h3','h2','h1'];
+				GantryBuildSpans(modules, header);
+			});
+		InputsExclusion.push('.content_vote','#rt-popup')
+  </script>
+		</head>
+		<body  class="backgroundlevel-low backgroundstyle-style8 bodylevel-med bodystyle-light cssstyle-style1 logostyle-dark font-family-helvetica font-size-is-default menu-type-fusionmenu col12 ">
+			<div id="rt-main-surround">
+				<div class="rt-container">
+					<div class="rt-block">
+						<div id="rt-mainbody">
+					    	
+<div class="rt-joomla ">
+	<div class="rt-article">
+		
+				<div class="rt-headline"><h1 class="rt-article-title">Hurd 究竟出了什麼事？GNU OS 背後的故事</h1>		</div>
+		<div class="clear"></div>
+		
+		
+		
+				<div class="rt-articleinfo">
+						<div class="rt-article-icons">
+				<a href="8908-hurd-gnu-os-%3Ftmpl=component&amp;print=1&amp;layout=default&amp;page=.html#" onclick="window.print();return false;"><span class="icon print"></span></a>									<span class="icon printscreen">
+						<a href="8908-hurd-gnu-os-%3Ftmpl=component&amp;print=1&amp;layout=default&amp;page=.html#" onclick="window.print();return false;"><img src="../../images/M_images/printButton.png" alt="Print"  /></a>					</span>
+							</div>
+			
+			<span class="rt-date-posted">
+						 Created at			Monday, 28 January 2013 14:23						&nbsp;&nbsp;&nbsp;&nbsp;						Last Updated on Monday, 28 January 2013 14:33						</span>
+
+						<span class="rt-author">
+				Written by 謝良奇／編譯			</span>
+				
+					</div>
+		
+		
+		<p>雖然 GNU 作業系統最初發想是在 1983 年，自由軟體基金會也早在 1987 年便首次宣布有意在 GNU 作業系統核心上採用 Mach 微核心，但是由卡內基梅隆大學 (Carnegie Mellon University，CMU) 開發的 Mach 微核心的程式碼，一直到 1991 年都未能以適當的授權加以釋出。Linus Torvalds 在那時開始著手為 IBM 386 撰寫 UNIX-like 核心的專案。</p>
+
+<p>假如當時沒有出現 Linux 核心，該核心沒有採用 GPLv2 授權也沒有 GNU 作業系統各元件的協助，或者 Linux 沒有抓住那個契機以及開發者的想像力的話，Linux 周圍的動能很可能會轉向 Hurd，那麼一切都會不同。然而，Hurd 進度緩慢的原因，不只是 Linux 的崛起或 Mach 微核心的選擇而已。</p>
+<p>Hurd 的設計是將自由軟體運動的精神與承諾，在程式碼中加以體現的一項嘗試。自由軟體運動是為了將用戶，從提供軟體者手上解放出來。Hurd 的微核心架構與服務 (daemons) 的結構能安穩地為用戶解放來自系統管理者的操控。無需特殊的權限，每個用戶都可以執行一系列服務，建構用戶想要的作業環境。</p>
+<p>Richard Stallman 在 1983 年 9 月宣布撰寫完整 UNIX-like 作業系統的計劃，也就是知名的 GNU (GNU's Not Unix!)。從 1983 年到 Hurd 出現這期間，許多使該核心成為可能的工具、編輯器、編譯器、Bash、Make、Autoconf、Emacs、GCC、sed、gawk 等命令列工具陸續地被開發出來。</p>
+<p>就在 Hurd 開始進行後不到幾個月，Linus Torvalds 在 on comp.os.minix 上公開了針對 386 (486) AT 機器的自由作業系統 ，該系統當時只是業餘作品，不像 GNU 那樣龐大且專業。Torvalds 之所以選擇單一核心，並非出自純粹主義，只不過是為了能更快產生可運作核心而已。</p>
+<p>黑客、業餘愛好者、學術界人士之所以被 Linux 核心吸引而投入協助其開發，作為自由軟體、採用 GPLv2 授權，加上選擇大眾普遍擁有的硬體是主要原因。Linux 與其社群的成長速度快得驚人，並促成 GNU/ Linux。儘管 GNU Hurd 的開發仍持續，步調卻緩慢得多。</p>
+<p>從使用者角度來看，Hurd 看來需要漫長的等待，Linux 開發者於是採用 Linux 填補 GNU 作業系統中心，本應該由 Hurd 佔據的空間。Stallman 對此一開始抱持懷疑。早期 Linux 僅能在 IBM 386 上執行，對此 Stallman 表示，我們聽說 Linux 並非完全可攜，而且採用和 UNIX 核心相同架構，相較之下我們的作品更加強大許多。</p>
+<p>Linux 依賴 GCC 和 GNU 工具，其知名度隨眾多散佈套件出現而提高，自由軟體基金會開始將 Linux 視為 GNU 作業系統核心可接受的替代品。Hurd 的開發雖然持續進行，但顯然自由軟體基金會已經選擇了不同的方向。該微核心出現一系列需要克服的問題，有可能參與其中的人紛紛轉向具有可用性且成果豐碩的 Linux。Torvalds 在 Linux 上選擇單一核心，使得它更為輕易地成為可運作的自由作業系統。</p>
+<p>Stallman 之後也承認，開發基於 Mach 的 GNU 核心的技術決定完全是他的責任，這個決定似乎延緩了開發工作。他認為使用 Mach 可以節省許多工作而加速開發，但他錯了。</p>
+<p>Hurd 預計在 1994 年會首度問世，並計劃於 2001 年釋出，但這些承諾從未實現。從 1998 年起，Debian GNU/Hurd 成為 Debian 社群中的活躍專案，該社群提供安裝 CD 與 live CD，可被視為目前 Hurd 開發狀態的認可版本，雖然依舊並非官方 Debian 釋出。Hurd 未達生產品質，且在硬體支援上有著許多限制，儘管如此還是可以並且值得在虛擬環境中執行看看。</p>
+<p>Richard Stallman 說過 GNU 核心一開始並不叫做 Hurd。它最初稱為 Alix，是以當時他的情人來命名，這個她曾指出自己的名字很符合 UNIX 系統版本的一般命名規則。所以她跟朋友開玩笑說，應該用她的名字為核心命名。Stallman 於是決定用 Alix 命名核心給她驚喜。</p>
+<p>不過之後核心主要開發者 Michael (現在是 Thomas) Bushnell 較喜歡 Hurd 這個名字，Alix 被改以指稱核心中攔截系統呼叫，並發送訊息至 Hurd 伺服器加以處理的部分。</p>
+<p>之後 Stallman 跟 Alix 分手，她也改了名字。恰巧的是，Hurd 設計也有所更動，C 程式庫會直接發送訊息至伺服器，這使得 Alix 元件消失在設計中。</p>
+<p>Bushnell 選擇 Hurd 這個名字，部分因為 Hurd 念起來像 Herd，有一群 GNU 的意思，部分因為 Hurd 是 'Hird of Unix-Replacing Daemons' 的遞迴首字母縮寫，而 Hird 是 'Hurd of Interfaces Representing Depth' 的遞迴首字母縮寫。如 Bushnell 所說，這是第一套以成對相互遞迴首字母縮寫命名的軟體。</p>
+<p>與 Linux 的單一核心不同，Hurd 使用微核心，許多功能從 kernel space 移至 userland。微核心位於硬體以及多數被認為是單一核心的功能之間。</p>
+<p>Hurd 早期主要架構師之一的 Thomas Bushnell，在他於 1996 年撰寫的論文 'Towards a New Strategy of OS design' 中總結了此一理論。他寫道，GNU Hurd 的設計讓系統程式碼區域盡可能受限，程式只能與核心少數基本部分溝通，系統其餘部分可動態更換。</p>
+<p>GNU 一開始發想時，顯而易見的解決方案是找一個已經在公眾領域的現成核心。Stallman 最初的選擇是在 MIT 開發的 TRIX。其他想法包括使用 Berkeley 的 Sprite 作業系統與 BSD 核心。</p>
+<p>Bushnell 表示他第一個選擇是以 BSD 4.4-Lite 釋出製作核心，他了解其程式碼，知道如何進行。對他而言這很顯然會有好的結果，將改變今日所有的一切。Stallman 希望與來自 Berkeley 的人員共事。雖然有些人表示有興趣，但有部分人似乎故意在拖延時間，從現在看來，其原因似乎是他們打算創立 BSDI。以 4.4-Lite 為基礎的 GNU 將影響到 BSDI。</p>
+<p>正如 Bushnell 所描述，Stallman 最後下了結論說，Mach 是一套可運作的核心，4.4-Lite 還不完整，我們就用 Mach 吧。</p>
+<br />
+<h3>相關網址</h3>
+<ol>
+<li>Hurd 究竟出了什麼事？該 GNU OS 背後的故事<br /> <a target="_blank" href="https://www.linuxuser.co.uk/features/whatever-happened-to-the-hurd-the-story-of-the-gnu-os">https://www.linuxuser.co.uk/features/whatever-happened-to-the-hurd-the-story-of-the-gnu-os</a></li>
+</ol>
+			<!-- Show relate article -->
+				<!-- end -->
+		<div class="article_note">
+		<!-- Add tags use metakey, and show OSSF Newsletter tag: OSSFNL+NUM-->
+		<br><br> <hr style='border: 1px dashed #D2DADB;'><b>OSSF Newsletter&nbsp;:</b>&nbsp;<a href='../../previous-issue%3Ftask=view&amp;id=822.html'>第 213 期 簡論「轉授權／再授權」於公眾授權領域的效力與應用方式</a><br>				<!-- End -->
+					<br>
+					<b>Category: </b><a href="../foss-forum.html">				FOSS Forum					</a>				</div>
+			 <!-- AddThis Button BEGIN ID 3001 is the front page article -->
+     			<br><br>
+       <div class="addthis_toolbox addthis_default_style addthis_32x32_style">
+       <a class="addthis_button_preferred_1"></a>
+       <a class="addthis_button_preferred_2"></a>
+       <a class="addthis_button_preferred_3"></a>
+       <a class="addthis_button_preferred_4"></a>
+       <a class="addthis_button_compact"></a>
+       <a class="addthis_counter addthis_bubble_style"></a>
+       </div>
+       <script type="text/javascript">var addthis_config = {"data_track_clickback":true};</script>
+       <script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js#pubid=openfoundry"></script>
+       <!-- AddThis Button END -->
+     <br>
+		<div class="totop" ><a class="rt-totop" href="8908-hurd-gnu-os-%3Ftmpl=component&amp;print=1&amp;layout=default&amp;page=.html#" style="outline: medium none;">↑ Top</a></div>
+            <!-- AddThis Button END -->
+
+			</div>
+</div>
+
+						</div>
+					</div>
+				</div>
+			</div>
+		</body>
+	</html>

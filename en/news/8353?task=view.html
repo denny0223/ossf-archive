@@ -1,0 +1,579 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-gb" lang="en-gb" >
+<head>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<link rel="shortcut icon" href="../../images/favicon.ico" />
+	  <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+  <meta name="robots" content="index, follow" />
+  <meta name="keywords" content="OSSFNL734" />
+  <meta name="title" content="用自由軟體 Plone 來架設網站 (6)－動態網頁" />
+  <meta name="description" content="在前篇文章裡，我們已經建置了 Event Folder 和 Signup 兩個型別，接著，仍要依照專案需求，繼續調整功能及程式邏輯。展現網站功能的時候，我們總希望它能緊密結合視覺設計成果，另一方面，套用新的視覺設計時，會希望它不影響既有的程式邏輯。那麼 Plone 如何做到這個要求？控制視覺設計的檔案又放在哪裡呢？ Plone" />
+  <meta name="generator" content="" />
+  <title>用自由軟體 Plone 來架設網站 (6)－動態網頁 - OpenFoundry</title>
+  <link href="../../favicon.ico" rel="shortcut icon" type="image/x-icon" />
+  <link rel="stylesheet" href="../../components/com_gantry/css/gantry.css" type="text/css" />
+  <link rel="stylesheet" href="../../components/com_gantry/css/grid-12.css" type="text/css" />
+  <link rel="stylesheet" href="../../components/com_gantry/css/joomla.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/joomla.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/style1.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/light-body.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/demo-styles.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/template.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/typography.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/fusionmenu.css" type="text/css" />
+  <style type="text/css">
+    <!--
+#rt-main-surround ul.menu li.active > a, #rt-main-surround ul.menu li.active > .separator, #rt-main-surround ul.menu li.active > .item, #rt-main-surround .square4 ul.menu li:hover > a, #rt-main-surround .square4 ul.menu li:hover > .item, #rt-main-surround .square4 ul.menu li:hover > .separator, .roktabs-links ul li.active span {color:#0088B5;}
+a, #rt-main-surround ul.menu a:hover, #rt-main-surround ul.menu .separator:hover, #rt-main-surround ul.menu .item:hover {color:#0088B5;}
+    -->
+  </style>
+  <script type="text/javascript" src="../../components/com_jcomments/js/jcomments-v2.1.js%3Fv=2"></script>
+  <script type="text/javascript" src="../../components/com_jcomments/libraries/joomlatune/ajax.js"></script>
+  <script type="text/javascript" src="../../media/system/js/mootools.js"></script>
+  <script type="text/javascript" src="../../media/system/js/caption.js"></script>
+  <script type="text/javascript" src="../../components/com_gantry/js/gantry-buildspans.js"></script>
+  <script type="text/javascript" src="../../components/com_gantry/js/gantry-inputs.js"></script>
+  <script type="text/javascript" src="../../templates/rt_quantive_j15/js/jquery.cookie.js"></script>
+  <script type="text/javascript" src="../../modules/mod_roknavmenu/themes/fusion/js/fusion.js"></script>
+  <script type="text/javascript" src="../../modules/mod_ofssologin/js/ofssologin.js"></script>
+  <script type="text/javascript">
+
+			window.addEvent('domready', function() {
+				var modules = ['rt-block'];
+				var header = ['h3','h2','h1'];
+				GantryBuildSpans(modules, header);
+			});
+		InputsExclusion.push('.content_vote','#rt-popup')
+		        window.addEvent('load', function() {
+					new Fusion('ul.menutop', {
+						pill: 0,
+						effect: 'slide and fade',
+						opacity: 1,
+						hideDelay: 500,
+						centered: 0,
+						tweakInitial: {'x': -2, 'y': 0},
+        				tweakSubsequent: {'x': 0, 'y': -14},
+						menuFx: {duration: 200, transition: Fx.Transitions.Sine.easeOut},
+						pillFx: {duration: 400, transition: Fx.Transitions.Back.easeOut}
+					});
+	            });
+  </script>
+<!-- <script type="text/javascript" src="/sso/javascripts/langsync.js"></script> -->
+<!-- <script src="/templates/rt_quantive_j15/js/ossf.js"></script> -->
+<script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-4136519-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
+</head>
+	<body  class="backgroundlevel-low backgroundstyle-style8 bodylevel-med bodystyle-light cssstyle-style1 logostyle-dark font-family-helvetica font-size-is-default menu-type-fusionmenu col12 ">
+		<div id="rt-main-background">
+			<div class="rt-container">
+																<div id="rt-header">
+					<div class="rt-grid-7 rt-alpha">
+    			<div class="rt-block">
+    	    	<a href="../../index.html" id="rt-logo"></a>
+    		</div>
+	    
+</div>
+<div class="rt-grid-5 rt-omega">
+                    <div class="square9">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<div class="ofssologin_square9"><a href="../../index.html">Login</a>&nbsp;&nbsp|&nbsp;&nbsp;<span><a href="https://www.openfoundry.org/tw/news/8353?task=view" ><span lang="tw" xml:lang="tw">繁體中文</span></a></li></ul></span><!--Joom!fish V2.0.4 (Lightning)-->
+<!-- &copy; 2003-2009 Think Network, released under the GPL. -->
+<!-- More information: at http://www.joomfish.net -->
+<div class="ofssologin_search_square9">
+  <form id="of_search" action="https://www.openfoundry.org/of/openfoundry/search" method="get" onsubmit="of_search(); return false;">
+    <select id="of_search_type">
+      <option value="Projects"> Projects </option>
+      <option value="Content"> Content </option>
+      <option value="People"> People </option>
+    </select>
+    <input id="query" name="query" id="mod_search_searchword" maxlength="50" alt="search" class="inputbox" type="text" size="28" value="search..."  onblur="if(this.value=='') this.value='search...';" onfocus="if(this.value=='search...') this.value='';" />
+    <input type="hidden" name="commit" value="search" />
+  </form>
+</div></div>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		
+</div>
+					<div class="clear"></div>
+				</div>
+																<div id="rt-navigation"><div id="rt-navigation2"><div id="rt-navigation3">
+					
+<div class="nopill">
+	<ul class="menutop level1 " >
+						<li class="item1 root" >
+					<a class="orphan item bullet" href="../../index.html"  >
+				<span>
+			    				Home				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item32 root" >
+					<a class="orphan item bullet" href="../../archived.html"  >
+				<span>
+			    				Projects				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item186 root" >
+					<a class="orphan item bullet" href="../community.html"  >
+				<span>
+			    				Who&#039;s Who				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item4 root" >
+					<a class="orphan item bullet" href="../news.html"  >
+				<span>
+			    				News				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item5 root" >
+					<a class="orphan item bullet" href="../law-and-licensing.html"  >
+				<span>
+			    				Law &amp; Licensing				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item3 root" >
+					<a class="orphan item bullet" href="../activities.html"  >
+				<span>
+			    				Activities				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item2 root" >
+					<a class="orphan item bullet" href="../resourcecatalog.html"  >
+				<span>
+			    				Resource Catalog				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item45 root" >
+					<a class="orphan item bullet" href="../about.html"  >
+				<span>
+			    				About				   
+				</span>
+			</a>
+			
+			
+	</li>	
+				</ul>
+</div>
+
+				    <div class="clear"></div>
+				</div></div></div>
+								<div class="rt-surround"><div class="rt-surround2"><div class="rt-surround3">
+										<div id="rt-showcase-section">
+												<div id="rt-showcase">
+							<div class="rt-grid-12 rt-alpha rt-omega">
+    		<div class="clear"></div>
+		
+		
+                <div class="close-note">
+                    <div class="rt-block">
+               					<div class="module-content">
+                	<div style="font-size:medium; background-image:linear-gradient(120deg,#159957,#4298b2);color:white;padding:20px;margin:-10px -18px;">感謝您對「自由軟體鑄造場」的支持與愛護，十多年來「自由軟體鑄造場」受中央研究院支持，並在資訊科學研究所以及資訊科技創新研究中心執行，現已完成階段性的任務。 本網站預計持續維運至 2021年底，網站內容基本上不會再更動。<br />也紀念我們永遠的朋友 李士傑先生（Shih-Chieh Ilya Li）。</div>				</div>
+            </div>
+                </div>
+		
+</div>
+							<div class="clear"></div>
+						</div>
+																	</div>
+															<div id="rt-main-surround">
+												<div id="rt-breadcrumbs">
+								<div class="rt-breadcrumb-surround">
+		<a href="../../index.html" id="breadcrumbs-home"></a>
+		<span class="breadcrumbs pathway">
+<span class="no-link">News</span></span>
+	</div>
+	
+							<div class="clear"></div>
+						</div>
+																							              <div id="rt-main" class="sa3-mb9">
+                <div class="rt-main-inner">
+                    <div class="rt-grid-9 rt-push-3">
+                                                <div class="rt-block">
+                            							<div class="square1">
+							<div class="rt-module-surround">
+								<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+								<div class="rt-module-inner">
+		                            <div id="rt-mainbody">
+		                                
+<div class="rt-joomla ">
+	<div class="rt-article">
+		
+				<div class="rt-headline"><h1 class="rt-article-title">用自由軟體 Plone 來架設網站 (6)－動態網頁</h1>		</div>
+		<div class="clear"></div>
+		
+		
+		
+				<div class="rt-articleinfo">
+						<div class="rt-article-icons">
+								<a href="https://www.openfoundry.org/en/news/8353--plone-6?tmpl=component&amp;print=1&amp;page=" title="Print" onclick="window.open(this.href,'win2','status=no,toolbar=no,scrollbars=yes,titlebar=no,menubar=no,resizable=yes,width=640,height=480,directories=no,location=no'); return false;" rel="nofollow"><span class="icon print"></span></a>																</div>
+			
+			<span class="rt-date-posted">
+						 Created at			Thursday, 09 June 2011 18:27						&nbsp;&nbsp;&nbsp;&nbsp;						Last Updated on Wednesday, 12 October 2011 11:35						</span>
+
+						<span class="rt-author">
+				Written by marr			</span>
+				
+					</div>
+		
+		
+		<p style="margin-bottom: 0cm;">在前篇文章裡，我們已經建置了 <span style="font-family: DejaVu Serif,serif;">Event Folder </span>和 <span style="font-family: DejaVu Serif,serif;">Signup </span>兩個型別，接著，仍要依照專案需求，繼續調整功能及程式邏輯。展現網站功能的時候，我們總希望它能緊密結合視覺設計成果，另一方面，套用新的視覺設計時，會希望它不影響既有的程式邏輯。那麼 <span style="font-family: DejaVu Serif,serif;">Plone </span>如何做到這個要求？控制視覺設計的檔案又放在哪裡呢？</p>
+<p style="margin-bottom: 0cm;"><span style="font-family: DejaVu Serif,serif;"><br /></span></p>
+<p style="margin-bottom: 0cm;"><span style="font-family: DejaVu Serif,serif;">Plone </span>系統預設的網頁呈現效果，著重在功能上，而且緊扣著內容管理的動線邏輯，這在 <span style="font-family: DejaVu Serif,serif;">Intranet </span>的場合，可能已經足夠，但在對外服務的網站場合，通常需要調整頁面。在本文裡，我們將介紹佈景主題、視覺元件、動態網頁的相關技巧。</p>
+
+<p> </p>
+<p style="margin-bottom: 0cm;"> </p>
+<h2 style="margin-bottom: 0cm;">準備工作</h2>
+<p style="margin-bottom: 0cm;"> </p>
+<p style="margin-bottom: 0cm;">之前介紹過 <span style="font-family: DejaVu Serif,serif;">buildout.cfg </span>檔案，裡面有個 <span style="font-family: DejaVu Serif,serif;">debug-mode </span>參數，記得要指定為 <span style="font-family: DejaVu Serif,serif;">on</span>，執行 <span style="font-family: DejaVu Serif,serif;">bin/buildout </span>生效後，它會動態記錄在 <span style="font-family: DejaVu Serif,serif;">parts/instance/etc/zope.conf </span>裡面，線上的 <span style="font-family: DejaVu Serif,serif;">Plone </span>就會即時反應 <span style="font-family: DejaVu Serif,serif;">HTML </span>和 <span style="font-family: DejaVu Serif,serif;">CSS </span>的修改結果，在 <span style="font-family: DejaVu Serif,serif;">ZMI </span>的 <span style="font-family: DejaVu Serif,serif;">portal_css </span>或 <span style="font-family: DejaVu Serif,serif;">portal_javascripts </span>裡，也看得到 <span style="font-family: DejaVu Serif,serif;">Development mode </span>選項啟用中，如圖<span style="font-family: DejaVu Serif,serif;">1 </span>所示。</p>
+<p style="margin-bottom: 0cm;"> </p>
+<p style="margin-bottom: 0cm;"><a href="../../images/110614/Plone6/plone&#32;6_01.png" target="_blank"><img src="../../images/110614/Plone6/plone&#32;6_01.png" border="0" /></a></p>
+<p style="margin-bottom: 0cm;">▲ 圖<span style="font-family: DejaVu Serif,serif;">1 portal_css </span>的 <span style="font-family: DejaVu Serif,serif;">Development mode </span>選項</p>
+<p style="margin-bottom: 0cm;"> </p>
+<p style="margin-bottom: 0cm;">瀏覽器通常會搭載輔助工具，協助存取 <span style="font-family: DejaVu Serif,serif;">HTML</span>、<span style="font-family: DejaVu Serif,serif;">CSS</span>、<span style="font-family: DejaVu Serif,serif;">JavaScript </span>檔案資源，以 <span style="font-family: DejaVu Serif,serif;">Firefox </span>為例，搭配安裝 <span style="font-family: DejaVu Serif,serif;">Firebug </span>後，利用 <span style="font-family: DejaVu Serif,serif;">inspect </span>選項檢視 <span style="font-family: DejaVu Serif,serif;">layout </span>和網頁元件，或是離線編輯 <span style="font-family: DejaVu Serif,serif;">HTML </span>和 <span style="font-family: DejaVu Serif,serif;">CSS </span>內容，都能帶來事半功倍之效，如圖<span style="font-family: DejaVu Serif,serif;">2 </span>所示。</p>
+<p style="margin-bottom: 0cm;"> </p>
+<p style="margin-bottom: 0cm;"><a href="../../images/110614/Plone6/plone&#32;6_02.png" target="_blank"><img src="../../images/110614/Plone6/plone&#32;6_02.png" border="0" width="441" height="313" /></a></p>
+<p style="margin-bottom: 0cm;">▲ 圖<span style="font-family: DejaVu Serif,serif;">2 Firebug </span>操作畫面範例</p>
+<p style="margin-bottom: 0cm;"> </p>
+<p style="margin-bottom: 0cm;">以上只是最基本的選項及工具，想要調整更多項目，當然可以搭配其他工具，或是自行閱讀工具的細項說明。</p>
+<p><br /><br /></p>
+<h2>佈景主題</h2>
+<p style="margin-bottom: 0cm;"> </p>
+<p style="margin-bottom: 0cm;">我們把 <span style="font-family: DejaVu Serif,serif;">Theme </span>稱為「佈景主題」，它是網站整體視覺設計的成果，包括 <span style="font-family: DejaVu Serif,serif;">layout</span>、<span style="font-family: DejaVu Serif,serif;">color</span>、<span style="font-family: DejaVu Serif,serif;">icon </span>之類的設計元素，還有 <span style="font-family: DejaVu Serif,serif;">page template</span>、<span style="font-family: DejaVu Serif,serif;">style sheet</span>、<span style="font-family: DejaVu Serif,serif;">image</span>、<span style="font-family: DejaVu Serif,serif;">javascript </span>資源檔案。</p>
+<p style="margin-bottom: 0cm;"><span style="font-family: DejaVu Serif,serif;">Plone 4.0.x </span>預設的佈景主題稱為 <span style="font-family: DejaVu Serif,serif;">Sunburst</span>，值得一提的是，部份功能使用 <span style="font-family: DejaVu Serif,serif;">AJAX </span>效果，畫面外觀如圖<span style="font-family: DejaVu Serif,serif;">3 </span>所示。</p>
+<p style="margin-bottom: 0cm;"> </p>
+<p style="margin-bottom: 0cm;"><a href="../../images/110614/Plone6/plone&#32;6_03.png" target="_blank"><img src="../../images/110614/Plone6/plone&#32;6_03.png" border="0" width="461" height="444" /></a></p>
+<p style="margin-bottom: 0cm;">▲ 圖<span style="font-family: DejaVu Serif,serif;">3 Sunburst </span>佈景主題畫面</p>
+<p style="margin-bottom: 0cm;"> </p>
+<p style="margin-bottom: 0cm;"><span style="font-family: DejaVu Serif,serif;">Sunburst </span>的 <span style="font-family: DejaVu Serif,serif;">layout </span>概分為四個區塊，如圖<span style="font-family: DejaVu Serif,serif;">4 </span>所示。</p>
+<p style="margin-bottom: 0cm;"><span style="font-family: DejaVu Serif,serif;">1. </span>表頭區塊</p>
+<p style="margin-bottom: 0cm;"><span style="font-family: DejaVu Serif,serif;">2. </span>主要內容區塊</p>
+<p style="margin-bottom: 0cm;"><span style="font-family: DejaVu Serif,serif;">3. </span>資訊方框區塊</p>
+<p style="margin-bottom: 0cm;"><span style="font-family: DejaVu Serif,serif;">4. </span>表尾區塊</p>
+<p style="margin-bottom: 0cm;"> </p>
+<p style="margin-bottom: 0cm;"><a href="../../images/110614/Plone6/plone&#32;6_04.png" target="_blank"><img src="../../images/110614/Plone6/plone&#32;6_04.png" border="0" width="462" height="364" /></a></p>
+<p style="margin-bottom: 0cm;">▲ 圖<span style="font-family: DejaVu Serif,serif;">4 Sunburst </span>的 <span style="font-family: DejaVu Serif,serif;">layout </span>示意</p>
+<p style="margin-bottom: 0cm;"> </p>
+<p style="margin-bottom: 0cm;">就既有的系統架構而言，佈景主題是 <span style="font-family: DejaVu Serif,serif;">Plone </span>裡的一個模組，想換佈景主題，跟啟用新模組的步驟一樣，先在 <span style="font-family: DejaVu Serif,serif;">buildout.cfg </span>加上模組名稱，下載安裝後，再到 <span style="font-family: DejaVu Serif,serif;">Plone Setup </span>的 <span style="font-family: DejaVu Serif,serif;">Theme settings </span>裡選定想要的佈景主題，如圖<span style="font-family: DejaVu Serif,serif;">5 </span>所示。</p>
+<p style="margin-bottom: 0cm;"> </p>
+<p style="margin-bottom: 0cm;"><a href="../../images/110614/Plone6/plone&#32;6_05.png" target="_blank"><img src="../../images/110614/Plone6/plone&#32;6_05.png" border="0" /></a></p>
+<p style="margin-bottom: 0cm;">▲ 圖<span style="font-family: DejaVu Serif,serif;">5 </span>佈景主題設定畫面</p>
+<p style="margin-bottom: 0cm;"> </p>
+<p style="margin-bottom: 0cm;">在 <span style="font-family: DejaVu Serif,serif;">Default theme </span>下拉選單裡，可以看到 <span style="font-family: DejaVu Serif,serif;">Plone Classic Theme </span>選項，它是 <span style="font-family: DejaVu Serif,serif;">Plone 4.0.x </span>以前的預設佈景主題。</p>
+<p style="margin-bottom: 0cm;"> </p>
+<p style="margin-bottom: 0cm;"> </p>
+<h2 style="margin-bottom: 0cm;">視覺元件的處理</h2>
+<p style="margin-bottom: 0cm;"> </p>
+<p style="margin-bottom: 0cm;">由於佈景主題模組裡的許多元件，也都適合獨立介紹和運作，因此，我們另外將它們統稱為視覺元件。目前 <span style="font-family: DejaVu Serif,serif;">Plone </span>處理視覺元件的架構，整理如圖<span style="font-family: DejaVu Serif,serif;">6 </span>所示。</p>
+<p style="margin-bottom: 0cm;"> </p>
+<p style="margin-bottom: 0cm;"><a href="../../images/110614/Plone6/plone&#32;6_06.png" target="_blank"><img src="../../images/110614/Plone6/plone&#32;6_06.png" border="0" width="497" height="262" /></a></p>
+<p style="margin-bottom: 0cm;">▲ 圖<span style="font-family: DejaVu Serif,serif;">6 Plone </span>視覺元件架構</p>
+<p style="margin-bottom: 0cm;"> </p>
+<p style="margin-bottom: 0cm;">實作視覺元件時，具體的方式主要分成四類：</p>
+<p style="margin-bottom: 0cm;"><span style="font-family: DejaVu Serif,serif;">1</span>．<span style="font-family: DejaVu Serif,serif;">Skin Layer </span>方式－通常是透過 <span style="font-family: DejaVu Serif,serif;">ZMI </span>的 <span style="font-family: DejaVu Serif,serif;">portal_skins </span>目錄，編輯裡面的 <span style="font-family: DejaVu Serif,serif;">Page Template</span>、<span style="font-family: DejaVu Serif,serif;">CSS</span>、<span style="font-family: DejaVu Serif,serif;">Python Script</span>。這個機制屬於舊的方式，它的功能可以完整由下列的其他方式取代。</p>
+<p style="margin-bottom: 0cm;"><span style="font-family: DejaVu Serif,serif;">2</span>．<span style="font-family: DejaVu Serif,serif;">Browser View </span>方式－<span style="font-family: DejaVu Serif,serif;">View </span>由 <span style="font-family: DejaVu Serif,serif;">Python class </span>和 <span style="font-family: DejaVu Serif,serif;">Page Template </span>組成，透過 <span style="font-family: DejaVu Serif,serif;">configure.zcml </span>檔案註冊後，可以透過 <span style="font-family: DejaVu Serif,serif;">https://localhost/mysite/@@my_view </span>的形式來執行。</p>
+<p style="margin-bottom: 0cm;"><span style="font-family: DejaVu Serif,serif;">3</span>．<span style="font-family: DejaVu Serif,serif;">Viewlet </span>方式－和 <span style="font-family: DejaVu Serif,serif;">Browser View </span>類似，但需要搭配一個 <span style="font-family: DejaVu Serif,serif;">Viewlet Manager </span>來註冊。</p>
+<p style="margin-bottom: 0cm;"><span style="font-family: DejaVu Serif,serif;">4</span>．<span style="font-family: DejaVu Serif,serif;">Portlet </span>方式－和 <span style="font-family: DejaVu Serif,serif;">Viewlet </span>類似，但可以搭配設定檔，在特定的 <span style="font-family: DejaVu Serif,serif;">Portlet Manager </span>裡顯示。它的顯示位置預設在 <span style="font-family: DejaVu Serif,serif;">layout </span>的資訊方框區塊裡。</p>
+<p style="margin-bottom: 0cm;"> </p>
+<p style="margin-bottom: 0cm;">這麼多種方式，不如找一個簡單的切入點來示範，例如我們只想調整佈景主題裡的一部份，像是取消搜尋方框的顯示，該怎樣辦呢？</p>
+<p style="margin-bottom: 0cm;"> </p>
+<p style="margin-bottom: 0cm;"> </p>
+<h2 style="margin-bottom: 0cm;"><span style="font-family: DejaVu Serif,serif;">Viewlet </span>和 <span style="font-family: DejaVu Serif,serif;">Viewlet Manager</span></h2>
+<p style="margin-bottom: 0cm;"><span style="font-family: DejaVu Serif,serif;"><br /></span></p>
+<p style="margin-bottom: 0cm;">以 <span style="font-family: DejaVu Serif,serif;">Plone </span>網站首頁為例，諸如 <span style="font-family: DejaVu Serif,serif;">logo</span>、搜尋方框、導覽列，都是一個 <span style="font-family: DejaVu Serif,serif;">Viewlet</span>，數個 <span style="font-family: DejaVu Serif,serif;">Viewlet </span>再由一個 <span style="font-family: DejaVu Serif,serif;">Viewlet Manager </span>管理。管理者可以從 <span style="font-family: DejaVu Serif,serif;">https://localhost:8080/mysite/@@manage-viewlets </span>之類的網址，進入 <span style="font-family: DejaVu Serif,serif;">Viewlet </span>管理介面，如圖<span style="font-family: DejaVu Serif,serif;">7 </span>所示。</p>
+<p style="margin-bottom: 0cm;"> </p>
+<p style="margin-bottom: 0cm;"><a href="../../images/110614/Plone6/plone&#32;6_07.png" target="_blank"><img src="../../images/110614/Plone6/plone&#32;6_07.png" border="0" width="470" height="441" /></a></p>
+<p style="margin-bottom: 0cm;">▲ 圖<span style="font-family: DejaVu Serif,serif;">7 @@manage-viewlets </span>管理介面</p>
+<p style="margin-bottom: 0cm;"> </p>
+<p style="margin-bottom: 0cm;">每個 <span style="font-family: DejaVu Serif,serif;">Viewlet </span>都有自己的名稱，像 <span style="font-family: DejaVu Serif,serif;">logo </span>的名稱是 <span style="font-family: DejaVu Serif,serif;">plone.logo</span>，每個 <span style="font-family: DejaVu Serif,serif;">Viewlet Manager </span>也有自己的名稱，像表頭區塊的名稱是 <span style="font-family: DejaVu Serif,serif;">plone.portaltop</span>。同時，<span style="font-family: DejaVu Serif,serif;">Viewlet </span>可以被指定隱藏或顯示，以 <span style="font-family: DejaVu Serif,serif;">plone.searchbox </span>為例，點擊 <span style="font-family: DejaVu Serif,serif;">Hide </span>選項後，搜尋方框就被取消顯示，另外，也可以在同一個 <span style="font-family: DejaVu Serif,serif;">Viewlet Manager </span>裡調整順序，如圖<span style="font-family: DejaVu Serif,serif;">8 </span>所示。</p>
+<p style="margin-bottom: 0cm;"> </p>
+<p style="margin-bottom: 0cm;"><a href="../../images/110614/Plone6/plone&#32;6_08.png" target="_blank"><img src="../../images/110614/Plone6/plone&#32;6_08.png" border="0" /></a></p>
+<p style="margin-bottom: 0cm;">▲ 圖<span style="font-family: DejaVu Serif,serif;">8 Viewlet </span>設定項目示範</p>
+<p style="margin-bottom: 0cm;"> </p>
+<p style="margin-bottom: 0cm;">透過 <span style="font-family: DejaVu Serif,serif;">Viewlet </span>和 <span style="font-family: DejaVu Serif,serif;">Viewlet Manager</span>，可以輕鬆管理 <span style="font-family: DejaVu Serif,serif;">Portlet </span>之外的視覺元件大項，但是，<span style="font-family: DejaVu Serif,serif;">Viewlet Manager </span>的順序和顯示與否，又是如何被控制的呢？</p>
+<p style="margin-bottom: 0cm;"> </p>
+<p style="margin-bottom: 0cm;"> </p>
+<h2 style="margin-bottom: 0cm;"><span style="font-family: DejaVu Serif,serif;">main_template</span></h2>
+<p style="margin-bottom: 0cm;"> </p>
+<p style="margin-bottom: 0cm;">在 <span style="font-family: DejaVu Serif,serif;">ZMI </span>的 <span style="font-family: DejaVu Serif,serif;">portal_skins </span>裡，點選 <span style="font-family: DejaVu Serif,serif;">Properties </span>頁籤，在畫面下方可以看到 <span style="font-family: DejaVu Serif,serif;">Default skin </span>設定為 <span style="font-family: DejaVu Serif,serif;">Sunburst Theme</span>，因此 <span style="font-family: DejaVu Serif,serif;">Sunburst Theme </span>的 <span style="font-family: DejaVu Serif,serif;">Skin Layer </span>清單項目，包括 <span style="font-family: DejaVu Serif,serif;">custom</span>、<span style="font-family: DejaVu Serif,serif;">sunburst_images</span>、<span style="font-family: DejaVu Serif,serif;">sunburst_templates</span>，會依序被讀取，如圖<span style="font-family: DejaVu Serif,serif;">9 </span>所示。</p>
+<p style="margin-bottom: 0cm;"> </p>
+<p style="margin-bottom: 0cm;"><a href="../../images/110614/Plone6/plone&#32;6_09.png" target="_blank"><img src="../../images/110614/Plone6/plone&#32;6_09.png" border="0" width="463" height="551" /></a></p>
+<p style="margin-bottom: 0cm;">▲ 圖<span style="font-family: DejaVu Serif,serif;">9 Sunburst Theme </span>的 <span style="font-family: DejaVu Serif,serif;">Skin Layer </span>清單</p>
+<p style="margin-bottom: 0cm;"> </p>
+<p style="margin-bottom: 0cm;">回到 <span style="font-family: DejaVu Serif,serif;">portal_skins </span>的 <span style="font-family: DejaVu Serif,serif;">Contents </span>頁籤，從 <span style="font-family: DejaVu Serif,serif;">sunburst_templates </span>可以找到一個 <span style="font-family: DejaVu Serif,serif;">Filesystem Directory View </span>物件，名稱叫做 <span style="font-family: DejaVu Serif,serif;">main_template</span>，它就是控制 <span style="font-family: DejaVu Serif,serif;">Viewlet manager </span>順序和顯示與否的檔案，如圖<span style="font-family: DejaVu Serif,serif;">10 </span>所示。</p>
+<p style="margin-bottom: 0cm;"><a href="../../images/110614/Plone6/plone&#32;6_10.png" target="_blank"><img src="../../images/110614/Plone6/plone&#32;6_10.png" border="0" width="432" height="169" /></a></p>
+<p style="margin-bottom: 0cm;">▲ 圖<span style="font-family: DejaVu Serif,serif;">10 sunburst_templates </span>包含的 <span style="font-family: DejaVu Serif,serif;">main_template</span></p>
+<p style="margin-bottom: 0cm;"> </p>
+<p style="margin-bottom: 0cm;"><span style="font-family: DejaVu Serif,serif;">sunburst_templates </span>是一個 <span style="font-family: DejaVu Serif,serif;">Skin Layer </span>目錄，<span style="font-family: DejaVu Serif,serif;">main_template </span>是一個 <span style="font-family: DejaVu Serif,serif;">Page Template </span>檔案，留意到程式碼的內容呈現灰色底，代表不能修改，要點選 <span style="font-family: DejaVu Serif,serif;">Customize </span>按鈕後，才可以修改 <span style="font-family: DejaVu Serif,serif;">main_template </span>的程式碼，如圖<span style="font-family: DejaVu Serif,serif;">11 </span>所示。</p>
+<p style="margin-bottom: 0cm;"><a href="../../images/110614/Plone6/plone&#32;6_11.png" target="_blank"><img src="../../images/110614/Plone6/plone&#32;6_11.png" border="0" width="448" height="328" /></a></p>
+<p style="margin-bottom: 0cm;">▲ 圖<span style="font-family: DejaVu Serif,serif;">11 </span>點選 <span style="font-family: DejaVu Serif,serif;">Customize </span>按鈕可以修改 <span style="font-family: DejaVu Serif,serif;">Page Template</span></p>
+<p style="margin-bottom: 0cm;"> </p>
+<p>上述動作會把 <span style="font-family: DejaVu Serif,serif;">main_template </span>檔案，從 <span style="font-family: DejaVu Serif,serif;">sunburst_templates </span>複製到 <span style="font-family: DejaVu Serif,serif;">custom </span>目錄，留意到程式碼的內容呈現白色底，代表可以編輯，試著讓＜div tal:replace="structure provider:plone.portaltop" /＞失效，這代表取消 <span style="font-family: DejaVu Serif,serif;">plone.portaltop </span>這個 <span style="font-family: DejaVu Serif,serif;">Viewlet Manager </span>的顯示，如圖<span style="font-family: DejaVu Serif,serif;">12 </span>所示。</p>
+<div>
+<p style="margin-bottom: 0cm;"><a href="../../images/110614/Plone6/plone&#32;6_12.png" target="_blank"><img src="../../images/110614/Plone6/plone&#32;6_12.png" border="0" width="468" height="254" /></a></p>
+<p style="margin-bottom: 0cm;">▲ 圖<span style="font-family: DejaVu Serif,serif;">12 </span>編輯 <span style="font-family: DejaVu Serif,serif;">main_template </span>取消 <span style="font-family: DejaVu Serif,serif;">plone.portaltop</span></p>
+<p style="margin-bottom: 0cm;"> </p>
+<p style="margin-bottom: 0cm;"> </p>
+<h2 style="margin-bottom: 0cm;"><span style="font-family: DejaVu Serif,serif;">Skin Layer</span></h2>
+<p style="margin-bottom: 0cm;"> </p>
+<p style="margin-bottom: 0cm;">練習操作後，讓我們檢視 <span style="font-family: DejaVu Serif,serif;">Skin Layer </span>的運作原理。以 <span style="font-family: DejaVu Serif,serif;">Sunburst Theme </span>為例，<span style="font-family: DejaVu Serif,serif;">Plone </span>會由上而下尋找資源檔案，也就是 <span style="font-family: DejaVu Serif,serif;">custom</span>、<span style="font-family: DejaVu Serif,serif;">sunburst_images</span>、<span style="font-family: DejaVu Serif,serif;">sunburst_templates </span>之類的順序，尋找資源檔案，如圖<span style="font-family: DejaVu Serif,serif;">13 </span>所示。</p>
+<p style="margin-bottom: 0cm;"> </p>
+<p style="margin-bottom: 0cm;"><a href="../../images/110614/Plone6/plone&#32;6_13.png" target="_blank"><img src="../../images/110614/Plone6/plone&#32;6_13.png" border="0" /></a></p>
+<p style="margin-bottom: 0cm;">▲ 圖<span style="font-family: DejaVu Serif,serif;">13 Sunburst Theme </span>的 <span style="font-family: DejaVu Serif,serif;">layer </span>順序設定值</p>
+<p style="margin-bottom: 0cm;"> </p>
+<p style="margin-bottom: 0cm;">每個 <span style="font-family: DejaVu Serif,serif;">layer </span>裡包含數個資源檔案，像是圖檔、<span style="font-family: DejaVu Serif,serif;">CSS</span>、<span style="font-family: DejaVu Serif,serif;">Page Template </span>檔案，例如 <span style="font-family: DejaVu Serif,serif;">sunburst_images </span>裡找得到許多圖檔，<span style="font-family: DejaVu Serif,serif;">sunburst_styles </span>裡找得到許多 <span style="font-family: DejaVu Serif,serif;">CSS </span>檔案。</p>
+<p style="margin-bottom: 0cm;"> </p>
+<p style="margin-bottom: 0cm;">數個 <span style="font-family: DejaVu Serif,serif;">layer </span>可以組成一個 <span style="font-family: DejaVu Serif,serif;">Theme Skin</span>，以 <span style="font-family: DejaVu Serif,serif;">Plone Default </span>為例，這個 <span style="font-family: DejaVu Serif,serif;">Skin </span>最上層的 <span style="font-family: DejaVu Serif,serif;">layer </span>是 <span style="font-family: DejaVu Serif,serif;">custom</span>，如果 <span style="font-family: DejaVu Serif,serif;">custom </span>目錄裡有個 <span style="font-family: DejaVu Serif,serif;">logo.jpg </span>圖檔，它會蓋掉 <span style="font-family: DejaVu Serif,serif;">plone_image </span>目錄裡的 <span style="font-family: DejaVu Serif,serif;">logo.jpg</span>，如圖<span style="font-family: DejaVu Serif,serif;">14 </span>所示。</p>
+<p style="margin-bottom: 0cm;"> </p>
+<p style="margin-bottom: 0cm;"><a href="../../images/110614/Plone6/plone&#32;6_14.png" target="_blank"><img src="../../images/110614/Plone6/plone&#32;6_14.png" border="0" width="515" height="197" /></a></p>
+<p style="margin-bottom: 0cm;">▲ 圖<span style="font-family: DejaVu Serif,serif;">14 custom </span>目錄的資源檔案優先被讀取</p>
+<p style="margin-bottom: 0cm;"> </p>
+<p style="margin-bottom: 0cm;">圖檔 <span style="font-family: DejaVu Serif,serif;">logo.jpg </span>的來源，可以進入某個 <span style="font-family: DejaVu Serif,serif;">layer </span>點擊 <span style="font-family: DejaVu Serif,serif;">Custom </span>按鈕獲得，也可以直接在 <span style="font-family: DejaVu Serif,serif;">custom </span>目錄，從項目下拉選單新增 <span style="font-family: DejaVu Serif,serif;">Image </span>獲得。我們沒有示範 <span style="font-family: DejaVu Serif,serif;">CSS </span>或其他資源檔案的例子，但它們的運作原理跟操作方式，都是完全一樣的。</p>
+<p style="margin-bottom: 0cm;"> </p>
+<p style="margin-bottom: 0cm;"><span style="font-family: DejaVu Serif,serif;">Skin Layer </span>雖然是舊的方式，由於設定方式簡單，目前還是常被使用，像是換 <span style="font-family: DejaVu Serif,serif;">logo </span>套 <span style="font-family: DejaVu Serif,serif;">CSS </span>的場合，特別適合用這種方式。</p>
+<p style="margin-bottom: 0cm;"> </p>
+<p style="margin-bottom: 0cm;"> </p>
+<h2 style="margin-bottom: 0cm;"><span style="font-family: DejaVu Serif,serif;">Page Template</span></h2>
+<p style="margin-bottom: 0cm;"> </p>
+<p style="margin-bottom: 0cm;">如前所述，不管用哪一種視覺元件的處理方式，都會牽涉 <span style="font-family: DejaVu Serif,serif;">Page Template</span>，接著，我們把焦點放在這個資源檔案上。</p>
+<p style="margin-bottom: 0cm;"> </p>
+<p style="margin-bottom: 0cm;"><span style="font-family: DejaVu Serif,serif;">Page Template </span>有時也稱為 <span style="font-family: DejaVu Serif,serif;">Zope Page Template (ZPT)</span>，在檔案系統裡，它的副檔名是 <span style="font-family: DejaVu Serif,serif;">.pt</span>，以 <span style="font-family: DejaVu Serif,serif;">XHTML </span>為基礎，也就是相容於 <span style="font-family: DejaVu Serif,serif;">XML </span>標準的 <span style="font-family: DejaVu Serif,serif;">HTML </span>語法，<span style="font-family: DejaVu Serif,serif;">XHTML </span>要求程式碼符合 <span style="font-family: DejaVu Serif,serif;">well formed </span>格式，例如使用 ＜img /＞、＜span＞＜/span＞這樣的格式，還有正確的巢狀結構，並使用小寫英文的標籤格式。</p>
+<p style="margin-bottom: 0cm;"> </p>
+<p style="margin-bottom: 0cm;"><span style="font-family: DejaVu Serif,serif;">Page Template </span>使用 <span style="font-family: DejaVu Serif,serif;">Template Attribute Language </span>動態網頁語法，簡稱為 <span style="font-family: DejaVu Serif,serif;">TAL</span>。在 <span style="font-family: DejaVu Serif,serif;">TAL </span>裡，包含了描述屬性資訊的標籤語法，最簡化的 <span style="font-family: DejaVu Serif,serif;">TAL </span>語法範例，參考圖<span style="font-family: DejaVu Serif,serif;">15 </span>所示。</p>
+<p style="margin-bottom: 0cm;"> </p>
+<p style="margin-bottom: 0cm;"><a href="../../images/110614/Plone6/plone&#32;6_15.png" target="_blank"><img src="../../images/110614/Plone6/plone&#32;6_15.png" border="0" width="499" height="122" /></a></p>
+<p style="margin-bottom: 0cm;">▲ 圖<span style="font-family: DejaVu Serif,serif;">15 TAL </span>標籤語法示意</p>
+<p style="margin-bottom: 0cm;"> </p>
+<p style="margin-bottom: 0cm;">其中 ＜title＞<span style="font-family: DejaVu Serif,serif;">... </span>＜/title＞是原本 <span style="font-family: DejaVu Serif,serif;">HTML </span>語法的部份，<span style="font-family: DejaVu Serif,serif;">tal:content="here/title" </span>的部份則是 <span style="font-family: DejaVu Serif,serif;">XML namespace</span>，<span style="font-family: DejaVu Serif,serif;">TAL </span>語法統一以 <span style="font-family: DejaVu Serif,serif;">tal: </span>為首，<span style="font-family: DejaVu Serif,serif;">content= </span>部份用來指明要設定 <span style="font-family: DejaVu Serif,serif;"> </span>的內容，而 <span style="font-family: DejaVu Serif,serif;">"here/title" </span>是 <span style="font-family: DejaVu Serif,serif;">TAL </span>的 <span style="font-family: DejaVu Serif,serif;">expression </span>內容，這類的 <span style="font-family: DejaVu Serif,serif;">expression </span>被規定在 <span style="font-family: DejaVu Serif,serif;">TAL Expression Syntax (TALES) </span>裡。</p>
+<p style="margin-bottom: 0cm;"> </p>
+<p style="margin-bottom: 0cm;">當網頁版面人員使用 <span style="font-family: DejaVu Serif,serif;">Dreamweaver </span>之類的工具，讀取上述 <span style="font-family: DejaVu Serif,serif;">XHTML </span>原始碼時，並不會造成無法解讀的困擾，畫面上會順利出現「<span style="font-family: DejaVu Serif,serif;">Page Title</span>」的標題字樣。當這樣的 <span style="font-family: DejaVu Serif,serif;">Page Template </span>檔案存放於 <span style="font-family: DejaVu Serif,serif;">Zope </span>系統裡，它會搭配物件的屬性值與物件方法，動態產生網頁內容，包括執行邏輯判斷和錯誤處理等。</p>
+<p style="margin-bottom: 0cm;"> </p>
+<p style="margin-bottom: 0cm;">不過，<span style="font-family: DejaVu Serif,serif;">Page Template </span>不應該拿來處理 <span style="font-family: DejaVu Serif,serif;">subroutine </span>或 <span style="font-family: DejaVu Serif,serif;">class</span>，這類的程式功能，應該寫在 <span style="font-family: DejaVu Serif,serif;">Python Script </span>裡，再由 <span style="font-family: DejaVu Serif,serif;">Page Template </span>呼叫取值和顯示。接著，為了入門練習的用途，我們直接在 <span style="font-family: DejaVu Serif,serif;">ZMI </span>裡，搭配 <span style="font-family: DejaVu Serif,serif;">Plone </span>系統來建立最簡單的 <span style="font-family: DejaVu Serif,serif;">Page Template</span>。</p>
+<p style="margin-bottom: 0cm;"> </p>
+<p style="margin-bottom: 0cm;"> </p>
+<h2 style="margin-bottom: 0cm;">練習 <span style="font-family: DejaVu Serif,serif;">Page Template </span>的建立</h2>
+<p style="margin-bottom: 0cm;"> </p>
+<p style="margin-bottom: 0cm;">為了練習用途，我們先在 <span style="font-family: DejaVu Serif,serif;">ZMI </span>的 <span style="font-family: DejaVu Serif,serif;">Plone Site </span>裡，從新增物件項目的下拉選單，選擇 <span style="font-family: DejaVu Serif,serif;">Page Template</span>，如圖<span style="font-family: DejaVu Serif,serif;">16 </span>所示。</p>
+<p style="margin-bottom: 0cm;"> </p>
+<p style="margin-bottom: 0cm;"><a href="../../images/110614/Plone6/plone&#32;6_16.png" target="_blank"><img src="../../images/110614/Plone6/plone&#32;6_16.png" border="0" width="519" height="197" /></a></p>
+<p style="margin-bottom: 0cm;">▲ 圖<span style="font-family: DejaVu Serif,serif;">16 </span>在 <span style="font-family: DejaVu Serif,serif;">ZMI </span>裡新增 <span style="font-family: DejaVu Serif,serif;">Page Template</span></p>
+<p style="margin-bottom: 0cm;"> </p>
+<p style="margin-bottom: 0cm;">在新增頁面的 <span style="font-family: DejaVu Serif,serif;">Id </span>欄位填寫識別碼，以 <span style="font-family: DejaVu Serif,serif;">mypage </span>為例，它會成為 <span style="font-family: DejaVu Serif,serif;">URL </span>的一部份，點選 <span style="font-family: DejaVu Serif,serif;">Add and Edit </span>按鈕，如圖<span style="font-family: DejaVu Serif,serif;">17 </span>所示。</p>
+<p style="margin-bottom: 0cm;"> </p>
+<p style="margin-bottom: 0cm;"><a href="../../images/110614/Plone6/plone&#32;6_17.png" target="_blank"><img src="../../images/110614/Plone6/plone&#32;6_17.png" border="0" /></a></p>
+<p style="margin-bottom: 0cm;">▲ 圖<span style="font-family: DejaVu Serif,serif;">17 Page Template </span>新增頁面</p>
+<p style="margin-bottom: 0cm;"> </p>
+<p style="margin-bottom: 0cm;">在編輯頁面，可以看到預設的程式碼內容，點選 <span style="font-family: DejaVu Serif,serif;">Save Changes </span>將程式碼儲存生效後，就可以點選 <span style="font-family: DejaVu Serif,serif;">Test </span>頁籤，檢視程式碼的執行結果，如圖<span style="font-family: DejaVu Serif,serif;">18 </span>所示。</p>
+<p style="margin-bottom: 0cm;"> </p>
+<p style="margin-bottom: 0cm;"><a href="../../images/110614/Plone6/plone&#32;6_18.png" target="_blank"><img src="../../images/110614/Plone6/plone&#32;6_18.png" border="0" width="479" height="474" /></a></p>
+<p style="margin-bottom: 0cm;">▲ 圖<span style="font-family: DejaVu Serif,serif;">18 Page Template </span>編輯頁面</p>
+<p style="margin-bottom: 0cm;"> </p>
+<p style="margin-bottom: 0cm;">預設的執行結果，只出現的簡單畫面，包括 <span style="font-family: DejaVu Serif,serif;">title </span>和 <span style="font-family: DejaVu Serif,serif;">id </span>這兩個動態產生的變數值。回到瀏覽器的前一頁後，可以繼續編輯 <span style="font-family: DejaVu Serif,serif;">Page Template </span>的程式碼內容，如圖<span style="font-family: DejaVu Serif,serif;">19 </span>所示。</p>
+<p style="margin-bottom: 0cm;"> </p>
+<p style="margin-bottom: 0cm;"><a href="../../images/110614/Plone6/plone&#32;6_19.png" target="_blank"><img src="../../images/110614/Plone6/plone&#32;6_19.png" border="0" /></a></p>
+<p style="margin-bottom: 0cm;">▲ 圖<span style="font-family: DejaVu Serif,serif;">19 </span>預設的 <span style="font-family: DejaVu Serif,serif;">Page Template </span>執行畫面</p>
+<p style="margin-bottom: 0cm;"> </p>
+<p style="margin-bottom: 0cm;">試著在圖<span style="font-family: DejaVu Serif,serif;">4 </span>的 <span style="font-family: DejaVu Serif,serif;">Title </span>欄位，填上內容，按 <span style="font-family: DejaVu Serif,serif;">Save Changes </span>後，再次測試時，會看見剛才填上的 <span style="font-family: DejaVu Serif,serif;">Title </span>內容。</p>
+<p style="margin-bottom: 0cm;"> </p>
+<p style="margin-bottom: 0cm;">那麼，我們該如何套上佈景主題，或是讓網頁看起來更豐富呢？</p>
+<p style="margin-bottom: 0cm;"> </p>
+<p style="margin-bottom: 0cm;"> </p>
+<h2 style="margin-bottom: 0cm;"><span style="font-family: DejaVu Serif,serif;">METAL </span>巨集語法</h2>
+<p style="margin-bottom: 0cm;"> </p>
+<p style="margin-bottom: 0cm;">套用佈景主題的方法，是在＜html＞裡使用 <span style="font-family: DejaVu Serif,serif;">metal:use-macro="context/main_template/macros/master"</span>，並在＜body＞裡使用＜metal＞＜/metal＞標籤語法，簡化的程式碼範例，如圖<span style="font-family: DejaVu Serif,serif;">20 </span>所示。</p>
+<p style="margin-bottom: 0cm;"> </p>
+<p style="margin-bottom: 0cm;"><a href="../../images/110614/Plone6/plone&#32;6_20.png" target="_blank"><img src="../../images/110614/Plone6/plone&#32;6_20.png" border="0" width="530" height="306" /></a></p>
+<p style="margin-bottom: 0cm;">▲ 圖<span style="font-family: DejaVu Serif,serif;">20 </span>使用 <span style="font-family: DejaVu Serif,serif;">METAL </span>語法的 <span style="font-family: DejaVu Serif,serif;">Page Template</span></p>
+<p style="margin-bottom: 0cm;"> </p>
+<p style="margin-bottom: 0cm;">我們利用 <span style="font-family: DejaVu Serif,serif;">METAL (Macro Expansion for TAL) </span>語法，快速引用原本的佈景主題設計成果。上述程式碼範例的顯示結果，如圖<span style="font-family: DejaVu Serif,serif;">21 </span>所示。</p>
+<p style="margin-bottom: 0cm;"> </p>
+<p style="margin-bottom: 0cm;"><a href="../../images/110614/Plone6/plone&#32;6_21.png" target="_blank"><img src="../../images/110614/Plone6/plone&#32;6_21.png" border="0" width="520" height="462" /></a></p>
+<p style="margin-bottom: 0cm;">▲ 圖<span style="font-family: DejaVu Serif,serif;">21 </span>套用佈景主題的 <span style="font-family: DejaVu Serif,serif;">Page Template </span>執行結果</p>
+<p style="margin-bottom: 0cm;"> </p>
+<p style="margin-bottom: 0cm;">巨集 <span style="font-family: DejaVu Serif,serif;">(Macro) </span>的功能，是讓特定的 <span style="font-family: DejaVu Serif,serif;">HTML </span>段落，能夠重覆被使用。<span style="font-family: DejaVu Serif,serif;">METAL </span>是搭配 <span style="font-family: DejaVu Serif,serif;">TAL </span>的巨集語法，語法以 <span style="font-family: DejaVu Serif,serif;">metal: </span>開頭，先要有個 <span style="font-family: DejaVu Serif,serif;">define-macro </span>的內容，後來的 <span style="font-family: DejaVu Serif,serif;">Page Template </span>才可以用 <span style="font-family: DejaVu Serif,serif;">use-macro </span>引入巨集內容。例子裡的 <span style="font-family: DejaVu Serif,serif;">use-macro="context/main_template/macros/master"</span>，表示在 <span style="font-family: DejaVu Serif,serif;">main_template </span>裡有定義一個名稱為 <span style="font-family: DejaVu Serif,serif;">master </span>的巨集，如圖<span style="font-family: DejaVu Serif,serif;">22 </span>所示。</p>
+<p style="margin-bottom: 0cm;"> </p>
+<p style="margin-bottom: 0cm;"><a href="../../images/110614/Plone6/plone&#32;6_22.png" target="_blank"><img src="../../images/110614/Plone6/plone&#32;6_22.png" border="0" width="492" height="379" /></a></p>
+<p style="margin-bottom: 0cm;">▲ 圖<span style="font-family: DejaVu Serif,serif;">22 main_template </span>定義的 <span style="font-family: DejaVu Serif,serif;">master </span>巨集</p>
+<p style="margin-bottom: 0cm;"> </p>
+<p style="margin-bottom: 0cm;"> </p>
+<h2 style="margin-bottom: 0cm;">結論</h2>
+<p style="margin-bottom: 0cm;"> </p>
+<p style="margin-bottom: 0cm;">利用 <span style="font-family: DejaVu Serif,serif;">TAL </span>和 <span style="font-family: DejaVu Serif,serif;">METAL</span>，<span style="font-family: DejaVu Serif,serif;">Page Template </span>可以把 <span style="font-family: DejaVu Serif,serif;">Viewlet </span>和 <span style="font-family: DejaVu Serif,serif;">Viewlet Manager </span>串連起來，利用 <span style="font-family: DejaVu Serif,serif;">Skin Layer</span>，則可以在 <span style="font-family: DejaVu Serif,serif;">ZODB </span>裡存取檔案系統裡的資源檔案，這些工具和方法，是建立 <span style="font-family: DejaVu Serif,serif;">Plone </span>視覺元件的入門基礎。即使我們還未介紹 <span style="font-family: DejaVu Serif,serif;">Browser View </span>的細節，也能完成不少佈景主題的調整，透過 <span style="font-family: DejaVu Serif,serif;">ZMI </span>就能搞定，未必要在檔案系統裡進行。</p>
+<p style="margin-bottom: 0cm;"> </p>
+<p style="margin-bottom: 0cm;">關於佈景主題和視覺元件，仍有許多技巧值得介紹，像是結合 <span style="font-family: DejaVu Serif,serif;">AJAX </span>功能，在檔案系統裡註冊資源檔案的方法，我們將在後續的篇幅裡示範。對於 <span style="font-family: DejaVu Serif,serif;">TAL </span>感到意猶未盡的朋友，可以上網尋找更多範例。最後，值得一提的是，<span style="font-family: DejaVu Serif,serif;">TAL </span>並不是 <span style="font-family: DejaVu Serif,serif;">Zope </span>獨有的語法工具，<span style="font-family: DejaVu Serif,serif;">PHP </span>環境也可以使用它，例如 <span style="font-family: DejaVu Serif,serif;">PHPTAL</span>，這是跨語言技術擴散的另一例。</p>
+<p style="margin-bottom: 0cm;"> </p>
+</div>
+			<!-- Show relate article -->
+		<br><br><h4>You may be interested in the following articles:</h4><ul><li><a href='../../foss-programs/8411.html'>用自由軟體 Plone 來架設網站(10)－連接資料庫</a> - <span class='date-posted'>2011-08-05</span></li><li><a href='../../foss-programs/8402.html'>用自由軟體 Plone 來架設網站(9)－多媒體結合</a> - <span class='date-posted'>2011-07-25</span></li><li><a href='../../foss-programs/8392.html'>用自由軟體 Plone 來架設網站(8)－內容查詢</a> - <span class='date-posted'>2011-07-12</span></li><li><a href='../../foss-programs/8380.html'>用自由軟體 Plone 來架設網站(7)－版型調整</a> - <span class='date-posted'>2011-06-28</span></li><li><a href='../../foss-programs/8346.html'>用自由軟體 Plone 來架設網站 (5)－元件架構</a> - <span class='date-posted'>2011-05-20</span></li><li><a href='../../foss-programs/8320.html'>用自由軟體 Plone 來架設網站 (4)－建立專案</a> - <span class='date-posted'>2011-05-04</span></li><li><a href='../../foss-programs/8318.html'>用自由軟體 Plone 來架設網站 (3)— 內部設定</a> - <span class='date-posted'>2011-04-25</span></li><li><a href='../../foss-programs/8294.html'>用自由軟體 Plone 來架設網站 (2)— 內容管理</a> - <span class='date-posted'>2011-04-11</span></li><li><a href='../../foss-programs/8288.html'>用自由軟體 Plone 來架設網站 (1)— 基礎安裝</a> - <span class='date-posted'>2011-03-21</span></li></ul>		<!-- end -->
+		<div class="article_note">
+		<!-- Add tags use metakey, and show OSSF Newsletter tag: OSSFNL+NUM-->
+		<br><br> <hr style='border: 1px dashed #D2DADB;'><b>OSSF Newsletter&nbsp;:</b>&nbsp;<a href='../../previous-issue%3Ftask=view&amp;id=734.html'>第 174 期 CallGraphviz—依據 cscope、Graphviz 以及 xdot 實作的 call graph visualizer</a><br>				<!-- End -->
+					<br>
+					<b>Category: </b><a href="../foss-programs.html">				FOSS Programs					</a>				</div>
+			 <!-- AddThis Button BEGIN ID 3001 is the front page article -->
+     			<br><br>
+       <div class="addthis_toolbox addthis_default_style addthis_32x32_style">
+       <a class="addthis_button_preferred_1"></a>
+       <a class="addthis_button_preferred_2"></a>
+       <a class="addthis_button_preferred_3"></a>
+       <a class="addthis_button_preferred_4"></a>
+       <a class="addthis_button_compact"></a>
+       <a class="addthis_counter addthis_bubble_style"></a>
+       </div>
+       <script type="text/javascript">var addthis_config = {"data_track_clickback":true};</script>
+       <script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js#pubid=openfoundry"></script>
+       <!-- AddThis Button END -->
+     <br>
+		<div class="totop" ><a class="rt-totop" href="8353%3Ftask=view.html#" style="outline: medium none;">↑ Top</a></div>
+            <!-- AddThis Button END -->
+
+			</div>
+</div>
+
+		                            </div>
+									<div class="clear"></div>
+								</div>
+								<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+							</div>
+							</div>
+                                                    </div>
+                                            </div>
+                                <div class="rt-grid-3 rt-pull-9">
+                <div id="rt-sidebar-a">
+                                    <div class="square4">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<ul class="menu"><li class="item56"><a href="../previous-issue.html"><span>Previous Issue</span></a></li><li class="item55"><a href="../about-newsletter.html"><span>About Newsletter</span></a></li></ul>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<ul class="menu"><li class="item115"><a href="../foss-news.html"><span>FOSS News</span></a></li><li class="item141"><a href="../case-job.html"><span>Case and Jobs</span></a></li></ul>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+        	                <div class="square1">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-title"><h2 class="title">Special</h2></div>
+						<div class="clear"></div>
+		                						<div class="module-content">
+		                	<ul class="menu"><li class="item37"><a href="../tech-column.html"><span>Tech Column</span></a></li><li class="item40"><a href="../foss-programs.html"><span>FOSS Programs</span></a></li><li class="item35"><a href="../legal-column.html"><span>Legal Column</span></a></li><li class="item154"><a href="../foss-forum.html"><span>FOSS Forum</span></a></li><li class="item162"><a href="../enterprise-application.html"><span>Enterprise Application</span></a></li><li class="item44"><a href="../foss-projects.html"><span>FOSS Projects</span></a></li></ul>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		                <div class="square1">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<p style="text-align: center;"><a href="../../news%3Fformat=feed&amp;type=rss" target="_black"><img src="../../images/M_images/news-rss-feed.png" border="0" /></a><br /><a href="https://www.openfoundry.org/rss-feed/Newsletter" target="_black"><img src="../../images/M_images/newsletter-rss-feed.png" border="0" /></a></p>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		
+                </div>
+            </div>
+
+                    <div class="clear"></div>
+                </div>
+            </div>
+																													</div>
+										<div id="rt-copyright">
+						<div class="rt-grid-12 rt-alpha rt-omega">
+                        <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<span class="nowrap">Open Source Software Foundry</span><span class="nowrap">‧</span><span class="nowrap"> </span><span class="nowrap">Best  Viewed with IE7.0 or Firefox2.0 above, 1024x768 Resolution. </span><strong>E-Mail</strong>：<a href="mailto:contact@openfoundry.org">contact@openfoundry.org</a> <br /><strong>Address</strong>：No.128, Sec.2, Academia Rd., Institute of Information Science, Academia Sinica, Nangang District, Taipei City 11529, Taiwan (R.O.C). <br /><a href="../privacy-policy.html">Privacy Policy</a>. <a href="../terms-of-use.html">Terms-of-use</a> <span style="position: relative; top: 8px; margin-top: -8px;"> <a href="../../about/8101.html"><img src="../../images/M_images/rss-feed-all.png" border="0" /></a></span>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+        	
+</div>
+						<div class="clear"></div>
+					</div>
+					<div class="rt-footer-bottom-wrap"><div class="rt-footer-bottom"><div class="rt-footer-bottom2"><div class="rt-footer-bottom3"></div></div></div></div>
+									</div></div></div>
+				<div class="rt-surround-bottom"><div class="rt-surround-bottom2"><div class="rt-surround-bottom3"></div></div></div>
+							</div>
+		</div>
+		<!--
+		<script id="aptureScript">
+						(function (){var a=document.createElement("script");a.defer="true";a.src="http://www.apture.com/js/apture.js?siteToken=vsJttrn";document.getElementsByTagName("head")[0].appendChild(a);})();
+     </script>
+-->
+
+<!-- Piwik -->
+<!-- 			<script type="text/javascript">
+			  var _paq = _paq || [];
+		  _paq.push(["trackPageView"]);
+		  _paq.push(["enableLinkTracking"]);
+
+		    (function() {
+			        var u=(("https:" == document.location.protocol) ? "https" : "https") + "://www.openfoundry.org/piwik/";
+				    _paq.push(["setTrackerUrl", u+"piwik.php"]);
+				    _paq.push(["setSiteId", "1"]);
+				        var d=document, g=d.createElement("script"), s=d.getElementsByTagName("script")[0]; g.type="text/javascript";
+				        g.defer=true; g.async=true; g.src=u+"piwik.js"; s.parentNode.insertBefore(g,s);
+					  })();
+		  </script> -->
+<!-- End Piwik Code -->
+	</body>
+</html>

@@ -1,0 +1,402 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-gb" lang="en-gb" >
+<head>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<link rel="shortcut icon" href="../../../images/favicon.ico" />
+	  <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+  <meta name="robots" content="index, follow" />
+  <meta name="keywords" content="Android, Embedded System, GPL 區隔機制, 授權拘束性, Apache, Apache 2.0, GPL, OSSFNL442" />
+  <meta name="title" content="Android 的區隔 GPL 感染機制" />
+  <meta name="description" content="兩個月前談過「分開散佈．責任轉嫁」這種用來避開 GPL 感染的一種方法，今天要談的是另外一種方法：區隔機制。 所謂的區隔機制就是在 GPL 程式與 nonGPL 程式中間插入一個中介的介面，這個介面寫得夠好，讓 nonGPL 程式透過介面與 GPL 程式互動，nonGPL 程式因此不會包含任何的 GPL 程式碼，所以 nonGPL 程式不受到 GPL 感染。而這個介面可以是 LGPL、BSD 或" />
+  <meta name="generator" content="" />
+  <title>Android 的區隔 GPL 感染機制 - OpenFoundry</title>
+  <link href="../../../favicon.ico" rel="shortcut icon" type="image/x-icon" />
+  <link rel="stylesheet" href="../../../components/com_jcomments/tpl/default/style.css%3Fv=10.css" type="text/css" />
+  <link rel="stylesheet" href="../../../components/com_gantry/css/gantry.css" type="text/css" />
+  <link rel="stylesheet" href="../../../components/com_gantry/css/grid-12.css" type="text/css" />
+  <link rel="stylesheet" href="../../../components/com_gantry/css/joomla.css" type="text/css" />
+  <link rel="stylesheet" href="../../../templates/rt_quantive_j15/css/joomla.css" type="text/css" />
+  <link rel="stylesheet" href="../../../templates/rt_quantive_j15/css/style1.css" type="text/css" />
+  <link rel="stylesheet" href="../../../templates/rt_quantive_j15/css/light-body.css" type="text/css" />
+  <link rel="stylesheet" href="../../../templates/rt_quantive_j15/css/demo-styles.css" type="text/css" />
+  <link rel="stylesheet" href="../../../templates/rt_quantive_j15/css/template.css" type="text/css" />
+  <link rel="stylesheet" href="../../../templates/rt_quantive_j15/css/typography.css" type="text/css" />
+  <link rel="stylesheet" href="../../../templates/rt_quantive_j15/css/fusionmenu.css" type="text/css" />
+  <style type="text/css">
+    <!--
+#rt-main-surround ul.menu li.active > a, #rt-main-surround ul.menu li.active > .separator, #rt-main-surround ul.menu li.active > .item, #rt-main-surround .square4 ul.menu li:hover > a, #rt-main-surround .square4 ul.menu li:hover > .item, #rt-main-surround .square4 ul.menu li:hover > .separator, .roktabs-links ul li.active span {color:#0088B5;}
+a, #rt-main-surround ul.menu a:hover, #rt-main-surround ul.menu .separator:hover, #rt-main-surround ul.menu .item:hover {color:#0088B5;}
+    -->
+  </style>
+  <script type="text/javascript" src="../../../components/com_jcomments/js/jcomments-v2.1.js%3Fv=2"></script>
+  <script type="text/javascript" src="../../../components/com_jcomments/libraries/joomlatune/ajax.js"></script>
+  <script type="text/javascript" src="../../../media/system/js/mootools.js"></script>
+  <script type="text/javascript" src="../../../media/system/js/caption.js"></script>
+  <script type="text/javascript" src="../../../components/com_gantry/js/gantry-buildspans.js"></script>
+  <script type="text/javascript" src="../../../components/com_gantry/js/gantry-inputs.js"></script>
+  <script type="text/javascript" src="../../../templates/rt_quantive_j15/js/jquery.cookie.js"></script>
+  <script type="text/javascript" src="../../../modules/mod_roknavmenu/themes/fusion/js/fusion.js"></script>
+  <script type="text/javascript" src="../../../modules/mod_ofssologin/js/ofssologin.js"></script>
+  <script type="text/javascript">
+
+			window.addEvent('domready', function() {
+				var modules = ['rt-block'];
+				var header = ['h3','h2','h1'];
+				GantryBuildSpans(modules, header);
+			});
+		InputsExclusion.push('.content_vote','#rt-popup')
+		        window.addEvent('load', function() {
+					new Fusion('ul.menutop', {
+						pill: 0,
+						effect: 'slide and fade',
+						opacity: 1,
+						hideDelay: 500,
+						centered: 0,
+						tweakInitial: {'x': -2, 'y': 0},
+        				tweakSubsequent: {'x': 0, 'y': -14},
+						menuFx: {duration: 200, transition: Fx.Transitions.Sine.easeOut},
+						pillFx: {duration: 400, transition: Fx.Transitions.Back.easeOut}
+					});
+	            });
+  </script>
+<!-- <script type="text/javascript" src="/sso/javascripts/langsync.js"></script> -->
+<!-- <script src="/templates/rt_quantive_j15/js/ossf.js"></script> -->
+<script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-4136519-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
+</head>
+	<body  class="backgroundlevel-low backgroundstyle-style8 bodylevel-med bodystyle-light cssstyle-style1 logostyle-dark font-family-helvetica font-size-is-default menu-type-fusionmenu col12">
+		<div id="rt-main-background">
+			<div class="rt-container">
+																<div id="rt-header">
+					<div class="rt-grid-7 rt-alpha">
+    			<div class="rt-block">
+    	    	<a href="../../../index.html" id="rt-logo"></a>
+    		</div>
+	    
+</div>
+<div class="rt-grid-5 rt-omega">
+                    <div class="square9">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<div class="ofssologin_square9"><a href="../../../index.html">Login</a>&nbsp;&nbsp|&nbsp;&nbsp;<span><a href="https://www.openfoundry.org/tw/component/content/1788/1788?task=view" ><span lang="tw" xml:lang="tw">繁體中文</span></a></li></ul></span><!--Joom!fish V2.0.4 (Lightning)-->
+<!-- &copy; 2003-2009 Think Network, released under the GPL. -->
+<!-- More information: at http://www.joomfish.net -->
+<div class="ofssologin_search_square9">
+  <form id="of_search" action="https://www.openfoundry.org/of/openfoundry/search" method="get" onsubmit="of_search(); return false;">
+    <select id="of_search_type">
+      <option value="Projects"> Projects </option>
+      <option value="Content"> Content </option>
+      <option value="People"> People </option>
+    </select>
+    <input id="query" name="query" id="mod_search_searchword" maxlength="50" alt="search" class="inputbox" type="text" size="28" value="search..."  onblur="if(this.value=='') this.value='search...';" onfocus="if(this.value=='search...') this.value='';" />
+    <input type="hidden" name="commit" value="search" />
+  </form>
+</div></div>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		
+</div>
+					<div class="clear"></div>
+				</div>
+																<div id="rt-navigation"><div id="rt-navigation2"><div id="rt-navigation3">
+					
+<div class="nopill">
+	<ul class="menutop level1 " >
+						<li class="item1 root" >
+					<a class="orphan item bullet" href="../../../index.html"  >
+				<span>
+			    				Home				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item32 root" >
+					<a class="orphan item bullet" href="../../../archived.html"  >
+				<span>
+			    				Projects				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item186 root" >
+					<a class="orphan item bullet" href="../../community.html"  >
+				<span>
+			    				Who&#039;s Who				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item4 root" >
+					<a class="orphan item bullet" href="../../news.html"  >
+				<span>
+			    				News				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item5 root" >
+					<a class="orphan item bullet" href="../../law-and-licensing.html"  >
+				<span>
+			    				Law &amp; Licensing				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item3 root" >
+					<a class="orphan item bullet" href="../../activities.html"  >
+				<span>
+			    				Activities				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item2 root" >
+					<a class="orphan item bullet" href="../../resourcecatalog.html"  >
+				<span>
+			    				Resource Catalog				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item45 root" >
+					<a class="orphan item bullet" href="../../about.html"  >
+				<span>
+			    				About				   
+				</span>
+			</a>
+			
+			
+	</li>	
+				</ul>
+</div>
+
+				    <div class="clear"></div>
+				</div></div></div>
+								<div class="rt-surround"><div class="rt-surround2"><div class="rt-surround3">
+										<div id="rt-showcase-section">
+												<div id="rt-showcase">
+							<div class="rt-grid-12 rt-alpha rt-omega">
+    		<div class="clear"></div>
+		
+		
+                <div class="close-note">
+                    <div class="rt-block">
+               					<div class="module-content">
+                	<div style="font-size:medium; background-image:linear-gradient(120deg,#159957,#4298b2);color:white;padding:20px;margin:-10px -18px;">感謝您對「自由軟體鑄造場」的支持與愛護，十多年來「自由軟體鑄造場」受中央研究院支持，並在資訊科學研究所以及資訊科技創新研究中心執行，現已完成階段性的任務。 本網站預計持續維運至 2021年底，網站內容基本上不會再更動。<br />也紀念我們永遠的朋友 李士傑先生（Shih-Chieh Ilya Li）。</div>				</div>
+            </div>
+                </div>
+		
+</div>
+							<div class="clear"></div>
+						</div>
+																	</div>
+															<div id="rt-main-surround">
+																							              <div id="rt-main" class="mb12">
+                <div class="rt-main-inner">
+                    <div class="rt-grid-12 ">
+                                                <div class="rt-block">
+                            							<div class="square1">
+							<div class="rt-module-surround">
+								<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+								<div class="rt-module-inner">
+		                            <div id="rt-mainbody">
+		                                
+<div class="rt-joomla ">
+	<div class="rt-article">
+		
+				<div class="rt-headline"><h1 class="rt-article-title">Android 的區隔 GPL 感染機制</h1>		</div>
+		<div class="clear"></div>
+		
+		
+		
+				<div class="rt-articleinfo">
+						<div class="rt-article-icons">
+								<a href="https://www.openfoundry.org/en/component/content/article/1788-android-gpl-?tmpl=component&amp;print=1&amp;page=" title="Print" onclick="window.open(this.href,'win2','status=no,toolbar=no,scrollbars=yes,titlebar=no,menubar=no,resizable=yes,width=640,height=480,directories=no,location=no'); return false;" rel="nofollow"><span class="icon print"></span></a>																</div>
+			
+			<span class="rt-date-posted">
+						 Created at			Friday, 24 October 2008 08:00						&nbsp;&nbsp;&nbsp;&nbsp;						Last Updated on Wednesday, 30 May 2012 10:48						</span>
+
+						<span class="rt-author">
+				Written by 葛冬梅			</span>
+				
+					</div>
+		
+		
+		<p>兩個月前談過「分開散佈．責任轉嫁」這種用來避開 GPL 感染的一種方法，今天要談的是另外一種方法：區隔機制。</p>
+<p>所謂的區隔機制就是在 GPL 程式與 nonGPL 程式中間插入一個中介的介面，這個介面寫得夠好，讓 nonGPL 程式透過介面與 GPL 程式互動，nonGPL 程式因此不會包含任何的 GPL 程式碼，所以 nonGPL 程式不受到 GPL 感染。而這個介面可以是 LGPL、BSD 或 Apache 等任何一份授權條款。</p>
+
+<pre>nonGPL 程式
+   ｜
+Interface
+   ｜
+GPL 程式
+</pre>
+<p>這樣一個區隔機制可以隔離 GPL 感染的邏輯很簡單：因為中間存在的介面，所以 nonGPL 程式並未包含到 GPL 程式碼，因此當然可以不用受到 GPL 感染。就筆者所知，運用這種方式的大多是嵌入式裝置的專案，Google 的 Android 手機平台可以算是目前就是這種區隔機制最著名的實例。 </p>
+<pre>4. applications
+       ｜
+3. application framework
+       ｜
+2. middleware: libraries, virtual machine
+       ｜
+1. Linux kernel (GPLed)
+</pre>
+<p>上面是 Android 架構示意圖，可以看到 Android 平台有四個層次：最底部的第 1 層是 Linux 核心、第 2 層是包含了各類函示庫與虛擬程式的中介軟體層、第 3 層是應用程式框架，而最上層則是各種應用程式（註一）。除了最底層的 Linux 核心是 GPL-2.0 授權之外，其他部分都採用 Apache License 2.0 (Apache-2.0) 授權（註二），Apache-2.0 具有 BSD License 的特性（註三）：不具有像 GPL-2.0 一樣的感染性，可以與專屬軟體的授權條款相容。而 Google 之所以採用 Apache-2.0，就是希望可以透過這麼多層次的 Apache-2.0 程式來區隔底層 GPL-2.0 授權的 Linux，其他廠商就可以在這個平台上面開發出配合的應用程式與嵌入式裝置，同時並不需要將這些產品的原始碼提供給他人，因而保持各自的營業秘密（註四）。</p>
+<p>這樣的區隔機制聽來簡單明瞭，我們也看到 Google 這樣著名的大公司採用這種方式，所以應該是合於 GPL 的方式吧！不過還是老話一句：有討論的空間！因為若嚴格解釋的話，GPL-2.0 的感染性會一層一層地傳染延展到嵌入式裝置中的每一個程式碼上，也就是在正常的情況下，第 2 層因為與第 1 層互動，其程式會涵蓋 Linux Kernel 的程式碼，因此第 2 層的中介軟體應該被感染成為 GPL-2.0 授權，第 3 層程式與第 2 層程式互動，因而被感染成為 GPL-2.0 授權，依此類推，第 4 層的應用程式也當然因此會成為 GPL-2.0 授權的。</p>
+<p>若這樣的平台架構不是在嵌入式裝置中，而是在個人電腦，或者是大型裝置中運作，也許還比較有機會可以說的過去（註五），但是在小型嵌入式裝置中，因為各程式的運作相當緊密，互不可分，因此持嚴格解釋 GPL-2.0 者會認為採用 Android 平台製造出來的手機，其上的程式應該都是 GPL-2.0 授權，並且因此必須提供管道讓手機持有者可以取得手機程式的原始碼。</p>
+<p>不過也有論者認為，只要中間這些用來區隔的介面寫的夠好，定義夠完備清晰，讓 nonGPL 程式可以在不包含 GPL 程式碼的狀況下運作，如此 nonGPL 程式就可以保持其不被感染的狀態。</p>
+<p>在 GPL-2.0 感染性方面的探討，全球目前雖然漸漸有法學者投入研究，相關議題的討論也有增加的趨勢，但距離凝聚共識標準還有相當的距離，而在沒有法院判決或其他具高度說服力見解可資參考的情況下，一向是眾說紛紜。在這種現狀下，筆者只能觀察與整理現狀事實，嘗試從中釐清抽象模糊的 GPL-2.0 感染性判斷標準。到目前為止在這過程中，筆者雖然無法歸納出清楚的判斷標準，但是卻觀察到一個現象：商業公司似乎正在主導 GPL-2.0 內涵的解釋。這樣的現象從 GPL-3.0 修改過程可以窺知端倪：商業公司在 GPL-3.0 修改討論委員會中佔有超過半數的席位。而本文所提到的區隔 GPL-2.0 感染機制雖然仍有爭議，但是 Google 依舊實作出來，等到未來 Android 手機上市，又沒有相關權利人質疑此種方式的正確性，這樣的事實狀態在經過一段時間之後，就很有可能就讓此種區隔機制成為大家所認可、合於 GPL-2.0 內涵的利用方式。</p>
+<p>未來究竟會有什麼有趣的發展，就等 Android 手機上市之後看看吧！</p>
+<p><br /><hr />註一：<a href="https://code.google.com/android/what-is-android.html" target="_blank">Android 平台架構請見</a>。<br />註二：<a href="https://www.apache.org/licenses/LICENSE-2.0" target="_blank">Apache License 2.0 原文內容請見</a>。<br />註三：BSD License 的介紹<a href="../../../tw/licenses/31-bsd-license-bsd.html">請見</a>。<br />註四：<a href="https://www.openhandsetalliance.com/android_faq.html" target="_blank">Android 採用 Apache 2.0 的理由請見</a>。<br />註五：這部分將另撰文討論。</p>
+			<!-- Show relate article -->
+				<!-- end -->
+		<div class="article_note">
+		<!-- Add tags use metakey, and show OSSF Newsletter tag: OSSFNL+NUM-->
+		<br><br> <hr style='border: 1px dashed #D2DADB;'><b>OSSF Newsletter&nbsp;:</b>&nbsp;<a href='../../../previous-issue%3Ftask=view&amp;id=442.html'>第 114 期 「GPL 檢驗工程指南」提供侵權檢驗的基礎指南</a><br><b>Tags:</b>&nbsp;<a href='../../../index.php%3Foption=com_search&amp;Itemid=58&amp;searchphrase=exact_meta&amp;ordering=newest&amp;searchword=Android.html'>Android</a>,&nbsp;&nbsp;<a href='../../../index.php%3Foption=com_search&amp;Itemid=58&amp;searchphrase=exact_meta&amp;ordering=newest&amp;searchword=&#32;Embedded&#32;System.html'> Embedded System</a>,&nbsp;&nbsp;<a href='../../../index.php%3Foption=com_search&amp;Itemid=58&amp;searchphrase=exact_meta&amp;ordering=newest&amp;searchword=&#32;GPL&#32;區隔機制.html'> GPL 區隔機制</a>,&nbsp;&nbsp;<a href='../../../index.php%3Foption=com_search&amp;Itemid=58&amp;searchphrase=exact_meta&amp;ordering=newest&amp;searchword=&#32;授權拘束性.html'> 授權拘束性</a>,&nbsp;&nbsp;<a href='../../../index.php%3Foption=com_search&amp;Itemid=58&amp;searchphrase=exact_meta&amp;ordering=newest&amp;searchword=&#32;Apache.html'> Apache</a>,&nbsp;&nbsp;<a href='../../../index.php%3Foption=com_search&amp;Itemid=58&amp;searchphrase=exact_meta&amp;ordering=newest&amp;searchword=&#32;Apache&#32;2.0.html'> Apache 2.0</a>,&nbsp;&nbsp;<a href='../../../index.php%3Foption=com_search&amp;Itemid=58&amp;searchphrase=exact_meta&amp;ordering=newest&amp;searchword=&#32;GPL.html'> GPL</a>,&nbsp;&nbsp;				<!-- End -->
+					<br>
+					<b>Category: </b><a href="../../legal-column-list.html">				Legal Column					</a>				</div>
+			 <!-- AddThis Button BEGIN ID 3001 is the front page article -->
+     			<br><br>
+       <div class="addthis_toolbox addthis_default_style addthis_32x32_style">
+       <a class="addthis_button_preferred_1"></a>
+       <a class="addthis_button_preferred_2"></a>
+       <a class="addthis_button_preferred_3"></a>
+       <a class="addthis_button_preferred_4"></a>
+       <a class="addthis_button_compact"></a>
+       <a class="addthis_counter addthis_bubble_style"></a>
+       </div>
+       <script type="text/javascript">var addthis_config = {"data_track_clickback":true};</script>
+       <script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js#pubid=openfoundry"></script>
+       <!-- AddThis Button END -->
+     <br>
+		<div class="totop" ><a class="rt-totop" href="1788%3Ftask=view.html#" style="outline: medium none;">↑ Top</a></div>
+            <!-- AddThis Button END -->
+
+		<script type="text/javascript">
+var jcomments=new JComments(1788, 'com_content','https://openfoundry.org/index.php?option=com_jcomments&amp;tmpl=component&amp;lang=');
+jcomments.setList('comments-list');
+</script>
+<div id="jc">
+<div id="comments"><h4>Comments<a class="refresh" href="1788%3Ftask=view.html#" title="Refresh comments list" onclick="jcomments.showPage(1788,'com_content',0);return false;">&nbsp;</a></h4>
+<div id="comments-list" class="comments-list">
+        <div class="even" id="comment-item-22"><div class="rbox"><div class="rbox_tr"><div class="rbox_tl"><div class="rbox_t">&nbsp;</div></div></div><div class="rbox_m">
+<div class="comment-avatar"><img src="http://www.gravatar.com/avatar.php?gravatar_id=247834500cdc94f33671402c1ca50bc8&amp;default=https%3A%2F%2Fwww.openfoundry.org%2Fcomponents%2Fcom_jcomments%2Fimages%2Fno_avatar.png" alt="" /></div>
+<div class="comment-box avatar-indent">
+<span class="comments-vote">
+	<span id="comment-vote-holder-22">
+<a href="1788%3Ftask=view.html#" class="vote-good" title="Good comment!" onclick="jcomments.voteComment(22, 1);return false;"></a><a href="1788%3Ftask=view.html#" class="vote-poor" title="Poor comment!" onclick="jcomments.voteComment(22, -1);return false;"></a>
+<span class="vote-none">0</span>
+	</span>
+</span>
+<a class="comment-anchor" href="../../legal-column-list/1788-android-gpl-.html#comment-22" id="comment-22">#1</a>
+<span class="comment-author">Mnz</span>
+<span class="comment-date">2010-04-04 23:57</span>
+<div class="comment-body" id="comment-body-22">请问下载不到Montavist<span style="font-size:0px;padding:0;margin:0;"> </span>a linux的源码，他这个用的G<span style="font-size:0px;padding:0;margin:0;"> </span>PL的哪条规定呢？</div>
+</div><div class="clear"></div>
+</div><div class="rbox_br"><div class="rbox_bl"><div class="rbox_b">&nbsp;</div></div></div></div>
+</div>
+        <div class="odd" id="comment-item-25"><div class="rbox"><div class="rbox_tr"><div class="rbox_tl"><div class="rbox_t">&nbsp;</div></div></div><div class="rbox_m">
+<div class="comment-avatar"><img src="http://www.gravatar.com/avatar.php?gravatar_id=0df5426dd7b38c90836ee2c8753859f3&amp;default=https%3A%2F%2Fwww.openfoundry.org%2Fcomponents%2Fcom_jcomments%2Fimages%2Fno_avatar.png" alt="" /></div>
+<div class="comment-box avatar-indent">
+<span class="comments-vote">
+	<span id="comment-vote-holder-25">
+<a href="1788%3Ftask=view.html#" class="vote-good" title="Good comment!" onclick="jcomments.voteComment(25, 1);return false;"></a><a href="1788%3Ftask=view.html#" class="vote-poor" title="Poor comment!" onclick="jcomments.voteComment(25, -1);return false;"></a>
+<span class="vote-none">0</span>
+	</span>
+</span>
+<a class="comment-anchor" href="../../legal-column-list/1788-android-gpl-.html#comment-25" id="comment-25">#2</a>
+<a class="author-homepage" href="https://blogs.openfoundry.org/florenceko/" rel="nofollow" title="Florence T.M. Ko　葛冬梅">Florence T.M. Ko　葛冬梅</a>
+<span class="comment-date">2010-04-07 00:08</span>
+<div class="comment-body" id="comment-body-25">Mnz，你的這個問題可以改po 到法政討論區，會比較方便討論。 討論區網址為 ：http://https://whoswho.openfoundry.org/forum.html?func=listcat&catid=1</div>
+</div><div class="clear"></div>
+</div><div class="rbox_br"><div class="rbox_bl"><div class="rbox_b">&nbsp;</div></div></div></div>
+</div>
+</div>
+<div id="comments-list-footer"><a class="refresh" href="1788%3Ftask=view.html#" title="Refresh comments list" onclick="jcomments.showPage(1788,'com_content',0);return false;">Refresh comments list</a></div>
+</div>
+<div id="comments-footer" align="center"><a href="http://www.joomlatune.com" title="JComments" target="_blank">JComments</a></div>
+<script type="text/javascript">
+jcomments.setAntiCache(1,0,0);
+</script> 
+</div>	</div>
+</div>
+
+		                            </div>
+									<div class="clear"></div>
+								</div>
+								<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+							</div>
+							</div>
+                                                    </div>
+                                            </div>
+                                        <div class="clear"></div>
+                </div>
+            </div>
+																													</div>
+										<div id="rt-copyright">
+						<div class="rt-grid-12 rt-alpha rt-omega">
+                        <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<span class="nowrap">Open Source Software Foundry</span><span class="nowrap">‧</span><span class="nowrap"> </span><span class="nowrap">Best  Viewed with IE7.0 or Firefox2.0 above, 1024x768 Resolution. </span><strong>E-Mail</strong>：<a href="mailto:contact@openfoundry.org">contact@openfoundry.org</a> <br /><strong>Address</strong>：No.128, Sec.2, Academia Rd., Institute of Information Science, Academia Sinica, Nangang District, Taipei City 11529, Taiwan (R.O.C). <br /><a href="../../privacy-policy.html">Privacy Policy</a>. <a href="../../terms-of-use.html">Terms-of-use</a> <span style="position: relative; top: 8px; margin-top: -8px;"> <a href="../../../about/8101.html"><img src="../../../images/M_images/rss-feed-all.png" border="0" /></a></span>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+        	
+</div>
+						<div class="clear"></div>
+					</div>
+					<div class="rt-footer-bottom-wrap"><div class="rt-footer-bottom"><div class="rt-footer-bottom2"><div class="rt-footer-bottom3"></div></div></div></div>
+									</div></div></div>
+				<div class="rt-surround-bottom"><div class="rt-surround-bottom2"><div class="rt-surround-bottom3"></div></div></div>
+							</div>
+		</div>
+		<!--
+		<script id="aptureScript">
+						(function (){var a=document.createElement("script");a.defer="true";a.src="http://www.apture.com/js/apture.js?siteToken=vsJttrn";document.getElementsByTagName("head")[0].appendChild(a);})();
+     </script>
+-->
+
+<!-- Piwik -->
+<!-- 			<script type="text/javascript">
+			  var _paq = _paq || [];
+		  _paq.push(["trackPageView"]);
+		  _paq.push(["enableLinkTracking"]);
+
+		    (function() {
+			        var u=(("https:" == document.location.protocol) ? "https" : "https") + "://www.openfoundry.org/piwik/";
+				    _paq.push(["setTrackerUrl", u+"piwik.php"]);
+				    _paq.push(["setSiteId", "1"]);
+				        var d=document, g=d.createElement("script"), s=d.getElementsByTagName("script")[0]; g.type="text/javascript";
+				        g.defer=true; g.async=true; g.src=u+"piwik.js"; s.parentNode.insertBefore(g,s);
+					  })();
+		  </script> -->
+<!-- End Piwik Code -->
+	</body>
+</html>

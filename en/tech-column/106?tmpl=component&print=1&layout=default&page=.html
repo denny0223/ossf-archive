@@ -1,0 +1,407 @@
+	<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+	<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-gb" lang="en-gb" >
+		<head>
+			  <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+  <meta name="robots" content="noindex, nofollow" />
+  <meta name="keywords" content="OSSFNL238" />
+  <meta name="title" content="wxPython基礎視窗程式" />
+  <meta name="description" content="視窗程式設計是一件相當專業的工作，就像發射火箭升空一樣困難又複雜。其實視窗程式設計並沒有那樣的遙不可及，只要熟悉主要的視窗概 念，並選擇適當的開發工具，你也可以很快的設計出一個像樣的視窗程式。 基礎視窗程式概念 在電腦的操作介面上，大致分為兩種。即 Command Line Interface(CLI) 命令列介面與 Graphical User Interface(GUI) 圖形使用者介面。" />
+  <meta name="generator" content="" />
+  <title>wxPython基礎視窗程式</title>
+  <link href="../../favicon.ico" rel="shortcut icon" type="image/x-icon" />
+  <link rel="stylesheet" href="../../components/com_gantry/css/gantry.css" type="text/css" />
+  <link rel="stylesheet" href="../../components/com_gantry/css/grid-12.css" type="text/css" />
+  <link rel="stylesheet" href="../../components/com_gantry/css/joomla.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/joomla.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/style1.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/light-body.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/demo-styles.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/template.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/typography.css" type="text/css" />
+  <style type="text/css">
+    <!--
+#rt-main-surround ul.menu li.active > a, #rt-main-surround ul.menu li.active > .separator, #rt-main-surround ul.menu li.active > .item, #rt-main-surround .square4 ul.menu li:hover > a, #rt-main-surround .square4 ul.menu li:hover > .item, #rt-main-surround .square4 ul.menu li:hover > .separator, .roktabs-links ul li.active span {color:#0088B5;}
+a, #rt-main-surround ul.menu a:hover, #rt-main-surround ul.menu .separator:hover, #rt-main-surround ul.menu .item:hover {color:#0088B5;}
+    -->
+  </style>
+  <script type="text/javascript" src="../../components/com_jcomments/js/jcomments-v2.1.js%3Fv=2"></script>
+  <script type="text/javascript" src="../../components/com_jcomments/libraries/joomlatune/ajax.js"></script>
+  <script type="text/javascript" src="../../media/system/js/mootools.js"></script>
+  <script type="text/javascript" src="../../media/system/js/caption.js"></script>
+  <script type="text/javascript" src="../../components/com_gantry/js/gantry-buildspans.js"></script>
+  <script type="text/javascript" src="../../components/com_gantry/js/gantry-inputs.js"></script>
+  <script type="text/javascript">
+
+			window.addEvent('domready', function() {
+				var modules = ['rt-block'];
+				var header = ['h3','h2','h1'];
+				GantryBuildSpans(modules, header);
+			});
+		InputsExclusion.push('.content_vote','#rt-popup')
+  </script>
+		</head>
+		<body  class="backgroundlevel-low backgroundstyle-style8 bodylevel-med bodystyle-light cssstyle-style1 logostyle-dark font-family-helvetica font-size-is-default menu-type-fusionmenu col12 ">
+			<div id="rt-main-surround">
+				<div class="rt-container">
+					<div class="rt-block">
+						<div id="rt-mainbody">
+					    	
+<div class="rt-joomla ">
+	<div class="rt-article">
+		
+				<div class="rt-headline"><h1 class="rt-article-title">wxPython基礎視窗程式</h1>		</div>
+		<div class="clear"></div>
+		
+		
+		
+				<div class="rt-articleinfo">
+						<div class="rt-article-icons">
+				<a href="106%3Ftmpl=component&amp;print=1&amp;layout=default&amp;page=.html#" onclick="window.print();return false;"><span class="icon print"></span></a>									<span class="icon printscreen">
+						<a href="106%3Ftmpl=component&amp;print=1&amp;layout=default&amp;page=.html#" onclick="window.print();return false;"><img src="../../images/M_images/printButton.png" alt="Print"  /></a>					</span>
+							</div>
+			
+			<span class="rt-date-posted">
+						 Created at			Thursday, 11 January 2007 04:27						&nbsp;&nbsp;&nbsp;&nbsp;						Last Updated on Thursday, 16 August 2007 23:53						</span>
+
+						<span class="rt-author">
+				Written by 紀博文			</span>
+				
+					</div>
+		
+		
+		視窗程式設計是一件相當專業的工作，就像發射火箭升空一樣困難又複雜。其實視窗程式設計並沒有那樣的遙不可及，只要熟悉主要的視窗概 念，並選擇適當的開發工具，你也可以很快的設計出一個像樣的視窗程式。<h2 class="title" style="clear: both;">基礎視窗程式概念</h2>
+<p>在電腦的操作介面上，大致分為兩種。即 Command Line Interface(CLI) 命令列介面與 Graphical User Interface(GUI) 圖形使用者介面。</p>
+<p>在命令列的模式中，所有的動作，像是複製檔案、搬移檔案、建立目錄、刪除目錄、執行程式等，幾乎都是在一塊黑色</p>
+<p>背景的螢幕上，以輸入指令方式操作電腦。</p>
+<p>然而，命令列介面，卻是在圖形使用者介面普及之前，最為普及的電腦使用者介面。</p>
+<p>而在圖形使用者介面中，則透過滑鼠進行操作。</p>
+<div class="figure"><a title="d0e20" name="d0e20"></a>
+<p class="title"><strong>Figure&nbsp;1.&nbsp;Command Line Interface(CLI) 命令列介面</strong></p>
+<div class="figure-contents">
+<div class="mediaobject">{mosimage}<br /></div>
+</div>
+</div>
+<br />
+<div class="figure"><a title="d0e26" name="d0e26"></a>
+<p class="title"><strong>Figure&nbsp;2.&nbsp;Graphical User Interface(GUI) 圖形使用者介面</strong></p>
+<div class="figure-contents">
+<div class="mediaobject">{mosimage}<br /></div>
+</div>
+</div>
+<br />
+<p>通常來講，一個視窗的組成類似積木的堆疊，主要包括「Frame」(框架)、「Panel」(面板)、「Controls」(控制項)</p>
+<p>三個主要部分。以下以 Windows 內建的「超級終端機」為例，來說明視窗的各主要零件。</p>
+<div class="section">
+<div class="titlepage">
+<div>
+<div>
+<h3 class="title"><a title="d0e36" name="d0e36"></a>視窗 的底層畫板－Frame(框架)</h3>
+</div>
+</div>
+</div>
+<p>Frame 是一個視窗的最底層，所有的視窗元件都是建構在 Frame 裡面，而一般常見的 Frame 中，會有「MenuBar」(選單列)、「ToolBar」(工具列)、「StatusBar」(狀態列)和「Panel」(面版)。以下簡單說明各個</p>
+<p>部分。</p>
+<div class="itemizedlist">
+<ul>
+    <li>
+    <p>MenuBar(選單列)：為下拉式選單，通常所有應用程式的功能，都可在選單列中找到。</p>
+    </li>
+    <li>
+    <p>ToolBar(工具列)：將各種常用的功能，以圖示的方式展現出來，方便取用。</p>
+    </li>
+    <li>
+    <p>StatusBar(狀態列)：用來顯示應用程式的狀態訊息。</p>
+    </li>
+    <li>
+    <p>Panel(面板)：用來配置視窗操作時，需要使用的各種 Controls(控制項)。</p>
+    </li>
+</ul>
+</div>
+<div class="figure"><a title="d0e56" name="d0e56"></a>
+<p class="title"><strong>Figure&nbsp;3.&nbsp;常見 Frame 的組成</strong></p>
+<div class="figure-contents">
+<div class="mediaobject">{mosimage}<br /></div>
+</div>
+</div>
+<br /> </div>
+<div class="section">
+<div class="titlepage">
+<div>
+<div>
+<h3 class="title"><a title="d0e62" name="d0e62"></a>組合 各種元素的畫布－Panel(面板)</h3>
+</div>
+</div>
+</div>
+<p>前面提到，Panel 是用來放置各種 Controls(控制項)的地方。</p>
+<p>而 Controls(控制項)指的就是各種視窗控制項，像這裡看到的有「Button(按鈕)」、「TextCtrl(文字方塊)」。</p>
+<div class="figure"><a title="d0e69" name="d0e69"></a>
+<p class="title"><strong>Figure&nbsp;4.&nbsp;Panel 中的各種元素</strong></p>
+<div class="figure-contents">
+<div class="mediaobject">{mosimage}<br /></div>
+</div>
+</div>
+<br /> </div>
+<div class="section">
+<div class="titlepage">
+<div>
+<div>
+<h3 class="title"><a title="d0e75" name="d0e75"></a>原料 －Controls(控制項)</h3>
+</div>
+</div>
+</div>
+<p>Controls(控制項)除了前面提到的 Button(按鈕)、TextCtrl(文字方塊)以外，還包括許多大家常見的元件。</p>
+<div class="figure"><a title="d0e80" name="d0e80"></a>
+<p class="title"><strong>Figure&nbsp;5.&nbsp;Button (按鈕)</strong></p>
+<div class="figure-contents">
+<div class="mediaobject">{mosimage}<br /></div>
+</div>
+</div>
+<br />
+<div class="figure"><a title="d0e86" name="d0e86"></a>
+<p class="title"><strong>Figure&nbsp;6.&nbsp;TextCtrl (文字方塊控制項)</strong></p>
+<div class="figure-contents">
+<div class="mediaobject">{mosimage}<br /></div>
+</div>
+</div>
+<br />
+<div class="figure"><a title="d0e92" name="d0e92"></a>
+<p class="title"><strong>Figure&nbsp;7.&nbsp;CheckBox (核取方塊控制項)</strong></p>
+<div class="figure-contents">
+<div class="mediaobject">{mosimage}<br /></div>
+</div>
+</div>
+<br />
+<div class="figure"><a title="d0e98" name="d0e98"></a>
+<p class="title"><strong>Figure&nbsp;8.&nbsp;StaticText (靜態文字控制項)</strong></p>
+<div class="figure-contents">
+<div class="mediaobject">{mosimage}<br /></div>
+</div>
+</div>
+<br />
+<div class="figure"><a title="d0e104" name="d0e104"></a>
+<p class="title"><strong>Figure&nbsp;9.&nbsp;ListBox (清單控制項)</strong></p>
+<div class="figure-contents">
+<div class="mediaobject">{mosimage}<br /></div>
+</div>
+</div>
+<br />
+<div class="figure"><a title="d0e110" name="d0e110"></a>
+<p class="title"><strong>Figure&nbsp;10.&nbsp;RadioBox (選取按鈕控制項)</strong></p>
+<div class="figure-contents">
+<div class="mediaobject">{mosimage}<br /></div>
+</div>
+</div>
+<br /> </div>
+<div class="section">
+<div class="titlepage">
+<div>
+<div>
+<h2 class="title" style="clear: both;"><a title="d0e116" name="d0e116"></a>建置開發 wxPython 的環境</h2>
+</div>
+</div>
+</div>
+<p>由於 wxPython 專為 Python 程式語言所設計，因此必須先安裝 Python 之後，再安裝 wxPython。</p>
+<div class="section">
+<div class="titlepage">
+<div>
+<div>
+<h3 class="title"><a title="d0e121" name="d0e121"></a>安 裝 Python</h3>
+</div>
+</div>
+</div>
+<p><a href="https://www.python.org/">https://www.python.org/</a></p>
+<div class="figure"><a title="d0e126" name="d0e126"></a>
+<p class="title"><strong>Figure&nbsp;11.&nbsp;在 Python 首頁點選 DOWNLOAD 連結</strong></p>
+<div class="figure-contents">
+<div class="mediaobject">{mosimage}<br /></div>
+</div>
+</div>
+<br />
+<div class="figure"><a title="d0e132" name="d0e132"></a>
+<p class="title"><strong>Figure&nbsp;12.&nbsp;選擇適當 的作業系統版本</strong></p>
+<div class="figure-contents">
+<div class="mediaobject">{mosimage}<br /></div>
+</div>
+</div>
+<br /> </div>
+<div class="section">
+<div class="titlepage">
+<div>
+<div>
+<h3 class="title"><a title="d0e138" name="d0e138"></a>安 裝 wxPython</h3>
+</div>
+</div>
+</div>
+<p><a href="https://www.wxpython.org/">https://www.wxpython.org/</a></p>
+<div class="figure"><a title="d0e143" name="d0e143"></a>
+<p class="title"><strong>Figure&nbsp;13.&nbsp;首頁點選 Binaries 連結</strong></p>
+<div class="figure-contents">
+<div class="mediaobject">{mosimage}<br /></div>
+</div>
+</div>
+<br />
+<div class="figure"><a title="d0e149" name="d0e149"></a>
+<p class="title"><strong>Figure&nbsp;14.&nbsp;選擇適當 的對應版本</strong></p>
+<div class="figure-contents">
+<div class="mediaobject">{mosimage}<br /></div>
+</div>
+</div>
+<br />
+<div class="figure"><a title="d0e155" name="d0e155"></a>
+<p class="title"><strong>Figure&nbsp;15.&nbsp;選擇適當 的下載地點</strong></p>
+<div class="figure-contents">
+<div class="mediaobject">{mosimage}<br /></div>
+</div>
+</div>
+<br /> </div>
+</div>
+<div class="section">
+<div class="titlepage">
+<div>
+<div>
+<h2 class="title" style="clear: both;"><a title="d0e161" name="d0e161"></a>實例介紹－以「薪資試算程式」為例</h2>
+</div>
+</div>
+</div>
+<p>這裡將以同學們曾經練習過的「薪資試算程式」為例。來說明如何將該程式，從一支命令列使用者介面，</p>
+<p>轉變成美觀的圖形使用者介面。</p>
+<div class="itemizedlist">
+<ul>
+    <li>
+    <p>設計一個「視窗介面」的薪資試算程式</p>
+    </li>
+    <li>
+    <p>要求使用者輸入月薪為何？</p>
+    </li>
+    <li>
+    <p>以及工作年數為何？</p>
+    </li>
+    <li>
+    <p>並結算該年之中可以獲得東少薪資？</p>
+    </li>
+    <li>
+    <p>以及平均每日賺得多少薪資？</p>
+    </li>
+</ul>
+</div>
+<div class="figure"><a title="d0e184" name="d0e184"></a>
+<p class="title"><strong>Figure&nbsp;16.&nbsp;薪資試算 程式的 CLI(Command Line Interface) 介面</strong></p>
+<div class="figure-contents">
+<div class="mediaobject">{mosimage}<br /></div>
+</div>
+</div>
+<br />
+<div class="figure"><a title="d0e190" name="d0e190"></a>
+<p class="title"><strong>Figure&nbsp;17.&nbsp;薪資試算 程式的 GUI(Graphics User Interface) 介面</strong></p>
+<div class="figure-contents">
+<div class="mediaobject">{mosimage}<br /></div>
+</div>
+</div>
+<br />
+<div class="section">
+<div class="titlepage">
+<div>
+<div>
+<h3 class="title"><a title="d0e196" name="d0e196"></a>建 立一個Frame</h3>
+</div>
+</div>
+</div>
+<p>首先必須為我們的視窗程式建立一個框架(Frame)，並且在 Frame 中配置一個面板(Panel)，供後續放置控制項(Controls)之用。</p>
+<div class="figure"><a title="d0e201" name="d0e201"></a>
+<p class="title"><strong>Figure&nbsp;18.&nbsp;空無一物 的 Frame</strong></p>
+<div class="figure-contents">
+<div class="mediaobject">{mosimage}<br /></div>
+</div>
+</div>
+<br />
+<pre class="programlisting"><span class="bold"><strong>#基本 Frame -- 開始 --</strong></span><br />import wx,string<br />class MySalgar(wx.Frame):<br />def __init__(self):<br />#建造一個新的 Frame<br />wx.Frame.__init__(self, parent=None, title=u&quot;薪資試算程式&quot;, size=(250,200))<br /># 加入一個 Panel<br />panel = wx.Panel(self)<br />if __name__ == '__main__':<br />app = wx.PySimpleApp()<br />frame = MySalgar()<br />frame.Show()<br />app.MainLoop()<br /><span class="bold"><strong>#基本 Frame -- 結束 --</strong></span></pre>
+</div>
+<div class="section">
+<div class="titlepage">
+<div>
+<div>
+<h3 class="title"><a title="d0e213" name="d0e213"></a>配 置視窗元件</h3>
+</div>
+</div>
+</div>
+<p>接著我們要在 Panel 當中，放置需要的控制項。包括四個StaticText(靜態文字)、兩個TextCtrl(文字方塊)、一個Button(按鈕)。</p>
+<div class="figure"><a title="d0e218" name="d0e218"></a>
+<p class="title"><strong>Figure&nbsp;19.&nbsp;配置完成 後的視窗畫面</strong></p>
+<div class="figure-contents">
+<div class="mediaobject">{mosimage}<br /></div>
+</div>
+</div>
+<br />
+<pre class="programlisting">import wx,string<br />class MySalgar(wx.Frame):<br />def __init__(self):<br />wx.Frame.__init__(self, parent=None, title=u&quot;薪資試算程式&quot;, size=(250,200))<br />panel = wx.Panel(self)<br /><span class="bold"><strong>#配置視窗元件 -- 開始 --</strong></span><br />wx.StaticText(parent=panel,label=u&quot;工作幾年？&quot;,pos=(10,10))<br />self.a = wx.TextCtrl(parent=panel,pos=(100,10))<br />wx.StaticText(parent=panel,label=u&quot;一個月多少錢？&quot;,pos=(10,50))<br />self.b = wx.TextCtrl(parent=panel,pos=(100,50))<br />self.btn = wx.Button(parent=panel,label=u&quot;結算薪資&quot;,pos=(10,100))<br />self.message1 = wx.StaticText(parent=panel,pos=(10,130))<br />self.message2 = wx.StaticText(parent=panel,pos=(10,150))<br /><span class="bold"><strong>#配置視窗元件 -- 結束 --</strong></span><br />if __name__ == '__main__':<br />app = wx.PySimpleApp()<br />frame = MySalgar()<br />frame.Show()<br />app.MainLoop()<br /></pre>
+</div>
+<div class="section">
+<div class="titlepage">
+<div>
+<div>
+<h3 class="title"><a title="d0e232" name="d0e232"></a>撰 寫事件函式</h3>
+</div>
+</div>
+</div>
+<p>當配置好整個視窗介面之後，皆下來我們需要告訴作業系統，當我按下「結算薪資」按鈕後，應該要做些什麼事？</p>
+<div class="figure"><a title="d0e237" name="d0e237"></a>
+<p class="title"><strong>Figure&nbsp;20.&nbsp;薪資試算 程式的執行結果</strong></p>
+<div class="figure-contents">
+<div class="mediaobject">{mosimage}<br /></div>
+</div>
+</div>
+<br />
+<pre class="programlisting">import wx,string<br />class MySalgar(wx.Frame):<br />def __init__(self):<br />wx.Frame.__init__(self,parent=None,title=u&quot;薪資試算程式&quot;,size=(250,200))<br />panel = wx.Panel(self)<br />wx.StaticText(parent=panel,label=u&quot;工作幾年？&quot;,pos=(10,10))<br />self.a = wx.TextCtrl(parent=panel,pos=(100,10))<br />wx.StaticText(parent=panel,label=u&quot;一個月多少錢？&quot;,pos=(10,50))<br />self.b = wx.TextCtrl(parent=panel,pos=(100,50))<br />self.btn = wx.Button(parent=panel,label=u&quot;結算薪資&quot;,pos=(10,100))<br /><span class="bold"><strong>#新增 BtnClick 事件 -- 開始 --</strong></span><br />self.Bind(wx.EVT_BUTTON,self.BtnClick,self.btn)<br /><span class="bold"><strong>#新增 BtnClick 事件 -- 結束 --</strong></span><br />self.message1 = wx.StaticText(parent=panel,pos=(10,130))<br />self.message2 = wx.StaticText(parent=panel,pos=(10,150))<br /><span class="bold"><strong>#撰寫 BtnClick 事件函式 -- 開始 --</strong></span><br />def BtnClick(self,event):<br />a = self.a.GetValue()<br />a = string.atoi(a)<br />b = self.b.GetValue()<br />b = string.atoi(b)<br />c = b * 12 * a<br />d = c /(365 * a)<br />message1Str = u'您工作 '+str(a)+u' 年可以獲得 '+str(c)+u' 元'<br />message2Str = u'平均每日獲得 '+str(d)+u' 元'<br />self.message1.SetLabel(message1Str)<br />self.message2.SetLabel(message2Str)<br /><span class="bold"><strong>#撰寫 BtnClick 事件函式 -- 結束 --</strong></span><br />if __name__ == '__main__':<br />app = wx.PySimpleApp()<br />frame = MySalgar()<br />frame.Show()<br />app.MainLoop()<br /></pre>
+</div>
+</div>
+<div class="section">
+<div class="titlepage">
+<div>
+<div>
+<h2 class="title" style="clear: both;"><a title="d0e257" name="d0e257"></a>參考資料</h2>
+</div>
+</div>
+</div>
+<div class="itemizedlist">
+<ul>
+    <li>
+    <p>wxPython 官方網站：<a href="https://www.wxpython.org/">https://www.wxpython.org</a></p>
+    </li>
+    <li>
+    <p>wxWidgets 官方網站：<a href="https://www.widget.org/">https://www.widget.org</a></p>
+    </li>
+</ul>
+</div>
+</div>
+			<!-- Show relate article -->
+				<!-- end -->
+		<div class="article_note">
+		<!-- Add tags use metakey, and show OSSF Newsletter tag: OSSFNL+NUM-->
+		<br><br> <hr style='border: 1px dashed #D2DADB;'><b>OSSF Newsletter&nbsp;:</b>&nbsp;<a href='../../previous-issue%3Ftask=view&amp;id=238.html'>第 72 期 2006年度回顧與展望</a><br>				<!-- End -->
+					<br>
+					<b>Category: </b><a href="../tech-column.html">				Tech Column					</a>				</div>
+			 <!-- AddThis Button BEGIN ID 3001 is the front page article -->
+     			<br><br>
+       <div class="addthis_toolbox addthis_default_style addthis_32x32_style">
+       <a class="addthis_button_preferred_1"></a>
+       <a class="addthis_button_preferred_2"></a>
+       <a class="addthis_button_preferred_3"></a>
+       <a class="addthis_button_preferred_4"></a>
+       <a class="addthis_button_compact"></a>
+       <a class="addthis_counter addthis_bubble_style"></a>
+       </div>
+       <script type="text/javascript">var addthis_config = {"data_track_clickback":true};</script>
+       <script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js#pubid=openfoundry"></script>
+       <!-- AddThis Button END -->
+     <br>
+		<div class="totop" ><a class="rt-totop" href="106%3Ftmpl=component&amp;print=1&amp;layout=default&amp;page=.html#" style="outline: medium none;">↑ Top</a></div>
+            <!-- AddThis Button END -->
+
+			</div>
+</div>
+
+						</div>
+					</div>
+				</div>
+			</div>
+		</body>
+	</html>

@@ -1,0 +1,254 @@
+	<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+	<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="zh-tw" lang="zh-tw" >
+		<head>
+			  <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+  <meta name="robots" content="noindex, nofollow" />
+  <meta name="keywords" content="OSSFNL689" />
+  <meta name="title" content="以 logfmon 與 expect 實作登入告知系統" />
+  <meta name="description" content="前言" />
+  <meta name="generator" content="" />
+  <title>以 logfmon 與 expect 實作登入告知系統</title>
+  <link href="../../favicon.ico" rel="shortcut icon" type="image/x-icon" />
+  <link rel="stylesheet" href="../../components/com_gantry/css/gantry.css" type="text/css" />
+  <link rel="stylesheet" href="../../components/com_gantry/css/grid-12.css" type="text/css" />
+  <link rel="stylesheet" href="../../components/com_gantry/css/joomla.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/joomla.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/style1.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/light-body.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/demo-styles.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/template.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/typography.css" type="text/css" />
+  <style type="text/css">
+    <!--
+#rt-main-surround ul.menu li.active > a, #rt-main-surround ul.menu li.active > .separator, #rt-main-surround ul.menu li.active > .item, #rt-main-surround .square4 ul.menu li:hover > a, #rt-main-surround .square4 ul.menu li:hover > .item, #rt-main-surround .square4 ul.menu li:hover > .separator, .roktabs-links ul li.active span {color:#0088B5;}
+a, #rt-main-surround ul.menu a:hover, #rt-main-surround ul.menu .separator:hover, #rt-main-surround ul.menu .item:hover {color:#0088B5;}
+    -->
+  </style>
+  <script type="text/javascript" src="../../components/com_jcomments/js/jcomments-v2.1.js%3Fv=2"></script>
+  <script type="text/javascript" src="../../components/com_jcomments/libraries/joomlatune/ajax.js"></script>
+  <script type="text/javascript" src="../../media/system/js/mootools.js"></script>
+  <script type="text/javascript" src="../../media/system/js/caption.js"></script>
+  <script type="text/javascript" src="../../components/com_gantry/js/gantry-buildspans.js"></script>
+  <script type="text/javascript" src="../../components/com_gantry/js/gantry-inputs.js"></script>
+  <script type="text/javascript">
+
+			window.addEvent('domready', function() {
+				var modules = ['rt-block'];
+				var header = ['h3','h2','h1'];
+				GantryBuildSpans(modules, header);
+			});
+		InputsExclusion.push('.content_vote','#rt-popup')
+  </script>
+		</head>
+		<body  class="backgroundlevel-low backgroundstyle-style8 bodylevel-med bodystyle-light cssstyle-style1 logostyle-dark font-family-helvetica font-size-is-default menu-type-fusionmenu col12 ">
+			<div id="rt-main-surround">
+				<div class="rt-container">
+					<div class="rt-block">
+						<div id="rt-mainbody">
+					    	
+<div class="rt-joomla ">
+	<div class="rt-article">
+		
+				<div class="rt-headline"><h1 class="rt-article-title">以 logfmon 與 expect 實作登入告知系統</h1>		</div>
+		<div class="clear"></div>
+		
+		
+		
+				<div class="rt-articleinfo">
+						<div class="rt-article-icons">
+				<a href="8152-logfmonexpect%3Ftmpl=component&amp;print=1&amp;page=.html#" onclick="window.print();return false;"><span class="icon print"></span></a>									<span class="icon printscreen">
+						<a href="8152-logfmonexpect%3Ftmpl=component&amp;print=1&amp;page=.html#" onclick="window.print();return false;"><img src="../../images/M_images/printButton.png" alt="列印"  /></a>					</span>
+							</div>
+			
+			<span class="rt-date-posted">
+						建立日期			2010-09-30 21:49						&nbsp;&nbsp;&nbsp;&nbsp;						最近更新在 2010-11-08 21:29						</span>
+
+						<span class="rt-author">
+				作者是 老薯條(https://vulscan.wynetech.com.tw)			</span>
+				
+					</div>
+		
+		
+		<h2>前言</h2>
+<p>在一般的企業中，伺服器主機通常置於封閉機房中，而系統管理者辦公的地點往往是在另一個辦公室，系統管理者僅能使用如網頁介面的管理軟體來查看伺服器狀態，如此，系統管理者需被動的時時查看網頁以得知目前的系統狀態，而一個當系統觸發某種事件即主動通知管理者的監控系統，也許是大多數系統管理者所需要的。因此在本文中，筆者將結合開源碼社群資源，實作一個當機房中的主機有人登入時，即會傳送相關訊息至管理者所在的電腦（或同辦公室的其它電腦並發出三聲 <span>beep </span>聲）來告知管理者有人登入主機，本系統所需的套件如下表所示：</p>
+
+<p> </p>
+<table id="customers" style="height: 402px;" border="0" cellspacing="0" cellpadding="2" width="628">
+<col style="text-align: left;" width="91"></col> <col style="text-align: left;" width="73"></col> <col style="text-align: left;" width="150"></col> <thead style="text-align: left;"> 
+<tr class="alt" style="text-align: left;">
+<th style="text-align: left;" width="91">
+<p>軟體名稱</p>
+</th> <th style="text-align: left;" width="73">
+<p>說明</p>
+</th> <th style="text-align: left;" width="150">
+<p>官方網站</p>
+</th>
+</tr>
+</thead> 
+<tbody style="text-align: left;">
+<tr style="text-align: left;">
+<td style="text-align: left;" width="91">
+<p><span>logfmon </span></p>
+</td>
+<td style="text-align: left;" width="73">
+<p style="text-align: left;">即時監控檔案機制，當所監控的檔案發生變化並符合使用者所設定的條件即執行使用者設定的動作。在這邊，我們將利用此程式來監控 				<span>log </span>檔（<span>/var/log/secure</span>，此檔案會存有使用者登入的資訊）</p>
+</td>
+<td style="text-align: left;" width="150"><span><br /><a href="https://sourceforge.net/projects/logfmon/" target="_blank"> https://sourceforge.net/projects/logfmon/</a></span>
+<p><span> </span></p>
+</td>
+</tr>
+<tr class="alt" style="text-align: left;">
+<td style="text-align: left;" width="91">
+<p><span>expect </span></p>
+</td>
+<td style="text-align: center;" width="73">
+<p style="text-align: left;">一種互動式的語言，在撰寫適當的劇本後，即可使程式自動與系統互動而不需人為的介入</p>
+</td>
+<td style="text-align: left;" width="150"><span><br /><a href="https://www.nist.gov/mel/msid/expect.cfm" target="_blank"> https://www.nist.gov/mel/msid/expect.cfm</a></span>
+<p><span> </span></p>
+</td>
+</tr>
+<tr style="text-align: left;">
+<td style="text-align: left;" width="91">
+<p><span>sshlogin.pl </span></p>
+</td>
+<td style="text-align: left;" width="73">
+<p>部署在被監控端，自撰寫的 <span>expect </span>程式，一但有人正常登入，即執行此程式，利用<span>SSH</span>與主控端連，並執行主控端的 				<span>beep </span>程式，發出三聲 				<span>Beep </span>聲音，提醒系統管理者</p>
+</td>
+<td style="text-align: left;" width="150"></td>
+</tr>
+<tr class="alt" style="text-align: left;">
+<td style="text-align: left;" width="91">
+<p><span>beep.c </span></p>
+</td>
+<td style="text-align: left;" width="73">
+<p>部署在主控端，發出三聲 <span>beep </span>的程式來提醒管理者</p>
+</td>
+<td style="text-align: left;" width="150"></td>
+</tr>
+</tbody>
+</table>
+<h2 class="cjk">什麼是<span>logfmon</span>？</h2>
+<p><span>logfmon </span>主要是利用來監控檔案的變動情況，一旦發現被監控的檔案內容發生變動（如發生新增或刪改），即將變動的範圍與使用者自定義的正規表示法（<span>Regular Expression</span>，<span>RE）</span>規則比對，一但比對成功（<span>match）</span>即執行使用者自定義的指令或程式。比對流程如下圖示<span>: </span></p>
+<p><img src="../../images/101012/image002.gif" border="0" width="382" height="579" /></p>
+<p>由於筆者的系統為 <span>fedora 11 </span>系統，系統預設會將安全相關的訊息（其中也包含了登入認證）等相關的訊息寫入 <span>/var/log/secure </span>中，而 <span>logfmon </span>即是利用即時監控 <span>/var/log/secure </span>檔案，一旦檔案發生變化（即有新的訊息寫入），即需利用以正規表示法表示的條件式，即時將相關的 <span>log </span>解析（在此僅需要正常登入的 <span>log </span>資訊）出來並執行相關的動作（以 <span>expect </span>自動與管理者所在辦公室的電腦互動並發出三聲的 <span>beep </span>來提醒管理者，有人已登入主機）。由於 <span>logfmon </span>使用正規表示法來設定比對的條件式，以下即簡單介紹正規表示法（由於本方案僅需模式比對即可達成要求，所以，筆者僅介紹模式比對，其餘更進階的用法就留待 讀者自行研究了） 正規表示法（<span>Regular Expression）</span>是利用一些含有特殊符號的字串，來描述或匹配（<span>match）</span>符合某種句型的句子。下表即說明正規表示法所使用的特殊符號：</p>
+<ul>
+<li>
+<p><span>^: </span>符合欄位開頭即符合，如設定為 	<span>^sex</span>，則 <span>sexual </span>即符合；</p>
+</li>
+<li>
+<p><span>$: </span>符合欄位結尾即符合，若設定為 	<span>ty$</span>，則 <span>Beauty </span>即符合；</p>
+</li>
+<li>
+<p><span>.: </span>代表任何一個字元，如 	<span>(pl.y)</span>，則 <span>play </span>即符合，但 <span>ply </span>不符合，即 	<span>pl </span>與 <span>y </span>中間一定要有一個字元；</p>
+</li>
+<li>
+<p><span>*: </span>重覆零至無限多個的 	<span>RE </span>符號，如只要 <span>pl </span>開頭的單字均符合，即可使用 <span>pl*</span>；</p>
+</li>
+<li>
+<p><span>\</span>脫逸符號（<span>escape）: </span>用來將特殊符號視為普通字元。如 	<span>\^ </span>即代表 <span>^ </span>是字元，而不是上述的意義；</p>
+</li>
+<li>
+<p><span>(</span> <span>): </span>模式比對，用括號內一連串的特殊符號來匹配含有某種句型的句子，這也是本方案所要使用的正規表示法模式。如 	<span>ipv4 </span>的 <span>ip </span>位址型式為數字<span>1.</span>數字<span>2.</span>數字<span>3.</span>數字<span>4</span>，如 	<span>192.168.2.1</span>，即可用下列的模式比對 	<span>(\d+)(\.)(\d+)(\.)(\d+)(\.)(\d+)</span>，其中：</p>
+<ul>
+<li>
+<p><span>$0: </span>全部的資料 		<span>(192.168.2.1)</span></p>
+</li>
+<li>
+<p><span>$1: </span>即表示 <span>192</span></p>
+</li>
+<li>
+<p><span>$2: </span>表示 <span>.</span></p>
+</li>
+<li>
+<p><span>$3: </span>即表示 <span>168… </span>依此類推</p>
+</li>
+</ul>
+</li>
+</ul>
+<p>在介紹完正規表示法後，接下來即來談談如何安裝 <span>Logfmon</span>，安裝步驟如下： 請讀者至 <a href="https://sourceforge.net/projects/logfmon/" target="_blank"><span>https://sourceforge.net/projects/logfmon/</span></a>，下載 <span>logfmon </span>最新版本。解壓縮後，直接使用 <span>make </span>，在編譯的過程，筆者曾發生找不到 <span>y.tab.h </span>的錯誤訊息，如下圖所示：</p>
+<p><img src="../../images/101012/image003.png" border="0" width="626" height="133" /></p>
+<p>解決方式即為先利用 <span>make y.tab.c y.tab.h </span>指令先產生 <span>y.tab.h </span>後，再重新使用 <span>make && make install </span>將 <span>logfmon </span>安裝到系統上。完裝完成後，<span>Logfmon </span>所使用的設定檔為 <span>/etc/logfmon.conf</span>，<span>logfmon.conf </span>參數意義如下所述：</p>
+<dl><dt style="margin-bottom: 0.5cm;"><span>User </span> </dt><dd style="margin-bottom: 0.5cm;"> 執行 <span>logfmon </span>時，所使用的 	<span>user </span>權限 </dd><dt style="margin-bottom: 0.5cm;"> <span>Group </span> </dt><dd style="margin-bottom: 0.5cm;"> 執行 <span>logfmon </span>時，所使用的 	<span>group </span>權限 </dd><dt style="margin-bottom: 0.5cm;"> <span>File </span> </dt><dd style="margin-bottom: 0.5cm;"> 設定 <span>logfmon </span>要監控的檔案名稱 </dd><dt style="margin-bottom: 0.5cm;"> <span>Logregexp </span> </dt><dd style="margin-bottom: 0.5cm;"> 初步的過濾，用來過濾符合格式的字串，<span>logfmon</span>預設規則為 	<span>syslog </span>格式，即表示被監控檔案符合<span>syslog</span>格式的資料，才可進入使用者自定義的規則，再進行細步的過濾。 </dd><dt style="margin-bottom: 0.5cm;"> <span>Match </span> </dt><dd style="margin-bottom: 0.5cm;"> 規則設定格式為：<span>match〔</span>條件式<span>〕action〔</span>執行事件<span>〕</span></dd><dd style="margin-bottom: 0.5cm;">當符合條件式時，即執行 <span>action </span>後所定義的事件其中 <span>action </span>事件可分為： </dd></dl> 
+<ul>
+<li><dd> <span>ignore: </span>若符合條件式，則不理會 </dd></li>
+<li><dd> <span>exec: </span>若符合條件式，即執行後續的指令 </dd></li>
+<li> <span>write: </span>若符合條件式，則將該符合的字串寫入檔案中 </li>
+<li> <span>write-append: </span>若符合條件式，則將該符合的字串新增至檔案中 </li>
+</ul>
+<p>接下來，我們即是要確定正常登入的訊息，在 <span>/var/log/secure </span>檔案中是長什麼樣式，在 <span>fedroa 11 </span>的系統上，相關登入的資訊，都會記錄在 <span>/var/log/secure</span>， 成功登入的樣式如下圖：</p>
+<p><img src="../../images/101012/image005.png" border="0" width="742" height="80" /></p>
+p { margin-bottom: 0.21cm; }pre.western { font-family: "DejaVu Sans Mono",monospace; }pre.cjk { font-family: "DejaVu Sans",monospace; }pre.ctl { font-family: "DejaVu Sans Mono",monospace; }
+<p>因此我們可以根據樣式，設定下列相關的正規表示法的條件式，來過濾符合正常登入的 <span>log</span>，根據此樣式，我們可設定下列相關正規表示法的條件式，來過濾符合正常登入記錄的 <span>log</span>：</p>
+<pre class="cjk"><span>(.*)(Accepted password for)(.*)(from )(.*)</span><br />   只要列資料中含有 <span>Accepted password for... from… </span>的樣式即符合條件。</pre>
+<p>在確定相關的正規表示式後， 我們即可開始設定 <span>logfmon </span>的組態檔 <span>(/etc/logfmon.conf)</span>，如下所示：</p>
+<pre class="cjk"><span>Set logregexp   #</span>初步過濾，<span>log</span>預設僅解析<span>syslog</span>型式的資訊。可利用 <span>logregexp</span><br />                      來重新設定初步過濾的條件。在此使用 <span>(.*) </span>即表示所有的字元都<br />                      符合條件，意即不使用初步過濾的功能。<br /><span>File "/var/log/secure" tag secure   #</span>設定欲監控的檔案，並命名為 <span>secure </span>的代號<br />                                    （後續的過濾條件即利用 <span>secure </span>代號來設定）<br /><span>match in secure "(.*)(Accepted password for )(.*)( from )(.*)( port )(.*)$" </span><br />   <span>exec (echo $0>>/tmp/authlog && perl /usr/bin/sshlogin.pl  $5;)"   #</span>過濾條件 <span>match in secure (</span>針對為<span>secure</span>做過濾，即針對 <span>/var/log/secure </span>檔案過濾，其中 <span>(.*)(Accepted password)(.*)$</span><br />                                                                      意指只要 <span>/var/log/secure </span>檔案中每列的 <span>log </span>資料只要含有 <span>Accepted password </span>的字串即符合過濾條件並執行 <span>exec </span>後的動作，<br />                                                                      在這邊會執行兩個動作：<br />                                                                      <span>1. echo $0>>/tmp/authlog   #</span>將登入資訊寫入 <span>/tmp/authlog</span><br />                                                                      <span>2. </span>執行 <span>sshlogin.pl $5</span>（此程式為 <span>expect </span>程式，負責與管理者的電腦互動，其中 <span>$5 </span>為登入的來源<span>IP</span>）<br />                </pre>
+<p>至此 <span>logfmon </span>即設定完成，啟動僅需執行 <span>logfmon &</span>。讀者可利用 <span>ps aux | grep logfmon </span>來檢查 <span>logfmon </span>是否有正常執行。</p>
+<h2 class="cjk"><a name="l421604811444111expect41288"></a>什麼是<span>expect</span>？</h2>
+<p><span>Expect </span>是 <span>unix </span>系統中用來進行自動化控制和測試的軟體工具，一但設定好適當的劇本，<span>expect </span>即會按照劇本的設定，自動的與系統互動而無需人為的介入。安裝 <span>expect </span>很簡單，只要執行 <span>yum install expect* </span>即可將相關的 <span>Expect </span>程式安裝進去。簡單的 <span>expect </span>劇本其實就是利用 <span>expect </span>送出命令，再期待系統的回應，然後再根據系統的回應來決定下一步的動作。簡單的範例如下（以自動登入 <span>telnet </span>伺服器為例）其中：</p>
+<ul>
+<li>
+<p><span>$remote_server</span>：遠端的<span>telnet</span>伺服器位址；</p>
+</li>
+<li>
+<p><span>$my_user_id</span>：登入的帳號資訊；</p>
+</li>
+<li>
+<p><span>$my_password</span>：登入的密碼資訊；</p>
+</li>
+<li>
+<p><span>$my_command</span>：欲執行的指令。</p>
+</li>
+</ul>
+<p>完整範例如下：</p>
+pre.western { font-family: "DejaVu Sans Mono",monospace; }pre.cjk { font-family: "DejaVu Sans",monospace; }pre.ctl { font-family: "DejaVu Sans Mono",monospace; }p { margin-bottom: 0.21cm; }
+<pre class="cjk"> <span>spawn telnet $remote_server #</span>啟動一個 <span>telnet </span>的程序<br /> <span>expect "username:"          #</span>假如系統回應含有 <span>username </span>的字樣，即表示系統需要使用者帳號<br /> <span>send "$my_user_id\r"        #</span>自動將帳號資訊寫入<br /> <span>expect "password:"          #</span>假如系統回應含有 <span>password </span>的字樣即表示系統需要使用者帳號<br /> <span>send "$my_password\r"       #</span>自動將密碼資訊寫入<br /> <span>expect "%"                  #</span>假如系統回應含有 <span>% </span>的字樣，表示已登入成功，<span>% </span>是系統的提示字元<br /> <span>send "ls\r"</span>　　　　　　　　 <span>#</span>自動執行 <span>ls </span>指令<br /> <span>send "exit\r"               #</span>自動執行 <span>exit </span>指令，離開 <span>telnet </span>伺服器<br /> <span>expect eof                  #expect </span>結束</pre>
+<p>在這邊 <span>expect </span>的用途，在於利用 <span>SSH </span>與管理者的電腦互動，當發現伺服器主機有登入的事件後，即使用 <span>expect </span>程式以 <span>SSH </span>與管理者的電腦互動，並遠端執行管理者電腦上的程式（發出三聲 <span>beep </span>聲來告知管理者有人登入機房的主機）。在這邊，由於我們是使用 <span>SSH </span>與監控端的電腦通訊並執行監控端電腦上的程式，在 <span>perl </span>的模組即有提供相關的模組 <span>(Net::SSH::Expect) </span>可自動化執行 <span>SSH </span>登入並執行相關指令），因此，在這邊我們將使用此模組來自動登入管理者的電腦並執行相關程式。安裝 <span>Net::SSH::Expect </span>步驟如下</p>
+<ol>
+<li>
+<blockquote style="margin-bottom: 0cm;"><span>wget 	<a href="https://search.cpan.org/CPAN/authors/id/B/BN/BNEGRAO/Net-SSH-Expect-1.09.tar.gz" target="_blank">https://search.cpan.org/CPAN/authors/id/B/BN/BNEGRAO/Net-SSH-Expect-1.09.tar.gz</a> #</span>至 <span>cpan </span>網站取得 	<span>Net::SSH::Expect </span>模組</blockquote>
+</li>
+<li>
+<blockquote>解壓縮後，利用 <span>perl 	Make.pl && make && make install </span>來安裝</blockquote>
+</li>
+</ol>
+<p>pre.western { font-family: "DejaVu Sans Mono",monospace; }pre.cjk { font-family: "DejaVu Sans",monospace; }pre.ctl { font-family: "DejaVu Sans Mono",monospace; }p { margin-bottom: 0.21cm; }</p>
+<p>接下來，筆者以 <span>perl </span>搭配 <span>Net::SSH::Expect </span>撰寫一個簡單的 <span>perl </span>程式（檔名為 <span>sshlogin.pl</span>），此程式可自動登入遠端的主機（在這裏即為監控端的電腦） <span>sshlogin.pl</span>程式內容如下：</p>
+<pre class="cjk"> <span>#!/usr/bin/perl</span><br /> <span>use Net::SSH::Expect;                      #</span>使用 <span>Net::SSH::Expect </span>模組<br /> <span>my $ssh = Net::SSH::Expect->new (          #</span>新增一個 <span>expect </span>的類別 <br />    <span>host => "remote IP"</span>，                   <span>#</span>設定欲連線的主機 <span>ip </span>位址，請填入監控端主機 <span>IP </span>位址<br />    <span>password=> ' remote IP</span>登入密碼<span>'</span>，       <span>#</span>設定登入所需的密碼<br />     <span>user => 'root'</span>，                       <span>#</span>設定登入帳號，在此例為 <span>root</span>（這裏特別強調一點，因為 <span>LINUX </span>系統特別的規定，<br />                                             要執行筆者所寫的 <span>beep </span>程式，需要 <span>root </span>權限，這方面有興趣的讀者可參考<br />                                             <span>linux serial program how-to </span>等文件）<br />    <span>raw_pty => 1                            #</span>預設為<span>1 </span>即可<br />    <span>);</span><br /> <span>my $login_output = $ssh->login();          #</span>設定<span>login</span>（此時 <span>expect </span>即會使用您所設定的 <span>host</span>、<span>user </span>及 <span>password </span>等相關資訊，<br />                                             以 <span>ssh </span>登入遠端主機）<br /> <span>$ssh->exec("/usr/bin/beep "</span>，<span>30);          #</span>在登入後，即在 <span>remote IP </span>的主機上執行 <span>beep </span>程式，此程式即為 <span>beep 3 </span>聲的程式</pre>
+<p>而在監控端上的 <span>beep.c </span>程式內容如下：</p>
+<pre class="cjk"> <span>#include   </span><br /> <span>#include   </span><br /> <span>#include   </span><br /> <span>#include   </span><br /> <span>#include   </span><br /> <span>Int main(int   argc</span>，   <span>char   *argv[])</span><br /> <span>{</span><br /> 　　<span>int   fd   =   open( "/dev/tty10 "</span>，<span>O_RDONLY);</span><br />     <span>{</span><br />         <span>system("echo   -e   \"\007\"   > /dev/tty10" ); #</span>電腦<span>beep</span>一聲<br />         <span>sleep(1);</span><br />         <span>system("echo   -e   \"\007\"   > /dev/tty10" );</span><br />         <span>sleep(1);</span><br />         <span>system("echo   -e   \"\007\"   > /dev/tty10" );</span><br />    <span>}</span><br />  <span>}</span></pre>
+<p> </p>
+<p>僅需使用 <span>gcc beep.c –o beep </span>編譯，即可編譯出 <span>beep </span>執行檔，而後將此執行檔置於 <span>/usr/bin/ </span>目錄下即可，當一切設置妥當後，如果機房主機有人登入，管理者的監控端電腦即會發出三聲 <span>beep </span>聲通知管理者，機房主機有人登入。</p>
+			<!-- Show relate article -->
+				<!-- end -->
+		<div class="article_note">
+		<!-- Add tags use metakey, and show OSSF Newsletter tag: OSSFNL+NUM-->
+		<br><br> <hr style='border: 1px dashed #D2DADB;'><b>自由軟體鑄造場電子報&nbsp;:</b>&nbsp;<a href='../../previous-issue%3Ftask=view&amp;id=689.html'>第 159 期 中央研究院 10 月 23 日盛大舉辦「99 年院區開放參觀活動」</a><br>				<!-- End -->
+					<br>
+					<b>分類: </b><a href="../tech-column.html">				技術專欄					</a>				</div>
+			 <!-- AddThis Button BEGIN ID 3001 is the front page article -->
+     			<br><br>
+       <div class="addthis_toolbox addthis_default_style addthis_32x32_style">
+       <a class="addthis_button_preferred_1"></a>
+       <a class="addthis_button_preferred_2"></a>
+       <a class="addthis_button_preferred_3"></a>
+       <a class="addthis_button_preferred_4"></a>
+       <a class="addthis_button_compact"></a>
+       <a class="addthis_counter addthis_bubble_style"></a>
+       </div>
+       <script type="text/javascript">var addthis_config = {"data_track_clickback":true};</script>
+       <script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js#pubid=openfoundry"></script>
+       <!-- AddThis Button END -->
+     <br>
+		<div class="totop" ><a class="rt-totop" href="8152-logfmonexpect%3Ftmpl=component&amp;print=1&amp;page=.html#" style="outline: medium none;">↑ Top</a></div>
+            <!-- AddThis Button END -->
+
+			</div>
+</div>
+
+						</div>
+					</div>
+				</div>
+			</div>
+		</body>
+	</html>

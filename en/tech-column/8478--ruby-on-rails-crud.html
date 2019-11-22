@@ -1,0 +1,663 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-gb" lang="en-gb" >
+<head>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<link rel="shortcut icon" href="../../images/favicon.ico" />
+	  <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+  <meta name="robots" content="index, follow" />
+  <meta name="keywords" content="Rails, Ruby, CRUD, OSSFNL759" />
+  <meta name="title" content="麥克阿忠的 Ruby on Rails 真功夫─手刻 CRUD" />
+  <meta name="description" content="前言 上篇我們介紹 Ruby on Rails 的快速上手方式，使用 scaffold 指令開發出完整的資料庫基礎操作的應用介面。但針對實際上的需求，仍需根據實務再作修正修正，為了使初學者能夠從中理解 Ruby on Rails 的運作過程，以打下 Ruby 的功夫底子，本篇特別示範真功夫教學。 什麼是 CRUD ？ CRUD 意指在資料庫的四個資料基本異動動作，分別為： Create：建立資料" />
+  <meta name="generator" content="" />
+  <title>麥克阿忠的 Ruby on Rails 真功夫─手刻 CRUD - OpenFoundry</title>
+  <link href="../../favicon.ico" rel="shortcut icon" type="image/x-icon" />
+  <link rel="stylesheet" href="../../components/com_jcomments/tpl/default/style.css%3Fv=10.css" type="text/css" />
+  <link rel="stylesheet" href="../../components/com_gantry/css/gantry.css" type="text/css" />
+  <link rel="stylesheet" href="../../components/com_gantry/css/grid-12.css" type="text/css" />
+  <link rel="stylesheet" href="../../components/com_gantry/css/joomla.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/joomla.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/style1.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/light-body.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/demo-styles.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/template.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/typography.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/fusionmenu.css" type="text/css" />
+  <style type="text/css">
+    <!--
+#rt-main-surround ul.menu li.active > a, #rt-main-surround ul.menu li.active > .separator, #rt-main-surround ul.menu li.active > .item, #rt-main-surround .square4 ul.menu li:hover > a, #rt-main-surround .square4 ul.menu li:hover > .item, #rt-main-surround .square4 ul.menu li:hover > .separator, .roktabs-links ul li.active span {color:#0088B5;}
+a, #rt-main-surround ul.menu a:hover, #rt-main-surround ul.menu .separator:hover, #rt-main-surround ul.menu .item:hover {color:#0088B5;}
+    -->
+  </style>
+  <script type="text/javascript" src="../../components/com_jcomments/js/jcomments-v2.1.js%3Fv=2"></script>
+  <script type="text/javascript" src="../../components/com_jcomments/libraries/joomlatune/ajax.js"></script>
+  <script type="text/javascript" src="../../media/system/js/mootools.js"></script>
+  <script type="text/javascript" src="../../media/system/js/caption.js"></script>
+  <script type="text/javascript" src="../../components/com_gantry/js/gantry-buildspans.js"></script>
+  <script type="text/javascript" src="../../components/com_gantry/js/gantry-inputs.js"></script>
+  <script type="text/javascript" src="../../templates/rt_quantive_j15/js/jquery.cookie.js"></script>
+  <script type="text/javascript" src="../../modules/mod_roknavmenu/themes/fusion/js/fusion.js"></script>
+  <script type="text/javascript" src="../../modules/mod_ofssologin/js/ofssologin.js"></script>
+  <script type="text/javascript">
+
+			window.addEvent('domready', function() {
+				var modules = ['rt-block'];
+				var header = ['h3','h2','h1'];
+				GantryBuildSpans(modules, header);
+			});
+		InputsExclusion.push('.content_vote','#rt-popup')
+		        window.addEvent('load', function() {
+					new Fusion('ul.menutop', {
+						pill: 0,
+						effect: 'slide and fade',
+						opacity: 1,
+						hideDelay: 500,
+						centered: 0,
+						tweakInitial: {'x': -2, 'y': 0},
+        				tweakSubsequent: {'x': 0, 'y': -14},
+						menuFx: {duration: 200, transition: Fx.Transitions.Sine.easeOut},
+						pillFx: {duration: 400, transition: Fx.Transitions.Back.easeOut}
+					});
+	            });
+  </script>
+<!-- <script type="text/javascript" src="/sso/javascripts/langsync.js"></script> -->
+<!-- <script src="/templates/rt_quantive_j15/js/ossf.js"></script> -->
+<script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-4136519-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
+</head>
+	<body  class="backgroundlevel-low backgroundstyle-style8 bodylevel-med bodystyle-light cssstyle-style1 logostyle-dark font-family-helvetica font-size-is-default menu-type-fusionmenu col12 ">
+		<div id="rt-main-background">
+			<div class="rt-container">
+																<div id="rt-header">
+					<div class="rt-grid-7 rt-alpha">
+    			<div class="rt-block">
+    	    	<a href="../../index.html" id="rt-logo"></a>
+    		</div>
+	    
+</div>
+<div class="rt-grid-5 rt-omega">
+                    <div class="square9">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<div class="ofssologin_square9"><a href="../../index.html">Login</a>&nbsp;&nbsp|&nbsp;&nbsp;<span><a href="../../tw/tech-column/8478--ruby-on-rails-crud.html" ><span lang="tw" xml:lang="tw">繁體中文</span></a></li></ul></span><!--Joom!fish V2.0.4 (Lightning)-->
+<!-- &copy; 2003-2009 Think Network, released under the GPL. -->
+<!-- More information: at http://www.joomfish.net -->
+<div class="ofssologin_search_square9">
+  <form id="of_search" action="https://www.openfoundry.org/of/openfoundry/search" method="get" onsubmit="of_search(); return false;">
+    <select id="of_search_type">
+      <option value="Projects"> Projects </option>
+      <option value="Content"> Content </option>
+      <option value="People"> People </option>
+    </select>
+    <input id="query" name="query" id="mod_search_searchword" maxlength="50" alt="search" class="inputbox" type="text" size="28" value="search..."  onblur="if(this.value=='') this.value='search...';" onfocus="if(this.value=='search...') this.value='';" />
+    <input type="hidden" name="commit" value="search" />
+  </form>
+</div></div>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		
+</div>
+					<div class="clear"></div>
+				</div>
+																<div id="rt-navigation"><div id="rt-navigation2"><div id="rt-navigation3">
+					
+<div class="nopill">
+	<ul class="menutop level1 " >
+						<li class="item1 root" >
+					<a class="orphan item bullet" href="../../index.html"  >
+				<span>
+			    				Home				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item32 root" >
+					<a class="orphan item bullet" href="../../archived.html"  >
+				<span>
+			    				Projects				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item186 root" >
+					<a class="orphan item bullet" href="../community.html"  >
+				<span>
+			    				Who&#039;s Who				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item4 root" >
+					<a class="orphan item bullet" href="../news.html"  >
+				<span>
+			    				News				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item5 root" >
+					<a class="orphan item bullet" href="../law-and-licensing.html"  >
+				<span>
+			    				Law &amp; Licensing				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item3 root" >
+					<a class="orphan item bullet" href="../activities.html"  >
+				<span>
+			    				Activities				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item2 root" >
+					<a class="orphan item bullet" href="../resourcecatalog.html"  >
+				<span>
+			    				Resource Catalog				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item45 root" >
+					<a class="orphan item bullet" href="../about.html"  >
+				<span>
+			    				About				   
+				</span>
+			</a>
+			
+			
+	</li>	
+				</ul>
+</div>
+
+				    <div class="clear"></div>
+				</div></div></div>
+								<div class="rt-surround"><div class="rt-surround2"><div class="rt-surround3">
+										<div id="rt-showcase-section">
+												<div id="rt-showcase">
+							<div class="rt-grid-12 rt-alpha rt-omega">
+    		<div class="clear"></div>
+		
+		
+                <div class="close-note">
+                    <div class="rt-block">
+               					<div class="module-content">
+                	<div style="font-size:medium; background-image:linear-gradient(120deg,#159957,#4298b2);color:white;padding:20px;margin:-10px -18px;">感謝您對「自由軟體鑄造場」的支持與愛護，十多年來「自由軟體鑄造場」受中央研究院支持，並在資訊科學研究所以及資訊科技創新研究中心執行，現已完成階段性的任務。 本網站預計持續維運至 2021年底，網站內容基本上不會再更動。<br />也紀念我們永遠的朋友 李士傑先生（Shih-Chieh Ilya Li）。</div>				</div>
+            </div>
+                </div>
+		
+</div>
+							<div class="clear"></div>
+						</div>
+																	</div>
+															<div id="rt-main-surround">
+												<div id="rt-breadcrumbs">
+								<div class="rt-breadcrumb-surround">
+		<a href="../../index.html" id="breadcrumbs-home"></a>
+		<span class="breadcrumbs pathway">
+<a href="../tech-column.html" class="pathway">Tech Column</a> <img src="../../templates/rt_quantive_j15/images/arrow.png" alt=""  /> <span class="no-link">麥克阿忠的 Ruby on Rails 真功夫─手刻 CRUD</span></span>
+	</div>
+	
+							<div class="clear"></div>
+						</div>
+																							              <div id="rt-main" class="sa3-mb9">
+                <div class="rt-main-inner">
+                    <div class="rt-grid-9 rt-push-3">
+                                                <div class="rt-block">
+                            							<div class="square1">
+							<div class="rt-module-surround">
+								<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+								<div class="rt-module-inner">
+		                            <div id="rt-mainbody">
+		                                
+<div class="rt-joomla ">
+	<div class="rt-article">
+		
+				<div class="rt-headline"><h1 class="rt-article-title">麥克阿忠的 Ruby on Rails 真功夫─手刻 CRUD</h1>		</div>
+		<div class="clear"></div>
+		
+		
+		
+				<div class="rt-articleinfo">
+						<div class="rt-article-icons">
+								<a href="8478--ruby-on-rails-crud%3Ftmpl=component&amp;print=1&amp;layout=default&amp;page=.html" title="Print" onclick="window.open(this.href,'win2','status=no,toolbar=no,scrollbars=yes,titlebar=no,menubar=no,resizable=yes,width=640,height=480,directories=no,location=no'); return false;" rel="nofollow"><span class="icon print"></span></a>																</div>
+			
+			<span class="rt-date-posted">
+						 Created at			Thursday, 13 October 2011 14:49						&nbsp;&nbsp;&nbsp;&nbsp;						Last Updated on Friday, 27 April 2012 16:56						</span>
+
+						<span class="rt-author">
+				Written by 麥克阿忠			</span>
+				
+					</div>
+		
+		
+		<h3>前言</h3>
+<p><a href="../../tw/tech-column/8440-ruby-on-rails-scaffold-.html" target="_blank">上篇</a>我們介紹 Ruby on Rails 的快速上手方式，使用 scaffold 指令開發出完整的資料庫基礎操作的應用介面。但針對實際上的需求，仍需根據實務再作修正修正，為了使初學者能夠從中理解 Ruby on Rails 的運作過程，以打下 Ruby 的功夫底子，本篇特別示範真功夫教學。</p>
+
+<p>&nbsp;</p>
+<h3>什麼是 CRUD ？</h3>
+<p>CRUD 意指在資料庫的四個資料基本異動動作，分別為：</p>
+<ul>
+<li>Create：建立資料</li>
+<li>Read：讀取資料</li>
+<li>Update：更新資料</li>
+<li>Destory：刪除資料</li>
+</ul>
+<p>一般而言，傳統資料庫的組成是各資料列結合成資料表，再由資料表集合成資料庫。如同手上的電話簿，欲加上朋友的聯絡人，就必需 Create（建立資料），若要打電話讀取電話號碼則 Read（讀取資料），若某人的電話更新了就要 Update（更新資料），而不再聯絡者就 Destory（刪除資料）。設計資料庫應用程式介面原則上不離這四個基礎操作。設計一項表單就要開發出建立、檢視、更新、移除。</p>
+<p>所以，有經驗的程式設計師會花許多時間建立屬於自己的 MVC，或是使用現成流行的 MVC Framework 以簡化開發的流程。如上述的狀況，網頁表單的設計可以簡化為類似 Partial 的方式以重複利用。</p>
+<h3>準備</h3>
+<p>在實作手刻 CRUD 前，請先確定目前的環境。例如檢查 Ruby 的版本，</p>
+<pre><code>$ ruby -v<br />ruby 1.8.7 (2011-02-18 patchlevel 334) [i686-linux], MBARI 0x8770, Ruby Enterprise Edition 2011.03<br /></code></pre>
+<p>以及檢查 Ruby on Rails 的版本，</p>
+<pre><code>$ rails -v<br />Rails 3.0.7<br /><br /></code></pre>
+<p>還有 Rake 的版本，</p>
+<pre><code>$ rake -V<br />rake, version 0.8.7<br /></code></pre>
+<h3>實作</h3>
+<h4>規畫資料庫</h4>
+<p>在前兩篇系列文章中，我們提到 Ruby on Rails 中的 new 用法，現在我們需要再建立一個新的專案來實作這次的手刻 CRUD 的內容。在本例中我們將以「電話簿」的實例來建立一個 Web 應用程式，首先我們必須規劃資料庫的結構，然後一步步建立資料庫介面所需的 Ruby 程式碼。</p>
+<p><a href="../../images/111018/RailsIII/rorcrud01.png" target="_blank"><img src="../../images/111018/RailsIII/rorcrud01.png" alt="圖1" title="電話簿範例的資料庫結構" style="border: 0;" border="0" width="350" /></a></p>
+<p>▲ 圖1：電話簿範例的資料庫結構</p>
+<p>如上圖，規劃出的欄位有 id、name、phone、birthday 等四個欄位，而型態皆是平常使用到的整數型態(INT)，文字型態 (TEXT) 以及日期型態 (DATE)。MySQL 的使用者可參考此表中的長度欄位，若是使用 SQLite3 則可忽略。</p>
+<h4>建立新專案</h4>
+<p>輸入下列指令以建立本篇所需的檔案：</p>
+<pre><code>$ rails new phonebook<br /></code></pre>
+<p>然後進入工作目錄開始上工囉，</p>
+<pre><code>$ cd phonebook<br /></code></pre>
+<p>註：如果您升級至 rails 3.1.0，會遇到 Could not find a JavaScript runtime 錯誤，解決方法是到該目錄下的 Gemfile 檔加入二行：</p>
+<pre><code>gem 'execjs'<br />gem 'therubyracer'<br /></code></pre>
+<p>然後執行下列指令即可，</p>
+<pre><code>$ bundle install<br /></code></pre>
+<h4>資料庫與 Ruby on Rails 的連結</h4>
+<p>應用程式的資料庫函式可以透過 Database adapter 介面來連結不同的資料庫，不過前提是該程式語言有提供這樣的連結方式。如同 PHP 除了會搭配 MySQL 之外也提供 ODBC 函式庫連結 MS SQL。</p>
+<p>在 Ruby on Rails 中預設的資料庫是 SQLite3，因此不用特別連結其它資料庫。如果偏好 MySQL，可在建立新專案時下指令：</p>
+<pre><code>$ rails new myproject -d mysql<br /><br /></code></pre>
+<p>"-d" 的參數就是指定特定的資料庫，目前 Rails 可指定的資料庫選項有：mysql / oracle / postgresql / sqlite3 / frontbase / ibm_db / jdbcmysql / jdbcsqlite3 / jdbcpostgresql / jdbc。</p>
+<p>如果有特別的資料庫則必須先以下列指令查詢是否已安裝，</p>
+<pre><code>$ gem list<br />*** LOCAL GEMS ***<br />......<br />jquery-rails (1.0.14)<br />json (1.6.1)<br />......<br />......<br />mysql (2.8.1)<br />mysql2 (0.3.7, 0.3.6, 0.2.13, 0.2.7)<br />......<br />......<br />rack (1.3.3, 1.3.2, 1.2.3)<br />......<br /></code></pre>
+<p>只要看到有 mysql 字眼，就表示你的 Ruby on Rails 有支援，若沒看到，可下指令安裝，</p>
+<pre><code>$ gem install mysql2<br /></code></pre>
+<p>不過在一般 Linux 套裝作業系統環境下，有時不只需要上述指令，還需另外安裝套件才能運作。</p>
+<p>開設完新專案之後，讀者可以到 config/database.yml 檢視資料庫的設定。</p>
+<p><a href="../../images/111018/RailsIII/rorcrud02.png" target="_blank"><img src="../../images/111018/RailsIII/rorcrud02.png" alt="圖2：" title="MySQL 的設定範例" border="0" height="532" width="450" /></a></p>
+<p>▲ 圖2：MySQL 的設定範例</p>
+<h4>頁面與網址的關係</h4>
+<p>建立頁面前我們要先了解網址的結構，例如以瀏覽器開啟此網址 "https://localhost/phone/show/1"，此段的網址可解釋如下："https://DomainName/controller/action/id"。</p>
+<p>我們所要建立的頁面是由一個 controller 跟一個 action構成，因此網址也必須這樣呈現："https://localhost/phone/index"</p>
+<p>以下列指令產生上述的頁面：</p>
+<pre><code>$ rails generate controller phone index<br /></code></pre>
+<p>其中 phone 是 controller，index 是 action，而 action 在一般說來它是所謂的某個頁面，並對應於 app/views/index.html.erb 檔，副檔名必需是 erb。而 controller 是 action 的集合，控制 action 跟資料庫間輸出的程序。</p>
+<p>註：rails generate 指令可以用簡化作 「rails g」。</p>
+<p><a href="../../images/111018/RailsIII/rorcrud03.png" target="_blank"><img src="../../images/111018/RailsIII/rorcrud03.png" alt="圖3：" title="以Rrails generate 指令來產生相對應的程式" border="0" height="266" width="450" /></a></p>
+<p>▲ 圖3：以 Rrails generate 指令來產生相對應的程式</p>
+<p>產生的檔案如圖 3，這樣子就開設好了一個如網址 phone/index 的頁面。請記得用下列指令開啟虛擬伺服器。</p>
+<pre><code>$ rails server<br /><br /></code></pre>
+<p><a href="../../images/111018/RailsIII/rorcrud04.png" target="_blank"><img src="../../images/111018/RailsIII/rorcrud04.png" alt="圖4：" title="網頁呈現於瀏覽器上的畫面" border="0" height="301" width="400" /></a></p>
+<p>▲ 圖4：網頁呈現於瀏覽器上的畫面</p>
+<p>如圖 4，我們就可以在此修改頁面。在圖 3 中，Ruby on Rails 已提示我們到哪個路徑修改網頁。所以開啟 phonebook/app/views/phone/index.html.erb 可以看到以下的內容：</p>
+<pre>
+<h1>Phone#index</h1>
+<br />
+<p>Find me in app/views/phone/index.html.erb</p>
+</pre>
+<p>有興趣的讀者可以試著修改頁面。</p>
+<h4>建立 Rails 與資料庫互動的模組</h4>
+<p>Ruby on Rails MVC 架構的 M 指的是 model，而此 model 是處理資料庫的程序，因此我們要輸入指令來產生資料表：</p>
+<pre><code>$ rails g model pbook name:string phone:integer birthday:date<br /></code></pre>
+<p>註：若使用 MySQL 必須先下 "rake db:create" 指令，讓 Ruby on Rails 建立相關的資料庫結構。若使用 SQLite3 則可跳過這步驟。</p>
+<p><a href="../../images/111018/RailsIII/rorcrud06.png" target="_blank"><img src="../../images/111018/RailsIII/rorcrud06.png" alt="圖5：" title="rake db:create 指令的輸出結果" style="border: 0;" border="0" width="450" /></a></p>
+<p>▲ 圖5：rake db:create 指令的輸出結果</p>
+<p>如圖5，產生若干檔案。其中較常更改到的檔案為 pbook.rb 以及 20110928100041_create_pbooks.rb。</p>
+<p>pbook.rb 是 Rails 中與資料表 pbook 互動的程式，該資料夾的每個資料欄位都會由 pbook.rb 來定義程式與頁面間的邏輯運作。如果沒有關聯式的資料表，通常該檔會保持空白。</p>
+<p>20110928100041_create_pbooks.rb 是資料表定義用的檔案，可以在目錄 db/migrate 找到，當配合團體開發時，與此類似的檔案就極為重要。</p>
+<p>開啟 20110928100041_create_pbooks.rb 檔案內容如下。</p>
+<p><a href="../../images/111018/RailsIII/rorcrud07.png" target="_blank"><img src="../../images/111018/RailsIII/rorcrud07.png" alt="圖6：" title="20110928100041_create_pbooks.rb 的檔案內容" style="border: 0;" border="0" height="198" width="400" /></a></p>
+<p>▲ 圖6：20110928100041_create_pbooks.rb 的檔案內容</p>
+<p>以上確定產生 model 後，再輸入指令：</p>
+<pre><code>$ rake db:migrate<br /><br /></code></pre>
+<p><a href="https://www.openfoundry.org/imges/111018/RailsIII/rorcrud08.png" target="_blank"><img src="../../images/111018/RailsIII/rorcrud08.png" alt="圖7：" title="rake db:migrate 指令的輸出結果" style="border: 0;" border="0" width="450" /></a></p>
+<p>▲ 圖7：rake db:migrate 指令的輸出結果</p>
+<p>Ruby on Rails 就會針對 db/migrate 所產生出的 20110928100041_create_pbooks.rb 開始變更資料庫的資料結構。若想要了解 Ruby on Rails 在資料庫做了哪些異動，可以下指令 tail -f log/development.log 查看。</p>
+<p><a href="../../images/111018/RailsIII/rorcrud09.png" target="_blank"><img src="../../images/111018/RailsIII/rorcrud09.png" alt="圖8：" title="rake db:migrate 的底層操作記錄" style="border: 0;" border="0" width="450" /></a></p>
+<p>▲ 圖8：rake db:migrate 的底層操作記錄</p>
+<h4>用 rails console 來測試跟資料庫互動的狀況</h4>
+<p>使用 MySQL 的讀者大都習慣使用 phpmyadmin 或是 mysql 的 console 來檢視資料庫的異動情形。Ruby on Rails 也提供以 console 的方式直接異動資料庫。在建立網頁之前，剛建立好的資料庫沒有任何資料，因此先運用 console 的方式建立一些測試資料，以方便設計網頁的後續工作。</p>
+<pre><code>$ rails console<br /></code></pre>
+<p>輸入方式有兩種，第一種是逐行輸入資料：</p>
+<pre><code>pbook.name = "Merry"<br />pbook.phone = "0922123123"<br />pbook.birthday = "1999/01/01"<br />pbook.save        #資料新增完成之後會返回true。<br />pbook.id         #新增完成會返回該資料的id值。<br /></code></pre>
+<p>新增情形如下圖，</p>
+<p><a href="../../images/111018/RailsIII/rorcrud10.png" target="_blank"><img src="../../images/111018/RailsIII/rorcrud10.png" alt="圖9：" title="rails console 指令的輸出結果" style="border: 0;" border="0" width="450" /></a></p>
+<p>▲ 圖9：rails console 指令的輸出結果</p>
+<p>第二種使用類似 HASH 的格式將資料置入同一行：</p>
+<pre><code>pbook=Pbook.new(:name=&gt;"John", :phone=&gt;"0988138138", :birthday=&gt;"1995/05/05")<br />pbook.save<br />pbook.id<br /></code></pre>
+<p>新增情形如下圖，</p>
+<p><a href="../../images/111018/RailsIII/rorcrud11.png" target="_blank"><img src="../../images/111018/RailsIII/rorcrud11.png" alt="圖10：" title="Hash 格式輸出結果" style="border: 0;" border="0" width="450" /></a></p>
+<p>▲ 圖10：Hash 格式的輸出結果</p>
+<p>新增完之後，可以直接用 Pbook.find(id) 查詢目前資料新增的狀況，我們已完成網頁設計前的處理工作。</p>
+<h4>開始設計網頁</h4>
+<p>開啟 app/controllers/phone_controller.rb 寫一些程式碼將剛剛輸入的資料呈現在網頁上。</p>
+<p><a href="../../images/111018/RailsIII/rorcrud12.png" target="_blank"><img src="../../images/111018/RailsIII/rorcrud12.png" alt="圖11：" title="app/controllers/phone_controller.rb 的程式碼" style="border: 0;" border="0" width="450" /></a></p>
+<p>▲ 圖11：app/controllers/phone_controller.rb 的程式碼</p>
+<p>然後再修改 app/views/phone/index.html.erb 檔案，並依照需要寫入來自 phone_controller.rb 的程式碼。</p>
+<p><a href="../../images/111018/RailsIII/rorcrud13.png" target="_blank"><img src="../../images/111018/RailsIII/rorcrud13.png" alt="圖12：" title="在 app/views/phone/index.html.erb 新增的程式碼" style="border: 0;" border="0" width="450" /></a></p>
+<p>▲ 圖12：在 app/views/phone/index.html.erb 新增的程式碼</p>
+<p>依照圖 12 的範例輸入完成後，重新整理網頁，呈現結果如下：</p>
+<p><a href="../../images/111018/RailsIII/rorcrud14.png" target="_blank"><img src="../../images/111018/RailsIII/rorcrud14.png" alt="圖13：" title="app/views/phone/index.html.erb 修改後的結果" style="border: 0;" border="0" width="450" /></a></p>
+<p>▲ 圖13：app/views/phone/index.html.erb 修改後的結果</p>
+<p>其中在 phone_controller.rb 的第一個 def 區段裡，我們定義了 index 的類別，而</p>
+<pre><code>@phones = Pbook.all<br /><br /></code></pre>
+<p>這一行程式碼，其用意是將資料表 Pbook 裡頭的資料用 all 的物件操作把資料全部倒出來，並指派給 @phones 這個實體變數。然後在 view 裡的 index.html.erb 就會接收到 @phones 的實體變數，用 code block 的方式逐一列出資料。</p>
+<p>詳見：</p>
+<pre><code>    ＜% @phones.each do |p| %＞<br />      ＜tr＞＜td＞＜%= p.name %＞＜/td＞＜td＞＜%=p.phone%＞＜/td＞＜td＞＜%=p.birthday%＞＜/td＞＜/tr＞<br />    ＜% end %＞<br />  </code></pre>
+<p>在上述程式碼中 @phone.each 的 each 會把 @phones 的資料傳給 p，之後 p 將得到各個資料陣列，然後用 p.name、p.phone、p.birthday 的欄位操作予以列印至網頁上。</p>
+<p>於是，我們完成 CRUD 的 R。</p>
+<h4>建立輸入表單</h4>
+<p>過去在設計表單時，除了要對應文字輸入框跟資料庫外，也要寫 SQL 語言從表單頁一一對應導入程式碼，而會耗去許多時間，且每一個動作都要配合不同的 SQL 語法，如 UPDATE、DELETE、INSERT 這三個動作。</p>
+<p>在 Ruby on Rails 中，表單與 SQL 相對應的設計方式比較容易，過程如下：</p>
+<p>先打開 config/routes.rb 並依照下圖設定「網址」</p>
+<p><a href="../../images/111018/RailsIII/rorcrud15.png" target="_blank"><img src="../../images/111018/RailsIII/rorcrud15.png" alt="圖14：" title="config/routes.rb 的設定畫面" style="border: 0;" border="0" width="400" /></a></p>
+<p>▲ 圖14：config/routes.rb 的設定畫面</p>
+<p>然後在 phone_controller.rb 建立一個 newphone 與 create 的類別，並照下圖輸入幾行程式碼。</p>
+<p><a href="../../images/111018/RailsIII/rorcrud16.png" target="_blank"><img src="../../images/111018/RailsIII/rorcrud16.png" alt="圖15：" title="修改 phone_controller.rb 程式碼" style="border: 0;" border="0" width="400" /></a></p>
+<p>▲ 圖15：修改 phone_controller.rb 程式碼</p>
+<p>利用在 views/index.html.erb 加入 link_to 的方法連結下一個頁面，結果如下圖：</p>
+<pre><code>    ＜%= link_to "edit" , :action =＞ "modify", :id =＞ p%＞ /<br /><br />    ＜%= link_to "del" , :action =&gt; "del", :id =＞ p%＞</code></pre>
+<p>並在最後一行加入 "add new phone number" 的連結，</p>
+<pre><code>　　＜p＞＜%= link_to "add new phone number" ,phone_newphone_path %＞＜/p＞</code></pre>
+<p><a href="../../images/111018/RailsIII/rorcrud17.png" target="_blank"><img src="../../images/111018/RailsIII/rorcrud17.png" alt="圖16：" title="於 views/index.html.erb 中加入 link_to 的結果" style="border: 0;" border="0" width="400" /></a></p>
+<p>▲ 圖16：於 views/index.html.erb 中加入 link_to 的結果</p>
+<p>由於我們設定的 modify 與 del 頁面尚未建立，因此連過去時顯示為錯誤，不過，目前要先建立 add new phone 的表單頁面。</p>
+<p>在目錄 views 中建立一個名叫 newphone.html.erb 的檔案，並輸入如下圖的程式碼：</p>
+<p><a href="../../images/111018/RailsIII/rorcrud18.png" target="_blank"><img src="../../images/111018/RailsIII/rorcrud18.png" alt="圖17：" title="newphone.html.erb 的程式碼" style="border: 0;" border="0" width="450" /></a></p>
+<p>▲ 圖17：newphone.html.erb 的程式碼</p>
+<p>輸入完成後重新整理網頁，並使用瀏覽器瀏覽 "https://localhost/phone/newphone" 就可得到如下圖的結果。</p>
+<p><a href="../../images/111018/RailsIII/rorcrud19.png" target="_blank"><img src="../../images/111018/RailsIII/rorcrud19.png" alt="圖18：" title="newphone 的瀏覽器呈現畫面" style="border: 0;" border="0" width="400" /></a></p>
+<p>▲ 圖18：newphone 的瀏覽器呈現畫面</p>
+<p>如此，我們就完成建立表單的步驟。記得在 phone_controller.rb 建立一個 create 的類別並加入處理送往資料庫的程序。至此我們完成 CRUD 的 C。</p>
+<p>關於 routes.rb 與 URL Rewriting 的設計，可以回頭看 config/routes.rb 的程式碼。routes.rb 的作用是以 URL Rewriting（重寫網址）技術將上述網址列的各個頁面都導入 rails 的類別裡，而 get、 put、post 在瀏覽器中會發出指令動作向 web server 做出「要求」與「回應」。get 是向伺服器做一般的資料請求並輸出 HTML，而 put 與 post 是表單按下「送出」(submit) 時伺服器會接受表單內的資料，並導入資料庫中。</p>
+<pre><code>get "phone/newphone"<br />get "phone/index"<br />get "phone/modify/:id" =&gt; "phone#modify"<br />post "phone/create"<br /><br /></code></pre>
+<p>上述程式碼都有相對應的 controller 跟 action ，如果後面還需 id 以檢視資料庫中個別的資料，則必須再自定如上的結構。</p>
+<p>如在 index.html.erb 的</p>
+<pre><code>    ＜%= link_to "edit" , :action =＞ "modify", :id =＞ p%＞<br />    ＜%= link_to "del" , :action =&gt; "del", :id =＞ p%＞</code></pre>
+<p>以及</p>
+<pre><code>   ＜%= link_to "add new phone number" ,phone_newphone_path %＞  </code></pre>
+<p>Ruby on Rails 會將 link_to 操作的方法，在 HTML 中轉換為如下的超連結：</p>
+<p><a href="../../images/111018/RailsIII/rorcrud20.png" target="_blank"><img src="../../images/111018/RailsIII/rorcrud20.png" alt="圖19：" title="link_to 實際對應的 HTML 輸出" style="border: 0;" border="0" width="400" /></a></p>
+<p>▲ 圖19：link_to 實際對應的 HTML 輸出</p>
+<p>在Ruby on Rails 的 MVC 概念下，controller 與 views 通常密不可分，幾乎 controller 中的每一個類別都會對應一個 views/phone/****.html.erb，如 def newphone 與 def index 等等。</p>
+<p>因此，我們在建立表單時，進入 newsphone 後，先將 Pbook.new 的操作導至 @pbook 的實體變數，如：</p>
+<pre><code>    @pbook = Pbook.new<br /></code></pre>
+<p>然後，在 newphone.html.erb 設計表單時，form_for 的程式碼會幫助處理表單的介面，只要把 f.text_field 的物件照資料表欄位名稱對應好即可。</p>
+<pre><code>   ＜%= form_for @pbook , :url =＞ {:controller =＞   "phone", :action =&gt; "create"} do |f| %&gt;<br /><br />    </code><code>&lt;</code><code>%= f.label :name %</code><code>&gt;</code><br /><code>    ＜%= f.text_field :name %＞<br />    ......<br /><br />    ......<br /><br />    ＜%end%＞</code></pre>
+<p>form_for 可提供的物件，在經過 code block 傳至變數 f 之後，除了 f.text_field 會輸出成文字輸入框之外，也有其它如 check_box、text_area 等等其它不同型別的表單元素。而 form_for 屬性設定除了接受 @pbook 的實體變數相關變數之外，url 的屬性也必須依照 routes.rb 的設定，傳送至資料庫的處理程序，因此轉變為 HTML 如下圖：</p>
+<p><a href="../../images/111018/RailsIII/rorcrud21.png" target="_blank"><img src="../../images/111018/RailsIII/rorcrud21.png" alt="圖20：" title="form_for 實際對應的 HTML 輸出" style="border: 0;" border="0" width="400" /></a></p>
+<p>▲ 圖20：form_for 實際對應的 HTML 輸出</p>
+<p>或許有讀者會問 SQL 語法在哪？由表單按下 Submit 送入後端資料庫的程式端，在圖20 HTML 的</p>
+<form>屬性是指定至 /phone/create，也就是在 phone_controller.rb 中所定義的 def create 區段，我們輸入如下的程式碼：
+<p>&nbsp;</p>
+<pre><code>def create<br />@pbook = Pbook.new(params[:pbook])<br />@pbook.save<br /><br />redirect_to (:action =&gt; "index")<br />end<br /></code></pre>
+<p>第二行的程式，是將 Pbook.new 的操作用 params[:pbook] 引入 pbook 表單的各個輸入框，然後在第三行用 save 的方法儲存至 Pbook 的資料表中。完成之後 redirect_to 就會令該頁轉至 index。</p>
+<p>因此不需輸入任何 SQL 語法， Ruby on Rails 已經為開發者妥善處理 SQL 與表單間的程序了。</p>
+</form>
+<h4>再完成其餘 CRUD 的 U 跟 D</h4>
+<p>在前幾段詳細說明了表單的設計、HTML 與 routes.rb 的原理，資料的異動還需要「更新」與「刪除」的動作，接著我們將完成本篇電話簿設計的範例。</p>
+<p>接著在 phone_controller.rb 再新增 modify、updating、del 的 action，程式碼如下圖所示：</p>
+<p><a href="../../images/111018/RailsIII/rorcrud22.png" target="_blank"><img src="../../images/111018/RailsIII/rorcrud22.png" alt="圖21：" title="phone_controller.rb 再新增 modify、updating、del 的 action" style="border: 0;" border="0" width="450" /></a></p>
+<p>▲ 圖21：phone_controller.rb 再新增 modify、updating、del 的 action</p>
+<p>再從目錄 views/phone 新建一個名為 modify.html.erb 的表單，程式碼如同 newphone.html.erb 一樣，但有一個地方不同，如下圖：</p>
+<p><a href="../../images/111018/RailsIII/rorcrud23.png" target="_blank"><img src="../../images/111018/RailsIII/rorcrud23.png" alt="圖22：" title="從views/phone 新建一個名為 modify.html.erb 的表單" style="border: 0;" border="0" width="450" /></a></p>
+<p>▲ 圖22：從views/phone 新建一個名為 modify.html.erb 的表單</p>
+<p>記得更改為：action =&gt; "updating", :id =&gt; @pbook，如此一來點選 edit 即可在網頁上看到文字輸入框已經有相關的資料在裡頭了。如下圖：</p>
+<p><a href="../../images/111018/RailsIII/rorcrud24.png" target="_blank"><img src="../../images/111018/RailsIII/rorcrud24.png" alt="圖23：" title="瀏覽器的輸出結果" style="border: 0;" border="0" width="450" /></a></p>
+<p>▲ 圖23：瀏覽器的輸出結果</p>
+<p>記得在 phone_cpntroller.rb 中的 def updating 鍵入完成程式碼，至此我們就完成了 CRUD 的 U 了！</p>
+<p>接著在 phone_controller.rb 加入 def del 的類別，但這個類別的刪除方式不必再用 del.html.erb 頁面顯示任何資料，所以重點在於 @pbook.destroy，再導回首頁。</p>
+<p>最後，完成了 CRUD 的 D，本篇的線上電話簿範例就宣告完工了。</p>
+<p>表單：另外值得一提的是更新資料與新建資料的差異性。在前段文章有提到 form_for 的操作方法，其中 Create 跟 Update 的動作略有不同。Create 資料是新建立過去不存在的資料，而 Update 資料是修改己存在的資料，因此 form_for 在 Create 中所顯示的程式碼如下：</p>
+<pre><code>   ＜%= form_for @pbook , :url =＞ {:controller =＞"phone", :action =&gt; "create"} do |f| %&gt;<br /></code></pre>
+<p>而 Update 的程式碼則為：</p>
+<pre><code>   ＜%= form_for @pbook , :url =＞{:controller =＞"phone", :action =&gt; "updating", :id =&gt; @pbook } do |f| %&gt;<br /></code></pre>
+<p>其中 :action =&gt; "updating" 要經過 Submit 後再導入 updating 的區段，而 :id =&gt; @pbook 會把 routes.rb 中的 get "phone/modify/:id" =&gt; "phone#modify" 之 id 值，幫忙將 Pbook 資料庫的資料導入 f.text_field 各個欄位中。</p>
+<p>而 modify、updating 與 del 又是什麼？在 phone_controller.rb 裡，modify 的程式碼很簡單。由 index 裡的 edit 點選之後，會傳送這串網址 https://localhost:3001/phone/modify/13，而 modify 後的 13 就是 id 值。所以使用 Pbook 的 find 操作物件，就可以查詢該 id 值的相關資料。如下方的程式碼：</p>
+<pre><code>@pbook = Pbook.find(params[:id])<br /><br /></code></pre>
+<p>Pbook.find 的用法是 Pbook.find(13)，因此要接受從網址而來的參數就用 param[:id] 即可。</p>
+<p>而 updating 的類別中，是由 modify.html.erb 按下表單中的送出鈕而觸發 updating 類別，經過 find id 之後，再透過 update_attributes(params[:pbook]) 將更改過的資料回送至資料庫。如下方的程式碼：</p>
+<pre><code>@pbook.update_attributes(params[:pbook])<br /></code></pre>
+<p>刪除資料的 del 也是如類似的方式查詢該 id，然後照 id 內的參數，完成刪除資料，如下：</p>
+<pre><code>@pbook.destroy<br /></code></pre>
+<p><a href="../../images/111018/RailsIII/rorcrud22.png" target="_blank"><img src="../../images/111018/RailsIII/rorcrud22.png" alt="圖24：" title="詳細的程式碼" style="border: 0;" border="0" width="400" /></a></p>
+<p>▲ 圖24：詳細的程式碼。</p>
+<h3>總結</h3>
+<p>最後為讀者整理手刻 CRUD 的一些重點步驟。</p>
+<ol style="list-style-type: decimal;">
+<li>建立資料庫相關的連結設定：config/database.yml，如要指定其它資料庫，就在建立新專案時加上 -d SqlServerName</li>
+<li>建立操作資料表相關的 model：$rails g model table columnA:string columnB:integer birthday:date</li>
+<li>設定相關路由：config/routes.rb 可先在建立 conroller 的過程中修改 routes.rb，注意改完之後要重啟 server。</li>
+<li>建立 controller 的 def action 跟 views 裡的 <em>*</em>.html.erb 相對應的網頁或表單。</li>
+</ol>
+<p>完成以上的範例後您的 Ruby on Rails 的功力即提升五成以上，敬請期待下篇剖析 Rails MVC 概念的文章。</p>
+<p><strong>作者簡介</strong></p>
+<p>麥克阿忠，資深網站程式開發者，興趣是攝影。目前擔任 Ruby on Rails 網站開發員，主要使用 Ubuntu Server 進行 Web 應用程式開發。</p>
+<p>作者部落格 <a href="https://about.me/MichaelChen520" target="_blank">https://about.me/MichaelChen520</a> <br />歡迎對 Ruby 有興趣的同好前來交流指教。</p>
+			<!-- Show relate article -->
+		<br><br><h4>You may be interested in the following articles:</h4><ul><li><a href='../../tech-column/8530.html'>麥克阿忠的 Ruby on Rails 實務─熟悉 MVC</a> - <span class='date-posted'>2011-11-29</span></li><li><a href='../../tech-column/8440.html'>麥克阿忠的 Ruby on Rails 特快車－Scaffold 篇</a> - <span class='date-posted'>2011-09-05</span></li><li><a href='../../tech-column/8407.html'>麥克阿忠的 Ruby on Rails 初探</a> - <span class='date-posted'>2011-08-03</span></li></ul>		<!-- end -->
+		<div class="article_note">
+		<!-- Add tags use metakey, and show OSSF Newsletter tag: OSSFNL+NUM-->
+		<br><br> <hr style='border: 1px dashed #D2DADB;'><b>OSSF Newsletter&nbsp;:</b>&nbsp;<a href='../../previous-issue%3Ftask=view&amp;id=759.html'>第 183 期 GPL 條款對於衍生程式的判定標準與其授權拘束性的擴散範圍（下）</a><br><b>Tags:</b>&nbsp;<a href='../../index.php%3Foption=com_search&amp;Itemid=58&amp;searchphrase=exact_meta&amp;ordering=newest&amp;searchword=Rails.html'>Rails</a>,&nbsp;&nbsp;<a href='../../index.php%3Foption=com_search&amp;Itemid=58&amp;searchphrase=exact_meta&amp;ordering=newest&amp;searchword=&#32;Ruby.html'> Ruby</a>,&nbsp;&nbsp;<a href='../../index.php%3Foption=com_search&amp;Itemid=58&amp;searchphrase=exact_meta&amp;ordering=newest&amp;searchword=&#32;CRUD.html'> CRUD</a>,&nbsp;&nbsp;				<!-- End -->
+					<br>
+					<b>Category: </b><a href="../tech-column.html">				Tech Column					</a>				</div>
+			 <!-- AddThis Button BEGIN ID 3001 is the front page article -->
+     			<br><br>
+       <div class="addthis_toolbox addthis_default_style addthis_32x32_style">
+       <a class="addthis_button_preferred_1"></a>
+       <a class="addthis_button_preferred_2"></a>
+       <a class="addthis_button_preferred_3"></a>
+       <a class="addthis_button_preferred_4"></a>
+       <a class="addthis_button_compact"></a>
+       <a class="addthis_counter addthis_bubble_style"></a>
+       </div>
+       <script type="text/javascript">var addthis_config = {"data_track_clickback":true};</script>
+       <script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js#pubid=openfoundry"></script>
+       <!-- AddThis Button END -->
+     <br>
+		<div class="totop" ><a class="rt-totop" href="8478--ruby-on-rails-crud.html#" style="outline: medium none;">↑ Top</a></div>
+            <!-- AddThis Button END -->
+
+		<script type="text/javascript">
+var jcomments=new JComments(8478, 'com_content','https://openfoundry.org/index.php?option=com_jcomments&amp;tmpl=component&amp;lang=');
+jcomments.setList('comments-list');
+</script>
+<div id="jc">
+<div id="comments"><h4>Comments<a class="refresh" href="8478--ruby-on-rails-crud.html#" title="Refresh comments list" onclick="jcomments.showPage(8478,'com_content',0);return false;">&nbsp;</a></h4>
+<div id="comments-list" class="comments-list">
+        <div class="even" id="comment-item-382"><div class="rbox"><div class="rbox_tr"><div class="rbox_tl"><div class="rbox_t">&nbsp;</div></div></div><div class="rbox_m">
+<div class="comment-avatar"><img src="http://www.gravatar.com/avatar.php?gravatar_id=70eecc6eee2c73465dbd1813d5802abd&amp;default=https%3A%2F%2Fwww.openfoundry.org%2Fcomponents%2Fcom_jcomments%2Fimages%2Fno_avatar.png" alt="" /></div>
+<div class="comment-box avatar-indent">
+<span class="comments-vote">
+	<span id="comment-vote-holder-382">
+<a href="8478--ruby-on-rails-crud.html#" class="vote-good" title="Good comment!" onclick="jcomments.voteComment(382, 1);return false;"></a><a href="8478--ruby-on-rails-crud.html#" class="vote-poor" title="Poor comment!" onclick="jcomments.voteComment(382, -1);return false;"></a>
+<span class="vote-none">0</span>
+	</span>
+</span>
+<a class="comment-anchor" href="8478--ruby-on-rails-crud.html#comment-382" id="comment-382">#1</a>
+<span class="comment-author">whispered</span>
+<span class="comment-date">2013-04-10 00:06</span>
+<div class="comment-body" id="comment-body-382">想請問一下，<br />我照著你的網頁步驟做到圖18那一步時，<br />網頁出現了錯誤：<br />Showing C:/Sites/phonebook/app/views/phone/newphone.html.erb where line #2 raised:<br />undefined method `model_name' for NilClass:Class<br /><br />Extracted source (around line #2):<br />1: Add a new phone number<br />2: {:controller => "phone", :action => "create"} do |f| %><br />3: <br />4: 	<br />5: 	<br /><br />請問這該怎麼解決呢＠＠？<br />謝謝您＞＜</div>
+</div><div class="clear"></div>
+</div><div class="rbox_br"><div class="rbox_bl"><div class="rbox_b">&nbsp;</div></div></div></div>
+</div>
+        <div class="odd" id="comment-item-442"><div class="rbox"><div class="rbox_tr"><div class="rbox_tl"><div class="rbox_t">&nbsp;</div></div></div><div class="rbox_m">
+<div class="comment-avatar"><img src="http://www.gravatar.com/avatar.php?gravatar_id=9288465aa2c3468026c7f2cc8cf7c549&amp;default=https%3A%2F%2Fwww.openfoundry.org%2Fcomponents%2Fcom_jcomments%2Fimages%2Fno_avatar.png" alt="" /></div>
+<div class="comment-box avatar-indent">
+<span class="comments-vote">
+	<span id="comment-vote-holder-442">
+<a href="8478--ruby-on-rails-crud.html#" class="vote-good" title="Good comment!" onclick="jcomments.voteComment(442, 1);return false;"></a><a href="8478--ruby-on-rails-crud.html#" class="vote-poor" title="Poor comment!" onclick="jcomments.voteComment(442, -1);return false;"></a>
+<span class="vote-none">0</span>
+	</span>
+</span>
+<a class="comment-anchor" href="8478--ruby-on-rails-crud.html#comment-442" id="comment-442">#2</a>
+<span class="comment-author">King</span>
+<span class="comment-date">2013-07-19 15:02</span>
+<div class="comment-body" id="comment-body-442">想請問一下我照著您的範例練習，<span style="font-size:0px;padding:0;margin:0;"> </span>全部都正常，唯有updatin<span style="font-size:0px;padding:0;margin:0;"> </span>g 的部份是有問題的<br />我使用的是rails 4<br />錯誤的訊息為底下<br />No route matches [PATCH] "/phone/updating/7"<br /><br />在Routes裡面明明就有 <br />PUT 	/phone/updating/:id(.:format) 	phone#updating <br />可是卻不會被matches，如<span style="font-size:0px;padding:0;margin:0;"> </span>果我在routes.rb裡面改成resources :phone ，把updating 改成update，再針對 newphone,updati<span style="font-size:0px;padding:0;margin:0;"> </span>ng修改這樣一來就全部能正常了<span style="font-size:0px;padding:0;margin:0;"> </span><br />是否能請大大解釋一下，為何ro<span style="font-size:0px;padding:0;margin:0;"> </span>ute會不被matches，g<span style="font-size:0px;padding:0;margin:0;"> </span>oogle上我實在找不到資料來<span style="font-size:0px;padding:0;margin:0;"> </span>解決這個錯誤，謝謝 <img src="../../components/com_jcomments/images/smiles/smile.gif" border="0" alt="" /></div>
+</div><div class="clear"></div>
+</div><div class="rbox_br"><div class="rbox_bl"><div class="rbox_b">&nbsp;</div></div></div></div>
+</div>
+        <div class="even" id="comment-item-510"><div class="rbox"><div class="rbox_tr"><div class="rbox_tl"><div class="rbox_t">&nbsp;</div></div></div><div class="rbox_m">
+<div class="comment-avatar"><img src="http://www.gravatar.com/avatar.php?gravatar_id=2cf4d33353b70e80d2ede38d122dbc98&amp;default=https%3A%2F%2Fwww.openfoundry.org%2Fcomponents%2Fcom_jcomments%2Fimages%2Fno_avatar.png" alt="" /></div>
+<div class="comment-box avatar-indent">
+<span class="comments-vote">
+	<span id="comment-vote-holder-510">
+<a href="8478--ruby-on-rails-crud.html#" class="vote-good" title="Good comment!" onclick="jcomments.voteComment(510, 1);return false;"></a><a href="8478--ruby-on-rails-crud.html#" class="vote-poor" title="Poor comment!" onclick="jcomments.voteComment(510, -1);return false;"></a>
+<span class="vote-none">0</span>
+	</span>
+</span>
+<a class="comment-anchor" href="8478--ruby-on-rails-crud.html#comment-510" id="comment-510">#3</a>
+<span class="comment-author">Arguo</span>
+<span class="comment-date">2014-10-29 18:00</span>
+<div class="comment-body" id="comment-body-510">針對前面提到的Rails 4的問題，需要指定form 執行採用的動作，我是改成下面這<span style="font-size:0px;padding:0;margin:0;"> </span>樣就可以執行了<br /> {:controller => "phone" , :action => "updateing" ,:id => @pbook } , :html => { :method => :put } do |f| %><br /><br />另外在updateing的方法<span style="font-size:0px;padding:0;margin:0;"> </span>也要作些修改才能通過安全性檢查<span style="font-size:0px;padding:0;margin:0;"> </span></div>
+</div><div class="clear"></div>
+</div><div class="rbox_br"><div class="rbox_bl"><div class="rbox_b">&nbsp;</div></div></div></div>
+</div>
+</div>
+<div id="comments-list-footer"><a class="refresh" href="8478--ruby-on-rails-crud.html#" title="Refresh comments list" onclick="jcomments.showPage(8478,'com_content',0);return false;">Refresh comments list</a></div>
+</div>
+<div id="comments-footer" align="center"><a href="http://www.joomlatune.com" title="JComments" target="_blank">JComments</a></div>
+<script type="text/javascript">
+jcomments.setAntiCache(1,0,0);
+</script> 
+</div>	</div>
+</div>
+
+		                            </div>
+									<div class="clear"></div>
+								</div>
+								<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+							</div>
+							</div>
+                                                    </div>
+                                            </div>
+                                <div class="rt-grid-3 rt-pull-9">
+                <div id="rt-sidebar-a">
+                                    <div class="square4">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<ul class="menu"><li class="item56"><a href="../previous-issue.html"><span>Previous Issue</span></a></li><li class="item55"><a href="../about-newsletter.html"><span>About Newsletter</span></a></li></ul>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<ul class="menu"><li class="item115"><a href="../foss-news.html"><span>FOSS News</span></a></li><li class="item141"><a href="../case-job.html"><span>Case and Jobs</span></a></li></ul>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+        	                <div class="square1">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-title"><h2 class="title">Special</h2></div>
+						<div class="clear"></div>
+		                						<div class="module-content">
+		                	<ul class="menu"><li id="current" class="active item37"><a href="../tech-column.html"><span>Tech Column</span></a></li><li class="item40"><a href="../foss-programs.html"><span>FOSS Programs</span></a></li><li class="item35"><a href="../legal-column.html"><span>Legal Column</span></a></li><li class="item154"><a href="../foss-forum.html"><span>FOSS Forum</span></a></li><li class="item162"><a href="../enterprise-application.html"><span>Enterprise Application</span></a></li><li class="item44"><a href="../foss-projects.html"><span>FOSS Projects</span></a></li></ul>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		                <div class="square1">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<p style="text-align: center;"><a href="../../news%3Fformat=feed&amp;type=rss" target="_black"><img src="../../images/M_images/news-rss-feed.png" border="0" /></a><br /><a href="https://www.openfoundry.org/rss-feed/Newsletter" target="_black"><img src="../../images/M_images/newsletter-rss-feed.png" border="0" /></a></p>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		
+                </div>
+            </div>
+
+                    <div class="clear"></div>
+                </div>
+            </div>
+																													</div>
+										<div id="rt-copyright">
+						<div class="rt-grid-12 rt-alpha rt-omega">
+                        <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<span class="nowrap">Open Source Software Foundry</span><span class="nowrap">‧</span><span class="nowrap"> </span><span class="nowrap">Best  Viewed with IE7.0 or Firefox2.0 above, 1024x768 Resolution. </span><strong>E-Mail</strong>：<a href="mailto:contact@openfoundry.org">contact@openfoundry.org</a> <br /><strong>Address</strong>：No.128, Sec.2, Academia Rd., Institute of Information Science, Academia Sinica, Nangang District, Taipei City 11529, Taiwan (R.O.C). <br /><a href="../privacy-policy.html">Privacy Policy</a>. <a href="../terms-of-use.html">Terms-of-use</a> <span style="position: relative; top: 8px; margin-top: -8px;"> <a href="../../about/8101.html"><img src="../../images/M_images/rss-feed-all.png" border="0" /></a></span>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+        	
+</div>
+						<div class="clear"></div>
+					</div>
+					<div class="rt-footer-bottom-wrap"><div class="rt-footer-bottom"><div class="rt-footer-bottom2"><div class="rt-footer-bottom3"></div></div></div></div>
+									</div></div></div>
+				<div class="rt-surround-bottom"><div class="rt-surround-bottom2"><div class="rt-surround-bottom3"></div></div></div>
+							</div>
+		</div>
+		<!--
+		<script id="aptureScript">
+						(function (){var a=document.createElement("script");a.defer="true";a.src="http://www.apture.com/js/apture.js?siteToken=vsJttrn";document.getElementsByTagName("head")[0].appendChild(a);})();
+     </script>
+-->
+
+<!-- Piwik -->
+<!-- 			<script type="text/javascript">
+			  var _paq = _paq || [];
+		  _paq.push(["trackPageView"]);
+		  _paq.push(["enableLinkTracking"]);
+
+		    (function() {
+			        var u=(("https:" == document.location.protocol) ? "https" : "https") + "://www.openfoundry.org/piwik/";
+				    _paq.push(["setTrackerUrl", u+"piwik.php"]);
+				    _paq.push(["setSiteId", "1"]);
+				        var d=document, g=d.createElement("script"), s=d.getElementsByTagName("script")[0]; g.type="text/javascript";
+				        g.defer=true; g.async=true; g.src=u+"piwik.js"; s.parentNode.insertBefore(g,s);
+					  })();
+		  </script> -->
+<!-- End Piwik Code -->
+	</body>
+</html>

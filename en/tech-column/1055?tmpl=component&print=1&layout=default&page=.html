@@ -1,0 +1,106 @@
+	<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+	<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-gb" lang="en-gb" >
+		<head>
+			  <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+  <meta name="robots" content="noindex, nofollow" />
+  <meta name="keywords" content="OSSFNL280" />
+  <meta name="title" content="PMD" />
+  <meta name="description" content="Java Opensources for Web Development Part I：Chapter 5 檢測程式碼Lession 19 : PMD往往我們在撰寫程式碼的時候，會忽略一些小細節，可能是當初貪圖方便，未來將造成系統的負擔。例如，使用 System.print 方式來進行除錯的作業，雖然小小的一行輸出的動作，卻容易造成系統頻繁的 IO ，而且輸出一些沒有等級的 logging" />
+  <meta name="generator" content="" />
+  <title>PMD</title>
+  <link href="../../favicon.ico" rel="shortcut icon" type="image/x-icon" />
+  <link rel="stylesheet" href="../../components/com_gantry/css/gantry.css" type="text/css" />
+  <link rel="stylesheet" href="../../components/com_gantry/css/grid-12.css" type="text/css" />
+  <link rel="stylesheet" href="../../components/com_gantry/css/joomla.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/joomla.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/style1.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/light-body.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/demo-styles.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/template.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/typography.css" type="text/css" />
+  <style type="text/css">
+    <!--
+#rt-main-surround ul.menu li.active > a, #rt-main-surround ul.menu li.active > .separator, #rt-main-surround ul.menu li.active > .item, #rt-main-surround .square4 ul.menu li:hover > a, #rt-main-surround .square4 ul.menu li:hover > .item, #rt-main-surround .square4 ul.menu li:hover > .separator, .roktabs-links ul li.active span {color:#0088B5;}
+a, #rt-main-surround ul.menu a:hover, #rt-main-surround ul.menu .separator:hover, #rt-main-surround ul.menu .item:hover {color:#0088B5;}
+    -->
+  </style>
+  <script type="text/javascript" src="../../components/com_jcomments/js/jcomments-v2.1.js%3Fv=2"></script>
+  <script type="text/javascript" src="../../components/com_jcomments/libraries/joomlatune/ajax.js"></script>
+  <script type="text/javascript" src="../../media/system/js/mootools.js"></script>
+  <script type="text/javascript" src="../../media/system/js/caption.js"></script>
+  <script type="text/javascript" src="../../components/com_gantry/js/gantry-buildspans.js"></script>
+  <script type="text/javascript" src="../../components/com_gantry/js/gantry-inputs.js"></script>
+  <script type="text/javascript">
+
+			window.addEvent('domready', function() {
+				var modules = ['rt-block'];
+				var header = ['h3','h2','h1'];
+				GantryBuildSpans(modules, header);
+			});
+		InputsExclusion.push('.content_vote','#rt-popup')
+  </script>
+		</head>
+		<body  class="backgroundlevel-low backgroundstyle-style8 bodylevel-med bodystyle-light cssstyle-style1 logostyle-dark font-family-helvetica font-size-is-default menu-type-fusionmenu col12 ">
+			<div id="rt-main-surround">
+				<div class="rt-container">
+					<div class="rt-block">
+						<div id="rt-mainbody">
+					    	
+<div class="rt-joomla ">
+	<div class="rt-article">
+		
+				<div class="rt-headline"><h1 class="rt-article-title">PMD</h1>		</div>
+		<div class="clear"></div>
+		
+		
+		
+				<div class="rt-articleinfo">
+						<div class="rt-article-icons">
+				<a href="1055%3Ftmpl=component&amp;print=1&amp;layout=default&amp;page=.html#" onclick="window.print();return false;"><span class="icon print"></span></a>									<span class="icon printscreen">
+						<a href="1055%3Ftmpl=component&amp;print=1&amp;layout=default&amp;page=.html#" onclick="window.print();return false;"><img src="../../images/M_images/printButton.png" alt="Print"  /></a>					</span>
+							</div>
+			
+			<span class="rt-date-posted">
+						 Created at			Monday, 25 June 2007 07:20						&nbsp;&nbsp;&nbsp;&nbsp;						</span>
+
+						<span class="rt-author">
+				Written by 李日貴（松凌科技技術總監）			</span>
+				
+					</div>
+		
+		
+		<p>Java Opensources for Web Development Part I：<br />Chapter 5 檢測程式碼<br />Lession 19 : PMD<br /><br />往往我們在撰寫程式碼的時候，會忽略一些小細節，可能是當初貪圖方便，未來將造成系統的負擔。例如，使用 System.print 方式來進行除錯的作業，雖然小小的一行輸出的動作，卻容易造成系統頻繁的 IO ，而且輸出一些沒有等級的 logging 資訊，更會造成除錯上的負擔。</p>
+<p><img src="https://pmd.sourceforge.net/images/pmd_logo_small.jpg" alt="" /><br /><a href="https://pmd.sourceforge.net" target="_blank">PMD</a> 就是專門協助工程師來判斷程式之中是否有一些小錯誤出現，提供了許多 IDE 工具的整合，在 ant、QALab、XRadar與 maven 等都有支援 PMD，當然你也可以利用命令列的模式來進行 PMD 的驗證。在 Eclipse 僅需要利用 HELP 之中的 Software Update，將下載網址指到 <a href="https://pmd.sourceforge.net/eclipse" target="_blank">https://pmd.sourceforge.net/eclipse</a> 就會自動進行安裝作業。<br /></p>要了解 PMD 首先需要了解 Rule Sets，因為撰寫程式的規範很多，每家公司或多或少都會有一些自己所要求的規定，如果利用 Eclipse 在 Window -&gt; Preferences 中 PMD 的 Rules Configuration 進行各種 Rule Sets 等級的設定，甚至移除一些你認為不用檢測或是新增自己所撰寫的 <a href="https://pmd.sourceforge.net/howtowritearule.html" target="_blank">RuleSet </a>。 <br />&nbsp;<br />{mosimage}<br /><br />例如我把 AvoidInstantiatingObjectsInLoops 的等級改為 priority.error，相關的程式碼在進行 PMD check code 時（對範例 AvoidInstantiatingObjectsInLoops .java 檔案按右鍵）就會進行驗證。在 FOR 迴圈之中，實在不需要不斷 new 出新物件，應該在 FOR 迴圈之外宣告 UserModel user，這樣資源上就不會過於浪費。<br /><br />package com.softleader.pmd;<br /><br />import java.util.ArrayList;<br />import java.util.Collection;<br /><br />public class AvoidInstantiatingObjectsInLoops {<br /><br />&nbsp;&nbsp;&nbsp; <br />&nbsp;&nbsp;&nbsp; public static void main(String[] args) {<br />&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; <br />&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; Collection c = new ArrayList();<br />&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; <br />&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; for(int i=0; i&lt;10; i++) {<br />&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; <br />&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; UserModel user = new UserModel();<br />&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; <br />&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; user.setId(i);<br />&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; user.setName(&quot;user&quot;+i);<br />&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; <br />&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; c.add(user);<br />&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; <br />&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; }<br />&nbsp;&nbsp;&nbsp; }<br />}<br /><br />當我們利用 IDE 檢測，下方會出現紅色的錯誤訊息，來告知程式之內，有錯誤的規則，在 PMD 編輯畫面中，如果不除錯則無法繼續作業，而其他則是有警告訊息提示在程式碼之前，如果有需要修改，再進行修正，並不會影響程式的編譯。<br /><br />{mosimage}<br />&nbsp;<br />如果不知道該 RuleSet 進行什麼類型的檢查，除了參考文件之外，也可以在 Eclipse 設定 PMD 的畫面之中，選擇 Edit Rule ，就會出現該規則的範例，例如 EmptyTryBlock 的範例：<br /><br />public class Foo {<br />&nbsp;public void bar() {<br />&nbsp; try {<br />&nbsp; } catch (Exception e) {<br />&nbsp;&nbsp;&nbsp; e.printStackTrace();<br />&nbsp; }<br />&nbsp;}<br />}<br />就是說，如果 try catch 之中沒有任何內容，應該避免之。<br /><br />PMD 除了針對 Java 原始碼進行檢核之外，也可以進行 JSP 的檢核，簡單來說，是進行是否符合 XHTML 的檢查，例如 &lt;br&gt; &lt;hr&gt; 雖然都是正確的 HTML codes，但是在 XHTML 的規則應該要用 &lt;br/&gt; 與 &lt;hr/&gt; 來表示，另外 PMD 會檢查 tag 屬性值，是否有被單引號或是雙引號所包住。<br /><br />如果你確認部分程式或是程式碼是正確的，不需要 PMD 進行確認，或是 PMD 會造成ㄧ些小問題，則使用 //NOPMD 這樣的註解即可，或是在 JDK 1.5 以上使用@SuppressWarnings(&quot;PMD&quot;) 來宣告此 class 不需要 PMD 進行檢核。<br /><br />未來 PMD 除了擴充一些 RuleSet 之外，更會增加 Data Flow 的分析以及清除不必要的程式碼，相信未來 PMD 將會是所有工程師將程式碼交測的最後一道防線，減少不必要的問題與錯誤發生，也可以增加系統的效能與安全等考量。
+			<!-- Show relate article -->
+				<!-- end -->
+		<div class="article_note">
+		<!-- Add tags use metakey, and show OSSF Newsletter tag: OSSFNL+NUM-->
+		<br><br> <hr style='border: 1px dashed #D2DADB;'><b>OSSF Newsletter&nbsp;:</b>&nbsp;<a href='../../previous-issue%3Ftask=view&amp;id=280.html'>第 83 期 自由軟體教育研習</a><br>				<!-- End -->
+					<br>
+					<b>Category: </b><a href="../tech-column.html">				Tech Column					</a>				</div>
+			 <!-- AddThis Button BEGIN ID 3001 is the front page article -->
+     			<br><br>
+       <div class="addthis_toolbox addthis_default_style addthis_32x32_style">
+       <a class="addthis_button_preferred_1"></a>
+       <a class="addthis_button_preferred_2"></a>
+       <a class="addthis_button_preferred_3"></a>
+       <a class="addthis_button_preferred_4"></a>
+       <a class="addthis_button_compact"></a>
+       <a class="addthis_counter addthis_bubble_style"></a>
+       </div>
+       <script type="text/javascript">var addthis_config = {"data_track_clickback":true};</script>
+       <script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js#pubid=openfoundry"></script>
+       <!-- AddThis Button END -->
+     <br>
+		<div class="totop" ><a class="rt-totop" href="1055%3Ftmpl=component&amp;print=1&amp;layout=default&amp;page=.html#" style="outline: medium none;">↑ Top</a></div>
+            <!-- AddThis Button END -->
+
+			</div>
+</div>
+
+						</div>
+					</div>
+				</div>
+			</div>
+		</body>
+	</html>

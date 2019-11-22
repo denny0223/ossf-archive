@@ -1,0 +1,395 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="zh-tw" lang="zh-tw" >
+<head>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<link rel="shortcut icon" href="../../images/favicon.ico" />
+	  <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+  <meta name="robots" content="index, follow" />
+  <meta name="keywords" content="OSSFNL177" />
+  <meta name="title" content="不斷重構輪子—專訪 Kwiki 作者 Brian Ingerson" />
+  <meta name="description" content=" Kwiki 的發明人 Brian Ingerson（又稱 ingy）搭上飛機來台灣前，剛在家裡與朋友慶祝了他的 40 歲生日。染了一頭粉紅頭髮的他，在台北 Perl 研討會上，是大家公認的冷面笑匠，一本正經地講著 Kwiki，卻句句讓人捧腹大笑。在以下的訪問中，我們請他跟我們談談他對 Kwiki 的想法與未來的計畫。 Ｑ：請問你第一次接觸 Perl 的原因是？ Ａ：在接觸 Perl" />
+  <meta name="generator" content="" />
+  <title>不斷重構輪子—專訪 Kwiki 作者 Brian Ingerson - OpenFoundry</title>
+  <link href="../../favicon.ico" rel="shortcut icon" type="image/x-icon" />
+  <link rel="stylesheet" href="../../components/com_gantry/css/gantry.css" type="text/css" />
+  <link rel="stylesheet" href="../../components/com_gantry/css/grid-12.css" type="text/css" />
+  <link rel="stylesheet" href="../../components/com_gantry/css/joomla.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/joomla.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/style1.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/light-body.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/demo-styles.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/template.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/typography.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/fusionmenu.css" type="text/css" />
+  <style type="text/css">
+    <!--
+#rt-main-surround ul.menu li.active > a, #rt-main-surround ul.menu li.active > .separator, #rt-main-surround ul.menu li.active > .item, #rt-main-surround .square4 ul.menu li:hover > a, #rt-main-surround .square4 ul.menu li:hover > .item, #rt-main-surround .square4 ul.menu li:hover > .separator, .roktabs-links ul li.active span {color:#0088B5;}
+a, #rt-main-surround ul.menu a:hover, #rt-main-surround ul.menu .separator:hover, #rt-main-surround ul.menu .item:hover {color:#0088B5;}
+    -->
+  </style>
+  <script type="text/javascript" src="../../components/com_jcomments/js/jcomments-v2.1.js%3Fv=2"></script>
+  <script type="text/javascript" src="../../components/com_jcomments/libraries/joomlatune/ajax.js"></script>
+  <script type="text/javascript" src="../../media/system/js/mootools.js"></script>
+  <script type="text/javascript" src="../../media/system/js/caption.js"></script>
+  <script type="text/javascript" src="../../components/com_gantry/js/gantry-buildspans.js"></script>
+  <script type="text/javascript" src="../../components/com_gantry/js/gantry-inputs.js"></script>
+  <script type="text/javascript" src="../../templates/rt_quantive_j15/js/jquery.cookie.js"></script>
+  <script type="text/javascript" src="../../modules/mod_roknavmenu/themes/fusion/js/fusion.js"></script>
+  <script type="text/javascript" src="../../modules/mod_ofssologin/js/ofssologin.js"></script>
+  <script type="text/javascript">
+
+			window.addEvent('domready', function() {
+				var modules = ['rt-block'];
+				var header = ['h3','h2','h1'];
+				GantryBuildSpans(modules, header);
+			});
+		InputsExclusion.push('.content_vote','#rt-popup')
+		        window.addEvent('load', function() {
+					new Fusion('ul.menutop', {
+						pill: 0,
+						effect: 'slide and fade',
+						opacity: 1,
+						hideDelay: 500,
+						centered: 0,
+						tweakInitial: {'x': -2, 'y': 0},
+        				tweakSubsequent: {'x': 0, 'y': -14},
+						menuFx: {duration: 200, transition: Fx.Transitions.Sine.easeOut},
+						pillFx: {duration: 400, transition: Fx.Transitions.Back.easeOut}
+					});
+	            });
+  </script>
+<!-- <script type="text/javascript" src="/sso/javascripts/langsync.js"></script> -->
+<!-- <script src="/templates/rt_quantive_j15/js/ossf.js"></script> -->
+<script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-4136519-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
+</head>
+	<body  class="backgroundlevel-low backgroundstyle-style8 bodylevel-med bodystyle-light cssstyle-style1 logostyle-dark font-family-helvetica font-size-is-default menu-type-fusionmenu col12 ">
+		<div id="rt-main-background">
+			<div class="rt-container">
+																<div id="rt-header">
+					<div class="rt-grid-7 rt-alpha">
+    			<div class="rt-block">
+    	    	<a href="../../index.html" id="rt-logo"></a>
+    		</div>
+	    
+</div>
+<div class="rt-grid-5 rt-omega">
+                    <div class="square9">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<div class="ofssologin_square9"><a href="../../index.html">登入</a>&nbsp;&nbsp|&nbsp;&nbsp;<span><a href="https://www.openfoundry.org/en/foss-news/624" ><span lang="en" xml:lang="en">English</span></a></li></ul></span><!--Joom!fish V2.0.4 (Lightning)-->
+<!-- &copy; 2003-2009 Think Network, released under the GPL. -->
+<!-- More information: at http://www.joomfish.net -->
+<div class="ofssologin_search_square9">
+  <form id="of_search" action="https://www.openfoundry.org/of/openfoundry/search" method="get" onsubmit="of_search(); return false;">
+    <select id="of_search_type">
+      <option value="Projects"> 專案 </option>
+      <option value="Content"> 文章 </option>
+      <option value="People"> 人才 </option>
+    </select>
+    <input id="query" name="query" id="mod_search_searchword" maxlength="50" alt="search" class="inputbox" type="text" size="28" value="search..."  onblur="if(this.value=='') this.value='search...';" onfocus="if(this.value=='search...') this.value='';" />
+    <input type="hidden" name="commit" value="search" />
+  </form>
+</div></div>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		
+</div>
+					<div class="clear"></div>
+				</div>
+																<div id="rt-navigation"><div id="rt-navigation2"><div id="rt-navigation3">
+					
+<div class="nopill">
+	<ul class="menutop level1 " >
+						<li class="item1 root" >
+					<a class="orphan item bullet" href="../../index.html"  >
+				<span>
+			    				首頁				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item32 root" >
+					<a class="orphan item bullet" href="../../archived.html"  >
+				<span>
+			    				專案				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item186 root" >
+					<a class="orphan item bullet" href="../community.html"  >
+				<span>
+			    				Who&#039;s Who				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item4 root" >
+					<a class="orphan item bullet" href="../news.html"  >
+				<span>
+			    				新聞				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item5 root" >
+					<a class="orphan item bullet" href="../law-and-licensing.html"  >
+				<span>
+			    				法律源地				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item3 root" >
+					<a class="orphan item bullet" href="../activities.html"  >
+				<span>
+			    				活動				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item2 root" >
+					<a class="orphan item bullet" href="../resourcecatalog%3FName=Value.html"  >
+				<span>
+			    				資源表列				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item45 root" >
+					<a class="orphan item bullet" href="../about.html"  >
+				<span>
+			    				關於				   
+				</span>
+			</a>
+			
+			
+	</li>	
+				</ul>
+</div>
+
+				    <div class="clear"></div>
+				</div></div></div>
+								<div class="rt-surround"><div class="rt-surround2"><div class="rt-surround3">
+										<div id="rt-showcase-section">
+												<div id="rt-showcase">
+							<div class="rt-grid-12 rt-alpha rt-omega">
+    		<div class="clear"></div>
+		
+		
+                <div class="close-note">
+                    <div class="rt-block">
+               					<div class="module-content">
+                	<div style="font-size:medium; background-image:linear-gradient(120deg,#159957,#4298b2);color:white;padding:20px;margin:-10px -18px;">感謝您對「自由軟體鑄造場」的支持與愛護，十多年來「自由軟體鑄造場」受中央研究院支持，並在資訊科學研究所以及資訊科技創新研究中心執行，現已完成階段性的任務。 本網站預計持續維運至 2021年底，網站內容基本上不會再更動。<br />也紀念我們永遠的朋友 李士傑先生（Shih-Chieh Ilya Li）。</div>				</div>
+            </div>
+                </div>
+		
+</div>
+							<div class="clear"></div>
+						</div>
+																	</div>
+															<div id="rt-main-surround">
+												<div id="rt-breadcrumbs">
+								<div class="rt-breadcrumb-surround">
+		<a href="../../index.html" id="breadcrumbs-home"></a>
+		<span class="breadcrumbs pathway">
+<a href="../foss-news.html" class="pathway">源碼新聞</a> <img src="../../templates/rt_quantive_j15/images/arrow.png" alt=""  /> <span class="no-link">不斷重構輪子—專訪 Kwiki 作者 Brian Ingerson</span></span>
+	</div>
+	
+							<div class="clear"></div>
+						</div>
+																							              <div id="rt-main" class="sa3-mb9">
+                <div class="rt-main-inner">
+                    <div class="rt-grid-9 rt-push-3">
+                                                <div class="rt-block">
+                            							<div class="square1">
+							<div class="rt-module-surround">
+								<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+								<div class="rt-module-inner">
+		                            <div id="rt-mainbody">
+		                                
+<div class="rt-joomla ">
+	<div class="rt-article">
+		
+				<div class="rt-headline"><h1 class="rt-article-title">不斷重構輪子—專訪 Kwiki 作者 Brian Ingerson</h1>		</div>
+		<div class="clear"></div>
+		
+		
+		
+				<div class="rt-articleinfo">
+						<div class="rt-article-icons">
+								<a href="https://www.openfoundry.org/tw/foss-news/624?tmpl=component&amp;print=1&amp;layout=default&amp;page=" title="列印" onclick="window.open(this.href,'win2','status=no,toolbar=no,scrollbars=yes,titlebar=no,menubar=no,resizable=yes,width=640,height=480,directories=no,location=no'); return false;" rel="nofollow"><span class="icon print"></span></a>																</div>
+			
+			<span class="rt-date-posted">
+						建立日期			2004-04-08 08:00						&nbsp;&nbsp;&nbsp;&nbsp;						最近更新在 2007-03-03 22:56						</span>
+
+						<span class="rt-author">
+				作者是 翁千婷			</span>
+				
+					</div>
+		
+		
+		  <p class="MsoNormal"><span style="font-family: 新細明體">Kwiki 的發明人 Brian Ingerson（又稱 ingy）搭上飛機來台灣前，剛在家裡與朋友慶祝了他的 40 歲生日。染了一頭粉紅頭髮的他，在台北 Perl 研討會上，是大家公認的冷面笑匠，一本正經地講著 Kwiki，卻句句讓人捧腹大笑。在以下的訪問中，我們請他跟我們談談他對 Kwiki 的想法與未來的計畫。</span></p><br /><p class="MsoNormal"><span style="font-family: 新細明體">Ｑ：請問你第一次接觸<span> Perl 的原因是？<br /> Ａ：在接觸 Perl 之前，我專門寫大型主機（mainfram）上的組合語言，我有一台 System 370 組譯器，專門用來幫一間公司寫軟體程式庫。1992 年的時候，我需要寫 web 程式，人們建議我去問年輕一輩的程式設計人員，他們建議我用 Perl。於是，我開始讀 Per，接著我發現，這比組合語言要好用。真正開始完全用 Perl，是在 1998 年三月，我直接從寫組語直接跳到寫 Perl，Perl 是我用的第一個直譯式語言。</span></span></p>  <p class="MsoNormal"><span style="font-family: 新細明體">Ｑ：<span>Kwiki 的中心思想是甚麼？<br /> Ａ：合作（Collaboraion），這裡指的不是內容合作，而是程式上的合作，雖然 Kwiki 兩種都可以做到。對 Kwiki 的探索目前還沒完全達成，當初設計時的目的是想要分享程式，想要設計一個架構，可以讓人們設計自己想要的程式；就像是樂高玩具一樣，你可以任意組合做出各 種東西。樂高後來推出的某些特殊產品，只能做固定的東西，我不喜歡這樣。舉例來說：當有人為 Kwiki 寫了新的功能，像是 Email 通知這種外掛（Plugin），其中需要加入任何設定時，相關的設定就會自動加到 Kwiki 的「偏好設定」裡面，不需要我的主動配合。我希望能規劃 Kwiki 的世界，但是盡量讓它足夠彈性，讓每個人都可以做事。對我而言，可做到快速合作是這個模組很好的地方。</span></span></p>  <p class="MsoNormal"><span style="font-family: 新細明體">我覺得除了我之外的多數人們在發展東西時，習慣跟自己熟悉的團體合作。我想<span> Larry 、我自己、唐宗漢（Autrijus）都想要創造比自己可以做到的更大的事。我所做的事通常需要其他人加入，否則就容易爛掉，Inline.pm 是一個好例子。因此我希望人們可以透過 Kwiki一起寫軟體元件，有他們自己的身份，達到合作式的安那其。</span></span></p>  <p class="MsoNormal"><span style="font-family: 新細明體">Ｑ：開發<span> Kwiki 時，針對的使用者族群是？<br /> Ａ：Kwiki 是為了 FIT 這個專案而開發的，當時我並沒有預設特定的對象。FIT 是 Ward Cunningham 發展出來的測試架構，他同時也是 Wiki 的發明人。我想建立我自己的 FIT 表格（table），因為當其他人用了我的測試架構時，如果 FIT 表格是用 Wiki 寫的，這些人就可以透過 Wiki 幫你寫測試，對你的專案做出貢獻，還能不斷更新。所以我就去找 Cunningham，他家就在我家附近，可是那時候他跟家人去迪士尼玩了找不到人，於是我就開始看他寫的 Wiki 程式，看了之後，我就決定自己寫，於是有了 Kwiki。</span></span></p>  <p class="MsoNormal"><span style="font-family: 新細明體">Perl 有大量的模組資源，這是其他語言沒有的。因為這個優勢，我們可以找到別人，幫我們寫很多測試。如果你透過 Wiki 這樣做，你就開啟了一扇合作的門。我試圖去找出要怎麼做讓更多人可以參與。有個人叫 Damian Conway，他讓我真正投入 Perl；我很喜歡他的風格。Damian 創造出不少神奇的東西，但是從來沒有真的把它下放給大家參與開發。比如他寫了 Parse::RecDescent 這個遞迴式下降剖析器（recursive decent parser），但是他卻沒有為它寫一個讓其他人也可以參與開發的架構。Damian 喜歡教人們怎麼自助，我則喜歡讓人參與。Perl 是很酷的東西，因為開發者可以真正從中學到東西。</span></p>  <p class="MsoNormal"><span style="font-family: 新細明體">Ｑ：<span>Kwiki 有哪些功能？<br /> Ａ：把 Kwiki 當成 Wiki 其實是對它的誤解，Kwiki 並不是一種 Wiki，它是一個讓人開發 Wiki 的架構，我希望人們可以使用 Kwiki 來開發他們自己的 Wiki。所以 Kwiki 的每個部份都充分抽象化，它的每個部份都是一個類別（class），但是我需要一個偏好設定檔（configuration file），所以我用 YAML。因為 Kwiki 非常抽象，所以很容易讓其他人誤會。</span></span></p>  <p class="MsoNormal"><span style="font-family: 新細明體">Ｑ：請談談你在<span> Kwiki 之前開發的專案？<br /> Ａ：除了 Kwiki 之外，我最喜歡的專案是 YAML。我喜歡寫程式，我喜歡由資料驅動（data-driven）的系統。如果你可以把資料處理得好，就只需要少許程式碼。YAML 真的是個讓你控制資料的好方法，我真正在意的是要把 Perl 的 YAML 處理程式庫（也就是 YAML.pm）完成，這是我對自己的承諾，時間是在今年七月的開放源碼會議（OSCON）。</span></span></p>  <p class="MsoNormal"><span style="font-family: 新細明體">Ｑ：你是<span> YAML 跨語言開發團隊的核心成員。YAML 也支援 Python 嗎？<br /> Ａ：YAML 是一種資料表示語言，它也有 Python 的 YAML 處理程式庫。Ruby 的處理程式庫則是目前最好、最穩定的。Ruby 內建 YAML，Guido（Guido van Rossum，Python 的發明人）喜歡 YAML，Larry 也喜歡 YAML，但是那跟 YAML會不會進 Perl 核心大概沒有關係。</span></span></p>  <p class="MsoNormal"><span style="font-family: 新細明體">Ｑ：<span>Kwiki的下一版何時釋出？新的功能會是？<br /> Ａ：從 Kwiki 的觀點來講，所有的東西都會是新的。我會在預設安裝移除一些功能（如投影片模式），這需要花太多時間解釋，所以我不想花時間。目前我在為 Socialtext 公司重寫 Kwiki，分一層新的 Kwiki 層跟新的 Socialtext 層，當所有的事情都做好之後，這一切就都會放回去 Kwiki 層。國際化（i18n）會是我想放進去的第一個功能。我也會把 Kwiki 目前的 &quot;Backup&quot; 類別暫時移除掉，因為我想要花更多時間在架構（framework）上。</span></span></p>  <p class="MsoNormal"><span style="font-family: 新細明體">Ｑ：你何時開始參與開放源碼運動？<span><br /> Ａ：幾乎跟使用 Perl 同時，在寫 Perl 六個月後我加入西雅圖 Perl 推廣組。然後在 2000 年參加了我的第一個 OSCON，在那邊遇到 Damian，他非常有趣。於是我在 50 分鐘內發明了 Inline，在接下來兩週重構（refractor） 了 Inline，然後釋出。OSCON 結束三週後，我去 ActiveState 面試，而且把文章發表在 The Perl Journal（那時候還是紙本）上。</span></span></p>  <p class="MsoNormal"><span style="font-family: 新細明體">Ｑ：你非常積極投入開放源碼運動，為甚麼？<span><br /> Ａ：我喜歡看到人們一起工作，創造東西，改變東西。當你在生命中找到可以讓事情改變的方式，你就會緊追在後，不忍放手。我就是這樣子，直到人們受不了我為止。</span></span></p>  <p class="MsoNormal"><span style="font-family: 新細明體">我唯一能做的事就是讓創造東西這件事變得更有趣，對我而言這樣就足夠了。<span> Perl 是讓事情可以發生的東西，總是有很酷的小孩繞著 Perl 打轉。 Perl 的世界一直在變，它會自動不斷改變，非常快速所以不會無聊，可以符合我們的需求。這非常有趣，就很像你可以開始一件事，然後它可以變成一種運動，或至少是 「準備運動」（pre-movement）。你不需要有一群人，只需要有一個夠好的想法。我們的時間都不多，所以我們應該做有趣的事。並不是所有在 Perl（社群）的人，都完全符合這些標籤，但是多少都能概括進來。</span></span></p>  <p class="MsoNormal"><span style="font-family: 新細明體">Ｑ：你跟幾位<span> Perl 的朋友開了名為 Onyx Neon 的公司，可以跟我們介紹一下嗎？<br /> Ａ：在一年半前， Curtis &quot;Ovid&quot; Poe、Allison Randal、Michael G. Schwern、chromatic跟我成立了這家公司，想要找到正確的人來做開放源碼專案。其實是因為我們太忙，沒有空做別人花錢請我們做的工作，所以 我們覺得，如果可以把工作轉給別人是件好事。如果有一件大案子下來，我們可以找到專家來做，因為我們有很多的聯絡管道。如果我們有任何需要開發票的時候， 就用這間公司的名義。至於生意的話，我們只有接受少數工作，而我已經算是 Socialtext 的全職員工，所以現在不太管這件事，詳情要問 Allison。</span></span></p>  <p class="MsoNormal"><span style="font-family: 新細明體">Ｑ：所以你現在是全職的員工？<span><br /> Ａ：我從 2003 年七月十五日開始成為 Socialtext 的全職員工，這間公司有 7-10 個全職員工。在 Socialtext 很特別的是，那裡的人超級愛用 Kwiki，超愛社交軟體（social software）。但是我比較喜歡看電子郵件，我喜歡發明，我不真的熱心參與 Kwiki 的討論，我比較喜歡寫程式。我喜歡弄出一堆想法，我總是發現自己太過投入。</span></span></p>  <p class="MsoNormal"><span style="font-family: 新細明體">Ｑ：你剛過<span> 40 歲生日，你說打算開始寫自傳，請問大概何時會寫完？<br /> Ａ：自傳大概會在我心跳停止的時候寫完，我不知道，這中間有很多的不確定，我沒寫過自傳，也不知道人們怎麼寫自傳。有一天，它一定會變成公共財 （public domain）。我不知道內容會有些甚麼，是否可能違法。我可能反對主流群眾的一些觀點，但是我並不想要傷害人。</span></span></p>  <p class="MsoNormal"><span style="font-family: 新細明體">相關網址：<span><br /> 1.<a href="https://c2.com/cgi/wiki?WardCunningham">Ward Cunningham個人網頁<br /> 2.</a><a href="https://www.yaml.org/">YAML<br /> https://www.yaml.org/ 3.</a><a href="https://www.socialtext.com/">Socialtext公司網站<br /> 4.</a><a href="https://www.onyxneon.com/">Onyx Neon</a></span></span></p>  <p class="MsoNormal"><span>&nbsp;</span></p>
+			<!-- Show relate article -->
+				<!-- end -->
+		<div class="article_note">
+		<!-- Add tags use metakey, and show OSSF Newsletter tag: OSSFNL+NUM-->
+		<br><br> <hr style='border: 1px dashed #D2DADB;'><b>自由軟體鑄造場電子報&nbsp;:</b>&nbsp;<a href='../../previous-issue%3Ftask=view&amp;id=177.html'>第 12 期 開放源碼與電子化政府(上)</a><br>				<!-- End -->
+					<br>
+					<b>分類: </b><a href="../foss-news.html">				源碼新聞					</a>				</div>
+			 <!-- AddThis Button BEGIN ID 3001 is the front page article -->
+     			<br><br>
+       <div class="addthis_toolbox addthis_default_style addthis_32x32_style">
+       <a class="addthis_button_preferred_1"></a>
+       <a class="addthis_button_preferred_2"></a>
+       <a class="addthis_button_preferred_3"></a>
+       <a class="addthis_button_preferred_4"></a>
+       <a class="addthis_button_compact"></a>
+       <a class="addthis_counter addthis_bubble_style"></a>
+       </div>
+       <script type="text/javascript">var addthis_config = {"data_track_clickback":true};</script>
+       <script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js#pubid=openfoundry"></script>
+       <!-- AddThis Button END -->
+     <br>
+		<div class="totop" ><a class="rt-totop" href="624.html#" style="outline: medium none;">↑ Top</a></div>
+            <!-- AddThis Button END -->
+
+			</div>
+</div>
+
+		                            </div>
+									<div class="clear"></div>
+								</div>
+								<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+							</div>
+							</div>
+                                                    </div>
+                                            </div>
+                                <div class="rt-grid-3 rt-pull-9">
+                <div id="rt-sidebar-a">
+                                    <div class="square4">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<ul class="menu"><li class="item56"><a href="../previous-issue.html"><span>電子報總覽</span></a></li><li class="item55"><a href="../about-newsletter.html"><span>關於本報</span></a></li></ul>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<ul class="menu"><li id="current" class="active item115"><a href="../foss-news.html"><span>源碼新聞</span></a></li><li class="item141"><a href="../case-job.html"><span>接案 / 工作</span></a></li></ul>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+        	                <div class="square1">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-title"><h2 class="title">專欄總覽</h2></div>
+						<div class="clear"></div>
+		                						<div class="module-content">
+		                	<ul class="menu"><li class="item37"><a href="../tech-column.html"><span>技術專欄</span></a></li><li class="item40"><a href="../foss-programs.html"><span>源碼秘技</span></a></li><li class="item35"><a href="../legal-article-.html"><span>法律專欄</span></a></li><li class="item154"><a href="../foss-forum.html"><span>自由專欄</span></a></li><li class="item162"><a href="../enterprise-application.html"><span>企業應用</span></a></li><li class="item44"><a href="../foss-projects.html"><span>源碼專案</span></a></li></ul>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		                <div class="square1">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<p style="text-align: center;"><a href="../../news%3Fformat=feed&amp;type=rss" target="_black"><img src="../../images/M_images/news-rss-feed.png" border="0" /></a><br /><a href="https://www.openfoundry.org/rss-feed/Newsletter" target="_black"><img src="../../images/M_images/newsletter-rss-feed.png" border="0" /></a></p>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		
+                </div>
+            </div>
+
+                    <div class="clear"></div>
+                </div>
+            </div>
+																													</div>
+										<div id="rt-copyright">
+						<div class="rt-grid-12 rt-alpha rt-omega">
+                        <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<div id="desktop-mobile-version-switch"><span id="mobile-version" class="version-switch"><a href="624.html#">行動版</a></span></div>
+自由軟體鑄造場 製作 最佳瀏覽狀態：IE7或Firefox2.0以上 (建議使用Firefox) ‧ 解析度1024*768 <br /> <strong>E-Mail</strong>：<a href="mailto:contact@openfoundry.org">contact@openfoundry.org</a> <strong>Address</strong>：台北市南港區研究院路2段128號 中央研究院資訊科學研究所 . <a href="../../privacy-policy.html">隱私權條款</a>. <a href="../../terms-of-use.html">使用條款</a><span style="position: relative; top: 8px; margin-top: -8px;"> <a href="../../about/8101.html"><img src="../../images/M_images/rss-feed-all.png" border="0" /></a></span>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+        	
+</div>
+						<div class="clear"></div>
+					</div>
+					<div class="rt-footer-bottom-wrap"><div class="rt-footer-bottom"><div class="rt-footer-bottom2"><div class="rt-footer-bottom3"></div></div></div></div>
+									</div></div></div>
+				<div class="rt-surround-bottom"><div class="rt-surround-bottom2"><div class="rt-surround-bottom3"></div></div></div>
+							</div>
+		</div>
+		<!--
+		<script id="aptureScript">
+						(function (){var a=document.createElement("script");a.defer="true";a.src="http://www.apture.com/js/apture.js?siteToken=vsJttrn";document.getElementsByTagName("head")[0].appendChild(a);})();
+     </script>
+-->
+
+<!-- Piwik -->
+<!-- 			<script type="text/javascript">
+			  var _paq = _paq || [];
+		  _paq.push(["trackPageView"]);
+		  _paq.push(["enableLinkTracking"]);
+
+		    (function() {
+			        var u=(("https:" == document.location.protocol) ? "https" : "https") + "://www.openfoundry.org/piwik/";
+				    _paq.push(["setTrackerUrl", u+"piwik.php"]);
+				    _paq.push(["setSiteId", "1"]);
+				        var d=document, g=d.createElement("script"), s=d.getElementsByTagName("script")[0]; g.type="text/javascript";
+				        g.defer=true; g.async=true; g.src=u+"piwik.js"; s.parentNode.insertBefore(g,s);
+					  })();
+		  </script> -->
+<!-- End Piwik Code -->
+	</body>
+</html>

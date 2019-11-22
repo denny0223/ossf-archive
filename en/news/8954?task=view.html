@@ -1,0 +1,574 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-gb" lang="en-gb" >
+<head>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<link rel="shortcut icon" href="../../images/favicon.ico" />
+	  <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+  <meta name="robots" content="index, follow" />
+  <meta name="keywords" content="OSSFNL826" />
+  <meta name="title" content="用 LibreOffice 匯出 PDF" />
+  <meta name="description" content="LibreOffice 是開源世界中相當有名的辦公套件，最近版本號推進速度很快，功能也不斷推陳出新。 不過今天想要和大家分享的，並不是 LibreOffice 本身，而是 LibreOffice 內建的 PDF 匯出功能。 對於有一定經驗的電腦用戶來說，製作 PDF 檔案並不困難，包括 LibreOffice 在內，許多軟體可以只透過一個按鈕就將檔案匯出成 PDF" />
+  <meta name="generator" content="" />
+  <title>用 LibreOffice 匯出 PDF - OpenFoundry</title>
+  <link href="../../favicon.ico" rel="shortcut icon" type="image/x-icon" />
+  <link rel="stylesheet" href="../../components/com_jcomments/tpl/default/style.css%3Fv=10.css" type="text/css" />
+  <link rel="stylesheet" href="../../components/com_gantry/css/gantry.css" type="text/css" />
+  <link rel="stylesheet" href="../../components/com_gantry/css/grid-12.css" type="text/css" />
+  <link rel="stylesheet" href="../../components/com_gantry/css/joomla.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/joomla.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/style1.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/light-body.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/demo-styles.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/template.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/typography.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/fusionmenu.css" type="text/css" />
+  <style type="text/css">
+    <!--
+#rt-main-surround ul.menu li.active > a, #rt-main-surround ul.menu li.active > .separator, #rt-main-surround ul.menu li.active > .item, #rt-main-surround .square4 ul.menu li:hover > a, #rt-main-surround .square4 ul.menu li:hover > .item, #rt-main-surround .square4 ul.menu li:hover > .separator, .roktabs-links ul li.active span {color:#0088B5;}
+a, #rt-main-surround ul.menu a:hover, #rt-main-surround ul.menu .separator:hover, #rt-main-surround ul.menu .item:hover {color:#0088B5;}
+    -->
+  </style>
+  <script type="text/javascript" src="../../components/com_jcomments/js/jcomments-v2.1.js%3Fv=2"></script>
+  <script type="text/javascript" src="../../components/com_jcomments/libraries/joomlatune/ajax.js"></script>
+  <script type="text/javascript" src="../../media/system/js/mootools.js"></script>
+  <script type="text/javascript" src="../../media/system/js/caption.js"></script>
+  <script type="text/javascript" src="../../components/com_gantry/js/gantry-buildspans.js"></script>
+  <script type="text/javascript" src="../../components/com_gantry/js/gantry-inputs.js"></script>
+  <script type="text/javascript" src="../../templates/rt_quantive_j15/js/jquery.cookie.js"></script>
+  <script type="text/javascript" src="../../modules/mod_roknavmenu/themes/fusion/js/fusion.js"></script>
+  <script type="text/javascript" src="../../modules/mod_ofssologin/js/ofssologin.js"></script>
+  <script type="text/javascript">
+
+			window.addEvent('domready', function() {
+				var modules = ['rt-block'];
+				var header = ['h3','h2','h1'];
+				GantryBuildSpans(modules, header);
+			});
+		InputsExclusion.push('.content_vote','#rt-popup')
+		        window.addEvent('load', function() {
+					new Fusion('ul.menutop', {
+						pill: 0,
+						effect: 'slide and fade',
+						opacity: 1,
+						hideDelay: 500,
+						centered: 0,
+						tweakInitial: {'x': -2, 'y': 0},
+        				tweakSubsequent: {'x': 0, 'y': -14},
+						menuFx: {duration: 200, transition: Fx.Transitions.Sine.easeOut},
+						pillFx: {duration: 400, transition: Fx.Transitions.Back.easeOut}
+					});
+	            });
+  </script>
+<!-- <script type="text/javascript" src="/sso/javascripts/langsync.js"></script> -->
+<!-- <script src="/templates/rt_quantive_j15/js/ossf.js"></script> -->
+<script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-4136519-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
+</head>
+	<body  class="backgroundlevel-low backgroundstyle-style8 bodylevel-med bodystyle-light cssstyle-style1 logostyle-dark font-family-helvetica font-size-is-default menu-type-fusionmenu col12 ">
+		<div id="rt-main-background">
+			<div class="rt-container">
+																<div id="rt-header">
+					<div class="rt-grid-7 rt-alpha">
+    			<div class="rt-block">
+    	    	<a href="../../index.html" id="rt-logo"></a>
+    		</div>
+	    
+</div>
+<div class="rt-grid-5 rt-omega">
+                    <div class="square9">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<div class="ofssologin_square9"><a href="../../index.html">Login</a>&nbsp;&nbsp|&nbsp;&nbsp;<span><a href="https://www.openfoundry.org/tw/news/8954?task=view" ><span lang="tw" xml:lang="tw">繁體中文</span></a></li></ul></span><!--Joom!fish V2.0.4 (Lightning)-->
+<!-- &copy; 2003-2009 Think Network, released under the GPL. -->
+<!-- More information: at http://www.joomfish.net -->
+<div class="ofssologin_search_square9">
+  <form id="of_search" action="https://www.openfoundry.org/of/openfoundry/search" method="get" onsubmit="of_search(); return false;">
+    <select id="of_search_type">
+      <option value="Projects"> Projects </option>
+      <option value="Content"> Content </option>
+      <option value="People"> People </option>
+    </select>
+    <input id="query" name="query" id="mod_search_searchword" maxlength="50" alt="search" class="inputbox" type="text" size="28" value="search..."  onblur="if(this.value=='') this.value='search...';" onfocus="if(this.value=='search...') this.value='';" />
+    <input type="hidden" name="commit" value="search" />
+  </form>
+</div></div>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		
+</div>
+					<div class="clear"></div>
+				</div>
+																<div id="rt-navigation"><div id="rt-navigation2"><div id="rt-navigation3">
+					
+<div class="nopill">
+	<ul class="menutop level1 " >
+						<li class="item1 root" >
+					<a class="orphan item bullet" href="../../index.html"  >
+				<span>
+			    				Home				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item32 root" >
+					<a class="orphan item bullet" href="../../archived.html"  >
+				<span>
+			    				Projects				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item186 root" >
+					<a class="orphan item bullet" href="../community.html"  >
+				<span>
+			    				Who&#039;s Who				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item4 root" >
+					<a class="orphan item bullet" href="../news.html"  >
+				<span>
+			    				News				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item5 root" >
+					<a class="orphan item bullet" href="../law-and-licensing.html"  >
+				<span>
+			    				Law &amp; Licensing				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item3 root" >
+					<a class="orphan item bullet" href="../activities.html"  >
+				<span>
+			    				Activities				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item2 root" >
+					<a class="orphan item bullet" href="../resourcecatalog.html"  >
+				<span>
+			    				Resource Catalog				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item45 root" >
+					<a class="orphan item bullet" href="../about.html"  >
+				<span>
+			    				About				   
+				</span>
+			</a>
+			
+			
+	</li>	
+				</ul>
+</div>
+
+				    <div class="clear"></div>
+				</div></div></div>
+								<div class="rt-surround"><div class="rt-surround2"><div class="rt-surround3">
+										<div id="rt-showcase-section">
+												<div id="rt-showcase">
+							<div class="rt-grid-12 rt-alpha rt-omega">
+    		<div class="clear"></div>
+		
+		
+                <div class="close-note">
+                    <div class="rt-block">
+               					<div class="module-content">
+                	<div style="font-size:medium; background-image:linear-gradient(120deg,#159957,#4298b2);color:white;padding:20px;margin:-10px -18px;">感謝您對「自由軟體鑄造場」的支持與愛護，十多年來「自由軟體鑄造場」受中央研究院支持，並在資訊科學研究所以及資訊科技創新研究中心執行，現已完成階段性的任務。 本網站預計持續維運至 2021年底，網站內容基本上不會再更動。<br />也紀念我們永遠的朋友 李士傑先生（Shih-Chieh Ilya Li）。</div>				</div>
+            </div>
+                </div>
+		
+</div>
+							<div class="clear"></div>
+						</div>
+																	</div>
+															<div id="rt-main-surround">
+												<div id="rt-breadcrumbs">
+								<div class="rt-breadcrumb-surround">
+		<a href="../../index.html" id="breadcrumbs-home"></a>
+		<span class="breadcrumbs pathway">
+<span class="no-link">News</span></span>
+	</div>
+	
+							<div class="clear"></div>
+						</div>
+																							              <div id="rt-main" class="sa3-mb9">
+                <div class="rt-main-inner">
+                    <div class="rt-grid-9 rt-push-3">
+                                                <div class="rt-block">
+                            							<div class="square1">
+							<div class="rt-module-surround">
+								<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+								<div class="rt-module-inner">
+		                            <div id="rt-mainbody">
+		                                
+<div class="rt-joomla ">
+	<div class="rt-article">
+		
+				<div class="rt-headline"><h1 class="rt-article-title">用 LibreOffice 匯出 PDF</h1>		</div>
+		<div class="clear"></div>
+		
+		
+		
+				<div class="rt-articleinfo">
+						<div class="rt-article-icons">
+								<a href="https://www.openfoundry.org/en/news/8954--libreoffice-pdf?tmpl=component&amp;print=1&amp;page=" title="Print" onclick="window.open(this.href,'win2','status=no,toolbar=no,scrollbars=yes,titlebar=no,menubar=no,resizable=yes,width=640,height=480,directories=no,location=no'); return false;" rel="nofollow"><span class="icon print"></span></a>																</div>
+			
+			<span class="rt-date-posted">
+						 Created at			Wednesday, 17 April 2013 00:00						&nbsp;&nbsp;&nbsp;&nbsp;						Last Updated on Tuesday, 16 April 2013 10:23						</span>
+
+						<span class="rt-author">
+				Written by 林雪凡			</span>
+				
+					</div>
+		
+		
+		<p>LibreOffice 是開源世界中相當有名的辦公套件，最近版本號推進速度很快，功能也不斷推陳出新。</p>
+<p>不過今天想要和大家分享的，並不是 LibreOffice 本身，而是 LibreOffice 內建的 PDF 匯出功能。</p>
+<p>對於有一定經驗的電腦用戶來說，製作 PDF 檔案並不困難，包括 LibreOffice 在內，許多軟體可以只透過一個按鈕就將檔案匯出成 PDF 格式。然而從另一個角度考慮，PDF 本身卻也相當有彈性，匯出時有大把可由使用者自行設定調節的細部選項可用。想來使用 PDF 格式的人很多，但仔細研究過那些選項涵義的人恐怕就沒多少了；即使有心認真起來將它搞懂，也因為缺乏足夠的背景知識，就算看了說明書也滿頭問號，看也看不懂。</p>
+<p>LibreOffice 是款普遍又容易使用的軟體，PDF 匯出選項的數量和其他軟體相比也十分適中。本文就以 LibreOffice 的 PDF 匯出功能為基礎，和大家一起檢視這方面的設定。</p>
+<p> </p>
+
+<p>LibreOffice 最簡單的 PDF 匯出方法，就是按下面板上的 PDF 匯出按鈕。不過如果需要進一步設定 PDF 的匯出細節，則需要從主選單的「檔案」→「匯出成 PDF ...」進入。</p>
+<p>我們的旅程就從這裡開始。</p>
+<p> </p>
+<h3>第一頁：資料格式基本設定</h3>
+<p>如前所述地按下按鈕，下方的對話框就會出現。</p>
+<p><img alt="pdf 001" src="../../images/130326/pdf/pdf_001.png" height="266" width="500" /></p>
+<p>▲ 圖1：PDF 匯出選項頁－－第一頁。</p>
+<p> </p>
+<h4>圖片壓縮</h4>
+<p>「影像」標籤下的選項，處理的是您文件中的「插圖類」檔案附件，而非您的「整體文件」。簡單說來，不論設定成怎樣的值，都不會讓匯出後的文字變得模糊，僅僅只會影響插圖的清晰度。這方面還請放心。</p>
+<p>JPEG 壓縮強度被預設為 90%。這種壓縮的實際效果，和「無損壓縮」選項幾無差異－－至少我不管把圖放多大都無法用目視分出不同來－－但是，匯出後 PDF 檔案體積卻差別巨大，在測試樣本中差了整整六倍。因此推薦使用預設值 (90%) 來進行圖檔壓縮。</p>
+<p>此值如果設太低，圖片顏色會嚴重走調。就經驗上來說，建議設值不要走極端，檔案大小與顯示效果就都還可接受，90% ~ 60% 是個人的推薦範圍，請參考。</p>
+<p> </p>
+<p>「降低影像解析度」選項，同樣是透過降低圖片的精美度來壓縮圖片大小，但其壓縮方式卻與前述的 JPEG 壓縮不同。這種壓縮不會損失顏色，但會在將圖片放大時產生小方磚。</p>
+<p>如果有印刷需求，此處的數值無論如何不要低於 300dpi；如果匯出的 PDF 只是打算供人放在電腦上觀看，則建議無論如何不要低於 150dpi。</p>
+<p> </p>
+<h4>水印設定</h4>
+<p>「以水印簽署」選項，會在文件的每一頁中，覆蓋上一層半透明，且橫跨全頁的巨大文字。</p>
+<p>注意這不是漂漂亮亮的可以用做裝飾的水印字，而是「內部文件，禁止傳閱」、「機密」或「僅供預覽」式的強烈印章式聲明。如果有類似場合可以使用看看。</p>
+<p> </p>
+<h4>內嵌編輯能力</h4>
+<p>「內嵌 OpenDocument 檔案」是一項很有特色的選項，這能讓這份檔案在日後被視為一般的 LibreOffice 檔案供使用者打開編輯。但是相對地檔案大小也會大幅上升。因為這等於是將一份純的 PDF，和一份純的原始檔，兩者合併打包在一起。</p>
+<p>如果您沒有對 PDF 進行任何壓縮，勾選這個選項會讓檔案大小憑空增加兩倍左右；如果您有對影像進行壓縮，則檔案大小的增加倍數還會更高。因為內嵌原始檔佔用的空間大小是固定的，不會被壓縮到。</p>
+<p> </p>
+<h4>PDF/A-1a</h4>
+<p>「PDF/A-1a」選項打勾的話，可以將文件儲存成 PDF/A-1a 格式。這是一種特別的 PDF 格式。</p>
+<p>PDF/A 系列格式是被設計用來「保存」用的，其設計初衷，是為了讓 PDF 檔案能於遙遠的未來被完整地讀取並顯示出來，而不會因為缺少字型、忘記密碼、用了不同的閱讀設備或軟體而讀到不一樣的東西、格式跑掉，甚至完全讀不出來。您可以將大寫的 A 理解 Archive（封存），另外 PDF 還有 PDF/X （X = eXchange，交換）等適合用來印刷出版的亞種，此處不提。</p>
+<p>PDF/A 大類底下又分為 PDF/A-1a 與 PDF/A-1b。PDF/A-1b 是 PDF/A 系列的基本型，能完美地完成 PDF/A 系列的目標：完整重現文件最初的顯示畫面。至於 PDF/A-1a 型，則是在 b 型的基礎上多紀錄了一些額外資料，使某種程度上的排版微調成為可能。這部份請參考下方對於「標記的 PDF」之說明。</p>
+<p>如果您希望您的檔案，到哪裡都能保持一樣的外觀而不會出現格式問題，「PDF/A-1a」選項就是一種快速的解決方案。請選取她。</p>
+<p> </p>
+<h4>標記的 PDF</h4>
+<p>「已標記的 PDF」選項，可以幫助 PDF 文件保留既有的結構。</p>
+<p>各位或許不知道，PDF 文件和 Word 或 txt 文件不同，它的重點在於版面的呈現方式，而不在於保存「文字流」。說得更具體一點，PDF 檔案中固然會安插有很多文字區塊，但卻沒有紀錄文字區塊之間的語義順序。</p>
+<p> </p>
+<p>舉例來說，假設 PDF 中有兩行文字：</p>
+<p style="margin-left: 30px;">……我的爸爸討厭吃蘋<br />果。</p>
+<p> </p>
+<p>因為行尾在「蘋果」中間分開，所以使用者在檔案中搜尋「蘋果」這個關鍵字時，會驚訝地發現自己居然找不到。這就是因為 PDF 檔案（預設）並沒有紀錄上述那兩行在文意上是連在一起的，而也因為相同的原因，如果您切換到螢幕寬度更大或更小的平台，希望每行的字數能增加或減少，PDF 也無能為力，因為他不知道文意如何串聯，自然也無法將已經斷開的兩行重新串接起來，重新加以排版。</p>
+<p>但是如果您勾選「已標記的 PDF」選項，那上述的問題就都能解決。不過相對的，所需的儲存空間也會因此而增加－－實測結果大致上是文字所佔空間的兩倍左右。</p>
+<p> </p>
+<h4>建立 PDF 表單</h4>
+<p>往下說明「建立 PDF 表單」這個選項前，有必要稍微解釋什麼是 PDF 表單。</p>
+<p>簡單地說，PDF 表單是種「可在 PDF 閱讀器中讓讀者直接填表打字」的特別欄位。請注意它跟一般文書編輯時常用的「表格」並不是同一回事。</p>
+<p>比方說您的 PDF 可能是一份讀者回函，上面要求讀者填入地址以供抽獎……那問題來了，讀者該怎麼填呢？是印出來之後用手填？還是截圖後再用美工技術拼字拼上去？算了吧，這麼麻煩誰會老實回信呢？這時您就可以在文件中設定一些「表單」，讓讀者可以直接在電腦螢幕上進行輸入，這一來問題就解決大半了。</p>
+<p> </p>
+<p>如果希望在文件中創建 PDF 表單，請從 LibreOffice 的「檢視」→「工具列」→「表單控制項」面板來建立。具體如何建立的細節超出本文範圍，請自行嘗試研究看看。</p>
+<p> </p>
+<p>關於「建立 PDF 表單」這個選項，如果您的文件中沒有任何表單，那本選項就和您沒有任何關係；反之如果您的文件中存在表單，則您在匯出前就得勾選這個選項，才會將表單匯出為真正能用來輸入的欄位，否則就只是外觀上看起來像，但實際上依然無法填入東西。</p>
+<p>匯出的表單可以選擇許多格式，而這涉及了很多關於 PDF 版本、功能相容性與應用程式支援度間的微妙差異，我一時也看不出哪種格式比較佔優勢，總之採用預設格式 (FDF) 基本上就可以用了。更多細節與特徵還請各位讀者自行研究了。</p>
+<p> </p>
+<h4>匯出書籤</h4>
+<p>「匯出書籤」選項打勾後，會在 PDF 中加入您所設定的章節索引。</p>
+<p>您多半有見過：用 PDF 閱讀軟體打開某份製作精良的 PDF 檔案後，側欄會出現一排目錄，上面寫著第一章、第二章等等；而點擊目錄中的項目，還可以快速跳轉到指定的章節位置……沒錯，本選項要匯出的就是那個了！</p>
+<p>想要匯出書籤，除了本選項得勾上以外，您還得具體設定「要將哪些位置設為索引目標」。比方說「要將一級標題列入索引，三級標題太細了不要列入」……之類的。您可以在主選單的「工具」→「章節編號…」處進行這方面的設定調整。</p>
+<p> </p>
+<h4>匯出備註、匯出空白頁面、內嵌標準字型</h4>
+<p>當「匯出備註」打勾時，您先前在本檔案中透過主選單功能表「插入」→「備註」選項插入的備註，就會以 PDF 專有的註解型式被匯出到 PDF 檔案之中。反之如果不勾，則這些備註就會被略過。</p>
+<p>本選項預設是不勾（會被略過）的。</p>
+<p> </p>
+<p>「匯出自動插入的空白頁面」選項，特別適用於某些需要雙面列印的文件。在這種情況下，有時有些頁面會依設定自動留白。如：在奇數頁結束一個章節，但又自訂規則要求所有章節必須從奇數頁開頭，那麼到下一個章節中間自然會由程式自行插入一頁空白的偶數頁。</p>
+<p>本選項一旦打勾，在 PDF 匯出時就不會略過這一張空白頁，如此一來在雙面列印時才不會出現正反面對不上的問題。</p>
+<p> </p>
+<p>「內嵌標準字型」選項中的「標準字型」，指的是 PDF 規範中預設的 14 種基本字型，就是 Times、Courier、Helvetica、Symbol、Zapf Dingbats 這五種加上他們的粗體斜體等變體。這些字體理論上所有 PDF 閱讀器都會內建，所以沒有必要刻意嵌入。但如果在此打勾，也能強制嵌入這些字體（不過僅限於這份文件中有用到的部份）。</p>
+<p> </p>
+<h3>第二頁：第一次打開的瀏覽狀態</h3>
+<p><img alt="pdf 002" src="../../images/130326/pdf/pdf_002.png" height="266" width="500" /></p>
+<p>▲ 圖2：PDF 匯出選項頁－－第二頁。</p>
+<p> </p>
+<p>第二頁「初始檢視」所設定的，是這份 PDF 第一次被打開時，會以什麼模式被開啟、會翻到哪一頁、版面的配置外觀為何。</p>
+<p>這些設定具體如何運作，和個別閱讀器的設定與特性有關，有些閱讀軟體不會理會這些資料，或是會使用預設設定覆蓋。</p>
+<p>當然您還是可以設定一下。各選項意義都如字面那般，不細講。</p>
+<p> </p>
+<h3>第三頁：使用者介面</h3>
+<p><img alt="pdf 003" src="../../images/130326/pdf/pdf_003.png" height="266" width="500" /></p>
+<p>▲ 圖3：PDF 匯出選項頁－－第三頁。</p>
+<p> </p>
+<p>本頁設定每次打開時使用者介面的狀況。</p>
+<p>和第二頁相同，各家閱讀器對此支援狀況落差很大。比方說 Evince 就不支援除了以全螢幕模式開啟以外的大多數選項。而且如果設定不當，可能會讓讀者感到困擾，好比說如果勾選了「隱藏視窗控制項」或「以全螢幕模式開啟」，就很有可能嚇到讀者。</p>
+<p>個人建議除非真有必要，建議不要動這一頁的選項內容。</p>
+<p> </p>
+<p>此外還有些需要額外說明的是「使用切換效果」選項。這選項專門用在將 LibreOffice 的 Impress 投影片匯出為成 PDF 投影片時。它會將 Impress 中設定的換頁效果，也一併存入 PDF 中。只要您的 PDF 閱讀器支援簡報模式，就會在進入簡報模式後發揮效果。</p>
+<p> </p>
+<p>另外一個要提的是本頁的「書籤」選項。</p>
+<p>本頁的書籤和第一頁的書籤一樣，都是指索引的意思，不過此處設定的不再是書籤本身，而是「書籤的展開層級」。具體說來，如果設為「全部書籤等級」，表示樹狀索引會在開啟檔案時自動全部展開。反過來說，如果將「顯示書籤等級」設為 1，則預設只會曝露出第一級索引，其他的索引都會被隱藏起來（但可以像開啟樹狀圖一樣被讀者手動打開）。</p>
+<p>如果書籤數量太多，擔心讀者打開檔案後眼花頭暈的話，可以嘗試調整這裡的數字。</p>
+<p> </p>
+<h3>第四頁：連結設定</h3>
+<p>本頁設定轉換為 PDF 時，文章中現有連結的處理方法。</p>
+<p><img alt="pdf 004" src="../../images/130326/pdf/pdf_004.png" height="266" width="500" /></p>
+<p>▲ 圖4：PDF 匯出選項頁－－第四頁。</p>
+<p> </p>
+<p>「轉換 PDF 目標的文件參照」選項，可以將所有連向標準 LibreOffice 文件的連結－－如 *.odt、*.ods－－其副檔名改成 pdf。適用於將一堆交互連結的 odf 文件同時大量匯出成 PDF 檔案時。</p>
+<p>「跨文件連結」選項，可用來指定閱讀這份 PDF 的 PDF 瀏覽器，其打開外部連結的方式。您在製作 PDF 時，就可以指定讀者是用網頁瀏覽器或直接用當前的 PDF 閱讀器打開外部聯結。當然這也和閱讀器的相容性有關，只能參考而不能依賴。</p>
+<p> </p>
+<p>另外其他兩個選項我暫時試不出效果，說明文件也無論如何看不懂，因此先跳過。歡迎對此有瞭解的讀者留言補充。</p>
+<p> </p>
+<h3>第五頁：保密設定</h3>
+<p><img alt="pdf 005" src="../../images/130326/pdf/pdf_005.png" height="266" width="500" /></p>
+<p>▲ 圖5：PDF 匯出選項頁－－第五頁。</p>
+<p> </p>
+<p>按下設定密碼後會出現一個密碼設定視窗。如下：</p>
+<p><img alt="pdf 006" src="../../images/130326/pdf/pdf_006.png" height="307" width="386" /></p>
+<p>▲ 圖6：密碼設定視窗</p>
+<p> </p>
+<p>密碼設定視窗中可以設定兩組密碼。上面的密碼是用來限制讀者「能不能開啟閱讀這個 PDF 檔案」用的，PDF 規範稱此密碼為 User Password，沒有得到此一密碼的人將無法開啟這個 PDF 檔案。至於下方的密碼，則是用來限制 圖 5 中右側那些設定之用（PDF 規範稱此為 Owner Password），沒有密碼將無法解除那些限制性設定。</p>
+<p>如果密碼欄位是空的，那就是不加密的意思。您可以用這種方式來解除密碼設定。</p>
+<p> </p>
+<p>此外，也請注意以上兩個密碼的實作差別。</p>
+<p>讀取用密碼 (User Password) 有「真正去用密碼加密 PDF 檔案」的特性，換言之，沒有密碼就一定打不開，不管讀者用哪一款 PDF 閱讀器都一樣（當然您的密碼要夠難猜）。但反過來說，Owner Password 就沒有真正用加密方式來防護檔案資料，只是簡單地對閱讀器進行一個「我打算限制讀者不准做這個那個……」的「宣告」，而並非真的有實力去阻止閱讀器進行列印、編輯、複製貼上等動作。事實上許多非 Adobe 官方的 PDF 閱讀器都不甩這個設定。因此請不要真正去依賴這個功能。</p>
+<p> </p>
+<p>LibreOffice 的匯出說明到此說明完畢。雖然還是有些不夠完整的地方，但讀過上文，大家對於 PDF 的理解，多少還是有增加一些吧？</p>
+<p>請在日後更準確地使用 PDF 匯出功能哦！</p>
+			<!-- Show relate article -->
+				<!-- end -->
+		<div class="article_note">
+		<!-- Add tags use metakey, and show OSSF Newsletter tag: OSSFNL+NUM-->
+		<br><br> <hr style='border: 1px dashed #D2DADB;'><b>OSSF Newsletter&nbsp;:</b>&nbsp;<a href='../../previous-issue%3Ftask=view&amp;id=826.html'>第 217 期 淺談貢獻者契約在自由開源軟體之應用</a><br>				<!-- End -->
+					<br>
+					<b>Category: </b><a href="../foss-programs.html">				FOSS Programs					</a>				</div>
+			 <!-- AddThis Button BEGIN ID 3001 is the front page article -->
+     			<br><br>
+       <div class="addthis_toolbox addthis_default_style addthis_32x32_style">
+       <a class="addthis_button_preferred_1"></a>
+       <a class="addthis_button_preferred_2"></a>
+       <a class="addthis_button_preferred_3"></a>
+       <a class="addthis_button_preferred_4"></a>
+       <a class="addthis_button_compact"></a>
+       <a class="addthis_counter addthis_bubble_style"></a>
+       </div>
+       <script type="text/javascript">var addthis_config = {"data_track_clickback":true};</script>
+       <script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js#pubid=openfoundry"></script>
+       <!-- AddThis Button END -->
+     <br>
+		<div class="totop" ><a class="rt-totop" href="8954%3Ftask=view.html#" style="outline: medium none;">↑ Top</a></div>
+            <!-- AddThis Button END -->
+
+		<script type="text/javascript">
+var jcomments=new JComments(8954, 'com_content','https://openfoundry.org/index.php?option=com_jcomments&amp;tmpl=component&amp;lang=');
+jcomments.setList('comments-list');
+</script>
+<div id="jc">
+<div id="comments"><h4>Comments<a class="refresh" href="8954%3Ftask=view.html#" title="Refresh comments list" onclick="jcomments.showPage(8954,'com_content',0);return false;">&nbsp;</a></h4>
+<div id="comments-list" class="comments-list">
+        <div class="even" id="comment-item-401"><div class="rbox"><div class="rbox_tr"><div class="rbox_tl"><div class="rbox_t">&nbsp;</div></div></div><div class="rbox_m">
+<div class="comment-avatar"><img src="http://www.gravatar.com/avatar.php?gravatar_id=819a551b204e9d1594f4aa36c2a082d2&amp;default=https%3A%2F%2Fwww.openfoundry.org%2Fcomponents%2Fcom_jcomments%2Fimages%2Fno_avatar.png" alt="" /></div>
+<div class="comment-box avatar-indent">
+<span class="comments-vote">
+	<span id="comment-vote-holder-401">
+<a href="8954%3Ftask=view.html#" class="vote-good" title="Good comment!" onclick="jcomments.voteComment(401, 1);return false;"></a><a href="8954%3Ftask=view.html#" class="vote-poor" title="Poor comment!" onclick="jcomments.voteComment(401, -1);return false;"></a>
+<span class="vote-good">+1</span>
+	</span>
+</span>
+<a class="comment-anchor" href="../foss-programs/8954--libreoffice-pdf.html#comment-401" id="comment-401">#1</a>
+<a class="author-homepage" href="https://www.biousing.com/zh/" rel="nofollow" title="鐵皮石斛">鐵皮石斛</a>
+<span class="comment-date">2013-04-30 23:05</span>
+<div class="comment-body" id="comment-body-401">libreoffice的pdf<span style="font-size:0px;padding:0;margin:0;"> </span>文件水印可以設置樣式麼？</div>
+</div><div class="clear"></div>
+</div><div class="rbox_br"><div class="rbox_bl"><div class="rbox_b">&nbsp;</div></div></div></div>
+</div>
+        <div class="odd" id="comment-item-403"><div class="rbox"><div class="rbox_tr"><div class="rbox_tl"><div class="rbox_t">&nbsp;</div></div></div><div class="rbox_m">
+<div class="comment-avatar"><img src="http://www.gravatar.com/avatar.php?gravatar_id=f4c05b4f2542c4153b85472f8dc00f99&amp;default=https%3A%2F%2Fwww.openfoundry.org%2Fcomponents%2Fcom_jcomments%2Fimages%2Fno_avatar.png" alt="" /></div>
+<div class="comment-box avatar-indent">
+<span class="comments-vote">
+	<span id="comment-vote-holder-403">
+<a href="8954%3Ftask=view.html#" class="vote-good" title="Good comment!" onclick="jcomments.voteComment(403, 1);return false;"></a><a href="8954%3Ftask=view.html#" class="vote-poor" title="Poor comment!" onclick="jcomments.voteComment(403, -1);return false;"></a>
+<span class="vote-none">0</span>
+	</span>
+</span>
+<a class="comment-anchor" href="../foss-programs/8954--libreoffice-pdf.html#comment-403" id="comment-403">#2</a>
+<a class="author-homepage" href="https://wfst.blogspot.com" rel="nofollow" title="&#x6797&#x96ea&#x51e1">&#x6797&#x96ea&#x51e1</a>
+<span class="comment-date">2013-05-06 09:11</span>
+<div class="comment-body" id="comment-body-403">至少 Libreoffice 3.6 以前是不行的！<br />（Libreoffice 目前出到 4.0，但我還沒試過這一版，您有興<span style="font-size:0px;padding:0;margin:0;"> </span>趣的話可以試試看）</div>
+</div><div class="clear"></div>
+</div><div class="rbox_br"><div class="rbox_bl"><div class="rbox_b">&nbsp;</div></div></div></div>
+</div>
+        <div class="even" id="comment-item-476"><div class="rbox"><div class="rbox_tr"><div class="rbox_tl"><div class="rbox_t">&nbsp;</div></div></div><div class="rbox_m">
+<div class="comment-avatar"><img src="http://www.gravatar.com/avatar.php?gravatar_id=99b3fc318d2083f234eccea487681929&amp;default=https%3A%2F%2Fwww.openfoundry.org%2Fcomponents%2Fcom_jcomments%2Fimages%2Fno_avatar.png" alt="" /></div>
+<div class="comment-box avatar-indent">
+<span class="comments-vote">
+	<span id="comment-vote-holder-476">
+<a href="8954%3Ftask=view.html#" class="vote-good" title="Good comment!" onclick="jcomments.voteComment(476, 1);return false;"></a><a href="8954%3Ftask=view.html#" class="vote-poor" title="Poor comment!" onclick="jcomments.voteComment(476, -1);return false;"></a>
+<span class="vote-none">0</span>
+	</span>
+</span>
+<a class="comment-anchor" href="../foss-programs/8954--libreoffice-pdf.html#comment-476" id="comment-476">#3</a>
+<span class="comment-author">pumpkin</span>
+<span class="comment-date">2014-03-19 22:21</span>
+<div class="comment-body" id="comment-body-476">您好，<br />請問您一個匯出PDF的問題，狀<span style="font-size:0px;padding:0;margin:0;"> </span>況如下：<br />目前使用LibreOffice<span style="font-size:0px;padding:0;margin:0;"> </span>3.5，在點選匯出成PDF功能時，<span style="font-size:0px;padding:0;margin:0;"> </span>整個LibreOffice就不<span style="font-size:0px;padding:0;margin:0;"> </span>見了，也沒有匯出任何pdf檔案<span style="font-size:0px;padding:0;margin:0;"> </span>，再重複點選該doc檔案後，L<span style="font-size:0px;padding:0;margin:0;"> </span>ibreOffice跳出一個回<span style="font-size:0px;padding:0;margin:0;"> </span>復視窗，要求啟動回復程序，回復<span style="font-size:0px;padding:0;margin:0;"> </span>後該doc檔案才又顯示出來了。<span style="font-size:0px;padding:0;margin:0;"> </span></div>
+</div><div class="clear"></div>
+</div><div class="rbox_br"><div class="rbox_bl"><div class="rbox_b">&nbsp;</div></div></div></div>
+</div>
+</div>
+<div id="comments-list-footer"><a class="refresh" href="8954%3Ftask=view.html#" title="Refresh comments list" onclick="jcomments.showPage(8954,'com_content',0);return false;">Refresh comments list</a></div>
+</div>
+<div id="comments-footer" align="center"><a href="http://www.joomlatune.com" title="JComments" target="_blank">JComments</a></div>
+<script type="text/javascript">
+jcomments.setAntiCache(1,0,0);
+</script> 
+</div>	</div>
+</div>
+
+		                            </div>
+									<div class="clear"></div>
+								</div>
+								<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+							</div>
+							</div>
+                                                    </div>
+                                            </div>
+                                <div class="rt-grid-3 rt-pull-9">
+                <div id="rt-sidebar-a">
+                                    <div class="square4">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<ul class="menu"><li class="item56"><a href="../previous-issue.html"><span>Previous Issue</span></a></li><li class="item55"><a href="../about-newsletter.html"><span>About Newsletter</span></a></li></ul>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<ul class="menu"><li class="item115"><a href="../foss-news.html"><span>FOSS News</span></a></li><li class="item141"><a href="../case-job.html"><span>Case and Jobs</span></a></li></ul>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+        	                <div class="square1">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-title"><h2 class="title">Special</h2></div>
+						<div class="clear"></div>
+		                						<div class="module-content">
+		                	<ul class="menu"><li class="item37"><a href="../tech-column.html"><span>Tech Column</span></a></li><li class="item40"><a href="../foss-programs.html"><span>FOSS Programs</span></a></li><li class="item35"><a href="../legal-column.html"><span>Legal Column</span></a></li><li class="item154"><a href="../foss-forum.html"><span>FOSS Forum</span></a></li><li class="item162"><a href="../enterprise-application.html"><span>Enterprise Application</span></a></li><li class="item44"><a href="../foss-projects.html"><span>FOSS Projects</span></a></li></ul>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		                <div class="square1">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<p style="text-align: center;"><a href="../../news%3Fformat=feed&amp;type=rss" target="_black"><img src="../../images/M_images/news-rss-feed.png" border="0" /></a><br /><a href="https://www.openfoundry.org/rss-feed/Newsletter" target="_black"><img src="../../images/M_images/newsletter-rss-feed.png" border="0" /></a></p>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		
+                </div>
+            </div>
+
+                    <div class="clear"></div>
+                </div>
+            </div>
+																													</div>
+										<div id="rt-copyright">
+						<div class="rt-grid-12 rt-alpha rt-omega">
+                        <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<span class="nowrap">Open Source Software Foundry</span><span class="nowrap">‧</span><span class="nowrap"> </span><span class="nowrap">Best  Viewed with IE7.0 or Firefox2.0 above, 1024x768 Resolution. </span><strong>E-Mail</strong>：<a href="mailto:contact@openfoundry.org">contact@openfoundry.org</a> <br /><strong>Address</strong>：No.128, Sec.2, Academia Rd., Institute of Information Science, Academia Sinica, Nangang District, Taipei City 11529, Taiwan (R.O.C). <br /><a href="../privacy-policy.html">Privacy Policy</a>. <a href="../terms-of-use.html">Terms-of-use</a> <span style="position: relative; top: 8px; margin-top: -8px;"> <a href="../../about/8101.html"><img src="../../images/M_images/rss-feed-all.png" border="0" /></a></span>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+        	
+</div>
+						<div class="clear"></div>
+					</div>
+					<div class="rt-footer-bottom-wrap"><div class="rt-footer-bottom"><div class="rt-footer-bottom2"><div class="rt-footer-bottom3"></div></div></div></div>
+									</div></div></div>
+				<div class="rt-surround-bottom"><div class="rt-surround-bottom2"><div class="rt-surround-bottom3"></div></div></div>
+							</div>
+		</div>
+		<!--
+		<script id="aptureScript">
+						(function (){var a=document.createElement("script");a.defer="true";a.src="http://www.apture.com/js/apture.js?siteToken=vsJttrn";document.getElementsByTagName("head")[0].appendChild(a);})();
+     </script>
+-->
+
+<!-- Piwik -->
+<!-- 			<script type="text/javascript">
+			  var _paq = _paq || [];
+		  _paq.push(["trackPageView"]);
+		  _paq.push(["enableLinkTracking"]);
+
+		    (function() {
+			        var u=(("https:" == document.location.protocol) ? "https" : "https") + "://www.openfoundry.org/piwik/";
+				    _paq.push(["setTrackerUrl", u+"piwik.php"]);
+				    _paq.push(["setSiteId", "1"]);
+				        var d=document, g=d.createElement("script"), s=d.getElementsByTagName("script")[0]; g.type="text/javascript";
+				        g.defer=true; g.async=true; g.src=u+"piwik.js"; s.parentNode.insertBefore(g,s);
+					  })();
+		  </script> -->
+<!-- End Piwik Code -->
+	</body>
+</html>

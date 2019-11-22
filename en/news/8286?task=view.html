@@ -1,0 +1,507 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-gb" lang="en-gb" >
+<head>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<link rel="shortcut icon" href="../../images/favicon.ico" />
+	  <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+  <meta name="robots" content="index, follow" />
+  <meta name="keywords" content="OSSFNL715" />
+  <meta name="title" content="以 ModSecurity 實作 Webapp  Firewall" />
+  <meta name="description" content="前言 在網路時代，相信每個企業都有屬於自己的網站，但由於人力與經費不足，常成為駭客覬覦的對象。相關的網路安全威脅事件也有日漸增多的趨勢，例如常見的 SQL Injection，造成個資外洩。而網路的安全威脅型態與其它威脅間的最大差異，在於網路的安全威脅，通常是程式設計師的疏失或經驗不足所造成的安全漏洞（如XSS）。這與一般系統只要安裝修正程式 (patch)" />
+  <meta name="generator" content="" />
+  <title>以 ModSecurity 實作 Webapp  Firewall - OpenFoundry</title>
+  <link href="../../favicon.ico" rel="shortcut icon" type="image/x-icon" />
+  <link rel="stylesheet" href="../../components/com_gantry/css/gantry.css" type="text/css" />
+  <link rel="stylesheet" href="../../components/com_gantry/css/grid-12.css" type="text/css" />
+  <link rel="stylesheet" href="../../components/com_gantry/css/joomla.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/joomla.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/style1.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/light-body.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/demo-styles.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/template.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/typography.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/fusionmenu.css" type="text/css" />
+  <style type="text/css">
+    <!--
+#rt-main-surround ul.menu li.active > a, #rt-main-surround ul.menu li.active > .separator, #rt-main-surround ul.menu li.active > .item, #rt-main-surround .square4 ul.menu li:hover > a, #rt-main-surround .square4 ul.menu li:hover > .item, #rt-main-surround .square4 ul.menu li:hover > .separator, .roktabs-links ul li.active span {color:#0088B5;}
+a, #rt-main-surround ul.menu a:hover, #rt-main-surround ul.menu .separator:hover, #rt-main-surround ul.menu .item:hover {color:#0088B5;}
+    -->
+  </style>
+  <script type="text/javascript" src="../../components/com_jcomments/js/jcomments-v2.1.js%3Fv=2"></script>
+  <script type="text/javascript" src="../../components/com_jcomments/libraries/joomlatune/ajax.js"></script>
+  <script type="text/javascript" src="../../media/system/js/mootools.js"></script>
+  <script type="text/javascript" src="../../media/system/js/caption.js"></script>
+  <script type="text/javascript" src="../../components/com_gantry/js/gantry-buildspans.js"></script>
+  <script type="text/javascript" src="../../components/com_gantry/js/gantry-inputs.js"></script>
+  <script type="text/javascript" src="../../templates/rt_quantive_j15/js/jquery.cookie.js"></script>
+  <script type="text/javascript" src="../../modules/mod_roknavmenu/themes/fusion/js/fusion.js"></script>
+  <script type="text/javascript" src="../../modules/mod_ofssologin/js/ofssologin.js"></script>
+  <script type="text/javascript">
+
+			window.addEvent('domready', function() {
+				var modules = ['rt-block'];
+				var header = ['h3','h2','h1'];
+				GantryBuildSpans(modules, header);
+			});
+		InputsExclusion.push('.content_vote','#rt-popup')
+		        window.addEvent('load', function() {
+					new Fusion('ul.menutop', {
+						pill: 0,
+						effect: 'slide and fade',
+						opacity: 1,
+						hideDelay: 500,
+						centered: 0,
+						tweakInitial: {'x': -2, 'y': 0},
+        				tweakSubsequent: {'x': 0, 'y': -14},
+						menuFx: {duration: 200, transition: Fx.Transitions.Sine.easeOut},
+						pillFx: {duration: 400, transition: Fx.Transitions.Back.easeOut}
+					});
+	            });
+  </script>
+<!-- <script type="text/javascript" src="/sso/javascripts/langsync.js"></script> -->
+<!-- <script src="/templates/rt_quantive_j15/js/ossf.js"></script> -->
+<script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-4136519-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
+</head>
+	<body  class="backgroundlevel-low backgroundstyle-style8 bodylevel-med bodystyle-light cssstyle-style1 logostyle-dark font-family-helvetica font-size-is-default menu-type-fusionmenu col12 ">
+		<div id="rt-main-background">
+			<div class="rt-container">
+																<div id="rt-header">
+					<div class="rt-grid-7 rt-alpha">
+    			<div class="rt-block">
+    	    	<a href="../../index.html" id="rt-logo"></a>
+    		</div>
+	    
+</div>
+<div class="rt-grid-5 rt-omega">
+                    <div class="square9">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<div class="ofssologin_square9"><a href="../../index.html">Login</a>&nbsp;&nbsp|&nbsp;&nbsp;<span><a href="https://www.openfoundry.org/tw/news/8286?task=view" ><span lang="tw" xml:lang="tw">繁體中文</span></a></li></ul></span><!--Joom!fish V2.0.4 (Lightning)-->
+<!-- &copy; 2003-2009 Think Network, released under the GPL. -->
+<!-- More information: at http://www.joomfish.net -->
+<div class="ofssologin_search_square9">
+  <form id="of_search" action="https://www.openfoundry.org/of/openfoundry/search" method="get" onsubmit="of_search(); return false;">
+    <select id="of_search_type">
+      <option value="Projects"> Projects </option>
+      <option value="Content"> Content </option>
+      <option value="People"> People </option>
+    </select>
+    <input id="query" name="query" id="mod_search_searchword" maxlength="50" alt="search" class="inputbox" type="text" size="28" value="search..."  onblur="if(this.value=='') this.value='search...';" onfocus="if(this.value=='search...') this.value='';" />
+    <input type="hidden" name="commit" value="search" />
+  </form>
+</div></div>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		
+</div>
+					<div class="clear"></div>
+				</div>
+																<div id="rt-navigation"><div id="rt-navigation2"><div id="rt-navigation3">
+					
+<div class="nopill">
+	<ul class="menutop level1 " >
+						<li class="item1 root" >
+					<a class="orphan item bullet" href="../../index.html"  >
+				<span>
+			    				Home				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item32 root" >
+					<a class="orphan item bullet" href="../../archived.html"  >
+				<span>
+			    				Projects				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item186 root" >
+					<a class="orphan item bullet" href="../community.html"  >
+				<span>
+			    				Who&#039;s Who				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item4 root" >
+					<a class="orphan item bullet" href="../news.html"  >
+				<span>
+			    				News				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item5 root" >
+					<a class="orphan item bullet" href="../law-and-licensing.html"  >
+				<span>
+			    				Law &amp; Licensing				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item3 root" >
+					<a class="orphan item bullet" href="../activities.html"  >
+				<span>
+			    				Activities				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item2 root" >
+					<a class="orphan item bullet" href="../resourcecatalog.html"  >
+				<span>
+			    				Resource Catalog				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item45 root" >
+					<a class="orphan item bullet" href="../about.html"  >
+				<span>
+			    				About				   
+				</span>
+			</a>
+			
+			
+	</li>	
+				</ul>
+</div>
+
+				    <div class="clear"></div>
+				</div></div></div>
+								<div class="rt-surround"><div class="rt-surround2"><div class="rt-surround3">
+										<div id="rt-showcase-section">
+												<div id="rt-showcase">
+							<div class="rt-grid-12 rt-alpha rt-omega">
+    		<div class="clear"></div>
+		
+		
+                <div class="close-note">
+                    <div class="rt-block">
+               					<div class="module-content">
+                	<div style="font-size:medium; background-image:linear-gradient(120deg,#159957,#4298b2);color:white;padding:20px;margin:-10px -18px;">感謝您對「自由軟體鑄造場」的支持與愛護，十多年來「自由軟體鑄造場」受中央研究院支持，並在資訊科學研究所以及資訊科技創新研究中心執行，現已完成階段性的任務。 本網站預計持續維運至 2021年底，網站內容基本上不會再更動。<br />也紀念我們永遠的朋友 李士傑先生（Shih-Chieh Ilya Li）。</div>				</div>
+            </div>
+                </div>
+		
+</div>
+							<div class="clear"></div>
+						</div>
+																	</div>
+															<div id="rt-main-surround">
+												<div id="rt-breadcrumbs">
+								<div class="rt-breadcrumb-surround">
+		<a href="../../index.html" id="breadcrumbs-home"></a>
+		<span class="breadcrumbs pathway">
+<span class="no-link">News</span></span>
+	</div>
+	
+							<div class="clear"></div>
+						</div>
+																							              <div id="rt-main" class="sa3-mb9">
+                <div class="rt-main-inner">
+                    <div class="rt-grid-9 rt-push-3">
+                                                <div class="rt-block">
+                            							<div class="square1">
+							<div class="rt-module-surround">
+								<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+								<div class="rt-module-inner">
+		                            <div id="rt-mainbody">
+		                                
+<div class="rt-joomla ">
+	<div class="rt-article">
+		
+				<div class="rt-headline"><h1 class="rt-article-title">以 ModSecurity 實作 Webapp  Firewall</h1>		</div>
+		<div class="clear"></div>
+		
+		
+		
+				<div class="rt-articleinfo">
+						<div class="rt-article-icons">
+								<a href="https://www.openfoundry.org/en/news/8286--modsecurity-webapp-firewall?tmpl=component&amp;print=1&amp;page=" title="Print" onclick="window.open(this.href,'win2','status=no,toolbar=no,scrollbars=yes,titlebar=no,menubar=no,resizable=yes,width=640,height=480,directories=no,location=no'); return false;" rel="nofollow"><span class="icon print"></span></a>																</div>
+			
+			<span class="rt-date-posted">
+						 Created at			Friday, 18 March 2011 22:19						&nbsp;&nbsp;&nbsp;&nbsp;						Last Updated on Tuesday, 22 March 2011 21:51						</span>
+
+						<span class="rt-author">
+				Written by 老薯條(https://vulscan.wynetech.com.tw)			</span>
+				
+					</div>
+		
+		
+		<h2>前言</h2>
+<br /> 在網路時代，相信每個企業都有屬於自己的網站，但由於人力與經費不足，常成為駭客覬覦的對象。相關的網路安全威脅事件也有日漸增多的趨勢，例如常見的 SQL Injection，造成個資外洩。而網路的安全威脅型態與其它威脅間的最大差異，在於網路的安全威脅，通常是程式設計師的疏失或經驗不足所造成的安全漏洞（如XSS）。這與一般系統只要安裝修正程式 (patch) 即可修補系統漏洞有很大的差別。當然要解決程式的漏洞，最有效的方式即是利用 Code review 會議，重新檢視每一行程式碼，從中找出有問題的程式。但此種方式所花費的人力與物力浩大，不切實際。當然目前市面上有所謂的原始碼檢視軟體，但此種軟體不但昂貴，而且最後還是需要仰賴人工進行比對。因此， 網路應用程式防火牆 WAF (Web Application Firewall) 因應而生。WAF 就如同一般防火牆，功能雷同，但它的定位是保護網站伺服器。<br /><br />在本文中，筆者將使用開放源碼社群中最知名的網站伺服器 Apache，再加上 ModSecurity 模組，來實作一個具有 WAF 防護的網站伺服器。<br /><br /><br /> 
+
+所需套件如下表所示：<br /><br /> 
+<table id="customers" border="1" cellspacing="0" cellpadding="3" width="100%">
+<tbody>
+<tr valign="top">
+<th width="20%"> 軟體名稱 </th> <th width="40%"> 官方網址 </th> <th width="40%"> 說明 </th>
+</tr>
+<tr valign="top">
+<td width="20%">libapr</td>
+<td width="40%"><a href="https://apr.apache.org/" target="_blank">https://apr.apache.org/</a></td>
+<td width="40%">安裝 ModSecurity 所需的套件</td>
+</tr>
+<tr valign="top">
+<td width="20%">libpcre</td>
+<td width="40%"><a href="https://www.pcre.org/" target="_blank">https://www.pcre.org/</a></td>
+<td width="40%">安裝 ModSecurity 所需的套件</td>
+</tr>
+<tr valign="top">
+<td width="20%">libxml2</td>
+<td width="40%"><a href="https://xmlsoft.org/downloads.html" target="_blank">https://xmlsoft.org/downloads.html</a></td>
+<td width="40%">安裝 ModSecurity 所需的套件</td>
+</tr>
+<tr valign="top">
+<td width="20%">Apache 2.2.16</td>
+<td width="40%"><a href="../resourcecatalog/Enterprise/General-Info/apache-software-foundation/visit.html" target="_blank">https://www.apache.org/</a></td>
+<td width="40%">網站伺服器</td>
+</tr>
+<tr valign="top">
+<td width="20%">ModSecurity 2.5.12</td>
+<td width="40%"><a href="https://www.modsecurity.org" target="_blank">https://www.modsecurity.org</a></td>
+<td width="40%">WAF（網路應用程式防火牆）</td>
+</tr>
+<tr valign="top">
+<td width="20%">PHP</td>
+<td width="40%"><a href="https://www.php.net" target="_blank">https://www.php.net</a></td>
+<td width="40%">著名的網頁程式</td>
+</tr>
+</tbody>
+</table>
+<br /><br />
+<h2>OWASP 2010 TOP 10</h2>
+Open Web Application Security Project (OWASP) 是一個專門研究網路軟體安全的社群。他們每年均會提出最具威脅性的網路安全漏洞，來提醒使用者。以下簡單的說明 OWASP 於 2010 年所提出的網路安全漏洞：<br /><br />1. Injection （注入攻擊）<br /><br />由於程式設計師疏失或經驗不足，未對使用者輸入的參數值進行檢驗，以致於惡意使用者可利用惡意的輸入值（如惡意 SQL 指令串或惡意的 script 碼），讓系統自動執行惡意的指令，而對系統造成危害。此類攻擊以 SQL injection、command injection 為代表，其中 SQL injection 最具代表也最具危害性。以下就來說明 SQL injection 的攻擊方式。<br /><br />假設有一個程式，用於驗證是否為會員登入，如圖1 所示（假設會員表格 (table) 名稱為 account 並以 login 表示帳號參數，passwd 表示密碼參數）：<br /><a href="../../images/110322/ModSecurity/modsecurity_1.png" target="_blank"><img src="../../images/110322/ModSecurity/modsecurity_1.png" border="0" width="235" height="107" /></a><br />▲ 圖1<br /><br />假如程式設計師並未對輸入欄位進行驗證，他的程式碼可能如下：<br /><br />
+<pre><code>Select * from account where login=’+LOGIN +”’ and<br /><br />passwd=’”+PASSWD+”’”</code></pre>
+<br />其中 LOGIN 為使用者輸入的帳號參數，而 PASSWD 為使用者輸入的密碼參數。在正常的情況下，使用者輸入正常的帳號及密碼，即組成正常的 SQL 查詢字串，如下所示：<br /><br />
+<pre><code>Select * FROM account where login=’使用者帳號’ AND passwd=’使用者密碼’</code></pre>
+<br /><br />如果有查詢到資訊，即表示為合法使用者（因為該筆記錄在 account 中有存在），否則即不允許登入。但是如果有惡意的使用者輸入如圖1 的字串作為帳號，所組成的 sql 查詢字串即如下所示：<br /><br />
+<pre><code>Select * FROM account where login=’john’  - -  passwd=’’</code></pre>
+<br />在 SQL 語法中， - - 表示註解，即後續的指令均不需執行。聰明的讀者應該發現上述的指令有什麼蹊蹺了。沒錯，上述的 SQL 指令代表只要帳號符合，無需輸入密碼，即可通過驗證而成功登入。<br /><br />另一個甚至不需輸入帳號的例子，是輸入如 " ' ' or 1=1 - - " 的字串作為帳號參數，則其所組成的SQL查詢指令為：<br /><br />
+<pre><code>sqlSelect * FROM account where login=’’ OR 1=1  - -  passwd=’’</code></pre>
+<br />由於 “OR 1=1” 的條件式一定成立，所以即使不需帳號密碼，也可成功的登入。上述的例子僅為 SQL Injection 的基本型，其危害程度取決於攻擊者對於 SQL 的了解程度。有些資料庫伺服器，甚至有提供系統指令，就可能危害到系統安全。<br /><br />2. Cross Site Scripting（XSS，跨網站腳本攻擊）<br /><br />跨網站腳本攻擊的原因跟 SQL injection 一樣，同樣是因為程式沒有檢驗使用者輸入的參數內容所造成。不過，與 SQL injection 最大不同在於， SQL injection 會對資料庫所在的主機造成重大危害，而 XSS 攻擊以造成瀏覽者安全上的危害為主，往往不會對於主機造成危害。這也導致管理者易於乎略此類網站攻擊的可能性，而使得此種攻擊有越來越普遍的趨勢。 XSS 攻擊流程如下:<br /><br />攻擊者將含有 XSS 漏洞的網頁，置於受害的網站伺服器上。常見的是在討論區上留下含有 XSS 惡意碼的留言。當不知情的使用者瀏覽此網頁時（如瀏覽某則留言），即啟動 XXS 攻擊碼，而將無辜的第三者相關資訊回傳到駭客的電腦上，最常見的是回傳使用者電腦上的授權 (cookies)。<br /><br />所以，對網路使用者而言，當瀏覽某個討論區留言時，發現出現彈跳視窗，就要特別注意是否有 XSS 的可能。如果發現彈跳視窗自動幫你轉址到其它的網址，那麼別懷疑，趕快離開那個網站、避開 XSS 攻擊就對了。對於網站管理者而言，在 <a href="https://xssed.com/" target="_blank">https://xssed.com/</a> 網站中有提供含有 XSS 漏洞的網站，有興趣的讀者可到此網站上，查詢自己所管理的網站是否有被提報含有 XSS 漏洞。<br /><br />3. Broken Authentication and Session Management（鑑別與連線管理漏洞）<br /><br />此漏洞是指網站自行開發的身份證驗證與連線 (session) 管理，具有安全性的缺失。以下用網站身份驗證流程說明：<br /><br /> 
+<ul>
+<li> 當使用者登入成功後，會將一個含有帳號及密碼（甚至權限等相關資訊的 cookies），丟至使用者的電腦端上</li>
+<li> 網站再存取該使用者的授權 cookies 來判別使用者的身份</li>
+</ul>
+<br />在上述流程中，如果 cookies 並未加密，惡意的使用者只要取得此 cookies，即可得知其它使用者相關的機密敏感資訊。或者加密的演算法不夠嚴謹，一但被破解，也會造成使用者的機敏資料外流，甚至惡意使用者可藉以冒充成其它的使用者（或提升權限至管理者）。<br /><br />4. Insecure Direct Object References（不安全的物件參考）<br /><br />如果一個經驗不足的程式設計師想要實做一支能動態顯示檔案內容的程式，他會直覺想到把希望顯示的檔案設為參數，再傳進去就好了，如下連結所示：<br /><br />
+<pre><code>https://xxx.xxx.xxx.xxx/show.php?file=xxx.txt</code></pre>
+<br />而後在接到參數值後，再直接開檔顯示即可。但是如果一個有心人傳進去的參數為：<br /><br />
+<pre><code>https://xxx.xxx.xxx.xxx/show.php?file=../../etc/passwd</code></pre>
+<br />其中 ".." 為回到上一層，此種參數即可能將系統中的 /etc/目錄下的 passwd 檔案顯示出來。<br /><br />5. Cross Site Request Forgery（CSRF，跨網站冒名請求）<br /><br />從某種角度來看，CSRF 可視為廣義的跨網站攻擊 (XSS)。但 CSRF 通常是在使用者已登入系統服務下發動攻擊。例如：<br /><br />在討論區中的某段留言塞進一段可直接登出 (logout) 的惡意程式碼。當使用者登入後、瀏覽相關留言時，只要瀏覽到這段留言，即會觸發該段惡意程式碼，而直接將該使用者登出。此即為 CSRF 攻擊。<br /><br />6. Security Misconfiguration（不安全的組態設定）<br /><br />此漏洞較偏向管理面的問題，如未更改預設的帳號及密碼，或未定時的更新系統的安全修正程式等等。<br /><br />7. Failure to Restrict URL Access（未適當限制的 URL 取）<br /><br />一般網站通常會分成前端程式及後端管理程式。基於安全的考量，Internet 上的使用者不應該獲准直接查詢後端管理程式，而應該只限制某些管理者可查詢及存取後端管理程式。如果網站未限制，而使 Internet 上的其它的使用者也可正常的查詢，即可能造成潛在的安全漏洞。<br /><br />8. Unvalidated Redirects and Forwards（未驗證的網頁重新導向）<br /><br />有些網站提供網頁重新導向至其它的網址，惡意的攻擊者可利此種特性，將惡意網址插入到重新導向的參數中，讓使用者連接到惡意的網站上。<br /><br />9. Insecure Cryptographic Storage（不安全的加密儲存）<br /><br />網站並未對機敏的資料進行加密處理，或使用不嚴謹的加密演算法，而導致攻擊者在取得相關的機敏資料後，可以很輕易的取得相關資訊。<br /><br />10. Insufficient Transport Layer Protection（不安全的傳輸防護）<br /><br />由於 HTTP 連線均是採用明碼的方式連線，攻擊者可在任何一個節點均可能利用 sniffer（竊聽）方式來取得來往資料。如果網站採用 HTTP 連線方式，來往的封包均以明碼方式傳輸，攻擊者即可輕易的取得相關的機敏資訊。<br /><br />
+<h2>如何安裝 ModSecurity</h2>
+<br />在說明完相關的網路安全威脅後，接下來我們繼續來說明如何安裝 ModSecurity 來防止相關的網路安全威脅。<br /><br />ModSecurity 是 Apache 的一個模組，可以提供入侵偵測及防禦功能，它就如同是網路應用程式的防火牆，可以用來抵擋如 SQL injection attacks、cross-site scripting、path traversal attacks 等相關的網路攻擊，由於 ModSecurity 需要 Apache 的 mod_unique_id 模組，所以在這邊我們需自行編譯支援 mod_unique_id 模組的 Apache 軟體，這裏筆者目的在於編譯一個 Apache + MySQL + PHP 的環境，其中筆者不多談如何編譯 MySQL，請有興趣的讀者自行參閲其它文件。在筆者的環境中，MySQL 是安裝在 /usr/local/mysql5 目錄下。<br /><br />
+<h3>編譯 Apache</h3>
+<br /> 重新編譯支援 mod_unique_id 模組的 Apache 伺服器，如下步驟：<br /><br />1. 請讀者至 <a href="https://httpd.apache.org/" target="_blank">https://httpd.apache.org/</a> 取得 Apache 原始碼（筆者使用版本為 2.2.16）<br /><br />2. 解開後，./configure --enable-so --enable-unique-id  --prefix=/usr/local/apache2  <br /><br />#重新組態 Apache，在此將 Apache 安裝在 /usr/local/apache2 目錄下並支援 DSO 及 unique-id 模組<br /><br />3. make     #編譯 Apache 執行檔  <br /><br />4. make install #安裝 Apache<br /><br />在編譯完成後，請讀者執行 /usr/local/apache2/bin/httpd –l ，列出 Apache 內建模組，並檢查是否有 mod_unique_id.c 等字樣，如有，即表示已經內建 mod_unique_id 模組<br /><br />
+<h3>編譯 PHP 模組</h3>
+<br />1. 請讀者至 <a href="https://www.php.net" target="_blank">https://www.php.net</a> 取得 PHP 原始碼（筆者使用版本為 5.2.10）<br /><br />2. 解壓縮後，執行 ./configure --with-apxs2=/usr/local/apache2/bin/apxs --with-mysql=/usr/local/mysql5 　#編譯一個支援 MySQL 的 PHP 模組<br /><br />3. make                    <br /><br />4. make install<br /><br />在安裝完後，重新調整 Apache 的組態檔（在此為 /usr/local/apache2/conf/httpd.conf）<br /><br />新增下列資訊：<br /><br />LoadModule php5_module        modules/libphp5.so  # 新增 PHP 模組，讓 Apache 能支援 PHP 語言<br /><br />AddType application/x-httpd-php .php .phtml .php3      #新增 PHP 檔案類型<br /><br /> 調整組態檔 (httpd.conf) 後，<br /><br />讀者可利用 /usr/local/apache2/bin/apachectl start 啟動 Apache 或 /usr/local/apache2/bin/apachectl stop 停止 Apache 運作<br /><br /><br />
+<h3>編譯 ModSecurity</h3>
+<br />1. 至 <a href="https://www.modsecurity.org/" target="_blank">https://www.modsecurity.org/</a> 取得最新版本（至目前為止，筆者取得版本為 2.5.12）<br /><br />2. 解壓縮後至 apache2 目錄下，執行下列指令 <br />./configure --with-apxs=/usr/local/apache2/bin/apxs    #編譯 ModSecurity 為 Apache 的模組<br /><br />3. make<br />在編譯的過程中，筆者曾遇過 “This PCRE version does not support match limits! Upgrade to at least PCRE v6.5” 的錯誤，這是因為 ModSecurity 還是使用 Apache 內建的 PCRE 版本，解決方式為：<br /><br />cp /usr/include/pcre.h  /usr/local/apache2/include ，覆蓋掉 Apache 所使用的pcre.h，再重新編譯即可。<br /><br />4. make install<br /><br /> 編譯完成後，會在 /usr/local/apache2/modules/ 產生 mod_security.so 模組檔，接下來需在 /usr/local/apache2/conf/httpd.conf 新增下列設定檔<br />
+<pre><code>LoadModule security2_module modules/mod_security2.so<br /> ＜IfModule mod_security＞   #設定mod_security<br /> SecFilterEngine On     #開啟過濾引擎開關。<br />SecServerSignature "Microsoft-IIS/6.0" #偽裝服務器標識<br />＜/ IfModule＞<br /></code></pre>
+<br />至此，讀者可以寫一個簡單的 PHP 程式 (test.php) 來測試安裝是否正確，如下所示：<br />
+<pre><code>＜?php<br /> phpinfo();    //顯示 apache 的系統資訊<br />?><br /></code></pre>
+<br />假如一切設定正確，讀者應可看到如圖2 的畫面。<br /><a href="../../images/110322/ModSecurity/modsecurity_2.png" target="_blank"><img src="../../images/110322/ModSecurity/modsecurity_2.png" border="0" width="400" /></a><br />▲ 圖2<br /><br />接下來我們可以簡單設定 /usr/local/apache2/conf/httpd.conf 檔案來測試 ModSecurity 模組是否正常運作，如下述設定：<br />
+<pre><code><br />＜IfModule mod_security2.c＞<br />SecServerSignature "Microsoft-IIS/5.0"  #將網站伺服器偽裝成<br />Microsoft-IIS<br />＜/ IfModule＞<br /></code></pre>
+<br />設定完成後，讀者需重新啟動 Apache 伺服器。而後以 Telnet（或用 nmap 可以）來測試 Apache 伺服器回覆的資訊是否已改為 Microsoft-IIS，請執行如下指令：<br />
+<pre><code>telnet 127.0.0.1 80<br />get https:1.1 /<br /></code></pre>
+<br />而後伺服器回覆的訊息如圖3：讀者可看出 Apache 此時回覆的資訊為 Microsoft-IIS，己達到隱藏真實網站伺服器資訊的目的。<br /><a href="../../images/110322/ModSecurity/modsecurity_3.png" target="_blank"><img src="../../images/110322/ModSecurity/modsecurity_3.png" border="0" width="300" /></a> <br />▲ 圖3<br /><br />
+<h2>ModSecurity 組態說明</h2>
+<br /> ModSecurity 是以設定規則的方式來定義應用程式防火牆規則 (WAF)，在 ModSecurity 2.X 的版本中，允許規則可在 HTTP 個別的狀態 (Phase) 執行，ModSecurity 2 將 HTTP 處理狀態 (Phase) 分為下列階段：<br />1. Request headers (REQUEST_HEADERS，phase 1)<br />當網站伺服器接收到客戶端的 http 要求，正在解析 HTTP 表頭 (header) 的階段<br />2. Request body (REQUEST_BODY，phase 2)<br />當網站伺服器接收到客戶端的 http 要求，正在解析 HTTP 內容 (body) 的階段<br />3. Response headers (RESPONSE_HEADERS,phase 3)<br />當網站伺服器回覆到客戶端的 http 要求，在回覆 HTTP 標頭 (header) 的階段<br />4. Response body (RESPONSE_BODY,phase 4)<br />當網站伺服器回覆到客戶端的 http 要求，在回覆 HTTP 內容 (body) 的階段<br />5. Logging (LOGGING,phase 5)<br />在網站伺服器要寫入 log（如access.log error.log）的階段<br /> <br />
+<h2>ModSecurity 常用參數說明</h2>
+<br /> 1. SecRuleEngine  On | Off    #是否開啟或關閉 secrule 的解析，這一定要開啟，不然 ModSecurity 就失去意義了。<br />2. SecRule  VARIABLES OPERATOR [ACTION] #設定規則，是 ModSecurity 主要設定的選項。<br /> (1) VARIABLES: ModSecurity 定義相當多的變數，在這邊僅說明幾個常用的變數，其它的就請讀者自行參閱相關的說明：<br /> 
+<ul>
+<li>ARGS_GET: 此變數內存以 get 方式傳遞的資訊</li>
+<li>ARGS_POST: 此變數內存以 post 方式傳遞的資訊</li>
+<li>REMOTE_ADDR: 此變數內存遠端客戶主機的 IP 資訊</li>
+<li>REQUEST_URI: 此變數內存整個 URL 的資訊</li>
+<li>REQUEST_METHOD: 儲存遠端客戶主機所使用的 HTTP 傳遞方式，如 post get trace </li>
+</ul>
+(2) OPERATOR：利用正規表示法的比對條件，可分為下列兩種型式：<br /> 使用內建的運算子 (operator)，在內建運算子之前加上 ：<br /> 
+<ul>
+<li>contains: 如果有包含即為真，如下例：<br /> SecRule REQUEST_LINE　"＠contains .php"<br />（假如 REQUEST_LINE 變數包含 .php ，條件即成立） </li>
+<li>within: 如果有包含內設的字串，即為真，如下例：<br /> SecRule REQUEST_METHOD "!@within get,post"<br />（假如 REQUEST_METHOD 變數內包含 get 或 post，條件即成立） </li>
+<li>gt: 當大於時，條件即成立</li>
+<li>eq: 當等於時，條件即成立</li>
+<li>ge: 當大於等於時，條件即成立</li>
+<li>lt: 當小於時，條件即成立</li>
+</ul>
+<br /> 使用正規表示式：<br /> 可使用正規表示法的特殊符號來設定比對條件，如下例：<br />SecRule REQUEST_ADDR "^192\.168\.2\.1$"<br />（當 REQUEST_ADDR 變數內容為 192.168.2.1，條件即成立） <br /> (3) ACTION<br /> 常用的 action 如下所述：<br /> 
+<ul>
+<li>append: 當條件成立時，在網站伺服器回覆的 HTML 的訊息中插入相關的資訊。</li>
+<li>deny: 當條件成立時，不允許使用者瀏覽，如最後兩段舉的例子。</li>
+<li>drop: 這個 ACTION 特別提出用在預防暴力攻擊及拒絕服務的預防上，如下：<br /> 常用的 actionSecAction phase: 1,initcol:ip=%{REMOTE_ADDR},nolog\<br />SecRule ARGS: login "!^$"\ nolog,phase:1,setvar:ip.auth_attempt=+1,deprecatevar: ip.auth_attempt=20/120<br />SecRule IP:AUTH_ATTEMPT "@gt 25" \  <br />"log,drop,phase:1,msg: 'Possible Brute Force Attack'"\</li>
+（在 2 分鐘內若有超過 20 次認證存取錯誤，即認定為暴力攻擊，並記錄相關的資訊）<br />
+<li>exec: 當條件成立時，可設定執行某個程式：<br />SecRule REQUEST_URI "^/cgi-bin/script\.pl" \  <br />"exec:/usr/local/apache/bin/test.sh"<br />（當使用者存取 script.pl 即執行 /usr/local/apache/bin/test.sh 程式）</li>
+<li>log: 記錄 ModSecurity 的相關 LOG。</li>
+<li>nolog: 不記錄 ModSecurity 的相關 LOG。</li>
+<li>phase: 設定規則適用於那個 phase 階段，ModSecurity 定義了 5 個 phase，規則可設定適用於那個 phase </li>
+<li>redirect: 當條件成立時，轉址到另一個網址<br />SecRule REMOTE_ADDR "^xxx.xxx.xxx.xxx$" <br />"redirect:https://www.modsecurity.org"  <br />（如果來源為xxx.xxx.xxx.xxx連線，即轉址到 https://www.modsecurity.org）</li>
+</ul>
+3. SecGuardianLog ＜FILE＞: ModSecurity 特別用來阻檔拒絕服務攻擊，可與 iptables 搭配來過濾惡意來源的 HTTP 存取，並將相關的資訊寫入所設定的檔案中<br />4. SecPdfProtect On|Off  #設定是否要開啟 PDF XSS 的保護<br />5. SecUploadDir  ＜DIR＞    #設定檔案上傳的目錄<br />6. SecUploadFileLimit  ＜NUMBER＞ #設定上傳檔案的最大個數<br />7. SecServerSignature ＜STRING＞ #偽裝網站伺服器的資訊，可利用此參數來隱藏網站伺服器真正的版本資訊<br /><br />如下例，以 ModSecurity 來保護網站伺服器的安全<br />1. 設定不允許某些來源 IP 的連線<br />(1) 在 httpd.conf 加上如下的設定<br />
+<pre><code>＜IfModule mod_security2.c＞<br />SecRuleEngine On<br />SecRule REMOTE_ADDR "^xxx\.xxx\.xxx\.xxx$" deny<br />＜/ IfModule＞<br /></code></pre>
+<br />(2) 利用瀏覽器瀏覽，如果符合所設定的來源 IP，即會得到 403 拒絕服務的訊息<br /> <br />2. 設定當有人以 Web 弱點掃描器掃描（在此以 <a href="https://cirt.net/nikto2" target="_blank">Nikto</a> 為例）時，即拒絕 (deny) 連線<br />在 httpd.conf 加上如下的設定：<br />
+<pre><code><br />＜IfModule mod_security2.c＞<br />SecRuleEngine On<br />SecRule REQUEST_HEADERS:User-Agent "nikto"  deny<br />＜/ IfModule＞<br /></code></pre>
+<br />讀者或許會覺得 ModSecurity 的規則集設定相當的複雜，使用者也可以參考在 ModSecurity 的官方網址上釋出的相關規則集。規則集分為免費版及付費版，其中免費版本的規則集，僅較付費版本晚更新，使用者會較晚點取得最新版本而已。讀者可至下列網址取得規則集：wget <a href="https://downloads.prometheus-group.com/delayed/rules/modsec-2.5-free-latest.tar.gz" target="_blank">https://downloads.prometheus-group.com/delayed/rules/modsec-2.5-free-latest.tar.gz</a>。解開後，將相關檔案置於 http 的 conf 目錄下後，根據需要在 httpd.conf 加上 Include conf/rule/*.conf，即可套用相關的 ModSecurity 規則集，來保護您的網站伺服器。<br /><br /><br />
+			<!-- Show relate article -->
+				<!-- end -->
+		<div class="article_note">
+		<!-- Add tags use metakey, and show OSSF Newsletter tag: OSSFNL+NUM-->
+		<br><br> <hr style='border: 1px dashed #D2DADB;'><b>OSSF Newsletter&nbsp;:</b>&nbsp;<a href='../../previous-issue%3Ftask=view&amp;id=715.html'>第 169 期 AWStats — 多功能記錄檔分析工具</a><br>				<!-- End -->
+					<br>
+					<b>Category: </b><a href="../tech-column.html">				Tech Column					</a>				</div>
+			 <!-- AddThis Button BEGIN ID 3001 is the front page article -->
+     			<br><br>
+       <div class="addthis_toolbox addthis_default_style addthis_32x32_style">
+       <a class="addthis_button_preferred_1"></a>
+       <a class="addthis_button_preferred_2"></a>
+       <a class="addthis_button_preferred_3"></a>
+       <a class="addthis_button_preferred_4"></a>
+       <a class="addthis_button_compact"></a>
+       <a class="addthis_counter addthis_bubble_style"></a>
+       </div>
+       <script type="text/javascript">var addthis_config = {"data_track_clickback":true};</script>
+       <script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js#pubid=openfoundry"></script>
+       <!-- AddThis Button END -->
+     <br>
+		<div class="totop" ><a class="rt-totop" href="8286%3Ftask=view.html#" style="outline: medium none;">↑ Top</a></div>
+            <!-- AddThis Button END -->
+
+			</div>
+</div>
+
+		                            </div>
+									<div class="clear"></div>
+								</div>
+								<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+							</div>
+							</div>
+                                                    </div>
+                                            </div>
+                                <div class="rt-grid-3 rt-pull-9">
+                <div id="rt-sidebar-a">
+                                    <div class="square4">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<ul class="menu"><li class="item56"><a href="../previous-issue.html"><span>Previous Issue</span></a></li><li class="item55"><a href="../about-newsletter.html"><span>About Newsletter</span></a></li></ul>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<ul class="menu"><li class="item115"><a href="../foss-news.html"><span>FOSS News</span></a></li><li class="item141"><a href="../case-job.html"><span>Case and Jobs</span></a></li></ul>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+        	                <div class="square1">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-title"><h2 class="title">Special</h2></div>
+						<div class="clear"></div>
+		                						<div class="module-content">
+		                	<ul class="menu"><li class="item37"><a href="../tech-column.html"><span>Tech Column</span></a></li><li class="item40"><a href="../foss-programs.html"><span>FOSS Programs</span></a></li><li class="item35"><a href="../legal-column.html"><span>Legal Column</span></a></li><li class="item154"><a href="../foss-forum.html"><span>FOSS Forum</span></a></li><li class="item162"><a href="../enterprise-application.html"><span>Enterprise Application</span></a></li><li class="item44"><a href="../foss-projects.html"><span>FOSS Projects</span></a></li></ul>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		                <div class="square1">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<p style="text-align: center;"><a href="../../news%3Fformat=feed&amp;type=rss" target="_black"><img src="../../images/M_images/news-rss-feed.png" border="0" /></a><br /><a href="https://www.openfoundry.org/rss-feed/Newsletter" target="_black"><img src="../../images/M_images/newsletter-rss-feed.png" border="0" /></a></p>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		
+                </div>
+            </div>
+
+                    <div class="clear"></div>
+                </div>
+            </div>
+																													</div>
+										<div id="rt-copyright">
+						<div class="rt-grid-12 rt-alpha rt-omega">
+                        <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<span class="nowrap">Open Source Software Foundry</span><span class="nowrap">‧</span><span class="nowrap"> </span><span class="nowrap">Best  Viewed with IE7.0 or Firefox2.0 above, 1024x768 Resolution. </span><strong>E-Mail</strong>：<a href="mailto:contact@openfoundry.org">contact@openfoundry.org</a> <br /><strong>Address</strong>：No.128, Sec.2, Academia Rd., Institute of Information Science, Academia Sinica, Nangang District, Taipei City 11529, Taiwan (R.O.C). <br /><a href="../privacy-policy.html">Privacy Policy</a>. <a href="../terms-of-use.html">Terms-of-use</a> <span style="position: relative; top: 8px; margin-top: -8px;"> <a href="../../about/8101.html"><img src="../../images/M_images/rss-feed-all.png" border="0" /></a></span>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+        	
+</div>
+						<div class="clear"></div>
+					</div>
+					<div class="rt-footer-bottom-wrap"><div class="rt-footer-bottom"><div class="rt-footer-bottom2"><div class="rt-footer-bottom3"></div></div></div></div>
+									</div></div></div>
+				<div class="rt-surround-bottom"><div class="rt-surround-bottom2"><div class="rt-surround-bottom3"></div></div></div>
+							</div>
+		</div>
+		<!--
+		<script id="aptureScript">
+						(function (){var a=document.createElement("script");a.defer="true";a.src="http://www.apture.com/js/apture.js?siteToken=vsJttrn";document.getElementsByTagName("head")[0].appendChild(a);})();
+     </script>
+-->
+
+<!-- Piwik -->
+<!-- 			<script type="text/javascript">
+			  var _paq = _paq || [];
+		  _paq.push(["trackPageView"]);
+		  _paq.push(["enableLinkTracking"]);
+
+		    (function() {
+			        var u=(("https:" == document.location.protocol) ? "https" : "https") + "://www.openfoundry.org/piwik/";
+				    _paq.push(["setTrackerUrl", u+"piwik.php"]);
+				    _paq.push(["setSiteId", "1"]);
+				        var d=document, g=d.createElement("script"), s=d.getElementsByTagName("script")[0]; g.type="text/javascript";
+				        g.defer=true; g.async=true; g.src=u+"piwik.js"; s.parentNode.insertBefore(g,s);
+					  })();
+		  </script> -->
+<!-- End Piwik Code -->
+	</body>
+</html>

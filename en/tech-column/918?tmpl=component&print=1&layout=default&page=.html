@@ -1,0 +1,120 @@
+	<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+	<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-gb" lang="en-gb" >
+		<head>
+			  <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+  <meta name="robots" content="noindex, nofollow" />
+  <meta name="keywords" content="OSSFNL254" />
+  <meta name="title" content="HTMLUnit" />
+  <meta name="description" content="Java Opensources for Web Development Part I： Chapter 4 在 Java 中進行各種單元測試Lession 16 : HTMLUnit * Category: Test* Project Name: HTMLUnit* WebSite: https://htmlunit.sourceforge.net/* Lice nse: Apache" />
+  <meta name="generator" content="" />
+  <title>HTMLUnit</title>
+  <link href="../../favicon.ico" rel="shortcut icon" type="image/x-icon" />
+  <link rel="stylesheet" href="../../components/com_gantry/css/gantry.css" type="text/css" />
+  <link rel="stylesheet" href="../../components/com_gantry/css/grid-12.css" type="text/css" />
+  <link rel="stylesheet" href="../../components/com_gantry/css/joomla.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/joomla.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/style1.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/light-body.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/demo-styles.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/template.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/typography.css" type="text/css" />
+  <style type="text/css">
+    <!--
+#rt-main-surround ul.menu li.active > a, #rt-main-surround ul.menu li.active > .separator, #rt-main-surround ul.menu li.active > .item, #rt-main-surround .square4 ul.menu li:hover > a, #rt-main-surround .square4 ul.menu li:hover > .item, #rt-main-surround .square4 ul.menu li:hover > .separator, .roktabs-links ul li.active span {color:#0088B5;}
+a, #rt-main-surround ul.menu a:hover, #rt-main-surround ul.menu .separator:hover, #rt-main-surround ul.menu .item:hover {color:#0088B5;}
+    -->
+  </style>
+  <script type="text/javascript" src="../../components/com_jcomments/js/jcomments-v2.1.js%3Fv=2"></script>
+  <script type="text/javascript" src="../../components/com_jcomments/libraries/joomlatune/ajax.js"></script>
+  <script type="text/javascript" src="../../media/system/js/mootools.js"></script>
+  <script type="text/javascript" src="../../media/system/js/caption.js"></script>
+  <script type="text/javascript" src="../../components/com_gantry/js/gantry-buildspans.js"></script>
+  <script type="text/javascript" src="../../components/com_gantry/js/gantry-inputs.js"></script>
+  <script type="text/javascript">
+
+			window.addEvent('domready', function() {
+				var modules = ['rt-block'];
+				var header = ['h3','h2','h1'];
+				GantryBuildSpans(modules, header);
+			});
+		InputsExclusion.push('.content_vote','#rt-popup')
+  </script>
+		</head>
+		<body  class="backgroundlevel-low backgroundstyle-style8 bodylevel-med bodystyle-light cssstyle-style1 logostyle-dark font-family-helvetica font-size-is-default menu-type-fusionmenu col12 ">
+			<div id="rt-main-surround">
+				<div class="rt-container">
+					<div class="rt-block">
+						<div id="rt-mainbody">
+					    	
+<div class="rt-joomla ">
+	<div class="rt-article">
+		
+				<div class="rt-headline"><h1 class="rt-article-title">HTMLUnit</h1>		</div>
+		<div class="clear"></div>
+		
+		
+		
+				<div class="rt-articleinfo">
+						<div class="rt-article-icons">
+				<a href="918%3Ftmpl=component&amp;print=1&amp;layout=default&amp;page=.html#" onclick="window.print();return false;"><span class="icon print"></span></a>									<span class="icon printscreen">
+						<a href="918%3Ftmpl=component&amp;print=1&amp;layout=default&amp;page=.html#" onclick="window.print();return false;"><img src="../../images/M_images/printButton.png" alt="Print"  /></a>					</span>
+							</div>
+			
+			<span class="rt-date-posted">
+						 Created at			Monday, 16 April 2007 08:28						&nbsp;&nbsp;&nbsp;&nbsp;						Last Updated on Thursday, 06 December 2007 21:38						</span>
+
+						<span class="rt-author">
+				Written by 李日貴（松凌科技技術總監）			</span>
+				
+					</div>
+		
+		
+		Java Opensources for Web Development Part I：<br />
+<p>Chapter 4 在 Java 中進行各種單元測試<br />Lession 16 : HTMLUnit</p>
+<p>* Category: Test<br />* Project Name: HTMLUnit<br />* WebSite: <a href="https://htmlunit.sourceforge.net/" target="_blank">https://htmlunit.sourceforge.net/</a><br />* License: Apache-like&nbsp; <a href="https://htmlunit.sourceforge.net/license.html" target="_blank">https://htmlunit.sourceforge.net/license.html</a><br />* Last version: 1.11 (2007/04)</p><p>我們在開發 Web 的時候，必要時，對於網頁的操作，總不能每次都以人工點選操控瀏覽器，進行部署後的測試，所以我們需要 HTMLUnit 來解決這個問題。 其實也有一個很雷同的 opensource，名叫 HttpUnit，只是 HttpUnit 著重於 Http 通訊協定的運用，如果要針對 form 與 table 等網頁元件處理，使用 HTMLUnit 會比較輕鬆。</p>
+<p>例如我們要確認網頁的標題&lt;title&gt;是否正確，首先先建立一個 WebClient 就是視為一個瀏覽器，接著透過 WebClient 進行遠端 URL 存取取得一個頁面，再針對該頁面&nbsp; getTitleText() 取得標題，最後利用 assertEquals 來判斷字串是否如同預期。</p>
+<p>package com.softleader.unittest.htmlunit;</p>
+<p>import java.net.URL;</p>
+<p>import junit.framework.TestCase;</p>
+<p>import org.junit.Test;<br />import org.junit.Assert;<br />import com.gargoylesoftware.htmlunit.WebClient;<br />import com.gargoylesoftware.htmlunit.html.HtmlPage;</p>
+<p>public class HtmlUnitSample extends TestCase {</p>
+<p>&nbsp;@Test<br />&nbsp;public void testSoftleaderTitle() throws Exception{&nbsp;&nbsp;<br />&nbsp;&nbsp;&nbsp;&nbsp; final WebClient webClient = new WebClient();<br />&nbsp;&nbsp;&nbsp;&nbsp; final URL url = new URL(&quot;<a target="_blank" href="https://www.softleader.com.tw">https://www.softleader.com.tw</a>&quot;);<br />&nbsp;&nbsp;&nbsp;&nbsp; final HtmlPage page = (HtmlPage)webClient.getPage(url);</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp; assertEquals( &quot;::::::::::::松凌科技::::::::::::&quot;, page.getTitleText() );<br />&nbsp;&nbsp;&nbsp;&nbsp; <br />&nbsp;}<br />}</p>
+<p>當 test 出現綠燈，那麼就算是正確。</p>
+<p>{mosimage}</p>
+<p>主要來說，HTMLUnit 還可以模擬各種不同的瀏覽器，如果要專測某種瀏覽器，就是在建立 WebClient 之時，利用 new WebClient(BrowserVersion.MOZILLA_1_0)，或是BrowserVersion.NETSCAPE 等等的方式進行。</p>
+<p>當然，HTMLUnit 也可以設定 proxy Server，因為畢竟有些公司內部一定要透過 proxy 才能存取網頁，此外，也支援 keyboard 的操控，例如 tab 在 HTML 之中是以 tabindex 來進行順序排列，就可以用 call HtmlPage.tabToNextElement() 或是 HtmlPage.tabToPreviousElement() 來進行前後控制。或是使用HtmlPage.pressAccessKey(char)。直接透過 html accesskey 的屬性來測試控制的。</p>
+<p>有時候，我會利用 HTMLUnit 來設計抓網頁欄位數值的內容，只需要利用 HTMLTable 與 HtmlTableRow 加上 HtmlTableCell，就可以把一個表格之中的某個數值抓取出來作其他判斷。不過，雖然現在也有內建 mozilla 的 js.jar，但是在 javascript 運作，IE 與 firefox 也有所不同，所以往往會發生 javascript 無法解析。這部分的情況，我通常會移除 js.jar，讓 javascript disabled ，否則衍生性的問題將會更多。當然，如果都利用標準 javascript 語法撰寫的網頁，可以利用之來處理 javascript 事件，甚至監控 alert 的訊息，倒是蠻方便的。</p>
+			<!-- Show relate article -->
+				<!-- end -->
+		<div class="article_note">
+		<!-- Add tags use metakey, and show OSSF Newsletter tag: OSSFNL+NUM-->
+		<br><br> <hr style='border: 1px dashed #D2DADB;'><b>OSSF Newsletter&nbsp;:</b>&nbsp;<a href='../../previous-issue%3Ftask=view&amp;id=254.html'>第 78 期 新酷音輸入法 Windows 版</a><br>				<!-- End -->
+					<br>
+					<b>Category: </b><a href="../tech-column.html">				Tech Column					</a>				</div>
+			 <!-- AddThis Button BEGIN ID 3001 is the front page article -->
+     			<br><br>
+       <div class="addthis_toolbox addthis_default_style addthis_32x32_style">
+       <a class="addthis_button_preferred_1"></a>
+       <a class="addthis_button_preferred_2"></a>
+       <a class="addthis_button_preferred_3"></a>
+       <a class="addthis_button_preferred_4"></a>
+       <a class="addthis_button_compact"></a>
+       <a class="addthis_counter addthis_bubble_style"></a>
+       </div>
+       <script type="text/javascript">var addthis_config = {"data_track_clickback":true};</script>
+       <script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js#pubid=openfoundry"></script>
+       <!-- AddThis Button END -->
+     <br>
+		<div class="totop" ><a class="rt-totop" href="918%3Ftmpl=component&amp;print=1&amp;layout=default&amp;page=.html#" style="outline: medium none;">↑ Top</a></div>
+            <!-- AddThis Button END -->
+
+			</div>
+</div>
+
+						</div>
+					</div>
+				</div>
+			</div>
+		</body>
+	</html>

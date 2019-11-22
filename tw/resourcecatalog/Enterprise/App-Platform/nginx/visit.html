@@ -1,0 +1,730 @@
+<!DOCTYPE html>
+
+
+<html lang="en">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  
+  <link rel="canonical" href="../../../../../en/resourcecatalog/Enterprise/App-Platform/nginx/visit.html" />
+  
+    <meta content="This is the NGINX Wiki. NGINX is a free, open-source, high-performance HTTP server, reverse proxy, and IMAP/POP3 proxy server." name="description" />
+
+    <title>Welcome to NGINX Wiki! | NGINX</title>
+    
+    <link rel="stylesheet" href="https://www.nginx.com/resources/wiki/_static/nginx.css?ver=201509101510" type="text/css" />
+    <link rel="stylesheet" href="https://www.nginx.com/resources/wiki/_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '',
+        VERSION:     '1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="https://www.nginx.com/resources/wiki/_static/jquery.js"></script>
+    <script type="text/javascript" src="https://www.nginx.com/resources/wiki/_static/underscore.js"></script>
+    <script type="text/javascript" src="https://www.nginx.com/resources/wiki/_static/doctools.js"></script>
+    <link rel="icon" type="image/png" href="https://www.nginx.com/resources/wiki/_static/favicon-48x48.ico" sizes="48x48">
+    <link rel="icon" type="image/png" href="https://www.nginx.com/resources/wiki/_static/favicon-64x46.ico" sizes="64x46">
+    <link rel="search" title="Search" href="https://www.nginx.com/resources/wiki/search/" />
+    <link rel="top" title="NGINX" href="../../../../../en/resourcecatalog/Enterprise/App-Platform/nginx/visit.html#" />
+    <link rel="next" title="Getting Started" href="https://www.nginx.com/resources/wiki/start/" /> 
+    <script type="text/javascript">
+        // workaround for rewriting anchor tags
+        $(function() {
+            if(window.location.hash != '') {
+              var parts = window.location.hash.split('#', 2);
+              var anchor = parts[1].replace(/[\W_]/g, '-').toLowerCase();
+              window.location.hash = parts[0] + '#' + anchor;
+            }
+        });
+    </script>   
+
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+
+  
+
+  <link rel="stylesheet" href='https://www.nginx.com/resources/wiki/_static/css/bootstrap.min.css'>
+
+<link rel='stylesheet' id='nginx-theme-style-css'
+          href='https://www.nginx.com/resources/wiki/_static/nginx-theme.css?ver=1438882823'
+          type='text/css' media='all'/>
+          
+
+  <link rel="stylesheet" href='https://www.nginx.com/resources/wiki/_static/style.css'>
+  <link rel="stylesheet" type='text/css' href='https://www.nginx.com/resources/wiki/_static/nginx-site-header.css'>
+</head>
+<body>
+  <!-- Header Section Start -->
+
+  <!-- NGINX SITE HEADER START -->
+<!-- GDPR HTML start -->
+<div id="nx_gdpr_modal2" class="hidden">
+  <div id="nx_gdpr_modal_inner2">
+    <div id="nx_gdpr_modal_more_info2" class="hidden">
+      <div class="less-info-wrap">
+        <a id="gdpr-less-info" href="../../../../../en/resourcecatalog/Enterprise/App-Platform/nginx/visit.html#less-info">&lt;</a>
+      </div>
+      <h2>Your Cookie Settings</h2>
+      <form>
+        <div class="gdpr_info_section">
+          <div class="gdpr_modal_chkbox2">
+            <input title="yes" type="checkbox" id="nx_gdpr_func_con_checkbox"
+                   value="yes" checked="checked" disabled/>
+          </div>
+          <p>Site functionality and performance. These cookies are required
+            for
+            NGINX site functionality and are therefore always enabled. They
+            contain no identifiable information.</p>
+        </div>
+        <div class="gdpr_info_section">
+          <div class="gdpr_modal_chkbox2">
+            <input title="yes" type="checkbox"
+                   id="nx_gdpr_social_con_checkbox"
+                   value="yes" checked/>
+          </div>
+          <p>Social media and advertising. Cookies that help connect to social
+            networks, and advertising cookies (of third parties) to
+            help better tailor NGINX advertising to your interests</p>
+        </div>
+      </form>
+    </div>
+    <div id="nx_gdpr_modal_main2">
+      <h2>Have a <span class="cookie-emoji">&#x1F36A;</span>? :)</h2>
+      <p>nginx.com uses <a id="gdpr-more-info" href="../../../../../en/resourcecatalog/Enterprise/App-Platform/nginx/visit.html#more-info">cookies</a> to
+        provide
+        functionality and performance.
+        <a href="https://www.nginx.com/privacy-policy">Privacy Policy</a>.</p>
+    </div>
+
+    <div class="submit-button-wrap">
+      <button class="nginx-button button-secondary" id="nx_gdpr_accept_btn">Accept</button>
+    </div>
+  </div>
+</div><!-- /#nx_gdpr_modal -->
+<!-- GDPR HTML end -->
+
+<header id="masthead" class="site-header" role="banner" itemscope
+        itemtype="http://schema.org/Organization">
+  <!-- sticky-menu show-sticky-menu-->
+  <div class="site-header-inner">
+
+    <div class="site-branding-wrapper">
+      <div class="site-branding">
+        <div class="site-title" itemprop="name">
+          <a href="https://www.nginx.com/" rel="home"><img
+              src="https://www.nginx.com/resources/wiki/_static/NGINX-Logo-White-Endorsement-RGB.svg"
+              alt="Web Server Load Balancing with NGINX Plus"></a>
+        </div>
+      </div>
+      <!-- /.site-branding -->
+    </div>
+    <!-- /.site-branding-wrapper -->
+
+    <div class="header-menus">
+
+      <div class="header-actions-menu-location-wrapper">
+        <nav class="header-actions-menu-location" role="navigation">
+          <div class="menu-header-actions-container">
+            <ul id="menu-header-actions" class="menu">
+              <li id="menu-item-5252"
+                  class="free-trial-menu-btn menu-item menu-item-type-custom menu-item-object-custom menu-item-5252">
+                <a href="https://www.nginx.com/free-trial-request">Free
+                  Trial</a></li>
+              <li id="menu-item-4811"
+                  class="contact-sales-menu-btn menu-item menu-item-type-custom menu-item-object-custom menu-item-4811">
+                <a href="https://www.nginx.com/#contact-us">Contact Us</a></li>
+            </ul>
+          </div>
+        </nav>
+        <!-- /.header-actions-menu-location -->
+      </div>
+      <!-- /.header-actions-menu-location -->
+      <div class="primary-menu-location-wrapper">
+        <a class="menu-logo" href="https://www.nginx.com/" rel="home"><img
+            src="https://www.nginx.com/resources/wiki/_static/NGINX-Logo-White-Endorsement-RGB.svg"
+            alt="Web Server Load Balancing with NGINX Plus"></a>
+        <nav id="site-navigation" class="primary-menu-location"
+             role="navigation">
+          <div class="menu-primary-container">
+            <ul id="menu-primary" class="menu">
+              <li id="menu-item-3570"
+                  class="menu-item menu-item-type-post_type menu-item-object-page menu-item-has-children menu-item-3570">
+                <a href="https://www.nginx.com/products/"><span class="inner">Products</span><span
+                    class="icon icon-arrow-down"></span></a>
+                <ul class="sub-menu">
+                  <li id="menu-item-53220"
+                      class="menu-item menu-item-type-post_type menu-item-object-nx_product_module menu-item-53220">
+                    <a href="https://www.nginx.com/products/nginx/"><span
+                        class="inner">NGINX Plus</span></a></li>
+                  <li id="menu-item-53219"
+                      class="menu-item menu-item-type-post_type menu-item-object-nx_product_module menu-item-53219">
+                    <a href="https://www.nginx.com/products/nginx-controller/"><span
+                        class="inner">NGINX Controller</span></a></li>
+                  <li id="menu-item-53225"
+                      class="menu-item menu-item-type-post_type menu-item-object-nx_product_module menu-item-53225">
+                    <a href="https://www.nginx.com/products/nginx-unit/"><span
+                        class="inner">NGINX Unit</span></a></li>
+                  <li id="menu-item-53221"
+                      class="menu-item menu-item-type-post_type menu-item-object-nx_product_module menu-item-53221">
+                    <a href="https://www.nginx.com/products/nginx-amplify/"><span
+                        class="inner">NGINX Amplify</span></a></li>
+                  <li id="menu-item-53226"
+                      class="menu-item menu-item-type-post_type menu-item-object-nx_product_module menu-item-53226">
+                    <a href="https://www.nginx.com/products/nginx-waf/"><span
+                        class="inner">NGINX WAF</span></a></li>
+                </ul>
+              </li>
+              <li id="menu-item-3572"
+                  class="menu-item menu-item-type-post_type menu-item-object-page menu-item-has-children menu-item-3572">
+                <a href="https://www.nginx.com/solutions/"><span class="inner">Solutions</span><span
+                    class="icon icon-arrow-down"></span></a>
+                <ul class="sub-menu">
+                  <li id="menu-item-53542"
+                      class="menu-item menu-item-type-custom menu-item-object-custom menu-item-53542">
+                    <a href="https://www.nginx.com/solutions/microservices/"><span
+                        class="inner">Microservices</span></a></li>
+                  <li id="menu-item-53543"
+                      class="menu-item menu-item-type-custom menu-item-object-custom menu-item-53543">
+                    <a href="https://www.nginx.com/solutions/adc/"><span
+                        class="inner">ADC / Load balancing</span></a></li>
+                  <li id="menu-item-53544"
+                      class="menu-item menu-item-type-custom menu-item-object-custom menu-item-53544">
+                    <a href="https://www.nginx.com/solutions/cloud/"><span
+                        class="inner">Cloud migration</span></a></li>
+                  <li id="menu-item-53545"
+                      class="menu-item menu-item-type-custom menu-item-object-custom menu-item-53545">
+                    <a href="https://www.nginx.com/solutions/application-security/"><span
+                        class="inner">Security</span></a></li>
+                  <li id="menu-item-53546"
+                      class="menu-item menu-item-type-custom menu-item-object-custom menu-item-53546">
+                    <a href="https://www.nginx.com/solutions/web-mobile-acceleration/"><span
+                        class="inner">Web &#038; mobile performance</span></a>
+                  </li>
+                  <li id="menu-item-53547"
+                      class="menu-item menu-item-type-custom menu-item-object-custom menu-item-53547">
+                    <a href="https://www.nginx.com/solutions/api-gateway/"><span
+                        class="inner">API gateway</span></a></li>
+                </ul>
+              </li>
+              <li id="menu-item-3622"
+                  class="menu-item menu-item-type-post_type menu-item-object-page menu-item-has-children menu-item-3622">
+                <a href="https://www.nginx.com/resources/"><span class="inner">Resources</span><span
+                    class="icon icon-arrow-down"></span></a>
+                <ul class="sub-menu">
+                  <li id="menu-item-4235"
+                      class="menu-item menu-item-type-post_type menu-item-object-page menu-item-4235">
+                    <a href="https://www.nginx.com/resources/admin-guide/"><span
+                        class="inner">Admin Guide</span></a></li>
+                  <li id="menu-item-5758"
+                      class="menu-item menu-item-type-post_type menu-item-object-page menu-item-5758">
+                    <a href="https://www.nginx.com/resources/library/"><span
+                        class="inner">Ebooks</span></a></li>
+                  <li id="menu-item-4056"
+                      class="menu-item menu-item-type-post_type menu-item-object-page menu-item-4056">
+                    <a href="https://www.nginx.com/resources/webinars/"><span
+                        class="inner">Webinars</span></a></li>
+                  <li id="menu-item-49023"
+                      class="menu-item menu-item-type-post_type menu-item-object-page menu-item-49023">
+                    <a href="https://www.nginx.com/customers/"><span
+                        class="inner">Case studies</span></a></li>
+                  <li id="menu-item-4093"
+                      class="menu-item menu-item-type-post_type menu-item-object-page menu-item-4093">
+                    <a href="https://www.nginx.com/faqs/"><span class="inner">FAQ</span></a>
+                  </li>
+                  <li id="menu-item-14377"
+                      class="menu-item menu-item-type-custom menu-item-object-custom menu-item-14377">
+                    <a href="https://www.nginx.com/resources/glossary/"><span
+                        class="inner">Glossary</span></a></li>
+                  <li id="menu-item-53223"
+                      class="menu-item menu-item-type-custom menu-item-object-custom menu-item-53223">
+                    <a href="https://www.nginx.com/products/modules"><span
+                        class="inner">Third party integrations</span></a></li>
+                </ul>
+              </li>
+              <li id="menu-item-53052"
+                  class="menu-item menu-item-type-post_type menu-item-object-page menu-item-has-children menu-item-53052">
+                <a href="https://www.nginx.com/support/"><span class="inner">Support</span><span
+                    class="icon icon-arrow-down"></span></a>
+                <ul class="sub-menu">
+                  <li id="menu-item-3628"
+                      class="menu-item menu-item-type-post_type menu-item-object-page menu-item-3628">
+                    <a href="https://www.nginx.com/support/"><span
+                        class="inner">NGINX Plus support</span></a></li>
+                  <li id="menu-item-3626"
+                      class="menu-item menu-item-type-custom menu-item-object-custom menu-item-3626">
+                    <a target="_blank" href="https://university.nginx.com/"><span
+                        class="inner">Training</span></a></li>
+                  <li id="menu-item-3631"
+                      class="menu-item menu-item-type-post_type menu-item-object-page menu-item-3631">
+                    <a href="https://www.nginx.com/services/"><span
+                        class="inner">Professional Services</span></a></li>
+                </ul>
+              </li>
+              <li id="menu-item-49226"
+                  class="menu-item menu-item-type-post_type menu-item-object-page menu-item-49226">
+                <a href="https://www.nginx.com/products/pricing/"><span
+                    class="inner">Pricing</span></a></li>
+              <li id="menu-item-3571"
+                  class="menu-item menu-item-type-post_type menu-item-object-page menu-item-3571">
+                <a href="https://www.nginx.com/blog/"><span
+                    class="inner">Blog</span></a></li>
+            </ul>
+          </div>
+
+          <div class="search-form-wrapper">
+            <form method="get" class="search-form"
+                  action="https://www.nginx.com/">
+              <label for="search" class="screen-reader-text">Search</label>
+              <input type="search" name="s" id="s" class="search-field"
+                     placeholder="Search nginx.com" value="" maxlength="150"/>
+              <input type="submit" class="search-button" value="Search">
+            </form>
+          </div>
+
+          <div class="header-login">
+            <a class="login-link" href="https://cs.nginx.com/login">
+              <div class="icon icon-user"></div>
+              <div class="login-text">Login</div>
+            </a>
+          </div>
+        </nav>
+        <!-- /#site-navigation.primary-menu-location -->
+      </div>
+      <!-- /.primary-menu-location-wrapper -->
+
+      <div class="header-extras-wrapper" style="display: none;">
+        <div class="header-extras">
+          <div class="header-extra header-tel" itemprop="telephone"><a
+              href="tel:+18009159122">1-800-915-9122</a></div>
+        </div>
+      </div>
+    </div>
+    <!-- /.header-menus -->
+
+    <div class="mobile-menu-button-wrapper">
+      <a href="../../../../../en/resourcecatalog/Enterprise/App-Platform/nginx/visit.html#" class="mobile-menu-button">
+        <div class="icon icon-menu"></div>
+      </a>
+    </div>
+
+    <div class="mobile-search-button-wrapper">
+      <div class="search-form-wrapper">
+        <form method="get" class="search-form" action="https://www.nginx.com/">
+          <label for="search" class="screen-reader-text">Search</label>
+          <input type="search" name="s" id="s" class="search-field"
+                 placeholder="Search nginx.com" value="" maxlength="150"/>
+          <input type="submit" class="search-button" value="Search">
+        </form>
+      </div>
+    </div>
+
+  </div>
+  <!-- /.site-header-inner -->
+</header>
+<!-- /#masthead -->
+
+<!-- NGINX SITE HEADER END -->
+<!-- Header Section End -->
+
+<!-- Navigation Section Start -->
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="https://www.nginx.com/resources/wiki/start/" title="Getting Started"
+             accesskey="N">next</a></li>
+        <li class="nav-item nav-item-0"><a href="../../../../../en/resourcecatalog/Enterprise/App-Platform/nginx/visit.html#">NGINX</a> &raquo;</li> 
+      </ul>
+    </div>
+<!-- Navigation Section End -->
+
+  <section id="wrapper">  
+
+    <section class="global-header-wrapper">
+      <div class="global-header">
+        <div class="container">
+          <div class="row">
+            <div class="col-md-12">
+              <div class="content">
+                <h1>Welcome to NGINX Wiki!</h1>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="wiki-body">
+      <div class="container">
+        <div class="row">
+          
+          <!-- Start main document block -->
+
+          <div class="col-md-9" id="page_content">
+            
+  <div class="section" id="welcome-to-nginx-wiki">
+<h1>Welcome to NGINX Wiki!<a class="headerlink" href="../../../../../en/resourcecatalog/Enterprise/App-Platform/nginx/visit.html#welcome-to-nginx-wiki" title="Permalink to this headline">¶</a></h1>
+<p>NGINX is a free, open-source, high-performance HTTP server and reverse proxy,
+as well as an IMAP/POP3 proxy server. NGINX is known for its high performance,
+stability, rich feature set, simple configuration, and low resource consumption.</p>
+<p>NGINX is one of a handful of servers written to address the <a class="reference external" href="http://www.kegel.com/c10k.html">C10K problem</a>. Unlike traditional servers, NGINX doesn&#8217;t rely on threads to handle requests.
+Instead it uses a much more scalable event-driven (asynchronous) architecture.
+This architecture uses small, but more importantly, predictable amounts of
+memory under load. Even if you don&#8217;t expect to handle thousands of simultaneous
+requests, you can still benefit from NGINX&#8217;s high-performance and small memory
+footprint. NGINX scales in all directions: from the smallest VPS all the way up
+to large clusters of servers.</p>
+<p>NGINX powers several high-visibility sites, such as <a class="reference external" href="https://www.netflix.com/">Netflix</a>, <a class="reference external" href="https://www.hulu.com/">Hulu</a>, <a class="reference external" href="https://www.pinterest.com/">Pinterest</a>, <a class="reference external" href="https://www.cloudflare.com/">CloudFlare</a>, <a class="reference external" href="https://www.airbnb.com/">Airbnb</a>, <a class="reference external" href="https://wordpress.com/">WordPress.com</a>, <a class="reference external" href="https://github.com/">GitHub</a>, <a class="reference external" href="https://soundcloud.com/">SoundCloud</a>, <a class="reference external" href="https://www.zynga.com/">Zynga</a>, <a class="reference external" href="https://eventbrite.com/">Eventbrite</a>, <a class="reference external" href="https://www.zappos.com/">Zappos</a>, <a class="reference external" href="https://mediatemple.net/">Media Temple</a>, <a class="reference external" href="https://www.heroku.com/">Heroku</a>, <a class="reference external" href="http://www.rightscale.com/">RightScale</a>, <a class="reference external" href="https://www.engineyard.com/">Engine Yard</a>, <a class="reference external" href="https://www.stackpath.com/">StackPath</a>, <a class="reference external" href="https://www.cdn77.com/">CDN77</a> and many others.</p>
+<table border="1" class="docutils" id="introtable">
+<colgroup>
+<col width="25%" />
+<col width="28%" />
+<col width="23%" />
+<col width="25%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><a class="reference external" href="https://www.nginx.com/resources/wiki/start/index.html"><span class="icon-holder"><svg width="1792" height="1792" viewBox="0 0 1792 1792" xmlns="http://www.w3.org/2000/svg"><path d="M1576 927l-1328 738q-23 13-39.5 3t-16.5-36v-1472q0-26 16.5-36t39.5 3l1328 738q23 13 23 31t-23 31z"/></svg></span></a></td>
+<td><a class="reference external" href="https://www.nginx.com/resources/wiki/community/index.html"><span class="icon-holder"><svg width="1792" height="1792" viewBox="0 0 1792 1792" xmlns="http://www.w3.org/2000/svg"><path d="M529 896q-162 5-265 128h-134q-82 0-138-40.5t-56-118.5q0-353 124-353 6 0 43.5 21t97.5 42.5 119 21.5q67 0 133-23-5 37-5 66 0 139 81 256zm1071 637q0 120-73 189.5t-194 69.5h-874q-121 0-194-69.5t-73-189.5q0-53 3.5-103.5t14-109 26.5-108.5 43-97.5 62-81 85.5-53.5 111.5-20q10 0 43 21.5t73 48 107 48 135 21.5 135-21.5 107-48 73-48 43-21.5q61 0 111.5 20t85.5 53.5 62 81 43 97.5 26.5 108.5 14 109 3.5 103.5zm-1024-1277q0 106-75 181t-181 75-181-75-75-181 75-181 181-75 181 75 75 181zm704 384q0 159-112.5 271.5t-271.5 112.5-271.5-112.5-112.5-271.5 112.5-271.5 271.5-112.5 271.5 112.5 112.5 271.5zm576 225q0 78-56 118.5t-138 40.5h-134q-103-123-265-128 81-117 81-256 0-29-5-66 66 23 133 23 59 0 119-21.5t97.5-42.5 43.5-21q124 0 124 353zm-128-609q0 106-75 181t-181 75-181-75-75-181 75-181 181-75 181 75 75 181z"/></svg></span></a></td>
+<td><a class="reference external" href="https://www.nginx.com/resources/wiki/modules/index.html"><span class="icon-holder"><svg width="1792" height="1792" viewBox="0 0 1792 1792" xmlns="http://www.w3.org/2000/svg"><path d="M1728 1098q0 81-44.5 135t-123.5 54q-41 0-77.5-17.5t-59-38-56.5-38-71-17.5q-110 0-110 124 0 39 16 115t15 115v5q-22 0-33 1-34 3-97.5 11.5t-115.5 13.5-98 5q-61 0-103-26.5t-42-83.5q0-37 17.5-71t38-56.5 38-59 17.5-77.5q0-79-54-123.5t-135-44.5q-84 0-143 45.5t-59 127.5q0 43 15 83t33.5 64.5 33.5 53 15 50.5q0 45-46 89-37 35-117 35-95 0-245-24-9-2-27.5-4t-27.5-4l-13-2q-1 0-3-1-2 0-2-1v-1024q2 1 17.5 3.5t34 5 21.5 3.5q150 24 245 24 80 0 117-35 46-44 46-89 0-22-15-50.5t-33.5-53-33.5-64.5-15-83q0-82 59-127.5t144-45.5q80 0 134 44.5t54 123.5q0 41-17.5 77.5t-38 59-38 56.5-17.5 71q0 57 42 83.5t103 26.5q64 0 180-15t163-17v2q-1 2-3.5 17.5t-5 34-3.5 21.5q-24 150-24 245 0 80 35 117 44 46 89 46 22 0 50.5-15t53-33.5 64.5-33.5 83-15q82 0 127.5 59t45.5 143z"/></svg></span></a></td>
+<td><a class="reference external" href="https://www.nginx.com/resources/wiki/contributing/index.html"><span class="icon-holder"><svg width="1792" height="1792" viewBox="0 0 1792 1792" xmlns="http://www.w3.org/2000/svg"><path d="M448 1472q0-26-19-45t-45-19-45 19-19 45 19 45 45 19 45-19 19-45zm644-420l-682 682q-37 37-90 37-52 0-91-37l-106-108q-38-36-38-90 0-53 38-91l681-681q39 98 114.5 173.5t173.5 114.5zm634-435q0 39-23 106-47 134-164.5 217.5t-258.5 83.5q-185 0-316.5-131.5t-131.5-316.5 131.5-316.5 316.5-131.5q58 0 121.5 16.5t107.5 46.5q16 11 16 28t-16 28l-293 169v224l193 107q5-3 79-48.5t135.5-81 70.5-35.5q15 0 23.5 10t8.5 25z"/></svg></span></a></td>
+</tr>
+<tr class="row-even"><td><a class="reference external" href="https://www.nginx.com/resources/wiki/start/index.html">Getting Started</a></td>
+<td><a class="reference external" href="https://www.nginx.com/resources/wiki/community/index.html">Community</a></td>
+<td><a class="reference external" href="https://www.nginx.com/resources/wiki/modules/index.html">3<sup>rd</sup> Party Modules</a></td>
+<td><a class="reference external" href="https://www.nginx.com/resources/wiki/contributing/index.html">Contributing</a></td>
+</tr>
+</tbody>
+</table>
+<div class="toctree-wrapper compound">
+</div>
+</div>
+
+
+
+             
+                          <div class="wiki-docs">
+              <div class="row">
+                <div class="col-md-4">
+                  <div class="doc-item">
+                    <h3>Getting Started</h3>
+                    <ul>
+                      <li>
+                        <a href="https://www.nginx.com/resources/wiki/start/topics/tutorials/install/">Download and Installation</a>
+                        <p>Various ways to download and install NGINX.</p>
+                      </li>
+                      <li>
+                        <a href="https://www.nginx.com/resources/wiki/start/topics/tutorials/commandline/">Run NGINX from the Commandline</a>
+                        <p>How to control NGINX from the commandline.</p>
+                      </li>
+                      <li>
+                        <a href="https://www.nginx.com/resources/wiki/start/#pre-canned-configurations">Example Configurations and Recipes</a>
+                        <p>Useful collection of community-submitted configurations.</p>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+                <div class="col-md-4">
+                  <div class="doc-item">
+                    <h3>Troubleshooting</h3>
+                    <ul>
+                      <li>
+                        <a href="https://www.nginx.com/resources/wiki/community/faq/">Frequently Asked Questions</a>
+                        <p>Answers to the most frequently asked questions about NGINX.</p>
+                      </li>
+                      <li>
+                        <a href="https://www.nginx.com/resources/wiki/start/topics/tutorials/config_pitfalls/">Pitfalls and Common Mistakes</a>
+                        <p>NGINX configuration issues that we see frequently and how to resolve them.</p>
+                      </li>
+                      <li>
+                        <a href="https://www.nginx.com/resources/wiki/start/topics/tutorials/debugging/">Debugging</a>
+                        <p>How to use some of NGINX's essential debugging features.</p>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+                <div class="col-md-4">
+                  <div class="doc-item">
+                    <h3>Contributing</h3>
+                    <ul>
+                      <li>
+                        <a href="https://www.nginx.com/resources/wiki/contributing/writing_docs/">Writing Documentation</a>
+                        <p>How to use reStructuredText to write documentation for the NGINX wiki.</p>
+                      </li>
+                      <li>
+                        <a href="https://www.nginx.com/resources/wiki/contributing/github/">Submitting Contributions</a>
+                        <p>How to submit your contributions to the NGINX wiki.</p>
+                      </li>
+                      <li>
+                        <a href="https://www.nginx.com/resources/wiki/contributing/translating_docs/">Translating Docs</a>
+                        <p>How to use Sphinx to translate documentation.</p>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="support-item">
+              <div class="row">
+                <div class="col-sm-4">
+                  <div class="block">
+                    <a href="https://www.nginx.com/products/">
+                      <img src="https://www.nginx.com/resources/wiki/_static/img/nginx-plus-icon.png"  alt="">
+                    </a>
+                    <h4><a href="https://www.nginx.com/products/">NGINX Plus </a></h4>
+                  </div>
+                </div>
+                <div class="col-sm-4">
+                  <div class="block">
+                    <a href="https://www.nginx.com/support-services/">
+                      <img src="https://www.nginx.com/resources/wiki/_static/img/support-icon.png"  alt="">
+                    </a>
+                    <h4><a href="https://www.nginx.com/support-services/">Training + Support Services ›</a></h4>
+                  </div>
+                </div>
+                <div class="col-sm-4">
+                  <div class="block">
+                    <a href="https://www.nginx.com/resources/more/">
+                      <img src="https://www.nginx.com/resources/wiki/_static/img/settings-icon.png"  alt="">
+                    </a>
+                    <h4><a href="https://www.nginx.com/resources/more/">Community Resources ›</a></h4>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+
+          </div>
+          <!-- End main document block -->
+          
+          <!-- Start Sidebar block -->
+          <div class="col-md-3">
+                   <aside class="wiki-sidebar">
+    <!-- Search Box Start -->
+    <div class="sidebar-widget"><div class="search_box">
+	<form action="https://www.nginx.com/resources/wiki/search/" method="get">
+		<div class="input-group">
+			
+			<input type="text" name="q" class="form-control" placeholder="Search Wiki">
+			<span class="input-group-btn">
+			  <input type="submit" class="btn" value="">
+			    <i class="fa fa-chevron-circle-right"></i>
+			  </input>
+			</span>
+			<input type="hidden" name="check_keywords" value="yes" />
+			<input type="hidden" name="area" value="default" />
+			
+		</div>
+	</form>
+</div>
+    </div>
+    <!-- Search Box End -->
+    <div class="sidebar-widget">
+    </div>
+      
+    <div class="sidebar-menu sidebar-widget"><h3><a href="../../../../../en/resourcecatalog/Enterprise/App-Platform/nginx/visit.html#">Wiki home</a></h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="https://www.nginx.com/resources/wiki/start/">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="https://www.nginx.com/resources/wiki/community/">Community</a></li>
+<li class="toctree-l1"><a class="reference internal" href="https://www.nginx.com/resources/wiki/modules/">NGINX 3<sup>rd</sup> Party Modules</a></li>
+<li class="toctree-l1"><a class="reference internal" href="https://www.nginx.com/resources/wiki/contributing/">Contributing to NGINX</a></li>
+<li class="toctree-l1"><a class="reference internal" href="https://www.nginx.com/resources/wiki/extending/">Extending NGINX</a></li>
+</ul>
+<div class="search_box">
+	<form action="https://www.nginx.com/resources/wiki/search/" method="get">
+		<div class="input-group">
+			
+			<input type="text" name="q" class="form-control" placeholder="Search Wiki">
+			<span class="input-group-btn">
+			  <input type="submit" class="btn" value="">
+			    <i class="fa fa-chevron-circle-right"></i>
+			  </input>
+			</span>
+			<input type="hidden" name="check_keywords" value="yes" />
+			<input type="hidden" name="area" value="default" />
+			
+		</div>
+	</form>
+</div>
+    </div>
+
+    <div class="sidebar-widget">
+      <a href="https://pages.nginx.com/express-opt-in.html" class="wiki-email-subscribe-btn-white" target="_blank">Stay in the Loop <span class="icon icon-arrow-submit"></span></a>
+    </div>
+
+
+    <div class="sidebar-menu sidebar-widget">
+      <h3>Edit this page</h3>
+       <ul>
+          <li><a href="https://github.com/nginxinc/nginx-wiki/blob/master/source/index.rst"
+              rel="nofollow"><span class="icon-holder"><svg width="1792" height="1792" viewBox="0 0 1792 1792" xmlns="http://www.w3.org/2000/svg"><path d="M1664 960q-152-236-381-353 61 104 61 225 0 185-131.5 316.5t-316.5 131.5-316.5-131.5-131.5-316.5q0-121 61-225-229 117-381 353 133 205 333.5 326.5t434.5 121.5 434.5-121.5 333.5-326.5zm-720-384q0-20-14-34t-34-14q-125 0-214.5 89.5t-89.5 214.5q0 20 14 34t34 14 34-14 14-34q0-86 61-147t147-61q20 0 34-14t14-34zm848 384q0 34-20 69-140 230-376.5 368.5t-499.5 138.5-499.5-139-376.5-368q-20-35-20-69t20-69q140-229 376.5-368t499.5-139 499.5 139 376.5 368q20 35 20 69z"/></svg></span>&nbsp;Show on GitHub</a></li>
+          <li><a href="https://github.com/nginxinc/nginx-wiki/edit/master/source/index.rst"
+              rel="nofollow"><span class="icon-holder"><svg width="1792" height="1792" viewBox="0 0 1792 1792" xmlns="http://www.w3.org/2000/svg"><path d="M491 1536l91-91-235-235-91 91v107h128v128h107zm523-928q0-22-22-22-10 0-17 7l-542 542q-7 7-7 17 0 22 22 22 10 0 17-7l542-542q7-7 7-17zm-54-192l416 416-832 832h-416v-416zm683 96q0 53-37 90l-166 166-416-416 166-165q36-38 90-38 53 0 91 38l235 234q37 39 37 91z"/></svg></span>&nbsp;Edit on GitHub</a></li>
+        </ul>
+    </div>
+
+  </aside>
+              
+          </div>
+          <!-- Start Sidebar block -->
+
+        </div><!-- end class="row" -->
+      </div><!-- end class="container" -->
+    </section><!-- end class="wiki-body" -->
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="https://www.nginx.com/resources/wiki/start/" title="Getting Started"
+             >next</a></li>
+        <li class="nav-item nav-item-0"><a href="../../../../../en/resourcecatalog/Enterprise/App-Platform/nginx/visit.html#">NGINX</a> &raquo;</li> 
+      </ul>
+    </div>
+
+  </section> <!-- End Wrapper -->
+
+  <!-- Footer Section Start -->
+  <footer id="colophon" class="site-footer" role="contentinfo">
+    <div class="site-footer-inner">
+        <div class="footer-primary-nav">
+            <nav class="footer-menu-wrap" role="navigation">
+                <ul id="menu-footer-products" class="footer-menu">
+                    <li id="menu-item-3650" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-has-children menu-item-3650"><a href="https://www.nginx.com/products/">Products</a>
+                        <ul class="sub-menu">
+                            <li id="menu-item-53245" class="menu-item menu-item-type-post_type menu-item-object-nx_product_module menu-item-53245"><a href="https://www.nginx.com/products/nginx/">NGINX Plus</a></li>
+                            <li id="menu-item-53244" class="menu-item menu-item-type-post_type menu-item-object-nx_product_module menu-item-53244"><a href="https://www.nginx.com/products/nginx-controller/">NGINX Controller</a></li>
+                            <li id="menu-item-53242" class="menu-item menu-item-type-post_type menu-item-object-nx_product_module menu-item-53242"><a href="https://www.nginx.com/products/nginx-unit/">NGINX Unit</a></li>
+                            <li id="menu-item-53246" class="menu-item menu-item-type-post_type menu-item-object-nx_product_module menu-item-53246"><a href="https://www.nginx.com/products/nginx-amplify/">NGINX Amplify</a></li>
+                            <li id="menu-item-53243" class="menu-item menu-item-type-post_type menu-item-object-nx_product_module menu-item-53243"><a href="https://www.nginx.com/products/nginx-waf/">NGINX Web Application Firewall</a></li>
+                        </ul>
+                    </li>
+                    <li id="menu-item-53248" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-has-children menu-item-53248"><a href="https://www.nginx.com/support">Support</a>
+                        <ul class="sub-menu">
+                            <li id="menu-item-53249" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-53249"><a href="https://www.nginx.com/services/">NGINX Professional Services</a></li>
+                            <li id="menu-item-53250" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-53250"><a href="https://university.nginx.com/">Training</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </nav>
+            <!-- /.footer-menu-location -->
+            <nav class="footer-menu-wrap" role="navigation">
+                <ul id="menu-footer-solutions" class="footer-menu">
+                    <li id="menu-item-4128" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-has-children menu-item-4128"><a href="https://www.nginx.com/solutions/">Solutions</a>
+                        <ul class="sub-menu">
+                            <li id="menu-item-53571" class="menu-item menu-item-type-post_type menu-item-object-solution menu-item-53571"><a href="https://www.nginx.com/solutions/microservices/">Microservices</a></li>
+                            <li id="menu-item-53570" class="menu-item menu-item-type-post_type menu-item-object-solution menu-item-53570"><a href="https://www.nginx.com/solutions/adc/">ADC / Load balancing</a></li>
+                            <li id="menu-item-53569" class="menu-item menu-item-type-post_type menu-item-object-solution menu-item-53569"><a href="https://www.nginx.com/solutions/cloud/">Cloud migration</a></li>
+                            <li id="menu-item-53568" class="menu-item menu-item-type-post_type menu-item-object-solution menu-item-53568"><a href="https://www.nginx.com/solutions/application-security/">Security</a></li>
+                            <li id="menu-item-53567" class="menu-item menu-item-type-post_type menu-item-object-solution menu-item-53567"><a href="https://www.nginx.com/solutions/web-mobile-acceleration/">Web &#038; mobile performance</a></li>
+                            <li id="menu-item-53566" class="menu-item menu-item-type-post_type menu-item-object-solution menu-item-53566"><a href="https://www.nginx.com/solutions/api-gateway/">API Gateway</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </nav>
+            <!-- /.footer-menu-location -->
+        </div>
+        <div class="footer-secondary-nav">
+            <nav class="footer-menu-wrap" role="navigation">
+                <ul id="menu-footer-resources-and-support" class="footer-menu">
+                    <li id="menu-item-4151" class="menu-item menu-item-type-post_type menu-item-object-page current-menu-ancestor current-menu-parent current_page_parent current_page_ancestor menu-item-has-children menu-item-4151"><a href="https://www.nginx.com/resources/">Resources</a>
+                        <ul class="sub-menu">
+                            <li id="menu-item-4153" class="menu-item menu-item-type-taxonomy menu-item-object-nx_info_types menu-item-4153"><a href="https://www.nginx.com/blog/nx_info_types/admin-guide/">Admin Guide</a></li>
+                            <li id="menu-item-24977" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-24977"><a href="https://www.nginx.com/resources/library/">Ebooks</a></li>
+                            <li id="menu-item-4154" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-4154"><a href="https://www.nginx.com/resources/webinars/">Webinars</a></li>
+                            <li id="menu-item-50089" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-50089"><a href="https://www.nginx.com/customers/">Case studies</a></li>
+                            <li id="menu-item-50088" class="menu-item menu-item-type-post_type menu-item-object-page current-menu-item page_item page-item-140 current_page_item menu-item-50088"><a href="https://www.nginx.com/blog/">Blog</a></li>
+                            <li id="menu-item-4156" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-4156"><a href="https://www.nginx.com/faqs/">FAQ</a></li>
+                            <li id="menu-item-53253" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-53253"><a href="https://www.nginx.com/resources/glossary/glossary/">Glossary</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </nav>
+            <!-- /.footer-menu-location -->
+            <nav class="footer-menu-wrap" role="navigation">
+                <ul id="menu-footer-companypartners" class="footer-menu">
+                    <li id="menu-item-4157" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-has-children menu-item-4157"><a href="https://www.nginx.com/company/">Company</a>
+                        <ul class="sub-menu">
+                            <li id="menu-item-4158" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-4158"><a href="https://www.nginx.com/company/">About NGINX</a></li>
+                            <li id="menu-item-4159" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-4159"><a href="https://www.nginx.com/jobs/">Careers</a></li>
+                            <li id="menu-item-4162" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-4162"><a href="https://www.nginx.com/leadership-team/">Leadership</a></li>
+                            <li id="menu-item-5550" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-5550"><a href="https://www.nginx.com/press/">Press</a></li>
+                            <li id="menu-item-53254" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-53254"><a href="https://www.nginx.com/resources/events/">Events</a></li>
+                        </ul>
+                    </li>
+                    <li id="menu-item-4160" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-has-children menu-item-4160"><a href="https://www.nginx.com/partners/">Partners</a>
+                        <ul class="sub-menu">
+                            <li id="menu-item-53255" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-53255"><a href="https://www.nginx.com/products/nginx-plus-aws/">Amazon Web Services</a></li>
+                            <li id="menu-item-53257" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-53257"><a href="https://www.nginx.com/products/nginx-plus-google-cloud-platform/">Google Cloud Platform</a></li>
+                            <li id="menu-item-53256" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-53256"><a href="https://www.nginx.com/products/nginx-plus-microsoft-azure/">Microsoft Azure</a></li>
+                            <li id="menu-item-53258" class="menu-item menu-item-type-post_type menu-item-object-nx_partner_module menu-item-53258"><a href="https://www.nginx.com/partners/red-hat/">Red Hat</a></li>
+                            <li id="menu-item-49390" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-49390"><a href="https://www.nginx.com/partners/certified-module-program/">Certified module program</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </nav>
+            <!-- /.footer-menu-location -->
+        </div>
+        <div class="footer-connect-nav">
+            <div class="footer-social">
+                <span class="footer-head">Connect With Us</span>
+                <ul>
+                    <li><a href="https://www.facebook.com/nginxinc" class="icon-facebook">facebook</a></li>
+                    <li><a href="https://twitter.com/nginx" class="icon-twitter">twitter</a></li>
+                    <li><a href="https://www.linkedin.com/company/nginx" class="icon-linkedin">linkedin</a></li>
+                    <li style="margin-right:-3px;margin-left:2px;">
+                        <a href="https://www.youtube.com/user/NginxInc"><img style="width:26px;height:auto;" src="https://www.nginx.com/wp-content/themes/nginx-theme/assets/img/yt-nginx@2x.png" alt="NGINX Youtube Channel" /></a>
+                    </li>
+                    <li><a href="https://www.nginx.com/feed/" class="icon-rss">rss</a></li>
+                </ul>
+            </div>
+            <div class="footer-email-signup">
+                <a href="https://pages.nginx.com/express-opt-in.html" class="nginx-button button-primary" target="_blank" style="padding:9px 9px; color:#32302f; background:#656463; border-color:#656463;">Stay in the Loop</a>
+            </div>
+        </div>
+
+        <div class="site-info">
+            Copyright &copy; 2017 NGINX Inc. All rights reserved. | <a href="https://www.nginx.com/privacy-policy/">Privacy Policy</a> </div>
+        <!-- /.site-info -->
+
+    </div>
+    <!-- /.site-footer-inner -->
+</footer>
+<!-- /#colophon -->
+  <!-- Footer Section End -->
+ 
+   <!-- Js From old design --> 
+   <!-- /#page -->
+  <script type="text/javascript" src="https://www.nginx.com/resources/wiki/_static/js/cookies/nginx-cookies.js?ver=20150911"></script>
+  <script type="text/javascript" src="https://www.nginx.com/resources/wiki/_static/js/gdpr/nginx-gdpr2.js?ver=20150911"></script>
+  <script type="text/javascript" src="https://www.nginx.com/resources/wiki/_static/nginx-theme.js?ver=20150911"></script>
+  <script type="text/javascript" src="https://www.nginx.com/resources/wiki/_static/js/nginx-site-header.js?ver=20171024"></script>
+  <!-- End Piwik Code -->
+  <script type="text/javascript">
+  var shiftWindow = function() { window.scrollBy(0, -80) };
+  // Timeout to push the scrollBy to the bottom of the queue, otherwise it breaks in IE and Chrome
+  var testWindow = function() { if (!!window.location.hash) setTimeout(function(){ shiftWindow(); }, 1); };
+  window.addEventListener("load", testWindow);
+  window.addEventListener("hashchange", shiftWindow);
+  </script>
+  <!-- Google Tag Manager -->
+  <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-WBXGM3"
+  height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+  <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+  new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+  j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+  '//www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+  })(window,document,'script','dataLayer','GTM-WBXGM3');</script>
+  <!-- End Google Tag Manager -->
+
+
+  <!-- Js Files new for design -->
+  <!-- jQuery is automatically included in header -->
+  <script src="https://www.nginx.com/resources/wiki/_static/js/bootstrap.min.js"></script>
+  <script src="https://www.nginx.com/resources/wiki/_static/js/main.js"></script> 
+</body>
+</html>

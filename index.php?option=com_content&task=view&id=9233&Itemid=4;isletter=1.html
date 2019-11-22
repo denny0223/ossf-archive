@@ -1,0 +1,615 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-gb" lang="en-gb" >
+<head>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<link rel="shortcut icon" href="images/favicon.ico" />
+	  <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+  <meta name="robots" content="index, follow" />
+  <meta name="keywords" content="OSSFNL854" />
+  <meta name="title" content="CSS3 動畫基礎" />
+  <meta name="description" content="在 JSConf.As ia 2013 ， Lea Verou 介紹了 CSS in the 4th dimension (影片) ，引發了整個 Web 界對 CSS 動畫的期盼；在 CSS動畫簡介一文也已經把重點整理好了。 以下我們將會介紹主要兩個 CSS3 在動畫的屬性： Transition 與 Animation ，並配合實例來練習這些技術，後面我也會介紹一些不錯的相關開發工具。" />
+  <meta name="generator" content="" />
+  <title>CSS3 動畫基礎 - OpenFoundry</title>
+  <link href="favicon.ico" rel="shortcut icon" type="image/x-icon" />
+  <link rel="stylesheet" href="components/com_jcomments/tpl/default/style.css%3Fv=10.css" type="text/css" />
+  <link rel="stylesheet" href="components/com_gantry/css/gantry.css" type="text/css" />
+  <link rel="stylesheet" href="components/com_gantry/css/grid-12.css" type="text/css" />
+  <link rel="stylesheet" href="components/com_gantry/css/joomla.css" type="text/css" />
+  <link rel="stylesheet" href="templates/rt_quantive_j15/css/joomla.css" type="text/css" />
+  <link rel="stylesheet" href="templates/rt_quantive_j15/css/style1.css" type="text/css" />
+  <link rel="stylesheet" href="templates/rt_quantive_j15/css/light-body.css" type="text/css" />
+  <link rel="stylesheet" href="templates/rt_quantive_j15/css/demo-styles.css" type="text/css" />
+  <link rel="stylesheet" href="templates/rt_quantive_j15/css/template.css" type="text/css" />
+  <link rel="stylesheet" href="templates/rt_quantive_j15/css/typography.css" type="text/css" />
+  <link rel="stylesheet" href="templates/rt_quantive_j15/css/fusionmenu.css" type="text/css" />
+  <style type="text/css">
+    <!--
+#rt-main-surround ul.menu li.active > a, #rt-main-surround ul.menu li.active > .separator, #rt-main-surround ul.menu li.active > .item, #rt-main-surround .square4 ul.menu li:hover > a, #rt-main-surround .square4 ul.menu li:hover > .item, #rt-main-surround .square4 ul.menu li:hover > .separator, .roktabs-links ul li.active span {color:#0088B5;}
+a, #rt-main-surround ul.menu a:hover, #rt-main-surround ul.menu .separator:hover, #rt-main-surround ul.menu .item:hover {color:#0088B5;}
+    -->
+  </style>
+  <script type="text/javascript" src="components/com_jcomments/js/jcomments-v2.1.js%3Fv=2"></script>
+  <script type="text/javascript" src="components/com_jcomments/libraries/joomlatune/ajax.js"></script>
+  <script type="text/javascript" src="media/system/js/mootools.js"></script>
+  <script type="text/javascript" src="media/system/js/caption.js"></script>
+  <script type="text/javascript" src="components/com_gantry/js/gantry-buildspans.js"></script>
+  <script type="text/javascript" src="components/com_gantry/js/gantry-inputs.js"></script>
+  <script type="text/javascript" src="templates/rt_quantive_j15/js/jquery.cookie.js"></script>
+  <script type="text/javascript" src="modules/mod_roknavmenu/themes/fusion/js/fusion.js"></script>
+  <script type="text/javascript" src="modules/mod_ofssologin/js/ofssologin.js"></script>
+  <script type="text/javascript">
+
+			window.addEvent('domready', function() {
+				var modules = ['rt-block'];
+				var header = ['h3','h2','h1'];
+				GantryBuildSpans(modules, header);
+			});
+		InputsExclusion.push('.content_vote','#rt-popup')
+		        window.addEvent('load', function() {
+					new Fusion('ul.menutop', {
+						pill: 0,
+						effect: 'slide and fade',
+						opacity: 1,
+						hideDelay: 500,
+						centered: 0,
+						tweakInitial: {'x': -2, 'y': 0},
+        				tweakSubsequent: {'x': 0, 'y': -14},
+						menuFx: {duration: 200, transition: Fx.Transitions.Sine.easeOut},
+						pillFx: {duration: 400, transition: Fx.Transitions.Back.easeOut}
+					});
+	            });
+  </script>
+<!-- <script type="text/javascript" src="/sso/javascripts/langsync.js"></script> -->
+<!-- <script src="/templates/rt_quantive_j15/js/ossf.js"></script> -->
+<script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-4136519-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
+</head>
+	<body  class="backgroundlevel-low backgroundstyle-style8 bodylevel-med bodystyle-light cssstyle-style1 logostyle-dark font-family-helvetica font-size-is-default menu-type-fusionmenu col12 ">
+		<div id="rt-main-background">
+			<div class="rt-container">
+																<div id="rt-header">
+					<div class="rt-grid-7 rt-alpha">
+    			<div class="rt-block">
+    	    	<a href="index.html" id="rt-logo"></a>
+    		</div>
+	    
+</div>
+<div class="rt-grid-5 rt-omega">
+                    <div class="square9">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<div class="ofssologin_square9"><a href="index.html">Login</a>&nbsp;&nbsp|&nbsp;&nbsp;<span><a href="tw/news/9233%3Ftask=view.html" ><span lang="tw" xml:lang="tw">繁體中文</span></a></li></ul></span><!--Joom!fish V2.0.4 (Lightning)-->
+<!-- &copy; 2003-2009 Think Network, released under the GPL. -->
+<!-- More information: at http://www.joomfish.net -->
+<div class="ofssologin_search_square9">
+  <form id="of_search" action="https://www.openfoundry.org/of/openfoundry/search" method="get" onsubmit="of_search(); return false;">
+    <select id="of_search_type">
+      <option value="Projects"> Projects </option>
+      <option value="Content"> Content </option>
+      <option value="People"> People </option>
+    </select>
+    <input id="query" name="query" id="mod_search_searchword" maxlength="50" alt="search" class="inputbox" type="text" size="28" value="search..."  onblur="if(this.value=='') this.value='search...';" onfocus="if(this.value=='search...') this.value='';" />
+    <input type="hidden" name="commit" value="search" />
+  </form>
+</div></div>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		
+</div>
+					<div class="clear"></div>
+				</div>
+																<div id="rt-navigation"><div id="rt-navigation2"><div id="rt-navigation3">
+					
+<div class="nopill">
+	<ul class="menutop level1 " >
+						<li class="item1 root" >
+					<a class="orphan item bullet" href="index.html"  >
+				<span>
+			    				Home				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item32 root" >
+					<a class="orphan item bullet" href="archived.html"  >
+				<span>
+			    				Projects				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item186 root" >
+					<a class="orphan item bullet" href="en/community.html"  >
+				<span>
+			    				Who&#039;s Who				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item4 active root" >
+					<a class="orphan item bullet" href="en/news.html"  >
+				<span>
+			    				News				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item5 root" >
+					<a class="orphan item bullet" href="en/law-and-licensing.html"  >
+				<span>
+			    				Law &amp; Licensing				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item3 root" >
+					<a class="orphan item bullet" href="en/activities.html"  >
+				<span>
+			    				Activities				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item2 root" >
+					<a class="orphan item bullet" href="en/resourcecatalog.html"  >
+				<span>
+			    				Resource Catalog				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item45 root" >
+					<a class="orphan item bullet" href="en/about.html"  >
+				<span>
+			    				About				   
+				</span>
+			</a>
+			
+			
+	</li>	
+				</ul>
+</div>
+
+				    <div class="clear"></div>
+				</div></div></div>
+								<div class="rt-surround"><div class="rt-surround2"><div class="rt-surround3">
+										<div id="rt-showcase-section">
+												<div id="rt-showcase">
+							<div class="rt-grid-12 rt-alpha rt-omega">
+    		<div class="clear"></div>
+		
+		
+                <div class="close-note">
+                    <div class="rt-block">
+               					<div class="module-content">
+                	<div style="font-size:medium; background-image:linear-gradient(120deg,#159957,#4298b2);color:white;padding:20px;margin:-10px -18px;">感謝您對「自由軟體鑄造場」的支持與愛護，十多年來「自由軟體鑄造場」受中央研究院支持，並在資訊科學研究所以及資訊科技創新研究中心執行，現已完成階段性的任務。 本網站預計持續維運至 2021年底，網站內容基本上不會再更動。<br />也紀念我們永遠的朋友 李士傑先生（Shih-Chieh Ilya Li）。</div>				</div>
+            </div>
+                </div>
+		
+</div>
+							<div class="clear"></div>
+						</div>
+																	</div>
+															<div id="rt-main-surround">
+												<div id="rt-breadcrumbs">
+								<div class="rt-breadcrumb-surround">
+		<a href="index.html" id="breadcrumbs-home"></a>
+		<span class="breadcrumbs pathway">
+<span class="no-link">News</span></span>
+	</div>
+	
+							<div class="clear"></div>
+						</div>
+																							              <div id="rt-main" class="sa3-mb9">
+                <div class="rt-main-inner">
+                    <div class="rt-grid-9 rt-push-3">
+                                                <div class="rt-block">
+                            							<div class="square1">
+							<div class="rt-module-surround">
+								<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+								<div class="rt-module-inner">
+		                            <div id="rt-mainbody">
+		                                
+<div class="rt-joomla ">
+	<div class="rt-article">
+		
+				<div class="rt-headline"><h1 class="rt-article-title">CSS3 動畫基礎</h1>		</div>
+		<div class="clear"></div>
+		
+		
+		
+				<div class="rt-articleinfo">
+						<div class="rt-article-icons">
+								<a href="en/news/9233-css3-animation%3Ftmpl=component&amp;print=1&amp;page=.html" title="Print" onclick="window.open(this.href,'win2','status=no,toolbar=no,scrollbars=yes,titlebar=no,menubar=no,resizable=yes,width=640,height=480,directories=no,location=no'); return false;" rel="nofollow"><span class="icon print"></span></a>																</div>
+			
+			<span class="rt-date-posted">
+						 Created at			Friday, 23 May 2014 12:00						&nbsp;&nbsp;&nbsp;&nbsp;						Last Updated on Friday, 23 May 2014 14:02						</span>
+
+						<span class="rt-author">
+				Written by Jace Ju			</span>
+				
+					</div>
+		
+		
+		<p>在 JSConf.Asia 2013 ， Lea Verou 介紹了 <a target="_blank" href="https://lea.verou.me/css-4d/#intro">CSS in the 4th dimension</a> (<a target="_blank" href="https://www.youtube.com/watch?v=NTJUFQmHbvc">影片</a>) ，引發了整個 Web 界對 CSS 動畫的期盼；在 <a target="_blank" href="https://www.ruanyifeng.com/blog/2014/02/css_transition_and_animation.html">CSS動畫簡介</a>一文也已經把重點整理好了。</p>
+<p>以下我們將會介紹主要兩個 CSS3 在動畫的屬性： Transition 與 Animation ，並配合實例來練習這些技術，後面我也會介紹一些不錯的相關開發工具。</p>
+
+<h2>Transition</h2>
+<p>在以往 HTML 元素在兩種外觀之間的變換，只能從一種外觀直接跳到另一種外觀，瀏覽者並沒有辦法感受到這兩種外觀中間平滑的轉換，造成了視覺上的不適。</p>
+<p data-height="268" data-theme-id="0" data-slug-hash="gwyao" data-default-tab="result" class="codepen"><a target="_blank" href="https://codepen.io/jaceju/pen/gwyao/">例：在滑鼠移過時，方塊的高度和寬度變化。</a></p>
+<h3>基本的 transition</h3>
+<p>而 CSS 為了補足這方面的視覺轉換特效，特別加入 <code>transition</code> 屬性。 一個簡易的動畫效果就是在想要變化的狀態上，加入一個 <code>transition</code> 屬性，而其值為變化需歷時的秒數。</p>
+<pre><code>div:hover {
+    ...
+    transition: 1s;
+}
+</code></pre>
+<p>這麼一來， <code>transition</code> 就會自動幫我們補足中間的過場動畫。例如我們希望上面的例子能平順地轉換，歷時一秒：</p>
+<p data-height="268" data-theme-id="0" data-slug-hash="AGiEa" data-default-tab="result" class="codepen"><a target="_blank" href="https://codepen.io/jaceju/pen/AGiEa/">例：加入 transition 後的效果</a></p>
+<p>我們也可以讓高度以外的屬性有動畫效果，例如顏色：</p>
+<p data-height="268" data-theme-id="0" data-slug-hash="pwgnc" data-default-tab="result" class="codepen"><a target="_blank" href="https://codepen.io/jaceju/pen/pwgnc/">例：用 transition 改變顏色</a></p>
+<h3><code>transition</code> 屬性詳解</h3>
+<p><code>transition</code> 屬性其實跟 <code>font</code> 或 <code>background</code> 屬性一樣是簡寫屬性，它是以下四個屬性的總和：</p>
+<ul>
+<li><code>transition-property</code>: 要做變換的 CSS 屬性</li>
+<li><code>transition-duration</code>: 變換需要的時間，單位為 <code>s</code> 或 <code>ms</code></li>
+<li><code>transition-delay</code>: 延遲多久後開始變換，單位為 <code>s</code> 或 <code>ms</code></li>
+<li><code>transition-timing-function</code>: 稱為 Timing Funciton ，用名稱來定義變換時的加速度。</li>
+</ul>
+<p>這些屬性可以分開寫，也可以將它們的值同時寫在 <code>transition</code> 屬性裡；唯一要注意的是 <code>transition-duration</code> 與 <code>transition-delay</code> 的值寫在一起時有前述的順序關係。前面例子中的 <code>transition: 1s</code> ，其 <code>1s</code> 即為 <code>transition-duration</code> 的值。</p>
+<h3><code>transition-property</code> 可使用 transition 的屬性</h3>
+<p>不是所有 CSS 屬性都可以使用 <code>transition</code> ，可以參考這篇 <a target="_blank" href="https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_animated_properties">CSS animated properties</a> 得知有哪些屬性可以使用 <code>transition</code> 。</p>
+<p><code>transition</code> 預設是對所有可套用的屬性做轉場效果，也就是關鍵字 <code>all</code> ；但其實也可以只針對某個屬性做 <code>transition</code> 變化，其他屬性則維持原來的直接變化。</p>
+<p data-height="268" data-theme-id="0" data-slug-hash="zpcEG" data-default-tab="result" class="codepen"><a target="_blank" href="https://codepen.io/jaceju/pen/zpcEG/">例：只對單一屬性加入 transition</a></p>
+<h3>針對不同屬性同時做 transition</h3>
+<p>如果希望對兩個以上的屬性做 <code>transition</code> ，可是又不希望影響其他屬性時，可以用逗號 <code>,</code> 將要做 transition 的屬性分隔開來。</p>
+<p data-height="268" data-theme-id="0" data-slug-hash="ifbIG" data-default-tab="result" class="codepen"><a target="_blank" href="https://codepen.io/jaceju/pen/ifbIG/">例：對不同屬性同時做 transition</a></p>
+<h3><code>transition-delay</code> 延遲變換</h3>
+<p>有時候我們需要先變換一個屬性，再變換另一個屬性，這時候就需要對後者加入一個延遲時間；它需要加在原先我們定義好的歷時時間之後。</p>
+<p data-height="268" data-theme-id="0" data-slug-hash="xneaw" data-default-tab="result" class="codepen"><a target="_blank" href="https://codepen.io/jaceju/pen/xneaw/">例：先變換一個屬性，再變換另一個屬性</a></p>
+<h3><code>transition-timing-function</code> Timing Funciton</h3>
+<p>Timing Funciton 包含數種模式，下圖可以看出它們的加速度曲線。</p>
+<p><img src="images/140527/trTimingFn_resized.jpg" alt="trTimingFn resized" height="104" width="500" /></p>
+<ul>
+<li><code>linear</code>: 匀速</li>
+<li><code>ease</code>: 急加速後減速 (預設值)</li>
+<li><code>ease-in</code>: 加速</li>
+<li><code>ease-out</code>: 减速</li>
+<li><code>ease-in-out</code>: 較平緩的 <code>ease</code></li>
+<li><code>cubic-bezier</code>: 自定義速度模式</li>
+</ul>
+<h3>cubic-bezier 函式</h3>
+<p>利用貝茲曲線函式來定義加速曲線，可以直接使用線上工具 <a href="https://cubic-bezier.com/" target="_blank">cubic-bezier()</a> 來找出需要的數值。</p>
+<h3>雙向的 transition</h3>
+<p>Transition 的效果只會作用在有加入 <code>transition</code> 屬性的那個狀態，一旦要回復至原來的狀態時，就會失去 Transition 的平順效果了。這時我們需要對原先的狀態，也加入 <code>transition</code> 。</p>
+<p data-height="268" data-theme-id="0" data-slug-hash="JhIux" data-default-tab="result" class="codepen"><a target="_blank" href="https://codepen.io/jaceju/pen/JhIux/">例：雙向的 transition</a></p>
+<h3>Transition 的限制</h3>
+<p><code>transition</code> 的開始和結束都必須是具體數值；例如以下的 CSS 屬性值之間是無法被計算的，就無法使用 <code>transition</code> ：</p>
+<ul>
+<li><code>height: auto</code> (不確定的值) 至 <code>height: 100px</code> (具體數值)</li>
+<li><code>display: none</code> 至 <code>display: block</code></li>
+<li><code>background: url(foo.jpg)</code> 至 <code>background: url(bar.jpg)</code></li>
+</ul>
+<p data-height="268" data-theme-id="0" data-slug-hash="DgFKd" data-default-tab="result" class="codepen"><a target="_blank" href="https://codepen.io/jaceju/pen/DgFKd/">例： transition 無法作用的狀況</a></p>
+<p>另外 <code>transition</code> 需要事件來觸發它的動作，所以沒辦法在一進頁面自動產生效果。所以如果不透過 JavaScript 事件處理的話，就只能配合與事件有關的 Pseudo Classes (偽類別，即 <code>:hover</code> 、 <code>:focus</code> 等) 來呈現效果了。</p>
+<p data-height="268" data-theme-id="0" data-slug-hash="jAaxk" data-default-tab="result" class="codepen"><a target="_blank" href="https://codepen.io/jaceju/pen/jAaxk/">例：搭配 :focus 偽類別</a></p>
+<h3>搭配 jQuery</h3>
+<p>如果搭配 jQuery 等可以操作 DOM 元素的 library ，我們就可以做更複雜的操作。</p>
+<p data-height="300" data-theme-id="0" data-slug-hash="lcCHb" data-default-tab="result" class="codepen"><a target="_blank" href="https://codepen.io/jaceju/pen/lcCHb/">例：透過切換 class 來做 transition</a></p>
+<h3>瀏覽器支援</h3>
+<p>目前包含 IE 10+ 的主流瀏覽器都已經支援 <code>transition</code> ，可參考 <a target="_blank" href="https://caniuse.com/#search=transition">Can I use</a> 。</p>
+<h2>Animation</h2>
+<p>雖然 <code>transition</code> 屬性簡單易用，但也有上述的侷限。因此就有了 <code>animation</code> 這個屬性來彌補其不足。</p>
+<h3>基本的 Animation</h3>
+<p>最基本的 <code>animation</code> 要指定動畫持續的時間，還有動畫的名稱。</p>
+<pre><code>div:hover {
+  animation: 1s fat;
+}
+</code></pre>
+<p>而動畫的定義則是用 <code>@keyframes</code> 這個屬性，例如：</p>
+<pre><code>@keyframes fat {
+  0% { width: 100px; }
+  50% { width: 150px; }
+  100% { width: 200px; }
+}
+</code></pre>
+<p>在 <code>@keyframes</code> 中可以定義多個狀態，範圍可從 <code>0%</code> 至 <code>100%</code> 。另外 <code>0%</code> 可寫成 <code>from</code> ， <code>100%</code> 可寫成 <code>to</code> ，其他狀態還是使用數字百分比。</p>
+<p data-height="268" data-theme-id="0" data-slug-hash="pyngJ" data-default-tab="result" class="codepen"><a target="_blank" href="https://codepen.io/jaceju/pen/pyngJ/">例：基本的 animation</a></p>
+<h3><code>animation</code> 屬性詳解</h3>
+<p><code>animation</code> 屬性和 <code>transition</code> 屬性一樣，都是簡寫屬性。它代表以下屬性的總和：</p>
+<ul>
+<li><code>animation-name</code>: 動畫名稱</li>
+<li><code>animation-duration</code>: 播放一次動畫需要的時間，單位為 <code>s</code> 或 <code>ms</code></li>
+<li><code>animation-timing-function</code>: 動畫的加速度曲線</li>
+<li><code>animation-delay</code>: 延遲多久後啟始動畫</li>
+<li><code>animation-iteration-count</code>: 動畫播放次數，可用 <code>infinite</code></li>
+<li><code>animation-direction</code>: 動畫播放方向</li>
+<li><code>animation-fill-mode</code>: 指定動畫播放前後的狀態</li>
+<li><code>animation-play-state</code>: 指定動畫播放或暫停</li>
+</ul>
+<p>其中 <code>animation-duration</code> 、 <code>animation-timing-function</code> 、 <code>animation-delay</code> 可參考上面 <code>transition</code> 相似屬性的介紹。</p>
+<h3><code>animation-iteration-count</code> 播放次數</h3>
+<p>預設 <code>animation</code> 和 <code>transition</code> 一樣只會動作一次，但我們可以加入數字來指定動畫效果播放的次數。</p>
+<p data-height="268" data-theme-id="0" data-slug-hash="lqCjD" data-default-tab="result" class="codepen"><a target="_blank" href="https://codepen.io/jaceju/pen/lqCjD/">例：指定 animation 的播放次數</a></p>
+<p>或是以 <code>infinite</code> 這個關鍵字來無限次播放。</p>
+<p data-height="268" data-theme-id="0" data-slug-hash="fybqJ" data-default-tab="result" class="codepen"><a target="_blank" href="https://codepen.io/jaceju/pen/fybqJ/">例：無限次播放 animation</a></p>
+<h3><code>animation-direction</code> 播放方向</h3>
+<p>所謂的播放方向是指從動畫效果 0% 到 100% 的方向，同時也是預設的 <code>normal</code> 值。可供設定的值如下：</p>
+<ul>
+<li><code>normal</code> ：每次播放都是從 0% 至 100%</li>
+<li><code>reverse</code> ：每次播放都是從 100% 至 0%</li>
+<li><code>alternate</code> ：播放兩次以上的話，會從 0% 至 100% ，再從 100% 回到 0% ，以此類推</li>
+<li><code>alternate-reverse</code> ：跟 <code>alternate</code> 相反，會先從 100% 開始播放</li>
+</ul>
+<p><code>animation-direction: reverse</code> ：</p>
+<p data-height="268" data-theme-id="0" data-slug-hash="vBtAd" data-default-tab="result" class="codepen"><a target="_blank" href="https://codepen.io/jaceju/pen/vBtAd/">例：animation 播放方向 reverse</a></p>
+<p><code>animation-direction: alternate</code> ：</p>
+<p data-height="268" data-theme-id="0" data-slug-hash="bwkCf" data-default-tab="result" class="codepen"><a target="_blank" href="https://codepen.io/jaceju/pen/bwkCf/">例：animation 播放方向 alternate</a></p>
+<p><code>animation-direction: alternate-reverse</code> ：</p>
+<p data-height="268" data-theme-id="0" data-slug-hash="kCfAE" data-default-tab="result" class="codepen"><a target="_blank" href="https://codepen.io/jaceju/pen/kCfAE/">例：animation 播放方向 alternate-reverse</a></p>
+<h3><code>animation-fill-mode</code> 動畫播放前後的狀態</h3>
+<p>如果想要控制動畫播放完後的最終狀態，可以用 <code>animation-fill-mode</code> 屬性，它可設定的值如下：</p>
+<ul>
+<li><code>none</code> ：回到未播放動畫效果前的狀態</li>
+<li><code>forwards</code> ：停在動畫的最後一個狀態上</li>
+<li><code>backwards</code> ：停在動畫的第一個狀態上 (實測不出來)</li>
+<li><code>both</code> ：視 <code>animation-direction</code> 來決定停在哪一個狀態上。</li>
+</ul>
+<p data-height="268" data-theme-id="0" data-slug-hash="fazAe" data-default-tab="result" class="codepen"><a target="_blank" href="https://codepen.io/jaceju/pen/fazAe/">例：指定 animation 播放後的狀態 forwards</a></p>
+<p>註： <code>backwards</code> 這個值我在 Chrome 和 Firefox 都試不出來。</p>
+<h3><code>animation-play-state</code> 指定動畫播放或暫停</h3>
+<p><code>animation-play-state</code> 有兩個屬性值： <code>running</code> 及 <code>paused</code> ，其中 <code>running</code> 是預設值。</p>
+<p>這個屬性必須獨立定義，無法被放在 <code>animation</code> 屬性裡。</p>
+<p data-height="268" data-theme-id="0" data-slug-hash="HhGqj" data-default-tab="result" class="codepen"><a target="_blank" href="https://codepen.io/jaceju/pen/HhGqj/">例：決定 animation 執行或暫停</a></p>
+<h3>瀏覽器支援</h3>
+<p><code>animation</code> 屬性目前在 IE 10+ 以上主流瀏覽器都可以執行，但採用 Webkit 引擎的瀏覽器必須加上 <code>-webkit-</code> 前綴字串。</p>
+<pre><code>div:hover {
+  -webkit-animation: 1s name;
+  animation: 1s name;
+}
+
+@-webkit-keyframes name {
+    ...
+}
+
+@keyframes name {
+    ...
+}
+</code></pre>
+<h2>實例</h2>
+<p>接下來我們用 Animation 搭配 Transform 來做簡單的旋轉動畫。 Transform 是用來讓 HTML 元素變形的屬性，雖然跟動畫沒有直接的關係，但它是可以套用動畫效果的。這邊我不打算詳細介紹它，只會用到旋轉的效果。</p>
+<p>它的語法如下：</p>
+<pre><code>div {
+    transform: rotate(θ);
+    transform-origin: x y;
+}
+</code></pre>
+<p><code>rotate(θ)</code> 是指讓指定元素以參考點為中心軸 2D 旋轉 θ 度， <code>transform-origin</code> 會將 <code>(x, y)</code> 設為參考點。當我們把 <code>transform: rotate(θ)</code> 放到 <code>@keyframes</code> 中時， <code>animation</code> 就會改變 <code>θ</code> 值來做出動畫效果。</p>
+<p>以下模擬簡單的太陽、地球、月亮的週期變化。</p>
+<p data-height="600" data-theme-id="0" data-slug-hash="gkdBx" data-default-tab="result" class="codepen"><a target="_blank" href="https://codepen.io/jaceju/pen/gkdBx/">範例：模擬太陽、地球、月亮的週期</a></p>
+<p>更酷的範例參考：</p>
+<ul>
+<li><a target="_blank" href="https://www.creativebloq.com/css3/animation-with-css3-712437">20 stunning examples of CSS3 animation</a></li>
+<li><a target="_blank" href="https://neography.com/experiment/circles/solarsystem/">Our Solar System</a></li>
+<li><a target="_blank" href="https://designscrazed.com/css3-animation-examples/">30 Best Creative CSS3 Animation Examples</a></li>
+<li><a target="_blank" href="https://goo.gl/SHWmEx">Codepen.io CSS Animation</a></li>
+</ul>
+<h2>開發工具</h2>
+<h3>CSS 3.0 Maker</h3>
+<p><a target="_blank" href="https://www.css3maker.com">CSS 3.0 Marker</a> 可以讓我們調整 CSS3 相關屬性的參數，並預覽效果。確認後就可以產生對應的 CSS 碼，套用到專案上。</p>
+<h3>Animate.css</h3>
+<p><a target="_blank" href="https://daneden.github.io/animate.css/">Animate.css</a> 這個 CSS framework 提供很多組已經定義好動畫效果的 CSS class ，讓我們可以直接套在 HTML 元素上，或是搭配 jQuery 來操作 class 來產生動畫效果。</p>
+<p data-height="268" data-theme-id="0" data-slug-hash="pDblC" data-default-tab="result" class="codepen"><a target="_blank" href="https://codepen.io/jaceju/pen/pDblC/">範例： Animation.css</a></p>
+<h3>Animate Mixin for Compass/SASS</h3>
+<p><a target="_blank" href="https://thecssguru.freeiz.com/animate/">Animate Mixin for Compass/SASS</a> 提供了一組很棒的 CSS3 Animation mixins ，讓我們可以直接套用。它其實就是從 Animation.css 移植過來的。</p>
+<h3>AniJS</h3>
+<p><a target="_blank" href="https://codepen.io/jaceju/pen/cEqhf/">AniJS</a> 是一個宣告式的 CSS 動畫 library ，它讓我們可以在 HTML 元素中加入一個 <code>data-anijs</code> 屬性，並用敘述式來定義動作事件、動畫效果、以及要作用在哪個元素上。</p>
+<p> </p>
+<p data-height="268" data-theme-id="0" data-slug-hash="cEqhf" data-default-tab="result" class="codepen"><a target="_blank" href="https://codepen.io/jaceju/pen/cEqhf/">範例： AniJS</a></p>
+			<!-- Show relate article -->
+				<!-- end -->
+		<div class="article_note">
+		<!-- Add tags use metakey, and show OSSF Newsletter tag: OSSFNL+NUM-->
+		<br><br> <hr style='border: 1px dashed #D2DADB;'><b>OSSF Newsletter&nbsp;:</b>&nbsp;<a href='previous-issue%3Ftask=view&amp;id=854.html'>第 242 期 CSS3 動畫基礎</a><br>				<!-- End -->
+					<br>
+					<b>Category: </b><a href="en/tech-column.html">				Tech Column					</a>				</div>
+			 <!-- AddThis Button BEGIN ID 3001 is the front page article -->
+     			<br><br>
+       <div class="addthis_toolbox addthis_default_style addthis_32x32_style">
+       <a class="addthis_button_preferred_1"></a>
+       <a class="addthis_button_preferred_2"></a>
+       <a class="addthis_button_preferred_3"></a>
+       <a class="addthis_button_preferred_4"></a>
+       <a class="addthis_button_compact"></a>
+       <a class="addthis_counter addthis_bubble_style"></a>
+       </div>
+       <script type="text/javascript">var addthis_config = {"data_track_clickback":true};</script>
+       <script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js#pubid=openfoundry"></script>
+       <!-- AddThis Button END -->
+     <br>
+		<div class="totop" ><a class="rt-totop" href="index.php%3Foption=com_content&amp;task=view&amp;id=9233&amp;Itemid=4%3Bisletter=1.html#" style="outline: medium none;">↑ Top</a></div>
+            <!-- AddThis Button END -->
+
+		<script type="text/javascript">
+var jcomments=new JComments(9233, 'com_content','https://openfoundry.org/index.php?option=com_jcomments&amp;tmpl=component&amp;lang=');
+jcomments.setList('comments-list');
+</script>
+<div id="jc">
+<div id="comments"><h4>Comments<a class="refresh" href="index.php%3Foption=com_content&amp;task=view&amp;id=9233&amp;Itemid=4%3Bisletter=1.html#" title="Refresh comments list" onclick="jcomments.showPage(9233,'com_content',0);return false;">&nbsp;</a></h4>
+<div id="comments-list" class="comments-list">
+        <div class="even" id="comment-item-502"><div class="rbox"><div class="rbox_tr"><div class="rbox_tl"><div class="rbox_t">&nbsp;</div></div></div><div class="rbox_m">
+<div class="comment-avatar"><img src="http://www.gravatar.com/avatar.php?gravatar_id=60858116089820b52ac9315f001f0542&amp;default=https%3A%2F%2Fwww.openfoundry.org%2Fcomponents%2Fcom_jcomments%2Fimages%2Fno_avatar.png" alt="" /></div>
+<div class="comment-box avatar-indent">
+<span class="comments-vote">
+	<span id="comment-vote-holder-502">
+<a href="index.php%3Foption=com_content&amp;task=view&amp;id=9233&amp;Itemid=4%3Bisletter=1.html#" class="vote-good" title="Good comment!" onclick="jcomments.voteComment(502, 1);return false;"></a><a href="index.php%3Foption=com_content&amp;task=view&amp;id=9233&amp;Itemid=4%3Bisletter=1.html#" class="vote-poor" title="Poor comment!" onclick="jcomments.voteComment(502, -1);return false;"></a>
+<span class="vote-none">0</span>
+	</span>
+</span>
+<a class="comment-anchor" href="en/tech-column/9233-css3-animation.html#comment-502" id="comment-502">#1</a>
+<span class="comment-author">jkklynn2004</span>
+<span class="comment-date">2014-09-18 14:57</span>
+<div class="comment-body" id="comment-body-502">您好，教學內容從"基本的 Animation"開始，後面的範例是因為什麼緣故<span style="font-size:0px;padding:0;margin:0;"> </span>沒有作動?</div>
+</div><div class="clear"></div>
+</div><div class="rbox_br"><div class="rbox_bl"><div class="rbox_b">&nbsp;</div></div></div></div>
+</div>
+        <div class="odd" id="comment-item-503"><div class="rbox"><div class="rbox_tr"><div class="rbox_tl"><div class="rbox_t">&nbsp;</div></div></div><div class="rbox_m">
+<div class="comment-avatar"><img src="http://www.gravatar.com/avatar.php?gravatar_id=f830ec52d5bf72ee64fd1a43a6a82a49&amp;default=https%3A%2F%2Fwww.openfoundry.org%2Fcomponents%2Fcom_jcomments%2Fimages%2Fno_avatar.png" alt="" /></div>
+<div class="comment-box avatar-indent">
+<span class="comments-vote">
+	<span id="comment-vote-holder-503">
+<a href="index.php%3Foption=com_content&amp;task=view&amp;id=9233&amp;Itemid=4%3Bisletter=1.html#" class="vote-good" title="Good comment!" onclick="jcomments.voteComment(503, 1);return false;"></a><a href="index.php%3Foption=com_content&amp;task=view&amp;id=9233&amp;Itemid=4%3Bisletter=1.html#" class="vote-poor" title="Poor comment!" onclick="jcomments.voteComment(503, -1);return false;"></a>
+<span class="vote-none">0</span>
+	</span>
+</span>
+<a class="comment-anchor" href="en/tech-column/9233-css3-animation.html#comment-503" id="comment-503">#2</a>
+<span class="comment-author">朱 建志</span>
+<span class="comment-date">2014-09-18 15:11</span>
+<div class="comment-body" id="comment-body-503">@jkklynn2004:<br /><br />如果你用的瀏覽器是 Google Chrome 的話，要加上 -webkit- 開頭，在後面的「瀏覽器支援」有<span style="font-size:0px;padding:0;margin:0;"> </span>提到。</div>
+</div><div class="clear"></div>
+</div><div class="rbox_br"><div class="rbox_bl"><div class="rbox_b">&nbsp;</div></div></div></div>
+</div>
+</div>
+<div id="comments-list-footer"><a class="refresh" href="index.php%3Foption=com_content&amp;task=view&amp;id=9233&amp;Itemid=4%3Bisletter=1.html#" title="Refresh comments list" onclick="jcomments.showPage(9233,'com_content',0);return false;">Refresh comments list</a></div>
+</div>
+<div id="comments-footer" align="center"><a href="http://www.joomlatune.com" title="JComments" target="_blank">JComments</a></div>
+<script type="text/javascript">
+jcomments.setAntiCache(1,0,0);
+</script> 
+</div>	</div>
+</div>
+
+		                            </div>
+									<div class="clear"></div>
+								</div>
+								<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+							</div>
+							</div>
+                                                    </div>
+                                            </div>
+                                <div class="rt-grid-3 rt-pull-9">
+                <div id="rt-sidebar-a">
+                                    <div class="square4">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<ul class="menu"><li class="item56"><a href="en/previous-issue.html"><span>Previous Issue</span></a></li><li class="item55"><a href="en/about-newsletter.html"><span>About Newsletter</span></a></li></ul>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<ul class="menu"><li class="item115"><a href="en/foss-news.html"><span>FOSS News</span></a></li><li class="item141"><a href="en/case-job.html"><span>Case and Jobs</span></a></li></ul>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+        	                <div class="square1">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-title"><h2 class="title">Special</h2></div>
+						<div class="clear"></div>
+		                						<div class="module-content">
+		                	<ul class="menu"><li class="item37"><a href="en/tech-column.html"><span>Tech Column</span></a></li><li class="item40"><a href="en/foss-programs.html"><span>FOSS Programs</span></a></li><li class="item35"><a href="en/legal-column.html"><span>Legal Column</span></a></li><li class="item154"><a href="en/foss-forum.html"><span>FOSS Forum</span></a></li><li class="item162"><a href="en/enterprise-application.html"><span>Enterprise Application</span></a></li><li class="item44"><a href="en/foss-projects.html"><span>FOSS Projects</span></a></li></ul>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		                <div class="square1">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<p style="text-align: center;"><a href="news%3Fformat=feed&amp;type=rss" target="_black"><img src="images/M_images/news-rss-feed.png" border="0" /></a><br /><a href="https://www.openfoundry.org/rss-feed/Newsletter" target="_black"><img src="images/M_images/newsletter-rss-feed.png" border="0" /></a></p>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		
+                </div>
+            </div>
+
+                    <div class="clear"></div>
+                </div>
+            </div>
+																													</div>
+										<div id="rt-copyright">
+						<div class="rt-grid-12 rt-alpha rt-omega">
+                        <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<span class="nowrap">Open Source Software Foundry</span><span class="nowrap">‧</span><span class="nowrap"> </span><span class="nowrap">Best  Viewed with IE7.0 or Firefox2.0 above, 1024x768 Resolution. </span><strong>E-Mail</strong>：<a href="mailto:contact@openfoundry.org">contact@openfoundry.org</a> <br /><strong>Address</strong>：No.128, Sec.2, Academia Rd., Institute of Information Science, Academia Sinica, Nangang District, Taipei City 11529, Taiwan (R.O.C). <br /><a href="en/privacy-policy.html">Privacy Policy</a>. <a href="en/terms-of-use.html">Terms-of-use</a> <span style="position: relative; top: 8px; margin-top: -8px;"> <a href="about/8101.html"><img src="images/M_images/rss-feed-all.png" border="0" /></a></span>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+        	
+</div>
+						<div class="clear"></div>
+					</div>
+					<div class="rt-footer-bottom-wrap"><div class="rt-footer-bottom"><div class="rt-footer-bottom2"><div class="rt-footer-bottom3"></div></div></div></div>
+									</div></div></div>
+				<div class="rt-surround-bottom"><div class="rt-surround-bottom2"><div class="rt-surround-bottom3"></div></div></div>
+							</div>
+		</div>
+		<!--
+		<script id="aptureScript">
+						(function (){var a=document.createElement("script");a.defer="true";a.src="http://www.apture.com/js/apture.js?siteToken=vsJttrn";document.getElementsByTagName("head")[0].appendChild(a);})();
+     </script>
+-->
+
+<!-- Piwik -->
+<!-- 			<script type="text/javascript">
+			  var _paq = _paq || [];
+		  _paq.push(["trackPageView"]);
+		  _paq.push(["enableLinkTracking"]);
+
+		    (function() {
+			        var u=(("https:" == document.location.protocol) ? "https" : "https") + "://www.openfoundry.org/piwik/";
+				    _paq.push(["setTrackerUrl", u+"piwik.php"]);
+				    _paq.push(["setSiteId", "1"]);
+				        var d=document, g=d.createElement("script"), s=d.getElementsByTagName("script")[0]; g.type="text/javascript";
+				        g.defer=true; g.async=true; g.src=u+"piwik.js"; s.parentNode.insertBefore(g,s);
+					  })();
+		  </script> -->
+<!-- End Piwik Code -->
+	</body>
+</html>

@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <meta name="description" content="pycsw - pycsw is an OGC CSW server implementation written in Python">
+    
+    
+    <meta name="keywords" content="pycsw, pycsw, csw, catalogue, catalog, metadata, discovery, search, ogc, iso, fgdc, dif, ebrim, inspire">
+    
+    <meta name="author" content="Tom Kralidis">
+    <link rel="shortcut icon" href="https://pycsw.org/img/favicon.ico">
+
+    <title>pycsw &bull; Metadata Publishing Just Got Easier</title>
+
+    <!-- Bootstrap core CSS -->
+    <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css">
+
+    <!-- Pygments CSS -->
+    <link rel="stylesheet" href="https://pycsw.org/css/syntax.css">
+
+    <!-- Custom styles for this template -->
+    <link href="https://pycsw.org/css/justified-nav.css" rel="stylesheet">
+    <link href="https://pycsw.org/css/main.css" rel="stylesheet">
+
+    <script type="text/javascript">
+      var _gaq = _gaq || [];
+      _gaq.push(['_setAccount', 'UA-32855587-1']);
+      _gaq.push(['_setDomainName', 'pycsw.org']);
+      _gaq.push(['_trackPageview']);
+
+      (function() {
+        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+      })();
+    </script>
+  </head>
+
+  <body>
+    <div class="container">
+
+      <div class="masthead">
+        <ul class="nav nav-justified">
+          <li class="active">
+            <a href="visit.html"><img src="https://pycsw.org/img/favicon.ico" width="16" height="16" alt="pycsw"/> Home</a>
+          </li>
+          <li >
+            <a href="https://pycsw.org/community">Community</a>
+          </li>
+          <li >
+            <a href="https://pycsw.org/blog">Blog</a>
+          </li>
+          <li>
+            <a href="https://github.com/geopython/pycsw">Code</a>
+          </li>
+          <li >
+            <a href="https://pycsw.org/docs">Docs</a>
+          </li>
+          <li>
+            <a href="https://github.com/geopython/pycsw/issues">Bugs</a>
+          </li>
+          <li >
+            <a href="https://pycsw.org/faq">FAQ</a>
+          </li>
+          <li >
+            <a href="https://pycsw.org/download">Download</a>
+          </li>
+          <li >
+            <a href="https://pycsw.org/development">Development</a>
+          </li>
+        </ul>
+      </div>
+
+      <div class="pycsw-content">
+        <div class="jumbotron">
+  <p class="lead">
+    <img alt="pycsw" class="logo" src="https://pycsw.org/img/pycsw-logo-vertical.png" /><h1 class="text-left">Metadata Publishing Just Got Easier</h1>
+  <p class="lead">
+    <p class="text-left">pycsw is an OGC <a title="CSW" href="https://opengeospatial.org/standards/cat">CSW</a> server implementation written in <a href="https://python.org/">Python</a>. Started in 2010 (more formally announced in <a href="https://www.kralidis.ca/blog/2011/02/04/help-wanted-baking-a-csw-server-in-python/">2011</a>), pycsw allows for the publishing and discovery of geospatial metadata via numerous APIs (CSW 2/CSW 3, OpenSearch, OAI-PMH, SRU), providing a standards-based metadata and catalogue component of spatial data infrastructures.  pycsw is <a class="reference external" href="https://opensource.org/">Open Source</a>, released under an MIT <a class="reference internal" href="https://docs.pycsw.org/en/latest/license.html">license</a>, and runs on all major platforms (Windows, Linux, Mac OS X).</p>
+  <p>
+    <a class="btn btn-lg btn-success collapse-data-btn" data-toggle="collapse" href="visit.html#deploy-in-4-minutes">Deploy in 4 Minutes</a>
+    <div id="deploy-in-4-minutes" class="collapse panel panel-default text-left">
+        <figure class="highlight"><pre><code class="language-bash" data-lang="bash">        <span class="c"># Setup a virtual environment:</span>
+        virtualenv pycsw <span class="o">&amp;&amp;</span> <span class="nb">cd </span>pycsw <span class="o">&amp;&amp;</span> <span class="nb">.</span> bin/activate
+        
+        <span class="c"># Grab the pycsw source code:</span>
+        git clone https://github.com/geopython/pycsw.git <span class="o">&amp;&amp;</span> <span class="nb">cd </span>pycsw
+        pip <span class="nb">install</span> <span class="nt">-e</span> <span class="nb">.</span> <span class="o">&amp;&amp;</span> pip <span class="nb">install</span> <span class="nt">-r</span> requirements-standalone.txt
+        
+        <span class="c"># Create and adjust a configuration file:</span>
+        <span class="nb">cp </span>default-sample.cfg default.cfg
+        vi default.cfg
+        <span class="c"># adjust paths in</span>
+        <span class="c"># - server.home</span>
+        <span class="c"># - repository.database</span>
+        <span class="c"># set server.url to http://localhost:8000/</span>
+        
+        <span class="c"># Setup the database:</span>
+        pycsw-admin.py <span class="nt">-c</span> setup_db <span class="nt">-f</span> default.cfg
+        
+        <span class="c"># Load records by indicating a directory of XML files, use -r for recursive:</span>
+        pycsw-admin.py <span class="nt">-c</span> load_records <span class="nt">-f</span> default.cfg <span class="nt">-p</span> /path/to/xml/
+        
+        <span class="c"># Run the server:</span>
+        python ./pycsw/wsgi.py
+        
+        <span class="c"># See that it works!</span>
+        curl http://localhost:8000/?service<span class="o">=</span>CSW&amp;version<span class="o">=</span>2.0.2&amp;request<span class="o">=</span>GetCapabilities
+        </code></pre></figure>
+    </div>
+</div>
+<div class="row">
+  <div class="col-lg-4">
+    <h2><span class="glyphicon glyphicon-leaf"></span> Lightweight, Fast <span class="glyphicon glyphicon-plane"></span></h2>
+    pycsw stays out of your way:
+    <ul>
+      <li>Just a Python library</li>
+      <li>Install in just 4 minutes</li>
+      <li>Run multiple CSW endpoints with a single install</li>
+      <li>Headless: no GUI, just simple, scriptable command line configuration/deployment</li>
+      <li>Fully compliant, transactional, extensible metadata server in 400KB</li>
+    </ul>
+    <p>
+      <a class="btn btn-primary" href="https://pycsw.org/features">Features</a>
+    </p>
+  </div>
+  <div class="col-lg-4">
+    <h2>Flexible <span class="glyphicon glyphicon-wrench"></span></h2>
+    <p>
+      Everything is callable and configurable:
+      <ul>
+        <li>Embed within your Python application, or use standalone</li>
+        <li>Deploy via mod_wsgi, Django, Flask, Pylons, or CGI</li>
+        <li>Integrated with popular open data portal software: <a href="http://geonode.org">GeoNode</a>, <a href="https://ckan.org">CKAN</a>, <a href="https://github.com/cga-harvard/HHypermap">HHypermap</a>, <a href="https://commons.codeforamerica.org/apps/open-data-catalog">Open Data Catalog</a></li>
+        <li>Hook up to your existing metadata database, or use pycsw's native model and import your XML files</li>
+        <li>Choose your backend: PostgreSQL (with or without PostGIS), MySQL, or hack with SQLite</li>
+        <li>Manage settings in a configuration file, database, or even pass a Python dict</li>
+        <li>Robust, byte-level <a href="https://travis-ci.org/geopython/pycsw">testing / continuous integration</a></li>
+      </ul>
+    <p>
+      <a class="btn btn-primary" href="https://pycsw.org/docs">Read the Docs</a>
+    </p>
+  </div>
+  <div class="col-lg-4">
+    <h2>Compliant <span class="glyphicon glyphicon-check"></span></h2>
+    <p>pycsw is Certified <a href="https://www.opengeospatial.org/resource/products/details/?pid=1374">OGC Compliant</a> and is an <a href="http://demo.pycsw.org/">OGC Reference Implementation</a></p>
+    <p>
+      <a title="This product conforms to the OpenGIS Catalogue Service Implementation Specification [Catalogue Service for the Web], Revision 2.0.2. OGC, OGC®, and CERTIFIED OGC COMPLIANT are trademarks or registered trademarks of the Open Geospatial Consortium, Inc. in the United States and other countries." href="https://www.opengeospatial.org/resource/products/details/?pid=1374"><img alt="This product conforms to the OpenGIS Catalogue Service Implementation Specification [Catalogue Service for the Web], Revision 2.0.2. OGC, OGC®, and CERTIFIED OGC COMPLIANT are trademarks or registered trademarks of the Open Geospatial Consortium, Inc. in the United States and other countries." src="https://portal.opengeospatial.org/public_ogc/compliance/Certified_OGC_Compliant_Logo_Web.gif" height="74"/></a>
+    </p>
+    <p>
+      <a title="This product conforms to the OpenGIS Catalogue Service Implementation Specification [Catalogue Service for the Web], Revision 3.0.0. OGC, OGC®, and CERTIFIED OGC COMPLIANT are trademarks or registered trademarks of the Open Geospatial Consortium, Inc. in the United States and other countries." href="https://www.opengeospatial.org/resource/products/details/?pid=1374"><img alt="This product conforms to the OpenGIS Catalogue Service Implementation Specification [Catalogue Service for the Web], Revision 3.0.0. OGC, OGC®, and CERTIFIED OGC COMPLIANT are trademarks or registered trademarks of the Open Geospatial Consortium, Inc. in the United States and other countries." src="https://portal.opengeospatial.org/public_ogc/compliance/badge.php?s=CAT%20CSW%203.0.0&amp;r=1" height="38"/></a>
+    </p>
+    <p>
+      <a title="This product conforms to the OpenGIS Catalogue Service Implementation Specification [Catalogue Service for the Web], Revision 2.0.2. OGC, OGC®, and CERTIFIED OGC COMPLIANT are trademarks or registered trademarks of the Open Geospatial Consortium, Inc. in the United States and other countries." href="https://www.opengeospatial.org/resource/products/details/?pid=1374"><img alt="This product conforms to the OpenGIS Catalogue Service Implementation Specification [Catalogue Service for the Web], Revision 2.0.2. OGC, OGC®, and CERTIFIED OGC COMPLIANT are trademarks or registered trademarks of the Open Geospatial Consortium, Inc. in the United States and other countries." src="https://portal.opengeospatial.org/public_ogc/compliance/badge.php?s=CAT%20CSW%202.0.2&amp;r=1" height="38"/></a>
+    </p>
+    <p>
+      <a title="OSGeo Project" href="https://osgeo.org"><img alt="OSGeo Project" src="https://raw.githubusercontent.com/OSGeo/osgeo/master/incubation/project/OSGeo_project.png" height="64"/></a>
+      <a title="FOSS4G Conference" href="https://2020.foss4g.org"><img alt="FOSS4G Conference" width="145" height="45" src="https://2020foss4g.ca/wp-content/uploads/2019/08/HeaderLogo_2-1.png"/></a>
+    </p>
+    <p>
+      <script type="text/javascript" src="https://www.openhub.net/p/488022/widgets/project_thin_badge.js"></script> 
+    </p>
+    <p>
+      <a class="btn btn-primary" href="http://demo.pycsw.org/">View the Demos</a>
+    </p>
+  </div>
+</div>
+
+      </div>
+
+      <!-- Site footer -->
+      <div class="footer">
+        <p class="copyright">
+          &copy; Tom Kralidis, Angelos Tzotsos 2010 - 2015. Website <a href="https://github.com/rclark">Ryan Clark</a> 2013. <a rel="license" title="This work is licensed under a Creative Commons Attribution 4.0 International License" href="https://creativecommons.org/licenses/by/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by/4.0/80x15.png" /></a> Powered by <a href="https://jekyllrb.com/">Jekyll</a>
+          <a href="https://twitter.com/intent/tweet" class="twitter-share-button" data-dnt="true" data-count="none" data-via="twitterapi">Tweet</a>
+
+          <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="https://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
+
+          <iframe class="github-fork" src="https://ghbtns.com/github-btn.html?user=geopython&amp;repo=pycsw&amp;type=fork"></iframe>
+
+          <a title="pycsw on Google+" href="https://plus.google.com/u/0/communities/104084873011085696113" rel="publisher" target="_top" style="text-decoration:none;"> <img src="https://ssl.gstatic.com/images/icons/gplus-16.png" alt="pycsw on Google+" style="vertical-align:inherit;border:0;width:16px;height:16px;"/> </a>
+
+        </p>
+      </div>
+
+    </div> <!-- /container -->
+
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+    <script src="https://netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
+  </body>
+</html>

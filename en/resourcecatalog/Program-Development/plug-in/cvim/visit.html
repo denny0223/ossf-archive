@@ -1,0 +1,775 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html lang="en">
+
+<head>
+  <link rel="Stylesheet" type="text/css" href="https://www.vim.org/css/style.css" >
+  <title>c.vim - C/C++ IDE -- Write and run programs. Insert statements, idioms, comments etc. : vim online</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+  <meta name="KEYWORDS" content="Vim, Vi IMproved, text editor, home, documentation, tips, scripts, news">
+  <meta name="viewport" content="width=1000, initial-scale=1">
+  <link rel="shortcut icon" type="image/x-icon" href="https://www.vim.org/images/vim_shortcut.ico">
+</head>
+
+<body topmargin="0" leftmargin="0" marginheight="0" marginwidth="0" bgcolor="#ffffff"> 
+
+<!-- HEADER, SPONSOR IMAGE, VIM IMAGE AND BOOK AD -->
+<table width="100%" cellpadding="0" cellspacing="0" border="0" bordercolor="red">
+  <tr>
+    <td colspan="4" class="lightbg"><img src="https://www.vim.org/images/spacer.gif" width="1" height="5" alt=""></td>
+  </tr>
+  <tr>
+  <td class="lightbg">&nbsp;&nbsp;&nbsp;</td>
+  <td class="lightbg" align="left"><a href="https://www.vim.org/sponsor/index.php"><img src="https://www.vim.org/images/sponsorvim.gif" alt="sponsor Vim development" border="0"></a></td>
+  <td class="lightbg" align="center">
+	 <a href="https://www.vim.org/"><img src="https://www.vim.org/images/vim_header.gif" border="0" alt="Vim logo" class="align-middle"></a>
+	  </td>
+  <td class="lightbg" align="right"><a href="http://iccf-holland.org/vim_books.html"><img src="https://www.vim.org/images/buyhelplearn.gif" alt="Vim Book Ad" border="0"></a></td>
+  </tr>
+  <tr>
+    <td colspan="4" class="lightbg"><img src="https://www.vim.org/images/spacer.gif" width="1" height="5" alt=""></td>
+  </tr>
+  <tr>
+    <td colspan="4" class="darkbg"><img src="https://www.vim.org/images/spacer.gif" width="1" height="10" alt=""></td>
+  </tr>
+</table>
+<!-- THE PAGE BODY: BETWEEN HEADER AND FOOTER -->
+
+<table cellpadding="0" cellspacing="0" border="0" width="100%">
+  <col width="180">
+  <col width="1">
+
+  <tr valign="top">
+    <td class="sidebar">
+      <table width="180" cellpadding="4" cellspacing="0" border="0">
+        <tr valign="top">
+          <td class="sidebar">
+
+<!-- INCLUDE THE PAGE NAVIGATION -->
+<table width="100%" cellpadding="0" cellspacing="0" border="0" bordercolor="red">
+    <tr>
+        <td><small>not logged in (<a href="https://www.vim.org/login.php">login</a>)</small></td>
+    </tr>
+    <tr><td>
+<small>&nbsp;</small>
+<form action="https://www.google.com/cse" id="cse-search-box">
+  <div>
+    <input type="hidden" name="cx" value="partner-pub-3005259998294962:bvyni59kjr1" />
+    <input type="hidden" name="ie" value="ISO-8859-1" />
+    <input type="text" name="q" size="20" />
+    <br>
+    <input type="submit" name="sa" value="Search" />
+  </div>
+</form>
+<script type="text/javascript" src="https://www.google.com/coop/cse/brand?form=cse-search-box&amp;lang=en"></script>
+    </td></tr>
+    <tr>
+        <td><img src="https://www.vim.org/images/spacer.gif" alt="" border="0" width="1" height="1"></td>
+    </tr>
+    <tr>
+        <td class="darkbg"><img src="https://www.vim.org/images/spacer.gif" alt='' border="0" height="3"></td>
+    </tr>
+    <tr>
+        <td><img src="https://www.vim.org/images/spacer.gif" alt="" border="0" width="1" height="2"></td>
+    </tr>
+        <tr>
+            <td class="sidebarheader"><a href="https://www.vim.org/">Home</a></td>
+        </tr>
+        <tr>
+            <td class="sidebarheader"><a href="https://www.vim.org/search.php">Advanced search</a></td>
+        </tr>
+    <tr>
+        <td><img src="https://www.vim.org/images/spacer.gif" alt="" border="0" width="1" height="7"></td>
+    </tr>
+    <tr>
+        <td class="checker"><img src="https://www.vim.org/images/spacer.gif" alt='' border="0" height="1"></td>
+    </tr>
+    <tr>
+        <td><img src="https://www.vim.org/images/spacer.gif" alt="" border="0" width="1" height="7"></td>
+    </tr>
+        <tr>
+            <td class="sidebarheader"><a href="https://www.vim.org/about.php">About Vim</a></td>
+        </tr>
+        <tr>
+            <td class="sidebarheader"><a href="https://www.vim.org/community.php">Community</a></td>
+        </tr>
+        <tr>
+            <td class="sidebarheader"><a href="https://www.vim.org/news/news.php">News</a></td>
+        </tr>
+        <tr>
+            <td class="sidebarheader"><a href="https://www.vim.org/sponsor/index.php">Sponsoring</a></td>
+        </tr>
+        <tr>
+            <td class="sidebarheader"><a href="https://www.vim.org/trivia.php">Trivia</a></td>
+        </tr>
+        <tr>
+            <td class="sidebarheader"><a href="https://www.vim.org/docs.php">Documentation</a></td>
+        </tr>
+        <tr>
+            <td class="sidebarheader download"><a href="https://www.vim.org/download.php">Download</a></td>
+        </tr>
+    <tr>
+        <td><img src="https://www.vim.org/images/spacer.gif" alt="" border="0" width="1" height="7"></td>
+    </tr>
+    <tr>
+        <td class="checker"><img src="https://www.vim.org/images/spacer.gif" alt='' border="0" height="1"></td>
+    </tr>
+    <tr>
+        <td><img src="https://www.vim.org/images/spacer.gif" alt="" border="0" width="1" height="7"></td>
+    </tr>
+        <tr>
+            <td class="sidebarheader"><a href="https://www.vim.org/scripts/index.php">Scripts</a></td>
+        </tr>
+        <tr>
+            <td class="sidebarheader"><a href="https://www.vim.org/tips/index.php">Tips</a></td>
+        </tr>
+        <tr>
+            <td class="sidebarheader"><a href="https://www.vim.org/account/index.php">My Account</a></td>
+        </tr>
+    <tr>
+        <td><img src="https://www.vim.org/images/spacer.gif" alt="" border="0" width="1" height="7"></td>
+    </tr>
+    <tr>
+        <td class="checker"><img src="https://www.vim.org/images/spacer.gif" alt='' border="0" height="1"></td>
+    </tr>
+    <tr>
+        <td><img src="https://www.vim.org/images/spacer.gif" alt="" border="0" width="1" height="7"></td>
+    </tr>
+        <tr>
+            <td class="sidebarheader"><a href="https://www.vim.org/huh.php">Site Help</a></td>
+        </tr>
+</table>
+<br>
+
+            <table width="172" cellpadding="0" cellspacing="0" border="0">
+              <tr><td><img src="https://www.vim.org/images/spacer.gif" alt="" border="0" width="1" height="8"></td></tr>
+              <tr><td class="darkbg"><img src="https://www.vim.org/images/spacer.gif" width="1" height="3" alt=""></td></tr>
+            </table>
+            <br>
+
+<!-- INCLUDE THE PAGE SIDEBAR TEXT -->
+&nbsp;
+
+          </td>
+        </tr>
+      </table>
+    </td>
+
+    <td class="darkbg"><img src="https://www.vim.org/images/spacer.gif" width="1" height="1" border="0" alt=""><br></td>
+    <td>
+      <table width="100%" cellpadding="10" cellspacing="0" border="0" bordercolor="red">
+        <tr>
+          <td valign="top">
+
+<span class="txth1">c.vim : C/C++ IDE -- Write and run programs. Insert statements, idioms, comments etc.</span> 
+
+<br>
+<br>
+
+<!-- karma table -->
+<table cellpadding="4" cellspacing="0" border="1" bordercolor="#000066">
+<tr>
+  <td class="lightbg"><b>&nbsp;script karma&nbsp;</b></td>
+  <td>
+    Rating <b>5321/1670</b>,
+    Downloaded by 128659  </td>
+  <td class="lightbg">
+  <b>&nbsp;Comments, bugs, improvements&nbsp;</b>
+  </td>
+  <td>
+    <a href="http://vim.wikia.com/wiki/Script:213">Vim wiki</a>
+  </td>  
+</tr>
+</table>
+<p>
+
+<table cellspacing="0" cellpadding="0" border="0">
+<tr><td class="prompt">created by</td></tr>
+<tr><td><a href="https://www.vim.org/account/profile.php?user_id=169">Fritz Mehner</a></td></tr>
+<tr><td>&nbsp;</td></tr>
+<tr><td class="prompt">script type</td></tr>
+<tr><td>utility</td></tr>
+<tr><td>&nbsp;</td></tr>
+<tr><td class="prompt">description</td></tr>
+<tr><td>**&nbsp;&nbsp; Statement oriented editing of&nbsp;&nbsp;C / C++ programs<br>**&nbsp;&nbsp; Speed up writing new code considerably<br>**&nbsp;&nbsp; Write code and comments with a professional appearance from the beginning<br>**&nbsp;&nbsp; Use code snippets<br>**&nbsp;&nbsp; Toolbox for cmake(1), doxygen(1), and make(1)<br><br>- insertion of various types of comments&nbsp;&nbsp; (file prologue, function descriptions, file section headers<br>&nbsp;&nbsp;&nbsp;&nbsp;keyword comments, date, time, ...&nbsp;&nbsp;)<br>- insertion of empty control statements&nbsp;&nbsp; (if-else, while, do-while, switch, ... )<br>- insertion of various preprocessor directives<br>- insertion of C-idioms&nbsp;&nbsp; (enum+typedef, loops, complete main, empty function, file open dialogs, ... )<br>- insertion of C++ -idioms&nbsp;&nbsp; ( frames for simple classes and template classes, try-catch blocks,<br>&nbsp;&nbsp;&nbsp;&nbsp;file open dialogs, output manipulators, ios flags, ... )<br>- use and organize your own collection of code snippets<br>- compile / link / run support for one-file projects&nbsp;&nbsp; (without a makefile)<br>- run buffer through splint<br>- personalization of comments&nbsp;&nbsp; (name, email, ... )<br>- menus can be switched on and off&nbsp;&nbsp; (via the Tools menu)<br><br>Some screen shots :&nbsp;&nbsp;<a target="_blank" href="https://wolfgangmehner.github.io/vim-plugins/csupport.html">https://wolfgangmehner.github.io/vim-plugins/csupport.html</A><br><br>For plug-in managers :&nbsp;&nbsp;<a target="_blank" href="https://github.com/WolfgangMehner/c-support">https://github.com/WolfgangMehner/c-support</A><br><br>The help file online :&nbsp;&nbsp;<a target="_blank" href="https://wolfgangmehner.github.io/vim-plugins/doc/csupport.html">https://wolfgangmehner.github.io/vim-plugins/doc/csupport.html</A><br><br>The key mappings of this plug-in :&nbsp;&nbsp;<a target="_blank" href="https://wolfgangmehner.github.io/vim-plugins/csupport/c-hotkeys.pdf">https://wolfgangmehner.github.io/vim-plugins/csupport/c-hotkeys.pdf</A><br><br>The installation explained :&nbsp;&nbsp;&quot;Make Vim as Your C/C++ IDE Using c.vim Plugin&quot;<br>(<a target="_blank" href="http://www.thegeekstuff.com/2009/01/tutorial-make-vim-as-your-cc-ide-using-cvim-plugin/">http://www.thegeekstuff.com/2009/01/tutorial-make-vim-as-your-cc-ide-using-cvim-plugin/</A>)<br><br>DOCUMENTATION<br>--------------------------------------------------------<br>This plug-in comes with a help file (csupport.txt). Read it with<br><br>&nbsp;&nbsp;&nbsp;&nbsp;:help csupport<br><br>** PLEASE READ THE DOCUMENTATION **<br><br>Editing actions differ for different modes! There are a lot of features which<br>can be configured or customized to match your needs.<br><br>GitHub<br>--------------------------------------------------------<br>C-Support is on GitHub:<br><br>&nbsp;&nbsp;&nbsp;&nbsp;<a target="_blank" href="https://github.com/WolfgangMehner/vim-plugins">https://github.com/WolfgangMehner/vim-plugins</A><br><br>(Please help us keep track of all the issues and name your report/request &quot;C-Support: &lt;title&gt;&quot;)<br><br></td></tr>
+<tr><td>&nbsp;</td></tr>
+<tr><td class="prompt">install details</td></tr>
+<tr><td>Copy the zip archive cvim.zip to $HOME/.vim/ (Linux/Unix) or $HOME/vimfiles<br>(on the Windows platforms) and run<br>&nbsp;&nbsp;&nbsp;&nbsp;unzip cvim.zip<br>If you have already an older version of this plug-in and you have modified the<br>template files you may want to save your templates first or copy the files from<br>the archive by hand. See also the file README.md within the zip file.<br><br>To enable the tools for cmake or doxygen, add these lines to ~/.vimrc :<br><br>&nbsp;&nbsp;&nbsp;&nbsp;let&nbsp;&nbsp;g:C_UseTool_cmake&nbsp;&nbsp;&nbsp;&nbsp;= 'yes'<br>&nbsp;&nbsp;&nbsp;&nbsp;let&nbsp;&nbsp;g:C_UseTool_doxygen = 'yes'<br><br>For how to enable the Doxygen templates, see Chapter 1.10.1 of the documentation:<br><br>&nbsp;&nbsp;&nbsp;&nbsp;:help csupport-doxygen-enable</td></tr>
+<tr><td>&nbsp;</td></tr>
+</table>
+
+<!-- rating table -->
+<form name="rating" method="post">
+<input type="hidden" name="script_id" value="213">
+<table cellpadding="4" cellspacing="0" border="1" bordercolor="#000066">
+<tr>
+  <td class="lightbg"><b>rate this script</b></td>
+  <td valign="middle">
+    <input type="radio" name="rating" value="life_changing">Life Changing
+    <input type="radio" name="rating" value="helpful">Helpful
+    <input type="radio" name="rating" value="unfulfilling">Unfulfilling&nbsp;
+    <input type="submit" value="rate">
+  </td>
+</tr>
+</table>
+</form>
+<span class="txth2">script versions</span> (<a href="https://www.vim.org/scripts/add_script_version.php?script_id=213">upload new version</a>)
+<p>
+Click on the package to download.
+<p>
+
+<table cellspacing="2" cellpadding="4" border="0" width="100%">
+<tr class='tableheader'>
+        <th valign="top">package</th>
+    <th valign="top">script version</th>
+    <th valign="top">date</th>
+    <th valign="top">Vim version</th>
+    <th valign="top">user</th>
+    <th valign="top">release notes</th>
+</tr>
+<tr>
+        <td class="rowodd" valign="top" nowrap><a href="https://www.vim.org/scripts/download_script.php?src_id=24474">c-support.zip</a></td>
+    <td class="rowodd" valign="top" nowrap><b>6.2</b></td>
+    <td class="rowodd" valign="top" nowrap><i>2016-08-27</i></td>
+    <td class="rowodd" valign="top" nowrap>7.3</td>
+    <td class="rowodd" valign="top"><i><a href="https://www.vim.org/account/profile.php?user_id=169">Fritz Mehner</a></i></td>
+    <td class="rowodd" valign="top" width="2000">- Add 'g:C_CustomTemplateFile'.<br>- Add template personalization file and setup wizard.<br>- Respect 'g:Xterm_Executable' and 'g:Xterm_Options'.<br>&nbsp;&nbsp;('g:C_XtermDefaults' still works for backwards compatibility.)<br>- Remove unused 'g:C_GuiTemplateBrowser'.<br>- Change 'Run -&gt; link' and 'Run -&gt; run', do not produce object file anymore.<br>- Add submenu 'Comments -&gt; all sections'.<br>- Add submenu 'Preprocessor -&gt; include POSIX header'.<br>- New and reworked templates.<br>- Minor changes and bugfixes.</td>
+</tr>
+<tr>
+        <td class="roweven" valign="top" nowrap><a href="https://www.vim.org/scripts/download_script.php?src_id=21803">cvim.zip</a></td>
+    <td class="roweven" valign="top" nowrap><b>6.1.1</b></td>
+    <td class="roweven" valign="top" nowrap><i>2014-04-21</i></td>
+    <td class="roweven" valign="top" nowrap>7.0</td>
+    <td class="roweven" valign="top"><i><a href="https://www.vim.org/account/profile.php?user_id=169">Fritz Mehner</a></i></td>
+    <td class="roweven" valign="top" width="2000">- Added 'C_SetMapLeader' and 'C_ResetMapLeader'.<br>- Bugfix: Resetting maplocalleader in filetype plug-in after setting it to the<br>&nbsp;&nbsp;value of g:C_MapLeader.<br>- Bugfix: Setup of local templates in case of global installation.<br>- Bugfix: Better compatibility with custom mappings<br>&nbsp;&nbsp;(use &quot;normal!&quot; and &quot;noremap&quot; consistently).<br>- 'Help-&gt;show manual' shows man page text with appropriate width (UNIX only).<br>- Extended the documentation.</td>
+</tr>
+<tr>
+        <td class="rowodd" valign="top" nowrap><a href="https://www.vim.org/scripts/download_script.php?src_id=21251">cvim.zip</a></td>
+    <td class="rowodd" valign="top" nowrap><b>6.1</b></td>
+    <td class="rowodd" valign="top" nowrap><i>2013-12-28</i></td>
+    <td class="rowodd" valign="top" nowrap>7.0</td>
+    <td class="rowodd" valign="top"><i><a href="https://www.vim.org/account/profile.php?user_id=169">Fritz Mehner</a></i></td>
+    <td class="rowodd" valign="top" width="2000">- Map renamed: \rme -&gt; \re.<br>- New global variable g:C_InsertFileHeader (suppress file description comment for new files).<br>- Two new ex commands: CCmdlineArgs, CMakeCmdlineArgs.<br>- 'Run-&gt;cmd. line arg.' : tab expansion (files/directories)for all arguments.<br>- Bugfix: template 'file description header' not loading (thanks to Marco Lasczok).<br>- Bugfix: unnecessary characters in one template.<br>- Prototype picker improved.<br>- Toggle non-C-comments.<br>- Run debugger.<br>- Some global variables now changeable on the fly.<br>- Menus now show the correct mapleader.<br>- Bugfix: g:C_LoadMenus now works.<br>- Bugfix: Prevent unnecessary rereading of the template library.<br>- Added Doxygen templates and 'Doxygen-&gt;brief, after member'.<br>- Added help menu entries: help English, help Doxygen<br>- Improved &quot;adjust end-of-line comment&quot;.<br>- Bugfix: Setup of local templates in case of global installation.<br>- Bugfix: Map and menu entry 'Snippets-&gt;edit global templates'.<br>- Several internal improvements.</td>
+</tr>
+<tr>
+        <td class="roweven" valign="top" nowrap><a href="https://www.vim.org/scripts/download_script.php?src_id=18444">cvim.zip</a></td>
+    <td class="roweven" valign="top" nowrap><b>6.0</b></td>
+    <td class="roweven" valign="top" nowrap><i>2012-08-20</i></td>
+    <td class="roweven" valign="top" nowrap>7.0</td>
+    <td class="roweven" valign="top"><i><a href="https://www.vim.org/account/profile.php?user_id=169">Fritz Mehner</a></i></td>
+    <td class="roweven" valign="top" width="2000"> ++&nbsp;&nbsp;The plug-in version 6.0+ is a rewriting of version 5.19. <br> ++&nbsp;&nbsp;The template syntax has changed! <br><br>- New template system (many thanks to Wolfgang Mehner)<br>- A few new hotkeys and menu item.<br>- A few hotkeys and menu items renamed.<br><br></td>
+</tr>
+<tr>
+        <td class="rowodd" valign="top" nowrap><a href="https://www.vim.org/scripts/download_script.php?src_id=17992">cvim.zip</a></td>
+    <td class="rowodd" valign="top" nowrap><b>5.19</b></td>
+    <td class="rowodd" valign="top" nowrap><i>2012-05-18</i></td>
+    <td class="rowodd" valign="top" nowrap>7.0</td>
+    <td class="rowodd" valign="top"><i><a href="https://www.vim.org/account/profile.php?user_id=169">Fritz Mehner</a></i></td>
+    <td class="rowodd" valign="top" width="2000">- Resolve home for linked home directories.<br>- Three C++-items removed (see file 'customization.cpp.vim').<br>- Bugfix: global options changed unintentionally.<br>- Minor improvements and bugfixes.</td>
+</tr>
+<tr>
+        <td class="roweven" valign="top" nowrap><a href="https://www.vim.org/scripts/download_script.php?src_id=17559">cvim.zip</a></td>
+    <td class="roweven" valign="top" nowrap><b>5.18</b></td>
+    <td class="roweven" valign="top" nowrap><i>2012-03-03</i></td>
+    <td class="roweven" valign="top" nowrap>7.0</td>
+    <td class="roweven" valign="top"><i><a href="https://www.vim.org/account/profile.php?user_id=169">Fritz Mehner</a></i></td>
+    <td class="roweven" valign="top" width="2000">- Hotkeys \lcs, \ucs removed.<br>- Bugfix: delayed template initialization missing correct style.<br>- Wrong cursor position when inserting some templates at the end of a line.</td>
+</tr>
+<tr>
+        <td class="rowodd" valign="top" nowrap><a href="https://www.vim.org/scripts/download_script.php?src_id=17127">cvim.zip</a></td>
+    <td class="rowodd" valign="top" nowrap><b>5.17</b></td>
+    <td class="rowodd" valign="top" nowrap><i>2011-12-29</i></td>
+    <td class="rowodd" valign="top" nowrap>7.0</td>
+    <td class="rowodd" valign="top"><i><a href="https://www.vim.org/account/profile.php?user_id=169">Fritz Mehner</a></i></td>
+    <td class="rowodd" valign="top" width="2000">- Two new plugin tags: LICENSE,ORGANIZATION<br>- System-wide installation: minimal Template file for a user will automatically be added.<br>- New menu item and hotkey: choose a makefile.<br>- New idiom: realloc.<br>- New preprocessor item: #if #endif.<br>- New hotkeys: \ire, \ifs, \ifp, \pif.</td>
+</tr>
+<tr>
+        <td class="roweven" valign="top" nowrap><a href="https://www.vim.org/scripts/download_script.php?src_id=16847">cvim.zip</a></td>
+    <td class="roweven" valign="top" nowrap><b>5.16.1</b></td>
+    <td class="roweven" valign="top" nowrap><i>2011-11-10</i></td>
+    <td class="roweven" valign="top" nowrap>7.0</td>
+    <td class="roweven" valign="top"><i><a href="https://www.vim.org/account/profile.php?user_id=169">Fritz Mehner</a></i></td>
+    <td class="roweven" valign="top" width="2000">- Bugfix: problem with a system-wide installation under Windows (thanks to Ricardo Vrech).</td>
+</tr>
+<tr>
+        <td class="rowodd" valign="top" nowrap><a href="https://www.vim.org/scripts/download_script.php?src_id=16809">cvim.zip</a></td>
+    <td class="rowodd" valign="top" nowrap><b>5.16</b></td>
+    <td class="rowodd" valign="top" nowrap><i>2011-11-05</i></td>
+    <td class="rowodd" valign="top" nowrap>7.0</td>
+    <td class="rowodd" valign="top"><i><a href="https://www.vim.org/account/profile.php?user_id=169">Fritz Mehner</a></i></td>
+    <td class="rowodd" valign="top" width="2000">- Plugin loads faster: loading the templates is delayed until the first use.<br>- Plugin now works with pathogen.vim.<br>- Menus will always be generated (for the use with :emenu).<br>- Bugfix: no local templates available with a system-wide installation (thanks to Iain Arnell).<br>- Several improvements.</td>
+</tr>
+<tr>
+        <td class="roweven" valign="top" nowrap><a href="https://www.vim.org/scripts/download_script.php?src_id=16506">cvim.zip</a></td>
+    <td class="roweven" valign="top" nowrap><b>5.15.1</b></td>
+    <td class="roweven" valign="top" nowrap><i>2011-09-11</i></td>
+    <td class="roweven" valign="top" nowrap>7.0</td>
+    <td class="roweven" valign="top"><i><a href="https://www.vim.org/account/profile.php?user_id=169">Fritz Mehner</a></i></td>
+    <td class="roweven" valign="top" width="2000">This is the correct version 5.15.<br>The version 5.15 just published) contains a wrong archive. Sorry.</td>
+</tr>
+<tr>
+        <td class="rowodd" valign="top" nowrap><a href="https://www.vim.org/scripts/download_script.php?src_id=16505">cvim.zip</a></td>
+    <td class="rowodd" valign="top" nowrap><b>5.15</b></td>
+    <td class="rowodd" valign="top" nowrap><i>2011-09-11</i></td>
+    <td class="rowodd" valign="top" nowrap>7.0</td>
+    <td class="rowodd" valign="top"><i><a href="https://www.vim.org/account/profile.php?user_id=169">Fritz Mehner</a></i></td>
+    <td class="rowodd" valign="top" width="2000">- New hotkey \cx C to C++ comments and vice versa.<br>- Several hotkeys allow a range, e.g. '3\cl' (see help text and c-hotkey.pdf).<br>- Improved prototype picking: \nf, \np picks up a function prototype, <br>&nbsp;&nbsp;\nm picks up a method prototype (see documentation for more).<br>- include-statements will now be inserted in the actual line (before: new line<br>&nbsp;&nbsp;below the actual line).<br>- Several minor improvements.</td>
+</tr>
+<tr>
+        <td class="roweven" valign="top" nowrap><a href="https://www.vim.org/scripts/download_script.php?src_id=16018">cvim.zip</a></td>
+    <td class="roweven" valign="top" nowrap><b>5.14</b></td>
+    <td class="roweven" valign="top" nowrap><i>2011-07-02</i></td>
+    <td class="roweven" valign="top" nowrap>7.0</td>
+    <td class="roweven" valign="top"><i><a href="https://www.vim.org/account/profile.php?user_id=169">Fritz Mehner</a></i></td>
+    <td class="roweven" valign="top" width="2000">- A makefile can be run with C-F9<br>- Linking ( Run menu, \rl, \rr ) will be suppressed if buffer contains no main function.<br>- Bugfix: correctly deactivate unwanted compiler messages in a quickfix buffer.<br>- Several minor improvements.</td>
+</tr>
+<tr>
+        <td class="rowodd" valign="top" nowrap><a href="https://www.vim.org/scripts/download_script.php?src_id=14859">cvim.zip</a></td>
+    <td class="rowodd" valign="top" nowrap><b>5.13</b></td>
+    <td class="rowodd" valign="top" nowrap><i>2011-01-25</i></td>
+    <td class="rowodd" valign="top" nowrap>7.0</td>
+    <td class="rowodd" valign="top"><i><a href="https://www.vim.org/account/profile.php?user_id=169">Fritz Mehner</a></i></td>
+    <td class="rowodd" valign="top" width="2000">- New hotkeys \rmc (run 'make clean') and \rme (executable to run).<br>- Hotkeys for make are working when in a makefile.<br>- Linker errors and errors during a make will be shown in a quickfix buffer.<br>- Bugfix: detection of a systemwide installation can fail.<br>- Bugfix: preprocessor directive '#if 0 #endif' not working.</td>
+</tr>
+<tr>
+        <td class="roweven" valign="top" nowrap><a href="https://www.vim.org/scripts/download_script.php?src_id=14305">cvim.zip</a></td>
+    <td class="roweven" valign="top" nowrap><b>5.12</b></td>
+    <td class="roweven" valign="top" nowrap><i>2010-11-19</i></td>
+    <td class="roweven" valign="top" nowrap>7.0</td>
+    <td class="roweven" valign="top"><i><a href="https://www.vim.org/account/profile.php?user_id=169">Fritz Mehner</a></i></td>
+    <td class="roweven" valign="top" width="2000">- New hotkeys \+&quot; .<br>- Windows: user installation now possible.<br>- Bugfixe: for-idiom shows part of type definition as variable name in some cases.<br>- Bugfixe: wrong cursor position for some templates.</td>
+</tr>
+<tr>
+        <td class="rowodd" valign="top" nowrap><a href="https://www.vim.org/scripts/download_script.php?src_id=13077">cvim.zip</a></td>
+    <td class="rowodd" valign="top" nowrap><b>5.11</b></td>
+    <td class="rowodd" valign="top" nowrap><i>2010-05-31</i></td>
+    <td class="rowodd" valign="top" nowrap>5.7</td>
+    <td class="rowodd" valign="top"><i><a href="https://www.vim.org/account/profile.php?user_id=169">Fritz Mehner</a></i></td>
+    <td class="rowodd" valign="top" width="2000">- New tag {CURSOR} to avoid indent problems in a few cases.<br>- Three hotkeys renamed \rg -&gt; \rma , \ri -&gt; \rpa ,&nbsp;&nbsp;\re -&gt; \rka (better to remember).<br>- 'long long' added to the for-idioms.<br>- Bugfixes: for-idiom shows type as variable name if no variable name was given.<br>- Bugfixes: for-idiom inserts standard types with 2+ words wrong.<br>- Bugfixes: multiline end-of-line comments have wrong position in some cases.<br>- Bugfixes: local installation looks like a system-wide installation in seldom cases.</td>
+</tr>
+<tr>
+        <td class="roweven" valign="top" nowrap><a href="https://www.vim.org/scripts/download_script.php?src_id=12311">cvim.zip</a></td>
+    <td class="roweven" valign="top" nowrap><b>5.10</b></td>
+    <td class="roweven" valign="top" nowrap><i>2010-02-05</i></td>
+    <td class="roweven" valign="top" nowrap>7.0</td>
+    <td class="roweven" valign="top"><i><a href="https://www.vim.org/account/profile.php?user_id=169">Fritz Mehner</a></i></td>
+    <td class="roweven" valign="top" width="2000">- The plugin now handles different template styles without editing and reloading the main template file.<br>- The number of template styles is not limited. <br>- New hotkey and ex-command to switch template styles.<br>- Template styles can automatically be related to file extensions.<br>- indent(1) errors will be presented in a quickfix error window.<br>- Comment alignment improved.<br>- Minor improvements.</td>
+</tr>
+<tr>
+        <td class="rowodd" valign="top" nowrap><a href="https://www.vim.org/scripts/download_script.php?src_id=11557">cvim.zip</a></td>
+    <td class="rowodd" valign="top" nowrap><b>5.9</b></td>
+    <td class="rowodd" valign="top" nowrap><i>2009-10-21</i></td>
+    <td class="rowodd" valign="top" nowrap>7.0</td>
+    <td class="rowodd" valign="top"><i><a href="https://www.vim.org/account/profile.php?user_id=169">Fritz Mehner</a></i></td>
+    <td class="rowodd" valign="top" width="2000">+ Two additional hotkeys (+ ex commands) for preprocessor statements.<br>+ Compile-link-run: improved error detection.<br>+ Menu Run: hardcopy can print any buffer.<br>+ Several minor improvements and bugfixes.</td>
+</tr>
+<tr>
+        <td class="roweven" valign="top" nowrap><a href="https://www.vim.org/scripts/download_script.php?src_id=10910">cvim.zip</a></td>
+    <td class="roweven" valign="top" nowrap><b>5.8</b></td>
+    <td class="roweven" valign="top" nowrap><i>2009-06-30</i></td>
+    <td class="roweven" valign="top" nowrap>7.0</td>
+    <td class="roweven" valign="top"><i><a href="https://www.vim.org/account/profile.php?user_id=169">Fritz Mehner</a></i></td>
+    <td class="roweven" valign="top" width="2000">+ Hotkeys are shown in the menus.<br>+ File browser for code snippets and templates choosable (2 global variables).<br>+ Two new hotkeys: include file description (implementation, header).<br>+ New menu item: namespace alias<br>+ Bugfix: wrapper script for use of a xterm could not handle parameters containing blanks.<br>+ Several minor improvements.</td>
+</tr>
+<tr>
+        <td class="rowodd" valign="top" nowrap><a href="https://www.vim.org/scripts/download_script.php?src_id=10498">cvim.zip</a></td>
+    <td class="rowodd" valign="top" nowrap><b>5.7</b></td>
+    <td class="rowodd" valign="top" nowrap><i>2009-04-30</i></td>
+    <td class="rowodd" valign="top" nowrap>7.0</td>
+    <td class="rowodd" valign="top"><i><a href="https://www.vim.org/account/profile.php?user_id=169">Fritz Mehner</a></i></td>
+    <td class="rowodd" valign="top" width="2000">+ 4 new hotkeys : insert file section comments (C/C++/H), special comments,<br>&nbsp;&nbsp;keyword comments.<br>+ End-of-line comment adjustment improved.</td>
+</tr>
+<tr>
+        <td class="roweven" valign="top" nowrap><a href="https://www.vim.org/scripts/download_script.php?src_id=10354">cvim.zip</a></td>
+    <td class="roweven" valign="top" nowrap><b>5.6</b></td>
+    <td class="roweven" valign="top" nowrap><i>2009-04-06</i></td>
+    <td class="roweven" valign="top" nowrap>7.0</td>
+    <td class="roweven" valign="top"><i><a href="https://www.vim.org/account/profile.php?user_id=169">Fritz Mehner</a></i></td>
+    <td class="roweven" valign="top" width="2000">+ Jump targets (templates) and mapping Ctrl-j can be switched off.<br>+ Yet unused jump targets will be highlighted after a file is opened.<br>+ Statements menu: else block (key mapping \se).<br>+ Handling of &lt;SPLIT&gt; improved (templates).<br>+ Minor improvements.</td>
+</tr>
+<tr>
+        <td class="rowodd" valign="top" nowrap><a href="https://www.vim.org/scripts/download_script.php?src_id=9990">cvim.zip</a></td>
+    <td class="rowodd" valign="top" nowrap><b>5.5</b></td>
+    <td class="rowodd" valign="top" nowrap><i>2009-02-17</i></td>
+    <td class="rowodd" valign="top" nowrap>7.0</td>
+    <td class="rowodd" valign="top"><i><a href="https://www.vim.org/account/profile.php?user_id=169">Fritz Mehner</a></i></td>
+    <td class="rowodd" valign="top" width="2000">+ Additional plugin-tags (jump targets in templates): &lt;+text+&gt;, &lt;-text-&gt;.<br>+ Additional mapping Ctrl-j : jump to these new targets.<br>+ Template-file: additional macro |STYLE| and IF-ENDIF-construct to easily<br>&nbsp;&nbsp;choose between sets of templates.<br>+ Additional mapping: auto-complete classical C comment (also multi-line).<br>+ Additional mapping: auto-complete open block starting with {&lt;CR&gt; .<br>+ Visual mode for date and time insertion (menu 'Comments').<br>+ Visual mode for tags (submenu 'Comments-&gt;tags (plugin)').<br>+ Bugfix: hotkey \ica not working<br>+ Bugfix: hotkey Shift-F2 for the alternate-plugin disappeared. </td>
+</tr>
+<tr>
+        <td class="roweven" valign="top" nowrap><a href="https://www.vim.org/scripts/download_script.php?src_id=9679">cvim.zip</a></td>
+    <td class="roweven" valign="top" nowrap><b>5.4</b></td>
+    <td class="roweven" valign="top" nowrap><i>2008-12-15</i></td>
+    <td class="roweven" valign="top" nowrap>7.0</td>
+    <td class="roweven" valign="top"><i><a href="https://www.vim.org/account/profile.php?user_id=169">Fritz Mehner</a></i></td>
+    <td class="roweven" valign="top" width="2000">+ New hotkey \+co inserts ' cout &lt;&lt;&nbsp;&nbsp;&lt;&lt; endl;'<br>+ New menu item C++-menu: 'cout' replaces 'cout variable' and 'cout string'.<br>+ Hotkey \c/ removed ( \cc does the same).<br>+ Bugfix: after an unsuccessful compilation screen sometimes garbled.</td>
+</tr>
+<tr>
+        <td class="rowodd" valign="top" nowrap><a href="https://www.vim.org/scripts/download_script.php?src_id=9602">cvim.zip</a></td>
+    <td class="rowodd" valign="top" nowrap><b>5.3</b></td>
+    <td class="rowodd" valign="top" nowrap><i>2008-12-03</i></td>
+    <td class="rowodd" valign="top" nowrap>7.0</td>
+    <td class="rowodd" valign="top"><i><a href="https://www.vim.org/account/profile.php?user_id=169">Fritz Mehner</a></i></td>
+    <td class="rowodd" valign="top" width="2000">+ Insertions work properly when folding is used.<br>+ Menu items Idioms-&gt;for(...) : type declaration for loop variable possible (tab completion).<br>+ Specification of command line arguments (Run-&gt;cmd. line arg.): filename completion active.<br>+ New main menu item 'show manual' (hotkey \hm): read manual for word under cursor. <br>+ One hotkey renamed: \h -&gt; \hp (help plugin)</td>
+</tr>
+<tr>
+        <td class="roweven" valign="top" nowrap><a href="https://www.vim.org/scripts/download_script.php?src_id=9146">cvim.zip</a></td>
+    <td class="roweven" valign="top" nowrap><b>5.2.1</b></td>
+    <td class="roweven" valign="top" nowrap><i>2008-08-18</i></td>
+    <td class="roweven" valign="top" nowrap>7.0</td>
+    <td class="roweven" valign="top"><i><a href="https://www.vim.org/account/profile.php?user_id=169">Fritz Mehner</a></i></td>
+    <td class="roweven" valign="top" width="2000">+ Bugfix: stray characters whith three dialogs<br>+ Bugfix: Missing parameter in 2 internal function calls<br>+ Menu items 'Snippets-&gt;edit local/global templates' start an file browser (convenience).</td>
+</tr>
+<tr>
+        <td class="rowodd" valign="top" nowrap><a href="https://www.vim.org/scripts/download_script.php?src_id=9070">cvim.zip</a></td>
+    <td class="rowodd" valign="top" nowrap><b>5.2</b></td>
+    <td class="rowodd" valign="top" nowrap><i>2008-08-04</i></td>
+    <td class="rowodd" valign="top" nowrap>7.0</td>
+    <td class="rowodd" valign="top"><i><a href="https://www.vim.org/account/profile.php?user_id=169">Fritz Mehner</a></i></td>
+    <td class="rowodd" valign="top" width="2000">+ Superfluous control characters for mode switching (menus, hotkeys) removed. Caused beeps.<br>+ Template files (local/global) can be opened from the snippet menu.<br>+ Three new preprocessor statements.<br>+ v-mode for RTTI-entries.</td>
+</tr>
+<tr>
+        <td class="roweven" valign="top" nowrap><a href="https://www.vim.org/scripts/download_script.php?src_id=8437">cvim.zip</a></td>
+    <td class="roweven" valign="top" nowrap><b>5.1</b></td>
+    <td class="roweven" valign="top" nowrap><i>2008-03-12</i></td>
+    <td class="roweven" valign="top" nowrap>7.0</td>
+    <td class="roweven" valign="top"><i><a href="https://www.vim.org/account/profile.php?user_id=169">Fritz Mehner</a></i></td>
+    <td class="roweven" valign="top" width="2000">+ Definition and implementation of classes have now different templates and menu entries.<br>+ Accessor methods (get/set) can be generated.<br>+ New templates: everything other than language keywords comes from a template (and is user changeable).</td>
+</tr>
+<tr>
+        <td class="rowodd" valign="top" nowrap><a href="https://www.vim.org/scripts/download_script.php?src_id=7975">cvim.zip</a></td>
+    <td class="rowodd" valign="top" nowrap><b>5.0.5</b></td>
+    <td class="rowodd" valign="top" nowrap><i>2007-11-21</i></td>
+    <td class="rowodd" valign="top" nowrap>7.0</td>
+    <td class="rowodd" valign="top"><i><a href="https://www.vim.org/account/profile.php?user_id=169">Fritz Mehner</a></i></td>
+    <td class="rowodd" valign="top" width="2000">+ Bugfix: on a few systems doubling of path components in the run command (F9).<br>&nbsp;&nbsp;Skip this upgrade if you do not have this problem.</td>
+</tr>
+<tr>
+        <td class="roweven" valign="top" nowrap><a href="https://www.vim.org/scripts/download_script.php?src_id=7949">cvim.zip</a></td>
+    <td class="roweven" valign="top" nowrap><b>5.0.4</b></td>
+    <td class="roweven" valign="top" nowrap><i>2007-11-16</i></td>
+    <td class="roweven" valign="top" nowrap>7.0</td>
+    <td class="roweven" valign="top"><i><a href="https://www.vim.org/account/profile.php?user_id=169">Fritz Mehner</a></i></td>
+    <td class="roweven" valign="top" width="2000">+ Format for the macros |DATE|, |TIME|, and |YEAR| can be defined by the user.<br>+ Help text improved.</td>
+</tr>
+<tr>
+        <td class="rowodd" valign="top" nowrap><a href="https://www.vim.org/scripts/download_script.php?src_id=7802">cvim.zip</a></td>
+    <td class="rowodd" valign="top" nowrap><b>5.0.3</b></td>
+    <td class="rowodd" valign="top" nowrap><i>2007-10-16</i></td>
+    <td class="rowodd" valign="top" nowrap>7.0</td>
+    <td class="rowodd" valign="top"><i><a href="https://www.vim.org/account/profile.php?user_id=169">Fritz Mehner</a></i></td>
+    <td class="rowodd" valign="top" width="2000">+ Code snippets can now be used in the console mode (Vim without GUI).<br>+ Bugfix: Possible conflict with 'indent' removed when inserting templates.</td>
+</tr>
+<tr>
+        <td class="roweven" valign="top" nowrap><a href="https://www.vim.org/scripts/download_script.php?src_id=7740">cvim.zip</a></td>
+    <td class="roweven" valign="top" nowrap><b>5.0.2</b></td>
+    <td class="roweven" valign="top" nowrap><i>2007-10-03</i></td>
+    <td class="roweven" valign="top" nowrap>7.0</td>
+    <td class="roweven" valign="top"><i><a href="https://www.vim.org/account/profile.php?user_id=169">Fritz Mehner</a></i></td>
+    <td class="roweven" valign="top" width="2000">+ Bugfix: Prototype picker did not alway delete no longer used prototypes.<br>+ Bugfix: Prototype picker removed template specializations from parameter lists.</td>
+</tr>
+<tr>
+        <td class="rowodd" valign="top" nowrap><a href="https://www.vim.org/scripts/download_script.php?src_id=7717">cvim.zip</a></td>
+    <td class="rowodd" valign="top" nowrap><b>5.0.1</b></td>
+    <td class="rowodd" valign="top" nowrap><i>2007-09-26</i></td>
+    <td class="rowodd" valign="top" nowrap>7.0</td>
+    <td class="rowodd" valign="top"><i><a href="https://www.vim.org/account/profile.php?user_id=169">Fritz Mehner</a></i></td>
+    <td class="rowodd" valign="top" width="2000">+ Bugfix: autocmd setting can influence autocmd settings of OTHER plugins.</td>
+</tr>
+<tr>
+        <td class="roweven" valign="top" nowrap><a href="https://www.vim.org/scripts/download_script.php?src_id=7682">cvim.zip</a></td>
+    <td class="roweven" valign="top" nowrap><b>5.0</b></td>
+    <td class="roweven" valign="top" nowrap><i>2007-09-17</i></td>
+    <td class="roweven" valign="top" nowrap>7.0</td>
+    <td class="roweven" valign="top"><i><a href="https://www.vim.org/account/profile.php?user_id=169">Fritz Mehner</a></i></td>
+    <td class="roweven" valign="top" width="2000">+ New template system. Now every menu item is user definable.<br>+ Changes to allow a system-wide installation.<br>+ A few hotkeys added and renamed.<br><br></td>
+</tr>
+<tr>
+        <td class="rowodd" valign="top" nowrap><a href="https://www.vim.org/scripts/download_script.php?src_id=7494">cvim.zip</a></td>
+    <td class="rowodd" valign="top" nowrap><b>4.6.1</b></td>
+    <td class="rowodd" valign="top" nowrap><i>2007-08-13</i></td>
+    <td class="rowodd" valign="top" nowrap>6.0</td>
+    <td class="rowodd" valign="top"><i><a href="https://www.vim.org/account/profile.php?user_id=169">Fritz Mehner</a></i></td>
+    <td class="rowodd" valign="top" width="2000">+ New global variable to control the filetype of *.h header files (default is now 'cpp').<br>+ Bugfix: properly resetting 'compiler' after using make, splint, and CodeCheck.</td>
+</tr>
+<tr>
+        <td class="roweven" valign="top" nowrap><a href="https://www.vim.org/scripts/download_script.php?src_id=7168">cvim.zip</a></td>
+    <td class="roweven" valign="top" nowrap><b>4.6</b></td>
+    <td class="roweven" valign="top" nowrap><i>2007-05-25</i></td>
+    <td class="roweven" valign="top" nowrap>6.0</td>
+    <td class="roweven" valign="top"><i><a href="https://www.vim.org/account/profile.php?user_id=169">Fritz Mehner</a></i></td>
+    <td class="roweven" valign="top" width="2000">+ New insert mode mappings (comments, statements, preprocessing, idioms, C++).<br>+ Some mappings renamed (easier to remember). <br>+ New tag (basename of a file reduced to characters allowed in names).</td>
+</tr>
+<tr>
+        <td class="rowodd" valign="top" nowrap><a href="https://www.vim.org/scripts/download_script.php?src_id=7020">cvim.zip</a></td>
+    <td class="rowodd" valign="top" nowrap><b>4.5</b></td>
+    <td class="rowodd" valign="top" nowrap><i>2007-04-24</i></td>
+    <td class="rowodd" valign="top" nowrap>6.0</td>
+    <td class="rowodd" valign="top"><i><a href="https://www.vim.org/account/profile.php?user_id=169">Fritz Mehner</a></i></td>
+    <td class="rowodd" valign="top" width="2000">+ New menu item and hotkey for the (re)alignement of end-of-line comments.<br>+ Hotkey \cn removed. Only one menu item for end-of-line comments left.<br>+ Changed hotkeys: \ce -&gt; \cl and \cl -&gt; \cs .<br>+ Three new tags (giving the basename of a file) for writing template files.<br>+ Prototype picker handles template methods.<br>+ Bugfix: splint works now under Windows.<br>+ Minor improvements.</td>
+</tr>
+<tr>
+        <td class="roweven" valign="top" nowrap><a href="https://www.vim.org/scripts/download_script.php?src_id=6765">cvim.zip</a></td>
+    <td class="roweven" valign="top" nowrap><b>4.4</b></td>
+    <td class="roweven" valign="top" nowrap><i>2007-02-21</i></td>
+    <td class="roweven" valign="top" nowrap>6.0</td>
+    <td class="roweven" valign="top"><i><a href="https://www.vim.org/account/profile.php?user_id=169">Fritz Mehner</a></i></td>
+    <td class="roweven" valign="top" width="2000">+ PLUGIN DIRECTORIES REARRANGED.<br>+ main- and for-idiom have a visual mode now.<br>+ Four new commands (command line) to control the comment style.<br>+ Comment style (C/C++) can automatically follow the filetype.<br>+ Bugfix: empty new file after removing the header template can't be closed.<br>+ Bugfix : Tools entry missing when root menu not shown from the start.<br>+ Minor improvements.</td>
+</tr>
+<tr>
+        <td class="rowodd" valign="top" nowrap><a href="https://www.vim.org/scripts/download_script.php?src_id=6430">cvim.zip</a></td>
+    <td class="rowodd" valign="top" nowrap><b>4.3</b></td>
+    <td class="rowodd" valign="top" nowrap><i>2006-11-17</i></td>
+    <td class="rowodd" valign="top" nowrap>6.0</td>
+    <td class="rowodd" valign="top"><i><a href="https://www.vim.org/account/profile.php?user_id=169">Fritz Mehner</a></i></td>
+    <td class="rowodd" valign="top" width="2000">+ New key mappings for preprocessor statements. <br>+ Source code analysing tool CodeCheck (Trademark) integrated<br>+ New preprocessor menu.<br>+ Bugfix: indent under Windows.<br>+ Minor improvements.<br></td>
+</tr>
+<tr>
+        <td class="roweven" valign="top" nowrap><a href="https://www.vim.org/scripts/download_script.php?src_id=6100">cvim.zip</a></td>
+    <td class="roweven" valign="top" nowrap><b>4.2.1</b></td>
+    <td class="roweven" valign="top" nowrap><i>2006-08-26</i></td>
+    <td class="roweven" valign="top" nowrap>6.0</td>
+    <td class="roweven" valign="top"><i><a href="https://www.vim.org/account/profile.php?user_id=169">Fritz Mehner</a></i></td>
+    <td class="roweven" valign="top" width="2000">+ Bugfix: change needed for some menu names after patch 7.0.054 .</td>
+</tr>
+<tr>
+        <td class="rowodd" valign="top" nowrap><a href="https://www.vim.org/scripts/download_script.php?src_id=6029">cvim.zip</a></td>
+    <td class="rowodd" valign="top" nowrap><b>4.2</b></td>
+    <td class="rowodd" valign="top" nowrap><i>2006-08-03</i></td>
+    <td class="rowodd" valign="top" nowrap>6.0</td>
+    <td class="rowodd" valign="top"><i><a href="https://www.vim.org/account/profile.php?user_id=169">Fritz Mehner</a></i></td>
+    <td class="rowodd" valign="top" width="2000">+ Setting the starting column for trailing comments improved.<br>+ Small bug in block uncommenting fixed.<br>+ Mac OS X : circumvent a Vim bug which caused a crash when loading plugin version 4.1<br>+ File syntax/c.vim removed (but see help in csupport.txt).</td>
+</tr>
+<tr>
+        <td class="roweven" valign="top" nowrap><a href="https://www.vim.org/scripts/download_script.php?src_id=5895">cvim.zip</a></td>
+    <td class="roweven" valign="top" nowrap><b>4.1</b></td>
+    <td class="roweven" valign="top" nowrap><i>2006-06-29</i></td>
+    <td class="roweven" valign="top" nowrap>6.0</td>
+    <td class="roweven" valign="top"><i><a href="https://www.vim.org/account/profile.php?user_id=169">Fritz Mehner</a></i></td>
+    <td class="roweven" valign="top" width="2000">+ A complete switch statement can be made from a list of labels.<br>+ Additional cases can be made from a list of labels.<br>+ Small bug in line end commenting fixed.<br>+ Minor improvements.</td>
+</tr>
+<tr>
+        <td class="rowodd" valign="top" nowrap><a href="https://www.vim.org/scripts/download_script.php?src_id=5549">cvim.zip</a></td>
+    <td class="rowodd" valign="top" nowrap><b>4.0</b></td>
+    <td class="rowodd" valign="top" nowrap><i>2006-04-13</i></td>
+    <td class="rowodd" valign="top" nowrap>6.0</td>
+    <td class="rowodd" valign="top"><i><a href="https://www.vim.org/account/profile.php?user_id=169">Fritz Mehner</a></i></td>
+    <td class="rowodd" valign="top" width="2000">+ Kernighan & Ritchie style for block statements can be enabled.<br>+ Changes to make plugin compatible with Vim 7.<br>+ Set C/C++ file type for source files which should not be preprocessed (*.i, *.ii).<br>+ Some minor improvements.</td>
+</tr>
+<tr>
+        <td class="roweven" valign="top" nowrap><a href="https://www.vim.org/scripts/download_script.php?src_id=5462">cvim.zip</a></td>
+    <td class="roweven" valign="top" nowrap><b>3.11</b></td>
+    <td class="roweven" valign="top" nowrap><i>2006-03-20</i></td>
+    <td class="roweven" valign="top" nowrap>6.0</td>
+    <td class="roweven" valign="top"><i><a href="https://www.vim.org/account/profile.php?user_id=169">Fritz Mehner</a></i></td>
+    <td class="roweven" valign="top" width="2000">+ Hotkeys and an accompanying reference card added.<br>+ Preparation for syntax based folding.<br>+ Some minor improvements.</td>
+</tr>
+<tr>
+        <td class="rowodd" valign="top" nowrap><a href="https://www.vim.org/scripts/download_script.php?src_id=5003">cvim.zip</a></td>
+    <td class="rowodd" valign="top" nowrap><b>3.10</b></td>
+    <td class="rowodd" valign="top" nowrap><i>2006-01-26</i></td>
+    <td class="rowodd" valign="top" nowrap>6.0</td>
+    <td class="rowodd" valign="top"><i><a href="https://www.vim.org/account/profile.php?user_id=169">Fritz Mehner</a></i></td>
+    <td class="rowodd" valign="top" width="2000">+ Remove &quot;#if 0 ... #endif&quot; from the inside. <br>+ Change C comments to C++ comments and vice versa.<br>+ try..catch / catch / catch(...)&nbsp;&nbsp;now can be set surround a marked area.<br>+ Prototype picking improved (for C++).<br>+ A hardcopy shows the localized date and time in the header line.<br>+ New help menu entry in the main menu of this plugin (shows the plugin documentation).<br>+ Switch between corresponding source and header files with &lt;S-F2&gt; if the plugin a.vim<br>&nbsp;&nbsp;is present.<br>+ Plugin can be used with autocompletion for (, [, and { .</td>
+</tr>
+<tr>
+        <td class="roweven" valign="top" nowrap><a href="https://www.vim.org/scripts/download_script.php?src_id=4860">cvim.zip</a></td>
+    <td class="roweven" valign="top" nowrap><b>3.9.1</b></td>
+    <td class="roweven" valign="top" nowrap><i>2005-12-04</i></td>
+    <td class="roweven" valign="top" nowrap>6.0</td>
+    <td class="roweven" valign="top"><i><a href="https://www.vim.org/account/profile.php?user_id=169">Fritz Mehner</a></i></td>
+    <td class="roweven" valign="top" width="2000">+ Doubling of file header for new c- and h-files under Windows fixed (Thanks to Fabricio C A Oliveira).<br>+ Tiny bug in the file open idioms fixed.</td>
+</tr>
+<tr>
+        <td class="rowodd" valign="top" nowrap><a href="https://www.vim.org/scripts/download_script.php?src_id=4714">cvim.zip</a></td>
+    <td class="rowodd" valign="top" nowrap><b>3.9</b></td>
+    <td class="rowodd" valign="top" nowrap><i>2005-11-01</i></td>
+    <td class="rowodd" valign="top" nowrap>6.0</td>
+    <td class="rowodd" valign="top"><i><a href="https://www.vim.org/account/profile.php?user_id=169">Fritz Mehner</a></i></td>
+    <td class="rowodd" valign="top" width="2000">+ Formatter 'indent' integrated.<br>+ Bugfix in the automatic header insertion.<br>+ Assert idiom added.<br>+ #if 0 ... #endif statement for blocking out code added.<br>+ Minor stylistic improvements in some idioms.</td>
+</tr>
+<tr>
+        <td class="roweven" valign="top" nowrap><a href="https://www.vim.org/scripts/download_script.php?src_id=4553">cvim.zip</a></td>
+    <td class="roweven" valign="top" nowrap><b>3.8.2</b></td>
+    <td class="roweven" valign="top" nowrap><i>2005-09-05</i></td>
+    <td class="roweven" valign="top" nowrap>6.0</td>
+    <td class="roweven" valign="top"><i><a href="https://www.vim.org/account/profile.php?user_id=169">Fritz Mehner</a></i></td>
+    <td class="roweven" valign="top" width="2000">+ Screen update problem solved: color inversion under FC4 (Thanks to Bernie Barton).<br>+ RTTI menu : additional v-mode.<br>+ Statement menu and C++ menu rearranged.<br>+ Include guard : name generation improved.<br>+ File header templates will be included for additional file extensions (cp, cxx, c++, ...).</td>
+</tr>
+<tr>
+        <td class="rowodd" valign="top" nowrap><a href="https://www.vim.org/scripts/download_script.php?src_id=4472">cvim.zip</a></td>
+    <td class="rowodd" valign="top" nowrap><b>3.8.1</b></td>
+    <td class="rowodd" valign="top" nowrap><i>2005-08-08</i></td>
+    <td class="rowodd" valign="top" nowrap>6.0</td>
+    <td class="rowodd" valign="top"><i><a href="https://www.vim.org/account/profile.php?user_id=169">Fritz Mehner</a></i></td>
+    <td class="rowodd" valign="top" width="2000">+ More C++ output manipulators; manipulator insertion more intuitive.<br>+ Output into buffer: cursor goes to top of file.<br>+ Makefile template improved (code snippet).<br>+ Some minor improvements.</td>
+</tr>
+<tr>
+        <td class="roweven" valign="top" nowrap><a href="https://www.vim.org/scripts/download_script.php?src_id=4329">cvim.zip</a></td>
+    <td class="roweven" valign="top" nowrap><b>3.8</b></td>
+    <td class="roweven" valign="top" nowrap><i>2005-05-31</i></td>
+    <td class="roweven" valign="top" nowrap>6.0</td>
+    <td class="roweven" valign="top"><i><a href="https://www.vim.org/account/profile.php?user_id=169">Fritz Mehner</a></i></td>
+    <td class="roweven" valign="top" width="2000">+ Windows support. Most features are available under Windows now.</td>
+</tr>
+<tr>
+        <td class="rowodd" valign="top" nowrap><a href="https://www.vim.org/scripts/download_script.php?src_id=4244">cvim.zip</a></td>
+    <td class="rowodd" valign="top" nowrap><b>3.7.2</b></td>
+    <td class="rowodd" valign="top" nowrap><i>2005-05-05</i></td>
+    <td class="rowodd" valign="top" nowrap>6.0</td>
+    <td class="rowodd" valign="top"><i><a href="https://www.vim.org/account/profile.php?user_id=169">Fritz Mehner</a></i></td>
+    <td class="rowodd" valign="top" width="2000">+ Run buffer through splint (A tool for statically checking C programs; see<br>&nbsp;&nbsp;<a target="_blank" href="http://www.splint.org">http://www.splint.org</A>). An error window will be opened; quickfix commands can be used.<br>+ Set buffer related command line arguments for splint.<br>+ Line end comments start in a fixed column (can be set from the menu).<br>+ Spaces in path names and file names are now possible.<br>+ Template files and snippet files are no longer kept in the list of alternate files.<br>+ Some minor improvements.</td>
+</tr>
+<tr>
+        <td class="roweven" valign="top" nowrap><a href="https://www.vim.org/scripts/download_script.php?src_id=3719">cvim.zip</a></td>
+    <td class="roweven" valign="top" nowrap><b>3.7.1</b></td>
+    <td class="roweven" valign="top" nowrap><i>2004-12-21</i></td>
+    <td class="roweven" valign="top" nowrap>6.0</td>
+    <td class="roweven" valign="top"><i><a href="https://www.vim.org/account/profile.php?user_id=169">Fritz Mehner</a></i></td>
+    <td class="roweven" valign="top" width="2000">+ Bug fixed (comand line arguments not passed to the executable).<br>+ File extension for executables can be set.<br>+ Minor improvements.</td>
+</tr>
+<tr>
+        <td class="rowodd" valign="top" nowrap><a href="https://www.vim.org/scripts/download_script.php?src_id=3711">cvim.zip</a></td>
+    <td class="rowodd" valign="top" nowrap><b>3.7</b></td>
+    <td class="rowodd" valign="top" nowrap><i>2004-12-17</i></td>
+    <td class="rowodd" valign="top" nowrap>6.0</td>
+    <td class="rowodd" valign="top"><i><a href="https://www.vim.org/account/profile.php?user_id=169">Fritz Mehner</a></i></td>
+    <td class="rowodd" valign="top" width="2000">+ Running a program:<br>&nbsp;&nbsp;(1) Run program from the gVim command line.<br>&nbsp;&nbsp;(2) Run program and direct the output into a window with name &quot;C-Output&quot;. <br>&nbsp;&nbsp;(3) Run program in an xterm.<br>+ Command line arguments are now buffer related (each buffer can have its own arguments).<br>+ Code snippets can be protected from being indented during insertion. <br>+ Picked up prototypes will be deleted after insertion.<br>+ A code snippet with the file name extension &quot;ni&quot; or &quot;noindent&quot; will not be<br>&nbsp;&nbsp;indented on insertion.<br>+ for- and calloc-/malloc-idioms improved.<br>+ Bug fixed (word list handling).</td>
+</tr>
+<tr>
+        <td class="roweven" valign="top" nowrap><a href="https://www.vim.org/scripts/download_script.php?src_id=3205">cvim.zip</a></td>
+    <td class="roweven" valign="top" nowrap><b>3.6</b></td>
+    <td class="roweven" valign="top" nowrap><i>2004-07-06</i></td>
+    <td class="roweven" valign="top" nowrap>6.0</td>
+    <td class="roweven" valign="top"><i><a href="https://www.vim.org/account/profile.php?user_id=169">Fritz Mehner</a></i></td>
+    <td class="roweven" valign="top" width="2000">+ Installation simplified. <br>+ for-loop-idiom asks for control variable, initial value, ...<br>+ malloc-idiom asks for pointer variable and size.<br>+ Toggling the comment style works correct again.<br>+ Empty error windows will be closed.<br>+ Prototype picker removes trailing parts of the function body if marked.<br>+ The dialog windows (GUI) have been replaced by more flexible command line inputs.<br>+ The undocumented and unnecessary hot key F12 has been removed.<br>+ Extension to ctags + taglist shows makefile targets and qmake targets.</td>
+</tr>
+<tr>
+        <td class="rowodd" valign="top" nowrap><a href="https://www.vim.org/scripts/download_script.php?src_id=2902">cvim.zip</a></td>
+    <td class="rowodd" valign="top" nowrap><b>3.5</b></td>
+    <td class="rowodd" valign="top" nowrap><i>2004-04-02</i></td>
+    <td class="rowodd" valign="top" nowrap>6.0</td>
+    <td class="rowodd" valign="top"><i><a href="https://www.vim.org/account/profile.php?user_id=169">Fritz Mehner</a></i></td>
+    <td class="rowodd" valign="top" width="2000">+ Aligned line end comments for consecutive lines.<br>+ Improved prototype picker removes comments.<br>+ Picked up prototypes can be shown.<br>+ Uncomment more than one block at once.<br>+ 3 new idioms.<br>+ Help file improved .</td>
+</tr>
+<tr>
+        <td class="roweven" valign="top" nowrap><a href="https://www.vim.org/scripts/download_script.php?src_id=2628">cvim.zip</a></td>
+    <td class="roweven" valign="top" nowrap><b>3.4</b></td>
+    <td class="roweven" valign="top" nowrap><i>2003-12-26</i></td>
+    <td class="roweven" valign="top" nowrap>6.0</td>
+    <td class="roweven" valign="top"><i><a href="https://www.vim.org/account/profile.php?user_id=169">Fritz Mehner</a></i></td>
+    <td class="roweven" valign="top" width="2000">+ The following constructs are now read as templates from files: <br>&nbsp;&nbsp; class, class using new, template class, template class using new, error class<br>+ The preprocessor statements #if... and the function idiom include marked lines when invoked in visual mode.<br>+ All hotkeys are only defined for C/C++ files (file type plugin added).<br>+ Only one C/C++ entry in the gVim root menu (can be disabled).<br>+ Two new global variables: C_Dictionary_File, C_MenuHeader .<br>+ Install script added.<br>+ Customization improved. <br>+ Documentation improved (help file added).<br>+ Bug fix (template file handling)</td>
+</tr>
+<tr>
+        <td class="rowodd" valign="top" nowrap><a href="https://www.vim.org/scripts/download_script.php?src_id=2032">cvim.zip</a></td>
+    <td class="rowodd" valign="top" nowrap><b>3.1</b></td>
+    <td class="rowodd" valign="top" nowrap><i>2003-05-31</i></td>
+    <td class="rowodd" valign="top" nowrap>6.0</td>
+    <td class="rowodd" valign="top"><i><a href="https://www.vim.org/account/profile.php?user_id=169">Fritz Mehner</a></i></td>
+    <td class="rowodd" valign="top" width="2000">+ When the comment style &quot;C&quot; is active the menu entry &quot;Comments.code-&gt;comment&quot; <br>&nbsp;&nbsp;turns a marked region in one multiline C-comment.<br>+ The menu entry &quot;Comments.comment-&gt;code&quot;&nbsp;&nbsp;turns marked multiline C-comment&nbsp;&nbsp; back into code.<br>+ A marked region can be surrounded by a for-, if, if-else, while-, do-while-statement&nbsp;&nbsp;(with indentation).<br>+ The menu entry &quot;Snippets.make prototype&quot; makes a C- or C++-prototype from <br>&nbsp;&nbsp;the current line or marked region and puts it in an internal buffer.<br>+ The menu entry &quot;Snippets.add prototype&quot; also makes a C- or C++-prototype from <br>&nbsp;&nbsp;the current line or a marked region and adds it to the internal buffer.<br>+ The menu entry &quot;Snippets.put prototype&quot; inserts all gathered prototypes&nbsp;&nbsp;&nbsp;&nbsp;below the current line. <br>+ Tag substitution rewritten (Some characters in a substitution text for a tag <br>&nbsp;&nbsp;prevented the tag from being substituted).</td>
+</tr>
+<tr>
+        <td class="roweven" valign="top" nowrap><a href="https://www.vim.org/scripts/download_script.php?src_id=1947">cvim.zip</a></td>
+    <td class="roweven" valign="top" nowrap><b>3.0</b></td>
+    <td class="roweven" valign="top" nowrap><i>2003-04-28</i></td>
+    <td class="roweven" valign="top" nowrap>6.0</td>
+    <td class="roweven" valign="top"><i><a href="https://www.vim.org/account/profile.php?user_id=169">Fritz Mehner</a></i></td>
+    <td class="roweven" valign="top" width="2000">+ C-style comments AND C++-style comments are supported now.<br>+ The menu entry 'Comments-&gt;Comment style ..' switches the styles (toggle).<br>+ Block comments are now read as templates or skeletons from files:<br>&nbsp;&nbsp;&nbsp;&nbsp;Frame Block,&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Function Description,&nbsp;&nbsp;Method Description,<br>&nbsp;&nbsp;&nbsp;&nbsp;Class Description,&nbsp;&nbsp;H+file header,&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; C/C++-file header<br>+ These templates can contain tags like |FILENAME|, |AUTHOR| etc. which are replaced<br>&nbsp;&nbsp;after reading (KDevelop templates can be used without any change).<br>+ indentation: multiline inserts and code snippets will be indented after insertion.<br>+ Most menu entries are now also active in normal mode.<br>+ new menu items:&nbsp;&nbsp;includes for the C99 header, <br>&nbsp;&nbsp;includes for the standard C++ header, <br>&nbsp;&nbsp;includes for the C++ version of the Standard C Library header,<br>&nbsp;&nbsp;multiline C comment,&nbsp;&nbsp;vim modeline<br>+ Reading the templates is done in one function which can be called in an autocmd.<br>+ Code cleanup: register z no longer used. Most function calls are silent now.</td>
+</tr>
+<tr>
+        <td class="rowodd" valign="top" nowrap><a href="https://www.vim.org/scripts/download_script.php?src_id=1781">cvim.zip</a></td>
+    <td class="rowodd" valign="top" nowrap><b>2.8.1</b></td>
+    <td class="rowodd" valign="top" nowrap><i>2003-03-06</i></td>
+    <td class="rowodd" valign="top" nowrap>6.0</td>
+    <td class="rowodd" valign="top"><i><a href="https://www.vim.org/account/profile.php?user_id=169">Fritz Mehner</a></i></td>
+    <td class="rowodd" valign="top" width="2000">- menus appear immediately after loading the plugin<br>- additional word lists for keyword completion (optional):<br>&nbsp;&nbsp;&nbsp;&nbsp;C/C++ -keywords<br>&nbsp;&nbsp;&nbsp;&nbsp;German words (for commenting sources)<br>&nbsp;&nbsp;&nbsp;&nbsp;K&R-Book: Words from the table of content (for commenting sources)<br>&nbsp;&nbsp;&nbsp;&nbsp;Standard Template Library (STL):&nbsp;&nbsp;method names and type names<br>&nbsp;&nbsp;&nbsp;&nbsp;XFORMS library: macro and function names<br>- additional settings for .vimrc and .gvimrc (optional)</td>
+</tr>
+<tr>
+        <td class="roweven" valign="top" nowrap><a href="https://www.vim.org/scripts/download_script.php?src_id=1748">c.vim</a></td>
+    <td class="roweven" valign="top" nowrap><b>2.8</b></td>
+    <td class="roweven" valign="top" nowrap><i>2003-02-17</i></td>
+    <td class="roweven" valign="top" nowrap>6.0</td>
+    <td class="roweven" valign="top"><i><a href="https://www.vim.org/account/profile.php?user_id=169">Fritz Mehner</a></i></td>
+    <td class="roweven" valign="top" width="2000">- code snippet support: read, write, edit code snippets in a separate directory<br>- specify command line arguments for make<br>- hardcopy: print whole buffer or a highlighted part of it into a file (Postscript)<br>- new menu entry&nbsp;&nbsp;&quot;fscanf( infile, &quot;&quot;, & );&quot;&nbsp;&nbsp;after code for opening a file with pointer &quot;infile&quot; is inserted<br>- new menu entry&nbsp;&nbsp;&quot;fprintf( outfile, &quot;\n&quot;,&nbsp;&nbsp;);&quot;&nbsp;&nbsp;after code for opening a file with pointer &quot;outfile&quot; is inserted<br></td>
+</tr>
+<tr>
+        <td class="rowodd" valign="top" nowrap><a href="https://www.vim.org/scripts/download_script.php?src_id=988">cvim.zip</a></td>
+    <td class="rowodd" valign="top" nowrap><b>2.6</b></td>
+    <td class="rowodd" valign="top" nowrap><i>2002-07-04</i></td>
+    <td class="rowodd" valign="top" nowrap>6.0</td>
+    <td class="rowodd" valign="top"><i><a href="https://www.vim.org/account/profile.php?user_id=169">Fritz Mehner</a></i></td>
+    <td class="rowodd" valign="top" width="2000">- separation of file section comments in 2 new submenus<br>&nbsp;&nbsp; 'C-File-Sections' and 'H-File-Sections'<br>- class comment<br>- method comment<br>- keyword comments and special comments are now in submenus<br>- new hot key to run make<br>- word list for C/C++ word completion (optional)<br>- some optional vimrc- and gvimrc-entries in two files (optional)<br>- minor improvements and corrections</td>
+</tr>
+<tr>
+        <td class="roweven" valign="top" nowrap><a href="https://www.vim.org/scripts/download_script.php?src_id=758">c.vim</a></td>
+    <td class="roweven" valign="top" nowrap><b>2.1</b></td>
+    <td class="roweven" valign="top" nowrap><i>2002-04-04</i></td>
+    <td class="roweven" valign="top" nowrap>6.0</td>
+    <td class="roweven" valign="top"><i><a href="https://www.vim.org/account/profile.php?user_id=169">Fritz Mehner</a></i></td>
+    <td class="roweven" valign="top" width="2000">- include all file section headers at once<br>- insert empty block<br>- 2 additional loops<br>- includes for all Standard C Library header files<br>- minor internal improvements<br></td>
+</tr>
+<tr>
+        <td class="rowodd" valign="top" nowrap><a href="https://www.vim.org/scripts/download_script.php?src_id=658">c.vim</a></td>
+    <td class="rowodd" valign="top" nowrap><b>2.0.3</b></td>
+    <td class="rowodd" valign="top" nowrap><i>2002-03-07</i></td>
+    <td class="rowodd" valign="top" nowrap>6.0</td>
+    <td class="rowodd" valign="top"><i><a href="https://www.vim.org/account/profile.php?user_id=169">Fritz Mehner</a></i></td>
+    <td class="rowodd" valign="top" width="2000">(1) 4 new keyword comments<br>(2) code-&gt;comments does no longer mark&nbsp;&nbsp;the first character in all lines</td>
+</tr>
+<tr>
+        <td class="roweven" valign="top" nowrap><a href="https://www.vim.org/scripts/download_script.php?src_id=579">c.vim</a></td>
+    <td class="roweven" valign="top" nowrap><b>2.0</b></td>
+    <td class="roweven" valign="top" nowrap><i>2002-02-13</i></td>
+    <td class="roweven" valign="top" nowrap>6.0</td>
+    <td class="roweven" valign="top"><i><a href="https://www.vim.org/account/profile.php?user_id=169">Fritz Mehner</a></i></td>
+    <td class="roweven" valign="top" width="2000">Initial upload</td>
+</tr>
+</table>
+<small>ip used for rating: 60.250.32.97</small>
+<!-- finish off the framework -->
+          </td>
+        </tr>
+      </table>
+    </td>
+
+  </tr>
+</table>
+
+<!-- END OF THE PAGE BODY: BETWEEN HEADER AND FOOTER -->
+
+<table width="100%" cellpadding="0" cellspacing="0" border="0" bordercolor="red">
+  <tr><td colspan="4"><img src="https://www.vim.org/images/spacer.gif" width="1" height="5" alt=""></td></tr>
+  <tr><td colspan="4" bgcolor="#000000"><img src="https://www.vim.org/images/spacer.gif" height="2" width="1" alt=""></td></tr>
+  <tr><td colspan="4"><img src="https://www.vim.org/images/spacer.gif" width="1" height="5" alt=""></td></tr>
+  <tr>
+    <td><img src="https://www.vim.org/images/spacer.gif" width="5" height="1" alt=""></td>
+
+    <td align="left" valign="top"><small>
+      If you have questions or remarks about this site, visit the
+      <a href="http://vimonline.sf.net">vimonline development</a> pages.
+      Please use this site responsibly.
+      <br> 
+      
+      Questions about <a href="http://www.vim.org/about.php">Vim</a> should go
+      to the <a href="http://www.vim.org/maillist.php">maillist</a>.
+      Help Bram <a href="http://iccf-holland.org/">help Uganda</a>.
+      </small>
+	&nbsp;
+	&nbsp;
+
+    </td>
+
+    <td align="right" valign="top">
+      	<a href="https://osdn.net/projects/vim"><img src="https://osdn.net/sflogo.php?group_id=8&type=1" width="96" height="29" border="0" alt="OSDN.net Logo" /></a>
+    </td>
+
+    <td><img src="https://www.vim.org/images/spacer.gif" width="5" height="1" alt=""></td>
+  </tr>
+
+    
+  <tr><td colspan="4"><img src="https://www.vim.org/images/spacer.gif" width="1" height="5" alt=""></td>
+  
+  </tr>
+</table>
+
+</body>
+</html>
+

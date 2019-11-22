@@ -1,0 +1,713 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="zh-tw" lang="zh-tw" >
+<head>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<link rel="shortcut icon" href="../../images/favicon.ico" />
+	  <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+  <meta name="robots" content="index, follow" />
+  <meta name="keywords" content="docker, container, OSSFNL867" />
+  <meta name="title" content="Docker 實作入門" />
+  <meta name="description" content="Docker 實作入門" />
+  <meta name="generator" content="" />
+  <title>Docker 實作入門 - OpenFoundry</title>
+  <link href="../../favicon.ico" rel="shortcut icon" type="image/x-icon" />
+  <link rel="stylesheet" href="../../components/com_gantry/css/gantry.css" type="text/css" />
+  <link rel="stylesheet" href="../../components/com_gantry/css/grid-12.css" type="text/css" />
+  <link rel="stylesheet" href="../../components/com_gantry/css/joomla.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/joomla.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/style1.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/light-body.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/demo-styles.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/template.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/typography.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/fusionmenu.css" type="text/css" />
+  <style type="text/css">
+    <!--
+#rt-main-surround ul.menu li.active > a, #rt-main-surround ul.menu li.active > .separator, #rt-main-surround ul.menu li.active > .item, #rt-main-surround .square4 ul.menu li:hover > a, #rt-main-surround .square4 ul.menu li:hover > .item, #rt-main-surround .square4 ul.menu li:hover > .separator, .roktabs-links ul li.active span {color:#0088B5;}
+a, #rt-main-surround ul.menu a:hover, #rt-main-surround ul.menu .separator:hover, #rt-main-surround ul.menu .item:hover {color:#0088B5;}
+    -->
+  </style>
+  <script type="text/javascript" src="../../components/com_jcomments/js/jcomments-v2.1.js%3Fv=2"></script>
+  <script type="text/javascript" src="../../components/com_jcomments/libraries/joomlatune/ajax.js"></script>
+  <script type="text/javascript" src="../../media/system/js/mootools.js"></script>
+  <script type="text/javascript" src="../../media/system/js/caption.js"></script>
+  <script type="text/javascript" src="../../components/com_gantry/js/gantry-buildspans.js"></script>
+  <script type="text/javascript" src="../../components/com_gantry/js/gantry-inputs.js"></script>
+  <script type="text/javascript" src="../../templates/rt_quantive_j15/js/jquery.cookie.js"></script>
+  <script type="text/javascript" src="../../modules/mod_roknavmenu/themes/fusion/js/fusion.js"></script>
+  <script type="text/javascript" src="../../modules/mod_ofssologin/js/ofssologin.js"></script>
+  <script type="text/javascript">
+
+			window.addEvent('domready', function() {
+				var modules = ['rt-block'];
+				var header = ['h3','h2','h1'];
+				GantryBuildSpans(modules, header);
+			});
+		InputsExclusion.push('.content_vote','#rt-popup')
+		        window.addEvent('load', function() {
+					new Fusion('ul.menutop', {
+						pill: 0,
+						effect: 'slide and fade',
+						opacity: 1,
+						hideDelay: 500,
+						centered: 0,
+						tweakInitial: {'x': -2, 'y': 0},
+        				tweakSubsequent: {'x': 0, 'y': -14},
+						menuFx: {duration: 200, transition: Fx.Transitions.Sine.easeOut},
+						pillFx: {duration: 400, transition: Fx.Transitions.Back.easeOut}
+					});
+	            });
+  </script>
+<!-- <script type="text/javascript" src="/sso/javascripts/langsync.js"></script> -->
+<!-- <script src="/templates/rt_quantive_j15/js/ossf.js"></script> -->
+<script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-4136519-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
+</head>
+	<body  class="backgroundlevel-low backgroundstyle-style8 bodylevel-med bodystyle-light cssstyle-style1 logostyle-dark font-family-helvetica font-size-is-default menu-type-fusionmenu col12 ">
+		<div id="rt-main-background">
+			<div class="rt-container">
+																<div id="rt-header">
+					<div class="rt-grid-7 rt-alpha">
+    			<div class="rt-block">
+    	    	<a href="../../index.html" id="rt-logo"></a>
+    		</div>
+	    
+</div>
+<div class="rt-grid-5 rt-omega">
+                    <div class="square9">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<div class="ofssologin_square9"><a href="../../index.html">登入</a>&nbsp;&nbsp|&nbsp;&nbsp;<span><a href="../../en/tech-column/9319-docker-101.html" ><span lang="en" xml:lang="en">English</span></a></li></ul></span><!--Joom!fish V2.0.4 (Lightning)-->
+<!-- &copy; 2003-2009 Think Network, released under the GPL. -->
+<!-- More information: at http://www.joomfish.net -->
+<div class="ofssologin_search_square9">
+  <form id="of_search" action="https://www.openfoundry.org/of/openfoundry/search" method="get" onsubmit="of_search(); return false;">
+    <select id="of_search_type">
+      <option value="Projects"> 專案 </option>
+      <option value="Content"> 文章 </option>
+      <option value="People"> 人才 </option>
+    </select>
+    <input id="query" name="query" id="mod_search_searchword" maxlength="50" alt="search" class="inputbox" type="text" size="28" value="search..."  onblur="if(this.value=='') this.value='search...';" onfocus="if(this.value=='search...') this.value='';" />
+    <input type="hidden" name="commit" value="search" />
+  </form>
+</div></div>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		
+</div>
+					<div class="clear"></div>
+				</div>
+																<div id="rt-navigation"><div id="rt-navigation2"><div id="rt-navigation3">
+					
+<div class="nopill">
+	<ul class="menutop level1 " >
+						<li class="item1 root" >
+					<a class="orphan item bullet" href="../../index.html"  >
+				<span>
+			    				首頁				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item32 root" >
+					<a class="orphan item bullet" href="../../archived.html"  >
+				<span>
+			    				專案				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item186 root" >
+					<a class="orphan item bullet" href="../community.html"  >
+				<span>
+			    				Who&#039;s Who				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item4 root" >
+					<a class="orphan item bullet" href="../news.html"  >
+				<span>
+			    				新聞				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item5 root" >
+					<a class="orphan item bullet" href="../law-and-licensing.html"  >
+				<span>
+			    				法律源地				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item3 root" >
+					<a class="orphan item bullet" href="../activities.html"  >
+				<span>
+			    				活動				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item2 root" >
+					<a class="orphan item bullet" href="../resourcecatalog%3FName=Value.html"  >
+				<span>
+			    				資源表列				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item45 root" >
+					<a class="orphan item bullet" href="../about.html"  >
+				<span>
+			    				關於				   
+				</span>
+			</a>
+			
+			
+	</li>	
+				</ul>
+</div>
+
+				    <div class="clear"></div>
+				</div></div></div>
+								<div class="rt-surround"><div class="rt-surround2"><div class="rt-surround3">
+										<div id="rt-showcase-section">
+												<div id="rt-showcase">
+							<div class="rt-grid-12 rt-alpha rt-omega">
+    		<div class="clear"></div>
+		
+		
+                <div class="close-note">
+                    <div class="rt-block">
+               					<div class="module-content">
+                	<div style="font-size:medium; background-image:linear-gradient(120deg,#159957,#4298b2);color:white;padding:20px;margin:-10px -18px;">感謝您對「自由軟體鑄造場」的支持與愛護，十多年來「自由軟體鑄造場」受中央研究院支持，並在資訊科學研究所以及資訊科技創新研究中心執行，現已完成階段性的任務。 本網站預計持續維運至 2021年底，網站內容基本上不會再更動。<br />也紀念我們永遠的朋友 李士傑先生（Shih-Chieh Ilya Li）。</div>				</div>
+            </div>
+                </div>
+		
+</div>
+							<div class="clear"></div>
+						</div>
+																	</div>
+															<div id="rt-main-surround">
+												<div id="rt-breadcrumbs">
+								<div class="rt-breadcrumb-surround">
+		<a href="../../index.html" id="breadcrumbs-home"></a>
+		<span class="breadcrumbs pathway">
+<a href="../tech-column.html" class="pathway">技術專欄</a> <img src="../../templates/rt_quantive_j15/images/arrow.png" alt=""  /> <span class="no-link">Docker 實作入門</span></span>
+	</div>
+	
+							<div class="clear"></div>
+						</div>
+																							              <div id="rt-main" class="sa3-mb9">
+                <div class="rt-main-inner">
+                    <div class="rt-grid-9 rt-push-3">
+                                                <div class="rt-block">
+                            							<div class="square1">
+							<div class="rt-module-surround">
+								<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+								<div class="rt-module-inner">
+		                            <div id="rt-mainbody">
+		                                
+<div class="rt-joomla ">
+	<div class="rt-article">
+		
+				<div class="rt-headline"><h1 class="rt-article-title">Docker 實作入門</h1>		</div>
+		<div class="clear"></div>
+		
+		
+		
+				<div class="rt-articleinfo">
+						<div class="rt-article-icons">
+								<a href="9319-docker-101%3Ftmpl=component&amp;print=1&amp;layout=default&amp;page=.html" title="列印" onclick="window.open(this.href,'win2','status=no,toolbar=no,scrollbars=yes,titlebar=no,menubar=no,resizable=yes,width=640,height=480,directories=no,location=no'); return false;" rel="nofollow"><span class="icon print"></span></a>																</div>
+			
+			<span class="rt-date-posted">
+						建立日期			2014-12-05 09:46						&nbsp;&nbsp;&nbsp;&nbsp;						最近更新在 2014-12-17 16:23						</span>
+
+						<span class="rt-author">
+				作者是 黃儀銘			</span>
+				
+					</div>
+		
+		
+		<h3 id="-">目的</h3>
+<p>主要介紹 Docker 的實作，會提到以下幾個部分：</p>
+<ol>
+<li>建立 Docker container</li>
+<li>管理 Docker 上的 container</li>
+<li>下載 image 、commit 建立新的 image</li>
+<li>經由撰寫 Dockerfile 來自動建立新的 image</li>
+</ol>
+<p>在進入實作前，會簡單介紹 Docker 與虛擬化的差異、Docker 上的重要元件，接下來準備的部分會需要安裝 Docker 及先登入 Docker Hub。</p>
+
+<h3>&nbsp;</h3>
+<h3 id="-docker">簡介 Docker</h3>
+<p><strong>Docker</strong> 是一個開源專案，支援多平台，從筆電到公、私有雲上能進行快速部署輕量、獨立的作業環境。<strong>Docker</strong> 使用 Linux 核心中的功能，Namespace 及 Control Groups (cgroups) 等，來達到建置獨立的環境及控制 CPU 、Memory 、網路等資源。</p>
+<p><img title="Docker logo" src="../../images/141209/large_v.png" alt="Docker logo" /></p>
+<blockquote>
+<p><strong>專案網址：</strong> <a href="https://www.docker.com/">https://www.docker.com/</a></p>
+</blockquote>
+<h3>&nbsp;</h3>
+<h3 id="docker-container-">Docker Container 與虛擬化的不同</h3>
+<p>在前面敘述有提到，Docker 能提供建置獨立的環境，但是運作的方式與虛擬化有所差別。</p>
+<h4 id="-">虛擬化</h4>
+<p>虛擬化通常都是透過在 Host OS 上安裝 hypervisor ，由 hypervisor 來管理不同虛擬主機，每個虛擬主機都需要安裝不同的作業系統。</p>
+<p><img title="Virtualization_architecture.png" src="../../images/141209/Virtualization_architecture拷貝.png" alt="Virtualization diagram" /></p>
+<h4 id="docker-container">Docker Container</h4>
+<p>Docker 提供應用程式在獨立的 container 中執行，這些 container 並不需要像虛擬化一樣額外依附在 <a href="https://en.wikipedia.org/wiki/Hypervisor">hypervisor</a> 或 guest OS 上，是透過 Docker Engine 來進行管理。</p>
+<p><img title="Container_architecture.png" src="../../images/141209/Container_architecture拷貝.png" alt="Docker container daigram" /></p>
+<h3>&nbsp;</h3>
+<h3 id="docker-">Docker 重要元件</h3>
+<p>在進入如何操作 Docker 前，先介紹 Docker 中的三個主要部分：</p>
+<ul>
+<li><strong>Docker Images</strong> image 能開啟 Docker container，但是 images 是唯讀的，也就是直接 結束 container 後，在 container 變更的資料並不會儲存在 image 內，但是 Docker 能對變更後的 container 建立 image。</li>
+<li><strong>Docker Containers</strong> <strong>Docker Containers</strong> 提供獨立、安全的環境給應用程式執行，container 是從 Docker image 建立，運行在主機上。</li>
+<li><strong>Docker Registries</strong> 將 <strong>Docker images</strong> 上傳、下載到公開或私有的 <strong>Docker Registries</strong> 上，與其他人分享，公開的像 <strong>Docker Hub</strong> 提供了許多不同的 images ，如：Ubuntu 或 Ubuntu 環境下安裝 Ruby on Rails 的 images ，只要下載來，就能直接開啟成 container。</li>
+</ul>
+<h3>&nbsp;</h3>
+<h3 id="-docker-">操作 Docker 方法</h3>
+<p>Docker 主機上會運行 Docker daemon，也能開啟許多 container。 要對 Docker 進行操作，使用 Docker client，也就是 Docker 指令 (例如：<code>docker pull</code>, <code>docker images</code> ...) ，分別可以藉由：</p>
+<ol>
+<li><a href="https://en.wikipedia.org/wiki/Unix_domain_socket">UNIX sockets</a></li>
+<li>網路 (<a href="https://en.wikipedia.org/wiki/Representational_state_transfer">RESTful API</a>)</li>
+</ol>
+<p>對主機上的 Docker daemon 進行控制，當然 Docker client 與 Docker daemon 可以是同一台或不同主機上 。</p>
+<p><img title="docker-server-client.png" src="../../images/141209/docker-server-client拷貝.png" alt="Docker client &amp; Docker daemon" /></p>
+<blockquote>
+<p><strong>參考 Docker Remote API :</strong></p>
+<p>Docker Remote API - Docker Documentation <a href="https://docs.docker.com/reference/api/docker_remote_api/">https://docs.docker.com/reference/api/docker_remote_api/</a></p>
+</blockquote>
+<h3>&nbsp;</h3>
+<h3 id="-">準備</h3>
+<p>本篇文章實作版本：<strong>Docker 1.3.2</strong></p>
+<h4 id="1-">1. 安裝</h4>
+<p>接下來我們先在主機上安裝 Docker：</p>
+<p><strong>Ubuntu</strong></p>
+<p>安裝：</p>
+<pre><code class="lang-sh">$ <span class="hljs-built_in">sudo</span> apt-get update
+$ <span class="hljs-built_in">sudo</span> apt-get install docker.io
+</code></pre>
+<p>測試一下是否安裝成功：</p>
+<pre><code class="lang-sh">$ <span class="hljs-built_in">sudo</span> docker info
+Containers: <span class="hljs-number">0</span>
+Images: <span class="hljs-number">0</span>
+Storage Driver: aufs
+ Root Dir: /var/lib/docker/aufs
+ Dirs: <span class="hljs-number">3</span>
+ ...
+</code></pre>
+<p><strong>Mac OS X, Windows</strong></p>
+<p>在 Mac OS X 或 Windows 上需要安裝 <strong>Boot2Docker</strong> ，因為 <strong>Docker Engine</strong> 有用到 Linux 的特定功能，所以 <strong>Boot2Docker</strong> 會用 Virtualbox 建立 Linux VM ，在 Linux VM 上開啟 <strong>Docker</strong> daemon 由在 Mac OS X 或 Windows 的 <strong>Docker</strong> client 去操作Linux VM 上 <strong>Docker</strong> daemon <em>(後面會在詳述)</em>。</p>
+<blockquote>
+<p><strong>Boot2Docker 安裝參考：</strong></p>
+<p>Mac OS X : <a href="https://docs.docker.com/installation/mac/">https://docs.docker.com/installation/mac/</a><br /> Windows : <a href="https://docs.docker.com/installation/windows/">https://docs.docker.com/installation/windows/</a></p>
+</blockquote>
+<p>備註：在 Mac OS X 與 Windows 執行 <code>docker</code> 指令不用加上 <code>sudo</code></p>
+<h4 id="2-docker-hub-">2. 註冊及登入 Docker Hub 帳號</h4>
+<p>在前面有提到 <strong>Docker Hub</strong> 上提供了許多 images 可以使用，先註冊 <strong>Docker Hub</strong> 帳號，網址：<a href="https://hub.docker.com/account/signup/">https://hub.docker.com/account/signup/</a></p>
+<p>接著可以利用 <code>docker login</code> 來登入 <strong>Docker Hub</strong> ：</p>
+<pre><code class="lang-sh">$ <span class="hljs-built_in">sudo</span> docker login
+</code></pre>
+<blockquote>
+<p>Username: [ENTER YOUR USERNAME] Password:<br />Email: [ENTER YOUR EMAIL] Login Succeeded</p>
+</blockquote>
+<h3>&nbsp;</h3>
+<h3 id="-docker-container">一、操作 Docker Container</h3>
+<h4 id="1-container">1. 建立一個新的 Container</h4>
+<p>先來暖身一下，啟動一個 <em>CentOS 6</em> container，希望能執行指令來顯示今天的日期與時間。 使用 <code>docker run</code> 開啟一個新的 container：</p>
+<pre><code class="lang-sh">$ <span class="hljs-built_in">sudo</span> docker run centos:centos6 /bin/date
+</code></pre>
+<pre>Unable to find image 'centos:centos6' locally<br />centos:centos6: The image you are pulling has been verified<br />511136ea3c5a: Pull complete<br />5b12ef8fd570: Pull complete<br />Status: Downloaded newer image for centos:centos6<br />Mon Dec 1 03:25:41 GMT 2014</pre>
+<p>輸出結果的第 1 行到第 5 行是，因為 docker 主機上原來並沒有 centos6 的 image 檔案，所以會先從 Docker Hub 下載。</p>
+<p>輸出結果的最後一行就是執行的 <code>date</code> 指令。另外可以發現，如果扣除下載 image 時間，開啟一個 container 只要非常短的時間。</p>
+<ul>
+<li><code>docker run</code> 啟動一個新的 container</li>
+<li><code>centos:centos6</code> CentOS 6.X (目前 CentOS 6 最新版為 6.6)。 <code>centos</code> 是 repo 名稱，<code>centos6</code> 是 repo 內 tags。 到 <a href="https://hub.docker.com/">Docker Hub 網站</a>搜尋 <em>centos</em> 後，在 <em>centos</em> repo 頁面上就會呈現有哪些 tags 。</li>
+</ul>
+<p><img title="centos_Repository___Docker_Hub_Registry_-_Repositories_of_Docker_Images.png" src="../../images/141209/docker-server-client拷貝.png" alt="Docker client" /></p>
+<ul>
+<li><code>/bin/date</code> 開啟 container 後執行的指令</li>
+</ul>
+<p><code>docker run</code> 還有其他參數可以進入 container 的終端機指令互動模式下：</p>
+<pre><code class="lang-sh">$ <span class="hljs-built_in">sudo</span> docker run -t -i centos:centos6 bash
+</code></pre>
+<p><em>[進入 container...]</em></p>
+<pre><code class="lang-sh">[root@ea27583b1dba /]<span class="hljs-comment"># whoami</span>
+root
+</code></pre>
+<ul>
+<li>-t 開啟 tty 進入 container</li>
+<li>-i 透過 STDIN 與 container 進行互動</li>
+</ul>
+<p>該如何離開 container 的終端機？</p>
+<ol>
+<li>輸入 <code>exit</code> 或按 <code>control/Ctrl</code> + <code>D</code>，目前使用的這個 container 就會結束，而下次在開啟的 container 又是一個全新的。</li>
+<li><code>control/Ctrl</code> + <code>P</code>，再按 <code>control/Ctrl</code> + <code>Q</code> ，就可以跳離開這個 container 的 tty。</li>
+</ol>
+<h4 id="2-container">2. 管理 Container</h4>
+<p>如果只是離開了 container 終端機， container 並沒有關閉或停止執行，所以接下來說明如何來管理 container。</p>
+<p><strong>(1) Container ID</strong></p>
+<p>每一個 container 都有一個唯一的 <em>CONTAINER ID</em>，在上面的部分，執行 <code>sudo docker run -t -i centos:centos6 bash</code> 開啟新的 container 後，會進入 container 的終端機內：</p>
+<pre><code class="lang-sh">[root@<span class="hljs-number">0</span>f83f1728262 /]<span class="hljs-comment"># whoami</span>
+root
+</code></pre>
+<p><code>0f83f1728262</code> 就是 <em>CONTAINER ID</em>，之後都是利用此 id 來分別不同的 container。</p>
+<p><strong>(2) 列出 Container</strong></p>
+<p>Docker client 提供了 <code>docker ps</code> 可以查看目前開啟且正在執行的 container：</p>
+<pre><code class="lang-sh">$ <span class="hljs-built_in">sudo</span> docker ps
+</code></pre>
+<p><img title="docker_ps.png" src="../../images/141209/docker_ps.png" alt="docke ps commnad" /></p>
+<p>可以看到 CONTAINER ID 及用哪一個 image 建立。</p>
+<p><strong>(3) 在 Container 中執行指令</strong></p>
+<p>離開了 container 的終端機後，並沒有將 container 關掉，可以用 <code>docker exec</code> 在 container 中執行指令，例如下面範例就是再回到<code>0f83f1728262</code> container 的終端機：</p>
+<pre><code class="lang-sh">$ <span class="hljs-built_in">sudo</span> docker <span class="hljs-keyword">exec</span> -t -i <span class="hljs-number">0</span>f83f1728262 bash
+</code></pre>
+<p><em>[進入container...]</em></p>
+<pre><code class="lang-sh">[root@<span class="hljs-number">0</span>f83f1728262 /]<span class="hljs-comment">#</span>
+</code></pre>
+<p><strong>(4) 停止 Container</strong></p>
+<p>想要讓在執行中的 container 停止，用 <code>docker stop</code> 停止執行中的 container ：</p>
+<pre><code class="lang-sh">$ <span class="hljs-built_in">sudo</span> docker stop <span class="hljs-number">0</span>f83f1728262
+<span class="hljs-number">0</span>f83f1728262
+</code></pre>
+<p>查看 container 狀態：</p>
+<pre><code class="lang-sh">$ <span class="hljs-built_in">sudo</span> docker ps <span class="hljs-operator">-a</span>
+</code></pre>
+<p><img title="docker_ps_a.png" src="../../images/141209/docker_ps_a.png" alt="docker ps -a" /></p>
+<p>備註： <code>docker ps -a</code>，可以看到所有沒被刪除的 container。</p>
+<p><strong>(5) 開啟停止的 Container</strong></p>
+<p>開啟停止的 container <code>docker start</code>：</p>
+<pre><code class="lang-sh">$ <span class="hljs-built_in">sudo</span> docker start <span class="hljs-number">0</span>f83f1728262
+</code></pre>
+<p>開啟後會執行一開始建立這個 container 的指令及參數，所以如果建立的時候，並沒有開啟終端機與互動模式，執行完指令後，container 又結束了。</p>
+<p><strong>(6) 刪除 Container</strong> 透過 <code>docker ps -a</code> 可以列出所有建立過且沒被刪除的 container： <code>docker rm</code> 刪除不需要的 container ：</p>
+<pre><code class="lang-sh">$ <span class="hljs-built_in">sudo</span> docker rm <span class="hljs-number">0</span>f83f1728262
+<span class="hljs-number">0</span>f83f1728262
+</code></pre>
+<p><strong>(7) Container 內建立額外的掛載點</strong></p>
+<p>在 container 建立時，可以再建自訂的掛載點：</p>
+<pre><code class="lang-sh">$ docker run -t -i -v /myData centos:centos6 bash
+</code></pre>
+<p><em>[進入 container...]</em></p>
+<pre><code class="lang-sh">[root@<span class="hljs-number">20</span>d24e944789 /]<span class="hljs-comment"># df -h</span>
+Filesystem       Size  Used Avail Use% Mounted on
+rootfs              <span class="hljs-number">19</span>G  <span class="hljs-number">459</span>M   <span class="hljs-number">17</span>G   <span class="hljs-number">3</span>% /
+...
+/dev/sda1        <span class="hljs-number">19</span>G  <span class="hljs-number">459</span>M   <span class="hljs-number">17</span>G   <span class="hljs-number">3</span>% /myData
+...
+</code></pre>
+<ul>
+<li>-v 在 container 內的掛載點</li>
+</ul>
+<p><strong>(8) 共享主機與 Container 資料</strong> (這個部分可以等到 <strong>下載 Image</strong> 再回頭來看) Docker 也提供了可以與主機目錄共享的資料的功能，這在開發的時候蠻好用的，只要把專案目錄掛載到 container 內，就能直接在 container 測試、執行。</p>
+<p>我們將主機上的 <em>/home/aming/Docker/tutorial/</em> 目錄掛到 container 內的 <em>/app</em> 目錄：</p>
+<pre><code class="lang-sh">$ <span class="hljs-built_in">sudo</span> docker run -t -i -v \   
+&gt; /home/aming/Docker/tutorial/:/app \
+&gt; tutum/apache-php bash
+</code></pre>
+<ul>
+<li>-v <em>[HOST_DIR]:[CONTAINER_DIR]</em> 將 host OS 上的目錄掛載到 container 內的掛載點</li>
+</ul>
+<p><img title="host_os_container_volume_cc.png" src="../../images/141209/host_os_container_volume_cc.png" alt="共享主機與 Container 資料" /></p>
+<h3>&nbsp;</h3>
+<h3 id="-docker-image">二、管理 Docker Image</h3>
+<p><strong>建立一個新的 Container</strong> 內有提到，使用 <code>docker run</code> 建立新的 container 時，如果 Docker 發現沒有符合的 image 預設會去 Docker Hub 下載，那我們該如何知道目前有哪些可用的 images ？</p>
+<p><code>docker images</code> 可以列出主機內已經存在的 image：</p>
+<pre><code>$ sudo docker images
+REPOSITORY  TAG      IMAGE ID      CREATED      VIRTUAL SIZE
+centos      centos6  70441cac1ed5  3 weeks ago  215.8 M
+</code></pre>
+<p>可以看到前面所提到的 image 的「repo 名稱」、「tag 名稱」等資訊。</p>
+<h4 id="1-images">1. 搜尋 Images</h4>
+<p>搜尋 <em>php</em> 關鍵字：</p>
+<pre><code class="lang-sh">$ <span class="hljs-built_in">sudo</span> docker search php
+</code></pre>
+<p><img title="docker_search_php.png" src="../../images/141209/docker_search_php.png" alt="docker seach php result" /></p>
+<h4 id="2-image">2. 下載 Image</h4>
+<p>我們下載搜尋到的 <em>tutum/apache-php</em> ：</p>
+<pre><code class="lang-sh">$ <span class="hljs-built_in">sudo</span> docker pull tutum/apache-php
+Pulling repository tutum/apache-php
+...
+</code></pre>
+<p>想知道目前主機上有哪些 images 可以使用 <code>docker images</code> ，會列出主機內所有的 image：</p>
+<pre><code class="lang-sh">$ <span class="hljs-built_in">sudo</span> docker images
+</code></pre>
+<p><img title="docker_images_after_pull.png" src="../../images/141209/docker_images_after_pull.png" alt="enter image description here" /></p>
+<h4 id="3-image">3. 製作新的 Image</h4>
+<p>把剛才下載下來的 tutum/apache-php 已經有 Apache 及 PHP 環境，直接再利用這個 image，安裝 PHPUnit，製作成新的 image：</p>
+<p>開啟一個新的 Container：</p>
+<pre><code class="lang-sh">$ <span class="hljs-built_in">sudo</span> docker run -t -i tutum/apache-php bash
+</code></pre>
+<p><em>[進入 container...]</em></p>
+<p>Container 內 PHPUnit 安裝（示範用）：</p>
+<pre><code class="lang-sh">root@aeeb1980c96e:/app<span class="hljs-comment"># apt-get update</span>
+root@aeeb1980c96e:/app<span class="hljs-comment"># apt-get install wget php5-xdebug</span>
+root@aeeb1980c96e:/app<span class="hljs-comment"># cd /usr/local/bin ; \ </span>
+&gt; wget https://phar.phpunit.de/phpunit.phar 
+root@aeeb1980c96e:/usr/local/bin<span class="hljs-comment"># chmod +x phpunit.phar</span>
+root@aeeb1980c96e:/usr/local/bin<span class="hljs-comment"># mv phpunit.phar \</span>
+&gt; phpunit
+root@aeeb1980c96e:/usr/local/bin<span class="hljs-comment"># exit</span>
+</code></pre>
+<p><em>[離開 container...]</em></p>
+<p>目前，我們已經建立一個新的 container，container ID 為 <em>aeeb1980c96e</em> 。</p>
+<p>使用 <code>docker commit</code> 將 container 製作成新的 image：</p>
+<pre><code class="lang-sh">$ <span class="hljs-built_in">sudo</span> docker commit -m=<span class="hljs-string">"Add PHPUnit and xdebug"</span> \
+&gt; <span class="hljs-operator">-a</span>=<span class="hljs-string">"Huang Yi-Ming"</span> aeeb1980c96e \
+&gt; ymhuang0808/phpunit-testing:php5.<span class="hljs-number">5.9</span>
+</code></pre>
+<pre><code class="lang-sh">$ <span class="hljs-built_in">sudo</span> docker images
+</code></pre>
+<p><img title="docke_images_commit.png" src="../../images/141209/docke_images_commit.png" alt="製作新的 image" /></p>
+<p>在 container 內建立好需要的環境後，把修改的 container 建立成一個新 image 檔案，這個 image 已經有增加 PHPUnit 測試環境。</p>
+<ul>
+<li><code>-m</code>：製作這個 image 的訊息</li>
+<li><code>-a</code>：image 的作者</li>
+<li><em>aeeb1980c96e</em>：則為上面有提到的 container ID</li>
+<li><em>ymhuang0808/phpunit-testing</em>：repo 名稱，通常斜線（ / ）前面為在 Docker Hub 的帳號名稱<em>（前面部分有註冊 Docker Hub 帳號）</em>，後面則是 repo 名稱</li>
+<li><em>php5.5.9</em>：tag 名稱，因為 repo 內可能會有不版本的 image ，就可以利用 tag 來區分</li>
+</ul>
+<h4 id="4-docker-hub">4. 上傳至 Docker Hub</h4>
+<p>我們做了一個新的 image 後，可以上傳到 Docker Hub 或私有的 registry 將 image 分享出去。</p>
+<p>首先，我們需要到 Docker Hub 網站建立一個自己的 repo：</p>
+<ol>
+<li>
+<p>點選「Add Repository」，選擇「Respository」 <img title="View_Public_Profile___Docker_Hub_Registry_-_Repositories_of_Docker_Images.png" src="../../images/141209/View_Public_Profile___Docker_Hub_Registry_-_Repositories_of_Docker_Images.png" alt="點選新增 repo" /></p>
+</li>
+<li>
+<p>填寫 Repo 名稱（注意要小寫）與描述，接著點選「Add Repository」 <img title="Add_Repository___Docker_Hub_Registry_-_Repositories_of_Docker_Images.png" src="../../images/141209/Add_Repository___Docker_Hub_Registry_-_Repositories_of_Docker_Images.png" alt="填寫 repo 資訊" /></p>
+</li>
+<li>
+<p>成功在 Docker Hub 上建立 repo <img title="Successfully create Docker Hub repo" src="../../images/141209/ymhuang0808_phpunit-testing_Repository___Docker_Hub_Registry_-_Repositories_of_Docker_Images.png" alt="Repo 頁面" /></p>
+</li>
+</ol>
+<p>在 Docker Hub 建立好 repo 後，就可以將 image 使用 <code>docker push</code> 上傳至 Docker Hub：</p>
+<pre><code class="lang-sh">$ <span class="hljs-built_in">sudo</span> docker push ymhuang0808/phpunit-testing
+</code></pre>
+<pre><code>The push refers to a repository [ymhuang0808/phpunit-testing] (len: 1)
+Sending image list
+Pushing repository ymhuang0808/phpunit-testing (1 tags)
+511136ea3c5a: Image already pushed, skipping 
+...
+Pushing tag for rev [be964598c221] on {https://cdn-registry-1.docker.io/v1/repositories/ymhuang0808/phpunit-testing/tags/php5.5.9}
+</code></pre>
+<h4 id="5-image">5. 移除 Image</h4>
+<pre><code class="lang-sh">$ <span class="hljs-built_in">sudo</span> docker rmi \
+&gt; ymhuang0808/phpunit-testing:php5.<span class="hljs-number">5.9</span>
+</code></pre>
+<p>如果無法刪除可能是有 container 使用了這個 image ，所以要先用 <code>docker rm</code> 移除使用的 container，才能順利移除 image。</p>
+<h3>&nbsp;</h3>
+<h3 id="-dockerfile">三、撰寫 Dockerfile</h3>
+<p>在上面了解到能自己製作 image ，並且透過 Docker 分享出去。</p>
+<p>除了可以利用做好的 image 方便建立一個新的 container 外，也可以撰寫好 Dockerfile 來建立 image 的腳本檔案，再使用 <code>docker build</code> 就能幫我們建立一個 image，一樣可以上傳到 Docker Hub 分享出去！</p>
+<p>下面要示範如何使用 Dockerfile 來自動建立 image。跟上面一樣，我們利用 <em>tutum/apache-php</em> 來建 PHPUnit 的環境。</p>
+<h4 id="1-dockerfile">1. 建立目錄與 Dockerfile</h4>
+<pre><code class="lang-sh">$ mkdir ~/dockerfile-demo &amp;&amp; <span class="hljs-built_in">cd</span> ~/dockerfile-demo
+$ touch Dockerfile
+</code></pre>
+<h4 id="2-dockerfile">2. 編輯 Dockerfile</h4>
+<pre><code class="lang-sh">$ vi Dockerfile
+</code></pre>
+<p>加入以下內容：</p>
+<pre><code>FROM tutum/apache-php:latest
+MAINTAINER Huang AMing 
+RUN sed -i 's/archive.ubuntu.com/free.nchc.org.tw/g' \
+  /etc/apt/sources.list
+RUN apt-get update \
+  &amp;&amp; apt-get install -y php5-xdebug
+ADD https://phar.phpunit.de/phpunit.phar /usr/local/bin/
+RUN cd /usr/local/bin \ 
+  &amp;&amp; chmod +x phpunit.phar \ 
+  &amp;&amp; mv phpunit.phar phpunit
+</code></pre>
+<ul>
+<li><code>FROM</code>：以什麼 image 為基底</li>
+<li><code>MAINTAINER</code>：維護 image 的人</li>
+<li><code>RUN</code>：在 image 內執行的指令</li>
+<li><code>ADD</code>：將本機的檔案或遠端的檔案加入到 image 內的目錄，如果是壓縮檔會自動解壓縮。想將本機檔案或目錄複製到 image 可以使用 <code>COPY</code></li>
+</ul>
+<h4 id="3-dockerfile-image">3. 透過 Dockerfile 建立 Image</h4>
+<p>Dockerfile 就像一個腳本檔案，用 <code>docker build</code> 會根據 Dockerfile 內容來建立新的 image：</p>
+<pre><code class="lang-sh">$ <span class="hljs-built_in">sudo</span> docker build \
+&gt; -t=<span class="hljs-string">"ymhuang0808/phpunit-testing:php5.5.9"</span> .
+</code></pre>
+<pre><code>Sending build context to Docker daemon  2.56 kB
+Sending build context to Docker daemon 
+Step 0 : FROM tutum/apache-php:latest
+ ---&gt; 7e6d00854917
+Step 1 : MAINTAINER Huang AMing 
+ ---&gt; Running in 22412a8891e1
+...
+Successfully built 5f466619af2d
+</code></pre>
+<ul>
+<li><code>-t</code>：repo 名稱加上 tag ，以冒號（ : ）區隔</li>
+<li>. 依據當下目錄下的<code>Dockerfile</code></li>
+</ul>
+<h3 id="-">參考資料</h3>
+<ul>
+<li>Docker Documentation <a href="https://docs.docker.com/">https://docs.docker.com/</a></li>
+</ul>
+<p><strong>作者簡介</strong> 黃儀銘 (YMHuang) ，目前任職於自由軟體鑄造場。 部落格: <a href="https://blog.fmbase.tw/">https://blog.fmbase.tw/</a></p>
+			<!-- Show relate article -->
+				<!-- end -->
+		<div class="article_note">
+		<!-- Add tags use metakey, and show OSSF Newsletter tag: OSSFNL+NUM-->
+		<br><br> <hr style='border: 1px dashed #D2DADB;'><b>自由軟體鑄造場電子報&nbsp;:</b>&nbsp;<a href='../../previous-issue%3Ftask=view&amp;id=867.html'>第 255 期 Docker 實作入門</a><br><b>標籤:</b>&nbsp;<a href='../../index.php%3Foption=com_search&amp;Itemid=58&amp;searchphrase=exact_meta&amp;ordering=newest&amp;searchword=docker.html'>docker</a>,&nbsp;&nbsp;<a href='../../index.php%3Foption=com_search&amp;Itemid=58&amp;searchphrase=exact_meta&amp;ordering=newest&amp;searchword=&#32;container.html'> container</a>,&nbsp;&nbsp;				<!-- End -->
+					<br>
+					<b>分類: </b><a href="../tech-column.html">				技術專欄					</a>				</div>
+			 <!-- AddThis Button BEGIN ID 3001 is the front page article -->
+     			<br><br>
+       <div class="addthis_toolbox addthis_default_style addthis_32x32_style">
+       <a class="addthis_button_preferred_1"></a>
+       <a class="addthis_button_preferred_2"></a>
+       <a class="addthis_button_preferred_3"></a>
+       <a class="addthis_button_preferred_4"></a>
+       <a class="addthis_button_compact"></a>
+       <a class="addthis_counter addthis_bubble_style"></a>
+       </div>
+       <script type="text/javascript">var addthis_config = {"data_track_clickback":true};</script>
+       <script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js#pubid=openfoundry"></script>
+       <!-- AddThis Button END -->
+     <br>
+		<div class="totop" ><a class="rt-totop" href="9319-docker-101.html#" style="outline: medium none;">↑ Top</a></div>
+            <!-- AddThis Button END -->
+
+			</div>
+</div>
+
+		                            </div>
+									<div class="clear"></div>
+								</div>
+								<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+							</div>
+							</div>
+                                                    </div>
+                                            </div>
+                                <div class="rt-grid-3 rt-pull-9">
+                <div id="rt-sidebar-a">
+                                    <div class="square4">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<ul class="menu"><li class="item56"><a href="../previous-issue.html"><span>電子報總覽</span></a></li><li class="item55"><a href="../about-newsletter.html"><span>關於本報</span></a></li></ul>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<ul class="menu"><li class="item115"><a href="../foss-news.html"><span>源碼新聞</span></a></li><li class="item141"><a href="../case-job.html"><span>接案 / 工作</span></a></li></ul>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+        	                <div class="square1">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-title"><h2 class="title">專欄總覽</h2></div>
+						<div class="clear"></div>
+		                						<div class="module-content">
+		                	<ul class="menu"><li id="current" class="active item37"><a href="../tech-column.html"><span>技術專欄</span></a></li><li class="item40"><a href="../foss-programs.html"><span>源碼秘技</span></a></li><li class="item35"><a href="../legal-article-.html"><span>法律專欄</span></a></li><li class="item154"><a href="../foss-forum.html"><span>自由專欄</span></a></li><li class="item162"><a href="../enterprise-application.html"><span>企業應用</span></a></li><li class="item44"><a href="../foss-projects.html"><span>源碼專案</span></a></li></ul>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		                <div class="square1">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<p style="text-align: center;"><a href="../../news%3Fformat=feed&amp;type=rss" target="_black"><img src="../../images/M_images/news-rss-feed.png" border="0" /></a><br /><a href="https://www.openfoundry.org/rss-feed/Newsletter" target="_black"><img src="../../images/M_images/newsletter-rss-feed.png" border="0" /></a></p>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		
+                </div>
+            </div>
+
+                    <div class="clear"></div>
+                </div>
+            </div>
+																													</div>
+										<div id="rt-copyright">
+						<div class="rt-grid-12 rt-alpha rt-omega">
+                        <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<div id="desktop-mobile-version-switch"><span id="mobile-version" class="version-switch"><a href="9319-docker-101.html#">行動版</a></span></div>
+自由軟體鑄造場 製作 最佳瀏覽狀態：IE7或Firefox2.0以上 (建議使用Firefox) ‧ 解析度1024*768 <br /> <strong>E-Mail</strong>：<a href="mailto:contact@openfoundry.org">contact@openfoundry.org</a> <strong>Address</strong>：台北市南港區研究院路2段128號 中央研究院資訊科學研究所 . <a href="../../privacy-policy.html">隱私權條款</a>. <a href="../../terms-of-use.html">使用條款</a><span style="position: relative; top: 8px; margin-top: -8px;"> <a href="../../about/8101.html"><img src="../../images/M_images/rss-feed-all.png" border="0" /></a></span>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+        	
+</div>
+						<div class="clear"></div>
+					</div>
+					<div class="rt-footer-bottom-wrap"><div class="rt-footer-bottom"><div class="rt-footer-bottom2"><div class="rt-footer-bottom3"></div></div></div></div>
+									</div></div></div>
+				<div class="rt-surround-bottom"><div class="rt-surround-bottom2"><div class="rt-surround-bottom3"></div></div></div>
+							</div>
+		</div>
+		<!--
+		<script id="aptureScript">
+						(function (){var a=document.createElement("script");a.defer="true";a.src="http://www.apture.com/js/apture.js?siteToken=vsJttrn";document.getElementsByTagName("head")[0].appendChild(a);})();
+     </script>
+-->
+
+<!-- Piwik -->
+<!-- 			<script type="text/javascript">
+			  var _paq = _paq || [];
+		  _paq.push(["trackPageView"]);
+		  _paq.push(["enableLinkTracking"]);
+
+		    (function() {
+			        var u=(("https:" == document.location.protocol) ? "https" : "https") + "://www.openfoundry.org/piwik/";
+				    _paq.push(["setTrackerUrl", u+"piwik.php"]);
+				    _paq.push(["setSiteId", "1"]);
+				        var d=document, g=d.createElement("script"), s=d.getElementsByTagName("script")[0]; g.type="text/javascript";
+				        g.defer=true; g.async=true; g.src=u+"piwik.js"; s.parentNode.insertBefore(g,s);
+					  })();
+		  </script> -->
+<!-- End Piwik Code -->
+	</body>
+</html>

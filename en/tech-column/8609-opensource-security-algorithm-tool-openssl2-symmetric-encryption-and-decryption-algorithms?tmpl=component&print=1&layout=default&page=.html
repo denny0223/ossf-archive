@@ -1,0 +1,173 @@
+	<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+	<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-gb" lang="en-gb" >
+		<head>
+			  <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+  <meta name="robots" content="noindex, nofollow" />
+  <meta name="keywords" content="OpenSSL, Symmetric Encryption and Decryption Algorithms, Hash algorithms, OSSFNL780" />
+  <meta name="title" content="開放源碼的安全演算法工具: OpenSSL (2) - 對稱式加解密演算法" />
+  <meta name="description" content="前言 OpenSSL 提供了完整安全通信所需的編碼工具，諸如雜湊演算法 (Hash algorithms)、加解密演算法 (Encryption/Decryption algorithms) 及 SSL / TLS 協議的實現等。加上其開放源碼的特性，使得許多開源專案或商業套件都有其踪跡。OpenSSL 除了提供程式 API 擴充接口外，也有命令列模式的操作。 本專案主要使用 C" />
+  <meta name="generator" content="" />
+  <title>開放源碼的安全演算法工具: OpenSSL (2) - 對稱式加解密演算法</title>
+  <link href="../../favicon.ico" rel="shortcut icon" type="image/x-icon" />
+  <link rel="stylesheet" href="../../components/com_gantry/css/gantry.css" type="text/css" />
+  <link rel="stylesheet" href="../../components/com_gantry/css/grid-12.css" type="text/css" />
+  <link rel="stylesheet" href="../../components/com_gantry/css/joomla.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/joomla.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/style1.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/light-body.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/demo-styles.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/template.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/typography.css" type="text/css" />
+  <style type="text/css">
+    <!--
+#rt-main-surround ul.menu li.active > a, #rt-main-surround ul.menu li.active > .separator, #rt-main-surround ul.menu li.active > .item, #rt-main-surround .square4 ul.menu li:hover > a, #rt-main-surround .square4 ul.menu li:hover > .item, #rt-main-surround .square4 ul.menu li:hover > .separator, .roktabs-links ul li.active span {color:#0088B5;}
+a, #rt-main-surround ul.menu a:hover, #rt-main-surround ul.menu .separator:hover, #rt-main-surround ul.menu .item:hover {color:#0088B5;}
+    -->
+  </style>
+  <script type="text/javascript" src="../../components/com_jcomments/js/jcomments-v2.1.js%3Fv=2"></script>
+  <script type="text/javascript" src="../../components/com_jcomments/libraries/joomlatune/ajax.js"></script>
+  <script type="text/javascript" src="../../media/system/js/mootools.js"></script>
+  <script type="text/javascript" src="../../media/system/js/caption.js"></script>
+  <script type="text/javascript" src="../../components/com_gantry/js/gantry-buildspans.js"></script>
+  <script type="text/javascript" src="../../components/com_gantry/js/gantry-inputs.js"></script>
+  <script type="text/javascript">
+
+			window.addEvent('domready', function() {
+				var modules = ['rt-block'];
+				var header = ['h3','h2','h1'];
+				GantryBuildSpans(modules, header);
+			});
+		InputsExclusion.push('.content_vote','#rt-popup')
+  </script>
+		</head>
+		<body  class="backgroundlevel-low backgroundstyle-style8 bodylevel-med bodystyle-light cssstyle-style1 logostyle-dark font-family-helvetica font-size-is-default menu-type-fusionmenu col12 ">
+			<div id="rt-main-surround">
+				<div class="rt-container">
+					<div class="rt-block">
+						<div id="rt-mainbody">
+					    	
+<div class="rt-joomla ">
+	<div class="rt-article">
+		
+				<div class="rt-headline"><h1 class="rt-article-title">開放源碼的安全演算法工具: OpenSSL (2) - 對稱式加解密演算法</h1>		</div>
+		<div class="clear"></div>
+		
+		
+		
+				<div class="rt-articleinfo">
+						<div class="rt-article-icons">
+				<a href="8609-opensource-security-algorithm-tool-openssl2-symmetric-encryption-and-decryption-algorithms%3Ftmpl=component&amp;print=1&amp;layout=default&amp;page=.html#" onclick="window.print();return false;"><span class="icon print"></span></a>									<span class="icon printscreen">
+						<a href="8609-opensource-security-algorithm-tool-openssl2-symmetric-encryption-and-decryption-algorithms%3Ftmpl=component&amp;print=1&amp;layout=default&amp;page=.html#" onclick="window.print();return false;"><img src="../../images/M_images/printButton.png" alt="Print"  /></a>					</span>
+							</div>
+			
+			<span class="rt-date-posted">
+						 Created at			Thursday, 23 February 2012 09:18						&nbsp;&nbsp;&nbsp;&nbsp;						Last Updated on Tuesday, 27 March 2012 09:57						</span>
+
+						<span class="rt-author">
+				Written by 曾義峰			</span>
+				
+					</div>
+		
+		
+		<h3>前言</h3>
+<div>OpenSSL 提供了完整安全通信所需的編碼工具，諸如雜湊演算法 (Hash algorithms)、加解密演算法 (Encryption/Decryption algorithms) 及 SSL / TLS 協議的實現等。加上其開放源碼的特性，使得許多開源專案或商業套件都有其踪跡。OpenSSL 除了提供程式 API 擴充接口外，也有命令列模式的操作。</div>
+<div>本專案主要使用 C 程式語言撰寫，於 Windows/Linux/BSD/MacOS 下皆可運行。</div>
+<div></div>
+
+<ul>
+<li>官方網站: <a href="https://www.openssl.org/" target="_blank">https://www.openssl.org/</a></li>
+<li>軟體授權: OpenSSL License 或 SSLeay License 的雙重授權</li>
+</ul>
+<div>本篇文章為 OpenSSL 系列文章第二篇。常見的加解密演算法分為對稱式與非對稱式，有興趣的使用者，可以在網路上搜尋相關的文章。本章節將介紹 OpenSSL 在對稱式加解密演算法上的運用。本篇將著重於命令列模式下的對稱式加解密演算法的操作。</div>
+<h3>列出 OpenSSL 提供的對稱式加解密演算法</h3>
+<div>請使用 "enc -h" 為其參數:</div>
+<pre>&nbsp; &nbsp; $ openssl enc -h<br />&nbsp; &nbsp; unknown option '-h'<br />&nbsp; &nbsp; options are<br />&nbsp; &nbsp; -in  &nbsp; &nbsp; input file<br />&nbsp; &nbsp; -out  &nbsp; &nbsp;output file<br />&nbsp; &nbsp; -pass  &nbsp; &nbsp;pass phrase source<br />&nbsp; &nbsp; -e &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; encrypt<br />&nbsp; &nbsp; -d &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; decrypt<br />&nbsp; &nbsp; -a/-base64 &nbsp; &nbsp; base64 encode/decode, depending on encryption flag<br />&nbsp; &nbsp; -k &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; passphrase is the next argument<br />&nbsp; &nbsp; -kfile &nbsp; &nbsp; &nbsp; &nbsp; passphrase is the first line of the file argument<br />&nbsp; &nbsp; -md &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;the next argument is the md to use to create a key<br />&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;from a passphrase. &nbsp;One of md2, md5, sha or sha1<br />&nbsp; &nbsp; -K/-iv &nbsp; &nbsp; &nbsp; &nbsp; key/iv in hex is the next argument<br />&nbsp; &nbsp; -[pP] &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;print the iv/key (then exit if -P)<br />&nbsp; &nbsp; -bufsize  &nbsp; buffer size<br />&nbsp; &nbsp; -engine e &nbsp; &nbsp; &nbsp;use engine e, possibly a hardware device.<br />&nbsp; &nbsp; Cipher Types<br />&nbsp; &nbsp; -aes-128-cbc &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; -aes-128-cfb &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; -aes-128-cfb1<br />&nbsp; &nbsp; -aes-128-cfb8 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;-aes-128-ecb &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; -aes-128-ofb<br />&nbsp; &nbsp; -aes-192-cbc &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; -aes-192-cfb &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; -aes-192-cfb1<br />&nbsp; &nbsp; -aes-192-cfb8 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;-aes-192-ecb &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; -aes-192-ofb<br />&nbsp; &nbsp; -aes-256-cbc &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; -aes-256-cfb &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; -aes-256-cfb1<br />&nbsp; &nbsp; -aes-256-cfb8 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;-aes-256-ecb &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; -aes-256-ofb<br />&nbsp; &nbsp; -aes128 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;-aes192 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;-aes256<br />&nbsp; &nbsp; -bf &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;-bf-cbc &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;-bf-cfb<br />&nbsp; &nbsp; -bf-ecb &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;-bf-ofb &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;-blowfish<br />&nbsp; &nbsp; -cast &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;-cast-cbc &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;-cast5-cbc<br />&nbsp; &nbsp; -cast5-cfb &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; -cast5-ecb &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; -cast5-ofb<br />&nbsp; &nbsp; -des &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; -des-cbc &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; -des-cfb<br />&nbsp; &nbsp; -des-cfb1 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;-des-cfb8 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;-des-ecb<br />&nbsp; &nbsp; -des-ede &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; -des-ede-cbc &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; -des-ede-cfb<br />&nbsp; &nbsp; -des-ede-ofb &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; -des-ede3 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;-des-ede3-cbc<br />&nbsp; &nbsp; -des-ede3-cfb &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;-des-ede3-cfb1 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; -des-ede3-cfb8<br />&nbsp; &nbsp; -des-ede3-ofb &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;-des-ofb &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; -des3<br />&nbsp; &nbsp; -desx &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;-desx-cbc &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;-rc2<br />&nbsp; &nbsp; -rc2-40-cbc &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;-rc2-64-cbc &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;-rc2-cbc<br />&nbsp; &nbsp; -rc2-cfb &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; -rc2-ecb &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; -rc2-ofb<br />&nbsp; &nbsp; -rc4 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; -rc4-40</pre>
+<div>從列表中得知，OpenSSL 支援 AES, DES, Blowfish(bf) 及 RC4 演算法等。</div>
+<div>另外，雖然上例使用 "-h" 為其參數，但是這個參數在 OpenSSL 是不支援的。使用其它非內建的參數，亦有相同的效果。</div>
+<h3>使用 OpenSSL 的 DES 加解密演算法</h3>
+<h3>01.加密檔案</h3>
+<div>請使用 "des" 為其參數，隨後附上 "-in" 參數指定欲加密的檔案，以及 "-out" 參數指定加密後的檔案名稱:</div>
+<pre>&nbsp; &nbsp; $ openssl des -in file -out file.des</pre>
+<div>執行後，OpenSSL 會提示使用者由鍵盤上輸入加密之密碼，如下:</div>
+<pre>&nbsp; &nbsp; enter des-cbc encryption password:</pre>
+<div>需要注意的是，為了安全性，此時不管鍵盤輸入什麼，畫面上都不會出現任何字元，否則若旁人經過時，可能會故意或不經意的記下你的密碼。直到輸入完成後，按下鍵盤上的 "Enter" 鍵即可。</div>
+<div>OpenSSL 會再一次要求使用者輸入一次相同的密碼，如下:</div>
+<pre>&nbsp; &nbsp; Verifying - enter des-cbc encryption password:</pre>
+<div>此時使用者只需要輸入與先前一樣的密碼即可，在輸入過程中畫面上一樣都不會出現任何字元。最後加密的檔案將以 file.des 的名稱存在於磁碟中。</div>
+<h3>02.解密檔案</h3>
+<div>請使用 "des" 為其參數，因為 OpenSSL 指令預設為加密，所以若要切換成解密則需要再加上 "-d" (decrypt) 的參數，隨後附上 "-in" 參數指定欲加密的檔案，以及 "-out" 參數指定加密後的檔案名稱:</div>
+<pre>&nbsp; &nbsp; $ openssl des -d -in file.des -out file</pre>
+<div>執行後，OpenSSL 會提示使用者由鍵盤上輸入加密之密碼，如下:</div>
+<pre>&nbsp; &nbsp; enter des-cbc encryption password:</pre>
+<div>需要注意的是，為了安全性，此時不管鍵盤輸入什麼，畫面上都不會出現任何字元，否則若旁人經過時，可能會故意或不經意的記下你的密碼。直到輸入完成後，按下鍵盤上的 "Enter" 鍵即可。</div>
+<div>此時若使用者輸入了正確的密碼，就會成功將 file.des 解密之檔案，以 file 的檔案名稱存在於磁碟上。</div>
+<h3>使用 OpenSSL 的 Triple DES 加解密演算法</h3>
+<h3>01.加密檔案</h3>
+<div>請使用 "des3" 為其參數，隨後附上 "-in" 參數指定欲加密的檔案，以及 "-out" 參數指定加密後的檔案名稱:</div>
+<pre>&nbsp; &nbsp; $ openssl des3 -in file -out file.des3</pre>
+<div>執行後，OpenSSL 會提示使用者由鍵盤上輸入加密之密碼，如下:</div>
+<pre>&nbsp; &nbsp; enter des-ede3-cbc encryption password:</pre>
+<div>需要注意的是，為了安全性，此時不管鍵盤輸入什麼，畫面上都不會出現任何字元，否則若旁人經過時，可能會故意或不經意的記下你的密碼。直到輸入完成後，按下鍵盤上的 "Enter" 鍵即可。</div>
+<div>OpenSSL 會再一次要求使用者輸入一次相同的密碼，如下:</div>
+<pre>&nbsp; &nbsp; Verifying - enter des-ede3-cbc encryption password:</pre>
+<div>此時使用者只需要輸入與先前一樣的密碼即可，在輸入過程中畫面上一樣都不會出現任何字元。最後加密的檔案將以 file.des3 的名稱存在於磁碟中。</div>
+<h3>02.解密檔案</h3>
+<div>請使用 "des3" 為其參數，因為 OpenSSL 指令預設為加密，所以若要切換成解密則需要再加上 "-d" (decrypt) 的參數，隨後附上 "-in" 參數指定欲加密的檔案，以及 "-out" 參數指定加密後的檔案名稱:</div>
+<pre>&nbsp; &nbsp; $ openssl des3 -d -in file.des3 -out file</pre>
+<div>執行後，OpenSSL 會提示使用者由鍵盤上輸入加密之密碼，如下:</div>
+<pre>&nbsp; &nbsp; enter des-ede3-cbc encryption password:</pre>
+<div>需要注意的是，為了安全性，此時不管鍵盤輸入什麼，畫面上都不會出現任何字元，否則若旁人經過時，可能會故意或不經意的記下你的密碼。直到輸入完成後，按下鍵盤上的 "Enter" 鍵即可。</div>
+<div>此時若使用者輸入了正確的密碼，就會成功將 file.des3 解密之檔案，以 file 的檔案名稱存在於磁碟上。</div>
+<h3>使用 OpenSSL 的 AES 加解密演算法</h3>
+<div>本範例將使用 AES-256-CBC 的模式進行操作。</div>
+<h3>01.加密檔案</h3>
+<div>請使用 "aes-256-cbc" 為其參數，隨後附上 "-in" 參數指定欲加密的檔案，以及 "-out" 參數指定加密後的檔案名稱:</div>
+<pre>&nbsp; &nbsp; $ openssl aes-256-cbc -in file -out file.aes</pre>
+<div>執行後，OpenSSL 會提示使用者由鍵盤上輸入加密之密碼，如下:</div>
+<pre>&nbsp; &nbsp; enter aes-256-cbc encryption password:</pre>
+<div>需要注意的是，為了安全性，此時不管鍵盤輸入什麼，畫面上都不會出現任何字元，否則若旁人經過時，可能會故意或不經意的記下你的密碼。直到輸入完成後，按下鍵盤上的 "Enter" 鍵即可。</div>
+<div>OpenSSL 會再一次要求使用者輸入一次相同的密碼，如下:</div>
+<pre>&nbsp; &nbsp; Verifying - enter aes-256-cbc encryption password:</pre>
+<div>此時使用者只需要輸入與先前一樣的密碼即可，在輸入過程中畫面上一樣都不會出現任何字元。最後加密的檔案將以 file.aes 的名稱存在於磁碟中。</div>
+<h3>02.解密檔案</h3>
+<div>請使用 "aes-256-cbc" 為其參數，因為 OpenSSL 指令預設為加密，所以若要切換成解密則需要再加上 "-d" (decrypt) 的參數，隨後附上 "-in" 參數指定欲加密的檔案，以及 "-out" 參數指定加密後的檔案名稱:</div>
+<pre>&nbsp; &nbsp; $ openssl aes-256-cbc -d -in file.aes -out file</pre>
+<div>執行後，OpenSSL 會提示使用者由鍵盤上輸入加密之密碼，如下:</div>
+<pre>&nbsp; &nbsp; enter aes-256-cbc encryption password:</pre>
+<div>需要注意的是，為了安全性，此時不管鍵盤輸入什麼，畫面上都不會出現任何字元，否則若旁人經過時，可能會故意或不經意的記下你的密碼。直到輸入完成後，按下鍵盤上的 "Enter" 鍵即可。</div>
+<div>此時若使用者輸入了正確的密碼，就會成功將 file.aes 解密之檔案，以 file 的檔案名稱存在於磁碟上。</div>
+<h3>結語</h3>
+<div>本篇範例介紹了幾種常見對稱式加解密檔案的操作。在下一篇文章中，將介紹 OpenSSL 的非對稱式加解密演算法的操作。</div>
+			<!-- Show relate article -->
+		<br><br><h4>You may be interested in the following articles:</h4><ul><li><a href='../../tech-column/8615.html'>開放源碼的安全演算法工具: OpenSSL (3) - RSA 非對稱式加解密演算法</a> - <span class='date-posted'>2012-03-14</span></li><li><a href='../../tech-column/8608.html'>開放源碼的安全演算法工具: OpenSSL (1) - 基礎操作與雜湊演算法</a> - <span class='date-posted'>2012-02-15</span></li></ul>		<!-- end -->
+		<div class="article_note">
+		<!-- Add tags use metakey, and show OSSF Newsletter tag: OSSFNL+NUM-->
+		<br><br> <hr style='border: 1px dashed #D2DADB;'><b>OSSF Newsletter&nbsp;:</b>&nbsp;<a href='../../previous-issue%3Ftask=view&amp;id=780.html'>第 191 期  開放源碼的安全演算法工具︰OpenSSL（2）- 對稱式加解密演算法</a><br><b>Tags:</b>&nbsp;<a href='../../index.php%3Foption=com_search&amp;Itemid=58&amp;searchphrase=exact_meta&amp;ordering=newest&amp;searchword=OpenSSL.html'>OpenSSL</a>,&nbsp;&nbsp;<a href='../../index.php%3Foption=com_search&amp;Itemid=58&amp;searchphrase=exact_meta&amp;ordering=newest&amp;searchword=&#32;Symmetric&#32;Encryption&#32;and&#32;Decryption&#32;Algorithms.html'> Symmetric Encryption and Decryption Algorithms</a>,&nbsp;&nbsp;<a href='../../index.php%3Foption=com_search&amp;Itemid=58&amp;searchphrase=exact_meta&amp;ordering=newest&amp;searchword=&#32;Hash&#32;algorithms.html'> Hash algorithms</a>,&nbsp;&nbsp;				<!-- End -->
+					<br>
+					<b>Category: </b><a href="../tech-column.html">				Tech Column					</a>				</div>
+			 <!-- AddThis Button BEGIN ID 3001 is the front page article -->
+     			<br><br>
+       <div class="addthis_toolbox addthis_default_style addthis_32x32_style">
+       <a class="addthis_button_preferred_1"></a>
+       <a class="addthis_button_preferred_2"></a>
+       <a class="addthis_button_preferred_3"></a>
+       <a class="addthis_button_preferred_4"></a>
+       <a class="addthis_button_compact"></a>
+       <a class="addthis_counter addthis_bubble_style"></a>
+       </div>
+       <script type="text/javascript">var addthis_config = {"data_track_clickback":true};</script>
+       <script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js#pubid=openfoundry"></script>
+       <!-- AddThis Button END -->
+     <br>
+		<div class="totop" ><a class="rt-totop" href="8609-opensource-security-algorithm-tool-openssl2-symmetric-encryption-and-decryption-algorithms%3Ftmpl=component&amp;print=1&amp;layout=default&amp;page=.html#" style="outline: medium none;">↑ Top</a></div>
+            <!-- AddThis Button END -->
+
+			</div>
+</div>
+
+						</div>
+					</div>
+				</div>
+			</div>
+		</body>
+	</html>

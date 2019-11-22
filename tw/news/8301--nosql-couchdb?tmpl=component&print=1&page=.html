@@ -1,0 +1,115 @@
+	<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+	<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="zh-tw" lang="zh-tw" >
+		<head>
+			  <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+  <meta name="robots" content="noindex, nofollow" />
+  <meta name="keywords" content="OSSFNL721" />
+  <meta name="title" content="不做 NoSQL 的 CouchDB" />
+  <meta name="description" content="CouchDB 作為 NoSQL 潮流中的一份子，很容易被拿來與被貼上一樣標籤 (buzzwords) 的資料庫作為比較。各個專案分別被貼上 key-value stores、tuple stores、BigTable Clones、Document store、Graph database" />
+  <meta name="generator" content="" />
+  <title>不做 NoSQL 的 CouchDB</title>
+  <link href="../../favicon.ico" rel="shortcut icon" type="image/x-icon" />
+  <link rel="stylesheet" href="../../components/com_gantry/css/gantry.css" type="text/css" />
+  <link rel="stylesheet" href="../../components/com_gantry/css/grid-12.css" type="text/css" />
+  <link rel="stylesheet" href="../../components/com_gantry/css/joomla.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/joomla.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/style1.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/light-body.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/demo-styles.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/template.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/typography.css" type="text/css" />
+  <style type="text/css">
+    <!--
+#rt-main-surround ul.menu li.active > a, #rt-main-surround ul.menu li.active > .separator, #rt-main-surround ul.menu li.active > .item, #rt-main-surround .square4 ul.menu li:hover > a, #rt-main-surround .square4 ul.menu li:hover > .item, #rt-main-surround .square4 ul.menu li:hover > .separator, .roktabs-links ul li.active span {color:#0088B5;}
+a, #rt-main-surround ul.menu a:hover, #rt-main-surround ul.menu .separator:hover, #rt-main-surround ul.menu .item:hover {color:#0088B5;}
+    -->
+  </style>
+  <script type="text/javascript" src="../../components/com_jcomments/js/jcomments-v2.1.js%3Fv=2"></script>
+  <script type="text/javascript" src="../../components/com_jcomments/libraries/joomlatune/ajax.js"></script>
+  <script type="text/javascript" src="../../media/system/js/mootools.js"></script>
+  <script type="text/javascript" src="../../media/system/js/caption.js"></script>
+  <script type="text/javascript" src="../../components/com_gantry/js/gantry-buildspans.js"></script>
+  <script type="text/javascript" src="../../components/com_gantry/js/gantry-inputs.js"></script>
+  <script type="text/javascript">
+
+			window.addEvent('domready', function() {
+				var modules = ['rt-block'];
+				var header = ['h3','h2','h1'];
+				GantryBuildSpans(modules, header);
+			});
+		InputsExclusion.push('.content_vote','#rt-popup')
+  </script>
+		</head>
+		<body  class="backgroundlevel-low backgroundstyle-style8 bodylevel-med bodystyle-light cssstyle-style1 logostyle-dark font-family-helvetica font-size-is-default menu-type-fusionmenu col12 ">
+			<div id="rt-main-surround">
+				<div class="rt-container">
+					<div class="rt-block">
+						<div id="rt-mainbody">
+					    	
+<div class="rt-joomla ">
+	<div class="rt-article">
+		
+				<div class="rt-headline"><h1 class="rt-article-title">不做 NoSQL 的 CouchDB</h1>		</div>
+		<div class="clear"></div>
+		
+		
+		
+				<div class="rt-articleinfo">
+						<div class="rt-article-icons">
+				<a href="8301--nosql-couchdb%3Ftmpl=component&amp;print=1&amp;page=.html#" onclick="window.print();return false;"><span class="icon print"></span></a>									<span class="icon printscreen">
+						<a href="8301--nosql-couchdb%3Ftmpl=component&amp;print=1&amp;page=.html#" onclick="window.print();return false;"><img src="../../images/M_images/printButton.png" alt="列印"  /></a>					</span>
+							</div>
+			
+			<span class="rt-date-posted">
+						建立日期			2011-04-11 16:39						&nbsp;&nbsp;&nbsp;&nbsp;						最近更新在 2011-05-04 11:04						</span>
+
+						<span class="rt-author">
+				作者是 Rex			</span>
+				
+					</div>
+		
+		
+		CouchDB 作為 <a href="https://en.wikipedia.org/wiki/NoSQL_(concept)" target="_blank">NoSQL</a> 潮流中的一份子，很容易被拿來與被貼上一樣標籤 (buzzwords) 的資料庫作為比較。各個專案分別被貼上 key-value stores、<a href="https://en.wikipedia.org/wiki/NoSQL_%28concept%29#Tuple_store" target="_blank">tuple stores</a>、<a href="https://en.wikipedia.org/wiki/BigTable" target="_blank">BigTable Clones</a>、<a href="https://en.wikipedia.org/wiki/Document-oriented_database" target="_blank">Document store</a>、<a href="https://en.wikipedia.org/wiki/Graph_database" target="_blank">Graph database</a> 等等<a href="https://en.wikipedia.org/wiki/NoSQL_%28concept%29#Taxonomy" target="_blank">標籤</a>。<br /><br />這些標籤分類有時很容易幫助程式設計者概略瞭解後段實做的技術屬性，但很多時候，程式設計者的預設看法也可能是錯誤且偏頗的。我們可以說這些新技術都是想解決 <a href="https://en.wikipedia.org/wiki/CAP_theorem" target="_blank">CAP theorem</a> 問題，但其實這些不同的資料庫計劃各有其想要解決的問題與開發哲學，如果以概括性的功能特徵來作為選擇技術的方式，很多時候會發現專案發展方向不一定適合自己需求。程式設計者應該先定義自己的問題後，再選擇屬性最適合的技術。 
+
+<br /><br /><a href="https://couchone.com/" target="_blank">CouchOne</a> 的開發者 <a href="https://www.mikealrogers.com/" target="_blank">Mikeal Rogers</a> 曾說過，近期的產業浪潮掩蓋了各專案實際要解決的問題，取而代之是對於 <a href="https://en.wikipedia.org/wiki/Big_data" target="_blank">Big Data</a> 的想像與期待。Mikeal 那麼就讓其他人（與舊資料庫業者）去追尋 NoSQL 的浪潮吧，CouchDB 可以專注於處理 <a href="https://www.couchone.com/page/why-mobile" target="_blank">Mobile Database</a>。<br /><br />
+<h3>CouchDB 特色</h3>
+<br />試用了<a href="https://couchdb.apache.org/" target="_blank"> CouchDB</a> 一陣子，幾個特別欣賞的<a href="https://couchdb.apache.org/docs/overview.html" target="_blank">特色功能</a>，簡介如下：<br /><br />* Implemention for <a href="https://en.wikipedia.org/wiki/ACID" target="_blank">ACID</a> Properties<br />** Multi-Version Concurrency Control (<a href="https://en.wikipedia.org/wiki/Multiversion_concurrency_control" target="_blank">MVCC</a>)<br />** <a href="https://guide.couchdb.org/draft/btree.html" target="_blank">B-Tree indexes</a> <br />* Schema-Free document-oriented database<br />* RESTful JSON API<br />* View model / JavaScript View Functions<br />* Replication (Peer-based distributed databases), Distributed, featuring robust, incremental replication with bi-directional conflict detection and management.<br /><br />CouchDB 使用 MVCC model，所有的資料庫寫入 (add, update, delete) 都不需要先 lock 資料庫，因此能保證可以即時讀出資料。索引則是靠 B-Tree 大量存於硬碟，Document 會建立一份索引，利用 MapReduce pattern 設計的每一份 <a href="https://guide.couchdb.org/draft/views.html" target="_blank">View</a>，也會存取一份索引，因此你的資料庫會佔用大量硬碟空間來換取速度。<br /><br /><a href="https://github.com/couchapp/couchapp" target="_blank">CouchApp</a> 配合瀏覽器使用起來很方便且支援權限功能，因為資料可以是隨意的 Json document，所以愛存什麼就存什麼。此外 API 界面是 RESTful，加上內建 Javascript 的 View Server，你可以用內建的 <a href="https://guide.couchdb.org/draft/formats.html" target="_blank">Show</a> 功能來 Render Document。<br /><br />最重要的特色是 Replication 功能。CouchDB 支援雙向衝突偵測，很方便長期離線的 Client 上線後快速同步資料庫內容，在離線狀態也可以存取已經拉回的資料。<br /><br />
+<h3>CouchDB 目前限制</h3>
+<br />雖說 CouchDB 使用 MVCC Model，但 CouchDB 的讀寫速度遠遠慢於 in-memory key-value，與 MySQL 評測也未能夠勝出。加上 CouchDB 只支援 Replication，要作 <a href="https://guide.couchdb.org/draft/clustering.html" target="_blank">Horizontal partitioning</a> 要靠 <a href="https://tilgovi.github.com/couchdb-lounge/" target="_blank">CouchDB Lounge</a>，等同於手動作 <a href="https://en.wikipedia.org/wiki/Shard_%28database_architecture%29" target="_blank">Sharding</a>，在效能跟彈性上都未能夠勝過其他資料庫系統。<br /><br />此外，作為存取 unstructured data 的代價，若想要查詢特別資料，必須依賴 <a href="https://guide.couchdb.org/draft/views.html" target="_blank">View Model</a>，每組 View 會建出獨立的 b-tree index，這種索引的代價頗高，特別是你想做 ad hoc query 時，使用 _temp_view 會浪費你大量的磁碟與 CPU 的運算資源。因此程式設計者在設計軟體與鍵入資料前，都必須先建好 View。<br /><br />雖然 View functions 用了 <a href="https://en.wikipedia.org/wiki/MapReduce" target="_blank">MapReduce</a> pattern，但礙於 CouchDB View API 的限制，目前很難做多次的資料處理。基本上一次 View 倒出來的資料僅限制一次查詢，你無法方便快速的做第二次 MapReduce 處理，如此缺乏彈性讓 MapReduce 反而像是一種限制，而非特色。<br /><br />
+<h3>除了 Big Data 以外相關應用</h3>
+<br />捨去上述限制不談，CouchDB 的特色仍然可以作很多應用，特別是 JSON API 與 Peer-based distributed 這兩個功能。這使 CouchDB 在 Laptop 或 Mobile devices 上可以很方便地提供一些應用，特別是你經常需要在離線裝置上處理伺服器與本地端資料時。<br /><br />除了像是 CouchOne 推出相容 CouchDB 的 CouchOne Mobile for Android。在 Linux 上則有 <a href="https://www.freedesktop.org/wiki/Specifications/desktopcouch/Documentation" target="_blank">Desktop Couch</a>，目前整合了 <a href="https://projects.gnome.org/tomboy/" target="_blank">Tomboy</a>、<a href="https://projects.gnome.org/evolution/" target="_blank">Evolution</a>、<a href="https://launchpad.net/bindwood" target="_blank">Bindwood</a> for Firefox 等，可以用來管理 PIM, Bookmarks 等等。理論上可以整合 <a href="https://one.ubuntu.com/" target="_blank">UbuntuOne</a> 或 <a href="https://www.midgard-project.org/" target="_blank">Midgard</a>。<br /><br />筆者讀過兩本談論 CouchDB 的<a href="https://couchdb.apache.org/docs/books.html" target="_blank">書籍</a>，第一版的<a href="https://books.couchdb.org/relax" target="_blank">《CouchDB: The Definitive Guide》</a>與<a href="https://www.apress.com/9781430272373" target="_blank">《Beginning CouchDB》</a>。個人比較推薦《Beginning CouchDB》，但<a href="https://guide.couchdb.org/draft/index.html" target="_blank">再版</a>的《CouchDB: The Definitive Guide》內容已經有改善。<br /><br />
+<h3>◎ 作者簡介</h3>
+蔡志展 (Rex Tsai) 或網名 chihchun，現為自由工作者，從事開源軟體顧問或開發服務。倡議並推廣自由軟體與開放源碼，早期 KaLUG 成員，現常出席 Tossug, HackingThursday 聚會，亦是開源人年會 (COSCUP) 籌備志工。長期 Debian、OpenWrt 使用者。關注議題甚廣，進一步資訊請參考 <a href="https://people.debian.org.tw/~chihchun/" target="_blank">https://people.debian.org.tw/~chihchun/</a><br />
+			<!-- Show relate article -->
+				<!-- end -->
+		<div class="article_note">
+		<!-- Add tags use metakey, and show OSSF Newsletter tag: OSSFNL+NUM-->
+		<br><br> <hr style='border: 1px dashed #D2DADB;'><b>自由軟體鑄造場電子報&nbsp;:</b>&nbsp;<a href='../../previous-issue%3Ftask=view&amp;id=721.html'>第 170 期 不做 NoSQL 的 CouchDB</a><br>				<!-- End -->
+					<br>
+					<b>分類: </b><a href="../tech-column.html">				技術專欄					</a>				</div>
+			 <!-- AddThis Button BEGIN ID 3001 is the front page article -->
+     			<br><br>
+       <div class="addthis_toolbox addthis_default_style addthis_32x32_style">
+       <a class="addthis_button_preferred_1"></a>
+       <a class="addthis_button_preferred_2"></a>
+       <a class="addthis_button_preferred_3"></a>
+       <a class="addthis_button_preferred_4"></a>
+       <a class="addthis_button_compact"></a>
+       <a class="addthis_counter addthis_bubble_style"></a>
+       </div>
+       <script type="text/javascript">var addthis_config = {"data_track_clickback":true};</script>
+       <script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js#pubid=openfoundry"></script>
+       <!-- AddThis Button END -->
+     <br>
+		<div class="totop" ><a class="rt-totop" href="8301--nosql-couchdb%3Ftmpl=component&amp;print=1&amp;page=.html#" style="outline: medium none;">↑ Top</a></div>
+            <!-- AddThis Button END -->
+
+			</div>
+</div>
+
+						</div>
+					</div>
+				</div>
+			</div>
+		</body>
+	</html>

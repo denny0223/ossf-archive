@@ -1,0 +1,115 @@
+	<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+	<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-gb" lang="en-gb" >
+		<head>
+			  <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+  <meta name="robots" content="noindex, nofollow" />
+  <meta name="keywords" content="OSSFNL734" />
+  <meta name="title" content="CallGraphviz—依據 cscope、Graphviz 以及 xdot 實作的 call graph visualizer" />
+  <meta name="description" content="開源工具現狀 許多開發者都有介入中大型專案的經驗，有時候也常常需要理解原始程式的設計，因此或多或少都有在程式碼迷宮中找路的經驗。有些專案，程式碼結構嚴謹，軟體設計時應用設計模式 (Design Patterns)，往往只要見名稱、參數，即可推斷程式結構，閱讀上如沐春風。" />
+  <meta name="generator" content="" />
+  <title>CallGraphviz—依據 cscope、Graphviz 以及 xdot 實作的 call graph visualizer</title>
+  <link href="../../favicon.ico" rel="shortcut icon" type="image/x-icon" />
+  <link rel="stylesheet" href="../../components/com_gantry/css/gantry.css" type="text/css" />
+  <link rel="stylesheet" href="../../components/com_gantry/css/grid-12.css" type="text/css" />
+  <link rel="stylesheet" href="../../components/com_gantry/css/joomla.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/joomla.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/style1.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/light-body.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/demo-styles.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/template.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/typography.css" type="text/css" />
+  <style type="text/css">
+    <!--
+#rt-main-surround ul.menu li.active > a, #rt-main-surround ul.menu li.active > .separator, #rt-main-surround ul.menu li.active > .item, #rt-main-surround .square4 ul.menu li:hover > a, #rt-main-surround .square4 ul.menu li:hover > .item, #rt-main-surround .square4 ul.menu li:hover > .separator, .roktabs-links ul li.active span {color:#0088B5;}
+a, #rt-main-surround ul.menu a:hover, #rt-main-surround ul.menu .separator:hover, #rt-main-surround ul.menu .item:hover {color:#0088B5;}
+    -->
+  </style>
+  <script type="text/javascript" src="../../components/com_jcomments/js/jcomments-v2.1.js%3Fv=2"></script>
+  <script type="text/javascript" src="../../components/com_jcomments/libraries/joomlatune/ajax.js"></script>
+  <script type="text/javascript" src="../../media/system/js/mootools.js"></script>
+  <script type="text/javascript" src="../../media/system/js/caption.js"></script>
+  <script type="text/javascript" src="../../components/com_gantry/js/gantry-buildspans.js"></script>
+  <script type="text/javascript" src="../../components/com_gantry/js/gantry-inputs.js"></script>
+  <script type="text/javascript">
+
+			window.addEvent('domready', function() {
+				var modules = ['rt-block'];
+				var header = ['h3','h2','h1'];
+				GantryBuildSpans(modules, header);
+			});
+		InputsExclusion.push('.content_vote','#rt-popup')
+  </script>
+		</head>
+		<body  class="backgroundlevel-low backgroundstyle-style8 bodylevel-med bodystyle-light cssstyle-style1 logostyle-dark font-family-helvetica font-size-is-default menu-type-fusionmenu col12 ">
+			<div id="rt-main-surround">
+				<div class="rt-container">
+					<div class="rt-block">
+						<div id="rt-mainbody">
+					    	
+<div class="rt-joomla ">
+	<div class="rt-article">
+		
+				<div class="rt-headline"><h1 class="rt-article-title">CallGraphviz—依據 cscope、Graphviz 以及 xdot 實作的 call graph visualizer</h1>		</div>
+		<div class="clear"></div>
+		
+		
+		
+				<div class="rt-articleinfo">
+						<div class="rt-article-icons">
+				<a href="8352-callgraphviz-cscopegraphviz-xdot-call-graph-visualizer%3Ftmpl=component&amp;print=1&amp;layout=default&amp;page=.html#" onclick="window.print();return false;"><span class="icon print"></span></a>									<span class="icon printscreen">
+						<a href="8352-callgraphviz-cscopegraphviz-xdot-call-graph-visualizer%3Ftmpl=component&amp;print=1&amp;layout=default&amp;page=.html#" onclick="window.print();return false;"><img src="../../images/M_images/printButton.png" alt="Print"  /></a>					</span>
+							</div>
+			
+			<span class="rt-date-posted">
+						 Created at			Thursday, 09 June 2011 13:56						&nbsp;&nbsp;&nbsp;&nbsp;						Last Updated on Sunday, 21 August 2011 21:22						</span>
+
+						<span class="rt-author">
+				Written by Rex			</span>
+				
+					</div>
+		
+		
+		<h3>開源工具現狀</h3>
+<p>許多開發者都有介入中大型專案的經驗，有時候也常常需要理解原始程式的設計，因此或多或少都有在程式碼迷宮中找路的經驗。有些專案，程式碼結構嚴謹，軟體設計時應用設計模式 (<a href="https://en.wikipedia.org/wiki/Design_pattern_(computer_science)" target="_blank">Design Patterns</a>)，往往只要見名稱、參數，即可推斷程式結構，閱讀上如沐春風。 <br /> <br />但若碰到未經重構的成年老專案，程式邏輯因為年久失修，塞滿各個開發階段的臨時解決方案，常常已經複雜到難以一眼望穿理解。若是記憶力虛弱如我，常常追了後面幾千行、跳了三個檔，就忘了前面幾個檔案的函式名稱。於是常常以紙本畫流程圖輔助理解，但是手繪圖往往不敵跳來繞去的程式碼邏輯。還是得靠<a href="https://en.wikipedia.org/wiki/Program_analysis" target="_blank">程式碼解析</a>視覺化工具來協助理解。</p>
+
+<p>繪製 <a href="https://en.wikipedia.org/wiki/Call_graph" target="_blank">call graph</a> 的工具非常多，一般可以分作 <a href="https://en.wikipedia.org/wiki/Dynamic_program_analysis" target="_blank">dynamic analysis</a> 與 <a href="https://en.wikipedia.org/wiki/Static_program_analysis" target="_blank">static analysis</a> 兩種作法。在臺灣，最知名的商業版本工具，大概是 <a href="https://www.sourceinsight.com/" target="_blank">Source Insight</a>。不過我不用 Windows，對於缺乏原始碼的開發工具興趣也不大。 <br /> <br />開源的 dynamic analysis 包含諸如 <a href="https://blog.linux.org.tw/~jserv/" target="_blank">Jserv</a> <a href="https://blog.linux.org.tw/~jserv/archives/001723.html" target="_blank">介紹過</a>的 <a href="https://www.skynet.ie/~mel/projects/codeviz/" target="_blank">CodeViz</a> 或是 <a href="https://students.ceid.upatras.gr/~sxanth/ncc/" target="_blank">ncc</a>。不過這類工具需要 patch GCC，不適合嵌入式系統專案。因爲原始碼常常只支援特定平臺，或是無法取得編譯工具原始碼。此外，不同版本的 compiler 偶爾會造成不同的問題，造成使用上的困難。 <br /> <br />一種比較乾淨的作法是像 <a href="https://kcachegrind.sourceforge.net/" target="_blank">KCachegrind</a> 利用 <a href="https://valgrind.org/" target="_blank">valgrind</a> 來收集資料，或 <a href="https://code.google.com/p/jrfonseca/wiki/Gprof2Dot" target="_blank">Gprof2Dot</a> 利用 gprof 的輸出資料。再者是利用 GCC 的<a href="https://gcc.gnu.org/onlinedocs/gcc/Debugging-Options.html" target="_blank">除錯功能</a>，把 internal representation (RTL) 倒出來，再用 <a href="https://www.gson.org/egypt/" target="_blank">egypt</a> 或 <a href="https://rtlcheck.sourceforge.net/using.html" target="_blank">Python-RTL</a> 來判讀或繪圖。 <br /> <br />至於開源的 <a href="https://en.wikipedia.org/wiki/Static_program_analysis" target="_blank">static analysis</a>，則包括 <a href="https://fred-zone.blogspot.com/" target="_blank">Fred Chien</a> <a href="https://fred-zone.blogspot.com/2009/09/trace-cflow.html" target="_blank">介紹過</a>的 <a href="https://www.gnu.org/software/cflow/" target="_blank">cflow</a>，或是 <a href="https://www.stack.nl/~dimitri/doxygen/" target="_blank">Doxygen</a> 也有類似的<a href="https://www.stack.nl/~dimitri/doxygen/diagrams.html" target="_blank">繪圖功能</a>。也有工具是配合 <a href="https://cscope.sourceforge.net/" target="_blank">cscope</a> 或 <a href="https://www.gnu.org/software/global/" target="_blank">GLOBAL</a>，例如有人幫 cscope 刻過<a href="https://en.wikipedia.org/wiki/Cscope#GUI" target="_blank">圖形界面</a>，Vim 有個 <a href="https://www.vim.org/scripts/script.php?script_id=2368" target="_blank">CCTree</a> 可用。</p>
+<h3>CallGraphviz</h3>
+<p>以上這些工具各有優缺點。最常見的問題是許多工具無法處理 <a href="https://en.wikipedia.org/wiki/Function_pointer" target="_blank">function pointer</a>／<a href="https://en.wikipedia.org/wiki/Dynamic_dispatch" target="_blank">dynamic dispatch</a>，最終還是需要人力介入。另外一個使用上的困擾是，這些程式會一口氣畫出整個程式碼的結構圖。 <br /> <br />太多資訊其實妨礙理解，因爲用途常常只是追一個臭蟲，程式開發者只想畫出特定路徑來釐清問題。而 context-sensitive 的 call graph 測試工具又耗費資源。 <br /> <br />若用 <a href="https://codelite.org/" target="_blank">CodeLite</a>、<a href="../../tw/resourcecatalog/Program-Development/Integrated-Development-Environment/codeblocks/visit.html" target="_blank">Code::Blocks</a>、<a href="../resourcecatalog/Program-Development/plug-in/eclipse-cdt/visit.html" target="_blank">Eclipse CDT</a> 等開發工具，這些工具已經內建或者整合了 <a href="https://cscope.sourceforge.net/" target="_blank">cscope</a>／<a href="https://www.gnu.org/software/global/" target="_blank">GLOBAL</a>，提供 symbol lookup 功能。開發者很容易用滑鼠查閱函式定義或實做，也可以搭配 <a href="https://lxr.linux.no/+trees" target="_blank">LXR</a> 來瀏覽程式碼。已經不需要像是 <a href="https://www.ziplink.net/~felaco/cbrowser/" target="_blank">cbrowser</a> 這類專屬的程式碼瀏覽工具。 <br /> <br />如果需要手動將目前程式情境視覺化的工具，也可以在網路上找到。網路上已經有其他開發者做了 <a href="https://toolchainguru.blogspot.com/2008/07/bash-c-call-trees-and-graphs.html" target="_blank">Bash: C Call Trees and Graphs</a> 或是 <a href="https://stackoverflow.com/questions/2027508/simple-tool-for-callgraph-in-c" target="_blank">global-calltree</a>。或是像 <a href="https://www.ypwang.info/" target="_blank">Yao-Po Wang</a> 的<a href="https://www.ypwang.info/2010/10/call-graph.html" target="_blank">方法</a>，記錄函式進出點，再手動繪圖。 <br /> <br />上述工具大多是整合 shell scripts，操作上有點不便。另外我也不喜歡 Call Tree 的圖式，因爲樹狀圖無法表現遞迴或交互關係。 <br /> <br />於是查找一下，決定拿 <a href="https://cscope.sourceforge.net/" target="_blank">cscope</a> 加上 <a href="../resourcecatalog/General-Applications/Office/graphviz/visit.html" target="_blank">Graphviz</a> 的 <a href="https://www.graphviz.org/content/dot-language" target="_blank">DOT 語法</a>來用，改了一個 <a href="https://github.com/chihchun/callgraphviz" target="_blank">CallGraphviz</a>。它的功能是以 Graphviz 做為前端，後端還是使用 cscope 查 symbols，為了可以即時瀏覽便取用 <a href="https://code.google.com/p/jrfonseca/wiki/XDot" target="_blank">xdot</a> 當作介面。<a href="https://code.google.com/p/jrfonseca/wiki/XDot" target="_blank">xdot</a> 是以 <a href="https://www.pygtk.org/docs/pygtk/index.html" target="_blank">PyGtk</a> 開發，非常容易更改，不到三百行就加入我需要的功能。</p>
+<p><a href="../../images/110614/CallGraphviz/screenshotcodevisualize.png" target="_blank"><img src="../../images/110614/CallGraphviz/screenshotcodevisualize.png" border="0" alt="screenshotcodevisualize" width="600" /></a></p>
+<p>▲ 圖1 使用 CallGraphviz 自動畫出的程式邏輯流程圖</p>
+<p>使用方法： <br /> <br /> * 執行 python visualizer.py <br /> * 按下【New】，選擇要分析 C/C++ 專案目錄。 <br /> * 於「Search symbol」鍵入要追蹤的函式名稱。 <br /> * 每次鍵入新名稱，他會自動對應圖中已輸入函式是否爲 caller or callee，並自動畫圖。 <br /> <br /><a href="https://github.com/chihchun/callgraphviz" target="_blank">CallGraphviz</a> 可以將繪圖結果存成 dot 格式檔案，然後再利用 <a href="https://www.graphviz.org/cgi-bin/man?dot" target="_blank">dot</a> 指令轉換格式。不過它只紀錄曾經查過的名稱，開啟時重新查 cscope 而已。若圖大時，每次開啟可能會十分緩慢。 <br /> <br />CallGraphviz 原始碼可於 <a href="https://github.com/chihchun/callgraphviz" target="_blank">github 下載</a>，授權採用 GNU Lesser General Public License。 <br /> <br />延伸閱讀：<a href="https://pycallgraph.slowchop.com/" target="_blank">Python Call Graph</a></p>
+<h3>作者簡介</h3>
+<p>蔡志展 (Rex Tsai) 或網名 chihchun，現為自由工作者，從事開源軟體顧問或開發服務。倡議並推廣自由軟體與開放源碼，早期 KaLUG 成員，現常出席 Tossug、Hacking Thursday 聚會，亦是開源人年會（COSCUP）籌備志工。長期 Debian、OpenWrt 使用者。關注議題甚廣，進一步資訊請參考 <a href="https://people.debian.org.tw/~chihchun/" target="_blank">https://people.debian.org.tw/~chihchun/</a> 。</p>
+			<!-- Show relate article -->
+				<!-- end -->
+		<div class="article_note">
+		<!-- Add tags use metakey, and show OSSF Newsletter tag: OSSFNL+NUM-->
+		<br><br> <hr style='border: 1px dashed #D2DADB;'><b>OSSF Newsletter&nbsp;:</b>&nbsp;<a href='../../previous-issue%3Ftask=view&amp;id=734.html'>第 174 期 CallGraphviz—依據 cscope、Graphviz 以及 xdot 實作的 call graph visualizer</a><br>				<!-- End -->
+					<br>
+					<b>Category: </b><a href="../tech-column.html">				Tech Column					</a>				</div>
+			 <!-- AddThis Button BEGIN ID 3001 is the front page article -->
+     			<br><br>
+       <div class="addthis_toolbox addthis_default_style addthis_32x32_style">
+       <a class="addthis_button_preferred_1"></a>
+       <a class="addthis_button_preferred_2"></a>
+       <a class="addthis_button_preferred_3"></a>
+       <a class="addthis_button_preferred_4"></a>
+       <a class="addthis_button_compact"></a>
+       <a class="addthis_counter addthis_bubble_style"></a>
+       </div>
+       <script type="text/javascript">var addthis_config = {"data_track_clickback":true};</script>
+       <script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js#pubid=openfoundry"></script>
+       <!-- AddThis Button END -->
+     <br>
+		<div class="totop" ><a class="rt-totop" href="8352-callgraphviz-cscopegraphviz-xdot-call-graph-visualizer%3Ftmpl=component&amp;print=1&amp;layout=default&amp;page=.html#" style="outline: medium none;">↑ Top</a></div>
+            <!-- AddThis Button END -->
+
+			</div>
+</div>
+
+						</div>
+					</div>
+				</div>
+			</div>
+		</body>
+	</html>

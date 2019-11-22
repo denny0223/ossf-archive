@@ -1,0 +1,431 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="zh-tw" lang="zh-tw" >
+<head>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<link rel="shortcut icon" href="../../images/favicon.ico" />
+	  <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+  <meta name="robots" content="index, follow" />
+  <meta name="keywords" content="patch,由於修改後程式會包含原始程式的部分內容,故修改後之程式將成為原始程式的衍生著作,或進一步散布修改後之程式,改作人必須取得原著作權人改作權及散布權的授權,在電腦軟體的著作類型中,衍生著作必然會直接或間接包含原始著作的表達,expression,程式開發者如果想要直接修改他人之程式,散布他人之程式,並不包含原始程式的內容,故修正更新檔不具有著作權法上衍生著作必然會直接或間接包含原始著作表達的特性,所以不會被,修正更新檔中的內容只包含刪除原始程式特定位址及新增程式碼的指令,通常較原始程式檔案小得多,修正更新檔,是一種引導使用者就特定程式加以修改的小程式,拍攝影片或其他方法就原著作另為創作而產生之著作,因為沒有原始著作就不會有修正更新檔,而誤認為修正更新檔是原始程式的衍生著作" />
+  <meta name="title" content="軟體之改作" />
+  <meta name="description" content="Q7：為什麼修正更新檔 (patch) 不是衍生著作？ A7：一般人常會以為修正更新檔與原始著作具有某種的關連性（因為沒有原始著作就不會有修正更新檔），而誤認為修正更新檔是原始程式的衍生著作。然而，修正更新檔並不是衍生著作，原因有二： (1)" />
+  <meta name="generator" content="" />
+  <title>軟體之改作 - OpenFoundry</title>
+  <link href="../../favicon.ico" rel="shortcut icon" type="image/x-icon" />
+  <link rel="stylesheet" href="../../components/com_gantry/css/gantry.css" type="text/css" />
+  <link rel="stylesheet" href="../../components/com_gantry/css/grid-12.css" type="text/css" />
+  <link rel="stylesheet" href="../../components/com_gantry/css/joomla.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/joomla.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/style1.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/light-body.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/demo-styles.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/template.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/typography.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/fusionmenu.css" type="text/css" />
+  <style type="text/css">
+    <!--
+#rt-main-surround ul.menu li.active > a, #rt-main-surround ul.menu li.active > .separator, #rt-main-surround ul.menu li.active > .item, #rt-main-surround .square4 ul.menu li:hover > a, #rt-main-surround .square4 ul.menu li:hover > .item, #rt-main-surround .square4 ul.menu li:hover > .separator, .roktabs-links ul li.active span {color:#0088B5;}
+a, #rt-main-surround ul.menu a:hover, #rt-main-surround ul.menu .separator:hover, #rt-main-surround ul.menu .item:hover {color:#0088B5;}
+    -->
+  </style>
+  <script type="text/javascript" src="../../components/com_jcomments/js/jcomments-v2.1.js%3Fv=2"></script>
+  <script type="text/javascript" src="../../components/com_jcomments/libraries/joomlatune/ajax.js"></script>
+  <script type="text/javascript" src="../../media/system/js/mootools.js"></script>
+  <script type="text/javascript" src="../../media/system/js/caption.js"></script>
+  <script type="text/javascript" src="../../components/com_gantry/js/gantry-buildspans.js"></script>
+  <script type="text/javascript" src="../../components/com_gantry/js/gantry-inputs.js"></script>
+  <script type="text/javascript" src="../../templates/rt_quantive_j15/js/jquery.cookie.js"></script>
+  <script type="text/javascript" src="../../modules/mod_roknavmenu/themes/fusion/js/fusion.js"></script>
+  <script type="text/javascript" src="../../modules/mod_ofssologin/js/ofssologin.js"></script>
+  <script type="text/javascript">
+
+			window.addEvent('domready', function() {
+				var modules = ['rt-block'];
+				var header = ['h3','h2','h1'];
+				GantryBuildSpans(modules, header);
+			});
+		InputsExclusion.push('.content_vote','#rt-popup')
+		        window.addEvent('load', function() {
+					new Fusion('ul.menutop', {
+						pill: 0,
+						effect: 'slide and fade',
+						opacity: 1,
+						hideDelay: 500,
+						centered: 0,
+						tweakInitial: {'x': -2, 'y': 0},
+        				tweakSubsequent: {'x': 0, 'y': -14},
+						menuFx: {duration: 200, transition: Fx.Transitions.Sine.easeOut},
+						pillFx: {duration: 400, transition: Fx.Transitions.Back.easeOut}
+					});
+	            });
+  </script>
+<!-- <script type="text/javascript" src="/sso/javascripts/langsync.js"></script> -->
+<!-- <script src="/templates/rt_quantive_j15/js/ossf.js"></script> -->
+<script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-4136519-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
+</head>
+	<body  class="backgroundlevel-low backgroundstyle-style8 bodylevel-med bodystyle-light cssstyle-style1 logostyle-dark font-family-helvetica font-size-is-default menu-type-fusionmenu col12 ">
+		<div id="rt-main-background">
+			<div class="rt-container">
+																<div id="rt-header">
+					<div class="rt-grid-7 rt-alpha">
+    			<div class="rt-block">
+    	    	<a href="../../index.html" id="rt-logo"></a>
+    		</div>
+	    
+</div>
+<div class="rt-grid-5 rt-omega">
+                    <div class="square9">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<div class="ofssologin_square9"><a href="../../index.html">登入</a>&nbsp;&nbsp|&nbsp;&nbsp;<span><a href="../../en/faq/modification.html" ><span lang="en" xml:lang="en">English</span></a></li></ul></span><!--Joom!fish V2.0.4 (Lightning)-->
+<!-- &copy; 2003-2009 Think Network, released under the GPL. -->
+<!-- More information: at http://www.joomfish.net -->
+<div class="ofssologin_search_square9">
+  <form id="of_search" action="https://www.openfoundry.org/of/openfoundry/search" method="get" onsubmit="of_search(); return false;">
+    <select id="of_search_type">
+      <option value="Projects"> 專案 </option>
+      <option value="Content"> 文章 </option>
+      <option value="People"> 人才 </option>
+    </select>
+    <input id="query" name="query" id="mod_search_searchword" maxlength="50" alt="search" class="inputbox" type="text" size="28" value="search..."  onblur="if(this.value=='') this.value='search...';" onfocus="if(this.value=='search...') this.value='';" />
+    <input type="hidden" name="commit" value="search" />
+  </form>
+</div></div>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		
+</div>
+					<div class="clear"></div>
+				</div>
+																<div id="rt-navigation"><div id="rt-navigation2"><div id="rt-navigation3">
+					
+<div class="nopill">
+	<ul class="menutop level1 " >
+						<li class="item1 root" >
+					<a class="orphan item bullet" href="../../index.html"  >
+				<span>
+			    				首頁				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item32 root" >
+					<a class="orphan item bullet" href="../../archived.html"  >
+				<span>
+			    				專案				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item186 root" >
+					<a class="orphan item bullet" href="../community.html"  >
+				<span>
+			    				Who&#039;s Who				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item4 root" >
+					<a class="orphan item bullet" href="../news.html"  >
+				<span>
+			    				新聞				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item5 root" >
+					<a class="orphan item bullet" href="../law-and-licensing.html"  >
+				<span>
+			    				法律源地				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item3 root" >
+					<a class="orphan item bullet" href="../activities.html"  >
+				<span>
+			    				活動				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item2 root" >
+					<a class="orphan item bullet" href="../resourcecatalog%3FName=Value.html"  >
+				<span>
+			    				資源表列				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item45 root" >
+					<a class="orphan item bullet" href="../about.html"  >
+				<span>
+			    				關於				   
+				</span>
+			</a>
+			
+			
+	</li>	
+				</ul>
+</div>
+
+				    <div class="clear"></div>
+				</div></div></div>
+								<div class="rt-surround"><div class="rt-surround2"><div class="rt-surround3">
+										<div id="rt-showcase-section">
+												<div id="rt-showcase">
+							<div class="rt-grid-12 rt-alpha rt-omega">
+    		<div class="clear"></div>
+		
+		
+                <div class="close-note">
+                    <div class="rt-block">
+               					<div class="module-content">
+                	<div style="font-size:medium; background-image:linear-gradient(120deg,#159957,#4298b2);color:white;padding:20px;margin:-10px -18px;">感謝您對「自由軟體鑄造場」的支持與愛護，十多年來「自由軟體鑄造場」受中央研究院支持，並在資訊科學研究所以及資訊科技創新研究中心執行，現已完成階段性的任務。 本網站預計持續維運至 2021年底，網站內容基本上不會再更動。<br />也紀念我們永遠的朋友 李士傑先生（Shih-Chieh Ilya Li）。</div>				</div>
+            </div>
+                </div>
+		
+</div>
+							<div class="clear"></div>
+						</div>
+																	</div>
+															<div id="rt-main-surround">
+												<div id="rt-breadcrumbs">
+								<div class="rt-breadcrumb-surround">
+		<a href="../../index.html" id="breadcrumbs-home"></a>
+		<span class="breadcrumbs pathway">
+<a href="../faq.html" class="pathway">問答集</a> <img src="../../templates/rt_quantive_j15/images/arrow.png" alt=""  /> <span class="no-link">軟體之改作</span></span>
+	</div>
+	
+							<div class="clear"></div>
+						</div>
+																							              <div id="rt-main" class="sa3-mb9">
+                <div class="rt-main-inner">
+                    <div class="rt-grid-9 rt-push-3">
+                                                <div id="rt-content-top">
+                            <div class="rt-grid-9 rt-alpha rt-omega">
+                    <div class="title1">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-title"><h2 class="title">法律源地</h2></div>
+						<div class="clear"></div>
+		                						<div class="module-content">
+		                	<p><img style="float: right; border: 0; margin-left: 5px; margin-right: 5px;" src="../../images/banners/consulting1.png" alt="" width="100" border="0" />本網站法律源地提供相當多自由軟體授權與法律的資訊，歡迎您閱讀這些資訊。</p>
+<p>&nbsp;</p>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		
+</div>
+							<div class="clear"></div>
+                        </div>
+                                                <div class="rt-block">
+                            							<div class="square1">
+							<div class="rt-module-surround">
+								<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+								<div class="rt-module-inner">
+		                            <div id="rt-mainbody">
+		                                
+<div class="rt-joomla ">
+	<div class="rt-article">
+		
+				<div class="rt-headline"><h1 class="rt-article-title">軟體之改作</h1>		</div>
+		<div class="clear"></div>
+		
+		
+		
+		
+		
+		<p><span style="color: #ff6600; font-size: large;"><strong>Q7</strong></span>：<strong>為什麼修正更新檔 (patch) 不是衍生著作？</strong></p>
+<p><span style="color: #ff6600; font-size: large;"><strong>A7</strong></span>：一般人常會以為修正更新檔與原始著作具有某種的關連性（因為沒有原始著作就不會有修正更新檔），而誤認為修正更新檔是原始程式的衍生著作。然而，修正更新檔並不是衍生著作，原因有二：</p>
+<p>(1) 修正更新檔實際上並不包含原始程式的內容。依我國著作權法的規定，衍生著作指：改作人將他人著作透過翻譯、編曲、改寫、拍攝影片或其他方法就原著作另為創作而產生之著作。因此，衍生著作必然會直接或間接包含原始著作的表達 (expression)。在電腦軟體的著作類型中，程式開發者如果想要直接修改他人之程式，或進一步散布修改後之程式，由於修改後程式會包含原始程式的部分內容，故修改後之程式將成為原始程式的衍生著作，改作人必須取得原著作權人改作權及散布權的授權，才能修改、散布他人之程式。</p>
+<p>修正更新檔 (patch) 是一種引導使用者就特定程式加以修改的小程式，通常較原始程式檔案小得多，修正更新檔中的內容只包含刪除原始程式特定位址及新增程式碼的指令，並不包含原始程式的內容，故修正更新檔不具有著作權法上衍生著作必然會直接或間接包含原始著作表達的特性，所以不會被認定是原始程式的衍生著作，而是獨立的著作。修正更新檔的作者不需取得原始程式著作權人的授權，並可單獨為修正更新檔選擇授權條款。</p>
+<p>(2) 原始程式著作權人不會因為他人散布其自行開發之修正更新檔，而受到經濟利益的損失。這是從修正更新檔對原始程式著作權人經濟利益的影響此一角度來觀察。著作權法規定散布衍生著作需經原始著作權人授權的理由，主要在於衍生著作的散布，多少都會影響到原始著作的銷售，為了避免造成原始著作權人的損失，故透過原始著作權人對衍生著作之散布具有同意權之機制，讓原始著作權人可向衍生著作權人收取權利金。修正更新檔因為實際上不包含原始程式的內容，且一定需搭配原始程式才有實質的功能，因此，使用者取得修正更新檔的同時，仍需要透過購買或是其他方式直接向原始程式著作權人取得利用原始程式的授權，原始程式著作權人不會因為他人散布其自行開發之修正更新檔受到經濟利益的損失，若仍授與原始著作權人對於散布修正更新檔之同意權，會造成過高的社會成本，也阻礙社會科技文化的創新。</p>
+<p> </p>
+<p><span style="color: #ff6600; font-size: large;"><strong>Q8</strong></span>：<strong>承續 Q7，(1) 如果修正更新檔 (patch) 不是衍生著作，產生修正更新檔是否就不需要取得原始程式著作權人的同意？(2) 將修正更新檔安裝至原始程式上是否需要原作者之同意？</strong></p>
+<p><span style="color: #ff6600; font-size: large;"><strong>A8</strong></span>：(1) 不需要。承續 A7，修正更新檔是一獨立著作，而非衍生著作，故程式開發者開發修正更新檔，不需取得原始程式著作權人的同意。</p>
+<p>(2) 需要。開發修正更新檔的作者雖不需取得原始程式著作權人的授權，但使用者將修正更新檔安裝至原始程式上的行為，即構成改作原始著作，故該使用者必須取得原始程式著作權人改作權的授權；然因常見的自由軟體授權條款皆有著作權人授與使用者修改其著作的權利的規定，在此種情況下，使用者可在原始程式所適用的授權條款的授權範圍內，安裝修正更新檔。</p>
+<p>雖然程式開發者可為其開發的修正更新檔選擇獨立於原始程式的授權條款，但是考量到使用者安裝修正更新檔會構成對原始程式的改作，若修正更新檔採用與原始著作分別採用的授權條款不相容，將造成使用者無法合法安裝修正更新檔的窘境，因此開發修正更新檔的作者最好選擇與原始程式授權條款相容的授權條款釋出該修正更新檔。（相容性的問題請見「自由軟體授權方式之選擇」Q2、Q3）</p>
+<p> </p>
+<p><span style="color: #ff6600; font-size: large;"><strong>Q9</strong></span>：<strong> A 程式是一個網路線上多人開發的自由軟體，目前最新的版本是 1.7 版，陳凱莉想在 A 程式 1.7 版上繼續開發後續的 1.8 版，陳凱莉除了需得到 A 程式 1.7 版作者的同意之外，還需要得到 A 程式更早版本作者的同意嗎？</strong></p>
+<p><span style="color: #ff6600; font-size: large;"><strong> A9</strong></span>：需要。電腦程式在開發過程中常會有不同版本程式的釋出，新版本程式除非完全捨棄舊有版本的程式碼另為開發，否則基於舊有版本加以修改而產生的新版本，不僅是前一版本的衍生著作，同時也是之前所有版本的衍生著作。</p>
+<p>故陳凱莉想要修改 A 程式 1.7 版來開發 1.8 版，若 1.7 版的開發過程中參考了 1.6 版或更早之前的版本，則陳凱莉除需取得 A 程式 1.7 版開發者（團隊）的改作授權之外，同時也需取得之前所有版本開發者（團隊）的授權，才能對 1.7 版進行改作。</p>
+<p>網路線上多人開發是目前自由軟體常見的開發模式，但這種模式卻易使著作權人與使用者間的法律關係過於複雜，必須仰賴自由軟體專案開發者在程式開發之初，事先妥善規劃完善的授權條款，才不會造成後續開發者的難題。</p>
+<p> </p>
+<p><span style="color: #ff6600; font-size: large;"><strong>Q10</strong></span>： <strong>林正國開發 A 程式的過程中，向張莊敬取得了一份他經常使用的 B 程式碼複本，而 B 程式的原作者則是陳凱莉，且 B 程式是以自由軟體模式授權。如果林正國想要以 B 程式作為開發 A 程式的基礎，需得到張莊敬的授權還是 B 程式原作者陳凱莉的授權？</strong></p>
+<p><span style="color: #ff6600; font-size: large;"><strong>A10</strong></span>： 須視授權條款之內容而定。以下就一般情形與少數特別情形分別說明。</p>
+<p>一般情形，張莊敬雖是提供 B 程式副本給林正國的人，但張莊敬並非 B 程式的原始著作人，因此林正國必須取得 B 程式原作者（即陳凱莉）重製權或改作權等授權後，才能利用 B 程式。不過，由於 B 程式採用的是自由軟體授權模式，所以林正國只要遵守 B 程式所採用的授權條款規定，就可對 B 程式進行重製或改作等利用行為。</p>
+<p>少數自由軟體授權條款，例如：MIT、MPL (Mozilla Public License) 及 CPL (Common Public License)，允許他人以自己（即授權人）名義將該軟體「再授權 (sublicense)」給第三人。如果陳凱莉採取的是類似前述三種授權條款釋出 B 程式，則張莊敬在符合該授權條款的約定下，得以張莊敬自己為授權人，在陳凱莉授權給張莊敬的範圍內再授權給林正國，此時，授權契約的當事人便是張莊敬與林正國。在這種「再授權」的情況，對於被授權的林正國來說，一樣可以取得有效的重製或改作的授權，差別僅在於授權人是被授權可為「再授權」的張莊敬，而非 B 程式原作者陳凱莉。</p>
+<p>【按】：一般來說，會特別需要採行「再授權」的情形，較常發生在某一手程式開發／利用者（通常是商業公司）針對某程式加以商業化販售，而該程式之購買者要求和該公司直接訂立授權契約之情況。不過，允許第三人可為再授權的自由軟體授權條款並不多，因此，被授權人在與此等商業公司簽訂授權契約時，必須特別注意該程式原本之授權條款中是否有允許此等商業公司「再授權」之約定。若有，該公司在遵守原授權條款「再授權」的規定下，便能以該公司自己為授權人和購買者訂約；若無，縱使購買者和商業公司簽訂了授權契約，仍欠缺原程式著作權人的「再授權」，該購買者將無法合法地利用此程式。</p>
+			<!-- Show relate article -->
+				<!-- end -->
+		<div class="article_note">
+		<!-- Add tags use metakey, and show OSSF Newsletter tag: OSSFNL+NUM-->
+		<br><br> <hr style='border: 1px dashed #D2DADB;'>		<!-- End -->
+					<br>
+					<b>分類: </b><a href="../faq.html">				問答集					</a>				</div>
+			 <!-- AddThis Button BEGIN ID 3001 is the front page article -->
+     			<br><br>
+       <div class="addthis_toolbox addthis_default_style addthis_32x32_style">
+       <a class="addthis_button_preferred_1"></a>
+       <a class="addthis_button_preferred_2"></a>
+       <a class="addthis_button_preferred_3"></a>
+       <a class="addthis_button_preferred_4"></a>
+       <a class="addthis_button_compact"></a>
+       <a class="addthis_counter addthis_bubble_style"></a>
+       </div>
+       <script type="text/javascript">var addthis_config = {"data_track_clickback":true};</script>
+       <script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js#pubid=openfoundry"></script>
+       <!-- AddThis Button END -->
+     <br>
+		<div class="totop" ><a class="rt-totop" href="modification.html#" style="outline: medium none;">↑ Top</a></div>
+            <!-- AddThis Button END -->
+
+			</div>
+</div>
+
+		                            </div>
+									<div class="clear"></div>
+								</div>
+								<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+							</div>
+							</div>
+                                                    </div>
+                                            </div>
+                                <div class="rt-grid-3 rt-pull-9">
+                <div id="rt-sidebar-a">
+                                    <div class="square4">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-title"><h2 class="title">利用注意事項</h2></div>
+						<div class="clear"></div>
+		                						<div class="module-content">
+		                	<ul class="menu" id="5"><li class="item16"><a href="../for-users.html"><span>使用者注意事項</span></a></li><li class="item17"><a href="../for-developers.html"><span>開發者注意事項</span></a></li></ul>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-title"><h2 class="title">法律常識</h2></div>
+						<div class="clear"></div>
+		                						<div class="module-content">
+		                	<ul class="menu"><li class="item8"><a href="../basic-concepts.html"><span>基本觀念</span></a></li><li class="item9"><a href="../glossary.html"><span>法律小辭典</span></a></li><li class="parent active item10"><a href="../faq.html"><span>問答集</span></a><ul><li class="parent item201"><a href="licenses.html"><span>授權條款</span></a></li><li class="item11"><a href="choosing-of-licenses.html"><span>授權方式之選擇</span></a></li><li id="current" class="active item12"><a href="modification.html"><span>軟體之改作</span></a></li><li class="item199"><a href="patent.html"><span>專利</span></a></li><li class="item200"><a href="commercial-applications.html"><span>商業應用</span></a></li></ul></li><li class="item13"><a href="../case-study.html"><span>案例</span></a></li><li class="item14"><a href="../legal-column-list.html"><span>法律專欄</span></a></li><li class="item15"><a href="../law-and-license-forum.html" target="_blank"><span>法政討論區</span></a></li></ul>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+        	                <div class="square1">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-title"><h2 class="title">授權條款</h2></div>
+						<div class="clear"></div>
+		                						<div class="module-content">
+		                	<ul class="menu"><li class="item18"><a href="../licenses.html"><span>授權條款介紹</span></a></li><li class="parent item19"><a href="../license-wizard.html"><span>授權 指引/ 精靈</span></a></li><li class="item22"><a href="../comparison-of-licenses/27-license.html"><span>授權條款比較表</span></a></li><li class="item23"><a href="../compatibility-of-licenses/27-license.html"><span>授權條款相容性</span></a></li><li class="item197"><a href="../foss-license-category/27-license.html"><span>授權條款分類表</span></a></li></ul>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		                <div class="square1">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-title"><h2 class="title">法律政策</h2></div>
+						<div class="clear"></div>
+		                						<div class="module-content">
+		                	<ul class="menu"><li class="item24"><a href="../other-countries.html"><span>其他國家政策</span></a></li></ul>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		
+                </div>
+            </div>
+
+                    <div class="clear"></div>
+                </div>
+            </div>
+																													</div>
+										<div id="rt-copyright">
+						<div class="rt-grid-12 rt-alpha rt-omega">
+                        <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<div id="desktop-mobile-version-switch"><span id="mobile-version" class="version-switch"><a href="modification.html#">行動版</a></span></div>
+自由軟體鑄造場 製作 最佳瀏覽狀態：IE7或Firefox2.0以上 (建議使用Firefox) ‧ 解析度1024*768 <br /> <strong>E-Mail</strong>：<a href="mailto:contact@openfoundry.org">contact@openfoundry.org</a> <strong>Address</strong>：台北市南港區研究院路2段128號 中央研究院資訊科學研究所 . <a href="../../privacy-policy.html">隱私權條款</a>. <a href="../../terms-of-use.html">使用條款</a><span style="position: relative; top: 8px; margin-top: -8px;"> <a href="../../about/8101.html"><img src="../../images/M_images/rss-feed-all.png" border="0" /></a></span>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+        	
+</div>
+						<div class="clear"></div>
+					</div>
+					<div class="rt-footer-bottom-wrap"><div class="rt-footer-bottom"><div class="rt-footer-bottom2"><div class="rt-footer-bottom3"></div></div></div></div>
+									</div></div></div>
+				<div class="rt-surround-bottom"><div class="rt-surround-bottom2"><div class="rt-surround-bottom3"></div></div></div>
+							</div>
+		</div>
+		<!--
+		<script id="aptureScript">
+						(function (){var a=document.createElement("script");a.defer="true";a.src="http://www.apture.com/js/apture.js?siteToken=vsJttrn";document.getElementsByTagName("head")[0].appendChild(a);})();
+     </script>
+-->
+
+<!-- Piwik -->
+<!-- 			<script type="text/javascript">
+			  var _paq = _paq || [];
+		  _paq.push(["trackPageView"]);
+		  _paq.push(["enableLinkTracking"]);
+
+		    (function() {
+			        var u=(("https:" == document.location.protocol) ? "https" : "https") + "://www.openfoundry.org/piwik/";
+				    _paq.push(["setTrackerUrl", u+"piwik.php"]);
+				    _paq.push(["setSiteId", "1"]);
+				        var d=document, g=d.createElement("script"), s=d.getElementsByTagName("script")[0]; g.type="text/javascript";
+				        g.defer=true; g.async=true; g.src=u+"piwik.js"; s.parentNode.insertBefore(g,s);
+					  })();
+		  </script> -->
+<!-- End Piwik Code -->
+	</body>
+</html>

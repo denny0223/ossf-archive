@@ -1,0 +1,425 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="zh-tw" lang="zh-tw" >
+<head>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<link rel="shortcut icon" href="../../images/favicon.ico" />
+	  <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+  <meta name="robots" content="index, follow" />
+  <meta name="keywords" content="OSSFNL674" />
+  <meta name="title" content="自由軟體授權分析輔助工具：自動化程式碼掃描系統" />
+  <meta name="description" content="為了要解決工作上所需處理的授權分析問題，筆者常會需要了解一個專案究竟利用了哪些自由軟體元件，以及這些元件是採用哪一份自由軟體授權條款？這些工作通常得透過人工進行，也就是請實際開發專案的工程師提供他們的軟體架構圖，並且查詢這些軟體元件適用哪些授權條款，等到取得這些資料後，才有辦法進行後續的授權分析，以研擬授權衝突的解決方案。若涉及的自由軟體元件僅三、四個，那這樣的人工作業尚不困難，但若是牽涉到幾十個" />
+  <meta name="generator" content="" />
+  <title>自由軟體授權分析輔助工具：自動化程式碼掃描系統 - OpenFoundry</title>
+  <link href="../../favicon.ico" rel="shortcut icon" type="image/x-icon" />
+  <link rel="stylesheet" href="../../components/com_gantry/css/gantry.css" type="text/css" />
+  <link rel="stylesheet" href="../../components/com_gantry/css/grid-12.css" type="text/css" />
+  <link rel="stylesheet" href="../../components/com_gantry/css/joomla.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/joomla.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/style1.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/light-body.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/demo-styles.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/template.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/typography.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/fusionmenu.css" type="text/css" />
+  <style type="text/css">
+    <!--
+#rt-main-surround ul.menu li.active > a, #rt-main-surround ul.menu li.active > .separator, #rt-main-surround ul.menu li.active > .item, #rt-main-surround .square4 ul.menu li:hover > a, #rt-main-surround .square4 ul.menu li:hover > .item, #rt-main-surround .square4 ul.menu li:hover > .separator, .roktabs-links ul li.active span {color:#0088B5;}
+a, #rt-main-surround ul.menu a:hover, #rt-main-surround ul.menu .separator:hover, #rt-main-surround ul.menu .item:hover {color:#0088B5;}
+    -->
+  </style>
+  <script type="text/javascript" src="../../components/com_jcomments/js/jcomments-v2.1.js%3Fv=2"></script>
+  <script type="text/javascript" src="../../components/com_jcomments/libraries/joomlatune/ajax.js"></script>
+  <script type="text/javascript" src="../../media/system/js/mootools.js"></script>
+  <script type="text/javascript" src="../../media/system/js/caption.js"></script>
+  <script type="text/javascript" src="../../components/com_gantry/js/gantry-buildspans.js"></script>
+  <script type="text/javascript" src="../../components/com_gantry/js/gantry-inputs.js"></script>
+  <script type="text/javascript" src="../../templates/rt_quantive_j15/js/jquery.cookie.js"></script>
+  <script type="text/javascript" src="../../modules/mod_roknavmenu/themes/fusion/js/fusion.js"></script>
+  <script type="text/javascript" src="../../modules/mod_ofssologin/js/ofssologin.js"></script>
+  <script type="text/javascript">
+
+			window.addEvent('domready', function() {
+				var modules = ['rt-block'];
+				var header = ['h3','h2','h1'];
+				GantryBuildSpans(modules, header);
+			});
+		InputsExclusion.push('.content_vote','#rt-popup')
+		        window.addEvent('load', function() {
+					new Fusion('ul.menutop', {
+						pill: 0,
+						effect: 'slide and fade',
+						opacity: 1,
+						hideDelay: 500,
+						centered: 0,
+						tweakInitial: {'x': -2, 'y': 0},
+        				tweakSubsequent: {'x': 0, 'y': -14},
+						menuFx: {duration: 200, transition: Fx.Transitions.Sine.easeOut},
+						pillFx: {duration: 400, transition: Fx.Transitions.Back.easeOut}
+					});
+	            });
+  </script>
+<!-- <script type="text/javascript" src="/sso/javascripts/langsync.js"></script> -->
+<!-- <script src="/templates/rt_quantive_j15/js/ossf.js"></script> -->
+<script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-4136519-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
+</head>
+	<body  class="backgroundlevel-low backgroundstyle-style8 bodylevel-med bodystyle-light cssstyle-style1 logostyle-dark font-family-helvetica font-size-is-default menu-type-fusionmenu col12 ">
+		<div id="rt-main-background">
+			<div class="rt-container">
+																<div id="rt-header">
+					<div class="rt-grid-7 rt-alpha">
+    			<div class="rt-block">
+    	    	<a href="../../index.html" id="rt-logo"></a>
+    		</div>
+	    
+</div>
+<div class="rt-grid-5 rt-omega">
+                    <div class="square9">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<div class="ofssologin_square9"><a href="../../index.html">登入</a>&nbsp;&nbsp|&nbsp;&nbsp;<span><a href="../../en/legal-column-list/8094-2010-07-24-14-11-18.html" ><span lang="en" xml:lang="en">English</span></a></li></ul></span><!--Joom!fish V2.0.4 (Lightning)-->
+<!-- &copy; 2003-2009 Think Network, released under the GPL. -->
+<!-- More information: at http://www.joomfish.net -->
+<div class="ofssologin_search_square9">
+  <form id="of_search" action="https://www.openfoundry.org/of/openfoundry/search" method="get" onsubmit="of_search(); return false;">
+    <select id="of_search_type">
+      <option value="Projects"> 專案 </option>
+      <option value="Content"> 文章 </option>
+      <option value="People"> 人才 </option>
+    </select>
+    <input id="query" name="query" id="mod_search_searchword" maxlength="50" alt="search" class="inputbox" type="text" size="28" value="search..."  onblur="if(this.value=='') this.value='search...';" onfocus="if(this.value=='search...') this.value='';" />
+    <input type="hidden" name="commit" value="search" />
+  </form>
+</div></div>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		
+</div>
+					<div class="clear"></div>
+				</div>
+																<div id="rt-navigation"><div id="rt-navigation2"><div id="rt-navigation3">
+					
+<div class="nopill">
+	<ul class="menutop level1 " >
+						<li class="item1 root" >
+					<a class="orphan item bullet" href="../../index.html"  >
+				<span>
+			    				首頁				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item32 root" >
+					<a class="orphan item bullet" href="../../archived.html"  >
+				<span>
+			    				專案				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item186 root" >
+					<a class="orphan item bullet" href="../community.html"  >
+				<span>
+			    				Who&#039;s Who				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item4 root" >
+					<a class="orphan item bullet" href="../news.html"  >
+				<span>
+			    				新聞				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item5 root" >
+					<a class="orphan item bullet" href="../law-and-licensing.html"  >
+				<span>
+			    				法律源地				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item3 root" >
+					<a class="orphan item bullet" href="../activities.html"  >
+				<span>
+			    				活動				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item2 root" >
+					<a class="orphan item bullet" href="../resourcecatalog%3FName=Value.html"  >
+				<span>
+			    				資源表列				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item45 root" >
+					<a class="orphan item bullet" href="../about.html"  >
+				<span>
+			    				關於				   
+				</span>
+			</a>
+			
+			
+	</li>	
+				</ul>
+</div>
+
+				    <div class="clear"></div>
+				</div></div></div>
+								<div class="rt-surround"><div class="rt-surround2"><div class="rt-surround3">
+										<div id="rt-showcase-section">
+												<div id="rt-showcase">
+							<div class="rt-grid-12 rt-alpha rt-omega">
+    		<div class="clear"></div>
+		
+		
+                <div class="close-note">
+                    <div class="rt-block">
+               					<div class="module-content">
+                	<div style="font-size:medium; background-image:linear-gradient(120deg,#159957,#4298b2);color:white;padding:20px;margin:-10px -18px;">感謝您對「自由軟體鑄造場」的支持與愛護，十多年來「自由軟體鑄造場」受中央研究院支持，並在資訊科學研究所以及資訊科技創新研究中心執行，現已完成階段性的任務。 本網站預計持續維運至 2021年底，網站內容基本上不會再更動。<br />也紀念我們永遠的朋友 李士傑先生（Shih-Chieh Ilya Li）。</div>				</div>
+            </div>
+                </div>
+		
+</div>
+							<div class="clear"></div>
+						</div>
+																	</div>
+															<div id="rt-main-surround">
+												<div id="rt-breadcrumbs">
+								<div class="rt-breadcrumb-surround">
+		<a href="../../index.html" id="breadcrumbs-home"></a>
+		<span class="breadcrumbs pathway">
+<a href="../legal-column-list.html" class="pathway">法律專欄</a> <img src="../../templates/rt_quantive_j15/images/arrow.png" alt=""  /> <span class="no-link">自由軟體授權分析輔助工具：自動化程式碼掃描系統</span></span>
+	</div>
+	
+							<div class="clear"></div>
+						</div>
+																							              <div id="rt-main" class="sa3-mb9">
+                <div class="rt-main-inner">
+                    <div class="rt-grid-9 rt-push-3">
+                                                <div id="rt-content-top">
+                            <div class="rt-grid-9 rt-alpha rt-omega">
+                    <div class="title1">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-title"><h2 class="title">法律源地</h2></div>
+						<div class="clear"></div>
+		                						<div class="module-content">
+		                	<p><img style="float: right; border: 0; margin-left: 5px; margin-right: 5px;" src="../../images/banners/consulting1.png" alt="" width="100" border="0" />本網站法律源地提供相當多自由軟體授權與法律的資訊，歡迎您閱讀這些資訊。</p>
+<p>&nbsp;</p>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		
+</div>
+							<div class="clear"></div>
+                        </div>
+                                                <div class="rt-block">
+                            							<div class="square1">
+							<div class="rt-module-surround">
+								<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+								<div class="rt-module-inner">
+		                            <div id="rt-mainbody">
+		                                
+<div class="rt-joomla ">
+	<div class="rt-article">
+		
+				<div class="rt-headline"><h1 class="rt-article-title">自由軟體授權分析輔助工具：自動化程式碼掃描系統</h1>		</div>
+		<div class="clear"></div>
+		
+		
+		
+				<div class="rt-articleinfo">
+						<div class="rt-article-icons">
+								<a href="8094-2010-07-24-14-11-18%3Ftmpl=component&amp;print=1&amp;page=.html" title="列印" onclick="window.open(this.href,'win2','status=no,toolbar=no,scrollbars=yes,titlebar=no,menubar=no,resizable=yes,width=640,height=480,directories=no,location=no'); return false;" rel="nofollow"><span class="icon print"></span></a>																</div>
+			
+			<span class="rt-date-posted">
+						建立日期			2010-07-24 22:02						&nbsp;&nbsp;&nbsp;&nbsp;						最近更新在 2013-03-18 11:13						</span>
+
+						<span class="rt-author">
+				作者是 葛冬梅			</span>
+				
+					</div>
+		
+		
+		<p>為了要解決工作上所需處理的授權分析問題，筆者常會需要了解一個專案究竟利用了哪些自由軟體元件，以及這些元件是採用哪一份自由軟體授權條款？這些工作通常得透過人工進行，也就是請實際開發專案的工程師提供他們的軟體架構圖，並且查詢這些軟體元件適用哪些授權條款，等到取得這些資料後，才有辦法進行後續的授權分析，以研擬授權衝突的解決方案。若涉及的自由軟體元件僅三、四個，那這樣的人工作業尚不困難，但若是牽涉到幾十個自由軟體授權元件，那就得花上好一番的功夫來進行人工作業。因此為了簡便這些授權分析的流程，近年不少團隊就此需求建置了自由軟體程式碼掃描的自動化系統，以掃描軟體專案程式碼的授權方式，並進一步列出報表以顯示該專案裡自由軟體元件的利用情形，以及所使用到自由軟體元件的授權細節。<br /><br />近半年來，筆者接到的一些諮商問題，不約而同地詢問到哪裡可以找到這樣的掃瞄系統，因此透過本文來介紹幾套這類型的掃瞄系統，提供給想要了解這方面資訊的朋友一個初步的參考（註一）。但由於筆者本身並不具有程式開發的技術背景，因此介紹的內容，將僅就這類系統在授權分析方面的特點加以描述，而不針對技術細節來進行說明。</p>
+
+<p><br />以下將介紹的三套系統是 FOSSology、Black Duck 與 Palamida（註二），這些系統均可用來查對特定專案中是否包含有自由軟體授權的元件，以及判斷該元件是採用哪一份條款進行授權。這三套系統各具特色、優缺點，也具有各自不同的運作方式或商業模式。<br /><br /><strong>【FOSSology】</strong><br /><br />FOSSology 初始是由 HP 所研發，原來僅於公司內部使用，後來 HP 將這套系統採 GPL-2.0 的方式在 SourceForge 上授權釋出，希望透過社群共工合作的力量，以協助繼續改進、擴展這套系統的精準度及拓展使用範圍。<br /><br />FOSSology 的原理是：掃描專案檔案中，與授權相關的文字資訊。因此只要一個軟體檔案中包含有自由軟體授權相關的文字，無論是條款名稱、前言、內文或相關說明文字，FOSSology 都可以將這些資料比對出來，並且顯示是哪一份授權條款與版本為何。若所搜尋到的資訊仍不夠完整，它也能就既有的資訊進行比對，顯示相似程度的百分比，以指示這些文字可能指向哪份授權條款。<br /><br />由於這套系統本身就是自由軟體，因此任何人都可以在網路上自由下載、安裝。此外，OpenFoundry 團隊為這套系統製作了一份 vdi 檔，也可以節省使用者自己下載、安裝的時間。<br /><br /><strong>(1) 自行下載與安裝</strong><br /><br />您可以自行到 FOSSology 的專案網頁下載 FOSSology，然後安裝、使用。相關說明資訊也可參考該專案網頁：<br /><br /><a href="https://fossology.org/download" target="_blank">https://fossology.org/download</a><br /><br /><strong>(2) 利用現成的 vdi 檔</strong><br /><br />OpenFoundry 製作的 vdi 檔，內存一個虛擬的 Ubuntu Linux 作業系統，而 FOSSology 已經被預先安裝好在這個作業系統上。您只要在自己的電腦中安裝 VirtualBox（註三）這個跨平台的虛擬作業系統，將 OpenFoundry 所製作的 vdi 檔掛載上去，然後依照操作步驟的說明，就可以使用這個虛擬作業系統裡的 FOSSology 來掃描個別專案原始碼的授權狀態。這個 vdi 檔與相關說明文件您可以到下列網頁下載：<br /><br /><a href="https://www.openfoundry.org/of/projects/1342/download" target="_blank">https://www.openfoundry.org/of/projects/1342/download </a><br /><br />FOSSology 是掃描原始碼檔案中授權相關的文字資訊，因此若檔案中本來就沒有授權相關文字的話，這套系統便無法辨識出這個軟體是否有利用到自由軟體的程式碼。不過 FOSSology 具有免費、開放的特性，無論是原始碼或內容資料，任何有興趣的朋友都可以自由取得並加以研究、改良。此外，它所佔的儲放空間及所需的運算資源不大，可以被完整安裝在一般個人電腦中使用，十分方便，這些是以下兩套商業系統所沒有的優點。<br /><br />另外值得一提的是，HP 公司在釋出這套系統的同時，也成立了另外一個姊妹網站 FOSSBazaar（註四），FOSSBazaar 上有許多與自由軟體相關的開發管理、產品生命周期的參考資訊，也設有討論區供大家提問、討論，若使用者在透過 FOSSology 發現授權衝突之後，便可以到 FOSSBazaar 上找尋相關資訊以進一步解決問題。<br /><br /><strong>【Black Duck】</strong><br /><br />Black Duck 是一家專門提供自由軟體授權分析相關服務的美國公司，該公司建立龐大的原始碼分析比對資料庫，裡面儲存著從各知名網路站台所蒐集到的自由軟體授權原始碼與其授權資訊，Black Duck 掃描客戶所提供的產品原始碼，然後與資料庫裡的自由軟體原始碼進行指紋式 (Fingerprint) 的近似性比對，再將這些資訊輸出為報表，讓客戶得知產品專案裡包含有哪些自由軟體授權的元件及其授權狀態，以讓客戶進一步研究分析這些元件間是否會產生授權衝突。此外，Black Duck 也協助客戶將這樣的掃描系統，在產品開發初期時便先導入其管理流程。<br /><br />由於 Black Duck的系統是採用原始碼比對的方式，而全球自由軟體原始碼資料的儲存數量龐大，因此掃描比對過程較為耗時。另外，若產品的元件採用了較為複雜的授權模式，也很容易導致這套系統產生的判斷有所誤差，例如：有的自由軟體元件兼採 GPL 與商業授權的雙重授權模式，或者如同 Mozilla Firefox 特有的三重授權模式，當這些元件是採取多重授權的模式釋出程式碼時，僅靠 Black Duck 的自動化分析機制，所得到的授權列表便不會百分之百精確，該專案元件的授權狀態在最後確認前，還是需要以人工分析的方式，一項項確認特定元件究竟是以多重授權中的哪一重授權方式取得。此外，由於 Black Duck運作的是商業性的收費方式，使用者必須付費來取得這些分析服務，而就筆者所知，此套服務所費不貲，若是預算不多的話，所購買到的服務將十分有限（註五）。<br /><br /><strong>【Palamida】</strong><br /><br />Palamida 也是一家提供商業服務的美國公司，專門針對自由軟體商用專案提供自由軟體授權分析的服務，該公司亦有一套類似 Black Duck 的資料庫系統可以掃描、比對自由軟體檔案的授權狀態。Palamida 的系統一樣會掃描客戶的產品檔案後提供分析列表，告知客戶該產品中有哪些自由軟體授權的元件與可能衍生的授權問題，不過在遭遇授權狀態複雜的專案，Palamida 一樣可能會有結果誤差的現象。而在掃描完畢之後，Palamida 側重在提供後續的風險管理諮詢服務，該公司並與美國紐約州一家專門針對自由軟體商用侵權風險提供服務的公司 OSRM（註六）合作，Palamida 在掃描產品元件的授權狀態之後，會視分析結果推薦客戶購買 OSRM 分級式的自由軟體風險保單，若日後發生自由軟體侵權爭訟的時候，販售該產品的公司便可以透過保險金來彌補公司未來可能產生的金錢損失。<br /><br /><strong>【系統不同、優缺點各異】</strong><br /><br />以上三套系統，有著不同的優缺點：FOSSology 免費、輕巧、忠實呈現原始檔案中的授權資訊，卻無法判斷未在檔頭 (Header file) 及目錄下預置授權資訊的軟體元件；Black Duck 號稱資料庫龐大、程式碼方面的儲存資訊最為完整，但掃描結果卻仍會發生略有誤差的狀況；Palamida 雖然有著配套的風險承保措施，卻一樣也有風險評估失準的問題。因此採用哪一套系統，必須要看使用者的個別狀況而定。在個人或小型專案的話，筆者推薦採用 FOSSology，而若是商業公司的大型軟體專案，在預算充足、願意以金錢換取時間的前提下，購買商業性質的自動化掃描服務，也是一條可以考慮的途徑。<br /><br /><strong>【妥善處理問題是最終目的】</strong><br /><br />看到這裡，您可能也有發現，這些系統的開發者並非僅單純地提供系統式自動化掃描的服務，連帶亦會提供相關的授權參考資訊或中階的諮詢服務，那是因為自動化系統雖然可以替代人工比對，告訴使用者一個軟體專案裡面是否有利用到自由軟體元件，以及涉及到哪些授權條款，但是這些掃描結果往往只能夠協助使用者呈現問題，卻不能直接告訴使用者應該如何解決問題。<br /><br />所以、若是要這些商用專案的元件授權狀態得到妥善的處理，最後的解決方案還是需要回歸到人腦進行個案分析。因此使用者可以至 FOSSology 配套的 FOSSBazaar 網站上，尋找相關資訊、到討論區與人討論如何解決授權問題，或者直接利用商業性服務的 Black Duck 與 Palamida 所提供的中階諮詢服務。不過由於這些網站資訊與諮詢服務的內容幾乎都是偏向軟體開發、專案鑑價或生命周期等管理面向，只能解決複雜度較低的授權問題，例如：另外尋找授權拘束程度較低的其他自由軟體元件，以置換掉目前較易產生授權衝突的程式碼。<br /><br />而若問題複雜度高且與授權條款內容密切相關的話，那就不是單純依靠管理資訊或中階諮詢服務可以解決的。例如：系統掃描結果顯示，一個專案利用到多份性質相異的自由軟體授權元件，這些授權條款之間有的相互衝突、有的可以相容並存，若要整體解決授權衝突的話，會涉及到許多牽一髮而動全身的連帶問題，包括：衝突的授權條款應該如何解釋？根據這些解釋，有哪幾種置換程式碼的模式？置換的同時有哪些其他部份會受到影響？由於這些問題偏向高度複雜而需要精密的處理，若非尋求授權方面的專家協助，往往不易擬定出妥善的解決方案。<br /><br />因此若是想要利用這些系統來掃描程式碼，除了必須考慮自身狀況以選擇適合的系統外，還必須了解到自動化的掃描系統並非是解決問題時百試百靈的靈丹妙藥，掃描系統目前較近似於授權分析時所能使用的輔助工具，它能夠協助分析者更快了解授權衝突的徵結點所在，但若要根本性的解決問題，還是需要加入人腦的思考與策略分析。而若真正遭遇複雜的授權問題時，還是必須要尋求授權專家的建議，如此才是妥善解決自由軟體授權爭議及維繫專案授權調和性的根本之道。<br /><br /></p>
+<hr />註一：除了本文所提及的三套系統之外，還有其他具有類似功能的系統，例如：Open Source License Checker (<a href="https://forge.ow2.org/projects/oslcv3/">https://forge.ow2.org/projects/oslcv3/</a>)、OSS Discovery (<a href="https://ossdiscovery.sourceforge.net/">https://ossdiscovery.sourceforge.net/</a>) 與 Binary Analysis Tool (<a href="https://www.binaryanalysis.org/en/home" target="_blank">https://www.binaryanalysis.org/en/home</a>) 等。不過由於筆者涉獵有限，因此本文僅介紹較為熟悉的三套系統。<br />註二：這三套系統的入口網址如右，FOSSology：<a href="https://fossology.org/" target="_blank">https://fossology.org/ </a>；Black Duck：<a href="https://www.blackducksoftware.com/" target="_blank">https://www.blackducksoftware.com/</a>；Palamida：<a href="https://www.palamida.com/" target="_blank">https://www.palamida.com/</a>。<br />註三：VirtualBox 是跨平台的軟體，可以在 Linux、Open Solaris、BSD，甚至是 Windows 作業系統上執行。您可以到下面網址下載 VirtualBox 來安裝使用：<a href="https://www.virtualbox.org/wiki/Downloads" target="_blank">https://www.virtualbox.org/wiki/Downloads</a>。<br />註四：FOSSBazaar：<a href="https://fossbazaar.org/" target="_blank">https://fossbazaar.org/</a>。<br />註五：目前 Black Duck 在台灣有兩家代理公司，分別為鈦智科技 (<a href="https://www.adnetwork.com.tw/pro-blackduck-cn.htm">https://www.adnetwork.com.tw/pro-blackduck-cn.htm</a>) 與倚碩科技 (<a href="https://www.esoft.com.tw/blackduck.php">https://www.esoft.com.tw/blackduck.php</a>)。<br />註六：Open Source Risk Management，OSRM。OSRM 與 Palamida 的合作說明：<a href="https://www.osriskmanagement.com/partners.html" target="_blank">https://www.osriskmanagement.com/partners.html</a>；OSRM 風險保單的頁面：<a href="https://www.osriskmanagement.com/insurance.html" target="_blank">https://www.osriskmanagement.com/insurance.html</a>。
+			<!-- Show relate article -->
+				<!-- end -->
+		<div class="article_note">
+		<!-- Add tags use metakey, and show OSSF Newsletter tag: OSSFNL+NUM-->
+		<br><br> <hr style='border: 1px dashed #D2DADB;'><b>自由軟體鑄造場電子報&nbsp;:</b>&nbsp;<a href='../../previous-issue%3Ftask=view&amp;id=674.html'>第 154 期 自由軟體授權分析輔助工具 - 自動化程式碼掃描系統</a><br>				<!-- End -->
+					<br>
+					<b>分類: </b><a href="../legal-column-list.html">				法律專欄					</a>				</div>
+			 <!-- AddThis Button BEGIN ID 3001 is the front page article -->
+     			<br><br>
+       <div class="addthis_toolbox addthis_default_style addthis_32x32_style">
+       <a class="addthis_button_preferred_1"></a>
+       <a class="addthis_button_preferred_2"></a>
+       <a class="addthis_button_preferred_3"></a>
+       <a class="addthis_button_preferred_4"></a>
+       <a class="addthis_button_compact"></a>
+       <a class="addthis_counter addthis_bubble_style"></a>
+       </div>
+       <script type="text/javascript">var addthis_config = {"data_track_clickback":true};</script>
+       <script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js#pubid=openfoundry"></script>
+       <!-- AddThis Button END -->
+     <br>
+		<div class="totop" ><a class="rt-totop" href="8094-2010-07-24-14-11-18.html#" style="outline: medium none;">↑ Top</a></div>
+            <!-- AddThis Button END -->
+
+			</div>
+</div>
+
+		                            </div>
+									<div class="clear"></div>
+								</div>
+								<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+							</div>
+							</div>
+                                                    </div>
+                                            </div>
+                                <div class="rt-grid-3 rt-pull-9">
+                <div id="rt-sidebar-a">
+                                    <div class="square4">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-title"><h2 class="title">利用注意事項</h2></div>
+						<div class="clear"></div>
+		                						<div class="module-content">
+		                	<ul class="menu" id="5"><li class="item16"><a href="../for-users.html"><span>使用者注意事項</span></a></li><li class="item17"><a href="../for-developers.html"><span>開發者注意事項</span></a></li></ul>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-title"><h2 class="title">法律常識</h2></div>
+						<div class="clear"></div>
+		                						<div class="module-content">
+		                	<ul class="menu"><li class="item8"><a href="../basic-concepts.html"><span>基本觀念</span></a></li><li class="item9"><a href="../glossary.html"><span>法律小辭典</span></a></li><li class="parent item10"><a href="../faq.html"><span>問答集</span></a></li><li class="item13"><a href="../case-study.html"><span>案例</span></a></li><li id="current" class="active item14"><a href="../legal-column-list.html"><span>法律專欄</span></a></li><li class="item15"><a href="../law-and-license-forum.html" target="_blank"><span>法政討論區</span></a></li></ul>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+        	                <div class="square1">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-title"><h2 class="title">授權條款</h2></div>
+						<div class="clear"></div>
+		                						<div class="module-content">
+		                	<ul class="menu"><li class="item18"><a href="../licenses.html"><span>授權條款介紹</span></a></li><li class="parent item19"><a href="../license-wizard.html"><span>授權 指引/ 精靈</span></a></li><li class="item22"><a href="../comparison-of-licenses/27-license.html"><span>授權條款比較表</span></a></li><li class="item23"><a href="../compatibility-of-licenses/27-license.html"><span>授權條款相容性</span></a></li><li class="item197"><a href="../foss-license-category/27-license.html"><span>授權條款分類表</span></a></li></ul>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		                <div class="square1">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-title"><h2 class="title">法律政策</h2></div>
+						<div class="clear"></div>
+		                						<div class="module-content">
+		                	<ul class="menu"><li class="item24"><a href="../other-countries.html"><span>其他國家政策</span></a></li></ul>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		
+                </div>
+            </div>
+
+                    <div class="clear"></div>
+                </div>
+            </div>
+																													</div>
+										<div id="rt-copyright">
+						<div class="rt-grid-12 rt-alpha rt-omega">
+                        <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<div id="desktop-mobile-version-switch"><span id="mobile-version" class="version-switch"><a href="8094-2010-07-24-14-11-18.html#">行動版</a></span></div>
+自由軟體鑄造場 製作 最佳瀏覽狀態：IE7或Firefox2.0以上 (建議使用Firefox) ‧ 解析度1024*768 <br /> <strong>E-Mail</strong>：<a href="mailto:contact@openfoundry.org">contact@openfoundry.org</a> <strong>Address</strong>：台北市南港區研究院路2段128號 中央研究院資訊科學研究所 . <a href="../../privacy-policy.html">隱私權條款</a>. <a href="../../terms-of-use.html">使用條款</a><span style="position: relative; top: 8px; margin-top: -8px;"> <a href="../../about/8101.html"><img src="../../images/M_images/rss-feed-all.png" border="0" /></a></span>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+        	
+</div>
+						<div class="clear"></div>
+					</div>
+					<div class="rt-footer-bottom-wrap"><div class="rt-footer-bottom"><div class="rt-footer-bottom2"><div class="rt-footer-bottom3"></div></div></div></div>
+									</div></div></div>
+				<div class="rt-surround-bottom"><div class="rt-surround-bottom2"><div class="rt-surround-bottom3"></div></div></div>
+							</div>
+		</div>
+		<!--
+		<script id="aptureScript">
+						(function (){var a=document.createElement("script");a.defer="true";a.src="http://www.apture.com/js/apture.js?siteToken=vsJttrn";document.getElementsByTagName("head")[0].appendChild(a);})();
+     </script>
+-->
+
+<!-- Piwik -->
+<!-- 			<script type="text/javascript">
+			  var _paq = _paq || [];
+		  _paq.push(["trackPageView"]);
+		  _paq.push(["enableLinkTracking"]);
+
+		    (function() {
+			        var u=(("https:" == document.location.protocol) ? "https" : "https") + "://www.openfoundry.org/piwik/";
+				    _paq.push(["setTrackerUrl", u+"piwik.php"]);
+				    _paq.push(["setSiteId", "1"]);
+				        var d=document, g=d.createElement("script"), s=d.getElementsByTagName("script")[0]; g.type="text/javascript";
+				        g.defer=true; g.async=true; g.src=u+"piwik.js"; s.parentNode.insertBefore(g,s);
+					  })();
+		  </script> -->
+<!-- End Piwik Code -->
+	</body>
+</html>

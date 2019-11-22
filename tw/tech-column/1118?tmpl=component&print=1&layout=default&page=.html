@@ -1,0 +1,111 @@
+	<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+	<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="zh-tw" lang="zh-tw" >
+		<head>
+			  <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+  <meta name="robots" content="noindex, nofollow" />
+  <meta name="keywords" content="OSSFNL288" />
+  <meta name="title" content="Checkstyle" />
+  <meta name="description" content="Java Opensources for Web Development Part I：Chapter 5 檢測程式碼Lession 19 : Checkstyle 工程師的程式碼風格往往不完全相同，因此，一個團隊合作的情況之下，如果能夠利用相同的程式碼風格，查看其他人的程式也會比較輕鬆。尤其在 Opensources" />
+  <meta name="generator" content="" />
+  <title>Checkstyle</title>
+  <link href="../../favicon.ico" rel="shortcut icon" type="image/x-icon" />
+  <link rel="stylesheet" href="../../components/com_gantry/css/gantry.css" type="text/css" />
+  <link rel="stylesheet" href="../../components/com_gantry/css/grid-12.css" type="text/css" />
+  <link rel="stylesheet" href="../../components/com_gantry/css/joomla.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/joomla.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/style1.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/light-body.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/demo-styles.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/template.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/typography.css" type="text/css" />
+  <style type="text/css">
+    <!--
+#rt-main-surround ul.menu li.active > a, #rt-main-surround ul.menu li.active > .separator, #rt-main-surround ul.menu li.active > .item, #rt-main-surround .square4 ul.menu li:hover > a, #rt-main-surround .square4 ul.menu li:hover > .item, #rt-main-surround .square4 ul.menu li:hover > .separator, .roktabs-links ul li.active span {color:#0088B5;}
+a, #rt-main-surround ul.menu a:hover, #rt-main-surround ul.menu .separator:hover, #rt-main-surround ul.menu .item:hover {color:#0088B5;}
+    -->
+  </style>
+  <script type="text/javascript" src="../../components/com_jcomments/js/jcomments-v2.1.js%3Fv=2"></script>
+  <script type="text/javascript" src="../../components/com_jcomments/libraries/joomlatune/ajax.js"></script>
+  <script type="text/javascript" src="../../media/system/js/mootools.js"></script>
+  <script type="text/javascript" src="../../media/system/js/caption.js"></script>
+  <script type="text/javascript" src="../../components/com_gantry/js/gantry-buildspans.js"></script>
+  <script type="text/javascript" src="../../components/com_gantry/js/gantry-inputs.js"></script>
+  <script type="text/javascript">
+
+			window.addEvent('domready', function() {
+				var modules = ['rt-block'];
+				var header = ['h3','h2','h1'];
+				GantryBuildSpans(modules, header);
+			});
+		InputsExclusion.push('.content_vote','#rt-popup')
+  </script>
+		</head>
+		<body  class="backgroundlevel-low backgroundstyle-style8 bodylevel-med bodystyle-light cssstyle-style1 logostyle-dark font-family-helvetica font-size-is-default menu-type-fusionmenu col12 ">
+			<div id="rt-main-surround">
+				<div class="rt-container">
+					<div class="rt-block">
+						<div id="rt-mainbody">
+					    	
+<div class="rt-joomla ">
+	<div class="rt-article">
+		
+				<div class="rt-headline"><h1 class="rt-article-title">Checkstyle</h1>		</div>
+		<div class="clear"></div>
+		
+		
+		
+				<div class="rt-articleinfo">
+						<div class="rt-article-icons">
+				<a href="1118%3Ftmpl=component&amp;print=1&amp;layout=default&amp;page=.html#" onclick="window.print();return false;"><span class="icon print"></span></a>									<span class="icon printscreen">
+						<a href="1118%3Ftmpl=component&amp;print=1&amp;layout=default&amp;page=.html#" onclick="window.print();return false;"><img src="../../images/M_images/printButton.png" alt="列印"  /></a>					</span>
+							</div>
+			
+			<span class="rt-date-posted">
+						建立日期			2007-07-30 08:40						&nbsp;&nbsp;&nbsp;&nbsp;						最近更新在 2007-07-30 10:06						</span>
+
+						<span class="rt-author">
+				作者是 李日貴			</span>
+				
+					</div>
+		
+		
+		<p>Java Opensources for Web Development Part I：<br />Chapter 5 檢測程式碼<br />Lession 19 : Checkstyle</p>
+<p>工程師的程式碼風格往往不完全相同，因此，一個團隊合作的情況之下，如果能夠利用相同的程式碼風格，查看其他人的程式也會比較輕鬆。尤其在 Opensources 的開發，來自各方的工程師，最好能夠遵循公用的程式碼風格，才能讓大家更容易檢閱你的程式碼。 </p>checkstyle，就是在軟體開發完畢之後，尤其在 codereview 的過程之中，保有 code conversation 的特性，讓未來接手維護的人，利用 checkstyle 的特性，就是檢查一些程式開發上容易忽略的小細節。主要的檢查有
+<p>* 是否有 javadoc 的註解碼 <br />* 命名規則是否合適 <br />* 不用的 class import，或是採用 import * <br />* 空白 <br />* 確認一些非必要的 System.out, 或 printStackTrace 等等 <br />&nbsp;</p>
+<p>不過利用 checkstyle 的預設檢查模式，可能會出現成千上萬不符合的情況，如果採用 Eclipse 想要使用 checkstyle，建議使用 <a href="https://eclipse-cs.sourceforge.net/update/" target="_blank">https://eclipse-cs.sourceforge.net/update/</a> 進行 plugins 下載，另外還有 <a href="https://www.mvmsoft.de/content/plugins/checkclipse/checkclipse.htm" target="_blank">https://www.mvmsoft.de/content/plugins/checkclipse/checkclipse.htm</a> ，我沒有特別比較出差異，不過 eclipse-cs 得到 2007 Community Awards, 應該還是比較多人喜愛吧。 <br /><br />安裝後，可以在 Eclipse [Window]-&gt;[Preferences] 中對於 Checkstyle 的 check 進行設定。新增一套屬於自己的 checkstyle後進行內容的設定 ( Configure )<br /><br />{mosimage}</p>
+<p>一個一個新增你要的 check，例如 javadoc comments 的 package html 對我來說就不是很必要性，我就不把它放進來。 <br /><br />{mosimage}<br /><br />例如一些習慣長度的限制，例如 Size Violations 的 LineLength 預設是 80，你可以把他修改成 120。</p>
+<p>&nbsp;{mosimage}</p>
+<p>以上各種設定，可以 Export 成為 XML 檔案給予其他工程師。 <br /><br />因此，保有程式碼風格的統一，可以增加程式的可閱讀性，千萬不要因為一時的偷懶造成未來維護的困擾，尤其，是希望程式複雜或是維護期長久的系統開發。因為減少 debug 時間就是減少開發的時間。</p>
+			<!-- Show relate article -->
+				<!-- end -->
+		<div class="article_note">
+		<!-- Add tags use metakey, and show OSSF Newsletter tag: OSSFNL+NUM-->
+		<br><br> <hr style='border: 1px dashed #D2DADB;'><b>自由軟體鑄造場電子報&nbsp;:</b>&nbsp;<a href='../../previous-issue%3Ftask=view&amp;id=288.html'>第 85 期 GPL3 在專利條款與復權規定上的重大改變</a><br>				<!-- End -->
+					<br>
+					<b>分類: </b><a href="../tech-column.html">				技術專欄					</a>				</div>
+			 <!-- AddThis Button BEGIN ID 3001 is the front page article -->
+     			<br><br>
+       <div class="addthis_toolbox addthis_default_style addthis_32x32_style">
+       <a class="addthis_button_preferred_1"></a>
+       <a class="addthis_button_preferred_2"></a>
+       <a class="addthis_button_preferred_3"></a>
+       <a class="addthis_button_preferred_4"></a>
+       <a class="addthis_button_compact"></a>
+       <a class="addthis_counter addthis_bubble_style"></a>
+       </div>
+       <script type="text/javascript">var addthis_config = {"data_track_clickback":true};</script>
+       <script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js#pubid=openfoundry"></script>
+       <!-- AddThis Button END -->
+     <br>
+		<div class="totop" ><a class="rt-totop" href="1118%3Ftmpl=component&amp;print=1&amp;layout=default&amp;page=.html#" style="outline: medium none;">↑ Top</a></div>
+            <!-- AddThis Button END -->
+
+			</div>
+</div>
+
+						</div>
+					</div>
+				</div>
+			</div>
+		</body>
+	</html>

@@ -1,0 +1,107 @@
+	<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+	<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="zh-tw" lang="zh-tw" >
+		<head>
+			  <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+  <meta name="robots" content="noindex, nofollow" />
+  <meta name="keywords" content="OSSFNL303" />
+  <meta name="title" content="Cell 寬頻引擎的開放源碼系統軟體環境" />
+  <meta name="description" content="作者：Michael Gschwind, David Erb, Sid Manning and Mark Nutter◎ Cell 寬頻引擎介紹與軟體挑戰Cell 寬頻引擎 (Cell Broadband Engine, Cell BE) 提供的晶片多重處理器，具備針對廣泛用途設計的通用可程式化核心。在 Cell 軟體堆疊的開發上，開放源碼軟體扮演了關鍵性的角色。由 IBM、Sony 與" />
+  <meta name="generator" content="" />
+  <title>Cell 寬頻引擎的開放源碼系統軟體環境</title>
+  <link href="../../favicon.ico" rel="shortcut icon" type="image/x-icon" />
+  <link rel="stylesheet" href="../../components/com_gantry/css/gantry.css" type="text/css" />
+  <link rel="stylesheet" href="../../components/com_gantry/css/grid-12.css" type="text/css" />
+  <link rel="stylesheet" href="../../components/com_gantry/css/joomla.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/joomla.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/style1.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/light-body.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/demo-styles.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/template.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/typography.css" type="text/css" />
+  <style type="text/css">
+    <!--
+#rt-main-surround ul.menu li.active > a, #rt-main-surround ul.menu li.active > .separator, #rt-main-surround ul.menu li.active > .item, #rt-main-surround .square4 ul.menu li:hover > a, #rt-main-surround .square4 ul.menu li:hover > .item, #rt-main-surround .square4 ul.menu li:hover > .separator, .roktabs-links ul li.active span {color:#0088B5;}
+a, #rt-main-surround ul.menu a:hover, #rt-main-surround ul.menu .separator:hover, #rt-main-surround ul.menu .item:hover {color:#0088B5;}
+    -->
+  </style>
+  <script type="text/javascript" src="../../components/com_jcomments/js/jcomments-v2.1.js%3Fv=2"></script>
+  <script type="text/javascript" src="../../components/com_jcomments/libraries/joomlatune/ajax.js"></script>
+  <script type="text/javascript" src="../../media/system/js/mootools.js"></script>
+  <script type="text/javascript" src="../../media/system/js/caption.js"></script>
+  <script type="text/javascript" src="../../components/com_gantry/js/gantry-buildspans.js"></script>
+  <script type="text/javascript" src="../../components/com_gantry/js/gantry-inputs.js"></script>
+  <script type="text/javascript">
+
+			window.addEvent('domready', function() {
+				var modules = ['rt-block'];
+				var header = ['h3','h2','h1'];
+				GantryBuildSpans(modules, header);
+			});
+		InputsExclusion.push('.content_vote','#rt-popup')
+  </script>
+		</head>
+		<body  class="backgroundlevel-low backgroundstyle-style8 bodylevel-med bodystyle-light cssstyle-style1 logostyle-dark font-family-helvetica font-size-is-default menu-type-fusionmenu col12 ">
+			<div id="rt-main-surround">
+				<div class="rt-container">
+					<div class="rt-block">
+						<div id="rt-mainbody">
+					    	
+<div class="rt-joomla ">
+	<div class="rt-article">
+		
+				<div class="rt-headline"><h1 class="rt-article-title">Cell 寬頻引擎的開放源碼系統軟體環境</h1>		</div>
+		<div class="clear"></div>
+		
+		
+		
+				<div class="rt-articleinfo">
+						<div class="rt-article-icons">
+				<a href="1164-cell-%3Ftmpl=component&amp;print=1&amp;layout=default&amp;page=.html#" onclick="window.print();return false;"><span class="icon print"></span></a>									<span class="icon printscreen">
+						<a href="1164-cell-%3Ftmpl=component&amp;print=1&amp;layout=default&amp;page=.html#" onclick="window.print();return false;"><img src="../../images/M_images/printButton.png" alt="列印"  /></a>					</span>
+							</div>
+			
+			<span class="rt-date-posted">
+						建立日期			2007-08-27 04:33						&nbsp;&nbsp;&nbsp;&nbsp;						最近更新在 2011-01-11 19:22						</span>
+
+						<span class="rt-author">
+				作者是 謝良奇			</span>
+				
+					</div>
+		
+		
+		<p>作者：Michael Gschwind, David Erb, Sid Manning and Mark Nutter<br /><br />◎ Cell 寬頻引擎介紹與軟體挑戰<br /><br />Cell 寬頻引擎 (Cell Broadband Engine, Cell BE) 提供的晶片多重處理器，具備針對廣泛用途設計的通用可程式化核心。在 Cell 軟體堆疊的開發上，開放源碼軟體扮演了關鍵性的角色。由 IBM、Sony 與 Toshiba (STI) 為 PlayStation 3 與其它資料運算吃重環境所共同開發的 Cell，設計目標是將效能由 2005 年出貨的桌面系統提升一個數量級。其設計策略藉由多個支援現今應用軟體模型的核心達成應用軟體平行化，從而確保可程式化能力與程式開發者的效率。Cell 設計為一異質性的多重核心晶片，擁有為高運算需求工作與高頻寬媒體應用軟體最佳化的強大浮點運算處理能力。Cell BE 架構包含一 64 位元的 Power 處理元件、8 個名為協同處理元件 (Synergistic Processor Elements, SPEs) 的加速處理器、高速記憶體控制器、高頻寬的元件連接匯流排、高速記憶體與 I/O 界面。</p>
+
+<p>對於這樣一個能大幅提高應用軟體效能的革命性微處理器設計，開發新的架構為微處理器設計團隊帶來極少面對的挑戰。新架構無法確實因應最初構想時的需要，或 無法提供先期試用者符合需求的軟體堆疊，容易造成架構推出時遭遇失敗。除了設計新微架構時一般可能遇到的困難，設計團隊還需要確保這個架構在各種應用軟體 上都能發揮其效率。<br /><br />◎ 採行開放源碼策略<br /><br />設計團隊為了達成快速市場部署的目標，向開放源碼軟體尋求加速 Cell 架構生態系統開發的解決方案。開放源碼軟體提供了一個可迅速部署的環境，不僅可供架構研究之用，更可讓先期試用者做為平台，開發架構驗證套件、程式庫、中 介軟體與範例應用軟體。Cell 開放源碼軟體策略有四：初期概念驗證階段重點在設計目標的驗證，以及程式開發典範等。接著是軟體構成階段，要從程式庫、中介軟體與應用軟體上支援先期試用 者。程式模型創新期利用豐富的原生指令 (primitive)、工具與環境來找出新平台最有效的軟體開發典範。Cell 生態圈完全成熟期，透過軟體開發套件的散佈形成穩定成長的社群。<br /><br />開放源碼也可以做為 Cell BE 軟體堆疊上層私有工具的部署環境，像是以 IBM 的私有軟體 XLC 為基礎的自動平行化編譯器。雖然 XLC 的目標在超越開放源碼工具套件，仍然整合了開放源碼的組譯器、連接器、除錯器與程式庫等。<br /><br />◎ Cell 應用軟體架構<br /><br />Cell 應用軟體在包含了 PPE 與 SPE 核心的異質性架構中執行，Power 處理元件 (Power processor element, PPE) 與協同處理元件 (Synergistic processor element, SPE) 各自實作了 Power 架構 (Power Architecture) 與協同運算架構 (Synergistic Processor Architecture)，因此 Cell 應用軟體要包含對應不同架構的兩種指令流。每個 Cell 應用軟體都包含了可分派至對應處理器的 PPE 與 SPE 執行緒。應用軟體啟始時會啟動一個 PPE 執行緒，該執行緒會再藉由基於 pthreads 模式的執行緒管理程式庫，建立 PPE 或 SPE 執行緒。每個 SPE 除了包含協同處理器單元 (synergistic processor unit, SPU) 之外，還有一個協同記憶體流控制器 (synergistic memory flow controller, MFC)。一旦建立 SPE 執行緒後，PPE 可以直接用載入與回存指令存取記憶體，SPE 上執行的應用軟體元件則使用 MFC 把資料傳輸至 SPE 區域儲存空間。SPU 無法直接存取主記憶體，只能從區域儲存空間取得指令與資料，然後發出直接記憶體存取 (direct memory access, DMA) 命令給 MFC，將資料讀進區域儲存空間或寫入主記憶體。<br /><br />Cell 寬頻引擎架構 (Cell Broadband Engine Architecture, CBEA) 中，SPE 的程式設計模型特別針對資料處理吃重的應用軟體做過最佳化，應用軟體會將資料區塊傳輸至 SPE 的區域儲存空間，交給 SPU 處理。計算好的結果再回存至區域儲存空間，最後由 MFC 傳回系統記憶體或直接送到 I/O 設備。這種用 SPE 執行繁重資料處理作業的處理模式特別適合媒體處理與數值資料運算。SPE 與 PPE 都提供了資料平行化的單指令流多資料流 (SIMD) 計算能力，進一步加速資料處理繁重的應用軟體效能。<br /><br />為了降低記憶體存取的延滯，資料傳輸透過資料多重緩衝達到最佳效率。藉此軟體管線能延 伸到記憶體傳輸層次。當 SPU 在處理資料緩衝區內的資料時，MFC 會傳輸下一個資料集到另一個資料緩衝區。資料多重緩衝透過獨立的 SPU 執行與 MFC 資料傳輸執行緒，在 SPE 上發揮了計算與傳輸平行化的優點。<br /><br />◎ 資料平行化架構中的編譯工作<br /><br />GNU C 編譯器 (GCC) 是 Cell BE 開放源碼策略第一個測試平台，也做為此一架構先期的概念驗證。在 Cell BE 最終版本出爐前，以 GCC 為基礎的編譯器的開發工作早以展開，為的是用來展示與研究 SPU 中的概念，特別是其 SIMD 架構與完善資料平行計算架構所需的純量分層，而且也提供了程式庫開發、媒體處理與加解密核心所需的第一個程式設計環境，以便驗證新架構在這些關鍵功能上的 效能。<br /><br />利用 GCC 基礎架構，開發團隊得以集中在開發支援新 SIMD RISC 架構功能的編譯器上，無須耗費冗長時間與成本從頭發展全套編譯器。GCC 也用來實作應用軟體二進位界面 (application binary interface, ABI) 的雛型。SPU ABI 採用了優先槽 (preferred slot) 來傳遞純量變數做為函式參數使用，或將純量變數配置到總體分派的暫存器中，做為暫存器列中純量資料的預設位置。<br /><br />GCC 為基礎的 SPU 編譯器的開發驗證了 SPU 架構概念。程式庫與應用軟體開發者很快地開始使用這套編譯器，其效果催生了高階語言 (high-level-language, HLL) 程式庫與核心開發（進而成為 SDK 散佈套件），並從應用軟體開發者獲得重要意見。<br /><br />◎ 異質性架構工具<br /><br />異 質性架構應用軟體開發的應用軟體建構環境，比傳統應用軟體面臨了更多挑戰。跨越不同架構的工具整合是程式開發者專注在應用軟體開發與生產力的保障。架構定 義之初，初始的工具環境也已經同時發展。Cell BE 的第一個程式開發支援鎖定 SPU，軟硬體開發同時進行，開發出了 SPU 規格、編譯器、模擬器基礎架構。之後更移植 GNU binutils 到 SPU，提供更為穩固的組譯器、連接器與二進位檔操作工具。GNU binutils 提供可移植性高的二進位工具，並具有架構版本支援。因此開發團隊選擇以單一二進位檔為 PPE 與 SPE 提供組譯器與連接器支援。連接器會產生 PPE 與 SPE 的 ELF 格式目的檔 (object file)。開發團隊發展出一個嵌入程式，可以將 SPE 執行元件納入 PPE 執行元件，讓 PPE 執行的執行緒可以啟動執行緒來執行 SPE 二進位內容指定的程式碼。該嵌入程式可以讀取一或多個編譯與連接完成的 SPE ELF 二進位內容，嵌入 Cell ELF 執行檔。整合好的 PPE 執行內容包括 PPE 程式碼、多個嵌入的 SPE 執行內容，以及將 SPE 程式傳輸到 SPE 的管理功能。<br /><br />◎ 在異質性架構中使用 Linux<br /><br />Linux 在 STI 的開發過程中扮演了主要角色。Cell BE 上首先移植了 Linux 核心 2.4 版的 Power 架構散佈套件，並在設計完成前於 Mambo 全系統模擬器上啟動。移植 Linux 到 Cell BE 面臨兩個主要挑戰。首先是開發團隊必須找出有效使用 SPE 的程式設計典範。從作業系統看來，打破每個處理器都會處理自己的記憶體對應需求這個核心的預期行為是一大挑戰。由於集中式系統管理功能如虛擬記憶體管理 等，是 Cell 效能的主要因素，移植舊有作業系統必須對這一點多加考量。<br /><br />從作業系統設計的角度，在 SPE 上處理例外是一個重要的挑戰，在 Linux 內部架構上並未針對此一全新的架構機制做規劃。與傳統作業系統核心截然不同的是，一般的對稱多重處理器系統核心上，只有目前排定好的程序會產生例外，而且 一次只能發給作業系統一個例外。相反的，Cell 系統可以同時對單一 PPE 發出 8 個 SPE 例外，PPE 還必須處理自己的 PPE 例外。<br /><br />為 了支援彈性的 SPE 程式開發環境並提供熟悉的程式設計抽象層，開發團隊設計了類似於 Posix pthreads 程式庫的 SPE 執行緒管理 API。該 API 支援 SPE 工作的啟始與結束，以及單元更新原生指令以確保能達到相互排除 (mutual exclusion)。元件間的執行緒通訊與同步化架構功能，如訊息信箱 (mailboxes)、信號傳遞 (signal delivery) 等，可以透過一組系統呼叫執行或交由應用軟體將 SPE 記憶體對應控制區塊對映至應用軟體空間中。利用使用者可存取的控制區塊，應用軟體在處理器單元間直接透過記憶體對應 IO (memory-mapped I/O, MMIO) 動作，在 SPE 與遠端元件（其它 SPE 或 PPE）間進行通訊，並減少系統呼叫帶來的多餘負擔。<br /><br />Cell BE 需要先進的除錯環境，讓開發者追蹤在多達 9 個核心的異質性環境中執行的應用軟體。Cell 的除錯環境以 GNU 除錯器 (GNU debugger, GDB) 為基礎，同時是 GCC 開放源碼編譯器與 IBM 私有 XL C 編譯器的除錯解決方案。Cell 除錯環境並不只是簡單地移植 GBD 而已，利用了 Cell BE 的特色，該環境透過額外的系統服務提供了異質性多核心架構中的應用軟體除錯能力。由於 PPE 與 SPE 除錯器同以 GDB 為基礎，提供了一致性的使用界面。這個多核心除錯環境包含多個元件：追蹤 PPE 與 SPE 多重執行緒的 GUI、做為除錯引擎的 GDB、系統軟體堆疊中的除錯支援。<br /><br />◎ 結語<br /><br />開發團隊在整個系統堆疊中採用了開放源碼軟體以探索這個全新的架構 概念及其軟體實現，將軟體堆疊架構呈現為能抽象表達架構設計的高階語言程式設計環境，除了高可用性外，此一方式也為先期 Cell 使用者提供使用環境。開發團隊因此受惠於這些使用者研究此一整合式異質性環境的程式開發抽象層時回饋的許多意見。採用開放源碼策略讓該團隊藉由在熟悉環境 上實作創新軟體方案雛型，為新架構帶來改善效能與效率的創新方式，並加速此一新架構的市場部署。Cell BE 的軟體環境最終得以讓應用軟體開發者將重心放在應用軟體本身，而非架構或不熟悉的工具環境，進而提高效率。此一 Cell 軟體環境的成功使得 Cell BE 前所未見的軟體開發工作得以進行。<br /><br />相關網址：<br />1.<a href="https://www.research.ibm.com/people/m/mikeg/papers/2007_ieeecomputer.pdf" target="_blank">https://www.research.ibm.com/people/m/mikeg/papers/2007_ieeecomputer.pdf</a></p>
+			<!-- Show relate article -->
+				<!-- end -->
+		<div class="article_note">
+		<!-- Add tags use metakey, and show OSSF Newsletter tag: OSSFNL+NUM-->
+		<br><br> <hr style='border: 1px dashed #D2DADB;'><b>自由軟體鑄造場電子報&nbsp;:</b>&nbsp;<a href='../../previous-issue%3Ftask=view&amp;id=303.html'>第 87 期 自由軟體鑄造場電子報 HTML 版本正式上線</a><br>				<!-- End -->
+					<br>
+					<b>分類: </b><a href="../tech-column.html">				技術專欄					</a>				</div>
+			 <!-- AddThis Button BEGIN ID 3001 is the front page article -->
+     			<br><br>
+       <div class="addthis_toolbox addthis_default_style addthis_32x32_style">
+       <a class="addthis_button_preferred_1"></a>
+       <a class="addthis_button_preferred_2"></a>
+       <a class="addthis_button_preferred_3"></a>
+       <a class="addthis_button_preferred_4"></a>
+       <a class="addthis_button_compact"></a>
+       <a class="addthis_counter addthis_bubble_style"></a>
+       </div>
+       <script type="text/javascript">var addthis_config = {"data_track_clickback":true};</script>
+       <script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js#pubid=openfoundry"></script>
+       <!-- AddThis Button END -->
+     <br>
+		<div class="totop" ><a class="rt-totop" href="1164-cell-%3Ftmpl=component&amp;print=1&amp;layout=default&amp;page=.html#" style="outline: medium none;">↑ Top</a></div>
+            <!-- AddThis Button END -->
+
+			</div>
+</div>
+
+						</div>
+					</div>
+				</div>
+			</div>
+		</body>
+	</html>

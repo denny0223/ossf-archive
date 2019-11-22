@@ -1,0 +1,425 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="zh-tw" lang="zh-tw" >
+<head>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<link rel="shortcut icon" href="images/favicon.ico" />
+	  <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+  <meta name="robots" content="index, follow" />
+  <meta name="keywords" content="FreeNAS, nas, network-attached storage, cd, install,OSSFNL755" />
+  <meta name="title" content="利用 FreeNAS 打造儲存設備(3)─安裝篇（由光碟升級）" />
+  <meta name="description" content="前言 FreeNAS 的版本升級方式有二種。第一種是由 FreeNAS 官網下載最新版本的 ISO 檔燒錄至光碟片，再設定主機由光碟機開機，當系統偵測到光碟片中的安裝映像檔，其版本較現存版本為新，系統會自動進入版本升級模式，使用者僅需依照互動對話視窗的指示步驟，重新啟動主機即可完成升級。第二種升級方式為下載 GUI_upgrade.xz 韌體檔案（不需解壓縮），再登入 FreeNAS" />
+  <meta name="generator" content="" />
+  <title>利用 FreeNAS 打造儲存設備(3)─安裝篇（由光碟升級） - OpenFoundry</title>
+  <link href="favicon.ico" rel="shortcut icon" type="image/x-icon" />
+  <link rel="stylesheet" href="components/com_gantry/css/gantry.css" type="text/css" />
+  <link rel="stylesheet" href="components/com_gantry/css/grid-12.css" type="text/css" />
+  <link rel="stylesheet" href="components/com_gantry/css/joomla.css" type="text/css" />
+  <link rel="stylesheet" href="templates/rt_quantive_j15/css/joomla.css" type="text/css" />
+  <link rel="stylesheet" href="templates/rt_quantive_j15/css/style1.css" type="text/css" />
+  <link rel="stylesheet" href="templates/rt_quantive_j15/css/light-body.css" type="text/css" />
+  <link rel="stylesheet" href="templates/rt_quantive_j15/css/demo-styles.css" type="text/css" />
+  <link rel="stylesheet" href="templates/rt_quantive_j15/css/template.css" type="text/css" />
+  <link rel="stylesheet" href="templates/rt_quantive_j15/css/typography.css" type="text/css" />
+  <link rel="stylesheet" href="templates/rt_quantive_j15/css/fusionmenu.css" type="text/css" />
+  <style type="text/css">
+    <!--
+#rt-main-surround ul.menu li.active > a, #rt-main-surround ul.menu li.active > .separator, #rt-main-surround ul.menu li.active > .item, #rt-main-surround .square4 ul.menu li:hover > a, #rt-main-surround .square4 ul.menu li:hover > .item, #rt-main-surround .square4 ul.menu li:hover > .separator, .roktabs-links ul li.active span {color:#0088B5;}
+a, #rt-main-surround ul.menu a:hover, #rt-main-surround ul.menu .separator:hover, #rt-main-surround ul.menu .item:hover {color:#0088B5;}
+    -->
+  </style>
+  <script type="text/javascript" src="components/com_jcomments/js/jcomments-v2.1.js%3Fv=2"></script>
+  <script type="text/javascript" src="components/com_jcomments/libraries/joomlatune/ajax.js"></script>
+  <script type="text/javascript" src="media/system/js/mootools.js"></script>
+  <script type="text/javascript" src="media/system/js/caption.js"></script>
+  <script type="text/javascript" src="components/com_gantry/js/gantry-buildspans.js"></script>
+  <script type="text/javascript" src="components/com_gantry/js/gantry-inputs.js"></script>
+  <script type="text/javascript" src="templates/rt_quantive_j15/js/jquery.cookie.js"></script>
+  <script type="text/javascript" src="modules/mod_roknavmenu/themes/fusion/js/fusion.js"></script>
+  <script type="text/javascript" src="modules/mod_ofssologin/js/ofssologin.js"></script>
+  <script type="text/javascript">
+
+			window.addEvent('domready', function() {
+				var modules = ['rt-block'];
+				var header = ['h3','h2','h1'];
+				GantryBuildSpans(modules, header);
+			});
+		InputsExclusion.push('.content_vote','#rt-popup')
+		        window.addEvent('load', function() {
+					new Fusion('ul.menutop', {
+						pill: 0,
+						effect: 'slide and fade',
+						opacity: 1,
+						hideDelay: 500,
+						centered: 0,
+						tweakInitial: {'x': -2, 'y': 0},
+        				tweakSubsequent: {'x': 0, 'y': -14},
+						menuFx: {duration: 200, transition: Fx.Transitions.Sine.easeOut},
+						pillFx: {duration: 400, transition: Fx.Transitions.Back.easeOut}
+					});
+	            });
+  </script>
+<!-- <script type="text/javascript" src="/sso/javascripts/langsync.js"></script> -->
+<!-- <script src="/templates/rt_quantive_j15/js/ossf.js"></script> -->
+<script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-4136519-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
+</head>
+	<body  class="backgroundlevel-low backgroundstyle-style8 bodylevel-med bodystyle-light cssstyle-style1 logostyle-dark font-family-helvetica font-size-is-default menu-type-fusionmenu col12 ">
+		<div id="rt-main-background">
+			<div class="rt-container">
+																<div id="rt-header">
+					<div class="rt-grid-7 rt-alpha">
+    			<div class="rt-block">
+    	    	<a href="index.html" id="rt-logo"></a>
+    		</div>
+	    
+</div>
+<div class="rt-grid-5 rt-omega">
+                    <div class="square9">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<div class="ofssologin_square9"><a href="index.html">登入</a>&nbsp;&nbsp|&nbsp;&nbsp;<span><a href="en/news/8431%3Ftask=view.html" ><span lang="en" xml:lang="en">English</span></a></li></ul></span><!--Joom!fish V2.0.4 (Lightning)-->
+<!-- &copy; 2003-2009 Think Network, released under the GPL. -->
+<!-- More information: at http://www.joomfish.net -->
+<div class="ofssologin_search_square9">
+  <form id="of_search" action="https://www.openfoundry.org/of/openfoundry/search" method="get" onsubmit="of_search(); return false;">
+    <select id="of_search_type">
+      <option value="Projects"> 專案 </option>
+      <option value="Content"> 文章 </option>
+      <option value="People"> 人才 </option>
+    </select>
+    <input id="query" name="query" id="mod_search_searchword" maxlength="50" alt="search" class="inputbox" type="text" size="28" value="search..."  onblur="if(this.value=='') this.value='search...';" onfocus="if(this.value=='search...') this.value='';" />
+    <input type="hidden" name="commit" value="search" />
+  </form>
+</div></div>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		
+</div>
+					<div class="clear"></div>
+				</div>
+																<div id="rt-navigation"><div id="rt-navigation2"><div id="rt-navigation3">
+					
+<div class="nopill">
+	<ul class="menutop level1 " >
+						<li class="item1 root" >
+					<a class="orphan item bullet" href="index.html"  >
+				<span>
+			    				首頁				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item32 root" >
+					<a class="orphan item bullet" href="archived.html"  >
+				<span>
+			    				專案				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item186 root" >
+					<a class="orphan item bullet" href="tw/community.html"  >
+				<span>
+			    				Who&#039;s Who				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item4 active root" >
+					<a class="orphan item bullet" href="tw/news.html"  >
+				<span>
+			    				新聞				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item5 root" >
+					<a class="orphan item bullet" href="tw/law-and-licensing.html"  >
+				<span>
+			    				法律源地				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item3 root" >
+					<a class="orphan item bullet" href="tw/activities.html"  >
+				<span>
+			    				活動				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item2 root" >
+					<a class="orphan item bullet" href="tw/resourcecatalog%3FName=Value.html"  >
+				<span>
+			    				資源表列				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item45 root" >
+					<a class="orphan item bullet" href="tw/about.html"  >
+				<span>
+			    				關於				   
+				</span>
+			</a>
+			
+			
+	</li>	
+				</ul>
+</div>
+
+				    <div class="clear"></div>
+				</div></div></div>
+								<div class="rt-surround"><div class="rt-surround2"><div class="rt-surround3">
+										<div id="rt-showcase-section">
+												<div id="rt-showcase">
+							<div class="rt-grid-12 rt-alpha rt-omega">
+    		<div class="clear"></div>
+		
+		
+                <div class="close-note">
+                    <div class="rt-block">
+               					<div class="module-content">
+                	<div style="font-size:medium; background-image:linear-gradient(120deg,#159957,#4298b2);color:white;padding:20px;margin:-10px -18px;">感謝您對「自由軟體鑄造場」的支持與愛護，十多年來「自由軟體鑄造場」受中央研究院支持，並在資訊科學研究所以及資訊科技創新研究中心執行，現已完成階段性的任務。 本網站預計持續維運至 2021年底，網站內容基本上不會再更動。<br />也紀念我們永遠的朋友 李士傑先生（Shih-Chieh Ilya Li）。</div>				</div>
+            </div>
+                </div>
+		
+</div>
+							<div class="clear"></div>
+						</div>
+																	</div>
+															<div id="rt-main-surround">
+												<div id="rt-breadcrumbs">
+								<div class="rt-breadcrumb-surround">
+		<a href="index.html" id="breadcrumbs-home"></a>
+		<span class="breadcrumbs pathway">
+<span class="no-link">新聞</span></span>
+	</div>
+	
+							<div class="clear"></div>
+						</div>
+																							              <div id="rt-main" class="sa3-mb9">
+                <div class="rt-main-inner">
+                    <div class="rt-grid-9 rt-push-3">
+                                                <div class="rt-block">
+                            							<div class="square1">
+							<div class="rt-module-surround">
+								<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+								<div class="rt-module-inner">
+		                            <div id="rt-mainbody">
+		                                
+<div class="rt-joomla ">
+	<div class="rt-article">
+		
+				<div class="rt-headline"><h1 class="rt-article-title">利用 FreeNAS 打造儲存設備(3)─安裝篇（由光碟升級）</h1>		</div>
+		<div class="clear"></div>
+		
+		
+		
+				<div class="rt-articleinfo">
+						<div class="rt-article-icons">
+								<a href="tw/news/8431--freenas-3%3Ftmpl=component&amp;print=1&amp;page=.html" title="列印" onclick="window.open(this.href,'win2','status=no,toolbar=no,scrollbars=yes,titlebar=no,menubar=no,resizable=yes,width=640,height=480,directories=no,location=no'); return false;" rel="nofollow"><span class="icon print"></span></a>																</div>
+			
+			<span class="rt-date-posted">
+						建立日期			2011-09-01 15:30						&nbsp;&nbsp;&nbsp;&nbsp;						最近更新在 2012-02-03 14:51						</span>
+
+						<span class="rt-author">
+				作者是 Weithenn ( https://www.weithenn.org/ )			</span>
+				
+					</div>
+		
+		
+		<h3>前言</h3>
+<p><br />FreeNAS 的版本升級方式有二種。第一種是由 FreeNAS 官網下載最新版本的 ISO 檔燒錄至光碟片，再設定主機由光碟機開機，當系統偵測到光碟片中的安裝映像檔，其版本較現存版本為新，系統會自動進入版本升級模式，使用者僅需依照互動對話視窗的指示步驟，重新啟動主機即可完成升級。第二種升級方式為下載 GUI_upgrade.xz 韌體檔案（不需解壓縮），再登入 FreeNAS 圖形管理介面進行版本升級即可。本文將詳細說明使用光碟片升級 FreeNAS 版本的步驟。</p>
+
+<br />請注意！上述二種升級方式目前並不支援由 FreeNAS 0.7 直接升級至 FreeNAS 8.x，因為其運作架構完全不同。此外系統分割區亦產生變動，前一篇文章提到的版本 8.0 Release 至 8.0.1 BETA2 為二個 512MB 分割區，而從版本 8.0.1 BETA3 開始則為二個 1GB 分割區，所以在升級前您必須要確定您的 USB 儲存裝置或硬碟至少具備 2GB 的空間，否則即便可以順利升級至 8.0.1 BETA3 或之後的版本，升級後 FreeNAS 亦無法成功開機。<br />
+<p><br />最後筆者強烈建議，在升級前除了應備份 FreeNAS 上的重要資料，也應備份您的設定檔內容，以便版本升級後可以快速恢復套用先前的設定。 <br /><br /></p>
+<h4>實作環境</h4>
+<p><br />* 目前 FreeNAS 版本（i386）：FreeNAS-8.0-RELEASE，僅支援英文語系操作介面。<br />* 升級後 FreeNAS 版本（i386）：FreeNAS-8.0.1-BETA3，修正前版臭蟲並支援多國語系操作介面。<br /><br /></p>
+<h3>透過光碟機升級至 FreeNAS 8.0.1 BETA3 的步驟</h3>
+<h4><br />設定由光碟機開機</h4>
+<p><br />前往 FreeNAS 官網下載 <a href="https://sourceforge.net/projects/freenas/files/FreeNAS-8.0.1" target="_blank">FreeNAS-8.0.1-BETA3-i386.iso</a>，將映像檔燒錄成光碟片。<br />修改欲升級主機的 BIOS 設定，設為光碟機開機。<br />放入 FreeNAS-8.0.1-BETA3 光碟片並開機。此次實作的虛擬主機設定抓取 FreeNAS-8.0.1-BETA3-i386.iso 映像檔即可。<br /><br /><a href="https://www.openfoundry.org/images/110906/FreeNAS/FreeNAS_03_001.JPG%20" target="_blank"><img src="images/110906/FreeNAS/FreeNAS_03_001.JPG" border="0" alt="FreeNAS_03_001" width="450" height="331" /></a><br />▲圖1 主機設定由光碟機開機<br /><br /><br /></p>
+<h4>進入 FreeNAS 版本升級選單</h4>
+<p><br />當欲升級主機成功使用光碟片開機後，會先進入初始化程序，待開機選單畫面讀秒倒數完畢，會進入 FreeNAS 硬體偵測程序，通過硬體檢查後，光碟片內的 FreeNAS-8.0.1-BETA3 映像檔偵測到目前主機的版本較光碟片內的版本為舊，會出現詢問是否升級 FreeNAS 版本的選單，請選擇「1. Install/Upgrade to hard drive/flash device, etc.」項目按下〔OK〕，準備進入 FreeNAS 升級程序。 <br /> <br /><a href="images/110906/FreeNAS/FreeNAS_03_002.JPG" target="_blank"><img src="images/110906/FreeNAS/FreeNAS_03_002.JPG" border="0" alt="FreeNAS_03_002" width="450" height="252" /></a> <br />▲圖2 FreeNAS 升級選單，選擇項目 1 <br /><br /><br /></p>
+<h4>選擇升級 FreeNAS 版本的硬碟</h4>
+<p><br />接著畫面顯示 FreeNAS 於檢查硬體相容性時偵測到的主機硬碟。我們為該虛擬主機配置二顆硬碟。圖3 顯示請您選擇目的地硬碟，則選擇「da0  VMware Virtual disk 1.0 --2.0 GiB」並按下〔OK〕。 <br /><br />再次提醒：務必事先確定 USB 儲存裝置或硬碟至少具備 2GB 的空間，以免升級後無法開機。<br /><br /><a href="images/110906/FreeNAS/FreeNAS_03_003.JPG" target="_blank"><img src="images/110906/FreeNAS/FreeNAS_03_003.JPG" border="0" alt="FreeNAS_03_003" width="450" height="249" /></a><br />▲圖3 選擇目的地硬碟 2.0GB（da0） <br /><br /><br /></p>
+<h4>進行 FreeNAS 升級程序</h4>
+<p><br />選擇目的地硬碟後，畫面會詢問您是否要升級剛才選擇的硬碟 2.0GB（da0），按下〔Yes〕。<br />FreeNAS 再次警告目的地硬碟的資料將被清空（警告訊息 1.），且該硬碟其它未使用的空間將無法進行分享設定（警告訊息 2.）。了解警告訊息後按下〔Yes〕。<br />系統開始進行升級程序，將光碟片內的 FreeNAS-8.0.1-BETA3 資料寫入剛才選擇的 2GB 目的地硬碟，如圖5 您可以看到升級進度百分比、寫入資料的速度、已花費的升級時間、預估剩餘升級時間等資訊。一般來說 FreeNAS 版本升級作業全程不到 1 分鐘。<br /> <br /><a href="images/110906/FreeNAS/FreeNAS_03_004.JPG" target="_blank"><img src="images/110906/FreeNAS/FreeNAS_03_004.JPG" border="0" alt="FreeNAS_03_004" width="450" height="251" /></a><br />▲圖4 是否對目的地硬碟 da0 進行版本升級 <br /><br /><a href="images/110906/FreeNAS/FreeNAS_03_005.JPG" target="_blank"><img src="images/110906/FreeNAS/FreeNAS_03_005.JPG" border="0" alt="FreeNAS_03_005" width="450" height="253" /></a><br />▲圖5 FreeNAS 警告訊息及開始升級的進度資訊 <br /> <br /><br /></p>
+<h4>FreeNAS 升級完畢</h4>
+<p><br />由於 FreeNAS 是嵌入式 (<a href="https://zh.wikipedia.org/wiki/%E5%B5%8C%E5%85%A5%E5%BC%8F%E7%B3%BB%E7%BB%9F" target="_blank">Embedded</a>) 的設計概念，因此所有設定項目其實是回存至相關的資料庫檔案 (Database File)，而非單純寫入設定檔 (Config Files)，所以讀者應儘量使用圖形管理介面操作後續步驟，才能將相關設定值正確寫入相關資料庫檔案；儘量避免使用指令模式直接修改設定檔內容，以免 FreeNAS 重新啟動後設定值消失。<br /><br />當 FreeNAS 升級程序完成資料寫入後，會顯示已將相關資料庫檔案更新至目的地硬碟 2GB (da0)，並提示您取出光碟片後重啟主機，按下〔OK〕後會回到一開始的初始安裝畫面，接著選擇「3. Reboot System」，按下〔OK〕重新啟動系統，此時記得退出光碟片。<br />雖然使用光碟片升級會保留之前的設定值，但仍建議您在升級前備份好相關資料及設定檔以防萬一。 <br /><br /><a href="images/110906/FreeNAS/FreeNAS_03_006.JPG" target="_blank"><img src="images/110906/FreeNAS/FreeNAS_03_006.JPG" border="0" alt="FreeNAS_03_006" width="450" height="250" /></a><br />▲圖6 升級程序提示已保存資料庫檔案並會進行遷移（因為分割區大小由 512MB 改為 1GB） <br /><br /><a href="images/110906/FreeNAS/FreeNAS_03_007.JPG" target="_blank"><img src="images/110906/FreeNAS/FreeNAS_03_007.JPG" border="0" alt="FreeNAS_03_007" width="450" height="250" /></a><br />▲圖7 升級程序完畢，系統提示應重新啟動主機 <br /><br /><a href="images/110906/FreeNAS/FreeNAS_03_008.JPG" target="_blank"><img src="images/110906/FreeNAS/FreeNAS_03_008.JPG" border="0" alt="FreeNAS_03_008" width="450" height="249" /></a><br />▲圖8 選擇重新啟動項目後確定重新啟動 FreeNAS 主機 <br /><br /><br /></p>
+<h3>新版本 FreeNAS 控制台畫面 (Console)</h3>
+<p> </p>
+<p>此時 FreeNAS 主機將會重新啟動 2 到 3 次，因為整個系統分割區的架構已經由原來的 512MB 變更為 1GB 的空間，FreeNAS 還要保留並遷移之前所設定的資料庫檔案，最後是修正相關臭蟲問題等作業。 <br /><br />此次升級實作中我們仍然將 FreeNAS 主機置於具有 DHCP 伺服器的網路，所以主機開機完成後仍能藉由發出 DHCPDISCOVER 廣播封包，順利取得區域網路的 IP 資訊。系統亦提示您可將 https://10.10.25.78 網址 (URLs) 貼至您的瀏覽器，以登入圖形化操作介面。至此 FreeNAS 版本升級作業全部完成。 <br /><br />眼尖的讀者應該已經發現 FreeNAS 控制台畫面中的選項較前版多了 2 個項目，舊的 FreeNAS 8.0 RELEASE 版本其控制台畫面僅有 9 個選項，而升級後的 FreeNAS 8.0.1 BETA3 版本控制台畫面增加了 Reset WebGUI login credentials、Reset to factory defaults 2 個項目。美中不足的是此版本若安裝於虛擬主機，在 vSphere Client 中，VMware Tools 項目狀態仍是部份功能運作正常的「Unmanaged」。<br /><br />已有人在 <a href="https://support.freenas.org" target="_blank">FreeNAS 臭蟲回報系統</a>中提及此問題 <a href="https://support.freenas.org/ticket/368" target="_blank">FreeNAS 8 Freezing On VMware ESXi 4.1</a>，開發團隊承諾會在下一個正式發行版本進行修正（筆者猜測應為 FreeNAS 8.1 Release 版本）。<br /> <br /><a href="images/110906/FreeNAS/FreeNAS_03_009.JPG" target="_blank"><img src="images/110906/FreeNAS/FreeNAS_03_009.JPG" border="0" alt="FreeNAS_03_009" width="450" height="239" /></a><br />▲圖9 升級後的 FreeNAS 控制台畫面 (Console)<br /><br /><br /></p>
+<h3>查看升級後 FreeNAS 分割區狀態</h3>
+<p><br /><br />進入圖形操作介面以前，請先查看升級後的 FreeNAS 分割區是否真的由原本的 512MB 擴大至 1GB 。請於 FreeNAS 控制台畫面 (Console) 輸入數字【9】進入 Shell 模式，接著輸入「df -h」指令查看目前 FreeNAS 主機的檔案系統掛載狀況。如圖10 所示，目前檔案系統為 1GB 分割區運作（另一個 1GB 分割區在預設情況下是看不到的），表示我們已經順利將 FreeNAS 版本及其分割區空間升級。輸入「exit」指令即可回到 FreeNAS 控制台畫面。<br /><br /><a href="images/110906/FreeNAS/FreeNAS_03_010.JPG" target="_blank"><img src="images/110906/FreeNAS/FreeNAS_03_010.JPG" border="0" alt="FreeNAS_03_010" width="450" height="131" /></a><br />▲圖10 查看升級後 FreeNAS 檔案系統掛載情況 <br /><br /><br /></p>
+<h3>登入 FreeNAS 圖形操作介面</h3>
+<p><br /><br />順利登入圖形管理介面後，可以在【System Information】項目內看到 FreeNAS 主機的相關資訊，作業系統版本（OS Version）由先前採用的 FreeBSD 8.2 Release Patch 1 更新為 FreeBSD 8.2 Release Patch 2，並可再次確定 FreeNAS 版本（FreeNAS Build）為升級後的 FreeNAS-8.0.1-BETA3-i386 版本。 <br /> <br /><a href="images/110906/FreeNAS/FreeNAS_03_011.JPG" target="_blank"><img src="images/110906/FreeNAS/FreeNAS_03_011.JPG" border="0" alt="FreeNAS_03_011" width="500" height="371" /></a><br />▲圖11 FreeNAS 系統資訊 <br /><br /><br /></p>
+<h3>管理介面正式支援多國語系</h3>
+<p><br /><br />在升級前的 FreeNAS 8.0版本中，圖形操作介面僅支援英文 (English) 語系，FreeNAS 8.0.1 BETA1 之後的版本才加入圖形操作介面的多國語系支援，目前我們已經升級至 FreeNAS 8.0.1 BETA3，當然能順利切換圖形管理介面的操作語系。<br /><br />先切換至項目【System】，點選【Settings】，在【General】頁籤內【Language】下拉選單中選擇所需的語系。若要將操作畫面切換至正體中文語系，請切換至該下拉選單的最後一筆【Traditional Chinese】，按下〔OK〕，再使用組合鍵「Ctrl + F5」重新整理頁面，或者登出後重新登入，圖形操作介面便會變成熟悉的正體中文。<br /><br /><a href="images/110906/FreeNAS/FreeNAS_03_012.JPG" target="_blank"><img src="images/110906/FreeNAS/FreeNAS_03_012.JPG" border="0" alt="FreeNAS_03_012" width="500" height="367" /></a><br />▲圖12 FreeNAS 圖形操作介面，正式支援多國語系 <br /><br />不過在此建議讀者先別急著把圖形操作介面改成正體中文，因為在下一篇文章中要實作的升級方式是採用 GUI 圖形介面進行升級，筆者測試後發現，若操作介面語系改為正體中文，將找不到上傳韌體檔案所需的暫存空間，相信 FreeNAS 開發團隊會在之後的版本修正此錯誤。 <br /> <br /><a href="images/110906/FreeNAS/FreeNAS_03_013.JPG" target="_blank"><img src="images/110906/FreeNAS/FreeNAS_03_013.JPG" border="0" alt="FreeNAS_03_013" width="500" height="287" /></a><br />▲圖13 正體中文語系操作介面無法進行韌體檔案更新 <br /><br /><br /></p>
+<h3>協助本地化語系翻譯</h3>
+<p><br /><br />FreeNAS 在圖形操作介面上已經正式支援多國語系了，若您覺得圖形操作介面的正體中文翻譯不盡理想，或者您也想為本地化翻譯工作盡一份心力，可以至 <a href="https://pootle.freenas.org" target="_blank">FreeNAS 翻譯系統網站</a>註冊一個帳號協助翻譯。目前正體中文翻譯工作在相關熱心人士的努力下已經完成 99%。 <br /> <br /><a href="images/110906/FreeNAS/FreeNAS_03_014.JPG" target="_blank"><img src="images/110906/FreeNAS/FreeNAS_03_014.JPG" border="0" alt="FreeNAS_03_014" width="500" height="284" /></a><br />▲圖14 FreeNAS 本地化翻譯系統 <br /><br /><a href="images/110906/FreeNAS/FreeNAS_03_015.JPG" target="_blank"><img src="images/110906/FreeNAS/FreeNAS_03_015.JPG" border="0" alt="FreeNAS_03_015" width="500" height="350" /></a><br />▲圖15 正體中文翻譯進度 <br /><br /><br /></p>
+<h3>待續</h3>
+<p><br /><br />本文至此已經詳細說明如何透過燒錄 FreeNAS-8.0.1-BETA3-i386.iso 映像檔升級 FreeNAS 版本、驗證此版本確實將檔案系統的分割區大小由 512MB 提升至 1GB、說明如何切換圖形操作介面的語系，最後介紹如何參與 FreeNAS 本地化翻譯。<br /><br />下一篇文章將透過下載 FreeNAS 官網上的 <a href="https://sourceforge.net/projects/freenas/files/FreeNAS-8.0.1" target="_blank">FreeNAS-8.0.1-BETA4-i386-GUI_Upgrade.xz</a> 韌體檔案，由瀏覽器登入 FreeNAS-8.0.1-BETA3 版本的 FreeNAS 主機，以圖形介面升級版本至最新發行的 FreeNAS-8.0.1-BETA4。</p>
+			<!-- Show relate article -->
+		<br><br><h4>您也許有興趣閱讀以下文章:</h4><ul><li><a href='tech-column/8580.html'>利用 FreeNAS 打造儲存設備 (8)──網路設定篇之頻寬合併</a> - <span class='date-posted'>2012-01-13</span></li><li><a href='tech-column/8529.html'>利用 FreeNAS 打造儲存設備 (7)─Failover（故障轉移）</a> - <span class='date-posted'>2011-11-28</span></li><li><a href='tech-column/8480.html'>利用 FreeNAS 打造儲存設備 (6) 網路設定篇─基礎設定</a> - <span class='date-posted'>2011-10-14</span></li><li><a href='tech-column/8473.html'>利用 FreeNAS 打造儲存設備(5)安裝篇（嵌入式 USB）</a> - <span class='date-posted'>2011-10-04</span></li><li><a href='tech-column/8444.html'>利用 FreeNAS 打造儲存設備(4)─安裝篇（由 GUI 升級）</a> - <span class='date-posted'>2011-09-13</span></li><li><a href='tech-column/8423.html'>利用 FreeNAS 打造儲存設備(2)－安裝篇</a> - <span class='date-posted'>2011-08-18</span></li><li><a href='tech-column/8408.html'>利用 FreeNAS 打造儲存設備(1)－歷史篇</a> - <span class='date-posted'>2011-08-03</span></li></ul>		<!-- end -->
+		<div class="article_note">
+		<!-- Add tags use metakey, and show OSSF Newsletter tag: OSSFNL+NUM-->
+		<br><br> <hr style='border: 1px dashed #D2DADB;'><b>自由軟體鑄造場電子報&nbsp;:</b>&nbsp;<a href='previous-issue%3Ftask=view&amp;id=755.html'>第 180 期 一百年度自由軟體鑄造場作業暨智財權說明會</a><br><b>標籤:</b>&nbsp;<a href='index.php%3Foption=com_search&amp;Itemid=58&amp;searchphrase=exact_meta&amp;ordering=newest&amp;searchword=FreeNAS.html'>FreeNAS</a>,&nbsp;&nbsp;<a href='index.php%3Foption=com_search&amp;Itemid=58&amp;searchphrase=exact_meta&amp;ordering=newest&amp;searchword=&#32;nas.html'> nas</a>,&nbsp;&nbsp;<a href='index.php%3Foption=com_search&amp;Itemid=58&amp;searchphrase=exact_meta&amp;ordering=newest&amp;searchword=&#32;network-attached&#32;storage.html'> network-attached storage</a>,&nbsp;&nbsp;<a href='index.php%3Foption=com_search&amp;Itemid=58&amp;searchphrase=exact_meta&amp;ordering=newest&amp;searchword=&#32;cd.html'> cd</a>,&nbsp;&nbsp;<a href='index.php%3Foption=com_search&amp;Itemid=58&amp;searchphrase=exact_meta&amp;ordering=newest&amp;searchword=&#32;install.html'> install</a>,&nbsp;&nbsp;				<!-- End -->
+					<br>
+					<b>分類: </b><a href="tw/tech-column.html">				技術專欄					</a>				</div>
+			 <!-- AddThis Button BEGIN ID 3001 is the front page article -->
+     			<br><br>
+       <div class="addthis_toolbox addthis_default_style addthis_32x32_style">
+       <a class="addthis_button_preferred_1"></a>
+       <a class="addthis_button_preferred_2"></a>
+       <a class="addthis_button_preferred_3"></a>
+       <a class="addthis_button_preferred_4"></a>
+       <a class="addthis_button_compact"></a>
+       <a class="addthis_counter addthis_bubble_style"></a>
+       </div>
+       <script type="text/javascript">var addthis_config = {"data_track_clickback":true};</script>
+       <script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js#pubid=openfoundry"></script>
+       <!-- AddThis Button END -->
+     <br>
+		<div class="totop" ><a class="rt-totop" href="index.php%3Foption=com_content&amp;task=view&amp;id=8431&amp;Itemid=4%3Bisletter=1.html#" style="outline: medium none;">↑ Top</a></div>
+            <!-- AddThis Button END -->
+
+			</div>
+</div>
+
+		                            </div>
+									<div class="clear"></div>
+								</div>
+								<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+							</div>
+							</div>
+                                                    </div>
+                                            </div>
+                                <div class="rt-grid-3 rt-pull-9">
+                <div id="rt-sidebar-a">
+                                    <div class="square4">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<ul class="menu"><li class="item56"><a href="tw/previous-issue.html"><span>電子報總覽</span></a></li><li class="item55"><a href="tw/about-newsletter.html"><span>關於本報</span></a></li></ul>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<ul class="menu"><li class="item115"><a href="tw/foss-news.html"><span>源碼新聞</span></a></li><li class="item141"><a href="tw/case-job.html"><span>接案 / 工作</span></a></li></ul>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+        	                <div class="square1">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-title"><h2 class="title">專欄總覽</h2></div>
+						<div class="clear"></div>
+		                						<div class="module-content">
+		                	<ul class="menu"><li class="item37"><a href="tw/tech-column.html"><span>技術專欄</span></a></li><li class="item40"><a href="tw/foss-programs.html"><span>源碼秘技</span></a></li><li class="item35"><a href="tw/legal-article-.html"><span>法律專欄</span></a></li><li class="item154"><a href="tw/foss-forum.html"><span>自由專欄</span></a></li><li class="item162"><a href="tw/enterprise-application.html"><span>企業應用</span></a></li><li class="item44"><a href="tw/foss-projects.html"><span>源碼專案</span></a></li></ul>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		                <div class="square1">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<p style="text-align: center;"><a href="news%3Fformat=feed&amp;type=rss" target="_black"><img src="images/M_images/news-rss-feed.png" border="0" /></a><br /><a href="https://www.openfoundry.org/rss-feed/Newsletter" target="_black"><img src="images/M_images/newsletter-rss-feed.png" border="0" /></a></p>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		
+                </div>
+            </div>
+
+                    <div class="clear"></div>
+                </div>
+            </div>
+																													</div>
+										<div id="rt-copyright">
+						<div class="rt-grid-12 rt-alpha rt-omega">
+                        <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<div id="desktop-mobile-version-switch"><span id="mobile-version" class="version-switch"><a href="index.php%3Foption=com_content&amp;task=view&amp;id=8431&amp;Itemid=4%3Bisletter=1.html#">行動版</a></span></div>
+自由軟體鑄造場 製作 最佳瀏覽狀態：IE7或Firefox2.0以上 (建議使用Firefox) ‧ 解析度1024*768 <br /> <strong>E-Mail</strong>：<a href="mailto:contact@openfoundry.org">contact@openfoundry.org</a> <strong>Address</strong>：台北市南港區研究院路2段128號 中央研究院資訊科學研究所 . <a href="privacy-policy.html">隱私權條款</a>. <a href="terms-of-use.html">使用條款</a><span style="position: relative; top: 8px; margin-top: -8px;"> <a href="about/8101.html"><img src="images/M_images/rss-feed-all.png" border="0" /></a></span>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+        	
+</div>
+						<div class="clear"></div>
+					</div>
+					<div class="rt-footer-bottom-wrap"><div class="rt-footer-bottom"><div class="rt-footer-bottom2"><div class="rt-footer-bottom3"></div></div></div></div>
+									</div></div></div>
+				<div class="rt-surround-bottom"><div class="rt-surround-bottom2"><div class="rt-surround-bottom3"></div></div></div>
+							</div>
+		</div>
+		<!--
+		<script id="aptureScript">
+						(function (){var a=document.createElement("script");a.defer="true";a.src="http://www.apture.com/js/apture.js?siteToken=vsJttrn";document.getElementsByTagName("head")[0].appendChild(a);})();
+     </script>
+-->
+
+<!-- Piwik -->
+<!-- 			<script type="text/javascript">
+			  var _paq = _paq || [];
+		  _paq.push(["trackPageView"]);
+		  _paq.push(["enableLinkTracking"]);
+
+		    (function() {
+			        var u=(("https:" == document.location.protocol) ? "https" : "https") + "://www.openfoundry.org/piwik/";
+				    _paq.push(["setTrackerUrl", u+"piwik.php"]);
+				    _paq.push(["setSiteId", "1"]);
+				        var d=document, g=d.createElement("script"), s=d.getElementsByTagName("script")[0]; g.type="text/javascript";
+				        g.defer=true; g.async=true; g.src=u+"piwik.js"; s.parentNode.insertBefore(g,s);
+					  })();
+		  </script> -->
+<!-- End Piwik Code -->
+	</body>
+</html>

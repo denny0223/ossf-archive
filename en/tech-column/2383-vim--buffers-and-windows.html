@@ -1,0 +1,582 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-gb" lang="en-gb" >
+<head>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<link rel="shortcut icon" href="../../images/favicon.ico" />
+	  <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+  <meta name="robots" content="index, follow" />
+  <meta name="keywords" content="OSSFNL667" />
+  <meta name="title" content="Vim - 編輯緩衝區以及編輯視窗 (Buffers and Windows)" />
+  <meta name="description" content="Vim 內建視窗分割功能，可於編輯器內分割多重視窗及分頁來並行編輯檔案。 各編輯視窗 (Window) 可載入不同編輯緩衝區 (Buffer) 來進行編輯，不限於當前的編輯緩衝區。 編輯視窗也可載入共同的編輯緩衝區來編輯。 事實上編輯視窗基本上就是一個編輯緩衝區的觀察窗口 (viewport)。 由於可開啟多重編輯視窗來並行編輯，因此若能善用編輯視窗及編輯緩衝區等功能，便可提高編輯效率。" />
+  <meta name="generator" content="" />
+  <title>Vim - 編輯緩衝區以及編輯視窗 (Buffers and Windows) - OpenFoundry</title>
+  <link href="../../favicon.ico" rel="shortcut icon" type="image/x-icon" />
+  <link rel="stylesheet" href="../../components/com_gantry/css/gantry.css" type="text/css" />
+  <link rel="stylesheet" href="../../components/com_gantry/css/grid-12.css" type="text/css" />
+  <link rel="stylesheet" href="../../components/com_gantry/css/joomla.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/joomla.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/style1.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/light-body.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/demo-styles.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/template.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/typography.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/fusionmenu.css" type="text/css" />
+  <style type="text/css">
+    <!--
+#rt-main-surround ul.menu li.active > a, #rt-main-surround ul.menu li.active > .separator, #rt-main-surround ul.menu li.active > .item, #rt-main-surround .square4 ul.menu li:hover > a, #rt-main-surround .square4 ul.menu li:hover > .item, #rt-main-surround .square4 ul.menu li:hover > .separator, .roktabs-links ul li.active span {color:#0088B5;}
+a, #rt-main-surround ul.menu a:hover, #rt-main-surround ul.menu .separator:hover, #rt-main-surround ul.menu .item:hover {color:#0088B5;}
+    -->
+  </style>
+  <script type="text/javascript" src="../../components/com_jcomments/js/jcomments-v2.1.js%3Fv=2"></script>
+  <script type="text/javascript" src="../../components/com_jcomments/libraries/joomlatune/ajax.js"></script>
+  <script type="text/javascript" src="../../media/system/js/mootools.js"></script>
+  <script type="text/javascript" src="../../media/system/js/caption.js"></script>
+  <script type="text/javascript" src="../../components/com_gantry/js/gantry-buildspans.js"></script>
+  <script type="text/javascript" src="../../components/com_gantry/js/gantry-inputs.js"></script>
+  <script type="text/javascript" src="../../templates/rt_quantive_j15/js/jquery.cookie.js"></script>
+  <script type="text/javascript" src="../../modules/mod_roknavmenu/themes/fusion/js/fusion.js"></script>
+  <script type="text/javascript" src="../../modules/mod_ofssologin/js/ofssologin.js"></script>
+  <script type="text/javascript">
+
+			window.addEvent('domready', function() {
+				var modules = ['rt-block'];
+				var header = ['h3','h2','h1'];
+				GantryBuildSpans(modules, header);
+			});
+		InputsExclusion.push('.content_vote','#rt-popup')
+		        window.addEvent('load', function() {
+					new Fusion('ul.menutop', {
+						pill: 0,
+						effect: 'slide and fade',
+						opacity: 1,
+						hideDelay: 500,
+						centered: 0,
+						tweakInitial: {'x': -2, 'y': 0},
+        				tweakSubsequent: {'x': 0, 'y': -14},
+						menuFx: {duration: 200, transition: Fx.Transitions.Sine.easeOut},
+						pillFx: {duration: 400, transition: Fx.Transitions.Back.easeOut}
+					});
+	            });
+  </script>
+<!-- <script type="text/javascript" src="/sso/javascripts/langsync.js"></script> -->
+<!-- <script src="/templates/rt_quantive_j15/js/ossf.js"></script> -->
+<script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-4136519-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
+</head>
+	<body  class="backgroundlevel-low backgroundstyle-style8 bodylevel-med bodystyle-light cssstyle-style1 logostyle-dark font-family-helvetica font-size-is-default menu-type-fusionmenu col12 ">
+		<div id="rt-main-background">
+			<div class="rt-container">
+																<div id="rt-header">
+					<div class="rt-grid-7 rt-alpha">
+    			<div class="rt-block">
+    	    	<a href="../../index.html" id="rt-logo"></a>
+    		</div>
+	    
+</div>
+<div class="rt-grid-5 rt-omega">
+                    <div class="square9">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<div class="ofssologin_square9"><a href="../../index.html">Login</a>&nbsp;&nbsp|&nbsp;&nbsp;<span><a href="../../tw/tech-column/2383-vim--buffers-and-windows.html" ><span lang="tw" xml:lang="tw">繁體中文</span></a></li></ul></span><!--Joom!fish V2.0.4 (Lightning)-->
+<!-- &copy; 2003-2009 Think Network, released under the GPL. -->
+<!-- More information: at http://www.joomfish.net -->
+<div class="ofssologin_search_square9">
+  <form id="of_search" action="https://www.openfoundry.org/of/openfoundry/search" method="get" onsubmit="of_search(); return false;">
+    <select id="of_search_type">
+      <option value="Projects"> Projects </option>
+      <option value="Content"> Content </option>
+      <option value="People"> People </option>
+    </select>
+    <input id="query" name="query" id="mod_search_searchword" maxlength="50" alt="search" class="inputbox" type="text" size="28" value="search..."  onblur="if(this.value=='') this.value='search...';" onfocus="if(this.value=='search...') this.value='';" />
+    <input type="hidden" name="commit" value="search" />
+  </form>
+</div></div>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		
+</div>
+					<div class="clear"></div>
+				</div>
+																<div id="rt-navigation"><div id="rt-navigation2"><div id="rt-navigation3">
+					
+<div class="nopill">
+	<ul class="menutop level1 " >
+						<li class="item1 root" >
+					<a class="orphan item bullet" href="../../index.html"  >
+				<span>
+			    				Home				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item32 root" >
+					<a class="orphan item bullet" href="../../archived.html"  >
+				<span>
+			    				Projects				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item186 root" >
+					<a class="orphan item bullet" href="../community.html"  >
+				<span>
+			    				Who&#039;s Who				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item4 root" >
+					<a class="orphan item bullet" href="../news.html"  >
+				<span>
+			    				News				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item5 root" >
+					<a class="orphan item bullet" href="../law-and-licensing.html"  >
+				<span>
+			    				Law &amp; Licensing				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item3 root" >
+					<a class="orphan item bullet" href="../activities.html"  >
+				<span>
+			    				Activities				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item2 root" >
+					<a class="orphan item bullet" href="../resourcecatalog.html"  >
+				<span>
+			    				Resource Catalog				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item45 root" >
+					<a class="orphan item bullet" href="../about.html"  >
+				<span>
+			    				About				   
+				</span>
+			</a>
+			
+			
+	</li>	
+				</ul>
+</div>
+
+				    <div class="clear"></div>
+				</div></div></div>
+								<div class="rt-surround"><div class="rt-surround2"><div class="rt-surround3">
+										<div id="rt-showcase-section">
+												<div id="rt-showcase">
+							<div class="rt-grid-12 rt-alpha rt-omega">
+    		<div class="clear"></div>
+		
+		
+                <div class="close-note">
+                    <div class="rt-block">
+               					<div class="module-content">
+                	<div style="font-size:medium; background-image:linear-gradient(120deg,#159957,#4298b2);color:white;padding:20px;margin:-10px -18px;">感謝您對「自由軟體鑄造場」的支持與愛護，十多年來「自由軟體鑄造場」受中央研究院支持，並在資訊科學研究所以及資訊科技創新研究中心執行，現已完成階段性的任務。 本網站預計持續維運至 2021年底，網站內容基本上不會再更動。<br />也紀念我們永遠的朋友 李士傑先生（Shih-Chieh Ilya Li）。</div>				</div>
+            </div>
+                </div>
+		
+</div>
+							<div class="clear"></div>
+						</div>
+																	</div>
+															<div id="rt-main-surround">
+												<div id="rt-breadcrumbs">
+								<div class="rt-breadcrumb-surround">
+		<a href="../../index.html" id="breadcrumbs-home"></a>
+		<span class="breadcrumbs pathway">
+<a href="../tech-column.html" class="pathway">Tech Column</a> <img src="../../templates/rt_quantive_j15/images/arrow.png" alt=""  /> <span class="no-link">Vim - 編輯緩衝區以及編輯視窗 (Buffers and Windows)</span></span>
+	</div>
+	
+							<div class="clear"></div>
+						</div>
+																							              <div id="rt-main" class="sa3-mb9">
+                <div class="rt-main-inner">
+                    <div class="rt-grid-9 rt-push-3">
+                                                <div class="rt-block">
+                            							<div class="square1">
+							<div class="rt-module-surround">
+								<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+								<div class="rt-module-inner">
+		                            <div id="rt-mainbody">
+		                                
+<div class="rt-joomla ">
+	<div class="rt-article">
+		
+				<div class="rt-headline"><h1 class="rt-article-title">Vim - 編輯緩衝區以及編輯視窗 (Buffers and Windows)</h1>		</div>
+		<div class="clear"></div>
+		
+		
+		
+				<div class="rt-articleinfo">
+						<div class="rt-article-icons">
+								<a href="2383-vim--buffers-and-windows%3Ftmpl=component&amp;print=1&amp;layout=default&amp;page=.html" title="Print" onclick="window.open(this.href,'win2','status=no,toolbar=no,scrollbars=yes,titlebar=no,menubar=no,resizable=yes,width=640,height=480,directories=no,location=no'); return false;" rel="nofollow"><span class="icon print"></span></a>																</div>
+			
+			<span class="rt-date-posted">
+						 Created at			Friday, 18 June 2010 22:40						&nbsp;&nbsp;&nbsp;&nbsp;						Last Updated on Tuesday, 07 December 2010 23:55						</span>
+
+						<span class="rt-author">
+				Written by 林佑安			</span>
+				
+					</div>
+		
+		
+		<p>Vim 內建視窗分割功能，可於編輯器內分割多重視窗及分頁來並行編輯檔案。</p>
+<p>各編輯視窗 (Window) 可載入不同編輯緩衝區 (Buffer) 來進行編輯，不限於當前的編輯緩衝區。 編輯視窗也可載入共同的編輯緩衝區來編輯。 事實上編輯視窗基本上就是一個編輯緩衝區的觀察窗口 (viewport)。</p>
+<p>由於可開啟多重編輯視窗來並行編輯，因此若能善用編輯視窗及編輯緩衝區等功能，便可提高編輯效率。</p>
+<h2>編輯緩衝區 (Buffers)</h2>
+<p>在討論編輯視窗之前，需要先來討論編輯緩衝區。</p>
+<p>編輯緩衝區有三種狀態，分別為: 啟用(active), 隱藏(hidden), 非啟用(inactive)。</p>
+<p>編輯視窗在關閉時，只是將觀察窗口關閉，所以並不會影響到編輯緩衝區，實際上編輯緩衝區還是會在 執行中的 Vim 內，需要時，仍可使用編輯緩衝區命令將該緩衝區載回。</p>
+<p>以下簡單示範緩衝區應用之作法:</p>
+<p>於命令列可同時開啟多檔案載入緩衝區:</p>
+<pre><code>  $ vim file1 file2 file3<br /></code></pre>
+<p>此時 file1 會出現在第一個編輯視窗，而 file2 file3 會在背景，可透過 <code>:buffers</code> 命令來查看緩衝區清單:</p>
+<pre><code>  :buffers<br />  1 %a   "file1"                        line 1<br />  2      "file2"                        line 0<br />  3      "file3"                        line 0<br /></code></pre>
+<p>而 <code>:buffers</code> 有其他兩個別名，分別為: <code>:ls</code> , <code>:files</code>。</p>
+<p>欲切換至 file2 及 file3 的 編輯緩衝區需要 <code>:bnext</code> (載入下一緩衝區) , <code>:bprev</code> (載入前一緩衝區) 或 <code>:[N]buffer [N]</code> (載入第 [N] 個緩衝區)。</p>
+<p>不過每次翻閱緩衝區需鍵入指令 :bnext , :bprev 仍是麻煩，所以筆者建議可加入以下快捷鍵對應，請於 ~/.vimrc 內加入:</p>
+<pre><code>  nmap &lt;C-b&gt;n  :bnext&lt;CR&gt;<br />  nmap &lt;C-b&gt;p  :bprev&lt;CR&gt;<br /></code></pre>
+<p>如此可以 Ctrl-b n 以及 Ctrl-b p 來翻閱編輯緩衝區，若不習慣 Ctrl-b 也沒關係 可自行代換成其他快捷鍵組合。</p>
+<p>要跳至特定編輯緩衝區可使用 :[N]buffer 命令，如:</p>
+<pre><code>  :2buffer<br /></code></pre>
+<p>或</p>
+<pre><code>  :buffer 2<br /></code></pre>
+<p>如此便可跳至 file2 之編輯緩衝區。</p>
+<p>而:</p>
+<pre><code>  :2buffer!<br /></code></pre>
+<p>則可強制跳至 file2 之編輯緩衝區。</p>
+<p>若直接輸入緩衝區名稱也行，如:</p>
+<pre><code>  :buffer file3<br /></code></pre>
+<p>若要新增其他檔案進編輯緩衝區，可使用 <code>:badd</code> 命令:</p>
+<pre><code>  :badd path/to/file4<br /></code></pre>
+<p>若要於目前編輯緩衝區編輯檔案:</p>
+<pre><code>  :edit path/to/file5<br /></code></pre>
+<p>離開編輯視窗或是關閉編輯緩衝區時，該編輯緩衝區其實還留在記憶體中， 使用命令 <code>:ls!</code> 可以將隱藏的編輯緩衝區列舉出來。</p>
+<p>若要將編輯緩衝區完全卸載，則可使用 bwipeout 命令:</p>
+<pre><code>  :[N]bw[ipeout][!]<br />  :bw[ipeout][!] {bufname}<br />  :N,Mbw[ipeout][!]<br />  :bw[ipeout][!] N1 N2 ...<br /></code></pre>
+<p>舉例來說:</p>
+<pre><code>  :1bw<br />  :bw path/to/file<br />  :1,5bw!<br />  :bw 1 2 3 4<br /></code></pre>
+<p>該參數可以是編輯緩衝區的編號或是完整路徑。</p>
+<h3>相關選項</h3>
+<pre><code>  buftype bufhidden buflisted swapfile modifiable<br /></code></pre>
+<h1>編輯視窗</h1>
+<p>編輯視窗內可以切換不同的編輯緩衝區，常用編輯視窗命令如下:</p>
+<pre><code>  :split     - 將目前編輯視窗水平分割為二，新的視窗為原有的編輯緩衝區<br />  :vsplit    - 將目前編輯視窗垂直分割為二，新的視窗為原有的編輯緩衝區<br /><br />  :split  path/to/file   - 開啟新的水平分割視窗來編輯檔案<br />  :vsplit path/to/file   - 開啟新的垂直分割視窗來編輯檔案<br /><br />  :new                   - 開啟新的水平分割視窗，並且開啟新的編輯緩衝區<br />  :vnew                  - 開啟新的垂直分割視窗，並且開啟新的編輯緩衝區<br /></code></pre>
+<p>有時在分割視窗時，可以利用 topleft 以及 botright 命令來指定分割視窗位置，例如:</p>
+<p>從上方左側開啟分割視窗:</p>
+<pre><code>  :topleft split <br /></code></pre>
+<p>從下方右側開啟分割視窗:</p>
+<pre><code>  :botright split<br /></code></pre>
+<p>常用的編輯視窗快捷鍵如下:</p>
+<p>垂直分割:</p>
+<pre><code>  Ctrl-w v<br /></code></pre>
+<p>水平分割:</p>
+<pre><code>  Ctrl-w s<br /></code></pre>
+<p>切換視窗 Focus:</p>
+<pre><code>  Ctrl-w [hjkl]<br /></code></pre>
+<p>交換視窗內的編輯緩衝區:</p>
+<pre><code>  Ctrl-w x<br /></code></pre>
+<p>移動目前視窗至 (H: 最左側, L: 最右側, J: 最下方, K: 最上方):</p>
+<pre><code>  Ctrl-w [HJKL]<br /></code></pre>
+<p>將目前的編輯視窗移動至新的分頁:</p>
+<pre><code>  Ctrl-w T<br /></code></pre>
+<p>將目前的水平分割編輯視窗最大化:</p>
+<pre><code>  Ctrl-w _<br /></code></pre>
+<p>將目前的垂直分割編輯視窗最大化:</p>
+<pre><code>  Ctrl-w |<br /></code></pre>
+<p>將目前分割的視窗重新平均分配大小:</p>
+<pre><code>  Ctrl-w =<br /></code></pre>
+<p>在瀏覽程式碼時，可使用之視窗相關命令如下:</p>
+<p><code>Ctrl-w f</code></p>
+<blockquote>
+<p>於目前游標底下的檔案名稱或檔案路徑，開啟新的視窗來讀取該檔案。 要設定 Ctrl-w f 所搜尋檔案的路徑，可以設定 'path' 選項，如: set path+=/usr/include/</p>
+</blockquote>
+<p><code>Ctrl-w F</code></p>
+<blockquote>
+<p>於目前游標底下的檔案名稱或檔案路徑，開啟新的視窗來讀取該檔案， 並且跳至檔名或檔案路徑之後所跟隨的行號。例如:</p>
+<pre><code>    ~/.vimrc:300<br /></code></pre>
+<p>於按下 ~/.vimrc 上按下 Ctrl-w F 之後，便會以水平分割視窗開啟 ~/.vimrc 檔案，並且跳至第 300 行。</p>
+</blockquote>
+<p><code>Ctrl-w gf</code></p>
+<blockquote>
+<p>同 <code>Ctrl-w f</code>。不過開啟的檔案會在新的分頁開啟。同樣的功能可透過 <code>tab split</code> 以及 <code>gf</code> 來達到。</p>
+</blockquote>
+<p><code>Ctrl-w gF</code></p>
+<blockquote>
+<p>同 <code>Ctrl-w F</code>。 不過開啟的檔案會在新的分頁開啟。同樣的功能可透過 <code>tab split</code> 以及 <code>gF</code> 來達到。</p>
+</blockquote>
+<h2>相關腳本片段</h2>
+<h3>設定 gVim 一開始的視窗大小</h3>
+<p>將以下設定放入 .vimrc 內:</p>
+<pre><code>  set lines=50 columns=100<br /></code></pre>
+<p>或是:</p>
+<pre><code>  if has("gui_running")<br />      " GUI is running or is about to start.<br />      " Maximize gvim window.<br />      set lines=999 columns=999<br />  else<br />      " This is console Vim.<br />      if exists("+lines")<br />          set lines=50<br />      endif<br />      if exists("+columns")<br />          set columns=100<br />      endif<br />  endif<br /></code></pre>
+<h3>簡易調整編輯視窗大小</h3>
+<p>要調整水平分割視窗大小，通常使用 Ctrl-w + , Ctrl-w - ，若要方便調整，可使用下列設定:</p>
+<pre><code>  nmap + &lt;C-W&gt;+<br />  nmap - &lt;C-W&gt;-<br /></code></pre>
+<p>直接使用 + 或 - 來調整視窗大小。</p>
+<p>垂直分割視窗大小，則可嘗試下列設定:</p>
+<pre><code>  nmap &lt;Right&gt;  &lt;C-w&gt;&gt;<br />  nmap &lt;Left&gt;  &lt;C-w&gt;&lt;<br /></code></pre>
+<h3>快速切換垂直分割視窗 focus</h3>
+<pre><code>  map &lt;C-j&gt; &lt;C-w&gt;j&lt;C-w&gt;_<br />  map &lt;C-k&gt; &lt;C-w&gt;k&lt;C-w&gt;_<br /></code></pre>
+<p>如此會切換至下方或上方視窗，並且調整至最大化。</p>
+<h3>設置最小、預設視窗大小</h3>
+<pre><code>  set winminheight=0<br />  set winheight=999<br /></code></pre>
+<h3>以循環方式切換編輯緩衝區</h3>
+<pre><code>  :nnoremap &lt;C-n&gt; :bnext&lt;CR&gt;<br />  :nnoremap &lt;C-p&gt; :bprevious&lt;CR&gt;<br /></code></pre>
+<h3>以正規表示式搜尋編輯緩衝區</h3>
+<p>要快速搜尋編輯緩衝區，可以使用下方的 Vim Script Function:</p>
+<pre><code>  "   buffer sel by pattern {{{<br />  fu! BufSel(pattern)<br />      let buf_count = bufnr("$")<br />      let cur_bufnr = 1<br />      let nummatches = 0<br />      let firstmatchingbufnr = 0<br />      while cur_bufnr &lt;= buf_count<br />          if(bufexists(cur_bufnr))<br />          let currbufname = bufname(cur_bufnr)<br />          if(match(currbufname, a:pattern) &gt; -1)<br />              echo cur_bufnr . ": ". bufname(cur_bufnr)<br />              let nummatches += 1<br />              let firstmatchingbufnr = cur_bufnr<br />          endif<br />          endif<br />          let cur_bufnr = cur_bufnr + 1<br />      endwhile<br />      if(nummatches == 1)<br />          execute ":buffer ". firstmatchingbufnr<br />      elseif(nummatches &gt; 1)<br />          let desiredbufnr = input("Enter buffer number: ")<br />          if(strlen(desiredbufnr) != 0)<br />          execute ":buffer ". desiredbufnr<br />          endif<br />      else<br />          echo "No matching buffers"<br />      endif<br />  endf<br /><br />  fu! BufSelInput()<br />      let pattern = input( "pattern: " )<br />      call BufSel( pattern )<br />  endf<br /><br />  "Bind the BufSel() function to a user-command<br />  com! -nargs=1 Bs    :call BufSel("&lt;args&gt;")<br />  nmap &lt;leader&gt;bf      :call BufSelInput()&lt;CR&gt;<br /></code></pre>
+<p>將以上程式碼加入至 <code>~/.vimrc</code> 後，即可使用 <code>:Bs</code> 命令以及 <code>\\bf</code> 快捷鍵來呼叫該函式來使用正規表示式來搜尋符合的編輯緩衝區，如:</p>
+<pre><code>  :Bs vim.*<br /></code></pre>
+<p>或是按下 <code>\\bf</code> ，則會出現要求輸入 Pattern 的提示符。</p>
+<h3>顯示編輯緩衝區資訊</h3>
+<p>.vimrc 加入此一片段:</p>
+<pre><code>  fun! BufInfo()<br />      echo "[bufnr ] ".bufnr("%")<br />      echo "[bufname ] ". expand("%:p")<br />      echo "[cwd ] " . getcwd()<br />      if filereadable(expand("%"))<br />          echo "[mtime ] " . strftime("%Y-%m-%d %H:%M %a",getftime(expand("%")))<br />      endif<br />      echo "[size ] " . Bufsize() . " bytes"<br />      echo "[comment ] " . (exists('b:commentSymbol') ? b:commentSymbol : "undefined")<br />      echo "[filetype ] " . &amp;ft<br />      echo "[tab ] " . &amp;ts . " (" . (&amp;et ? "" : "no") . "expandtab)"<br />      echo "[keywordprg] " . &amp;keywordprg<br />      echo "[makeprg ] " . &amp;makeprg<br />      echo "[Buffer local mappings]"<br />      nmap &lt;buffer&gt;<br />  endf<br />  com! BufInfo :cal BufInfo()&lt;CR&gt;<br /></code></pre>
+<p>最後呼叫 <code>:BufInfo</code> 命令即可顯示編輯緩衝區資訊。</p>
+<h2>相關 Plugin</h2>
+<h3>FuzzyFinder</h3>
+<p>若有使用 FuzzyFinder Plugin ，則可加上此段設定來搜尋編輯緩衝區 (Buffer)。</p>
+<pre><code>  :nmap &lt;silent&gt; &lt;leader&gt;fb :FufBuffer&lt;CR&gt;<br /></code></pre>
+<p>FuzzyFinder: <a href="https://www.vim.org/scripts/script.php?script_id=1984" target="_blank">https://www.vim.org/scripts/script.php?script_id=1984</a></p>
+<h3>Bufexplorer</h3>
+<p>使用 Bufexplorer 可顯示出緩衝區清單，並且以選單的方式切換編輯緩衝區。</p>
+<p>Bufexplorer: <a href="https://www.vim.org/scripts/script.php?script_id=42" target="_blank">https://www.vim.org/scripts/script.php?script_id=42</a></p>
+<h3>filefind</h3>
+<p>filefind.vim 是一依據 find 命令的結果的 Vim 延伸插件。</p>
+<p>平常需求為:</p>
+<pre><code>  $ find path/to -type f -iname "*pattern*"<br /></code></pre>
+<p>使用 find 命令加上 -type f 參數搜尋檔案，但是要對該檔案清單另外處理就麻煩了，這時候最直接想到的是:</p>
+<pre><code>  $ find path/to -type f -iname "*pattern*" | vim -<br /></code></pre>
+<p>將該結果導向給 vim ，對 vim 命令而言，加上 "-" 則為從 stdout 讀取結果導至 Buffer (編輯緩衝區)。</p>
+<p>此時若要開啟、重新命名、編輯檔案，便可利用 filefind.vim 插件來執行這些操作。</p>
+<p>安裝：</p>
+<pre><code>  可使用 git 將 repository 抓取下來:<br /><br />  $ git clone 
+ <script language='JavaScript' type='text/javascript'>
+ <!--
+ var prefix = 'm&#97;&#105;lt&#111;:';
+ var suffix = '';
+ var attribs = '';
+ var path = 'hr' + 'ef' + '=';
+ var addy24325 = 'g&#105;t' + '&#64;';
+ addy24325 = addy24325 + 'g&#105;th&#117;b' + '&#46;' + 'c&#111;m';
+ document.write( '<a ' + path + '\'' + prefix + addy24325 + suffix + '\'' + attribs + '>' );
+ document.write( addy24325 );
+ document.write( '<\/a>' );
+ //-->
+ </script> <script language='JavaScript' type='text/javascript'>
+ <!--
+ document.write( '<span style=\'display: none;\'>' );
+ //-->
+ </script>This e-mail address is being protected from spambots. You need JavaScript enabled to view it
+ <script language='JavaScript' type='text/javascript'>
+ <!--
+ document.write( '</' );
+ document.write( 'span>' );
+ //-->
+ </script>:c9s/filefind.vim.git<br />  $ cd filefind.vim<br />  $ make install<br /></code></pre>
+<p>只需要呼叫 make 命令即可安裝。 :-) 用法可參考 github 上的 README file.</p>
+<p>filefind.vim: <a href="https://github.com/c9s/filefind.vim" target="_blank">https://github.com/c9s/filefind.vim</a></p>
+<h3>tselectbuffer</h3>
+<p>類似 bufexplorer。</p>
+<p>tselectbuffer: <a href="https://vim.sourceforge.net/scripts/script.php?script_id=1866" target="_blank">https://vim.sourceforge.net/scripts/script.php?script_id=1866</a></p>
+<h2>作者</h2>
+<p>
+ <script language='JavaScript' type='text/javascript'>
+ <!--
+ var prefix = 'm&#97;&#105;lt&#111;:';
+ var suffix = '';
+ var attribs = ' target="_blank"';
+ var path = 'hr' + 'ef' + '=';
+ var addy14832 = 'c&#111;rn&#101;l&#105;&#117;s.h&#111;wl_DELETE_ME_' + '&#64;';
+ addy14832 = addy14832 + 'gm&#97;&#105;l' + '&#46;' + 'c&#111;m';
+ var addy_text14832 = '林佑安 (c9s)';
+ document.write( '<a ' + path + '\'' + prefix + addy14832 + suffix + '\'' + attribs + '>' );
+ document.write( addy_text14832 );
+ document.write( '<\/a>' );
+ //-->
+ </script> <script language='JavaScript' type='text/javascript'>
+ <!--
+ document.write( '<span style=\'display: none;\'>' );
+ //-->
+ </script>This e-mail address is being protected from spambots. You need JavaScript enabled to view it
+ <script language='JavaScript' type='text/javascript'>
+ <!--
+ document.write( '</' );
+ document.write( 'span>' );
+ //-->
+ </script> ，</p>
+<p>熟 Vim Script、 Perl 程式設計及網頁相關等技術。開發及維護多項 Vim Plugin 及 Perl 相關模組。多數 Vim Plugin 可於 Github.com 上找到。</p>
+<p><a href="https://c9s.blogspot.com" target="_blank">Blog</a></p>
+<p><a href="https://github.com/c9s" target="_blank">Github</a></p>
+			<!-- Show relate article -->
+				<!-- end -->
+		<div class="article_note">
+		<!-- Add tags use metakey, and show OSSF Newsletter tag: OSSFNL+NUM-->
+		<br><br> <hr style='border: 1px dashed #D2DADB;'><b>OSSF Newsletter&nbsp;:</b>&nbsp;<a href='../../previous-issue%3Ftask=view&amp;id=667.html'>第 152 期 內含 GPL 授權元件產品的標示義務</a><br>				<!-- End -->
+					<br>
+					<b>Category: </b><a href="../tech-column.html">				Tech Column					</a>				</div>
+			 <!-- AddThis Button BEGIN ID 3001 is the front page article -->
+     			<br><br>
+       <div class="addthis_toolbox addthis_default_style addthis_32x32_style">
+       <a class="addthis_button_preferred_1"></a>
+       <a class="addthis_button_preferred_2"></a>
+       <a class="addthis_button_preferred_3"></a>
+       <a class="addthis_button_preferred_4"></a>
+       <a class="addthis_button_compact"></a>
+       <a class="addthis_counter addthis_bubble_style"></a>
+       </div>
+       <script type="text/javascript">var addthis_config = {"data_track_clickback":true};</script>
+       <script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js#pubid=openfoundry"></script>
+       <!-- AddThis Button END -->
+     <br>
+		<div class="totop" ><a class="rt-totop" href="2383-vim--buffers-and-windows.html#" style="outline: medium none;">↑ Top</a></div>
+            <!-- AddThis Button END -->
+
+			</div>
+</div>
+
+		                            </div>
+									<div class="clear"></div>
+								</div>
+								<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+							</div>
+							</div>
+                                                    </div>
+                                            </div>
+                                <div class="rt-grid-3 rt-pull-9">
+                <div id="rt-sidebar-a">
+                                    <div class="square4">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<ul class="menu"><li class="item56"><a href="../previous-issue.html"><span>Previous Issue</span></a></li><li class="item55"><a href="../about-newsletter.html"><span>About Newsletter</span></a></li></ul>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<ul class="menu"><li class="item115"><a href="../foss-news.html"><span>FOSS News</span></a></li><li class="item141"><a href="../case-job.html"><span>Case and Jobs</span></a></li></ul>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+        	                <div class="square1">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-title"><h2 class="title">Special</h2></div>
+						<div class="clear"></div>
+		                						<div class="module-content">
+		                	<ul class="menu"><li id="current" class="active item37"><a href="../tech-column.html"><span>Tech Column</span></a></li><li class="item40"><a href="../foss-programs.html"><span>FOSS Programs</span></a></li><li class="item35"><a href="../legal-column.html"><span>Legal Column</span></a></li><li class="item154"><a href="../foss-forum.html"><span>FOSS Forum</span></a></li><li class="item162"><a href="../enterprise-application.html"><span>Enterprise Application</span></a></li><li class="item44"><a href="../foss-projects.html"><span>FOSS Projects</span></a></li></ul>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		                <div class="square1">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<p style="text-align: center;"><a href="../../news%3Fformat=feed&amp;type=rss" target="_black"><img src="../../images/M_images/news-rss-feed.png" border="0" /></a><br /><a href="https://www.openfoundry.org/rss-feed/Newsletter" target="_black"><img src="../../images/M_images/newsletter-rss-feed.png" border="0" /></a></p>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		
+                </div>
+            </div>
+
+                    <div class="clear"></div>
+                </div>
+            </div>
+																													</div>
+										<div id="rt-copyright">
+						<div class="rt-grid-12 rt-alpha rt-omega">
+                        <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<span class="nowrap">Open Source Software Foundry</span><span class="nowrap">‧</span><span class="nowrap"> </span><span class="nowrap">Best  Viewed with IE7.0 or Firefox2.0 above, 1024x768 Resolution. </span><strong>E-Mail</strong>：<a href="mailto:contact@openfoundry.org">contact@openfoundry.org</a> <br /><strong>Address</strong>：No.128, Sec.2, Academia Rd., Institute of Information Science, Academia Sinica, Nangang District, Taipei City 11529, Taiwan (R.O.C). <br /><a href="../privacy-policy.html">Privacy Policy</a>. <a href="../terms-of-use.html">Terms-of-use</a> <span style="position: relative; top: 8px; margin-top: -8px;"> <a href="../../about/8101.html"><img src="../../images/M_images/rss-feed-all.png" border="0" /></a></span>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+        	
+</div>
+						<div class="clear"></div>
+					</div>
+					<div class="rt-footer-bottom-wrap"><div class="rt-footer-bottom"><div class="rt-footer-bottom2"><div class="rt-footer-bottom3"></div></div></div></div>
+									</div></div></div>
+				<div class="rt-surround-bottom"><div class="rt-surround-bottom2"><div class="rt-surround-bottom3"></div></div></div>
+							</div>
+		</div>
+		<!--
+		<script id="aptureScript">
+						(function (){var a=document.createElement("script");a.defer="true";a.src="http://www.apture.com/js/apture.js?siteToken=vsJttrn";document.getElementsByTagName("head")[0].appendChild(a);})();
+     </script>
+-->
+
+<!-- Piwik -->
+<!-- 			<script type="text/javascript">
+			  var _paq = _paq || [];
+		  _paq.push(["trackPageView"]);
+		  _paq.push(["enableLinkTracking"]);
+
+		    (function() {
+			        var u=(("https:" == document.location.protocol) ? "https" : "https") + "://www.openfoundry.org/piwik/";
+				    _paq.push(["setTrackerUrl", u+"piwik.php"]);
+				    _paq.push(["setSiteId", "1"]);
+				        var d=document, g=d.createElement("script"), s=d.getElementsByTagName("script")[0]; g.type="text/javascript";
+				        g.defer=true; g.async=true; g.src=u+"piwik.js"; s.parentNode.insertBefore(g,s);
+					  })();
+		  </script> -->
+<!-- End Piwik Code -->
+	</body>
+</html>

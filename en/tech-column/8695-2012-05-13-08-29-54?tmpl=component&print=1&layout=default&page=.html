@@ -1,0 +1,126 @@
+	<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+	<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-gb" lang="en-gb" >
+		<head>
+			  <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+  <meta name="robots" content="noindex, nofollow" />
+  <meta name="keywords" content="網站製作, OSSFNL790" />
+  <meta name="title" content="網站程式上線前需要準備的事（二）" />
+  <meta name="description" content="◎ 本文轉載自 Blog.XDite.net。 第  2 件事 ：application deployable from day 1 在進入開發階段後，我會做的第一件事：make application deployable 也就是：專案開始第一天，就必須要有個 production 直接可運行（可以鎖密碼，當作測試 server）才行。（我在 Rails 101 這本書最後一章，加入" />
+  <meta name="generator" content="" />
+  <title>網站程式上線前需要準備的事（二）</title>
+  <link href="../../favicon.ico" rel="shortcut icon" type="image/x-icon" />
+  <link rel="stylesheet" href="../../components/com_gantry/css/gantry.css" type="text/css" />
+  <link rel="stylesheet" href="../../components/com_gantry/css/grid-12.css" type="text/css" />
+  <link rel="stylesheet" href="../../components/com_gantry/css/joomla.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/joomla.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/style1.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/light-body.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/demo-styles.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/template.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/typography.css" type="text/css" />
+  <style type="text/css">
+    <!--
+#rt-main-surround ul.menu li.active > a, #rt-main-surround ul.menu li.active > .separator, #rt-main-surround ul.menu li.active > .item, #rt-main-surround .square4 ul.menu li:hover > a, #rt-main-surround .square4 ul.menu li:hover > .item, #rt-main-surround .square4 ul.menu li:hover > .separator, .roktabs-links ul li.active span {color:#0088B5;}
+a, #rt-main-surround ul.menu a:hover, #rt-main-surround ul.menu .separator:hover, #rt-main-surround ul.menu .item:hover {color:#0088B5;}
+    -->
+  </style>
+  <script type="text/javascript" src="../../components/com_jcomments/js/jcomments-v2.1.js%3Fv=2"></script>
+  <script type="text/javascript" src="../../components/com_jcomments/libraries/joomlatune/ajax.js"></script>
+  <script type="text/javascript" src="../../media/system/js/mootools.js"></script>
+  <script type="text/javascript" src="../../media/system/js/caption.js"></script>
+  <script type="text/javascript" src="../../components/com_gantry/js/gantry-buildspans.js"></script>
+  <script type="text/javascript" src="../../components/com_gantry/js/gantry-inputs.js"></script>
+  <script type="text/javascript">
+
+			window.addEvent('domready', function() {
+				var modules = ['rt-block'];
+				var header = ['h3','h2','h1'];
+				GantryBuildSpans(modules, header);
+			});
+		InputsExclusion.push('.content_vote','#rt-popup')
+  </script>
+		</head>
+		<body  class="backgroundlevel-low backgroundstyle-style8 bodylevel-med bodystyle-light cssstyle-style1 logostyle-dark font-family-helvetica font-size-is-default menu-type-fusionmenu col12 ">
+			<div id="rt-main-surround">
+				<div class="rt-container">
+					<div class="rt-block">
+						<div id="rt-mainbody">
+					    	
+<div class="rt-joomla ">
+	<div class="rt-article">
+		
+				<div class="rt-headline"><h1 class="rt-article-title">網站程式上線前需要準備的事（二）</h1>		</div>
+		<div class="clear"></div>
+		
+		
+		
+				<div class="rt-articleinfo">
+						<div class="rt-article-icons">
+				<a href="8695-2012-05-13-08-29-54%3Ftmpl=component&amp;print=1&amp;layout=default&amp;page=.html#" onclick="window.print();return false;"><span class="icon print"></span></a>									<span class="icon printscreen">
+						<a href="8695-2012-05-13-08-29-54%3Ftmpl=component&amp;print=1&amp;layout=default&amp;page=.html#" onclick="window.print();return false;"><img src="../../images/M_images/printButton.png" alt="Print"  /></a>					</span>
+							</div>
+			
+			<span class="rt-date-posted">
+						 Created at			Sunday, 13 May 2012 16:21						&nbsp;&nbsp;&nbsp;&nbsp;						Last Updated on Monday, 28 May 2012 11:00						</span>
+
+						<span class="rt-author">
+				Written by XDite			</span>
+				
+					</div>
+		
+		
+		<p>◎ 本文轉載自 <a href="https://blog.xdite.net/" target="_blank">Blog.XDite.net</a>。</p>
+<h2>第 2 件事：application deployable from day 1</h2>
+<p>在進入開發階段後，我會做的第一件事：make application deployable</p>
+<p>也就是：專案開始第一天，就必須要有個 production 直接可運行（可以鎖密碼，當作測試 server）才行。（我在 <a href="https://rails-101.logdown.com/" target="_blank">Rails 101</a> 這本書最後一章，加入 capistano 與裝機為必練技能，就是這個緣故。）</p>
+
+<p>為什麼專案需要 deployable？</p>
+<br />
+<h2>提前控制風險：開發環境與線上環境的不同</h2>
+<p>在一般的經驗中，往往在專案進行到尾聲快上線之時，才會注意到一個可能使專案時程大爆炸的事情： <strong>開發端與線上端的環境通通不一樣</strong>。</p>
+<p>在開發過程中，所有人只專注在自己的機器上能不能動，這是常態。專注在實現功能，東西有缺就先在 local 上塞假資料。在最短時間內將 feature 盡可能寫完絕對是第一要務。</p>
+<p>但很可惜的，寫完並不等於放到正式環境上可以動。</p>
+<p>網站上其實非常多功能需要實際被「真人」測試，才會知道到底有沒有問題。有一些設定，甚至開發環境與上線完完全全不一樣。（以 Rails 來說，其實就差很多。比如說程式 class 會不會被 cache，asset 有沒有 optimize，上傳路徑以及與第三方接軌的設定等等…）</p>
+<p>如果拖到最後一個月才做 deploy 的這件事，因為「到底有多少東西不一樣」，變成了一個完全的未知數。原本夠用的一個月測試期，被這樣一壓縮可能完全就不夠用了。而且因為專案截止日已近，隨之而來的壓力更加大了犯錯的可能性。</p>
+<br />
+<h2>一個透明的已知進度</h2>
+<p>Day1 就有一個可以直接實際測試的站台，還有一個很大的好處，能夠確保專案中所有人都知道現在進度，與規格書上的東西到底差多少。如果有重大瑕疵，或者是絕對不可行的功能，就可以早早提出修改，下架等等。節省大家寶貴的開發精力。</p>
+<p>如果專案截止日最後十五天，大家才知道很多東西原來根本是做不出來的，或者是跟原本想像差太多的，這時候鐵定陷入交相指責，一遍慌亂的狀況。</p>
+<p><strong>絕對注意：捍衛進度</strong></p>
+<p>不過這一招的使用，專案經理或者是 RD 主管要特別注意。因為 Day 1 就有一個直接可以看的站台，不少完全不懂「技術」的專案參與者（通常是企劃或老闆），會對網站的「裸站」狀態感到極度的恐慌，他們會挑剔 UI，會不滿 implement 細節，進而想要實際插手進度修改內容。請務必堅持住，堅持到進入最後一個階段：測試修飾期才可以讓他們修改（通常進入準完工階段，裸站狀態其實也消失了，當初挑剔的東西幾乎在這個階段不復存在，故也沒有修改的必要。）</p>
+<p>P.S. 可以架設一個 issue tracking system，把他們提出的修改事項先通通記起來，但通通不實作。等到接近測試期，再來看看這些當初的「建議」到底還有哪些實際需要被執行。</p>
+<p>只有「完全不合實際應用」的東西，或者是「變更會讓實作方式更合理」的東西可以在整個開發期，被丟入排程中。</p>
+<p>否則，他們的驚慌，會害這個專案完全結不了案。</p>
+			<!-- Show relate article -->
+		<br><br><h4>You may be interested in the following articles:</h4><ul><li><a href='../../tech-column/8734.html'>網站程式上線前需要準備的事（五）</a> - <span class='date-posted'>2012-06-25</span></li><li><a href='../../tech-column/8721.html'>網站程式上線前需要準備的事（四）</a> - <span class='date-posted'>2012-06-08</span></li><li><a href='../../tech-column/8702.html'>網站程式上線前需要準備的事（三）</a> - <span class='date-posted'>2012-05-24</span></li><li><a href='../../tech-column/8670.html'>網站程式上線前需要準備的事（一）</a> - <span class='date-posted'>2012-04-15</span></li></ul>		<!-- end -->
+		<div class="article_note">
+		<!-- Add tags use metakey, and show OSSF Newsletter tag: OSSFNL+NUM-->
+		<br><br> <hr style='border: 1px dashed #D2DADB;'><b>OSSF Newsletter&nbsp;:</b>&nbsp;<a href='../../previous-issue%3Ftask=view&amp;id=790.html'>第 195 期 利用 RequireJs 將 Backbone.js 程式模組化</a><br><b>Tags:</b>&nbsp;<a href='../../index.php%3Foption=com_search&amp;Itemid=58&amp;searchphrase=exact_meta&amp;ordering=newest&amp;searchword=網站製作.html'>網站製作</a>,&nbsp;&nbsp;				<!-- End -->
+					<br>
+					<b>Category: </b><a href="../tech-column.html">				Tech Column					</a>				</div>
+			 <!-- AddThis Button BEGIN ID 3001 is the front page article -->
+     			<br><br>
+       <div class="addthis_toolbox addthis_default_style addthis_32x32_style">
+       <a class="addthis_button_preferred_1"></a>
+       <a class="addthis_button_preferred_2"></a>
+       <a class="addthis_button_preferred_3"></a>
+       <a class="addthis_button_preferred_4"></a>
+       <a class="addthis_button_compact"></a>
+       <a class="addthis_counter addthis_bubble_style"></a>
+       </div>
+       <script type="text/javascript">var addthis_config = {"data_track_clickback":true};</script>
+       <script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js#pubid=openfoundry"></script>
+       <!-- AddThis Button END -->
+     <br>
+		<div class="totop" ><a class="rt-totop" href="8695-2012-05-13-08-29-54%3Ftmpl=component&amp;print=1&amp;layout=default&amp;page=.html#" style="outline: medium none;">↑ Top</a></div>
+            <!-- AddThis Button END -->
+
+			</div>
+</div>
+
+						</div>
+					</div>
+				</div>
+			</div>
+		</body>
+	</html>

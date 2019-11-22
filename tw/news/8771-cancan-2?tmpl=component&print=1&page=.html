@@ -1,0 +1,193 @@
+	<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+	<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="zh-tw" lang="zh-tw" >
+		<head>
+			  <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+  <meta name="robots" content="noindex, nofollow" />
+  <meta name="keywords" content="cancan, OSSFNL801" />
+  <meta name="title" content="Cancan 實作角色權限設計的最佳實踐 (2)" />
+  <meta name="description" content="◎ 本文原載 XDite 網站，原文章連結 使用 Cancan 的限制：RESTful controller （resource） 一般新進開發者會被 cancan 這兩個 API 搞得七葷八素： load_and_authorize_resource、authorize_resource。 這是因為 cancan 並沒有明顯的在 README 上做出說明：cancan 在使用上是有架構的限制：" />
+  <meta name="generator" content="" />
+  <title>Cancan 實作角色權限設計的最佳實踐 (2)</title>
+  <link href="../../favicon.ico" rel="shortcut icon" type="image/x-icon" />
+  <link rel="stylesheet" href="../../components/com_gantry/css/gantry.css" type="text/css" />
+  <link rel="stylesheet" href="../../components/com_gantry/css/grid-12.css" type="text/css" />
+  <link rel="stylesheet" href="../../components/com_gantry/css/joomla.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/joomla.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/style1.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/light-body.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/demo-styles.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/template.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/typography.css" type="text/css" />
+  <style type="text/css">
+    <!--
+#rt-main-surround ul.menu li.active > a, #rt-main-surround ul.menu li.active > .separator, #rt-main-surround ul.menu li.active > .item, #rt-main-surround .square4 ul.menu li:hover > a, #rt-main-surround .square4 ul.menu li:hover > .item, #rt-main-surround .square4 ul.menu li:hover > .separator, .roktabs-links ul li.active span {color:#0088B5;}
+a, #rt-main-surround ul.menu a:hover, #rt-main-surround ul.menu .separator:hover, #rt-main-surround ul.menu .item:hover {color:#0088B5;}
+    -->
+  </style>
+  <script type="text/javascript" src="../../components/com_jcomments/js/jcomments-v2.1.js%3Fv=2"></script>
+  <script type="text/javascript" src="../../components/com_jcomments/libraries/joomlatune/ajax.js"></script>
+  <script type="text/javascript" src="../../media/system/js/mootools.js"></script>
+  <script type="text/javascript" src="../../media/system/js/caption.js"></script>
+  <script type="text/javascript" src="../../components/com_gantry/js/gantry-buildspans.js"></script>
+  <script type="text/javascript" src="../../components/com_gantry/js/gantry-inputs.js"></script>
+  <script type="text/javascript">
+
+			window.addEvent('domready', function() {
+				var modules = ['rt-block'];
+				var header = ['h3','h2','h1'];
+				GantryBuildSpans(modules, header);
+			});
+		InputsExclusion.push('.content_vote','#rt-popup')
+  </script>
+		</head>
+		<body  class="backgroundlevel-low backgroundstyle-style8 bodylevel-med bodystyle-light cssstyle-style1 logostyle-dark font-family-helvetica font-size-is-default menu-type-fusionmenu col12 ">
+			<div id="rt-main-surround">
+				<div class="rt-container">
+					<div class="rt-block">
+						<div id="rt-mainbody">
+					    	
+<div class="rt-joomla ">
+	<div class="rt-article">
+		
+				<div class="rt-headline"><h1 class="rt-article-title">Cancan 實作角色權限設計的最佳實踐 (2)</h1>		</div>
+		<div class="clear"></div>
+		
+		
+		
+				<div class="rt-articleinfo">
+						<div class="rt-article-icons">
+				<a href="8771-cancan-2%3Ftmpl=component&amp;print=1&amp;page=.html#" onclick="window.print();return false;"><span class="icon print"></span></a>									<span class="icon printscreen">
+						<a href="8771-cancan-2%3Ftmpl=component&amp;print=1&amp;page=.html#" onclick="window.print();return false;"><img src="../../images/M_images/printButton.png" alt="列印"  /></a>					</span>
+							</div>
+			
+			<span class="rt-date-posted">
+						建立日期			2012-08-13 09:49						&nbsp;&nbsp;&nbsp;&nbsp;						最近更新在 2013-05-15 13:03						</span>
+
+						<span class="rt-author">
+				作者是 XDite			</span>
+				
+					</div>
+		
+		
+		<p>◎ 本文原載 XDite 網站，<a href="https://blog.xdite.net/posts/2012/07/30/cancan-rule-engine-authorization-based-library-2/" target="_blank">原文章連結</a></p>
+<h2>使用 Cancan 的限制：RESTful controller （resource）</h2>
+<p>一般新進開發者會被 cancan 這兩個 API 搞得七葷八素： <code>load_and_authorize_resource</code>、<code>authorize_resource</code>。</p>
+<p>這是因為 cancan 並沒有明顯的在 README 上做出說明：<strong>cancan 在使用上是有架構的限制</strong>：</p>
+
+<li>必須為 RESTful resource</li>
+<p>（cancan 直接假設了你一定使用 RESTful，畢竟這年頭誰還在寫 non-RESTful …?）</p>
+<li>resource 必須與 Controller 同名</li>
+<p>（@article 與 ArticlesController）</p>
+<p>使用過 cancan 的人，大概都「猜到」規則好像是這樣？</p>
+<p>其實不必猜，<a href="https://github.com/ryanb/cancan/blob/master/lib/cancan/controller_resource.rb" target="_blank">source code</a> 裡面就寫的很清楚。</p>
+<br />
+<h3>load_and_authorize_resource</h3>
+<p>load_and_authorized_resource 做了兩件事：</p>
+<pre>  def load_and_authorize_resource
+    load_resource
+    authorize_resource
+  end</pre>
+<ul>
+<li>load_resource</li>
+<li>authorize_resource</li>
+</ul>
+<p>load_resource 作什麼呢？: loard_resource => load_resource_instance</p>
+<pre>  def load_resource_instance
+    if !parent? && new_actions.include?(@params[:action].to_sym)
+      build_resource
+    elsif id_param || @options[:singleton]
+      find_resource
+    end
+  end</pre>
+<p>okay，這段的作用等於如果你在 Controller 裡面下了 load_resource，cancan 會<strong>自作聰明</strong>的幫你<strong> 自動 </strong>在每一個 action 塞一個 instance 下去</p>
+<pre>  lass ArticlesController < ApplicationController
+    load_resource
+
+    def new
+    end
+
+    def show
+      # @article is already loaded
+    end
+  end</pre>
+<p>如果是 new 這個 action，效果會等於</p>
+<pre>  def new
+    @article = Article.new
+  end</pre>
+<p>如果是 show 這個 action，效果會等於</p>
+<pre>  def show
+    @article = Article.find(params[:id])
+  end</pre>
+<p>有好處也有壞處，好處是…你不需要自己打一行 code，壞處就是不熟 cancan 的人，找不到 @article 在哪裡會驚慌失措…</p>
+<p><code>load_resource</code> 還有一些其他進階用法，在 <a href="https://github.com/ryanb/cancan/blob/master/lib/cancan/controller_additions.rb" target="_blank">controller_additions.rb</a> 裡面有不少說明…</p>
+<br />
+<h3>authorize_resource</h3>
+<p>authorize_resource 就是對 resource 判斷權限（根據 CanCan::Ability 裡的權限表）。</p>
+<p>而這個 resource 必定是與同名的 instance。</p>
+<p>如果是 ArticlesController 對應的必然是 @article。</p>
+<p>但是你會想說這樣慘了？萬一我在 ArticlesController 裡面要用 @post 怎麼辦呢？</p>
+<p>你可以在 controller 裡面指定 resource instance 的 name 要用什麼名字：<code>authorize_resource :post</code></p>
+<pre>  lass ArticlesController < ApplicationController
+    authorize_resource :post
+
+    def new
+      @post = Article.new
+    end
+
+    def show
+      @post = Article.find(params[:id])
+    end
+  end</pre>
+<p>Ability 裡面要這樣下</p>
+<pre>  can :read, Post
+  can :create, Post
+  can :update, Post</pre>
+<br />
+<h3>resource 規則小結</h3>
+<p>所以 cancan 裡面的 resource 第一個會去吃 controller 的名稱當成 resource name，如果是 <code>ArticlesController</code>，instance 就會是 <code>@article</code>，而在 ability 裡面就會是<code>can :read, Article</code>。這是在假設你已經使用同名設計 resource & controller 的情況下。</p>
+<p>如果非同名。你可以做出指定：<code>authorize_resource :post</code>，雖然是 ArticlesController，但是這一組的 resource 名稱為 <code>post</code>，所以 instance 就會是 <code>@post</code>，而在 ability 裡面就會是 <code>can :read, Post</code>。</p>
+<p>一般開發者常會誤會的是</p>
+<ul>
+<li>ability 會綁到 model，實際上不是</li>
+<li>controller 名稱要與 @instance 名稱相同，實際上不一定</li>
+<li>@instance 要與 model 同名，實際上不用</li>
+<li>ability 吃的應該是 controller name，實際上不一定（吃的是 resource name，且可以被指定）。</li>
+</ul>
+<p>Cancan 吃的是 resource，而且自作聰明的假設了大家「應該」都同名，而且 README example 也是使用「同名」，才會造成了這麼多的誤解…</p>
+<p>如果你有更多疑問，可以直接看 source code 裡面的 這一支 <a href="https://github.com/ryanb/cancan/blob/master/lib/cancan/controller_resource.rb" target="_blank">controller_resource.rb</a>，相信會讓你對整個架構更加的清楚…</p>
+<br />
+<h2>小結</h2>
+<p>這一節解釋了開發者認為最難懂的 <code>load_and_authorize_resource</code>、<code>authorize_resource</code>。下一節我們要來講 ability 要如何設計…</p>
+			<!-- Show relate article -->
+		<br><br><h4>您也許有興趣閱讀以下文章:</h4><ul><li><a href='../../tech-column/8770.html'>Cancan 實作角色權限設計的最佳實踐 (1)</a> - <span class='date-posted'>2012-08-08</span></li></ul>		<!-- end -->
+		<div class="article_note">
+		<!-- Add tags use metakey, and show OSSF Newsletter tag: OSSFNL+NUM-->
+		<br><br> <hr style='border: 1px dashed #D2DADB;'><b>自由軟體鑄造場電子報&nbsp;:</b>&nbsp;<a href='../../previous-issue%3Ftask=view&amp;id=801.html'>第 202 期 如何提供 GPL 元件的程式源碼</a><br><b>標籤:</b>&nbsp;<a href='../../index.php%3Foption=com_search&amp;Itemid=58&amp;searchphrase=exact_meta&amp;ordering=newest&amp;searchword=cancan.html'>cancan</a>,&nbsp;&nbsp;				<!-- End -->
+					<br>
+					<b>分類: </b><a href="../tech-column.html">				技術專欄					</a>				</div>
+			 <!-- AddThis Button BEGIN ID 3001 is the front page article -->
+     			<br><br>
+       <div class="addthis_toolbox addthis_default_style addthis_32x32_style">
+       <a class="addthis_button_preferred_1"></a>
+       <a class="addthis_button_preferred_2"></a>
+       <a class="addthis_button_preferred_3"></a>
+       <a class="addthis_button_preferred_4"></a>
+       <a class="addthis_button_compact"></a>
+       <a class="addthis_counter addthis_bubble_style"></a>
+       </div>
+       <script type="text/javascript">var addthis_config = {"data_track_clickback":true};</script>
+       <script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js#pubid=openfoundry"></script>
+       <!-- AddThis Button END -->
+     <br>
+		<div class="totop" ><a class="rt-totop" href="8771-cancan-2%3Ftmpl=component&amp;print=1&amp;page=.html#" style="outline: medium none;">↑ Top</a></div>
+            <!-- AddThis Button END -->
+
+			</div>
+</div>
+
+						</div>
+					</div>
+				</div>
+			</div>
+		</body>
+	</html>

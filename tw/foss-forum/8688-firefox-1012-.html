@@ -1,0 +1,504 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="zh-tw" lang="zh-tw" >
+<head>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<link rel="shortcut icon" href="../../images/favicon.ico" />
+	  <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+  <meta name="robots" content="index, follow" />
+  <meta name="keywords" content="firefox, mozilla,,,OSSFNL793" />
+  <meta name="title" content="Firefox 10～12 的網頁開發相容性資訊" />
+  <meta name="description" content="從 2012 年一開始到 4 月底為止，Firefox 陸續推出了 10、11、12 三個版本，這些版本之間有了一些瀏覽器 bug 的修正、對應標準的更動、安全性上的調整，特別是 HTML5 本身仍是屬於正在發展，尚未正式定案的階段，Mozilla 必須變更 Firefox 在相關功能的實作以符合草案的變動。再加上，Firefox 10 除了是第一個兩位數版本號的版本，更是 Mozilla" />
+  <meta name="generator" content="" />
+  <title>Firefox 10～12 的網頁開發相容性資訊 - OpenFoundry</title>
+  <link href="../../favicon.ico" rel="shortcut icon" type="image/x-icon" />
+  <link rel="stylesheet" href="../../components/com_gantry/css/gantry.css" type="text/css" />
+  <link rel="stylesheet" href="../../components/com_gantry/css/grid-12.css" type="text/css" />
+  <link rel="stylesheet" href="../../components/com_gantry/css/joomla.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/joomla.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/style1.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/light-body.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/demo-styles.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/template.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/typography.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/fusionmenu.css" type="text/css" />
+  <style type="text/css">
+    <!--
+#rt-main-surround ul.menu li.active > a, #rt-main-surround ul.menu li.active > .separator, #rt-main-surround ul.menu li.active > .item, #rt-main-surround .square4 ul.menu li:hover > a, #rt-main-surround .square4 ul.menu li:hover > .item, #rt-main-surround .square4 ul.menu li:hover > .separator, .roktabs-links ul li.active span {color:#0088B5;}
+a, #rt-main-surround ul.menu a:hover, #rt-main-surround ul.menu .separator:hover, #rt-main-surround ul.menu .item:hover {color:#0088B5;}
+    -->
+  </style>
+  <script type="text/javascript" src="../../components/com_jcomments/js/jcomments-v2.1.js%3Fv=2"></script>
+  <script type="text/javascript" src="../../components/com_jcomments/libraries/joomlatune/ajax.js"></script>
+  <script type="text/javascript" src="../../media/system/js/mootools.js"></script>
+  <script type="text/javascript" src="../../media/system/js/caption.js"></script>
+  <script type="text/javascript" src="../../components/com_gantry/js/gantry-buildspans.js"></script>
+  <script type="text/javascript" src="../../components/com_gantry/js/gantry-inputs.js"></script>
+  <script type="text/javascript" src="../../templates/rt_quantive_j15/js/jquery.cookie.js"></script>
+  <script type="text/javascript" src="../../modules/mod_roknavmenu/themes/fusion/js/fusion.js"></script>
+  <script type="text/javascript" src="../../modules/mod_ofssologin/js/ofssologin.js"></script>
+  <script type="text/javascript">
+
+			window.addEvent('domready', function() {
+				var modules = ['rt-block'];
+				var header = ['h3','h2','h1'];
+				GantryBuildSpans(modules, header);
+			});
+		InputsExclusion.push('.content_vote','#rt-popup')
+		        window.addEvent('load', function() {
+					new Fusion('ul.menutop', {
+						pill: 0,
+						effect: 'slide and fade',
+						opacity: 1,
+						hideDelay: 500,
+						centered: 0,
+						tweakInitial: {'x': -2, 'y': 0},
+        				tweakSubsequent: {'x': 0, 'y': -14},
+						menuFx: {duration: 200, transition: Fx.Transitions.Sine.easeOut},
+						pillFx: {duration: 400, transition: Fx.Transitions.Back.easeOut}
+					});
+	            });
+  </script>
+<!-- <script type="text/javascript" src="/sso/javascripts/langsync.js"></script> -->
+<!-- <script src="/templates/rt_quantive_j15/js/ossf.js"></script> -->
+<script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-4136519-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
+</head>
+	<body  class="backgroundlevel-low backgroundstyle-style8 bodylevel-med bodystyle-light cssstyle-style1 logostyle-dark font-family-helvetica font-size-is-default menu-type-fusionmenu col12 ">
+		<div id="rt-main-background">
+			<div class="rt-container">
+																<div id="rt-header">
+					<div class="rt-grid-7 rt-alpha">
+    			<div class="rt-block">
+    	    	<a href="../../index.html" id="rt-logo"></a>
+    		</div>
+	    
+</div>
+<div class="rt-grid-5 rt-omega">
+                    <div class="square9">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<div class="ofssologin_square9"><a href="../../index.html">登入</a>&nbsp;&nbsp|&nbsp;&nbsp;<span><a href="../../en/foss-forum/8688-firefox-1012-.html" ><span lang="en" xml:lang="en">English</span></a></li></ul></span><!--Joom!fish V2.0.4 (Lightning)-->
+<!-- &copy; 2003-2009 Think Network, released under the GPL. -->
+<!-- More information: at http://www.joomfish.net -->
+<div class="ofssologin_search_square9">
+  <form id="of_search" action="https://www.openfoundry.org/of/openfoundry/search" method="get" onsubmit="of_search(); return false;">
+    <select id="of_search_type">
+      <option value="Projects"> 專案 </option>
+      <option value="Content"> 文章 </option>
+      <option value="People"> 人才 </option>
+    </select>
+    <input id="query" name="query" id="mod_search_searchword" maxlength="50" alt="search" class="inputbox" type="text" size="28" value="search..."  onblur="if(this.value=='') this.value='search...';" onfocus="if(this.value=='search...') this.value='';" />
+    <input type="hidden" name="commit" value="search" />
+  </form>
+</div></div>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		
+</div>
+					<div class="clear"></div>
+				</div>
+																<div id="rt-navigation"><div id="rt-navigation2"><div id="rt-navigation3">
+					
+<div class="nopill">
+	<ul class="menutop level1 " >
+						<li class="item1 root" >
+					<a class="orphan item bullet" href="../../index.html"  >
+				<span>
+			    				首頁				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item32 root" >
+					<a class="orphan item bullet" href="../../archived.html"  >
+				<span>
+			    				專案				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item186 root" >
+					<a class="orphan item bullet" href="../community.html"  >
+				<span>
+			    				Who&#039;s Who				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item4 root" >
+					<a class="orphan item bullet" href="../news.html"  >
+				<span>
+			    				新聞				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item5 root" >
+					<a class="orphan item bullet" href="../law-and-licensing.html"  >
+				<span>
+			    				法律源地				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item3 root" >
+					<a class="orphan item bullet" href="../activities.html"  >
+				<span>
+			    				活動				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item2 root" >
+					<a class="orphan item bullet" href="../resourcecatalog%3FName=Value.html"  >
+				<span>
+			    				資源表列				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item45 root" >
+					<a class="orphan item bullet" href="../about.html"  >
+				<span>
+			    				關於				   
+				</span>
+			</a>
+			
+			
+	</li>	
+				</ul>
+</div>
+
+				    <div class="clear"></div>
+				</div></div></div>
+								<div class="rt-surround"><div class="rt-surround2"><div class="rt-surround3">
+										<div id="rt-showcase-section">
+												<div id="rt-showcase">
+							<div class="rt-grid-12 rt-alpha rt-omega">
+    		<div class="clear"></div>
+		
+		
+                <div class="close-note">
+                    <div class="rt-block">
+               					<div class="module-content">
+                	<div style="font-size:medium; background-image:linear-gradient(120deg,#159957,#4298b2);color:white;padding:20px;margin:-10px -18px;">感謝您對「自由軟體鑄造場」的支持與愛護，十多年來「自由軟體鑄造場」受中央研究院支持，並在資訊科學研究所以及資訊科技創新研究中心執行，現已完成階段性的任務。 本網站預計持續維運至 2021年底，網站內容基本上不會再更動。<br />也紀念我們永遠的朋友 李士傑先生（Shih-Chieh Ilya Li）。</div>				</div>
+            </div>
+                </div>
+		
+</div>
+							<div class="clear"></div>
+						</div>
+																	</div>
+															<div id="rt-main-surround">
+												<div id="rt-breadcrumbs">
+								<div class="rt-breadcrumb-surround">
+		<a href="../../index.html" id="breadcrumbs-home"></a>
+		<span class="breadcrumbs pathway">
+<a href="../foss-forum.html" class="pathway">自由專欄</a> <img src="../../templates/rt_quantive_j15/images/arrow.png" alt=""  /> <span class="no-link">Firefox 10～12 的網頁開發相容性資訊</span></span>
+	</div>
+	
+							<div class="clear"></div>
+						</div>
+																							              <div id="rt-main" class="sa3-mb9">
+                <div class="rt-main-inner">
+                    <div class="rt-grid-9 rt-push-3">
+                                                <div class="rt-block">
+                            							<div class="square1">
+							<div class="rt-module-surround">
+								<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+								<div class="rt-module-inner">
+		                            <div id="rt-mainbody">
+		                                
+<div class="rt-joomla ">
+	<div class="rt-article">
+		
+				<div class="rt-headline"><h1 class="rt-article-title">Firefox 10～12 的網頁開發相容性資訊</h1>		</div>
+		<div class="clear"></div>
+		
+		
+		
+				<div class="rt-articleinfo">
+						<div class="rt-article-icons">
+								<a href="8688-firefox-1012-%3Ftmpl=component&amp;print=1&amp;layout=default&amp;page=.html" title="列印" onclick="window.open(this.href,'win2','status=no,toolbar=no,scrollbars=yes,titlebar=no,menubar=no,resizable=yes,width=640,height=480,directories=no,location=no'); return false;" rel="nofollow"><span class="icon print"></span></a>																</div>
+			
+			<span class="rt-date-posted">
+						建立日期			2012-05-07 10:52						&nbsp;&nbsp;&nbsp;&nbsp;						最近更新在 2012-05-28 11:20						</span>
+
+						<span class="rt-author">
+				作者是 蕭惟杰 (RJ)／編譯			</span>
+				
+					</div>
+		
+		
+		<p>從 2012 年一開始到 4 月底為止，Firefox 陸續推出了 10、11、12 三個版本，這些版本之間有了一些瀏覽器 bug 的修正、對應標準的更動、安全性上的調整，特別是 HTML5 本身仍是屬於正在發展，尚未正式定案的階段，Mozilla 必須變更 Firefox 在相關功能的實作以符合草案的變動。再加上，Firefox 10 除了是第一個兩位數版本號的版本，更是 Mozilla 為了企業實務上不一定能配合 <a href="https://zh.wikipedia.org/wiki/Firefox#.E9.AB.98.E9.80.9F.E9.87.8B.E5.87.BA.E9.80.B1.E6.9C.9F" target="_blank">Firefox 4 開始的高速釋出週期</a>政策來更新所提供的<a href="https://zh.wikipedia.org/wiki/Mozilla_Firefox#.E9.95.B7.E6.9C.9F.E6.94.AF.E6.8C.81.E7.89.88.E6.9C.AC" target="_blank">第一個長期支援版本</a>（Extended Support Release，簡稱「ESR」），開發者除了要注意網頁在新版本上是否能正確運作及顯示之外，兼顧向下相容，特別是對 ESR 的相容性變得更加重要了。有鑑於 <a href="https://mozilla.jp/" target="_blank">Mozilla Japan</a> 會對這些資訊加以<a href="https://mozilla.jp/business/resources/" target="_blank">整理</a>，而台灣似乎沒有把相關資訊中文化並整理起來，因此小弟斗膽將 Firefox 10、11、12 的相容性資訊翻譯並加以彙整，希望讓以中文為母語的開發者能省去搜尋及閱讀的時間，在開發及維護時能提早預知可能的問題並加以避免。以下以版本號分別列出該版本與上一版本之間的差異。</p>
+
+<h2>Firefox 10</h2>
+<h3>UserAgent 字串的版本編號變成兩位數</h3>
+<p>Firefox 10 是第一個主要版本編號為兩位數的版本。UserAgent 字串用來分辨瀏覽器，如果 Script 中用來判斷版本的代碼是有問題的，可能造成分辨瀏覽器失敗。請利用 Firefox 10 來檢查有利用到 UserAgent 字串的 Script 是否能正確運作。</p>
+<p>Firefox 正式版及 Beta 版的 UserAgent 是長這個樣子的：</p>
+<p>Mozilla/5.0 (Macintosh; Intel Mac OS X 10.6; rv:10.0) Gecko/20100101 Firefox/10.0</p>
+<p>Mozilla/5.0 (Windows NT 6.2; rv:10.0.1) Gecko/20100101 Firefox/10.0.1</p>
+<p>除了主要版本編號會有兩位元以上之外，還要特別注意的是，如果有安全性更新的話，版本編號不是像「10.0」這樣子區分為兩個部份，而是像「10.0.1」這樣子區分為三個部份。</p>
+<p>Firefox 的 Beta 版使用與正式版相同的 UserAgent 字串，但是 Nightly 版及 Aurora 版則不同，是長這樣子的：</p>
+<p>Mozilla/5.0 (Macintosh; Intel Mac OS X 10.6; rv:12.0a1) Gecko/20120122 Firefox/12.0a1</p>
+<p>Mozilla/5.0 (Windows NT 6.2; rv:12.0a2) Gecko/20120122 Firefox/12.0a2</p>
+<p>請注意，「Gecko/yyyymmdd」的部份並非固定在「20100101」，而且版本編號最後面則是跟著「a1」或「a2」之類的字樣。其他關於 Firefox UserAgent 字串的細節，請參照 <a href="https://developer.mozilla.org/en/Gecko%20user%20agent%20string%20reference" target="_blank">Mozilla Developer Network 的文件</a>。</p>
+<h3>〈table〉 元件的邊 (Margin) 現在能正確的被抵消</h3>
+<p>在新的 CSS 規範當中，兩個垂直排列元件之間的邊距將會被「<a href="https://developer.mozilla.org/en/CSS/margin_collapsing" target="_blank">折疊</a>」。也就是說，垂直排列的元件之間的邊距將會被抵銷，而以最大的邊距作為上下元件之間的間隔距離。</p>
+<p>但是，直到 Firefox 9 為止都沒有針對〈table〉元件的部份做上下元素間邊距相抵銷的處理，使得〈table〉元件的部份仍然以與其垂直排列的元件之間上下邊距的總和作為之間的間隔距離。Firefox 10 開始<a href="https://bugzilla.mozilla.org/show_bug.cgi?id=87277" target="_blank">修正了這個問題</a>，使得〈table〉與其他元件相同，會正確的對上下邊距做折疊。**這將導致〈table〉與上下的元件兩邊都有設定上下邊距的情況下邊距會變小**。如果您依據垂直高度來決定頁面佈局，並且有指定〈table〉的邊距，那麼請特別注意這點。</p>
+<p>像是下面那樣的代碼，直到 Firefox 9 為止，〈table〉與上下元件之間的間距各自為 1+2=3em 與 2+3=5em，而從 Firefox 10 開始，則是 Max(1,2) = 2em 與 Max(2,3) = 3em（<a href="https://jsfiddle.net/dddyF/" target="_blank">從這裡觀看結果</a>）：</p>
+<pre>〈p style="margin: 1em;"〉有設置 margin-bottom 的元件〈/p〉<br />〈table style="margin: 2em;"〉〈tr〉〈td〉table 元件〈/td〉〈/tr〉〈/table〉<br />〈p style="margin: 3em;"〉有設置 margin-top 的元件〈/p〉</pre>
+<h3>在不是設定為一般配置的 〈table〉 中設定為絕對配置時的基準位置之修正</h3>
+<p>在 CSS 的規範中，被設定為絕對配置 (position: absolute) 的元件，其位置是以被設定為一般配置 (position: static) 以外之配置方式 (position: relative / absolute / fixed) 的所有祖先元件之中層級最接近者為基準，並配合所指定的位移量 (top, bottom, left, right) 來加以決定的。</p>
+<p>但是，直到 Firefox 9 為止，就算在祖先元件中的〈table〉元件被設定為一般配置以外之配置方式的情況下，被設定為絕對配置的子孫元件在決定基準點時，卻跳過〈table〉而以更上層中被設定為一般配置以外之配置方式的祖先元件為基準。</p>
+<p>在對設置為絕對配置、相對配置及固定配置之〈table〉内的元件指定絕對位置的情況下，頁面佈局將有所變動。</p>
+<p>像是下面那樣的代碼，直到 Firefox 9 為止，〈table〉内的〈div〉元件以外面的〈div〉元件作為基準的原因，從內容區域的上面算起 0+50 = 50px，左邊算起 100+50 = 150px 的地方開始繪製。而從 Firefox 10 開始，則是以〈table〉元件作為基準，從內容區域的上面算起 100+50 = 150px，左邊算起 100+50 = 150px 的地方開始繪製。（<a href="https://jsfiddle.net/NyCrf/" target="_blank">從這裡觀看結果</a>）</p>
+<pre>〈div style="position: absolute; left: 100px;"〉設定為絕對配置的祖先元件<br />〈table style="position: absolute; top: 100px;"〉〈tr〉〈td〉<br />table 内的一般配置元件<br />〈div style="position: absolute; top: 50px; left: 50px;"〉table 内的絕對配置元件〈/div〉<br />〈/td〉〈/tr〉〈/table〉<br />〈/div〉</pre>
+<p>絕對配置的問題與邊距抵銷的問題最終總會依據 CSS 規範做出修正。如果為了修改成與其他瀏覽器相同的頁面佈局，直到現在不是選擇做出 Firefox 專用的頁面佈局，而是做成能對應多個瀏覽器的話，我想應該是不會產生出多大的問題的。詳細情形請看<a href="https://ehsanakhgari.org/blog/2011-10-04/upcoming-changes-absolute-positioning-tables-and-table-margin-collapsing-firefox-10" target="_blank">這篇文章</a>。</p>
+<p>另外，雖然為了方便起見只寫了〈table〉元件的部份，但其實也對設定成 display: table 的任意元件做出修正。</p>
+<h3>在 Strict 模式下無法使用 E4X</h3>
+<p>雖然 Firefox 的 JavaScript 引擎有支援被稱為 「<a href="https://developer.mozilla.org/en/E4X" target="_blank">E4X</a>」這個為了能簡單處理 XML 而產生的語法，在從 ECMAScript 5th 開始導入的 Strict 模式已啟用的情況下 E4X 語法將會無法使用。</p>
+<p>如果有 E4X 和 Strict 模式同時使用之情況的話，請選擇不要使用 Strict 模式，或是將以 E4X 撰寫的代碼改掉。</p>
+<h3>移除在 DOM4 中成為不建議使用的特性 (Property)</h3>
+<p>在 DOM4 中以下的屬性 (Attribute) 及特性變成了「不建議使用」，從 Firefox 10 開始被移除。</p>
+<p>*   <a href="https://developer.mozilla.org/en/DOM/document.xmlVersion" target="_blank">`document.xmlVersion`</a> 屬性</p>
+<p>*   `document.xmlStandalone` 屬性</p>
+<p>*   `document.xmlEncoding` 屬性</p>
+<p>*   `text.isElementContentWhiteSpace` 屬性</p>
+<p>*   `text.replaceWholeText()` 方法</p>
+<p>*   `node.isSameNode()` 方法</p>
+<p>由於「document.xmlVersion」每次都會傳回「1.0」的原因，無法用來判斷取得的 document 究竟是 XML 還是是 HTML。我們可以用以下的方法來加以判別：</p>
+<pre>if (document.createElement("foo").tagName == "FOO") {<br />/* HTML 模式的話，呼叫 tagName 屬性將會取得被轉為大寫的元件名 */<br />}</pre>
+<p><a href="https://developer.mozilla.org/en/DOM/node.isSameNode" target="_blank">`node.isSameNode()`</a> 請改用同値運算子 (`===`) 進行比較。</p>
+<h3>遇到以「setAttribute()」指定一個整數值屬性時將末端的非數字文字無視來進行解釋</h3>
+<p>HTML 的規範當中，存在著「在指定一個整數值的屬性時，若用來指定的字串末端存在不是數字的文字則予以無視」</p>
+<p><a href="https://www.whatwg.org/specs/web-apps/current-work/multipage/common-microsyntaxes.html#rules-for-parsing-integers" target="_blank">這樣的定義</a>。也就是說，「100fox」必須被解釋成「100」。</p>
+<p>直到 Firefox 9 為止，在包含不是數字的文字的情況下當作錯誤來處理，而從 Firefox 10 開始則<a href="https://bugzilla.mozilla.org/show_bug.cgi?id=673820" target="_blank">修正為</a>依照規範將以用來指定之字串前面的整數值部份來指定。</p>
+<p>像是下面那樣的代碼，直到 Firefox 9 為止，〈canvas〉的寬度將不會被指定而是保留初始值「300」，而從 Firefox 10 開始，則將會被指定為「100」。</p>
+<pre>document.getElementById("canvasid").setAttribute("width", "100em");</pre>
+<h3>ESC 鍵不會觸發 oninput 事件</h3>
+<p>雖然 <a href="https://www.whatwg.org/specs/web-apps/current-work/multipage/common-input-element-attributes.html#common-event-behaviors" target="_blank">HTML 已經有規定</a>只有在元件的值被改變時才會觸發「oninput」事件，但是從 Firefox 4 到 Firefox 9 為止，按下 ESC 鍵也能觸發「oninput」事件。</p>
+<p>從 Firefox 10 開始依照規範<a href="https://bugzilla.mozilla.org/show_bug.cgi?id=651956)" target="_blank">做出修正</a>，ESC 鍵不會再觸發事件了。</p>
+<h3>IndexedDB 的實作依據最新規範進行更新</h3>
+<p>從 Firefox 4 開始支援仍然在制定規範中的 IndexedDB 的一部分 API，之後也持續的添加對應的 API 及配合規範的變更進行變更。</p>
+<p>在 Firefox 10 中「IndexedDB」已經做出了<a href="https://developer.mozilla.org/en/Firefox_10_for_developers" target="_blank">大幅度的改變</a>，其中請注意設定版本的方法已經改變了。</p>
+<p>以前的作法是在開啟資料庫連接的地方以<a href="https://developer.mozilla.org/en/IndexedDB/IDBDatabase#setVersion%28%29" target="_blank">「setVersion()」方法</a>進行設定，不過<a href="https://bugzilla.mozilla.org/show_bug.cgi?id=687361" target="_blank">「setVersion()」方法</a>將被移除，改成在連接資料庫時以參數來指定版本編號。先前使用「setVersion()」方法的代碼必須全部變更。</p>
+<p>如需要關於這次 IndexedDB 之改變的日文解說，可以參考 mzsm 先生所寫的「<a href="https://mzsm.me/2011/12/16/indexeddb-201112/" target="_blank">關於 IndexedDB 的備忘錄（2011年12月版）</a>」。</p>
+<h2>Firefox 11</h2>
+<h3>MozBeforePaint 事件被廢除，mozRequestAnimationFrame 函數改成必須提供回傳參數</h3>
+<p><a href="https://bugzilla.mozilla.org/show_bug.cgi?id=704171" target="_blank">Bug 704171 – Remove the no-argument form of requestAnimationFrame</a></p>
+<p>在此以前透過呼叫「mozRequestAnimationFrame」之際觸發「MozBeforePaint」事件的機制將被廢止。還有、在此之前能夠不提供引數直接呼叫「mozRequestAnimationFrame」，從此必須依照標準提供引數（callback 參數）。</p>
+<p>從今以後，請利用提供 callback 參數給「mozRequestAnimationFrame」來取得時間戳記，以取代透過「MozBeforePaint」事件觸發。從 Firefox 11 開始，不提供參數或是提供一個 null 值作為參數呼叫「mozRequestAnimationFrame」將會得出例外狀況，將會在錯誤主控台中看到錯誤訊息。</p>
+<h3>Android 版 Firefox 的 UA 字串被改變</h3>
+<p><a href="https://bugzilla.mozilla.org/show_bug.cgi?id=704171" target="_blank">Bug 671634 – Useragent should be different between phones and tablets</a></p>
+<p>Android 版 Firefox 的 <a href="https://developer.mozilla.org/en/Gecko_user_agent_string_reference" target="_blank">UserAgent (UA) 字串</a>被改變了。首先、追加了表示手持裝置種類的 token，像平板電腦則表示為「Tablet」，智慧手機等其他手持裝置則表示為「Mobile」。其次，移除掉代表開發代號「Fennec」的 token 被移除了。然後，「Gecko/」後面的數字，所表示的不再是凍結日期而是 Gecko 的版本號。</p>
+<p>Mozilla/5.0 (Android; Mobile; rv:11.0) Gecko/11.0 Firefox/11.0</p>
+<p>Mozilla/5.0 (Android; Tablet; rv:11.0) Gecko/11.0 Firefox/11.0</p>
+<h3>修正網站内 navigator 的特性 (Property) 被保留的這樣無法理解的行為</h3>
+<p><a href="https://bugzilla.mozilla.org/show_bug.cgi?id=690952" target="_blank">Bug 690952 – Remove the crazy navigator preservation behavior</a></p>
+<p>Firefox 在此之前，對 <a href="https://developer.mozilla.org/en/DOM/window.navigator" target="_blank">navigator</a> 物件設定擴充特性 (Property) 的話，在網站（同一網域）的頁面切換之間瀏覽器仍可能會保留住這些資料。為了這樣意料之外，無法理解的行為，而修正為資料不會被保留住了。如果想要在客戶端留下資料的話，請使用 <a href="https://developer.mozilla.org/en/DOM/document.cookie" target="_blank">Cookie</a>、<a href="https://developer.mozilla.org/en/DOM/Storage" target="_blank">DOM Storage</a>、<a href="https://developer.mozilla.org/en/IndexedDB" target="_blank">IndexedDB</a> 等其他一般的方法。</p>
+<h3>HTTP Content-Type 標頭的文字編碼用引號包起來指定將不被接受</h3>
+<p><a href="https://bugzilla.mozilla.org/show_bug.cgi?id=700589" target="_blank">Bug 700589 – HTTP content type charset parameter accepts single quotes</a></p>
+<p>在此之前，Firefox 接受「Content-Type: text/plain; charset='UTF-8'」這樣用單引號來指定文件編碼的作法，但是這樣違反了 RFC 的規範，所以這樣不正確的指定作法將會被無視。使用 HTTP Content-Type 標頭指定文件編碼的情況下，請不要再用引號包起來。</p>
+<h3>能透過 Geolocation API 取得的「countryCode」被拿掉了</h3>
+<p><a href="https://bugzilla.mozilla.org/show_bug.cgi?id=704056" target="_blank">Bug 704056 – remove 'countryCode' from nsIDOMGeoPositionAddress.idl</a></p>
+<p>在 Firefox 中，能透過 <a href="https://developer.mozilla.org/en/Using_geolocation" target="_blank">Geolocation API</a> 取得的資訊包含了國家代碼、但是標準規範中並沒有這樣的定義所以把它拿掉了。如果遇到類似下面的程式碼，請使用「county」取代「countryCode」。</p>
+<pre>navigator.geolocation.getCurrentPosition(function(position) {<br />do_something(position.address.countryCode);<br />});</pre>
+<h3>WebSockets API 的前綴拿掉了</h3>
+<p><a href="https://bugzilla.mozilla.org/show_bug.cgi?id=695635" target="_blank">Bug 695635 – tracking bug: unprefix WebSockets </a></p>
+<p>配合最新版標準規範草案中對 Protocol、API 的更新，「MozWebSocket」被換成「WebSockets」了。有調用 <a href="https://developer.mozilla.org/en/WebSockets" target="_blank">WebSockets API</a> 的情況下，請務必確保有無前綴都要能正確運作。為了向下相容，請用以下的方法確保有前綴的 API 也能被對應到。</p>
+<pre>var ws;<br />if (WebSocket) {<br />ws = new WebSocket(url); // 標準<br />} else if (MozWebSocket) {<br />ws = new MozWebSocket(url); // Firefox 10 及以前版本<br />} else {<br />// WebSockets 未對應<br />}</pre>
+<h3>使用百分比值指定 SVG 根要素大小將不被認可</h3>
+<p><a href="https://bugzilla.mozilla.org/show_bug.cgi?id=611099" target="_blank">Bug 611099 – remove handling of percentages as intrinsic widths/heights (SVG height="100%" width="100%" defaults)</a></p>
+<p>在此之前， Firefox 容許對 SVG 的根要素以「width="100%"」這樣以百分比值設定該要素的固有尺寸 (intrinsic dimensions)，為了配合標準，這樣的指定將不被接受。</p>
+<h3>使用者可設定提示文字的顯示前延遲時間</h3>
+<p><a href="https://bugzilla.mozilla.org/show_bug.cgi?id=204786" target="_blank">Bug 204786 – Add setting to change delay before tooltip shows</a></p>
+<p>在網頁及 Firefox 的 UI 要素上，作為提供補充資訊的提示文字在顯示前的延遲時間，可以透過瀏覽器的隱藏設定「ui.tooltipDelay」加以變更。預設值跟以前一樣為 500（0.5 秒），設為 0 的話，當滑鼠指標指到時將直接顯示。</p>
+<p>網頁這方面，透過 JavaScript 實作自己的提示文字的情況下、根據使用者的設定、可能會導致與瀏覽器所顯示的原生提示文字（title 屬性的值）重疊，請務必要注意。</p>
+<h2>Firefox 12</h2>
+<h3>input 事件將被 compositionupdate 事件觸發</h3>
+<p><a href="https://bugzilla.mozilla.org/show_bug.cgi?id=713502" target="_blank">Bug 713502 - input event should be fired after compositionupdate </a></p>
+<p>在 editor (Form) 上面透過 IME 輸入文字的情況下，本來是等到輸入完後才觸發 input 事件、Firefox 12 開始，仍在 IME 編輯中的文字經過變動而觸發 compositionupdate 事件後直接觸發 input 事件。從此之後，透過使用 input 事件的 handler，將能取得包含仍在輸入法編輯區中，尚未完成文字編輯的表單輸入內容。</p>
+<h3>在 editor 上被不實觸發的 keypress 事件將被無視</h3>
+<p><a href="https://bugzilla.mozilla.org/show_bug.cgi?id=698949" target="_blank">Bug 698949 – Refuse untrusted keypress events in editor</a></p>
+<p>使用 <a href="https://developer.mozilla.org/en/DOM/element.dispatchEvent" target="_blank">dispatchEvent</a> 的話 keypress 事件將有機會被不實觸發的情況下、在 Firefox 的 editor (Form) 上面仍會被接受。可是，關於在 editor 上面遇到「無法信賴」的事件處理規範尚未被制定，其他的瀏覽器都將其無視的情況下，Firefox 也決定跟進。</p>
+<h3>更新 border-image 的實做</h3>
+<p><a href="https://bugzilla.mozilla.org/show_bug.cgi?id=497995" target="_blank">Bug 497995 – Implement border-image revisions in latest css3-background</a></p>
+<p>為了配合 CSS3 的最新規範，border-image（現在仍是加上表示測試用前綴字串的 -moz-border-image）的實作跟著更新了。對應舊版本（特別是 Firefox 10 ESR）的指定及併記的方法請參考 <a href="https://mozilla.jp/business/resources/site-compatibility/firefox-12/" target="_blank">Piro 先生的部落格文章</a>。</p>
+<h3>提示文字將接受多行的文字</h3>
+<p><a href="https://bugzilla.mozilla.org/show_bug.cgi?id=358452" target="_blank">Bug 358452 – Firefox: Let authors put line breaks (newlines) in tooltips (title attribute)</a></p>
+<p>以前 Firefox 會無視 title 屬性值裡面的換行文字，而為了遵守 HTML5 的規範，將呈現出換行的效果，使得現在能做到顯示多行的提示文字。因此，在 title 屬性的值中包含換行文字的情況下新舊版本的呈現會有所不同。</p>
+<h3>刪除 UniversalXPConnect 以外的特權管理機制</h3>
+<p><a href="https://bugzilla.mozilla.org/show_bug.cgi?id=713747" target="_blank">Bug 713747 – Rip out non-UniversalXPConnect privilege manager functionality</a></p>
+<p>在 Firefox 之中，透過 JavaScript 的擴充規格 netscape.security.PrivilegeManager.enablePrivilege 取得極高的權力，能做到一般 Web 應用不被許可的操作（像是讀取本機檔案、改變設定等等）。這個<a href="https://www.mozilla.org/projects/security/components/signed-scripts.html" target="_blank">特權管理機制</a>必須修改 Firefox 的設定才能使用，而且只能在區域網路等極有限的範圍內使用。</p>
+<p>在 Firefox 12 之中、除了一般用途的 UniversalXPConnect 之外的五種特權，UniversalBrowserRead、UniversalBrowserWrite、UniversalPreferencesRead、UniversalPreferencesWrite、UniversalFileRead 皆被刪除了。</p>
+<p>在將來，Web 應用中能夠使用的特權管理機制（enablePrivilege 參數）預計將被廢除，建議使用擴充套件取代。</p>
+<h3>停止支援 JavaScript 的 sharp 變數</h3>
+<p><a href="https://bugzilla.mozilla.org/show_bug.cgi?id=566700" target="_blank">Bug 566700 – remove sharp variables</a></p>
+<p><a href="https://developer.mozilla.org/en/JavaScript/Sharp_variables_in_JavaScript" target="_blank">Sharp 變數</a>是從 Netscape 時代流傳下來，至今 Mozilla 的 JavaScript 引擎仍然實作的非標準擴充規範。Firefox 12 開始將不再支援。</p>
+<p>相關連結：</p>
+<p>Firefox 10 のサイト互換性情報 <a href="https://mozilla.jp/business/resources/site-compatibility/firefox-10/" target="_blank">https://mozilla.jp/business/resources/site-compatibility/firefox-10/</a></p>
+<p>Firefox 11 のサイト互換性情報 <a href="https://mozilla.jp/business/resources/site-compatibility/firefox-11/" target="_blank">https://mozilla.jp/business/resources/site-compatibility/firefox-11/</a></p>
+<p>Firefox 12 のサイト互換性情報 <a href="https://mozilla.jp/business/resources/site-compatibility/firefox-12/" target="_blank">https://mozilla.jp/business/resources/site-compatibility/firefox-12/</a></p>
+			<!-- Show relate article -->
+		<br><br><h4>您也許有興趣閱讀以下文章:</h4><ul><li><a href='../../foss-forum/2066.html'>從 Firefox 擴充套件之戰談起</a> - <span class='date-posted'>2009-05-06</span></li></ul>		<!-- end -->
+		<div class="article_note">
+		<!-- Add tags use metakey, and show OSSF Newsletter tag: OSSFNL+NUM-->
+		<br><br> <hr style='border: 1px dashed #D2DADB;'><b>自由軟體鑄造場電子報&nbsp;:</b>&nbsp;<a href='../../previous-issue%3Ftask=view&amp;id=793.html'>第 196 期 從 Copyleft 看自由開源軟體授權相容性</a><br><b>標籤:</b>&nbsp;<a href='../../index.php%3Foption=com_search&amp;Itemid=58&amp;searchphrase=exact_meta&amp;ordering=newest&amp;searchword=firefox.html'>firefox</a>,&nbsp;&nbsp;<a href='../../index.php%3Foption=com_search&amp;Itemid=58&amp;searchphrase=exact_meta&amp;ordering=newest&amp;searchword=&#32;mozilla.html'> mozilla</a>,&nbsp;&nbsp;<a href='../../index.php%3Foption=com_search&amp;Itemid=58&amp;searchphrase=exact_meta&amp;ordering=newest&amp;searchword=.html'></a>,&nbsp;&nbsp;<a href='../../index.php%3Foption=com_search&amp;Itemid=58&amp;searchphrase=exact_meta&amp;ordering=newest&amp;searchword=.html'></a>,&nbsp;&nbsp;				<!-- End -->
+					<br>
+					<b>分類: </b><a href="../foss-forum.html">				自由專欄					</a>				</div>
+			 <!-- AddThis Button BEGIN ID 3001 is the front page article -->
+     			<br><br>
+       <div class="addthis_toolbox addthis_default_style addthis_32x32_style">
+       <a class="addthis_button_preferred_1"></a>
+       <a class="addthis_button_preferred_2"></a>
+       <a class="addthis_button_preferred_3"></a>
+       <a class="addthis_button_preferred_4"></a>
+       <a class="addthis_button_compact"></a>
+       <a class="addthis_counter addthis_bubble_style"></a>
+       </div>
+       <script type="text/javascript">var addthis_config = {"data_track_clickback":true};</script>
+       <script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js#pubid=openfoundry"></script>
+       <!-- AddThis Button END -->
+     <br>
+		<div class="totop" ><a class="rt-totop" href="8688-firefox-1012-.html#" style="outline: medium none;">↑ Top</a></div>
+            <!-- AddThis Button END -->
+
+			</div>
+</div>
+
+		                            </div>
+									<div class="clear"></div>
+								</div>
+								<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+							</div>
+							</div>
+                                                    </div>
+                                            </div>
+                                <div class="rt-grid-3 rt-pull-9">
+                <div id="rt-sidebar-a">
+                                    <div class="square4">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<ul class="menu"><li class="item56"><a href="../previous-issue.html"><span>電子報總覽</span></a></li><li class="item55"><a href="../about-newsletter.html"><span>關於本報</span></a></li></ul>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<ul class="menu"><li class="item115"><a href="../foss-news.html"><span>源碼新聞</span></a></li><li class="item141"><a href="../case-job.html"><span>接案 / 工作</span></a></li></ul>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+        	                <div class="square1">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-title"><h2 class="title">專欄總覽</h2></div>
+						<div class="clear"></div>
+		                						<div class="module-content">
+		                	<ul class="menu"><li class="item37"><a href="../tech-column.html"><span>技術專欄</span></a></li><li class="item40"><a href="../foss-programs.html"><span>源碼秘技</span></a></li><li class="item35"><a href="../legal-article-.html"><span>法律專欄</span></a></li><li id="current" class="active item154"><a href="../foss-forum.html"><span>自由專欄</span></a></li><li class="item162"><a href="../enterprise-application.html"><span>企業應用</span></a></li><li class="item44"><a href="../foss-projects.html"><span>源碼專案</span></a></li></ul>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		                <div class="square1">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<p style="text-align: center;"><a href="../../news%3Fformat=feed&amp;type=rss" target="_black"><img src="../../images/M_images/news-rss-feed.png" border="0" /></a><br /><a href="https://www.openfoundry.org/rss-feed/Newsletter" target="_black"><img src="../../images/M_images/newsletter-rss-feed.png" border="0" /></a></p>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		
+                </div>
+            </div>
+
+                    <div class="clear"></div>
+                </div>
+            </div>
+																													</div>
+										<div id="rt-copyright">
+						<div class="rt-grid-12 rt-alpha rt-omega">
+                        <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<div id="desktop-mobile-version-switch"><span id="mobile-version" class="version-switch"><a href="8688-firefox-1012-.html#">行動版</a></span></div>
+自由軟體鑄造場 製作 最佳瀏覽狀態：IE7或Firefox2.0以上 (建議使用Firefox) ‧ 解析度1024*768 <br /> <strong>E-Mail</strong>：<a href="mailto:contact@openfoundry.org">contact@openfoundry.org</a> <strong>Address</strong>：台北市南港區研究院路2段128號 中央研究院資訊科學研究所 . <a href="../../privacy-policy.html">隱私權條款</a>. <a href="../../terms-of-use.html">使用條款</a><span style="position: relative; top: 8px; margin-top: -8px;"> <a href="../../about/8101.html"><img src="../../images/M_images/rss-feed-all.png" border="0" /></a></span>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+        	
+</div>
+						<div class="clear"></div>
+					</div>
+					<div class="rt-footer-bottom-wrap"><div class="rt-footer-bottom"><div class="rt-footer-bottom2"><div class="rt-footer-bottom3"></div></div></div></div>
+									</div></div></div>
+				<div class="rt-surround-bottom"><div class="rt-surround-bottom2"><div class="rt-surround-bottom3"></div></div></div>
+							</div>
+		</div>
+		<!--
+		<script id="aptureScript">
+						(function (){var a=document.createElement("script");a.defer="true";a.src="http://www.apture.com/js/apture.js?siteToken=vsJttrn";document.getElementsByTagName("head")[0].appendChild(a);})();
+     </script>
+-->
+
+<!-- Piwik -->
+<!-- 			<script type="text/javascript">
+			  var _paq = _paq || [];
+		  _paq.push(["trackPageView"]);
+		  _paq.push(["enableLinkTracking"]);
+
+		    (function() {
+			        var u=(("https:" == document.location.protocol) ? "https" : "https") + "://www.openfoundry.org/piwik/";
+				    _paq.push(["setTrackerUrl", u+"piwik.php"]);
+				    _paq.push(["setSiteId", "1"]);
+				        var d=document, g=d.createElement("script"), s=d.getElementsByTagName("script")[0]; g.type="text/javascript";
+				        g.defer=true; g.async=true; g.src=u+"piwik.js"; s.parentNode.insertBefore(g,s);
+					  })();
+		  </script> -->
+<!-- End Piwik Code -->
+	</body>
+</html>

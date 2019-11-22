@@ -1,0 +1,153 @@
+	<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+	<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-gb" lang="en-gb" >
+		<head>
+			  <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+  <meta name="robots" content="noindex, nofollow" />
+  <meta name="keywords" content="kernel,mainline,upstreaming,linux,advantages,various,visible,people,successfully,available,under,creative,attribution,commons,armijn,hemel,baechle,vendors,upstream,copyright" />
+  <meta name="title" content="Upstreaming your code - a primer" />
+  <meta name="description" content="Copyright © 2011 Armijn Hemel & Ralf Baechle .T his work is available under the Creative Commons Attribution 3.0  Unported license. This document describes what steps chip vendors need to take to" />
+  <meta name="generator" content="" />
+  <title>Upstreaming your code - a primer</title>
+  <link href="../../favicon.ico" rel="shortcut icon" type="image/x-icon" />
+  <link rel="stylesheet" href="../../components/com_gantry/css/gantry.css" type="text/css" />
+  <link rel="stylesheet" href="../../components/com_gantry/css/grid-12.css" type="text/css" />
+  <link rel="stylesheet" href="../../components/com_gantry/css/joomla.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/joomla.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/style1.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/light-body.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/demo-styles.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/template.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/typography.css" type="text/css" />
+  <style type="text/css">
+    <!--
+#rt-main-surround ul.menu li.active > a, #rt-main-surround ul.menu li.active > .separator, #rt-main-surround ul.menu li.active > .item, #rt-main-surround .square4 ul.menu li:hover > a, #rt-main-surround .square4 ul.menu li:hover > .item, #rt-main-surround .square4 ul.menu li:hover > .separator, .roktabs-links ul li.active span {color:#0088B5;}
+a, #rt-main-surround ul.menu a:hover, #rt-main-surround ul.menu .separator:hover, #rt-main-surround ul.menu .item:hover {color:#0088B5;}
+    -->
+  </style>
+  <script type="text/javascript" src="../../components/com_jcomments/js/jcomments-v2.1.js%3Fv=2"></script>
+  <script type="text/javascript" src="../../components/com_jcomments/libraries/joomlatune/ajax.js"></script>
+  <script type="text/javascript" src="../../media/system/js/mootools.js"></script>
+  <script type="text/javascript" src="../../media/system/js/caption.js"></script>
+  <script type="text/javascript" src="../../components/com_gantry/js/gantry-buildspans.js"></script>
+  <script type="text/javascript" src="../../components/com_gantry/js/gantry-inputs.js"></script>
+  <script type="text/javascript">
+
+			window.addEvent('domready', function() {
+				var modules = ['rt-block'];
+				var header = ['h3','h2','h1'];
+				GantryBuildSpans(modules, header);
+			});
+		InputsExclusion.push('.content_vote','#rt-popup')
+  </script>
+		</head>
+		<body  class="backgroundlevel-low backgroundstyle-style8 bodylevel-med bodystyle-light cssstyle-style1 logostyle-dark font-family-helvetica font-size-is-default menu-type-fusionmenu col12 ">
+			<div id="rt-main-surround">
+				<div class="rt-container">
+					<div class="rt-block">
+						<div id="rt-mainbody">
+					    	
+<div class="rt-joomla ">
+	<div class="rt-article">
+		
+				<div class="rt-headline"><h1 class="rt-article-title">Upstreaming your code - a primer</h1>		</div>
+		<div class="clear"></div>
+		
+		
+		
+				<div class="rt-articleinfo">
+						<div class="rt-article-icons">
+				<a href="8239--linux-%3Ftmpl=component&amp;print=1&amp;layout=default&amp;page=.html#" onclick="window.print();return false;"><span class="icon print"></span></a>									<span class="icon printscreen">
+						<a href="8239--linux-%3Ftmpl=component&amp;print=1&amp;layout=default&amp;page=.html#" onclick="window.print();return false;"><img src="../../images/M_images/printButton.png" alt="Print"  /></a>					</span>
+							</div>
+			
+			<span class="rt-date-posted">
+						 Created at			Monday, 10 January 2011 19:59						&nbsp;&nbsp;&nbsp;&nbsp;						Last Updated on Monday, 30 April 2012 15:28						</span>
+
+						<span class="rt-author">
+				Written by Armijn Hemel &amp; Ralf Baechle 林誠夏/翻譯			</span>
+				
+					</div>
+		
+		
+		Copyright © 2011 Armijn Hemel & Ralf Baechle .<br />This work is available under the <a href="https://creativecommons.org/licenses/by/3.0/" target="_blank">Creative Commons Attribution 3.0 Unported license</a>.<br /> <br />This document describes what steps chip vendors need to take to successfully upstream their code into the mainline Linux kernel.  
+
+<br /><strong>Why upstreaming? </strong><br /> <br />Upstreaming code has various advantages: the code will be seen by more people. A "code dump" on some FTP site will be less visible than code in the mainline kernel. If code is in the mainline kernel it will be more readily accessible and usable by more people, making your chip or board more attractive to use. It will be easier for others to improve the code and keep it up to date (code in the Linux kernel is frequently reworked).  <br /><br />Upstreaming your code does not mean that people will write the code for you from day 1. The biggest investment in engineering will, at least initially, still come from you. While there might be some additional costs in the short term in the form of engineering resources, upstreaming will definitely pay off in the mid to long term. <br /> <br /><strong>Communicating with upstream </strong><br /><br />The Linux kernel community has its own set of rules regarding various things, such as coding style, communication, and so on. Many of the leading developers in the Linux kernel community have little time, so it is best to follow these rules to make the whole process as smooth as possible.  <br /><br /><strong>Managing expectations </strong><br /><br />It is likely that the first submission to a Linux kernel developer of your code will not be accepted. This could be for various reasons: the code does not follow the coding style, code quality might not be as high as is expected, and so on. Do not see this as a rejection of your code, but as a first step for successful inclusion into the mainline kernel. <br /> <br />Sometimes developers might react very terse, or seemingly irritated. Once again, do not see this as a rejection, but as a sign that you need to put in a little bit more effort. <br /> <br /><strong>Preparing and submitting your code </strong><br /> <br />The rules to follow have been documented in the Linux kernel source archive at the following locations: <br /><br />* Documentation/CodingStyle <br />* Documentation/SubmitChecklist <br />* Documentation/SubmittingDrivers <br />* Documentation/SubmittingPatches <br /> <br />Typically the submission process starts with cleaning up your code and formatting it to comply with the rules as outlined in the document "CodingStyle". A list of items to check for in the code is in "SubmitChecklist"; the remaining two files document the actual submission process. <br /> <br />Once the code has been adapted according to the coding standard, the next step is to split up the code into patches for submission. Because very large patches are harder to review it is best to keep patches reasonably small. Another benefit is that this way the patches can be reviewed independently. Some examples of what are good things to keep in one separate patch: <br /> <br /> - fixing a bug <br /> - fixing a spelling mistake <br /> - a bug fix for the same bug that appears in several places in the kernel sources <br /> - a new driver <br /> - support for a new SOC or evaluation board <br /> <br />Patches should be split in such a way that when they get applied to the kernel they do not break anything, not even temporarily. This is because it makes debugging a lot harder. Debugging the Linux kernel is done using "git-bisect".  If a version of the kernel is broken, even if it is temporarily, the use of git bisect is significantly harder or even impossible. <br /> <br />After you have cleaned up the code, adapted it according to the right coding style and split it up into proper patches it is time to send out the patches. Support for an entire new system or SOC will touch several areas of the kernel, but it is not necessary to send all the patches to everybody on the Linux kernel mailinglist. For example, the maintainers of ARM Linux will not be very interested in MIPS specific code. The MAINTAINERS file in the kernel source tree can help you with this. <br /> <br />As an example, for the squashfs code you would find: <br /> <br />SQUASHFS FILE SYSTEM <br />M:      Phillip Lougher  <br />L:      
+ <script language='JavaScript' type='text/javascript'>
+ <!--
+ var prefix = 'm&#97;&#105;lt&#111;:';
+ var suffix = '';
+ var attribs = '';
+ var path = 'hr' + 'ef' + '=';
+ var addy29402 = 'sq&#117;&#97;shfs-d&#101;v&#101;l' + '&#64;';
+ addy29402 = addy29402 + 'l&#105;sts' + '&#46;' + 's&#111;&#117;rc&#101;f&#111;rg&#101;' + '&#46;' + 'n&#101;t';
+ document.write( '<a ' + path + '\'' + prefix + addy29402 + suffix + '\'' + attribs + '>' );
+ document.write( addy29402 );
+ document.write( '<\/a>' );
+ //-->
+ </script> <script language='JavaScript' type='text/javascript'>
+ <!--
+ document.write( '<span style=\'display: none;\'>' );
+ //-->
+ </script>This e-mail address is being protected from spambots. You need JavaScript enabled to view it
+ <script language='JavaScript' type='text/javascript'>
+ <!--
+ document.write( '</' );
+ document.write( 'span>' );
+ //-->
+ </script> (subscribers-only) <br />W:      https://squashfs.org.uk <br />S:      Maintained <br />F:      Documentation/filesystems/squashfs.txt <br />F:      fs/squashfs/ <br /> <br />'L' points to the mailing list for the specific subsystem. 'M' indicates the direct contact address for the maintainer or maintainers. In some cases one of these might be missing. If both are missing you should use 
+ <script language='JavaScript' type='text/javascript'>
+ <!--
+ var prefix = 'm&#97;&#105;lt&#111;:';
+ var suffix = '';
+ var attribs = '';
+ var path = 'hr' + 'ef' + '=';
+ var addy22059 = 'l&#105;n&#117;x-k&#101;rn&#101;l' + '&#64;';
+ addy22059 = addy22059 + 'vg&#101;r' + '&#46;' + 'k&#101;rn&#101;l' + '&#46;' + '&#111;rg';
+ document.write( '<a ' + path + '\'' + prefix + addy22059 + suffix + '\'' + attribs + '>' );
+ document.write( addy22059 );
+ document.write( '<\/a>' );
+ //-->
+ </script> <script language='JavaScript' type='text/javascript'>
+ <!--
+ document.write( '<span style=\'display: none;\'>' );
+ //-->
+ </script>This e-mail address is being protected from spambots. You need JavaScript enabled to view it
+ <script language='JavaScript' type='text/javascript'>
+ <!--
+ document.write( '</' );
+ document.write( 'span>' );
+ //-->
+ </script> to send patches to.  <br />If you follow these simple rules upstreaming your code should not be much of a problem. One important piece of advice that we want to give you: if you have questions, simply ask them. The Linux kernel developers will be more than happy to answer your questions.<br />
+			<!-- Show relate article -->
+				<!-- end -->
+		<div class="article_note">
+		<!-- Add tags use metakey, and show OSSF Newsletter tag: OSSFNL+NUM-->
+		<br><br> <hr style='border: 1px dashed #D2DADB;'>		<!-- End -->
+					<br>
+					<b>Category: </b><a href="../for-developers.html">				For Developers					</a>				</div>
+			 <!-- AddThis Button BEGIN ID 3001 is the front page article -->
+     			<br><br>
+       <div class="addthis_toolbox addthis_default_style addthis_32x32_style">
+       <a class="addthis_button_preferred_1"></a>
+       <a class="addthis_button_preferred_2"></a>
+       <a class="addthis_button_preferred_3"></a>
+       <a class="addthis_button_preferred_4"></a>
+       <a class="addthis_button_compact"></a>
+       <a class="addthis_counter addthis_bubble_style"></a>
+       </div>
+       <script type="text/javascript">var addthis_config = {"data_track_clickback":true};</script>
+       <script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js#pubid=openfoundry"></script>
+       <!-- AddThis Button END -->
+     <br>
+		<div class="totop" ><a class="rt-totop" href="8239--linux-%3Ftmpl=component&amp;print=1&amp;layout=default&amp;page=.html#" style="outline: medium none;">↑ Top</a></div>
+            <!-- AddThis Button END -->
+
+			</div>
+</div>
+
+						</div>
+					</div>
+				</div>
+			</div>
+		</body>
+	</html>

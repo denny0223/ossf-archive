@@ -1,0 +1,427 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-gb" lang="en-gb" >
+<head>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<link rel="shortcut icon" href="images/favicon.ico" />
+	  <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+  <meta name="robots" content="index, follow" />
+  <meta name="keywords" content="OSSFNL529" />
+  <meta name="title" content="Chumby 新一代嵌入式產品的開發模式" />
+  <meta name="description" content="◎ Chumby 採軟硬體均開放的商業模式，深獲消費者喜愛 自從開放源碼軟體開始被廣泛運用到商業產品上進行販售之後，連帶影響許多人也想將這樣的開放思維運用到硬體設計上，後續便有許多改採開放規格的硬體專案出現，早期較有名的如 OpenMoko 開放源碼手機計畫。 OpenMoko 將軟體內容及硬體規格都開放，讓使用者可以自行修改手機的軟硬體設定。這種軟硬體均開放的模式，也啟發了美國的 Chumby" />
+  <meta name="generator" content="" />
+  <title>Chumby 新一代嵌入式產品的開發模式 - OpenFoundry</title>
+  <link href="favicon.ico" rel="shortcut icon" type="image/x-icon" />
+  <link rel="stylesheet" href="components/com_gantry/css/gantry.css" type="text/css" />
+  <link rel="stylesheet" href="components/com_gantry/css/grid-12.css" type="text/css" />
+  <link rel="stylesheet" href="components/com_gantry/css/joomla.css" type="text/css" />
+  <link rel="stylesheet" href="templates/rt_quantive_j15/css/joomla.css" type="text/css" />
+  <link rel="stylesheet" href="templates/rt_quantive_j15/css/style1.css" type="text/css" />
+  <link rel="stylesheet" href="templates/rt_quantive_j15/css/light-body.css" type="text/css" />
+  <link rel="stylesheet" href="templates/rt_quantive_j15/css/demo-styles.css" type="text/css" />
+  <link rel="stylesheet" href="templates/rt_quantive_j15/css/template.css" type="text/css" />
+  <link rel="stylesheet" href="templates/rt_quantive_j15/css/typography.css" type="text/css" />
+  <link rel="stylesheet" href="templates/rt_quantive_j15/css/fusionmenu.css" type="text/css" />
+  <style type="text/css">
+    <!--
+#rt-main-surround ul.menu li.active > a, #rt-main-surround ul.menu li.active > .separator, #rt-main-surround ul.menu li.active > .item, #rt-main-surround .square4 ul.menu li:hover > a, #rt-main-surround .square4 ul.menu li:hover > .item, #rt-main-surround .square4 ul.menu li:hover > .separator, .roktabs-links ul li.active span {color:#0088B5;}
+a, #rt-main-surround ul.menu a:hover, #rt-main-surround ul.menu .separator:hover, #rt-main-surround ul.menu .item:hover {color:#0088B5;}
+    -->
+  </style>
+  <script type="text/javascript" src="components/com_jcomments/js/jcomments-v2.1.js%3Fv=2"></script>
+  <script type="text/javascript" src="components/com_jcomments/libraries/joomlatune/ajax.js"></script>
+  <script type="text/javascript" src="media/system/js/mootools.js"></script>
+  <script type="text/javascript" src="media/system/js/caption.js"></script>
+  <script type="text/javascript" src="components/com_gantry/js/gantry-buildspans.js"></script>
+  <script type="text/javascript" src="components/com_gantry/js/gantry-inputs.js"></script>
+  <script type="text/javascript" src="templates/rt_quantive_j15/js/jquery.cookie.js"></script>
+  <script type="text/javascript" src="modules/mod_roknavmenu/themes/fusion/js/fusion.js"></script>
+  <script type="text/javascript" src="modules/mod_ofssologin/js/ofssologin.js"></script>
+  <script type="text/javascript">
+
+			window.addEvent('domready', function() {
+				var modules = ['rt-block'];
+				var header = ['h3','h2','h1'];
+				GantryBuildSpans(modules, header);
+			});
+		InputsExclusion.push('.content_vote','#rt-popup')
+		        window.addEvent('load', function() {
+					new Fusion('ul.menutop', {
+						pill: 0,
+						effect: 'slide and fade',
+						opacity: 1,
+						hideDelay: 500,
+						centered: 0,
+						tweakInitial: {'x': -2, 'y': 0},
+        				tweakSubsequent: {'x': 0, 'y': -14},
+						menuFx: {duration: 200, transition: Fx.Transitions.Sine.easeOut},
+						pillFx: {duration: 400, transition: Fx.Transitions.Back.easeOut}
+					});
+	            });
+  </script>
+<!-- <script type="text/javascript" src="/sso/javascripts/langsync.js"></script> -->
+<!-- <script src="/templates/rt_quantive_j15/js/ossf.js"></script> -->
+<script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-4136519-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
+</head>
+	<body  class="backgroundlevel-low backgroundstyle-style8 bodylevel-med bodystyle-light cssstyle-style1 logostyle-dark font-family-helvetica font-size-is-default menu-type-fusionmenu col12 ">
+		<div id="rt-main-background">
+			<div class="rt-container">
+																<div id="rt-header">
+					<div class="rt-grid-7 rt-alpha">
+    			<div class="rt-block">
+    	    	<a href="index.html" id="rt-logo"></a>
+    		</div>
+	    
+</div>
+<div class="rt-grid-5 rt-omega">
+                    <div class="square9">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<div class="ofssologin_square9"><a href="index.html">Login</a>&nbsp;&nbsp|&nbsp;&nbsp;<span><a href="tw/component/content/2077%3Ftask=view.html" ><span lang="tw" xml:lang="tw">繁體中文</span></a></li></ul></span><!--Joom!fish V2.0.4 (Lightning)-->
+<!-- &copy; 2003-2009 Think Network, released under the GPL. -->
+<!-- More information: at http://www.joomfish.net -->
+<div class="ofssologin_search_square9">
+  <form id="of_search" action="https://www.openfoundry.org/of/openfoundry/search" method="get" onsubmit="of_search(); return false;">
+    <select id="of_search_type">
+      <option value="Projects"> Projects </option>
+      <option value="Content"> Content </option>
+      <option value="People"> People </option>
+    </select>
+    <input id="query" name="query" id="mod_search_searchword" maxlength="50" alt="search" class="inputbox" type="text" size="28" value="search..."  onblur="if(this.value=='') this.value='search...';" onfocus="if(this.value=='search...') this.value='';" />
+    <input type="hidden" name="commit" value="search" />
+  </form>
+</div></div>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		
+</div>
+					<div class="clear"></div>
+				</div>
+																<div id="rt-navigation"><div id="rt-navigation2"><div id="rt-navigation3">
+					
+<div class="nopill">
+	<ul class="menutop level1 " >
+						<li class="item1 root" >
+					<a class="orphan item bullet" href="index.html"  >
+				<span>
+			    				Home				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item32 root" >
+					<a class="orphan item bullet" href="archived.html"  >
+				<span>
+			    				Projects				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item186 root" >
+					<a class="orphan item bullet" href="en/community.html"  >
+				<span>
+			    				Who&#039;s Who				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item4 root" >
+					<a class="orphan item bullet" href="en/news.html"  >
+				<span>
+			    				News				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item5 root" >
+					<a class="orphan item bullet" href="en/law-and-licensing.html"  >
+				<span>
+			    				Law &amp; Licensing				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item3 root" >
+					<a class="orphan item bullet" href="en/activities.html"  >
+				<span>
+			    				Activities				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item2 root" >
+					<a class="orphan item bullet" href="en/resourcecatalog.html"  >
+				<span>
+			    				Resource Catalog				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item45 root" >
+					<a class="orphan item bullet" href="en/about.html"  >
+				<span>
+			    				About				   
+				</span>
+			</a>
+			
+			
+	</li>	
+				</ul>
+</div>
+
+				    <div class="clear"></div>
+				</div></div></div>
+								<div class="rt-surround"><div class="rt-surround2"><div class="rt-surround3">
+										<div id="rt-showcase-section">
+												<div id="rt-showcase">
+							<div class="rt-grid-12 rt-alpha rt-omega">
+    		<div class="clear"></div>
+		
+		
+                <div class="close-note">
+                    <div class="rt-block">
+               					<div class="module-content">
+                	<div style="font-size:medium; background-image:linear-gradient(120deg,#159957,#4298b2);color:white;padding:20px;margin:-10px -18px;">感謝您對「自由軟體鑄造場」的支持與愛護，十多年來「自由軟體鑄造場」受中央研究院支持，並在資訊科學研究所以及資訊科技創新研究中心執行，現已完成階段性的任務。 本網站預計持續維運至 2021年底，網站內容基本上不會再更動。<br />也紀念我們永遠的朋友 李士傑先生（Shih-Chieh Ilya Li）。</div>				</div>
+            </div>
+                </div>
+		
+</div>
+							<div class="clear"></div>
+						</div>
+																	</div>
+															<div id="rt-main-surround">
+												<div id="rt-breadcrumbs">
+								<div class="rt-breadcrumb-surround">
+		<a href="index.html" id="breadcrumbs-home"></a>
+		<span class="breadcrumbs pathway">
+<span class="no-link">Previous Issue</span></span>
+	</div>
+	
+							<div class="clear"></div>
+						</div>
+																							              <div id="rt-main" class="sa3-mb9">
+                <div class="rt-main-inner">
+                    <div class="rt-grid-9 rt-push-3">
+                                                <div class="rt-block">
+                            							<div class="square1">
+							<div class="rt-module-surround">
+								<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+								<div class="rt-module-inner">
+		                            <div id="rt-mainbody">
+		                                
+<div class="rt-joomla ">
+	<div class="rt-article">
+		
+				<div class="rt-headline"><h1 class="rt-article-title">Chumby 新一代嵌入式產品的開發模式</h1>		</div>
+		<div class="clear"></div>
+		
+		
+		
+				<div class="rt-articleinfo">
+						<div class="rt-article-icons">
+								<a href="https://www.openfoundry.org/en/component/content/2077-chumby-?tmpl=component&amp;print=1&amp;page=" title="Print" onclick="window.open(this.href,'win2','status=no,toolbar=no,scrollbars=yes,titlebar=no,menubar=no,resizable=yes,width=640,height=480,directories=no,location=no'); return false;" rel="nofollow"><span class="icon print"></span></a>																</div>
+			
+			<span class="rt-date-posted">
+						 Created at			Wednesday, 20 May 2009 08:00						&nbsp;&nbsp;&nbsp;&nbsp;						Last Updated on Tuesday, 11 January 2011 22:35						</span>
+
+						<span class="rt-author">
+				Written by 黃雪雁			</span>
+				
+					</div>
+		
+		
+		<p><strong>◎ Chumby 採軟硬體均開放的商業模式，深獲消費者喜愛</strong></p>
+<p>自從開放源碼軟體開始被廣泛運用到商業產品上進行販售之後，連帶影響許多人也想將這樣的開放思維運用到硬體設計上，後續便有許多改採開放規格的硬體專案出現，早期較有名的如 OpenMoko 開放源碼手機計畫。</p>
+<p>OpenMoko 將軟體內容及硬體規格都開放，讓使用者可以自行修改手機的軟硬體設定。這種軟硬體均開放的模式，也啟發了美國的 Chumby 公司，其將嵌入式電子產品以開放模式進行商業化，與過往的封閉開發模式相比，在銷售成績方面毫不遜色，而且在消費族群方面深獲美國青少年的青睞。</p>
+<p><br /><strong>◎ 以提供 Web2.0 服務為設計理念</strong></p>
+<p>Chumby 是造型特別的無線網路個人資訊顯示器（PID），外型就像一台迷你小電視，有柔軟的皮質外觀讓人忍不住想捏它，設計輕巧、移動方便可當鬧鐘使用，並可用來播放網際網路上的音樂、相片、影片、網站內容，亦可接收網路廣播節目以及執行簡單的電腦遊戲。</p>
+<p>Chumby 透過無線網路接收網路上的各種資訊，比如最新新聞、交通狀況、天氣預報、網路影音、電視節目以及 eBay 拍賣訊息等等。它甚至允許用戶可以自己編輯 Widget 來強化產品的功能，編輯者也可以透過網路平台與其他 Chumby 用戶分享這些 Widget. 目前在 Chumby 平台上可供下載的 Widget 已超過 1000 個，大半出自於消費者自發式的創意表現，這些 Widget 包括可以檢查 Facebook 朋友狀態的 Facebook Status、讓你追蹤及發布微網誌的 Twitter 和 FriendFeed Widget 以及能夠將電腦中的影片串流到 Chumby 上的 ORB Streamer 等。</p>
+<p>因為 Chumby 提供讓使用者自行客製化產品並進行分享的 Web2.0 共工平台，除了成功的吸引年輕人購買它的產品，並且有效的鼓勵消費者自主的加入改善產品的貢獻族群，從結果來看、它不僅獲得了消費者的熱烈參與，同時在銷售數量方面也獲得了傲人的成就，可說是近期以 Web2.0 設計理念進行產銷的商業化典範。</p>
+<p><br /><strong>◎ 與傳統封閉式開發不同的嶄新產銷模式</strong></p>
+<p>Chumby 最初在構想的時候，決定揚棄科技公司傳統的生產模式，改以開放創新的作法來生產 Chumby 這個嶄新作品。</p>
+<p>一般科技公司的傳統生產模式，是由其行銷及業務團隊就市場及價格的角度提出產品的銷售原型，然後再多方評估產品的成本、品質與功能，經過反覆內部討論之後確定新產品的基本規劃。</p>
+<p>接著再僱用高知名度的產品造型設計公司，針對不同的使用族群設計出造型不一的昂貴樣品，以這些樣本進行全國性的市場偏好度調查。</p>
+<p>然而這樣的流程常常淪於形式化，而不能真正徵詢到商品買家的消費需求，最後的結果往往製造出許多不符合消費者真正需要的多餘產品。這是因為整個新產品的規劃、設計、測試與生產流程完全由該公司主導而沒有消費使用者主動且熱忱的參與協助。</p>
+<p><br /><strong>◎ 藉由開放軟硬體吸取廣大使用社群的創意和智慧</strong></p>
+<p>Chumby 所採取的嶄新產銷模式，就是將其設計好雛型的新產品架構與大眾分享，並與關心電子科技產品的使用社群保持密切連繫，首先其以低成本的物料快速產出可供修改的一代產品，再將這個測試產品交給對使用 Chumby 有興趣的社群朋友，待社群朋友實際試用過後，發表對該產品的使用經驗、改善意見，以及新功能方面的需求建議。</p>
+<p>透過這種方式，很多非專業人士的創意和智慧都可以匯入產品的開發流程，這些參與者其實都不是 Chumby 公司的聘僱員工，而是外界對於電子科技產品有實際使用興趣的玩家。</p>
+<p>Chumby 公司透過提供測試產品的方式，順利收納了測試玩家對於產品的創意想法以及需求回報，因為好的科技產品該有哪些功能，光靠業者的自我想像並不充份，有時需要消費者的實際建議才能創造出真正符合需求的熱門商品，這一點、Chumby 做到了，它透過開放軟硬體的共享模式，成功的吸納了廣大使用社群的創意和智慧。</p>
+<p><strong>◎ 產品開發的過程獲得許多方面的支持</strong></p>
+<p>在 2006 年 8 月 O'Reilly 出版社所舉辦的 FOO Camp 活動裡，Chumby 設計公司將第一代的原型機發給 500 名關心電子科技產品的愛好社群，這個活動吸引了許多熱情的使用者開始試用 Chumby，後續更因此成立了 Chumby 的使用者論壇，讓試用者能持續地將產品的改善意見提供給 Chumby 公司。</p>
+<p>隔年7月，Chumby 成功的生產出功能表現上更為成熟的二代機，並接續從社群朋友中選出 50 名較活躍的試用者進行第二階段的測試，這 50 名的試用者有的從產品的使用角度提供精闢的修改意見，甚至發揮創意自行修改原產品的軟硬體設定，以及手動增設原測試機所沒有的新功能。</p>
+<p>50 名的進階參與者當中，不乏具程式開發能力、創意設計概念，以及有影像處理能力的人才，所以整體測試流程完成之後，Chumby 公司得到了第一手、豐碩、實用，而且具體的改善建議。</p>
+<p>當 2008 年 2 月充滿眾人創意的 Chumby 正式上市進行販售之時，短短時間內馬上一躍成為美國青少年在耶誕節及生日宴會中最想收到的祝賀禮物。</p>
+<p><br /><strong>◎ Chumby 的開放式開發模式值得國內業者參考及仿效</strong></p>
+<p>Chumby 有它優於同類型科技產品的獨賣特點，首先，它的造型可愛吸引人又方便移動，容易吸引消費者的目光。</p>
+<p>再者，Chumby 的經營團隊不乏具有多年販售經驗的行銷專員，懂得如何妥善包裝將產品賣給最感興趣的消費族群。</p>
+<p>最後，Chumby 執行長 Stephen Tomlin 於網路傳輸業擁有 15 年以上的投資經驗，其為 Chumby 籌措了穩定的開發基金以供市場開拓以及未來發展所需，亦為造就 Chumby 銷售成功的重要幕後推手。</p>
+<p>由此可知，妥善的產品向性規劃、消費群眾的創意吸納、事先縝密的行銷策略布局、以及背後穩固的資金備援，均是產品銷售成功不可或缺的重要因素。</p>
+<p>然而，Chumby 的銷售數字之所以能夠得到始無前例的高速增長，主要的關鍵因素仍在於開放程式原始碼及開放硬體規格的開發模式，這讓許多嵌入式電子產品的愛好者及使用社群，得以實際參與產品的開發及設計流程，從而催生出真正廣受消費者需求與歡迎的熱門產品。</p>
+<p>Chumby 所運作的開放式創意吸納模式，由 Web 2.0 的群眾參與觀點分析之，是透過網路意見分享平台，鼓勵終端使用者主動地參與產品開發，讓產品的製造商能夠獲得消費者最真實直接的使用需求以及改善意見，這個分享平台能讓生產者與消費者熱烈討論、各抒己見，最後生產出符合雙方期待與需求的熱銷產品。</p>
+<p>這樣嶄新的開發模式，過去也許難以想像，但未來靠著網際網路影響層面的持續發展，其所能吸納技術的前瞻性以及商機的未來性不可忽視，值得國內的軟硬體生產廠商善加思考，是否能夠將這樣的開發流程轉植至國內進行仿效，一同邁進 Web2.0 生產者與使用者創意分享、共工共榮的嶄新時代。</p>
+<p><br />參考資料：</p>
+<p>1、關於 Chumby 的詳細介紹可參考，<a href="https://en.wikipedia.org/wiki/Chumby" target="_blank">Wiki 關於 Chumby 的介紹</a>；<a href="https://taiwan.cnet.com/crave/0,2000088746,20127793,00.htm" target="_blank">Cnet Taiwan 關於 Chumby 的介紹</a>。</p>
+<p>2、<a href="https://en.wikipedia.org/wiki/Foo Camp" target="_blank">Wiki 關於 FOO Camp 的介紹</a></p>
+<p>3、<a href="https://www.avalonvi.com/team_stomlin.html" target="_blank">關於 Chumby 執行長的介紹</a></p>
+<p>本文之完成特別感謝葛冬梅小姐、林誠夏先生及潘俊成先生三位的大力協助以及胡崇偉先生、曾義峰先生、呂建宇先生及王韻琦小姐等同事提供的建議。</p>
+			<!-- Show relate article -->
+				<!-- end -->
+		<div class="article_note">
+		<!-- Add tags use metakey, and show OSSF Newsletter tag: OSSFNL+NUM-->
+		<br><br> <hr style='border: 1px dashed #D2DADB;'><b>OSSF Newsletter&nbsp;:</b>&nbsp;<a href='previous-issue%3Ftask=view&amp;id=529.html'>第 127 期 自由軟體說明文件的授權選擇</a><br>				<!-- End -->
+					<br>
+					<b>Category: </b><a href="en/enterprise-application.html">				Enterprise Application					</a>				</div>
+			 <!-- AddThis Button BEGIN ID 3001 is the front page article -->
+     			<br><br>
+       <div class="addthis_toolbox addthis_default_style addthis_32x32_style">
+       <a class="addthis_button_preferred_1"></a>
+       <a class="addthis_button_preferred_2"></a>
+       <a class="addthis_button_preferred_3"></a>
+       <a class="addthis_button_preferred_4"></a>
+       <a class="addthis_button_compact"></a>
+       <a class="addthis_counter addthis_bubble_style"></a>
+       </div>
+       <script type="text/javascript">var addthis_config = {"data_track_clickback":true};</script>
+       <script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js#pubid=openfoundry"></script>
+       <!-- AddThis Button END -->
+     <br>
+		<div class="totop" ><a class="rt-totop" href="index.php%3Foption=com_content&amp;task=view&amp;id=2077&amp;Itemid=56%3Bisletter=1.html#" style="outline: medium none;">↑ Top</a></div>
+            <!-- AddThis Button END -->
+
+			</div>
+</div>
+
+		                            </div>
+									<div class="clear"></div>
+								</div>
+								<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+							</div>
+							</div>
+                                                    </div>
+                                            </div>
+                                <div class="rt-grid-3 rt-pull-9">
+                <div id="rt-sidebar-a">
+                                    <div class="square4">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<ul class="menu"><li id="current" class="active item56"><a href="en/previous-issue.html"><span>Previous Issue</span></a></li><li class="item55"><a href="en/about-newsletter.html"><span>About Newsletter</span></a></li></ul>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<ul class="menu"><li class="item115"><a href="en/foss-news.html"><span>FOSS News</span></a></li><li class="item141"><a href="en/case-job.html"><span>Case and Jobs</span></a></li></ul>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+        	                <div class="square1">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-title"><h2 class="title">Special</h2></div>
+						<div class="clear"></div>
+		                						<div class="module-content">
+		                	<ul class="menu"><li class="item37"><a href="en/tech-column.html"><span>Tech Column</span></a></li><li class="item40"><a href="en/foss-programs.html"><span>FOSS Programs</span></a></li><li class="item35"><a href="en/legal-column.html"><span>Legal Column</span></a></li><li class="item154"><a href="en/foss-forum.html"><span>FOSS Forum</span></a></li><li class="item162"><a href="en/enterprise-application.html"><span>Enterprise Application</span></a></li><li class="item44"><a href="en/foss-projects.html"><span>FOSS Projects</span></a></li></ul>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		                <div class="square1">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<p style="text-align: center;"><a href="news%3Fformat=feed&amp;type=rss" target="_black"><img src="images/M_images/news-rss-feed.png" border="0" /></a><br /><a href="https://www.openfoundry.org/rss-feed/Newsletter" target="_black"><img src="images/M_images/newsletter-rss-feed.png" border="0" /></a></p>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		
+                </div>
+            </div>
+
+                    <div class="clear"></div>
+                </div>
+            </div>
+																													</div>
+										<div id="rt-copyright">
+						<div class="rt-grid-12 rt-alpha rt-omega">
+                        <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<span class="nowrap">Open Source Software Foundry</span><span class="nowrap">‧</span><span class="nowrap"> </span><span class="nowrap">Best  Viewed with IE7.0 or Firefox2.0 above, 1024x768 Resolution. </span><strong>E-Mail</strong>：<a href="mailto:contact@openfoundry.org">contact@openfoundry.org</a> <br /><strong>Address</strong>：No.128, Sec.2, Academia Rd., Institute of Information Science, Academia Sinica, Nangang District, Taipei City 11529, Taiwan (R.O.C). <br /><a href="en/privacy-policy.html">Privacy Policy</a>. <a href="en/terms-of-use.html">Terms-of-use</a> <span style="position: relative; top: 8px; margin-top: -8px;"> <a href="about/8101.html"><img src="images/M_images/rss-feed-all.png" border="0" /></a></span>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+        	
+</div>
+						<div class="clear"></div>
+					</div>
+					<div class="rt-footer-bottom-wrap"><div class="rt-footer-bottom"><div class="rt-footer-bottom2"><div class="rt-footer-bottom3"></div></div></div></div>
+									</div></div></div>
+				<div class="rt-surround-bottom"><div class="rt-surround-bottom2"><div class="rt-surround-bottom3"></div></div></div>
+							</div>
+		</div>
+		<!--
+		<script id="aptureScript">
+						(function (){var a=document.createElement("script");a.defer="true";a.src="http://www.apture.com/js/apture.js?siteToken=vsJttrn";document.getElementsByTagName("head")[0].appendChild(a);})();
+     </script>
+-->
+
+<!-- Piwik -->
+<!-- 			<script type="text/javascript">
+			  var _paq = _paq || [];
+		  _paq.push(["trackPageView"]);
+		  _paq.push(["enableLinkTracking"]);
+
+		    (function() {
+			        var u=(("https:" == document.location.protocol) ? "https" : "https") + "://www.openfoundry.org/piwik/";
+				    _paq.push(["setTrackerUrl", u+"piwik.php"]);
+				    _paq.push(["setSiteId", "1"]);
+				        var d=document, g=d.createElement("script"), s=d.getElementsByTagName("script")[0]; g.type="text/javascript";
+				        g.defer=true; g.async=true; g.src=u+"piwik.js"; s.parentNode.insertBefore(g,s);
+					  })();
+		  </script> -->
+<!-- End Piwik Code -->
+	</body>
+</html>

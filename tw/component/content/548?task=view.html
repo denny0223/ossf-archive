@@ -1,0 +1,362 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="zh-tw" lang="zh-tw" >
+<head>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<link rel="shortcut icon" href="../../../images/favicon.ico" />
+	  <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+  <meta name="robots" content="index, follow" />
+  <meta name="keywords" content="OSSFNL175" />
+  <meta name="title" content="Perl 的應用案例介紹" />
+  <meta name="description" content="Perl 在開放源碼界應用極廣，Yahoo、Amazon 等各大網站皆採用此一語言，但在國內，Perl 的實際應用並不常見。相較之下，PHP 等開放源碼語言在國內的實用率，或許比 Perl 更高。Perl 強大的文字處理能力、Regex 語法，使 Perl 在資料處理上，有其他語言難以項背的特性。在國外，Perl" />
+  <meta name="generator" content="" />
+  <title>Perl 的應用案例介紹 - OpenFoundry</title>
+  <link href="../../../favicon.ico" rel="shortcut icon" type="image/x-icon" />
+  <link rel="stylesheet" href="../../../components/com_gantry/css/gantry.css" type="text/css" />
+  <link rel="stylesheet" href="../../../components/com_gantry/css/grid-12.css" type="text/css" />
+  <link rel="stylesheet" href="../../../components/com_gantry/css/joomla.css" type="text/css" />
+  <link rel="stylesheet" href="../../../templates/rt_quantive_j15/css/joomla.css" type="text/css" />
+  <link rel="stylesheet" href="../../../templates/rt_quantive_j15/css/style1.css" type="text/css" />
+  <link rel="stylesheet" href="../../../templates/rt_quantive_j15/css/light-body.css" type="text/css" />
+  <link rel="stylesheet" href="../../../templates/rt_quantive_j15/css/demo-styles.css" type="text/css" />
+  <link rel="stylesheet" href="../../../templates/rt_quantive_j15/css/template.css" type="text/css" />
+  <link rel="stylesheet" href="../../../templates/rt_quantive_j15/css/typography.css" type="text/css" />
+  <link rel="stylesheet" href="../../../templates/rt_quantive_j15/css/fusionmenu.css" type="text/css" />
+  <style type="text/css">
+    <!--
+#rt-main-surround ul.menu li.active > a, #rt-main-surround ul.menu li.active > .separator, #rt-main-surround ul.menu li.active > .item, #rt-main-surround .square4 ul.menu li:hover > a, #rt-main-surround .square4 ul.menu li:hover > .item, #rt-main-surround .square4 ul.menu li:hover > .separator, .roktabs-links ul li.active span {color:#0088B5;}
+a, #rt-main-surround ul.menu a:hover, #rt-main-surround ul.menu .separator:hover, #rt-main-surround ul.menu .item:hover {color:#0088B5;}
+    -->
+  </style>
+  <script type="text/javascript" src="../../../components/com_jcomments/js/jcomments-v2.1.js%3Fv=2"></script>
+  <script type="text/javascript" src="../../../components/com_jcomments/libraries/joomlatune/ajax.js"></script>
+  <script type="text/javascript" src="../../../media/system/js/mootools.js"></script>
+  <script type="text/javascript" src="../../../media/system/js/caption.js"></script>
+  <script type="text/javascript" src="../../../components/com_gantry/js/gantry-buildspans.js"></script>
+  <script type="text/javascript" src="../../../components/com_gantry/js/gantry-inputs.js"></script>
+  <script type="text/javascript" src="../../../templates/rt_quantive_j15/js/jquery.cookie.js"></script>
+  <script type="text/javascript" src="../../../modules/mod_roknavmenu/themes/fusion/js/fusion.js"></script>
+  <script type="text/javascript" src="../../../modules/mod_ofssologin/js/ofssologin.js"></script>
+  <script type="text/javascript">
+
+			window.addEvent('domready', function() {
+				var modules = ['rt-block'];
+				var header = ['h3','h2','h1'];
+				GantryBuildSpans(modules, header);
+			});
+		InputsExclusion.push('.content_vote','#rt-popup')
+		        window.addEvent('load', function() {
+					new Fusion('ul.menutop', {
+						pill: 0,
+						effect: 'slide and fade',
+						opacity: 1,
+						hideDelay: 500,
+						centered: 0,
+						tweakInitial: {'x': -2, 'y': 0},
+        				tweakSubsequent: {'x': 0, 'y': -14},
+						menuFx: {duration: 200, transition: Fx.Transitions.Sine.easeOut},
+						pillFx: {duration: 400, transition: Fx.Transitions.Back.easeOut}
+					});
+	            });
+  </script>
+<!-- <script type="text/javascript" src="/sso/javascripts/langsync.js"></script> -->
+<!-- <script src="/templates/rt_quantive_j15/js/ossf.js"></script> -->
+<script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-4136519-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
+</head>
+	<body  class="backgroundlevel-low backgroundstyle-style8 bodylevel-med bodystyle-light cssstyle-style1 logostyle-dark font-family-helvetica font-size-is-default menu-type-fusionmenu col12">
+		<div id="rt-main-background">
+			<div class="rt-container">
+																<div id="rt-header">
+					<div class="rt-grid-7 rt-alpha">
+    			<div class="rt-block">
+    	    	<a href="../../../index.html" id="rt-logo"></a>
+    		</div>
+	    
+</div>
+<div class="rt-grid-5 rt-omega">
+                    <div class="square9">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<div class="ofssologin_square9"><a href="../../../index.html">登入</a>&nbsp;&nbsp|&nbsp;&nbsp;<span><a href="https://www.openfoundry.org/en/component/content/548/548?task=view" ><span lang="en" xml:lang="en">English</span></a></li></ul></span><!--Joom!fish V2.0.4 (Lightning)-->
+<!-- &copy; 2003-2009 Think Network, released under the GPL. -->
+<!-- More information: at http://www.joomfish.net -->
+<div class="ofssologin_search_square9">
+  <form id="of_search" action="https://www.openfoundry.org/of/openfoundry/search" method="get" onsubmit="of_search(); return false;">
+    <select id="of_search_type">
+      <option value="Projects"> 專案 </option>
+      <option value="Content"> 文章 </option>
+      <option value="People"> 人才 </option>
+    </select>
+    <input id="query" name="query" id="mod_search_searchword" maxlength="50" alt="search" class="inputbox" type="text" size="28" value="search..."  onblur="if(this.value=='') this.value='search...';" onfocus="if(this.value=='search...') this.value='';" />
+    <input type="hidden" name="commit" value="search" />
+  </form>
+</div></div>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		
+</div>
+					<div class="clear"></div>
+				</div>
+																<div id="rt-navigation"><div id="rt-navigation2"><div id="rt-navigation3">
+					
+<div class="nopill">
+	<ul class="menutop level1 " >
+						<li class="item1 root" >
+					<a class="orphan item bullet" href="../../../index.html"  >
+				<span>
+			    				首頁				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item32 root" >
+					<a class="orphan item bullet" href="../../../archived.html"  >
+				<span>
+			    				專案				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item186 root" >
+					<a class="orphan item bullet" href="../../community.html"  >
+				<span>
+			    				Who&#039;s Who				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item4 root" >
+					<a class="orphan item bullet" href="../../news.html"  >
+				<span>
+			    				新聞				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item5 root" >
+					<a class="orphan item bullet" href="../../law-and-licensing.html"  >
+				<span>
+			    				法律源地				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item3 root" >
+					<a class="orphan item bullet" href="../../activities.html"  >
+				<span>
+			    				活動				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item2 root" >
+					<a class="orphan item bullet" href="../../resourcecatalog%3FName=Value.html"  >
+				<span>
+			    				資源表列				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item45 root" >
+					<a class="orphan item bullet" href="../../about.html"  >
+				<span>
+			    				關於				   
+				</span>
+			</a>
+			
+			
+	</li>	
+				</ul>
+</div>
+
+				    <div class="clear"></div>
+				</div></div></div>
+								<div class="rt-surround"><div class="rt-surround2"><div class="rt-surround3">
+										<div id="rt-showcase-section">
+												<div id="rt-showcase">
+							<div class="rt-grid-12 rt-alpha rt-omega">
+    		<div class="clear"></div>
+		
+		
+                <div class="close-note">
+                    <div class="rt-block">
+               					<div class="module-content">
+                	<div style="font-size:medium; background-image:linear-gradient(120deg,#159957,#4298b2);color:white;padding:20px;margin:-10px -18px;">感謝您對「自由軟體鑄造場」的支持與愛護，十多年來「自由軟體鑄造場」受中央研究院支持，並在資訊科學研究所以及資訊科技創新研究中心執行，現已完成階段性的任務。 本網站預計持續維運至 2021年底，網站內容基本上不會再更動。<br />也紀念我們永遠的朋友 李士傑先生（Shih-Chieh Ilya Li）。</div>				</div>
+            </div>
+                </div>
+		
+</div>
+							<div class="clear"></div>
+						</div>
+																	</div>
+															<div id="rt-main-surround">
+																							              <div id="rt-main" class="mb12">
+                <div class="rt-main-inner">
+                    <div class="rt-grid-12 ">
+                                                <div class="rt-block">
+                            							<div class="square1">
+							<div class="rt-module-surround">
+								<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+								<div class="rt-module-inner">
+		                            <div id="rt-mainbody">
+		                                
+<div class="rt-joomla ">
+	<div class="rt-article">
+		
+				<div class="rt-headline"><h1 class="rt-article-title">Perl 的應用案例介紹</h1>		</div>
+		<div class="clear"></div>
+		
+		
+		
+				<div class="rt-articleinfo">
+						<div class="rt-article-icons">
+								<a href="https://www.openfoundry.org/tw/component/content/article/548-perl-?tmpl=component&amp;print=1&amp;page=" title="列印" onclick="window.open(this.href,'win2','status=no,toolbar=no,scrollbars=yes,titlebar=no,menubar=no,resizable=yes,width=640,height=480,directories=no,location=no'); return false;" rel="nofollow"><span class="icon print"></span></a>																</div>
+			
+			<span class="rt-date-posted">
+						建立日期			2004-03-10 08:00						&nbsp;&nbsp;&nbsp;&nbsp;						最近更新在 2011-01-11 22:44						</span>
+
+						<span class="rt-author">
+				作者是 謝良奇			</span>
+				
+					</div>
+		
+		
+		<p class="MsoNormal"><span style="font-family: 新細明體">Perl 在開放源碼界應用極廣，Yahoo、Amazon 等各大網站皆採用此一語言，但在國內，Perl 的實際應用並不常見。相較之下，PHP 等開放源碼語言在國內的實用率，或許比 Perl 更高。Perl 強大的文字處理能力、Regex 語法，使 Perl 在資料處理上，有其他語言難以項背的特性。在國外，Perl 除了商務應用，其觸角更已延伸到政府、學術機構等不同層面。看過這些國外的實際應用案例，也許妳/你可以考慮將 Perl 應用在目前遇到的問題上。之前看似麻煩的瑣事，或許就因為 Perl，而立即迎刃而解。</span></p>
+<br />
+
+<p class="MsoNormal"><span style="font-family: 新細明體">◎ 案例一：美國統計調查局（U.S. Census Bureau）</span></p>
+<p class="MsoNormal"><span style="font-family: 新細明體">對政府機構來說，程式工具的選擇，多半與技術人員有不小的關連。<span>Rachael LaPorte Taylor，已有八年以上 Perl 使用經驗，因為她，美國統計調查局使用 Perl 來架構統計調查網站，獲得三十年來最成功的結果。</span></span></p>
+<p class="MsoNormal"><span style="font-family: 新細明體">Taylor 不諱言她的個人偏好，她說自己從 92 年進入職場就開始用開放源碼。她對這些解決方案間的良好整合感到滿意。</span></p>
+<p class="MsoNormal"><span style="font-family: 新細明體">至於為什麼學<span> Perl？她解釋道，因為它是在網路上用 CGI 建構動態網頁所用的語言，它也是適用於各種系統管理工作的工具。Taylor 為統計調查局發展出兩套 Web 應用系統。The Census 2000 Initial and Final Response Rates 網站（rates.census.gov）與 FedStat's IMF（www.fedstats.gov/imf）。</span></span></p>
+<p class="MsoNormal"><span style="font-family: 新細明體">rates.census.gov 是全國性推廣活動 HAKWAN 的一部份。該推廣活動是因應 1970 年起統計調查回覆率的急速銳減，希望鼓勵公眾參與統計調查活動。該網站自 2000 年啟用，很快地便從 38000 個地方政府單位，收到針對統計問卷的回覆。Taylor 的 Perl 程式處理彙整後的檔案，每晚會把新資訊貼在網站上。Taylor 表示，Census 開始營運後，平均每天會有 55000 次點閱與 44000 次檔案傳輸。結果超乎預期。</span></p>
+<p class="MsoNormal"><span style="font-family: 新細明體">FedStat 的國際貨幣基金組織（IMF，International Monetary Fund）網站是 Taylor 以 Perl 發展的第二套 Web 應用程式。FedStats/IMF 程式藉由 Perl 的 LWP 和 DBI 模組，擷取來自 14 個不同統計機構網站的原始檔案，更新至 MySQL 資料庫。這套網站可以顯示所有國家財政與經濟指標概況，並每兩天更新其資訊。由於其威力與簡潔，國際貨幣基金組織其他參與國，不久後紛紛要求協助建構該類 系統。</span></p>
+<p class="MsoNormal"><span style="font-family: 新細明體">案例二：加拿大海關及稅務局<span><br /> （The Canada Customs and Revenue Agency）</span></span></p>
+<p class="MsoNormal"><span style="font-family: 新細明體">Jay Lawrence 在 mod_perl 郵件論壇上發表了加拿大海關及稅務局的 Perl 成功案例。該機構內約有 10000 份表格、指南與其他文件，需要加以管理與維護。該機構過去六、七年間，使用私有資料庫軟體維護這些表格，成本高且擴充困難。為了符合需求上的演進和改變， 該系統亟待升級或置換。該機構利用 Linux、mod_perl、MySQL，以一年的作業成本，置換整套系統。</span></p>
+<p class="MsoNormal"><span style="font-family: 新細明體">CCRA 針對表單管理的營運需求，建構了客制化的文件管理系統，EDDS。透過 Perl，該機構的報表流程由原先以週為單位，縮短到以日為單位。Perl 也讓該機構得以修正六、七年前，由於 Web 發佈流程尚未普遍，硬湊出來的怪異做法。附帶一提，因為丟棄舊有軟體，CCRA 和其客戶終於可以拋棄數據機，進入全球資訊網的世界。</span></p>
+<p class="MsoNormal"><span style="font-family: 新細明體">Jay Lawrence 寫道，CCRA 樂於了解到 Perl 這一套萃取與報表上最具實用的語言。該專案達成的時間與成本效率，可說是此一說法的最佳驗證。</span></p>
+<p class="MsoNormal"><span style="font-family: 新細明體">◎ 案例三：巴布亞新幾內亞大學學生事務管理</span></p>
+<p class="MsoNormal"><span style="font-family: 新細明體">藉由<span> Project Breeze，Perl 使巴布亞新幾內亞大學自然與物理科學學院，得以更精確且更有效率地，處理學生事務資料。1999 年，該大學將原來由兩學期組成的學年，改為三個學期。學年制的改變使自然與物理科學學院重新評估學生記錄的資料處理程序。當時，該程序主要還是用人工手動 輸入 Excel。</span></span></p>
+<p class="MsoNormal"><span style="font-family: 新細明體">在該大學，主要的計算環境為<span> Windows 作業系統和 Excel、Word 等應用軟體。自然與物理科學學院必須處理五百位學生資料，過程中得涉及約 6000 個 Excel 欄位。這樣的過程每年得執行三次。當該大學引入新的學年制，該學院副院長 Alfred Vahau，也是 Breeze 專案的領導人，了解有必要將此一程序自動化。該專案即是為此一資料處理流程尋求替代方案。</span></span></p>
+<p class="MsoNormal"><span style="font-family: 新細明體">為了彙整<span> Excel 內的學生與修課資訊，Vahau 利用 Perl 讀取兩個輸入檔案。Takanori Kawai 的 Spreadsheet::ParseExcel 模組可以將 Excel 檔案轉換為 ASCII 格式，藉此，Vahau 的 Perl 程式，得以彙整六個不同的學科的 Excel 檔案。接著，再利用 John McNamara 的 Spreadsheet::WriteExcel 模組，將結果輸出為 Excel 檔案。建構了此一具備迅速提供精確結果的系統，學院職員只需要一天便可完成計算成績的工作。對學生而言，他們可以在新學期開始前，了解自己的修課狀態。</span></span></p>
+<p class="MsoNormal"><span style="font-family: 新細明體">Breeze 仍持續發展中，未來目標包括引入資料庫，以提供學生入學到畢業間所有資訊。Alfred Vahau 表示雖然 Breeze 尚未跨入其他學院，不久後將發展的物件導向版 Breeze，將解決大學範疇下的學生管理問題。</span></p>
+<p class="MsoNormal"><span style="font-family: 新細明體">◎ 案例四：John Cabot 大學教授課程評鑑系統</span></p>
+<p class="MsoNormal"><span style="font-family: 新細明體">Ettore Vecchione，John Cabot 大學數學、電腦科學及自然科學系主任，也是一位 IT 專家，他利用 Perl、Apache、MySQL，為該所大學院校，解決了教授與課程評鑑資料的處理時間。John Cabot 大學位於羅馬，該大學一向以手動方式，輸入教授與課程評鑑資料至 Excel 與 Word 檔案，此一方式的處理時間因為當時招生人數增加，逐漸令人難以接受。粗略估計，該校每學期有 105 到 115 門課程，必須花上四到六週的資料輸入與編排時間。每年此一程序須重複四次。每一年，有多達 4600 份評鑑資料得透過人工輸入電腦。</span></p>
+<p class="MsoNormal"><span style="font-family: 新細明體">Vecchione 為了解決職員的負荷，消除資料收集上的人工錯誤，他決定發展一套可自動化此程序的系統，讓學生透過在 Apache 伺服器上執行的 Perl/CGI 程式，輸入他們的評鑑結果。資料會儲存在 MySQL 資料庫，稍後由 Perl 程式處理，輸出成相應的 Excel、Word 檔案。</span></p>
+<p class="MsoNormal"><span style="font-family: 新細明體">這套系統讓<span> Vecchione 花了八個月時間設計、開發、測試與除錯。在 Pentium II 700Mhz 的機器上，該系統輸出包含約 105 個工作表，約 56000 個欄位、內含教授統計資料的 Excel 檔案，花了不到 11 分鐘。產生約 24000 字、包含學生批評資料的 Word 檔案，該系統花了約 9 分鐘。Vecchione 認為具有相同規格的商用系統，成本約 1500萬，而他只花了不到 500 元。</span></span></p>
+<p class="MsoNormal"><span style="font-family: 新細明體">◎ 案例五：瑞士洛桑（Lausanne）大學醫院病理資料庫轉移</span></p>
+<p class="MsoNormal"><span style="font-family: 新細明體">洛桑大學醫院病理學實驗室過去十年間，一直採用<span> Ingres ARUNA 資料庫系統。對於每年處理超過 5 萬份實驗室樣本，並負責管理 50 萬份病例記錄的設備，該實驗室希望將其轉換為 Oracle DIAMIC 套件的決定，不是一件輕鬆的工作。除非，你懂 Perl。</span></span></p>
+<p class="MsoNormal"><span style="font-family: 新細明體">Perl 幫助 Marc-Henri Poget，為他簡化了資料庫轉移的複雜工作。洛桑大學醫院為一所擁有 850 張病床的醫院，為瑞士法語區 60 萬人口提供醫療服務。2000 年時，該醫院的病理實驗室希望用比較開放且具發展性的 DIAMIC 軟體套件，更換已使用十年的 ARUNA 資料庫。對於一套儲存超過二十年以上醫學資料的系統，該院病理學者時診斷，十分依賴該系統的資料。這個轉移工作具有相當大的挑戰。</span></p>
+<p class="MsoNormal"><span style="font-family: 新細明體">廠商提供的策略，是以<span> Excel 和 ODBC，從 Ingres ARUNA 資料庫將資料萃取成為檔案，再將該檔案匯入和原有資料庫結構相同的 Oracle 資料庫，最後利用廠商的應用軟體，將該 Oracle 資料庫的資料，移轉給 Oracle DIAMIC 資料庫。</span></span></p>
+<p class="MsoNormal"><span style="font-family: 新細明體">這樣的做法有許多問題。首先，由於<span> Ingres 和 Oracle 資料庫都在 Unix 機器上，沒理由使用 Windows 應用軟體做中介。其次，Excel 並不容許從 Ingres 資料庫萃取和處理非常大的檔案。何況，廠商無法保證 Oracle ARUNA 資料庫的表格和 Ingres ARUNA 資料庫百分之百相同。</span></span></p>
+<p class="MsoNormal"><span style="font-family: 新細明體">Marc-Henri Poget 最後決定完全在 Unix 平台上開發 Perl 程式，來解決這些問題。他撰寫了 Perl 的 DDL 產生程式（DLL Generation Script），用來對應 Ingres 和 Oracle 資料庫之間不同的資料型別，並且在 Oracle ARUNA 資料庫上產生資料表。為了提供更細緻的資料萃取方式，他發展了 Perl 萃取程式（Extract script），透過 DBI 和 Ingres DBD，依照命令列的指示，從資料庫萃取所需資料。此一方式讓 Marc-Henri Poget 在數小時內，成功地將 50 萬名病人相關的病例記錄，移轉到新的資料庫中。</span></p>
+<p class="MsoNormal"><span style="font-family: 新細明體">相關網址：</span></p>
+<p class="MsoNormal"><span style="font-family: 新細明體">1.<a href="https://www.oreillynet.com/pub/wlg/2455"> Perl 成功案例: Perl 治癒了瑞士醫院的資料庫移轉陣痛<br /> 2.</a><a href="https://www.oreillynet.com/pub/wlg/3855">Perl 成功案例: John Cabot 大學教授課程評鑑系統<br /> 3. </a><a href="https://www.oreillynet.com/pub/wlg/2075">Perl 成功案例: 巴布亞新幾內亞大學用 Perl 管理學生事務<br /> 4. </a><a href="https://www.oreillynet.com/pub/wlg/1632">Perl 成功案例: Perl 為 CCRA 提供文件管理與管制<br /> 5.</a><a href="https://perl.oreilly.com/pub/a/oreilly/perl/news/census_0101.html">統計調查局的 Perl 成功案例</a></span></p>
+<p class="MsoNormal"><span> </span></p>
+			<!-- Show relate article -->
+				<!-- end -->
+		<div class="article_note">
+		<!-- Add tags use metakey, and show OSSF Newsletter tag: OSSFNL+NUM-->
+		<br><br> <hr style='border: 1px dashed #D2DADB;'><b>自由軟體鑄造場電子報&nbsp;:</b>&nbsp;<a href='../../../previous-issue%3Ftask=view&amp;id=175.html'>第 10 期 YAPC::Taipei & Perl(上)</a><br>				<!-- End -->
+					<br>
+					<b>分類: </b><a href="../../foss-news.html">				源碼新聞					</a>				</div>
+			 <!-- AddThis Button BEGIN ID 3001 is the front page article -->
+     			<br><br>
+       <div class="addthis_toolbox addthis_default_style addthis_32x32_style">
+       <a class="addthis_button_preferred_1"></a>
+       <a class="addthis_button_preferred_2"></a>
+       <a class="addthis_button_preferred_3"></a>
+       <a class="addthis_button_preferred_4"></a>
+       <a class="addthis_button_compact"></a>
+       <a class="addthis_counter addthis_bubble_style"></a>
+       </div>
+       <script type="text/javascript">var addthis_config = {"data_track_clickback":true};</script>
+       <script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js#pubid=openfoundry"></script>
+       <!-- AddThis Button END -->
+     <br>
+		<div class="totop" ><a class="rt-totop" href="548%3Ftask=view.html#" style="outline: medium none;">↑ Top</a></div>
+            <!-- AddThis Button END -->
+
+			</div>
+</div>
+
+		                            </div>
+									<div class="clear"></div>
+								</div>
+								<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+							</div>
+							</div>
+                                                    </div>
+                                            </div>
+                                        <div class="clear"></div>
+                </div>
+            </div>
+																													</div>
+										<div id="rt-copyright">
+						<div class="rt-grid-12 rt-alpha rt-omega">
+                        <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<div id="desktop-mobile-version-switch"><span id="mobile-version" class="version-switch"><a href="548%3Ftask=view.html#">行動版</a></span></div>
+自由軟體鑄造場 製作 最佳瀏覽狀態：IE7或Firefox2.0以上 (建議使用Firefox) ‧ 解析度1024*768 <br /> <strong>E-Mail</strong>：<a href="mailto:contact@openfoundry.org">contact@openfoundry.org</a> <strong>Address</strong>：台北市南港區研究院路2段128號 中央研究院資訊科學研究所 . <a href="../../../privacy-policy.html">隱私權條款</a>. <a href="../../../terms-of-use.html">使用條款</a><span style="position: relative; top: 8px; margin-top: -8px;"> <a href="../../../about/8101.html"><img src="../../../images/M_images/rss-feed-all.png" border="0" /></a></span>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+        	
+</div>
+						<div class="clear"></div>
+					</div>
+					<div class="rt-footer-bottom-wrap"><div class="rt-footer-bottom"><div class="rt-footer-bottom2"><div class="rt-footer-bottom3"></div></div></div></div>
+									</div></div></div>
+				<div class="rt-surround-bottom"><div class="rt-surround-bottom2"><div class="rt-surround-bottom3"></div></div></div>
+							</div>
+		</div>
+		<!--
+		<script id="aptureScript">
+						(function (){var a=document.createElement("script");a.defer="true";a.src="http://www.apture.com/js/apture.js?siteToken=vsJttrn";document.getElementsByTagName("head")[0].appendChild(a);})();
+     </script>
+-->
+
+<!-- Piwik -->
+<!-- 			<script type="text/javascript">
+			  var _paq = _paq || [];
+		  _paq.push(["trackPageView"]);
+		  _paq.push(["enableLinkTracking"]);
+
+		    (function() {
+			        var u=(("https:" == document.location.protocol) ? "https" : "https") + "://www.openfoundry.org/piwik/";
+				    _paq.push(["setTrackerUrl", u+"piwik.php"]);
+				    _paq.push(["setSiteId", "1"]);
+				        var d=document, g=d.createElement("script"), s=d.getElementsByTagName("script")[0]; g.type="text/javascript";
+				        g.defer=true; g.async=true; g.src=u+"piwik.js"; s.parentNode.insertBefore(g,s);
+					  })();
+		  </script> -->
+<!-- End Piwik Code -->
+	</body>
+</html>

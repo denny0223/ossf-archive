@@ -1,0 +1,556 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-gb" lang="en-gb" >
+<head>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<link rel="shortcut icon" href="../../images/favicon.ico" />
+	  <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+  <meta name="robots" content="index, follow" />
+  <meta name="keywords" content="OSSFNL798" />
+  <meta name="title" content="授權流言終結者#5：Neo4j 授權的分析與探討" />
+  <meta name="description" content="1. 前言 Neo4j 是一種自由／開放源碼圖形資料庫系統 (Graph Database)，主要使用 Java 程式語言撰寫。圖形資料庫可以針對複雜的「關係」(Relationship) 進行設計與分析，最主要的訴求是解決傳統關聯式資料庫難以處理的關係搜尋，而非著重於大量資料庫讀寫 (Read/Write) 的效能。 Neo4j 專案於 2010 年 2 月推出第一版，主要由 Neo" />
+  <meta name="generator" content="" />
+  <title>授權流言終結者#5：Neo4j 授權的分析與探討 - OpenFoundry</title>
+  <link href="../../favicon.ico" rel="shortcut icon" type="image/x-icon" />
+  <link rel="stylesheet" href="../../components/com_gantry/css/gantry.css" type="text/css" />
+  <link rel="stylesheet" href="../../components/com_gantry/css/grid-12.css" type="text/css" />
+  <link rel="stylesheet" href="../../components/com_gantry/css/joomla.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/joomla.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/style1.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/light-body.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/demo-styles.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/template.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/typography.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/fusionmenu.css" type="text/css" />
+  <style type="text/css">
+    <!--
+#rt-main-surround ul.menu li.active > a, #rt-main-surround ul.menu li.active > .separator, #rt-main-surround ul.menu li.active > .item, #rt-main-surround .square4 ul.menu li:hover > a, #rt-main-surround .square4 ul.menu li:hover > .item, #rt-main-surround .square4 ul.menu li:hover > .separator, .roktabs-links ul li.active span {color:#0088B5;}
+a, #rt-main-surround ul.menu a:hover, #rt-main-surround ul.menu .separator:hover, #rt-main-surround ul.menu .item:hover {color:#0088B5;}
+    -->
+  </style>
+  <script type="text/javascript" src="../../components/com_jcomments/js/jcomments-v2.1.js%3Fv=2"></script>
+  <script type="text/javascript" src="../../components/com_jcomments/libraries/joomlatune/ajax.js"></script>
+  <script type="text/javascript" src="../../media/system/js/mootools.js"></script>
+  <script type="text/javascript" src="../../media/system/js/caption.js"></script>
+  <script type="text/javascript" src="../../components/com_gantry/js/gantry-buildspans.js"></script>
+  <script type="text/javascript" src="../../components/com_gantry/js/gantry-inputs.js"></script>
+  <script type="text/javascript" src="../../templates/rt_quantive_j15/js/jquery.cookie.js"></script>
+  <script type="text/javascript" src="../../modules/mod_roknavmenu/themes/fusion/js/fusion.js"></script>
+  <script type="text/javascript" src="../../modules/mod_ofssologin/js/ofssologin.js"></script>
+  <script type="text/javascript">
+
+			window.addEvent('domready', function() {
+				var modules = ['rt-block'];
+				var header = ['h3','h2','h1'];
+				GantryBuildSpans(modules, header);
+			});
+		InputsExclusion.push('.content_vote','#rt-popup')
+		        window.addEvent('load', function() {
+					new Fusion('ul.menutop', {
+						pill: 0,
+						effect: 'slide and fade',
+						opacity: 1,
+						hideDelay: 500,
+						centered: 0,
+						tweakInitial: {'x': -2, 'y': 0},
+        				tweakSubsequent: {'x': 0, 'y': -14},
+						menuFx: {duration: 200, transition: Fx.Transitions.Sine.easeOut},
+						pillFx: {duration: 400, transition: Fx.Transitions.Back.easeOut}
+					});
+	            });
+  </script>
+<!-- <script type="text/javascript" src="/sso/javascripts/langsync.js"></script> -->
+<!-- <script src="/templates/rt_quantive_j15/js/ossf.js"></script> -->
+<script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-4136519-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
+</head>
+	<body  class="backgroundlevel-low backgroundstyle-style8 bodylevel-med bodystyle-light cssstyle-style1 logostyle-dark font-family-helvetica font-size-is-default menu-type-fusionmenu col12 ">
+		<div id="rt-main-background">
+			<div class="rt-container">
+																<div id="rt-header">
+					<div class="rt-grid-7 rt-alpha">
+    			<div class="rt-block">
+    	    	<a href="../../index.html" id="rt-logo"></a>
+    		</div>
+	    
+</div>
+<div class="rt-grid-5 rt-omega">
+                    <div class="square9">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<div class="ofssologin_square9"><a href="../../index.html">Login</a>&nbsp;&nbsp|&nbsp;&nbsp;<span><a href="https://www.openfoundry.org/tw/enterprise-application/8738" ><span lang="tw" xml:lang="tw">繁體中文</span></a></li></ul></span><!--Joom!fish V2.0.4 (Lightning)-->
+<!-- &copy; 2003-2009 Think Network, released under the GPL. -->
+<!-- More information: at http://www.joomfish.net -->
+<div class="ofssologin_search_square9">
+  <form id="of_search" action="https://www.openfoundry.org/of/openfoundry/search" method="get" onsubmit="of_search(); return false;">
+    <select id="of_search_type">
+      <option value="Projects"> Projects </option>
+      <option value="Content"> Content </option>
+      <option value="People"> People </option>
+    </select>
+    <input id="query" name="query" id="mod_search_searchword" maxlength="50" alt="search" class="inputbox" type="text" size="28" value="search..."  onblur="if(this.value=='') this.value='search...';" onfocus="if(this.value=='search...') this.value='';" />
+    <input type="hidden" name="commit" value="search" />
+  </form>
+</div></div>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		
+</div>
+					<div class="clear"></div>
+				</div>
+																<div id="rt-navigation"><div id="rt-navigation2"><div id="rt-navigation3">
+					
+<div class="nopill">
+	<ul class="menutop level1 " >
+						<li class="item1 root" >
+					<a class="orphan item bullet" href="../../index.html"  >
+				<span>
+			    				Home				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item32 root" >
+					<a class="orphan item bullet" href="../../archived.html"  >
+				<span>
+			    				Projects				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item186 root" >
+					<a class="orphan item bullet" href="../community.html"  >
+				<span>
+			    				Who&#039;s Who				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item4 root" >
+					<a class="orphan item bullet" href="../news.html"  >
+				<span>
+			    				News				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item5 root" >
+					<a class="orphan item bullet" href="../law-and-licensing.html"  >
+				<span>
+			    				Law &amp; Licensing				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item3 root" >
+					<a class="orphan item bullet" href="../activities.html"  >
+				<span>
+			    				Activities				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item2 root" >
+					<a class="orphan item bullet" href="../resourcecatalog.html"  >
+				<span>
+			    				Resource Catalog				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item45 root" >
+					<a class="orphan item bullet" href="../about.html"  >
+				<span>
+			    				About				   
+				</span>
+			</a>
+			
+			
+	</li>	
+				</ul>
+</div>
+
+				    <div class="clear"></div>
+				</div></div></div>
+								<div class="rt-surround"><div class="rt-surround2"><div class="rt-surround3">
+										<div id="rt-showcase-section">
+												<div id="rt-showcase">
+							<div class="rt-grid-12 rt-alpha rt-omega">
+    		<div class="clear"></div>
+		
+		
+                <div class="close-note">
+                    <div class="rt-block">
+               					<div class="module-content">
+                	<div style="font-size:medium; background-image:linear-gradient(120deg,#159957,#4298b2);color:white;padding:20px;margin:-10px -18px;">感謝您對「自由軟體鑄造場」的支持與愛護，十多年來「自由軟體鑄造場」受中央研究院支持，並在資訊科學研究所以及資訊科技創新研究中心執行，現已完成階段性的任務。 本網站預計持續維運至 2021年底，網站內容基本上不會再更動。<br />也紀念我們永遠的朋友 李士傑先生（Shih-Chieh Ilya Li）。</div>				</div>
+            </div>
+                </div>
+		
+</div>
+							<div class="clear"></div>
+						</div>
+																	</div>
+															<div id="rt-main-surround">
+												<div id="rt-breadcrumbs">
+								<div class="rt-breadcrumb-surround">
+		<a href="../../index.html" id="breadcrumbs-home"></a>
+		<span class="breadcrumbs pathway">
+<a href="../enterprise-application.html" class="pathway">Enterprise Application</a> <img src="../../templates/rt_quantive_j15/images/arrow.png" alt=""  /> <span class="no-link">授權流言終結者#5：Neo4j 授權的分析與探討</span></span>
+	</div>
+	
+							<div class="clear"></div>
+						</div>
+																							              <div id="rt-main" class="sa3-mb9">
+                <div class="rt-main-inner">
+                    <div class="rt-grid-9 rt-push-3">
+                                                <div class="rt-block">
+                            							<div class="square1">
+							<div class="rt-module-surround">
+								<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+								<div class="rt-module-inner">
+		                            <div id="rt-mainbody">
+		                                
+<div class="rt-joomla ">
+	<div class="rt-article">
+		
+				<div class="rt-headline"><h1 class="rt-article-title">授權流言終結者#5：Neo4j 授權的分析與探討</h1>		</div>
+		<div class="clear"></div>
+		
+		
+		
+				<div class="rt-articleinfo">
+						<div class="rt-article-icons">
+								<a href="8738-5neo4j-%3Ftmpl=component&amp;print=1&amp;layout=default&amp;page=.html" title="Print" onclick="window.open(this.href,'win2','status=no,toolbar=no,scrollbars=yes,titlebar=no,menubar=no,resizable=yes,width=640,height=480,directories=no,location=no'); return false;" rel="nofollow"><span class="icon print"></span></a>																</div>
+			
+			<span class="rt-date-posted">
+						 Created at			Tuesday, 26 June 2012 12:53						&nbsp;&nbsp;&nbsp;&nbsp;						Last Updated on Tuesday, 26 June 2012 16:17						</span>
+
+						<span class="rt-author">
+				Written by 義峰 曾			</span>
+				
+					</div>
+		
+		
+		<h2>1. 前言</h2>
+<p><a href="https://neo4j.org/" target="_blank">Neo4j</a> 是一種自由／開放源碼圖形資料庫系統 (Graph Database)，主要使用 Java 程式語言撰寫。圖形資料庫可以針對複雜的「關係」(Relationship) 進行設計與分析，最主要的訴求是解決傳統關聯式資料庫難以處理的關係搜尋，而非著重於大量資料庫讀寫 (Read/Write) 的效能。 <a href="https://neo4j.org/" target="_blank">Neo4j</a> 專案於 2010 年 2 月推出第一版，主要由 <a href="https://www.neotechnology.com/" target="_blank">Neo Technology</a> 公司主導開發。</p>
+<p>在授權策略上，<a href="https://neo4j.org/" target="_blank">Neo4j </a>有著與 <a href="https://www.mysql.com/" target="_blank">MySQL</a> 及 <a href="https://www.mongodb.org/" target="_blank">MongoDB</a>（註1）類似的雙重授權商業模式，但與之不同的是，<a href="https://neo4j.org/" target="_blank">Neo4j</a> 就其產品市場定位，分別參考了 <a href="https://www.mysql.com/" target="_blank">MySQL</a> (GPL-2.0) 或 <a href="https://www.mongodb.org/" target="_blank">MongoDB</a> (AGPL-3.0) 的模式。</p>
+<p>近年隨著 <a href="https://neo4j.org/" target="_blank">Neo4j</a> 興起，相關的授權問題也隨之而來。本篇文章主要探討 <a href="https://neo4j.org/" target="_blank">Neo4j</a> 專案的實例，蒐集並探討常見的問題及誤解。</p>
+<br />
+<h2>2. Neo4j 的授權分析</h2>
+<p>根據 <a href="https://neo4j.org/" target="_blank">Neo4j 官方網站首頁</a> 的說明， <a href="https://neo4j.org/" target="_blank">Neo4j</a> 將產品分為四個部分：</p>
+<p>1. 社群版本 (Communicity edition)</p>
+<p>2. 進階版本 (Advanced edition)</p>
+<p>3. 企業版本 (Enterprise edition)</p>
+<p>4. 商業版本 (Commercial edition)</p>
+<p>其中網頁宣告的社群版本使用的是 <a href="https://www.gnu.org/copyleft/gpl-3.0.html" target="_blank">GPL-3.0</a> 授權，進階及企業版本則是 <a href="https://www.gnu.org/licenses/agpl-3.0.html" target="_blank">AGPL-3.0</a> 授權。</p>
+<p><a href="../../images/120626/Neo4j/01.png" target="_blank"><img src="../../images/120626/Neo4j/01.png" border="0" width="680" /></a></p>
+<p>▲ 圖1：Neo4j 官方網站首頁的授權聲明 (https://neo4j.org/) [畫面擷取日期為 2012-05-29]</p>
+<p>若由 <a href="https://neo4j.org/download/" target="_blank">Neo4j 官方下載網頁 </a>來看，其中三款產品的授權聲明更進一步被「模糊」了。社群版本僅剩 "GPL" 描述，而進階及企業版本則只剩下 "AGPL" 的字樣，皆非先前官方網頁聲稱的 <a href="https://www.gnu.org/copyleft/gpl-3.0.html" target="_blank">GPL-3.0</a> 及 <a href="https://www.gnu.org/licenses/agpl-3.0.html" target="_blank">AGPL-3.0</a>。</p>
+<p><a href="../../images/120626/Neo4j/02.png" target="_blank"><img src="../../images/120626/Neo4j/02.png" border="0" width="680" /></a></p>
+<p>▲ 圖2：Neo4j 官方下載網頁的授權聲明 (https://neo4j.org/download/) [畫面擷取日期為 2012-05-29]</p>
+<p>於授權分析來說，準確的授權聲明至關重要。其中 "GPL" 可能指的是單一授權的 <a href="https://www.gnu.org/licenses/gpl-1.0.html" target="_blank">GPL-1.0</a>、<a href="https://www.gnu.org/licenses/gpl-2.0.html" target="_blank">GPL-2.0</a> 及 <a href="https://www.gnu.org/copyleft/gpl-3.0.html" target="_blank">GPL-3.0</a>，或是複合授權的 GPL-1.0+、GPL-2.0+ 及 GPL-3.0+；而 "AGPL" 可能指的是單一授權的 <a href="https://www.affero.org/oagpl.html" target="_blank">AGPL-1.0</a> 及 <a href="https://www.gnu.org/licenses/agpl-3.0.html" target="_blank">AGPL-3.0</a>，或是複合授權的 AGPL-3.0+（註2）。</p>
+<p>法律契約或條文與軟體更新一樣，若文字歷經變更，則需依不同的版本號以利區別，特別是 <a href="https://www.gnu.org/licenses/gpl-1.0.html" target="_blank">GPL-1.0</a>、<a href="https://www.gnu.org/licenses/gpl-2.0.html" target="_blank">GPL-2.0</a> 及 <a href="https://www.gnu.org/copyleft/gpl-3.0.html" target="_blank">GPL-3.0</a> 在其條款上有著顯著不同，而 <a href="https://www.affero.org/oagpl.html" target="_blank">AGPL-1.0</a> 及 <a href="https://www.gnu.org/licenses/agpl-3.0.html" target="_blank">AGPL-3.0</a> 也是如此 。因此，若要進一步分析其授權，我們必須要知道其準確的授權版本為何。</p>
+<p>在官方網站沒有更進一步的資訊下，最後的判別方式只好直接取用原始碼版本庫中之資料來比對。由於目前 Neo4j 的程式置於 Github 上，所以我們可以直接從中分析。</p>
+<h3>2-1. Neo4j 社群版本</h3>
+<p><a href="../../images/120626/Neo4j/03.png" target="_blank"><img src="../../images/120626/Neo4j/03.png" border="0" width="680" /></a></p>
+<p>▲ 圖3：Neo4j 社群版本庫的授權聲明 (https://github.com/neo4j/community/blob/master/LICENSE.txt) [畫面擷取日期為 2012-05-29]</p>
+<p>其中該段聲明（第八、九列）：</p>
+<pre>[...]
+licensed under the GNU GENERAL PUBLIC LICENSE Version 3 to all third
+parties and that license is included below.
+[...]</pre>
+<p>並沒有任何「及其後版本」(or any later version) 的宣告。因此可以合理的認定社群版本使用的是 <a href="https://www.gnu.org/copyleft/gpl-3.0.html" target="_blank">GPL-3.0</a>，而非 GPL-3.0+。</p>
+<h3>2-2. Neo4j 進階版本</h3>
+<p><a href="../../images/120626/Neo4j/04.png" target="_blank"><img src="../../images/120626/Neo4j/04.png" border="0" width="680" /></a></p>
+<p>▲ 圖4：Neo4j 進階版本庫的授權聲明 (https://github.com/neo4j/advanced/blob/master/LICENSE.txt) [畫面擷取日期為 2012-05-29]</p>
+<p>其中該段聲明（第八、九列）：</p>
+<pre>[...]
+licensed under the GNU AFFERO GENERAL PUBLIC LICENSE Version 3 to all
+third parties and that license is included below.
+[...]</pre>
+<p>並沒有任何「及其後版本」(or any later version) 的宣告。因此可以合理的認定進階版本使用的是 <a href="https://www.gnu.org/licenses/agpl-3.0.html" target="_blank">AGPL-3.0</a>，而非 AGPL-3.0+。</p>
+<h3>2-3. Neo4j 企業版本</h3>
+<p><a href="../../images/120626/Neo4j/05.png" target="_blank"><img src="../../images/120626/Neo4j/05.png" border="0" width="680" /></a></p>
+<p>▲ 圖5：Neo4j 企業版本庫的授權聲明 (https://github.com/neo4j/enterprise/blob/master/LICENSE.txt) [畫面擷取日期為 2012-05-29]</p>
+<p>其中該段聲明（第八、九列）：</p>
+<pre>[...]
+licensed under the GNU AFFERO GENERAL PUBLIC LICENSE Version 3 to all
+third parties and that license is included below.
+[...]</pre>
+<p>並沒有任何「及其後版本」(or any later version) 的宣告。因此可以合理的認定企業版本使用的是 <a href="https://www.gnu.org/licenses/agpl-3.0.html" target="_blank">AGPL-3.0</a>，而非 AGPL-3.0+。</p>
+<h3>2-4. Neo4j 的授權整理</h3>
+<p>根據前述的分析，我們可以把 <a href="https://neo4j.org/" target="_blank">Neo4j</a> 的授權情形整理成下表。</p>
+<p><a href="../../images/120626/Neo4j/06.png" target="_blank"><img src="../../images/120626/Neo4j/06.png" border="0" width="680" /></a></p>
+<p>▲ 圖6：Neo4j 產品及授權聲明</p>
+<h3>2-5. Neo4j 授權的進階探討</h3>
+<p>雖然前述已經整理出授權清單，但其實我們從原始碼中還是可以發現多處有趣的聲明。以企業版本的 "EnterpriseNeoServerBootstrapper.java" 原始碼為例。</p>
+<p><a href="../../images/120626/Neo4j/07.png" target="_blank"><img src="../../images/120626/Neo4j/07.png" border="0" width="680" /></a></p>
+<p>▲ 圖7：Neo4j 企業版本 EnterpriseNeoServerBootstrapper.java 的授權聲明 (https://github.com/neo4j/enterprise/blob/master/server-enterprise/src/main/java/org/neo4j/server/enterprise/EnterpriseNeoServerBootstrapper.java) [畫面擷取日期為 2012-05-29]</p>
+<p>其中的授權聲明為（第六至九列）：</p>
+<pre>[...]
+Neo4j is free software: you can redistribute it and/or modify
+it under the terms of the GNU Affero General Public License as
+published by the Free Software Foundation, either version 3 of the
+License, or (at your option) any later version.
+[...]</pre>
+<p>我們可以注意到此程式中有著這段 "or ( at your option ) any later version" 內容。這意謂著該程式授權不是 <a href="https://www.gnu.org/licenses/agpl-3.0.html" target="_blank">AGPL-3.0</a> 反而是 AGPL-3.0+。除了該檔案外，此類情形幾乎可見於多處的進階及企業版本原始碼中。此外，在社群版本中也可以見到許多 GPL-3.0+ 的蹤跡。</p>
+<p>因此，在最終授權的認定上，與先前的結論產生了一些混淆，也就是社群版本是 <a href="https://www.gnu.org/copyleft/gpl-3.0.html" target="_blank">GPL-3.0</a> 還是 GPL-3.0+？進階及企業版本則是 <a href="https://www.gnu.org/licenses/agpl-3.0.html" target="_blank">AGPL-3.0</a> 還是 AGPL-3.0+？</p>
+<p>不過可以確定的是，目前尚沒有 GPL-4.0 或 AGPL-4.0 授權條款。因此以現階段來說，<a href="https://www.gnu.org/copyleft/gpl-3.0.html" target="_blank">GPL-3.0</a> 可以等同於 GPL-3.0+，<a href="https://www.gnu.org/licenses/agpl-3.0.html" target="_blank">AGPL-3.0</a> 則等同於 AGPL-3.0+。只是這個議題仍然會是 <a href="https://neo4j.org/" target="_blank">Neo4j</a> 團隊未來需要釐清的部分，尤其是未來當 GPL 有新版本的條款擬定之後，例如出現 GPL-4.0 或 AGPL-4.0 時。</p>
+<br />
+<h2>3. Neo4j 授權常見的誤解及探討</h2>
+<h3>3-1. 是否只要使用 Neo4j ，即必須提供專案原始碼？</h3>
+<p>根據本篇文章第 2 部分「Neo4j 的授權分析」所述，我們必須先行了解使用的是 <a href="https://neo4j.org/" target="_blank">Neo4j</a> 的何部分，及其該部分的授權。另外，為了避免本文過於冗長，接下來僅以下列虛擬案例的情況來具體說明。</p>
+<p>假如我們有一專案，其資料庫使用的是 <a href="https://neo4j.org/" target="_blank">Neo4j</a> 圖形資料庫系統，並且選擇社群版本 (<a href="https://www.gnu.org/copyleft/gpl-3.0.html" target="_blank">GPL-3.0</a>) 或進階／企業版本 (<a href="https://www.gnu.org/licenses/agpl-3.0.html" target="_blank">AGPL-3.0</a>) 為其授權模式。另有一應用程式，該應用程式使用的是 <a href="https://neo4j.org/" target="_blank">Neo4j</a> 官方提供的嵌入式 (Embedded) 資料庫驅動元件，使其得以與 <a href="https://neo4j.org/" target="_blank">Neo4j</a> 圖形資料庫系統進行溝通。此時所繪製的授權分析圖為如下，</p>
+<p><a href="../../images/120626/Neo4j/08.png" target="_blank"><img src="../../images/120626/Neo4j/08.png" border="0" width="680" /></a></p>
+<p>▲ 圖8：Neo4j 虛擬案例的授權分析圖（上為使用社群版本的例子；下為使用進階／企業版本的例子）</p>
+<p>以下將以不同的情況來分別敘述之。</p>
+<h4>3-1-1. 網頁服務為公開的網站形態</h4>
+<p>如果該專案所提供的服務為公開的電腦網路環境，例如提供一個公開的網站服務，則授權分析圖為如下，</p>
+<p><a href="../../images/120626/Neo4j/09.png" target="_blank"><img src="../../images/120626/Neo4j/09.png" border="0" width="680" /></a></p>
+<p>▲ 圖9：Neo4j 虛擬案例的授權分析圖 - 公開的網站形態（上為使用社群版本的例子；下為使用進階／企業版本的例子）</p>
+<p>在一般的使用下，即未修改 <a href="https://neo4j.org/" target="_blank">Neo4j</a> 圖形資料庫系統（上圖中咖啡及紅色的部分）時，我們並不需要將專案中相關的程式原始碼公開，也就不需要公開網站自行開發的應用程式（上圖中藍色的部分），甚至連 <a href="https://neo4j.org/" target="_blank">Neo4j</a> 圖形資料庫系統的程式原始碼也不需要額外在網站服務中提供給外部下載。</p>
+<p>同上所述，如果對於 <a href="https://neo4j.org/" target="_blank">Neo4j</a> 圖形資料庫進行修改時，則授權分析圖為如下，</p>
+<p><a href="../../images/120626/Neo4j/10.png" target="_blank"><img src="../../images/120626/Neo4j/10.png" border="0" width="680" /></a></p>
+<p>▲ 圖10：Neo4j 虛擬案例的授權分析圖 - 公開的網站形態（修改 Neo4j 時）（上為使用社群版本的例子；下為使用進階／企業版本的例子）</p>
+<p>若為 Neo4j 社群版本（上圖中咖啡的部分），我們同樣不需要將專案中相關的程式原始碼公開。但是若為 Neo4j 進階／企業版本（上圖中紅色的部分），因修改的部分屬於 <a href="https://www.gnu.org/licenses/agpl-3.0.html" target="_blank">AGPL-3.0</a>，同時利用之方式符合遠端電腦網路之互動行為，所以需要根據 <a href="https://www.gnu.org/licenses/agpl-3.0.html" target="_blank">AGPL-3.0</a> 第 13 節之內容遵循相關的義務要求，其內容原文如下，</p>
+<pre>13. Remote Network Interaction; Use with the GNU General Public License.
+
+  Notwithstanding any other provision of this License, if you modify the
+Program, your modified version must prominently offer all users
+interacting with it remotely through a computer network (if your version
+supports such interaction) an opportunity to receive the Corresponding
+Source of your version by providing access to the Corresponding Source
+from a network server at no charge, through some standard or customary
+means of facilitating copying of software.  This Corresponding Source
+shall include the Corresponding Source for any work covered by version 3
+of the GNU General Public License that is incorporated pursuant to the
+following paragraph.
+
+  Notwithstanding any other provision of this License, you have
+permission to link or combine any covered work with a work licensed
+under version 3 of the GNU General Public License into a single
+combined work, and to convey the resulting work.  The terms of this
+License will continue to apply to the part which is the covered work,
+but the work with which it is combined will remain governed by version
+3 of the GNU General Public License.</pre>
+<p>簡言之，此時我們除了要提供修改 <a href="https://neo4j.org/" target="_blank">Neo4j</a> 圖形資料庫系統的程式外，其它所有與該部分相關的對應原始碼 (Corresponding Source) 也都需要公開並提供所有得以使用此網站服務的人。換句話說，除了針對 <a href="https://neo4j.org/" target="_blank">Neo4j</a> 修改的部分外，連帶其它與 <a href="https://neo4j.org/" target="_blank">Neo4j</a> 相關的部分，包括自行撰寫的程式，都很可能需要開放並對外公開提供下載的管道。</p>
+<h4>3-1-2. 網頁服務為公司內部的網站形態</h4>
+<p>如果該專案所提供的服務為公司內部的電腦網路環境，例如提供一個僅允許公司內部使用的網站服務，則繪製的授權分析圖為如下，</p>
+<p><a href="../../images/120626/Neo4j/11.png" target="_blank"><img src="../../images/120626/Neo4j/11.png" border="0" width="680" /></a></p>
+<p>▲ 圖11：Neo4j 虛擬案例的授權分析圖 - 公司內部的網站形態（上為使用社群版本的例子；下為使用進階／企業版本的例子）</p>
+<p>此時無論是否有修改 <a href="https://neo4j.org/" target="_blank">Neo4j</a> 圖形資料庫系統，一般而言是不需要對外提供相關程式原始碼之義務。</p>
+<h4>3-1-3. 服務性質為 OEM／ISV 形態</h4>
+<p>如果該專案所提供的服務為 OEM（Original Equipment Manufacturing, 妥託代工）或 ISV（Independent Software Vendor, 獨立軟體開發商）型式時，此時無論是否有對 <a href="https://neo4j.org/" target="_blank">Neo4j</a> 圖形資料庫系統進行修改，整體專案很可能都需要提供相關的程式原始碼予後續的合作廠商及購買設備的消費者，這也同時意謂著，網站自行撰寫的應用程式通常也含括其中，且需要允予開放下載。</p>
+<h3>3-2. 專案非商業利用，是否也要提供程式原始碼？</h3>
+<p>這裡無關乎網站是否具有商業利用行為，只要合乎上述 3-1 部分所述的任何條件，不管屬於非商業利用或社會公益行為，皆同時需要符合該部分中所描述的對等義務要求。</p>
+<h3>3-3. 資料庫中的資料是否需要公開？</h3>
+<p>根據 <a href="https://www.gnu.org/copyleft/gpl-3.0.html" target="_blank">GPL-3.0</a> 或 <a href="https://www.gnu.org/licenses/agpl-3.0.html" target="_blank">AGPL-3.0</a> 內容，資料庫中的資料（如會員資料，交易資料等）都不符合其要求之程式 (Program) 或原始碼 (Source code) 的定義範圍，因此無論是否需要公開網站原始碼，網站資料庫中之資料通常都可以不對外進行公開揭示。</p>
+<h3>3-4. 如果不想或不得公開自行開發的程式碼時，該怎麼辦？</h3>
+<p>根據本篇文章第 2 部分「Neo4j 的授權分析」所述，針對 <a href="https://neo4j.org/" target="_blank">Neo4j</a> 核心資料庫系統的部分，其授權是 <a href="https://www.gnu.org/copyleft/gpl-3.0.html" target="_blank">GPL-3.0</a> / <a href="https://www.gnu.org/licenses/agpl-3.0.html" target="_blank">AGPL-3.0</a> 及商業授權的雙重授權模式。因此，除了 <a href="https://www.gnu.org/copyleft/gpl-3.0.html" target="_blank">GPL-3.0</a> 及 <a href="https://www.gnu.org/licenses/agpl-3.0.html" target="_blank">AGPL-3.0</a> 外，我們還可以額外購買商業授權。所以，在面對必須公開專案中不想或不得公開之程式碼時，是可以改向 <a href="https://www.neotechnology.com/" target="_blank">Neo Technology</a> 團隊談及商業授權版本的費用。</p>
+<br />
+<h2>4. Neo4j REST API 函式庫</h2>
+<p><a href="https://neo4j.org/" target="_blank">Neo4j</a> 除了提供嵌入式 (Embedded) 資料庫驅動元件外，也提供 REST API 的方式存取圖形資料庫的資料。</p>
+<p>我們可以自行開發程式以呼叫官方提供的存取介面，也可以使用官方或第三方提供的 REST API 函式庫來溝通。但若使用了官方或第三方提供的函式庫時，也要注意該部分的授權屬性。</p>
+<h3>4-1. Neo4j REST API 函式庫</h3>
+<p>官方網站有提供 REST API 的建議清單，其中第一項 Java-Rest-Binding 為官方提供的版本。擷取畫面如下。</p>
+<p><a href="../../images/120626/Neo4j/12.png" target="_blank"><img src="../../images/120626/Neo4j/12.png" border="0" width="680" /></a></p>
+<p>▲ 圖12：Neo4j 官方網站提供的 <a href="https://docs.neo4j.org/chunked/stable/tutorials-rest.html" target="_blank">REST API 的建議清單</a> [畫面擷取日期為 2012-06-06]</p>
+<p>官方網站的列表沒有提供各自函式庫的授權條款。因此筆者在蒐集各自對應的授權後，並額外加上 philippkueng 的 node-neo4j 專案，最後整理成下圖。</p>
+<p><a href="../../images/120626/Neo4j/13.png" target="_blank"><img src="../../images/120626/Neo4j/13.png" border="0" width="680" /></a></p>
+<p>▲ 圖13：Neo4j 各 REST API 清單及其授權條款 [製圖日期為 2012-06-06]</p>
+<p>其中可以發現第 2 項 Neo4jRestNet 專案目前沒有任何的授權聲明，因此為避免不必要的法律風險，筆者並不建議使用該函式庫，而在接下來的討論中，我們也將會屏除 <a href="https://github.com/philippkueng/node-neo4j/" target="_blank">node-neo4j </a> 專案的討論。</p>
+<h3>4-2. Neo4j REST API 的授權分析</h3>
+<p>根據本篇文章第 2 部分「Neo4j REST API 函式庫」所述，我們必須先行了解使用的是何 REST API 函式庫。另外，為了避免本文過於冗長，接下來會將 REST API 函式庫簡單分為二大類，一為 GPL，二為其他類。</p>
+<ul>
+<li>GPL
+<ul>
+<li>Java-Rest-Binding - GPL-3.0</li>
+<li>neo4jrestclient - GPL-3.0</li>
+<li>neo4django - GPL-3.0</li>
+</ul>
+</li>
+<li>其他類
+<ul>
+<li>Neo4jClient - MS-PL</li>
+<li>py2neo - Apache-2.0</li>
+<li>Bulbflow - BSD-3-Clause</li>
+<li>Neo4jPHP - MIT</li>
+<li>neography - MIT</li>
+<li>neoid - MIT</li>
+<li>node.js - Apache-2.0</li>
+<li>Neocons - EPL-1.0</li>
+<li>node-neo4j - MIT</li>
+</ul>
+</li>
+</ul>
+<p>因此當專案中使用 REST API 函式庫後，整體授權結構也會隨著改變。為了簡便說明，此部分僅以 <a href="https://neo4j.org/" target="_blank">Neo4j</a> 社群版本 (<a href="https://www.gnu.org/copyleft/gpl-3.0.html" target="_blank">GPL-3.0</a>) 為例，而下圖為整合後的範例授權分析圖。</p>
+<p><a href="../../images/120626/Neo4j/14.png" target="_blank"><img src="../../images/120626/Neo4j/14.png" border="0" width="680" /></a></p>
+<p>▲ 圖14：Neo4j 及 REST API 專案範例圖 [製圖日期為 2012-06-06]</p>
+<p>從分析圖中，我們可以得知，當我們使用 GPL 類的 REST API 函式庫時，因為該函式庫與自行開發的程式間，原則上有著緊密的主從關係，所以自行開發的程式部分很可能會自動衍生成為 GPL 的程式。反之，當使用的是其他類的函式庫時，並沒有直接影響自行開發的程式，而事後通常僅需遵照其義務來遵循即可，例如若為 <a href="https://www.opensource.org/licenses/mit-license.php" target="_blank">MIT</a> 授權，則需要保留原始著作權的聲明。</p>
+<br />
+<h2>5. 結語</h2>
+<p><a href="https://neo4j.org/" target="_blank">Neo4j</a> 的商業模式雖然與 <a href="https://www.mysql.com/" target="_blank">MySQL</a> 及 <a href="https://www.mongodb.org/" target="_blank">MongoDB</a> 類似，但因為 <a href="https://neo4j.org/" target="_blank">Neo4j</a> 針對產品別採行不同的授權，所以在使用上比較容易產生誤解或混淆。另外，當專案使用非自行撰寫的 REST API 函式庫時，也需要注意其授權條款。</p>
+<p>此外，<a href="https://neo4j.org/" target="_blank">Neo4j</a> 的商業授權策略相對複雜，但基本上仍是由 <a href="https://www.mysql.com/" target="_blank">MySQL</a> 的雙重授權模式 1.0 及 <a href="https://www.mongodb.org/" target="_blank">MongoDB</a> 的雙重授權模式 2.0 延伸而來，而這套稍作修改的模式，使其不同的產品得以針對不同需求的客群，來提供不同的商業模式。</p>
+<hr />
+<p>註1：請參考「<a href="../../enterprise-application/8687.html" target="_blank">授權流言終結者#4：MongoDB 授權的分析與探討（雙重授權模式 2.0）</a>」一文。</p>
+<p>註2：符號 '+' 意謂「及其後版本」(or any later version) 。以 GPL-2.0+ 為例，其授權可以為單一授權的 <a href="https://www.gnu.org/licenses/gpl-2.0.html" target="_blank">GPL-2.0</a> 或 <a href="https://www.gnu.org/copyleft/gpl-3.0.html" target="_blank">GPL-3.0</a>，甚至是未來的 GPL-4.0，亦可以為複合授權的 GPL-3.0+，或是未來的 GPL-4.0+。另外，並沒有所謂的 AGPL-2.0 授權條款。</p>
+			<!-- Show relate article -->
+		<br><br><h4>You may be interested in the following articles:</h4><ul><li><a href='../../enterprise-application/8687.html'>授權流言終結者#4：MongoDB 授權的分析與探討（雙重授權模式 2.0）</a> - <span class='date-posted'>2012-04-29</span></li><li><a href='../../enterprise-application/8680.html'>授權流言終結者#3：jQuery 授權的分析與探討</a> - <span class='date-posted'>2012-04-23</span></li><li><a href='../../enterprise-application/8657.html'>授權流言終結者#2︰The JSON License 的分析與探討</a> - <span class='date-posted'>2012-03-29</span></li><li><a href='../../enterprise-application/8636.html'>授權流言終結者#1︰VirtualBox 授權分析與探討</a> - <span class='date-posted'>2012-03-08</span></li></ul>		<!-- end -->
+		<div class="article_note">
+		<!-- Add tags use metakey, and show OSSF Newsletter tag: OSSFNL+NUM-->
+		<br><br> <hr style='border: 1px dashed #D2DADB;'><b>OSSF Newsletter&nbsp;:</b>&nbsp;<a href='../../previous-issue%3Ftask=view&amp;id=798.html'>第 199 期 授權流言終結者5：Neo4j 授權的分析與探討</a><br>				<!-- End -->
+					<br>
+					<b>Category: </b><a href="../enterprise-application.html">				Enterprise Application					</a>				</div>
+			 <!-- AddThis Button BEGIN ID 3001 is the front page article -->
+     			<br><br>
+       <div class="addthis_toolbox addthis_default_style addthis_32x32_style">
+       <a class="addthis_button_preferred_1"></a>
+       <a class="addthis_button_preferred_2"></a>
+       <a class="addthis_button_preferred_3"></a>
+       <a class="addthis_button_preferred_4"></a>
+       <a class="addthis_button_compact"></a>
+       <a class="addthis_counter addthis_bubble_style"></a>
+       </div>
+       <script type="text/javascript">var addthis_config = {"data_track_clickback":true};</script>
+       <script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js#pubid=openfoundry"></script>
+       <!-- AddThis Button END -->
+     <br>
+		<div class="totop" ><a class="rt-totop" href="8738.html#" style="outline: medium none;">↑ Top</a></div>
+            <!-- AddThis Button END -->
+
+			</div>
+</div>
+
+		                            </div>
+									<div class="clear"></div>
+								</div>
+								<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+							</div>
+							</div>
+                                                    </div>
+                                            </div>
+                                <div class="rt-grid-3 rt-pull-9">
+                <div id="rt-sidebar-a">
+                                    <div class="square4">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<ul class="menu"><li class="item56"><a href="../previous-issue.html"><span>Previous Issue</span></a></li><li class="item55"><a href="../about-newsletter.html"><span>About Newsletter</span></a></li></ul>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<ul class="menu"><li class="item115"><a href="../foss-news.html"><span>FOSS News</span></a></li><li class="item141"><a href="../case-job.html"><span>Case and Jobs</span></a></li></ul>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+        	                <div class="square1">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-title"><h2 class="title">Special</h2></div>
+						<div class="clear"></div>
+		                						<div class="module-content">
+		                	<ul class="menu"><li class="item37"><a href="../tech-column.html"><span>Tech Column</span></a></li><li class="item40"><a href="../foss-programs.html"><span>FOSS Programs</span></a></li><li class="item35"><a href="../legal-column.html"><span>Legal Column</span></a></li><li class="item154"><a href="../foss-forum.html"><span>FOSS Forum</span></a></li><li id="current" class="active item162"><a href="../enterprise-application.html"><span>Enterprise Application</span></a></li><li class="item44"><a href="../foss-projects.html"><span>FOSS Projects</span></a></li></ul>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		                <div class="square1">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<p style="text-align: center;"><a href="../../news%3Fformat=feed&amp;type=rss" target="_black"><img src="../../images/M_images/news-rss-feed.png" border="0" /></a><br /><a href="https://www.openfoundry.org/rss-feed/Newsletter" target="_black"><img src="../../images/M_images/newsletter-rss-feed.png" border="0" /></a></p>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		
+                </div>
+            </div>
+
+                    <div class="clear"></div>
+                </div>
+            </div>
+																													</div>
+										<div id="rt-copyright">
+						<div class="rt-grid-12 rt-alpha rt-omega">
+                        <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<span class="nowrap">Open Source Software Foundry</span><span class="nowrap">‧</span><span class="nowrap"> </span><span class="nowrap">Best  Viewed with IE7.0 or Firefox2.0 above, 1024x768 Resolution. </span><strong>E-Mail</strong>：<a href="mailto:contact@openfoundry.org">contact@openfoundry.org</a> <br /><strong>Address</strong>：No.128, Sec.2, Academia Rd., Institute of Information Science, Academia Sinica, Nangang District, Taipei City 11529, Taiwan (R.O.C). <br /><a href="../privacy-policy.html">Privacy Policy</a>. <a href="../terms-of-use.html">Terms-of-use</a> <span style="position: relative; top: 8px; margin-top: -8px;"> <a href="../../about/8101.html"><img src="../../images/M_images/rss-feed-all.png" border="0" /></a></span>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+        	
+</div>
+						<div class="clear"></div>
+					</div>
+					<div class="rt-footer-bottom-wrap"><div class="rt-footer-bottom"><div class="rt-footer-bottom2"><div class="rt-footer-bottom3"></div></div></div></div>
+									</div></div></div>
+				<div class="rt-surround-bottom"><div class="rt-surround-bottom2"><div class="rt-surround-bottom3"></div></div></div>
+							</div>
+		</div>
+		<!--
+		<script id="aptureScript">
+						(function (){var a=document.createElement("script");a.defer="true";a.src="http://www.apture.com/js/apture.js?siteToken=vsJttrn";document.getElementsByTagName("head")[0].appendChild(a);})();
+     </script>
+-->
+
+<!-- Piwik -->
+<!-- 			<script type="text/javascript">
+			  var _paq = _paq || [];
+		  _paq.push(["trackPageView"]);
+		  _paq.push(["enableLinkTracking"]);
+
+		    (function() {
+			        var u=(("https:" == document.location.protocol) ? "https" : "https") + "://www.openfoundry.org/piwik/";
+				    _paq.push(["setTrackerUrl", u+"piwik.php"]);
+				    _paq.push(["setSiteId", "1"]);
+				        var d=document, g=d.createElement("script"), s=d.getElementsByTagName("script")[0]; g.type="text/javascript";
+				        g.defer=true; g.async=true; g.src=u+"piwik.js"; s.parentNode.insertBefore(g,s);
+					  })();
+		  </script> -->
+<!-- End Piwik Code -->
+	</body>
+</html>

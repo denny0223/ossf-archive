@@ -1,0 +1,126 @@
+	<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+	<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="zh-tw" lang="zh-tw" >
+		<head>
+			  <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+  <meta name="robots" content="noindex, nofollow" />
+  <meta name="keywords" content="OSSFNL722" />
+  <meta name="title" content="清理 Debian/Ubuntu 儲存空間" />
+  <meta name="description" content="讀過 Tsung 分享的 「Debian/Ubuntu Linux 空間釋放－清除沒用的檔案」 一文，筆者也來分享一下自己清理作業系統環境的方法。筆者是 Debian GNU/Linux 的長年使用者。Debian 使用者有個壞習慣－不主動定時清理系統。因為 Debian" />
+  <meta name="generator" content="" />
+  <title>清理 Debian/Ubuntu 儲存空間</title>
+  <link href="../../favicon.ico" rel="shortcut icon" type="image/x-icon" />
+  <link rel="stylesheet" href="../../components/com_gantry/css/gantry.css" type="text/css" />
+  <link rel="stylesheet" href="../../components/com_gantry/css/grid-12.css" type="text/css" />
+  <link rel="stylesheet" href="../../components/com_gantry/css/joomla.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/joomla.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/style1.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/light-body.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/demo-styles.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/template.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/typography.css" type="text/css" />
+  <style type="text/css">
+    <!--
+#rt-main-surround ul.menu li.active > a, #rt-main-surround ul.menu li.active > .separator, #rt-main-surround ul.menu li.active > .item, #rt-main-surround .square4 ul.menu li:hover > a, #rt-main-surround .square4 ul.menu li:hover > .item, #rt-main-surround .square4 ul.menu li:hover > .separator, .roktabs-links ul li.active span {color:#0088B5;}
+a, #rt-main-surround ul.menu a:hover, #rt-main-surround ul.menu .separator:hover, #rt-main-surround ul.menu .item:hover {color:#0088B5;}
+    -->
+  </style>
+  <script type="text/javascript" src="../../components/com_jcomments/js/jcomments-v2.1.js%3Fv=2"></script>
+  <script type="text/javascript" src="../../components/com_jcomments/libraries/joomlatune/ajax.js"></script>
+  <script type="text/javascript" src="../../media/system/js/mootools.js"></script>
+  <script type="text/javascript" src="../../media/system/js/caption.js"></script>
+  <script type="text/javascript" src="../../components/com_gantry/js/gantry-buildspans.js"></script>
+  <script type="text/javascript" src="../../components/com_gantry/js/gantry-inputs.js"></script>
+  <script type="text/javascript">
+
+			window.addEvent('domready', function() {
+				var modules = ['rt-block'];
+				var header = ['h3','h2','h1'];
+				GantryBuildSpans(modules, header);
+			});
+		InputsExclusion.push('.content_vote','#rt-popup')
+  </script>
+		</head>
+		<body  class="backgroundlevel-low backgroundstyle-style8 bodylevel-med bodystyle-light cssstyle-style1 logostyle-dark font-family-helvetica font-size-is-default menu-type-fusionmenu col12 ">
+			<div id="rt-main-surround">
+				<div class="rt-container">
+					<div class="rt-block">
+						<div id="rt-mainbody">
+					    	
+<div class="rt-joomla ">
+	<div class="rt-article">
+		
+				<div class="rt-headline"><h1 class="rt-article-title">清理 Debian/Ubuntu 儲存空間</h1>		</div>
+		<div class="clear"></div>
+		
+		
+		
+				<div class="rt-articleinfo">
+						<div class="rt-article-icons">
+				<a href="8307--debianubuntu-%3Ftmpl=component&amp;print=1&amp;layout=default&amp;page=.html#" onclick="window.print();return false;"><span class="icon print"></span></a>									<span class="icon printscreen">
+						<a href="8307--debianubuntu-%3Ftmpl=component&amp;print=1&amp;layout=default&amp;page=.html#" onclick="window.print();return false;"><img src="../../images/M_images/printButton.png" alt="列印"  /></a>					</span>
+							</div>
+			
+			<span class="rt-date-posted">
+						建立日期			2011-04-21 13:52						&nbsp;&nbsp;&nbsp;&nbsp;						最近更新在 2011-04-25 11:54						</span>
+
+						<span class="rt-author">
+				作者是 Rex			</span>
+				
+					</div>
+		
+		
+		讀過 Tsung 分享的 「<a href="https://blog.longwin.com.tw/2011/02/linux-free-hd-clean-2011/" target="_blank">Debian/Ubuntu Linux 空間釋放－清除沒用的檔案</a>」 一文，筆者也來分享一下自己清理作業系統環境的方法。<br /><br />筆者是 <a href="https://www.debian.org/" target="_blank">Debian GNU/Linux</a> 的長年使用者。Debian 使用者有個壞習慣－不主動定時清理系統。因為 Debian 系統實在太穩定，裝好之後終年難得重灌，久而久之系統就會留下佔用空間的廢棄檔案。這些檔案除了使用者個人資料外，不外乎快取、歷史記錄、設定等等。此外還有曾經安裝的軟體，編譯軟體時所裝的開發函式庫等等。這裡分享幾個常用的清理檔案方法。<br /> 
+
+<h3>Personal data</h3>
+首先是個人檔案。你有許多目錄，需要先找出佔用最多磁碟空間的目錄。這時候你可以透過指令列用 <a href="https://en.wikipedia.org/wiki/Du_%28Unix%29" target="_blank">du</a> 來看 disk usage。常用的參數如下：<br />
+<pre><code><br />du --max-depth=1 -x | sort -n<br /></code></pre>
+<br />這個指令的意思是查詢當下目錄所佔用的大小，並依照由小到大的順序排列，<strong>-x</strong> 的意思是只查詢一個檔案系統，方便你找出單一檔案系統中最大的目錄。你也可以用 <strong>-h</strong> 讓 <strong>du</strong> 列出。<br /><br />如果你不是 <a href="https://en.wikipedia.org/wiki/Geek" target="_blank">geek</a>，我推薦使用 <a href="https://www.marzocca.net/linux/baobab/" target="_blank">Baobao</a> 。它具備圖形化操作界面，並提供派圖呈現磁碟佔用比例，很容易抓出佔用最多空間的目錄或檔案。另外筆者也建議 KDE 使用者用 <a href="https://www.methylblue.com/filelight/" target="_blank">Filelight</a> 。<br /><br /><a href="../../images/110426/DebianUbuntu/baobab_fullscan-300x194.png" target="_blank"><img src="../../images/110426/DebianUbuntu/baobab_fullscan-300x194.png" border="0" width="300" height="194" /></a><br />▲ 圖1 圖像來源：<a href="https://www.marzocca.net/linux/baobab/" target="_blank">Disk Usage Analyzer</a> by <a href="https://www.marzocca.net/" target="_blank">Fabio Marzocca</a> <br /><br />依照筆者的使用經驗，佔用最多空間的檔案往往是電子郵件，因為電子郵件中常常附夾了簡報檔、文件等等。如果已經歸檔結案，我通常會把夾檔刪掉，只留下郵件本文存檔。若你使用的郵件收發軟體是 Evolution，筆者推薦使用筆者寫的外掛程式 <a href="https://people.debian.org.tw/~chihchun/tag/evolution/" target="_blank">evolution-remove-attachments</a> ，來整理及備份電子郵件。<br /><br />
+<h3>apt-tools cache</h3>
+從最簡單的系統安裝設定開始，系統就已經裝了許多你用不著的檔案。第一個常見的就是各國語系的說明文件與翻譯，絕大多數使用者不會去看其他語言的說明文件，像是我從來沒讀過法文、甚至日文、韓文的 <a href="https://en.wikipedia.org/wiki/Man_page" target="_blank">man pages</a> ，也不會使用這些語系的使用界面。而大部分軟體因為國際化的關係，往往裝了數國翻譯，如果是 OpenOffice、GNOME 或 KDE 這些大型軟體計劃，佔用的空間還不少呢。這時，推薦使用者安裝 <a href="https://packages.debian.org/search?keywords=localepurge" target="_blank">localepurge</a> 來移除不需要的語系。第一次安裝 localepurge 時，系統會問你要<a href="https://linuxtoy.org/archives/localepurge.html" target="_blank">保留哪些語系</a>，回答過一次後，未來每次透過 <strong>apt/aptitude</strong> 安裝套件時，它都會自動清理一次。<br /><br />下載後的 deb 安裝檔常常也佔用很大空間，特別是 OpenOffice、Xorg、kernel 等等。如果你常常升級系統，不知不覺系統就會存下很多暫存的 deb 安裝檔。這時，你可以用 <strong>apt-get</strong> 來清除它們。<br />
+<pre><code><br /># apt-get autoclean<br /># apt-get clean<br /></code></pre>
+<br />其中 <strong>autoclean</strong> 是清掉舊版的 deb，系統會保留一份最新版本安裝檔。我個人都使用 <strong>autoclean</strong> 指令，以免發生意外的時候，沒有最新版本的 deb 檔可以重新安裝。一般使用者可以直接以 <strong>clean</strong> 清除快取。<br /><br />
+<h3>apt-tools dependency</h3>
+使用 Linux 時，或多或少會自己編譯一些軟體，需要編譯軟體時，就會需要相關的開發函式庫。但常常裝完砍掉後，這些相關的開發函式庫還留在系統中變成軟體孤兒。<br /><br />你除了應該儘量用 <a href="https://www.igigo.net/archives/88" target="_blank"><strong>apt-get autoremove</strong> 或 <strong>aptitude</strong></a> 外，也可以用 <strong><a href="https://packages.debian.org/search?keywords=deborphan" target="_blank">deborphan</a></strong> 來找軟體孤兒。最常見（也很危險）的用法如下：<br />
+<pre><code><br /># aptitude remove $(deborphan --nice-mode --guess-all)<br /></code></pre>
+<br />這樣 <strong>deborphan</strong> 會推估所有系統中不需要的程式，並全部移除。你也可以用以下指令找出最佔用空間的套件：<br />
+<pre><code><br />$ deborphan -a -n|sort -n<br /></code></pre>
+<br />懶惰的話，你也可以裝 <a href="https://www.marzocca.net/linux/gtkorphan.html" target="_blank">GtkOrphan</a>，以圖形化界面管理。<br /><br /><a href="../../images/110426/DebianUbuntu/gtkorphan-262x300.jpg" target="_blank"><img src="../../images/110426/DebianUbuntu/gtkorphan-262x300.jpg" border="0" width="262" height="300" /></a><br />▲ 圖2 使用 GtkOrphan 圖形化管理硬碟空間。<br /><br />
+<h3>BleachBit (<a href="https://www.piriform.com/" target="_blank">CCleaner</a> for Linux)</h3>
+雖然新的 Linux 軟體，已經逐漸使用 .local、.cache、.config 等目錄設定方式，但是還是有許多軟體會把快取存在 .config 或自己的目錄中，像是 .gnome2、.firefox 等。結果是使用者很難找到快取檔案。若使用 UbuntuOne、Dropbox 等等雲端備份工具，常常連不重要的快取都一起備份了，費時費錢。<br /><br />上述指令或工具，看似十分繁複，而且只能管理系統檔案。從 Windows 跳船過來的使用者一定會想，是否有類似 CCleaner 的工具，用手指點一點，就可以把垃圾檔案清乾淨？<br /><br />那麼，筆者建議你使用同時具有 Windows 及 Linux 版本的 <a href="https://bleachbit.sourceforge.net/" target="_blank">BleachBit</a> 。BleachBit 設計了一套相當有彈性的設定描述語言— <a href="https://bleachbit.sourceforge.net/documentation/cleanerml" target="_blank">CleanerML</a>，支援許多<a href="https://bleachbit.sourceforge.net/features" target="_blank">常見軟體</a>的清除功能，非常類似 CCleaner，可以自動偵測可清除的軟體列表，接著只要點選需清除的檔案類型，BleachBit 就會自動刪除並計算所騰出空間。沒有 X 圖形界面時，也可以用 bleachbit_cli 指令列。<br /><br /><a href="../../images/110426/DebianUbuntu/bleachbit-081-ubuntu-1010-zh_tw-300x244.png" target="_blank"><img src="../../images/110426/DebianUbuntu/bleachbit-081-ubuntu-1010-zh_tw-300x244.png" border="0" width="300" height="244" /></a><br />▲ 圖3<br /><br />
+<h3>References</h3>
+如果你很 Geek，可以參考 Ubuntu Wiki 上的 <a href="https://wiki.ubuntu.com/ReducingDiskFootprint" target="_blank">Reducing Disk Footprint</a> ，上面分享了許多縮減系統大小的技巧。<br /><br />另外 Ubuntu 計劃要<a href="https://blueprints.launchpad.net/ubuntu/+spec/performance-desktop-n-install-footprint" target="_blank">削減安裝光碟容量大小</a>，未來新版 Ubuntu 11.04 Natty 將會採用，也會影響系統安裝後佔用記憶體的量。<br /><br />
+<h3>作者簡介</h3>
+蔡志展 (Rex Tsai) 或網名 chihchun，現為自由工作者，從事開源軟體顧問或開發服務。倡議並推廣自由軟體與開放源碼，早期 KaLUG 成員，現常出席 Tossug、 HackingThursday 聚會，亦是開源人年會 (COSCUP) 籌備志工。長期 Debian、OpenWrt 使用者。關注議題甚廣，進一步資訊請參考 <a href="https://people.debian.org.tw/~chihchun/" target="_blank">https://people.debian.org.tw/~chihchun/</a>。
+			<!-- Show relate article -->
+				<!-- end -->
+		<div class="article_note">
+		<!-- Add tags use metakey, and show OSSF Newsletter tag: OSSFNL+NUM-->
+		<br><br> <hr style='border: 1px dashed #D2DADB;'><b>自由軟體鑄造場電子報&nbsp;:</b>&nbsp;<a href='../../previous-issue%3Ftask=view&amp;id=722.html'>第 171 期 談影音編碼的開放專利與商業應用：從 WebM 與 H.264 格式的比較觀點出發</a><br>				<!-- End -->
+					<br>
+					<b>分類: </b><a href="../foss-programs.html">				源碼秘技					</a>				</div>
+			 <!-- AddThis Button BEGIN ID 3001 is the front page article -->
+     			<br><br>
+       <div class="addthis_toolbox addthis_default_style addthis_32x32_style">
+       <a class="addthis_button_preferred_1"></a>
+       <a class="addthis_button_preferred_2"></a>
+       <a class="addthis_button_preferred_3"></a>
+       <a class="addthis_button_preferred_4"></a>
+       <a class="addthis_button_compact"></a>
+       <a class="addthis_counter addthis_bubble_style"></a>
+       </div>
+       <script type="text/javascript">var addthis_config = {"data_track_clickback":true};</script>
+       <script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js#pubid=openfoundry"></script>
+       <!-- AddThis Button END -->
+     <br>
+		<div class="totop" ><a class="rt-totop" href="8307--debianubuntu-%3Ftmpl=component&amp;print=1&amp;layout=default&amp;page=.html#" style="outline: medium none;">↑ Top</a></div>
+            <!-- AddThis Button END -->
+
+			</div>
+</div>
+
+						</div>
+					</div>
+				</div>
+			</div>
+		</body>
+	</html>

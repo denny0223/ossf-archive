@@ -1,0 +1,422 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-gb" lang="en-gb" >
+<head>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<link rel="shortcut icon" href="images/favicon.ico" />
+	  <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+  <meta name="robots" content="index, follow" />
+  <meta name="keywords" content="OSSFNL541" />
+  <meta name="title" content="OpenID：以使用者為中心（User-centric）的單一網路身分認證" />
+  <meta name="description" content="<專案源起> 隨著資訊科技快速發展與寬頻網路普及，網路使用者持續增長，使用習慣瀕臨轉變。在 Web2.0 發展熱潮下，您是否發覺自己擁有太多組的網路帳號密碼，造成登入時需要回想一下配對是否正確？或是有些使用頻率較低的網站，經一段時間就忘記帳號密碼，造成急用時的不便利？有 鑑於此，Single Sign-On（單一簽入）的想法開始被提出，亦即使用者採同一帳號密碼，可登入多個網站，OpenID" />
+  <meta name="generator" content="" />
+  <title>OpenID：以使用者為中心（User-centric）的單一網路身分認證 - OpenFoundry</title>
+  <link href="favicon.ico" rel="shortcut icon" type="image/x-icon" />
+  <link rel="stylesheet" href="components/com_gantry/css/gantry.css" type="text/css" />
+  <link rel="stylesheet" href="components/com_gantry/css/grid-12.css" type="text/css" />
+  <link rel="stylesheet" href="components/com_gantry/css/joomla.css" type="text/css" />
+  <link rel="stylesheet" href="templates/rt_quantive_j15/css/joomla.css" type="text/css" />
+  <link rel="stylesheet" href="templates/rt_quantive_j15/css/style1.css" type="text/css" />
+  <link rel="stylesheet" href="templates/rt_quantive_j15/css/light-body.css" type="text/css" />
+  <link rel="stylesheet" href="templates/rt_quantive_j15/css/demo-styles.css" type="text/css" />
+  <link rel="stylesheet" href="templates/rt_quantive_j15/css/template.css" type="text/css" />
+  <link rel="stylesheet" href="templates/rt_quantive_j15/css/typography.css" type="text/css" />
+  <link rel="stylesheet" href="templates/rt_quantive_j15/css/fusionmenu.css" type="text/css" />
+  <style type="text/css">
+    <!--
+#rt-main-surround ul.menu li.active > a, #rt-main-surround ul.menu li.active > .separator, #rt-main-surround ul.menu li.active > .item, #rt-main-surround .square4 ul.menu li:hover > a, #rt-main-surround .square4 ul.menu li:hover > .item, #rt-main-surround .square4 ul.menu li:hover > .separator, .roktabs-links ul li.active span {color:#0088B5;}
+a, #rt-main-surround ul.menu a:hover, #rt-main-surround ul.menu .separator:hover, #rt-main-surround ul.menu .item:hover {color:#0088B5;}
+    -->
+  </style>
+  <script type="text/javascript" src="components/com_jcomments/js/jcomments-v2.1.js%3Fv=2"></script>
+  <script type="text/javascript" src="components/com_jcomments/libraries/joomlatune/ajax.js"></script>
+  <script type="text/javascript" src="media/system/js/mootools.js"></script>
+  <script type="text/javascript" src="media/system/js/caption.js"></script>
+  <script type="text/javascript" src="components/com_gantry/js/gantry-buildspans.js"></script>
+  <script type="text/javascript" src="components/com_gantry/js/gantry-inputs.js"></script>
+  <script type="text/javascript" src="templates/rt_quantive_j15/js/jquery.cookie.js"></script>
+  <script type="text/javascript" src="modules/mod_roknavmenu/themes/fusion/js/fusion.js"></script>
+  <script type="text/javascript" src="modules/mod_ofssologin/js/ofssologin.js"></script>
+  <script type="text/javascript">
+
+			window.addEvent('domready', function() {
+				var modules = ['rt-block'];
+				var header = ['h3','h2','h1'];
+				GantryBuildSpans(modules, header);
+			});
+		InputsExclusion.push('.content_vote','#rt-popup')
+		        window.addEvent('load', function() {
+					new Fusion('ul.menutop', {
+						pill: 0,
+						effect: 'slide and fade',
+						opacity: 1,
+						hideDelay: 500,
+						centered: 0,
+						tweakInitial: {'x': -2, 'y': 0},
+        				tweakSubsequent: {'x': 0, 'y': -14},
+						menuFx: {duration: 200, transition: Fx.Transitions.Sine.easeOut},
+						pillFx: {duration: 400, transition: Fx.Transitions.Back.easeOut}
+					});
+	            });
+  </script>
+<!-- <script type="text/javascript" src="/sso/javascripts/langsync.js"></script> -->
+<!-- <script src="/templates/rt_quantive_j15/js/ossf.js"></script> -->
+<script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-4136519-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
+</head>
+	<body  class="backgroundlevel-low backgroundstyle-style8 bodylevel-med bodystyle-light cssstyle-style1 logostyle-dark font-family-helvetica font-size-is-default menu-type-fusionmenu col12 ">
+		<div id="rt-main-background">
+			<div class="rt-container">
+																<div id="rt-header">
+					<div class="rt-grid-7 rt-alpha">
+    			<div class="rt-block">
+    	    	<a href="index.html" id="rt-logo"></a>
+    		</div>
+	    
+</div>
+<div class="rt-grid-5 rt-omega">
+                    <div class="square9">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<div class="ofssologin_square9"><a href="index.html">Login</a>&nbsp;&nbsp|&nbsp;&nbsp;<span><a href="tw/component/content/2128%3Ftask=view.html" ><span lang="tw" xml:lang="tw">繁體中文</span></a></li></ul></span><!--Joom!fish V2.0.4 (Lightning)-->
+<!-- &copy; 2003-2009 Think Network, released under the GPL. -->
+<!-- More information: at http://www.joomfish.net -->
+<div class="ofssologin_search_square9">
+  <form id="of_search" action="https://www.openfoundry.org/of/openfoundry/search" method="get" onsubmit="of_search(); return false;">
+    <select id="of_search_type">
+      <option value="Projects"> Projects </option>
+      <option value="Content"> Content </option>
+      <option value="People"> People </option>
+    </select>
+    <input id="query" name="query" id="mod_search_searchword" maxlength="50" alt="search" class="inputbox" type="text" size="28" value="search..."  onblur="if(this.value=='') this.value='search...';" onfocus="if(this.value=='search...') this.value='';" />
+    <input type="hidden" name="commit" value="search" />
+  </form>
+</div></div>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		
+</div>
+					<div class="clear"></div>
+				</div>
+																<div id="rt-navigation"><div id="rt-navigation2"><div id="rt-navigation3">
+					
+<div class="nopill">
+	<ul class="menutop level1 " >
+						<li class="item1 root" >
+					<a class="orphan item bullet" href="index.html"  >
+				<span>
+			    				Home				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item32 root" >
+					<a class="orphan item bullet" href="archived.html"  >
+				<span>
+			    				Projects				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item186 root" >
+					<a class="orphan item bullet" href="en/community.html"  >
+				<span>
+			    				Who&#039;s Who				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item4 root" >
+					<a class="orphan item bullet" href="en/news.html"  >
+				<span>
+			    				News				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item5 root" >
+					<a class="orphan item bullet" href="en/law-and-licensing.html"  >
+				<span>
+			    				Law &amp; Licensing				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item3 root" >
+					<a class="orphan item bullet" href="en/activities.html"  >
+				<span>
+			    				Activities				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item2 root" >
+					<a class="orphan item bullet" href="en/resourcecatalog.html"  >
+				<span>
+			    				Resource Catalog				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item45 root" >
+					<a class="orphan item bullet" href="en/about.html"  >
+				<span>
+			    				About				   
+				</span>
+			</a>
+			
+			
+	</li>	
+				</ul>
+</div>
+
+				    <div class="clear"></div>
+				</div></div></div>
+								<div class="rt-surround"><div class="rt-surround2"><div class="rt-surround3">
+										<div id="rt-showcase-section">
+												<div id="rt-showcase">
+							<div class="rt-grid-12 rt-alpha rt-omega">
+    		<div class="clear"></div>
+		
+		
+                <div class="close-note">
+                    <div class="rt-block">
+               					<div class="module-content">
+                	<div style="font-size:medium; background-image:linear-gradient(120deg,#159957,#4298b2);color:white;padding:20px;margin:-10px -18px;">感謝您對「自由軟體鑄造場」的支持與愛護，十多年來「自由軟體鑄造場」受中央研究院支持，並在資訊科學研究所以及資訊科技創新研究中心執行，現已完成階段性的任務。 本網站預計持續維運至 2021年底，網站內容基本上不會再更動。<br />也紀念我們永遠的朋友 李士傑先生（Shih-Chieh Ilya Li）。</div>				</div>
+            </div>
+                </div>
+		
+</div>
+							<div class="clear"></div>
+						</div>
+																	</div>
+															<div id="rt-main-surround">
+												<div id="rt-breadcrumbs">
+								<div class="rt-breadcrumb-surround">
+		<a href="index.html" id="breadcrumbs-home"></a>
+		<span class="breadcrumbs pathway">
+<span class="no-link">Previous Issue</span></span>
+	</div>
+	
+							<div class="clear"></div>
+						</div>
+																							              <div id="rt-main" class="sa3-mb9">
+                <div class="rt-main-inner">
+                    <div class="rt-grid-9 rt-push-3">
+                                                <div class="rt-block">
+                            							<div class="square1">
+							<div class="rt-module-surround">
+								<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+								<div class="rt-module-inner">
+		                            <div id="rt-mainbody">
+		                                
+<div class="rt-joomla ">
+	<div class="rt-article">
+		
+				<div class="rt-headline"><h1 class="rt-article-title">OpenID：以使用者為中心（User-centric）的單一網路身分認證</h1>		</div>
+		<div class="clear"></div>
+		
+		
+		
+				<div class="rt-articleinfo">
+						<div class="rt-article-icons">
+								<a href="https://www.openfoundry.org/en/component/content/2128?tmpl=component&amp;print=1&amp;page=" title="Print" onclick="window.open(this.href,'win2','status=no,toolbar=no,scrollbars=yes,titlebar=no,menubar=no,resizable=yes,width=640,height=480,directories=no,location=no'); return false;" rel="nofollow"><span class="icon print"></span></a>																</div>
+			
+			<span class="rt-date-posted">
+						 Created at			Sunday, 09 August 2009 14:23						&nbsp;&nbsp;&nbsp;&nbsp;						Last Updated on Tuesday, 25 August 2009 18:22						</span>
+
+						<span class="rt-author">
+				Written by myID 團隊與 Arthur			</span>
+				
+					</div>
+		
+		
+		<p><strong>&lt;專案源起&gt;</strong> </p>
+<p>隨著資訊科技快速發展與寬頻網路普及，網路使用者持續增長，使用習慣瀕臨轉變。在 Web2.0 發展熱潮下，您是否發覺自己擁有太多組的網路帳號密碼，造成登入時需要回想一下配對是否正確？或是有些使用頻率較低的網站，經一段時間就忘記帳號密碼，造成急用時的不便利？有鑑於此，Single Sign-On（單一簽入）的想法開始被提出，亦即使用者採同一帳號密碼，可登入多個網站，OpenID 就是單一簽入技術的其中一種作法。<br /></p><p><strong>&lt;專案簡介&gt;</strong> </p>
+<p>myID.tw 專案是中央研究院－資訊科技創新研究中心（資創中心），所打造的 OpenID 服務，免費發行 OpenID 給使用者，提供 OpenID 的認證服務（Authentication service）與身份識別服務（Identity service）。myID.tw 專案發行的 OpenID 就稱作 myID，myID 遵循 OpenID Authentication 1.1&nbsp; 的規格，實現了 Single Sign-On 的服務機制。使用 OpenID 無需額外的軟硬體，是單純透過網頁瀏覽器與伺服端溝通來完成認證，適用於架構在 HTTP／HTTPS 之上的網路服務。而運作的方式是以使用者為中心，結合了認證、識別、信賴、授權等服務圍繞其外的概念。&nbsp;<br />&nbsp;<br /><img hspace="5" height="339" width="589" vspace="5" border="0" align="absbottom" alt="" src="images/090811/myid/01.jpg" /><br />圖1 OpenID的概念</p>
+<p>OpenID 的使用上分為 2 個步驟介紹：<br />&nbsp;&nbsp;&nbsp; 1.於 myID.tw 網站申請一個 OpenID 帳號。<br />&nbsp;&nbsp;&nbsp; 2.使用 OpenID 登入網站。</p>
+<p><br /><strong>&lt;申請 OpenID 帳號&gt;</strong> </p>
+<p>第一步、進入 <a href="https://myid.tw/" target="_blank">myID.tw 網站</a>，按下頁面中的「註冊會員」連結，就可以開始準備註冊一個新的帳號。</p>
+<p><a href="images/090811/myid/02.jpg" target="_blank"><img hspace="5" height="429" width="600" vspace="5" border="0" align="absbottom" alt="" src="images/090811/myid/02.jpg" /></a><br />圖2 中央研究院－資創中心 myID.tw 專案首頁</p>
+<p>第二步、請依序在帳號、姓名、密碼、Email 欄位填寫適當內容，並於最下方完成文字辨識測試，以確保不是由機器人程式申請帳號，測試內容為兩個英文單字，輸入時中間不需空格，輸入完再按「註冊」按鈕。</p>
+<p><a href="images/090811/myid/03.jpg" target="_blank"><img hspace="5" height="432" width="600" vspace="5" border="0" align="absbottom" alt="" src="images/090811/myid/03.jpg" /></a><br />圖3 註冊頁面</p>
+<p>第三步、出現「歡迎您進入 myID.tw 的管理介面」的畫面後，使用者已經可以開始使用myID.tw 的服務了！此時使用者可以在右方中間處看到目前的 OpenID URI，例如：圖 4 上的 https://momijichen.myid.tw/ 就是註冊完成的 OpenID，未來只要在其他支援 OpenID 的網站登入時，直接輸入 https://momijichen.myid.tw/ 即可登入，完全不用再註冊新帳號。</p>
+<p><a href="images/090811/myid/04.jpg" target="_blank"><img hspace="5" height="418" width="600" vspace="5" border="0" align="absbottom" alt="" src="images/090811/myid/04.jpg" /></a><br />圖4 註冊成功畫面</p>
+<p>第四步、若使用者已看到右上畫面有訊息提示，表示目前尚未通過 e-mail 認證，請收信並按照信件中的指示啟用 OpenID 帳號。若使用者未認證e-mail，雖仍可使用 myID.tw 的服務，但若將來遺忘了自己的密碼，myID.tw 將無法使用當初使用者註冊的 e-mail 寄發密碼忘記的信函，所以強烈建議使用者註冊時便點選信件中的連結認證 e-mail。</p>
+<p><a href="images/090811/myid/05.jpg" target="_blank"><img hspace="5" height="291" width="600" vspace="5" border="0" align="absbottom" alt="" src="images/090811/myid/05.jpg" /></a><br />圖5 e-mail認證信件</p>
+<p>第五步、點選認證連回 myID.tw 網站後，正式啟用 myID.tw 的服務便完成！<br />&nbsp;<br /><a href="images/090811/myid/06.jpg" target="_blank"><img hspace="5" height="303" width="600" vspace="5" border="0" align="absbottom" alt="" src="images/090811/myid/06.jpg" /></a><br />圖6&nbsp; 認證成功畫面</p>
+<p><br /><strong>&lt;使用 OpenID 登入網站&gt;</strong> </p>
+<p>myID.tw 發行的 OpenID 稱作為 myID，當使用者在 myID.tw 申請好了 myID 之後，如何使用才能登入網站呢？在此用 twitterfeed 這個服務作為使用 myID 的登入示範。</p>
+<p>第一步、twitterfeed 首頁找到「Sign In with OpenID」的連結，在上面按一下滑鼠左鍵。</p>
+<p><a href="images/090811/myid/07.jpg" target="_blank"><img hspace="5" height="557" width="600" vspace="5" border="0" align="absbottom" alt="" src="images/090811/myid/07.jpg" /></a><br />圖7 twitterfeed 首頁</p>
+<p>第二步、出現多種登入方式，要選擇右下角的&nbsp;&nbsp;&nbsp;<br />&nbsp;<br /><a href="images/090811/myid/08.jpg" target="_blank"><img hspace="5" height="425" width="600" vspace="5" border="0" align="absbottom" alt="" src="images/090811/myid/08.jpg" /></a><br />圖8 選擇右下角 OpenID 的按鈕</p>
+<p>第三步、請使用者填入自己的 myID。此範例中使用https://joyce.myid.tw<br />&nbsp;<br /><a href="images/090811/myid/09.jpg" target="_blank"><img hspace="5" height="425" width="600" vspace="5" border="0" align="absbottom" alt="" src="images/090811/myid/09.jpg" /></a><br />圖9 輸入OpenID帳號</p>
+<p>第四步、此時畫面會導回到 myID.tw，要求使用者輸入密碼。</p>
+<p><a href="images/090811/myid/10.jpg" target="_blank"><img hspace="5" height="315" width="600" vspace="5" border="0" align="absbottom" alt="" src="images/090811/myid/10.jpg" /></a><br />圖10 導回 myID.tw 輸入密碼</p>
+<p>第五步、輸入密碼後，會到請求使用者勾選項目，授權同意將那些資料傳到 twitterfeed 的畫面，可選擇按永遠認證、一次認證或取消，完成後會導回 twitterfeed 的頁面，使用 myID 登入 twitterfeed 的步驟就完成了。<br />&nbsp;<br /><a href="images/090811/myid/11.jpg" target="_blank"><img hspace="5" height="421" width="600" vspace="5" border="0" align="absbottom" src="images/090811/myid/11.jpg" alt="" /></a><br />圖11 使用者可選擇要給 twitterfeed 的個人資料</p>
+<p>從上述例子可知，若想使用 twitterfeed 的服務不需要專門去申請一個 twitterfeed 的帳號，只要使用 myID 登入有支援 OpenID 認證的網站 ，不需要申請帳號，就可登入你想使用的網站。同時你的 myID 亦可以到其他支援 OpenID 登入的網站去登入，不受登入次數影響。 </p>
+<p>您可至 <a href="https://myid.tw/profile/openidlist" target="_blank">https://myid.tw/profile/openidlist</a>&nbsp; 體驗更多 myID 帶給您的便利<br />想更了解 OpenID 技術，請至 <a href="https://of.openfoundry.org/projects/997/download" target="_blank">OpenID 技術手冊下載點</a></p>
+<p><br /><strong>&lt;未來發展&gt;</strong></p>
+<p>MyID 開始服務至今已快一年，過去一年裡 OpenID 普及相當迅速，由於 myID 開發時 OpenID Authentication 2.0 的規格尚未普及，如今整體環境進步，許多大型服務也開始支援 OpenID，這些大型服務採行較新的 OpenID Authentication 2.0 標準，同時也混雜一部分自有規格。所以 myID 要與更多的網站介接將 OpenID Authentication 2.0 新的標準納入是下一階段既定的工作，而與大型網站介接的特殊調整也一併考量。其次，myID 目前所做的 OpenID 身份發行服務還不算完全成功，還需著重在協助需要身份認證服務網站的推廣交流，使其發展成為可接受 OpenID 登入之網站，讓使用 OpenID 的管道更為暢通。</p>
+<p><br /><strong>&lt;專案摘要&gt;</strong></p>
+<p><strong>專案名稱:</strong>&nbsp; myID.tw<br /><strong>最新版本:</strong>&nbsp;&nbsp;Beta1<br /><strong>專案首頁:</strong>&nbsp;&nbsp;<a href="https://of.openfoundry.org/projects/997" target="_blank">https://of.openfoundry.org/projects/997</a><br /><strong>官方網站:</strong>&nbsp;&nbsp;<a href="https://myid.tw/" target="_blank">https://myid.tw/</a><br /><strong>程式碼授權:</strong>&nbsp;&nbsp;<a href="Law-and-Policy/Licenses/GPL.html" target="_blank">GPL</a> <br /><strong>作業環境:</strong>&nbsp;&nbsp;除了IE8尚未完全適用之外，其他所有網頁瀏覽器皆適用。<br /><strong>適用對象:</strong>&nbsp;&nbsp;一般大眾<br /><strong>漫遊網站:</strong>&nbsp;&nbsp;<a href="https://myid.tw/profile/openidlist" target="_blank">https://myid.tw/profile/openidlist</a></p>
+			<!-- Show relate article -->
+				<!-- end -->
+		<div class="article_note">
+		<!-- Add tags use metakey, and show OSSF Newsletter tag: OSSFNL+NUM-->
+		<br><br> <hr style='border: 1px dashed #D2DADB;'><b>OSSF Newsletter&nbsp;:</b>&nbsp;<a href='previous-issue%3Ftask=view&amp;id=541.html'>第 132 期 找個合用的開放源碼心智圖軟體</a><br>				<!-- End -->
+					<br>
+					<b>Category: </b><a href="en/foss-projects.html">				FOSS Projects					</a>				</div>
+			 <!-- AddThis Button BEGIN ID 3001 is the front page article -->
+     			<br><br>
+       <div class="addthis_toolbox addthis_default_style addthis_32x32_style">
+       <a class="addthis_button_preferred_1"></a>
+       <a class="addthis_button_preferred_2"></a>
+       <a class="addthis_button_preferred_3"></a>
+       <a class="addthis_button_preferred_4"></a>
+       <a class="addthis_button_compact"></a>
+       <a class="addthis_counter addthis_bubble_style"></a>
+       </div>
+       <script type="text/javascript">var addthis_config = {"data_track_clickback":true};</script>
+       <script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js#pubid=openfoundry"></script>
+       <!-- AddThis Button END -->
+     <br>
+		<div class="totop" ><a class="rt-totop" href="index.php%3Foption=com_content&amp;task=view&amp;id=2128&amp;Itemid=56%3Bisletter=1.html#" style="outline: medium none;">↑ Top</a></div>
+            <!-- AddThis Button END -->
+
+			</div>
+</div>
+
+		                            </div>
+									<div class="clear"></div>
+								</div>
+								<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+							</div>
+							</div>
+                                                    </div>
+                                            </div>
+                                <div class="rt-grid-3 rt-pull-9">
+                <div id="rt-sidebar-a">
+                                    <div class="square4">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<ul class="menu"><li id="current" class="active item56"><a href="en/previous-issue.html"><span>Previous Issue</span></a></li><li class="item55"><a href="en/about-newsletter.html"><span>About Newsletter</span></a></li></ul>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<ul class="menu"><li class="item115"><a href="en/foss-news.html"><span>FOSS News</span></a></li><li class="item141"><a href="en/case-job.html"><span>Case and Jobs</span></a></li></ul>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+        	                <div class="square1">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-title"><h2 class="title">Special</h2></div>
+						<div class="clear"></div>
+		                						<div class="module-content">
+		                	<ul class="menu"><li class="item37"><a href="en/tech-column.html"><span>Tech Column</span></a></li><li class="item40"><a href="en/foss-programs.html"><span>FOSS Programs</span></a></li><li class="item35"><a href="en/legal-column.html"><span>Legal Column</span></a></li><li class="item154"><a href="en/foss-forum.html"><span>FOSS Forum</span></a></li><li class="item162"><a href="en/enterprise-application.html"><span>Enterprise Application</span></a></li><li class="item44"><a href="en/foss-projects.html"><span>FOSS Projects</span></a></li></ul>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		                <div class="square1">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<p style="text-align: center;"><a href="news%3Fformat=feed&amp;type=rss" target="_black"><img src="images/M_images/news-rss-feed.png" border="0" /></a><br /><a href="https://www.openfoundry.org/rss-feed/Newsletter" target="_black"><img src="images/M_images/newsletter-rss-feed.png" border="0" /></a></p>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		
+                </div>
+            </div>
+
+                    <div class="clear"></div>
+                </div>
+            </div>
+																													</div>
+										<div id="rt-copyright">
+						<div class="rt-grid-12 rt-alpha rt-omega">
+                        <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<span class="nowrap">Open Source Software Foundry</span><span class="nowrap">‧</span><span class="nowrap"> </span><span class="nowrap">Best  Viewed with IE7.0 or Firefox2.0 above, 1024x768 Resolution. </span><strong>E-Mail</strong>：<a href="mailto:contact@openfoundry.org">contact@openfoundry.org</a> <br /><strong>Address</strong>：No.128, Sec.2, Academia Rd., Institute of Information Science, Academia Sinica, Nangang District, Taipei City 11529, Taiwan (R.O.C). <br /><a href="en/privacy-policy.html">Privacy Policy</a>. <a href="en/terms-of-use.html">Terms-of-use</a> <span style="position: relative; top: 8px; margin-top: -8px;"> <a href="about/8101.html"><img src="images/M_images/rss-feed-all.png" border="0" /></a></span>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+        	
+</div>
+						<div class="clear"></div>
+					</div>
+					<div class="rt-footer-bottom-wrap"><div class="rt-footer-bottom"><div class="rt-footer-bottom2"><div class="rt-footer-bottom3"></div></div></div></div>
+									</div></div></div>
+				<div class="rt-surround-bottom"><div class="rt-surround-bottom2"><div class="rt-surround-bottom3"></div></div></div>
+							</div>
+		</div>
+		<!--
+		<script id="aptureScript">
+						(function (){var a=document.createElement("script");a.defer="true";a.src="http://www.apture.com/js/apture.js?siteToken=vsJttrn";document.getElementsByTagName("head")[0].appendChild(a);})();
+     </script>
+-->
+
+<!-- Piwik -->
+<!-- 			<script type="text/javascript">
+			  var _paq = _paq || [];
+		  _paq.push(["trackPageView"]);
+		  _paq.push(["enableLinkTracking"]);
+
+		    (function() {
+			        var u=(("https:" == document.location.protocol) ? "https" : "https") + "://www.openfoundry.org/piwik/";
+				    _paq.push(["setTrackerUrl", u+"piwik.php"]);
+				    _paq.push(["setSiteId", "1"]);
+				        var d=document, g=d.createElement("script"), s=d.getElementsByTagName("script")[0]; g.type="text/javascript";
+				        g.defer=true; g.async=true; g.src=u+"piwik.js"; s.parentNode.insertBefore(g,s);
+					  })();
+		  </script> -->
+<!-- End Piwik Code -->
+	</body>
+</html>

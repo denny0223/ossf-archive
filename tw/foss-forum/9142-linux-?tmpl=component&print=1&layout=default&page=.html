@@ -1,0 +1,130 @@
+	<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+	<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="zh-tw" lang="zh-tw" >
+		<head>
+			  <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+  <meta name="robots" content="noindex, nofollow" />
+  <meta name="keywords" content="OSSFNL843" />
+  <meta name="title" content="Linux 最佳實踐指南：資料安全" />
+  <meta name="description" content="開放性有時會讓剛接觸開源軟體的人，產生安全問題上的疑慮。有些人認為 Linux 散佈套件的推陳出新，意味著缺乏標準化，在安全架構與系統管理上，也沒有最佳的實踐標準。 事實上，開放性與大量出現的不同專案其實是優點。上至 Linux 下至小應用程式的開源專案，都會受到開發者不斷地檢視並加以改進。也就是說有許多雙眼睛在審視這些程式碼，他們都想看到這些程式碼順利運作。 Linux" />
+  <meta name="generator" content="" />
+  <title>Linux 最佳實踐指南：資料安全</title>
+  <link href="../../favicon.ico" rel="shortcut icon" type="image/x-icon" />
+  <link rel="stylesheet" href="../../components/com_gantry/css/gantry.css" type="text/css" />
+  <link rel="stylesheet" href="../../components/com_gantry/css/grid-12.css" type="text/css" />
+  <link rel="stylesheet" href="../../components/com_gantry/css/joomla.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/joomla.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/style1.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/light-body.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/demo-styles.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/template.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/typography.css" type="text/css" />
+  <style type="text/css">
+    <!--
+#rt-main-surround ul.menu li.active > a, #rt-main-surround ul.menu li.active > .separator, #rt-main-surround ul.menu li.active > .item, #rt-main-surround .square4 ul.menu li:hover > a, #rt-main-surround .square4 ul.menu li:hover > .item, #rt-main-surround .square4 ul.menu li:hover > .separator, .roktabs-links ul li.active span {color:#0088B5;}
+a, #rt-main-surround ul.menu a:hover, #rt-main-surround ul.menu .separator:hover, #rt-main-surround ul.menu .item:hover {color:#0088B5;}
+    -->
+  </style>
+  <script type="text/javascript" src="../../components/com_jcomments/js/jcomments-v2.1.js%3Fv=2"></script>
+  <script type="text/javascript" src="../../components/com_jcomments/libraries/joomlatune/ajax.js"></script>
+  <script type="text/javascript" src="../../media/system/js/mootools.js"></script>
+  <script type="text/javascript" src="../../media/system/js/caption.js"></script>
+  <script type="text/javascript" src="../../components/com_gantry/js/gantry-buildspans.js"></script>
+  <script type="text/javascript" src="../../components/com_gantry/js/gantry-inputs.js"></script>
+  <script type="text/javascript">
+
+			window.addEvent('domready', function() {
+				var modules = ['rt-block'];
+				var header = ['h3','h2','h1'];
+				GantryBuildSpans(modules, header);
+			});
+		InputsExclusion.push('.content_vote','#rt-popup')
+  </script>
+		</head>
+		<body  class="backgroundlevel-low backgroundstyle-style8 bodylevel-med bodystyle-light cssstyle-style1 logostyle-dark font-family-helvetica font-size-is-default menu-type-fusionmenu col12 ">
+			<div id="rt-main-surround">
+				<div class="rt-container">
+					<div class="rt-block">
+						<div id="rt-mainbody">
+					    	
+<div class="rt-joomla ">
+	<div class="rt-article">
+		
+				<div class="rt-headline"><h1 class="rt-article-title">Linux 最佳實踐指南：資料安全</h1>		</div>
+		<div class="clear"></div>
+		
+		
+		
+				<div class="rt-articleinfo">
+						<div class="rt-article-icons">
+				<a href="9142-linux-%3Ftmpl=component&amp;print=1&amp;layout=default&amp;page=.html#" onclick="window.print();return false;"><span class="icon print"></span></a>									<span class="icon printscreen">
+						<a href="9142-linux-%3Ftmpl=component&amp;print=1&amp;layout=default&amp;page=.html#" onclick="window.print();return false;"><img src="../../images/M_images/printButton.png" alt="列印"  /></a>					</span>
+							</div>
+			
+			<span class="rt-date-posted">
+						建立日期			2013-12-17 14:57						&nbsp;&nbsp;&nbsp;&nbsp;						最近更新在 2013-12-18 11:32						</span>
+
+						<span class="rt-author">
+				作者是 謝良奇／編譯			</span>
+				
+					</div>
+		
+		
+		<p>開放性有時會讓剛接觸開源軟體的人，產生安全問題上的疑慮。有些人認為 Linux 散佈套件的推陳出新，意味著缺乏標準化，在安全架構與系統管理上，也沒有最佳的實踐標準。</p>
+
+<p>事實上，開放性與大量出現的不同專案其實是優點。上至 Linux 下至小應用程式的開源專案，都會受到開發者不斷地檢視並加以改進。也就是說有許多雙眼睛在審視這些程式碼，他們都想看到這些程式碼順利運作。</p>
+<p>Linux 資料安全確有標準存在，主要就是最初由美國國家安全局開發，於 2000 年公開釋出的 Security Enhanced Linux (SELinux)。其他也有像是 ISO 27001、PCI DSS 等中立於平台之外的標準。不過如果不付諸實用，有了這些工具也毫無意義。</p>
+<p>常見的問題出在當 Linux 被不同團隊在不同時間，出自不同目的而部署於資料中心各處時，其組態配置所出現的差異。實作並維護適當的安全措施於是變得很棘手。這是風險所在，特別是今日的 IT 基礎架構乃是奠基在廣泛的分散式網路，這為入侵者提供了企業系統與資料的現成進入點。</p>
+<p>標準化是關鍵之處，確保安全標準貫徹應用於 Linux 設計、部署、維護過程中。有三項基礎：</p>
+<ol>
+<li><strong>標準作業環境</strong></li>
+<p>標準作業環境是一套經過仔細定義的核心建構規格，能協助組織為依據其不同硬體平台、企業應用與工作負載，實作安全且經優化 Linux 系統，發展出一套可重複的流程。核心建構讓系統能迅速且一致地以安全的方式進行部署。</p>
+<li><strong>標準作業環境管理平台</strong></li>
+<p>標準作業環境管理平台是例如像 Red Hat 的 Satellite 伺服器與 Puppet 這樣的一系列技術，讓系統管理者有辦法輕鬆將重複工作自動化，並快速部署與有效管理標準作業環境與其安全性。標準作業環境管理平台能大幅降低核心建構安全性、部署和維護週期的運作成本。</p>
+<li><strong>最佳的系統管理程序實踐</strong></li>
+<p>為了維護 Linux 資料安全，安全管理必須成為 FCAPS 等所有管理方法論的關鍵組成部份。</p>
+<p>除了標準作業環境管理平台，像是 Centrify 等技術提供了有組織的辨識與存取管理方法，帶來更強大的安全性，更符合規格要求並降低營運成本。</p>
+</ol><br /> <strong>你需要做的是：</strong><ol>
+<li>在設計與設定 Linux 建構時以安全為優先</li>
+<li>建立並維護最佳的安全組態</li>
+<li>及時安裝支援修補和安全更新</li>
+<li>監視並回報安全組態異動</li>
+<li>嚴密網路與用戶存取</li>
+<li>用戶集中管理與認證服務</li>
+<li>使用日誌紀錄與稽核以提供品質保證與標準相符性</li>
+<li>定期檢視政策與程序</li>
+<li>在核心建構組態管理與部署上，挑選像 Puppet 與 Satellite 伺服器這樣的系統管理工具，為用戶認證選擇類似 Centrify 的工具，在監控上選用 Nagios 等工具。</li>
+</ol><br />
+<p>◎本文翻譯自 Linux IT，原作者為 Simon Mitchell：<br /><a target="_blank" href="https://www.linuxit.com/blog/bid/324262/Best-Practice-Linux-Guide-Data-Security?utm_source=feedburner&utm_medium=feed&utm_campaign=Feed%3A+LinuxIT+%28LinuxIT+Blog%29">https://www.linuxit.com/blog/bid/324262/Best-Practice-Linux-Guide-Data-Security?utm_source=feedburner&utm_medium=feed&utm_campaign=Feed%3A+LinuxIT+%28LinuxIT+Blog%29</a></p>
+			<!-- Show relate article -->
+				<!-- end -->
+		<div class="article_note">
+		<!-- Add tags use metakey, and show OSSF Newsletter tag: OSSFNL+NUM-->
+		<br><br> <hr style='border: 1px dashed #D2DADB;'><b>自由軟體鑄造場電子報&nbsp;:</b>&nbsp;<a href='../../previous-issue%3Ftask=view&amp;id=843.html'>第 233 期 自由開源軟體預設的不附隨保證與擔保特性</a><br>				<!-- End -->
+					<br>
+					<b>分類: </b><a href="../foss-forum.html">				自由專欄					</a>				</div>
+			 <!-- AddThis Button BEGIN ID 3001 is the front page article -->
+     			<br><br>
+       <div class="addthis_toolbox addthis_default_style addthis_32x32_style">
+       <a class="addthis_button_preferred_1"></a>
+       <a class="addthis_button_preferred_2"></a>
+       <a class="addthis_button_preferred_3"></a>
+       <a class="addthis_button_preferred_4"></a>
+       <a class="addthis_button_compact"></a>
+       <a class="addthis_counter addthis_bubble_style"></a>
+       </div>
+       <script type="text/javascript">var addthis_config = {"data_track_clickback":true};</script>
+       <script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js#pubid=openfoundry"></script>
+       <!-- AddThis Button END -->
+     <br>
+		<div class="totop" ><a class="rt-totop" href="9142-linux-%3Ftmpl=component&amp;print=1&amp;layout=default&amp;page=.html#" style="outline: medium none;">↑ Top</a></div>
+            <!-- AddThis Button END -->
+
+			</div>
+</div>
+
+						</div>
+					</div>
+				</div>
+			</div>
+		</body>
+	</html>

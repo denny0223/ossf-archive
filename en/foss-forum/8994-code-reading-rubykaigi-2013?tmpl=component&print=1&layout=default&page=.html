@@ -1,0 +1,126 @@
+	<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+	<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-gb" lang="en-gb" >
+		<head>
+			  <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+  <meta name="robots" content="noindex, nofollow" />
+  <meta name="keywords" content="OSSFNL829" />
+  <meta name="title" content="Code Reading @ RubyKaigi 2013" />
+  <meta name="description" content="很高興這次能有機會到日本參加 RubyKaigi 2013，我分享的題目是：「Code Reading, Learning More about Ruby by Reading Ruby Source Code」，算是個滿冷門的題目，主要是分享我自己從閱讀 Ruby 原始程式碼中學習到的一些經驗。不過當天還有不少朋友來捧場，讓場子看起來不會太冷清，真是太意外了" />
+  <meta name="generator" content="" />
+  <title>Code Reading @ RubyKaigi 2013</title>
+  <link href="../../favicon.ico" rel="shortcut icon" type="image/x-icon" />
+  <link rel="stylesheet" href="../../components/com_gantry/css/gantry.css" type="text/css" />
+  <link rel="stylesheet" href="../../components/com_gantry/css/grid-12.css" type="text/css" />
+  <link rel="stylesheet" href="../../components/com_gantry/css/joomla.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/joomla.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/style1.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/light-body.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/demo-styles.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/template.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/typography.css" type="text/css" />
+  <style type="text/css">
+    <!--
+#rt-main-surround ul.menu li.active > a, #rt-main-surround ul.menu li.active > .separator, #rt-main-surround ul.menu li.active > .item, #rt-main-surround .square4 ul.menu li:hover > a, #rt-main-surround .square4 ul.menu li:hover > .item, #rt-main-surround .square4 ul.menu li:hover > .separator, .roktabs-links ul li.active span {color:#0088B5;}
+a, #rt-main-surround ul.menu a:hover, #rt-main-surround ul.menu .separator:hover, #rt-main-surround ul.menu .item:hover {color:#0088B5;}
+    -->
+  </style>
+  <script type="text/javascript" src="../../components/com_jcomments/js/jcomments-v2.1.js%3Fv=2"></script>
+  <script type="text/javascript" src="../../components/com_jcomments/libraries/joomlatune/ajax.js"></script>
+  <script type="text/javascript" src="../../media/system/js/mootools.js"></script>
+  <script type="text/javascript" src="../../media/system/js/caption.js"></script>
+  <script type="text/javascript" src="../../components/com_gantry/js/gantry-buildspans.js"></script>
+  <script type="text/javascript" src="../../components/com_gantry/js/gantry-inputs.js"></script>
+  <script type="text/javascript">
+
+			window.addEvent('domready', function() {
+				var modules = ['rt-block'];
+				var header = ['h3','h2','h1'];
+				GantryBuildSpans(modules, header);
+			});
+		InputsExclusion.push('.content_vote','#rt-popup')
+  </script>
+		</head>
+		<body  class="backgroundlevel-low backgroundstyle-style8 bodylevel-med bodystyle-light cssstyle-style1 logostyle-dark font-family-helvetica font-size-is-default menu-type-fusionmenu col12 ">
+			<div id="rt-main-surround">
+				<div class="rt-container">
+					<div class="rt-block">
+						<div id="rt-mainbody">
+					    	
+<div class="rt-joomla ">
+	<div class="rt-article">
+		
+				<div class="rt-headline"><h1 class="rt-article-title">Code Reading @ RubyKaigi 2013</h1>		</div>
+		<div class="clear"></div>
+		
+		
+		
+				<div class="rt-articleinfo">
+						<div class="rt-article-icons">
+				<a href="8994-code-reading-rubykaigi-2013%3Ftmpl=component&amp;print=1&amp;layout=default&amp;page=.html#" onclick="window.print();return false;"><span class="icon print"></span></a>									<span class="icon printscreen">
+						<a href="8994-code-reading-rubykaigi-2013%3Ftmpl=component&amp;print=1&amp;layout=default&amp;page=.html#" onclick="window.print();return false;"><img src="../../images/M_images/printButton.png" alt="Print"  /></a>					</span>
+							</div>
+			
+			<span class="rt-date-posted">
+						 Created at			Wednesday, 05 June 2013 16:37						&nbsp;&nbsp;&nbsp;&nbsp;						Last Updated on Thursday, 06 June 2013 11:12						</span>
+
+						<span class="rt-author">
+				Written by 高見龍／文			</span>
+				
+					</div>
+		
+		
+		<p>很高興這次能有機會到日本參加 <a href="https://rubykaigi.org/2013" target="_blank">RubyKaigi 2013</a>，我分享的題目是：「<a href="https://rubykaigi.org/2013/talk/S41" target="_blank">Code Reading, Learning More about Ruby by Reading Ruby Source Code」</a>，算是個滿冷門的題目，主要是分享我自己從閱讀 Ruby 原始程式碼中學習到的一些經驗。不過當天還有不少朋友來捧場，讓場子看起來不會太冷清，真是太意外了 (其實我也搞不清楚到底有多少人，我當時已經緊張到沒辦法算數了) 。</p>
+
+<p>在進入主題之前，我問大家有多少人曾經來過台灣，結果在場有十來個人舉手，就以現場人數的比例來說不算少。</p>
+<p><a target="_blank" href="https://speakerdeck.com/eddie/code-reading"><img src="../../images/130611/RubyKaigi/rubykaigi-code-reading.jpg" alt="rubykaigi-code-reading" height="367" width="500" /></a> <br /><a href="https://speakerdeck.com/eddie/code-reading" target="_blank">View on Speaker Deck</a> | <a href="https://speakerd.s3.amazonaws.com/presentations/0186a390abc5013057536ee43d4d4638/Code_Reading.pdf" target="_blank">Download PDF</a></p>
+<br />
+<p>雖然之前有一些些上台演講的經驗，但這是第一次出國演講，而且還是全程用英文演講，我知道有很多的大神甚至 Ruby Committer 就坐在台下，所以我相當緊張。我那個「上台的前一天不會睡」的魔咒果然還是依舊存在，所以演講當天凌晨四點，我拿著筆電到飯店的大廳練習對著空氣講，練到早上七點，但還是覺得不夠穩。</p>
+<p>我的演講廳是小間的，所以壓力有稍微小一點點。</p>
+<p>為了怕現場出包，所以在 code review 展示的部份我是用預錄的，不過事後想想好像直接現場操作比較容易掌控時間</p>
+<p>上午的演講結束後，下午發生的小插曲讓我抖了好大一下。我在演講內容裡有提到一些在 Ruby 的原始碼裡面有一些小地方的命名不太優，當下大家笑得很開心，雖然娛樂效果達到了，但我其實也有點擔心會不會有什麼不好的副作用。結果上午的講場結束，下午就看到<a href="https://twitter.com/_zzak/status/340391416314331136" target="_blank">這則</a>：</p>
+<p><img alt="rubykaigi-zzak" src="../../images/130611/RubyKaigi/rubykaigi-zzak.jpg" height="185" width="500" /></p>
+<p>哇!! 我有嚇到的感覺了，不過因為我個人覺得這樣好像有些失禮，所以當晚的 Official Party，我就親自去跟 @nobu 說聲不好意思，希望沒有造成他的困擾。其實我也是想趁這個機會認識一下只有在網路上才能看得到的傳說大神，而且他好像一點也不在意。</p>
+<p>第三天的議程，我本來就打算要來聽 <a href="https://twitter.com/saturnflyer" target="_blank">Jim Gay</a> 的主題(他是 <a href="https://www.clean-ruby.com/" target="_blank">Clean Ruby</a> 一書的作者 )，沒想到坐下來沒多久竟然看到自己的名字跟前一天講的東西出現在投影片上：</p>
+<p><img alt="rubykaigi-jim-gay" src="../../images/130611/RubyKaigi/rubykaigi-jim-gay.jpg" height="375" width="500" /></p>
+<p>再度有被嚇到的感覺。</p>
+<p>活動結束後，RubyKaigi 2013 的頭目角谷<a href="https://twitter.com/kakutani/status/341202764472406017" target="_blank">也推了一篇</a>：</p>
+<p><img alt="rubykaigi-kakutani" src="../../images/130611/RubyKaigi/rubykaigi-kakutani.jpg" height="235" width="500" /></p>
+<p>再次看到自己的名字被提到，有些驚訝也有些不好意思，不過這個「Conference-Driven Development(CDD)」 聽起來好像不錯，而且我喜歡「RubyKaigi made Ruby Better」，如果有朝一日我有能力，我也希望可以多貢獻一些心力。</p>
+<p>感謝高井さん (<a href="https://twitter.com/takai" target="_blank">@takai</a>) 幫我拍的照片，讓我在 <a href="https://rubyistokei.herokuapp.com/" target="_blank">Rubyist 時計</a>上也可以有一張漂亮的照片。</p>
+<p><img alt="rubykaigi-rubyist-clock" src="../../images/130611/RubyKaigi/rubykaigi-rubyist-clock.jpg" height="337" width="500" /></p>
+<p>photoed by <a href="https://twitter.com/takai" target="_blank">@takai</a></p>
+<p>這趟日本之行有學習到不少東西，收獲很多，會在接下來的幾篇文章介紹。最後，有講的不好的地方，還請多多指教。</p>
+<p>Thank you all, RubyKaigi team, you’re all AWESOME!</p>
+			<!-- Show relate article -->
+				<!-- end -->
+		<div class="article_note">
+		<!-- Add tags use metakey, and show OSSF Newsletter tag: OSSFNL+NUM-->
+		<br><br> <hr style='border: 1px dashed #D2DADB;'><b>OSSF Newsletter&nbsp;:</b>&nbsp;<a href='../../previous-issue%3Ftask=view&amp;id=829.html'>第 220 期 GCStar 收集狂的藏寶箱 </a><br>				<!-- End -->
+					<br>
+					<b>Category: </b><a href="../foss-forum.html">				FOSS Forum					</a>				</div>
+			 <!-- AddThis Button BEGIN ID 3001 is the front page article -->
+     			<br><br>
+       <div class="addthis_toolbox addthis_default_style addthis_32x32_style">
+       <a class="addthis_button_preferred_1"></a>
+       <a class="addthis_button_preferred_2"></a>
+       <a class="addthis_button_preferred_3"></a>
+       <a class="addthis_button_preferred_4"></a>
+       <a class="addthis_button_compact"></a>
+       <a class="addthis_counter addthis_bubble_style"></a>
+       </div>
+       <script type="text/javascript">var addthis_config = {"data_track_clickback":true};</script>
+       <script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js#pubid=openfoundry"></script>
+       <!-- AddThis Button END -->
+     <br>
+		<div class="totop" ><a class="rt-totop" href="8994-code-reading-rubykaigi-2013%3Ftmpl=component&amp;print=1&amp;layout=default&amp;page=.html#" style="outline: medium none;">↑ Top</a></div>
+            <!-- AddThis Button END -->
+
+			</div>
+</div>
+
+						</div>
+					</div>
+				</div>
+			</div>
+		</body>
+	</html>

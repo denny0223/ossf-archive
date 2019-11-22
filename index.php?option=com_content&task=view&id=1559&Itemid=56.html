@@ -1,0 +1,464 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="zh-tw" lang="zh-tw" >
+<head>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<link rel="shortcut icon" href="images/favicon.ico" />
+	  <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+  <meta name="robots" content="index, follow" />
+  <meta name="keywords" content="OSSFNL425" />
+  <meta name="title" content="OmegaT — 開放源碼電腦翻譯輔助程式（CAT Tool）" />
+  <meta name="description" content="前言： 在專業翻譯的領域，CAT Tools 是不可或缺的翻譯輔助工具。CAT 所代表的意思是 Computer Assisted Translation，也就是指「電腦輔助翻譯工具」，此種工具透過讀取翻譯記憶檔（Translation Memory," />
+  <meta name="generator" content="" />
+  <title>OmegaT — 開放源碼電腦翻譯輔助程式（CAT Tool） - OpenFoundry</title>
+  <link href="favicon.ico" rel="shortcut icon" type="image/x-icon" />
+  <link rel="stylesheet" href="components/com_gantry/css/gantry.css" type="text/css" />
+  <link rel="stylesheet" href="components/com_gantry/css/grid-12.css" type="text/css" />
+  <link rel="stylesheet" href="components/com_gantry/css/joomla.css" type="text/css" />
+  <link rel="stylesheet" href="templates/rt_quantive_j15/css/joomla.css" type="text/css" />
+  <link rel="stylesheet" href="templates/rt_quantive_j15/css/style1.css" type="text/css" />
+  <link rel="stylesheet" href="templates/rt_quantive_j15/css/light-body.css" type="text/css" />
+  <link rel="stylesheet" href="templates/rt_quantive_j15/css/demo-styles.css" type="text/css" />
+  <link rel="stylesheet" href="templates/rt_quantive_j15/css/template.css" type="text/css" />
+  <link rel="stylesheet" href="templates/rt_quantive_j15/css/typography.css" type="text/css" />
+  <link rel="stylesheet" href="templates/rt_quantive_j15/css/fusionmenu.css" type="text/css" />
+  <style type="text/css">
+    <!--
+#rt-main-surround ul.menu li.active > a, #rt-main-surround ul.menu li.active > .separator, #rt-main-surround ul.menu li.active > .item, #rt-main-surround .square4 ul.menu li:hover > a, #rt-main-surround .square4 ul.menu li:hover > .item, #rt-main-surround .square4 ul.menu li:hover > .separator, .roktabs-links ul li.active span {color:#0088B5;}
+a, #rt-main-surround ul.menu a:hover, #rt-main-surround ul.menu .separator:hover, #rt-main-surround ul.menu .item:hover {color:#0088B5;}
+    -->
+  </style>
+  <script type="text/javascript" src="components/com_jcomments/js/jcomments-v2.1.js%3Fv=2"></script>
+  <script type="text/javascript" src="components/com_jcomments/libraries/joomlatune/ajax.js"></script>
+  <script type="text/javascript" src="media/system/js/mootools.js"></script>
+  <script type="text/javascript" src="media/system/js/caption.js"></script>
+  <script type="text/javascript" src="components/com_gantry/js/gantry-buildspans.js"></script>
+  <script type="text/javascript" src="components/com_gantry/js/gantry-inputs.js"></script>
+  <script type="text/javascript" src="templates/rt_quantive_j15/js/jquery.cookie.js"></script>
+  <script type="text/javascript" src="modules/mod_roknavmenu/themes/fusion/js/fusion.js"></script>
+  <script type="text/javascript" src="modules/mod_ofssologin/js/ofssologin.js"></script>
+  <script type="text/javascript">
+
+			window.addEvent('domready', function() {
+				var modules = ['rt-block'];
+				var header = ['h3','h2','h1'];
+				GantryBuildSpans(modules, header);
+			});
+		InputsExclusion.push('.content_vote','#rt-popup')
+		        window.addEvent('load', function() {
+					new Fusion('ul.menutop', {
+						pill: 0,
+						effect: 'slide and fade',
+						opacity: 1,
+						hideDelay: 500,
+						centered: 0,
+						tweakInitial: {'x': -2, 'y': 0},
+        				tweakSubsequent: {'x': 0, 'y': -14},
+						menuFx: {duration: 200, transition: Fx.Transitions.Sine.easeOut},
+						pillFx: {duration: 400, transition: Fx.Transitions.Back.easeOut}
+					});
+	            });
+  </script>
+<!-- <script type="text/javascript" src="/sso/javascripts/langsync.js"></script> -->
+<!-- <script src="/templates/rt_quantive_j15/js/ossf.js"></script> -->
+<script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-4136519-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
+</head>
+	<body  class="backgroundlevel-low backgroundstyle-style8 bodylevel-med bodystyle-light cssstyle-style1 logostyle-dark font-family-helvetica font-size-is-default menu-type-fusionmenu col12 ">
+		<div id="rt-main-background">
+			<div class="rt-container">
+																<div id="rt-header">
+					<div class="rt-grid-7 rt-alpha">
+    			<div class="rt-block">
+    	    	<a href="index.html" id="rt-logo"></a>
+    		</div>
+	    
+</div>
+<div class="rt-grid-5 rt-omega">
+                    <div class="square9">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<div class="ofssologin_square9"><a href="index.html">登入</a>&nbsp;&nbsp|&nbsp;&nbsp;<span><a href="en/component/content/1559%3Ftask=view.html" ><span lang="en" xml:lang="en">English</span></a></li></ul></span><!--Joom!fish V2.0.4 (Lightning)-->
+<!-- &copy; 2003-2009 Think Network, released under the GPL. -->
+<!-- More information: at http://www.joomfish.net -->
+<div class="ofssologin_search_square9">
+  <form id="of_search" action="https://www.openfoundry.org/of/openfoundry/search" method="get" onsubmit="of_search(); return false;">
+    <select id="of_search_type">
+      <option value="Projects"> 專案 </option>
+      <option value="Content"> 文章 </option>
+      <option value="People"> 人才 </option>
+    </select>
+    <input id="query" name="query" id="mod_search_searchword" maxlength="50" alt="search" class="inputbox" type="text" size="28" value="search..."  onblur="if(this.value=='') this.value='search...';" onfocus="if(this.value=='search...') this.value='';" />
+    <input type="hidden" name="commit" value="search" />
+  </form>
+</div></div>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		
+</div>
+					<div class="clear"></div>
+				</div>
+																<div id="rt-navigation"><div id="rt-navigation2"><div id="rt-navigation3">
+					
+<div class="nopill">
+	<ul class="menutop level1 " >
+						<li class="item1 root" >
+					<a class="orphan item bullet" href="index.html"  >
+				<span>
+			    				首頁				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item32 root" >
+					<a class="orphan item bullet" href="archived.html"  >
+				<span>
+			    				專案				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item186 root" >
+					<a class="orphan item bullet" href="tw/community.html"  >
+				<span>
+			    				Who&#039;s Who				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item4 root" >
+					<a class="orphan item bullet" href="tw/news.html"  >
+				<span>
+			    				新聞				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item5 root" >
+					<a class="orphan item bullet" href="tw/law-and-licensing.html"  >
+				<span>
+			    				法律源地				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item3 root" >
+					<a class="orphan item bullet" href="tw/activities.html"  >
+				<span>
+			    				活動				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item2 root" >
+					<a class="orphan item bullet" href="tw/resourcecatalog%3FName=Value.html"  >
+				<span>
+			    				資源表列				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item45 root" >
+					<a class="orphan item bullet" href="tw/about.html"  >
+				<span>
+			    				關於				   
+				</span>
+			</a>
+			
+			
+	</li>	
+				</ul>
+</div>
+
+				    <div class="clear"></div>
+				</div></div></div>
+								<div class="rt-surround"><div class="rt-surround2"><div class="rt-surround3">
+										<div id="rt-showcase-section">
+												<div id="rt-showcase">
+							<div class="rt-grid-12 rt-alpha rt-omega">
+    		<div class="clear"></div>
+		
+		
+                <div class="close-note">
+                    <div class="rt-block">
+               					<div class="module-content">
+                	<div style="font-size:medium; background-image:linear-gradient(120deg,#159957,#4298b2);color:white;padding:20px;margin:-10px -18px;">感謝您對「自由軟體鑄造場」的支持與愛護，十多年來「自由軟體鑄造場」受中央研究院支持，並在資訊科學研究所以及資訊科技創新研究中心執行，現已完成階段性的任務。 本網站預計持續維運至 2021年底，網站內容基本上不會再更動。<br />也紀念我們永遠的朋友 李士傑先生（Shih-Chieh Ilya Li）。</div>				</div>
+            </div>
+                </div>
+		
+</div>
+							<div class="clear"></div>
+						</div>
+																	</div>
+															<div id="rt-main-surround">
+												<div id="rt-breadcrumbs">
+								<div class="rt-breadcrumb-surround">
+		<a href="index.html" id="breadcrumbs-home"></a>
+		<span class="breadcrumbs pathway">
+<span class="no-link">電子報總覽</span></span>
+	</div>
+	
+							<div class="clear"></div>
+						</div>
+																							              <div id="rt-main" class="sa3-mb9">
+                <div class="rt-main-inner">
+                    <div class="rt-grid-9 rt-push-3">
+                                                <div class="rt-block">
+                            							<div class="square1">
+							<div class="rt-module-surround">
+								<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+								<div class="rt-module-inner">
+		                            <div id="rt-mainbody">
+		                                
+<div class="rt-joomla ">
+	<div class="rt-article">
+		
+				<div class="rt-headline"><h1 class="rt-article-title">OmegaT — 開放源碼電腦翻譯輔助程式（CAT Tool）</h1>		</div>
+		<div class="clear"></div>
+		
+		
+		
+				<div class="rt-articleinfo">
+						<div class="rt-article-icons">
+								<a href="https://www.openfoundry.org/tw/component/content/1559?tmpl=component&amp;print=1&amp;page=" title="列印" onclick="window.open(this.href,'win2','status=no,toolbar=no,scrollbars=yes,titlebar=no,menubar=no,resizable=yes,width=640,height=480,directories=no,location=no'); return false;" rel="nofollow"><span class="icon print"></span></a>																</div>
+			
+			<span class="rt-date-posted">
+						建立日期			2008-05-10 08:00						&nbsp;&nbsp;&nbsp;&nbsp;						最近更新在 2008-05-12 08:56						</span>
+
+						<span class="rt-author">
+				作者是 OSSF Mischa Hsu			</span>
+				
+					</div>
+		
+		
+		<h2 id="l210693532865306">前言：</h2>
+<p>在專業翻譯的領域，CAT Tools 是不可或缺的翻譯輔助工具。CAT 所代表的意思是 Computer Assisted  Translation，也就是指「電腦輔助翻譯工具」，此種工具透過讀取翻譯記憶檔（Translation Memory,  TM）和詞彙表（Glossaries），可以在翻譯人員遇到相同句型和詞語時，提供之前的譯作以供參考、比對，讓翻譯人員依循一致性的原則選擇較適當的翻譯。CAT  Tools 可以節省翻譯時間，並確保同一文件不同版本間的翻譯一致性。 <br /></p><p>在一般商業公司中，使用的最多的 CAT Tools 是 SDL Trados，Trados 由於它與 Microsoft Word 的完美結合與易用性而在  Windows 平台上廣泛使用。不過在開放源碼界中，也存在著不輸給 Trados 的 CAT Tool，例如：用 JAVA 寫成的 OmegaT 和 Open  language Tools，與使用 Python 的 Transolution 等，由於開放源碼的 CAT Tool 大多數以跨平台語言寫成，因此擁有  Trados 所不具備的跨平台能力，使得在各種平台上的使用者都能自由地使用這些 CAT Tool。 </p>
+<p>上述的 CAT Tool 大多擁有獨立的 TM 檔和參考檔，因此在發派翻譯工作時，必須將舊有的 TM 檔和 Reference  檔案，隨著翻譯文件一起寄送。相對於這種獨立式的 CAT Tool，另外也有集中式的 CAT Tool，例如 Lingotek  就是一個很好的例子，Lingotek 是個 CAT Web Application，發派翻譯的使用者可以將 TM 檔和 Reference 檔集中在  Lingotek 的 Server 上管理，而翻譯者也可以直接在 Lingotek 的 Web Application 介面中直接翻譯文件。 </p>
+<p>除了特殊用途的 CAT Tool 外（如專門翻譯 gettext po 文件的 Poedit），大多數的 CAT Tools  都可以翻譯多種來源文件，在開放源碼翻譯的常見文件格式有：HTML、XHTML、RTF、ODF 和純文字檔等，除此之外在 Windows 平台中，doc  文件也是翻譯來源文件的大宗，而在 Office Open XML 推出後，也有不少 CAT Tools 開始支援這個 Microsoft 公司推出的開放格式。  </p>
+<h3 id="ltm-27284303402115133021216443041034389">TM 檔的功能和益處</h3>
+<p>TM 檔的功能是將翻譯分段儲存，以在日後遇到相同的句子時可以再次回收使用。CAT Tools 會先解析原文，並將其分段儲存於 TM 檔中，這個過程稱為  Segmantation, Segmentation 的分段基準通常以句為單位，也就是說 CAT Tools  會先分析原文的標點符號使用狀況，並以句尾標點來分段。這種作法在遇到縮寫字時有時會有問題，因為有些翻譯系統會將縮寫點誤判為句點，因此大多數的 CAT Tools  都可以讓你調整 Segmantation 的例外條件，以處理此種問題。 </p>
+<p>如果是全新無內容的 TM 檔，CAT Tools 會在分段後，讓譯者直接輸入一句句輸入翻譯，由於 CAT Tools  都是分段處理翻譯，因此必須注意上下文承接的問題，否則有時會產生上下文不連貫的問題，但此種分段的方式也有其好處，因為 CAT Tools  讓譯者逐句翻譯，因此可大幅減少漏譯的問題。如果是舊版翻譯更新，則 CAT Tools 會去讀取 TM 檔中是否有目前翻譯文句的對應翻譯，有些 CAT Tools  只會顯示 100% Match 的文句，讓使用者可以直接套用，而大多數 CAT Tools 都有模糊對應（Fuzzy Match）的功能，可以抓出 TM  檔中部分相符的文句，讓使用者修改翻譯，以套用在新譯文中。更有些 CAT Tools 能夠設定模糊對應的百分比，只有對應較高的文句會顯示，一般來說，75%  Match 以上的句子才建議使用修改後套用的方式，符合度在 75% 以下的句子則建議重新翻譯，不過仍需依情況判斷。 </p>
+<p>使用 TM 檔另一個重要的原因是如已有前譯，則建議使用相同風格的文字，而 TM  檔剛好可以提供前譯的文字和術語供後來的譯者參考，這在大型翻譯計畫中尤其重要，因為譯者翻譯的可能僅是一部分需修改的文件，此時就必須注意目前的翻譯和其他舊有文件的一致性，這也是大型翻譯計畫常會使用單一  TM 檔的原因。TM 檔可以節省譯者翻譯重覆文句的時間，並提供翻譯一致性的參考文字，除此之外，它還能夠保留原有檔案的特殊格式，例如 HTML 檔中的 HTML  標籤等。另外，TM 檔的使用也能節省大型翻譯專案的開銷，因為已翻譯過的 100% 符合的文字並不需再重新翻譯，可以在發出專案前先行套用，僅計算實際的翻譯字數。  </p>
+<p>使用 TM 檔在翻譯專案一開始時並不明顯，但隨著翻譯計畫的擴大，TM 檔對於維持一致性會愈形重要。 </p>
+<h3 id="l35422244093492065288glossary65289303402115133021">詞彙表（Glossary）的功能</h3>
+<p>由於 TM  檔大多數是以句做為翻譯單位，因此對於單詞和術語雖然可以提供參考，但遇到特殊翻譯要求時，無法精確規範該使用的翻譯詞彙，此時發譯者可以提供詞彙表要求譯者遇到特殊詞彙時，強制使用指定的翻譯。通常  CAT Tools 會有一個 Glossary 欄位顯示提定的詞彙，這對譯者來說是絕對必須遵循的翻譯。詞彙表通常以 CAT Tools 可以讀取的純文字為主。如  CAT Tools 無提供 Glossary 功能時，也可以使用 Excel 表格指定術語翻譯詞彙，此時譯者必需勤於手動查詢 Glossary  表格，以期達到發譯者的要求。 </p>
+<p>總而言之，TM 檔的功能是提供讀者作為參考，並非絕對的標準，但遇到一個詞彙具有數種正確的翻譯時（例如： Regular  expression），則以一致性為最高原則，依循前譯的翻譯用詞（加這一句是因為自由軟體使用者、推動者和開發者似乎都有著難以說服的牛脾氣，因此以先來後來為準）；而詞彙表則是必須達到的翻譯要求，除非錯誤，是不容質疑的。  </p>
+<h2 id="lcat-tools-3034024037203162796931243">CAT Tools 的工作流程</h2>
+<p>基本上，CAT Tools 的工作流程大多遵循以下工作流程：</p>
+<p align="left"><img width="165" vspace="5" hspace="5" height="400" border="1" align="absbottom" alt="CAT 翻譯流程圖" src="images/080512/catworkflow.png" /></p>
+<div style="width: 199px;" class="figure vstcenter"><img height="480" src="https://www.openfoundry.org/pic/catworkflow.png" alt="" />  </div>
+<p>以下我們將使用開放源碼的 CAT Tool OmegaT 解說 CAT Tool 的工作流程和基本使用方式。 </p>
+<h3 id="l2431431435-project-216443033231295">建立 Project 和發稿</h3>
+<p>首先，發稿人必須將所有需翻譯的文件包成一整個 Project，以便於發出去翻譯。如果是舊版稿件更新的話，也必須匯入舊版翻譯的 TM  檔和詞彙表，以提供翻譯者上個翻譯版本和指定的翻譯詞彙作為參考。 </p>
+<p><img width="500" vspace="5" hspace="5" height="312" border="1" align="absbottom" alt="" src="images/080512/ome1.png" /></p>
+<p>首先選擇【Project】-&gt;【New】開啟一個新的翻譯計畫。 </p>
+<p><img width="500" vspace="5" hspace="5" height="404" border="1" align="absbottom" alt="" src="images/080512/ome2.png" /></p>
+<p>然後在「Save AS」欄位中輸入翻譯計畫的名稱。 </p>
+<p><img width="500" vspace="5" hspace="5" height="465" border="1" align="absbottom" alt="" src="images/080512/ome3.png" /></p>
+<p>接著必須選擇原文和譯文所使用的語言，請在「Source Files Language」指定原文語言，而在「Translated Files  Language」選擇翻譯語言。而底部的四個欄位則可以指定原文、譯文、TM 檔和詞彙表的存放目錄。 </p>
+<p><img width="500" vspace="5" hspace="5" height="361" border="1" align="absbottom" alt="" src="images/080512/ome4.png" /></p>
+<p>然後我們要匯入該計畫中的所有待翻譯文件，按一下〔Import Source Files〕即可選擇要匯入的文件。 </p>
+<p><img width="500" vspace="5" hspace="5" height="404" border="1" align="absbottom" alt="" src="images/080512/ome5.png" /></p>
+<p>選擇好要匯入的檔案或目錄後，就可以按一下〔Choose〕直接匯入。 </p>
+<p><img width="500" vspace="5" hspace="5" height="361" border="1" align="absbottom" alt="" src="images/080512/ome6.png" /></p>
+<p>然後你就可以在「Project Files」視窗中看到這個計畫中的所有文件，並可以看到整個計畫中分成幾個段落（segments），和已譯與未譯的段落。  </p>
+<p><img width="500" vspace="5" hspace="5" height="324" border="1" align="absbottom" alt="" src="images/080512/ome21.png" /></p>
+<p>將計畫中的所有文件包入後，你可以在剛剛指定的位置看到計畫的資料夾產生，在這個資料夾中，「Glossay」是讓發譯者放入詞彙表用，而 TM  檔則可以放入「tm」資料夾，不過如果是 CAT Tools 自行產生的 TM 檔則會直接放在主資料夾中，在圖中所有以 tmx 為副檔名皆為 TM 檔，三個 TM  檔各儲存不同格式的資料。而「source」資料中則包含原文檔案，而翻譯完成後會產成的 Target  檔則在會「target」資料夾中。發譯者可以將整個資料夾包成壓縮檔後，寄送給譯者翻譯。 </p>
+<h3 id="l3276335695">翻譯</h3>
+<p><img width="500" vspace="5" hspace="5" height="361" border="1" align="absbottom" alt="" src="images/080512/ome7.png" /></p>
+<p>譯者收到檔案後，就可以打開該項計畫，則選擇所要翻譯的文件之一。 </p>
+<p><img width="550" vspace="5" hspace="5" height="353" border="1" alt="" src="images/080512/ome8.png" /></p>
+<p>一開始 CAT Tools 會打開一個 Segment，你可以在圖中看到在 OmegaT 中來源文字為綠色底，而目標文字則包含在兩個標籤中。 </p>
+<p><img width="500" vspace="5" hspace="5" height="321" border="1" alt="" src="images/080512/ome9.png" /></p>
+<p>譯者只要將翻譯輸入，取代原有的目標文字後，再按一下鍵盤上的「return」（enter）鍵即可以將翻譯輸入 TM 檔中。 </p>
+<p><img width="500" vspace="5" hspace="5" height="321" border="1" align="absbottom" alt="" src="images/080512/ome10.png" /></p>
+<p>譯者按下「return」鍵，OmegaT 即會自動開啟下一個 Segment 供譯者翻譯。 </p>
+<p><img width="500" vspace="5" hspace="5" height="321" border="1" align="absbottom" alt="" src="images/080512/ome11.png" /></p>
+<p>雖然 CAT Tools 會自行判斷需要翻譯的文字，除去不翻譯的部分（例如 HTML  中的標籤部分），但有時仍為判斷錯誤，因此遇到此種問題時，必須由翻譯者自行判斷是否翻譯。 </p>
+<p><img width="500" vspace="5" hspace="5" height="321" border="1" align="absbottom" alt="" src="images/080512/ome12.png" /></p>
+<p>在翻譯特殊格式時，則會遇到特殊的標籤格式，此時翻譯者必須記得將這些標籤套用在翻譯中的對應之處，以保持與原文件的一致性。 </p>
+<p><img width="500" vspace="5" hspace="5" height="321" border="1" align="absbottom" alt="" src="images/080512/ome13.png" /></p>
+<p>在 OmegaT 中如果 TM 檔中有可以對應的翻譯，會顯示在「Fuzzy  Matches」欄位中，並顯示該譯文的符合百分比，讀者可以自行決定要重新翻譯，或是套用後再修改。如果要套用，可以按下鍵盤上的「Command+R」（Mac）或是「ctrl+R」（PC）套用符合的舊譯。如果  TM 檔提供一個以上的符合文句，則可以使用「Command/Ctrl+ 數字」指定所要套用的符合文句。</p>
+<p><img width="500" vspace="5" hspace="5" height="312" border="1" align="absbottom" src="images/080512/ome14.png" alt="" /></p>
+<p>如此一句句地翻譯下去，將整份文件就翻譯完成後，譯者必須先檢查文件所有的特殊格式標籤是否全數保留，這當然不是叫譯者一句句校對，我們可以使用【Tools】中的【Validate  Tags】功能讓 CAT Tools 自行檢查。 </p>
+<p><img width="450" vspace="5" hspace="5" height="479" border="1" align="absbottom" src="images/080512/ome15.png" alt="" /></p>
+<p>如果 CAT Tools 找到了格式不符合或是遺漏的標籤，則 CAT Tools 會顯示提示，提示中第一部分為 Segment  的編號，第二部分為原文標籤的形式，第三部分為譯文標籤形式。 </p>
+<p><img width="500" vspace="5" hspace="5" height="321" border="1" align="absbottom" src="images/080512/ome16.png" alt="" /></p>
+<p>譯者只要按一下 Segment 編號即可移動到需修改的段落，修改後按一下「return」鍵儲存再檢查一次即可。 </p>
+<p><img width="500" vspace="5" hspace="5" height="312" border="1" alt="" src="images/080512/ome17.png" /></p>
+<p>檢查結果如果完全正確，OmegaT 會提示「No tag errors detected」，這就表示特殊標籤已無任何錯誤。 </p>
+<p><img width="500" vspace="5" hspace="5" height="312" border="1" align="absbottom" src="images/080512/ome18.png" alt="" /></p>
+<p>接下來可別忘了儲存你的工作成果，因為 OmegaT 只是將你的翻譯儲存到 TM 檔中，並不會幫你自動儲存文件。 </p>
+<p><img width="500" vspace="5" hspace="5" height="312" border="1" align="absbottom" src="images/080512/ome20.png" alt="" /></p>
+<p>接下來必須產生 Target 檔，也就是譯者的翻譯成果檔案。只要選擇【Project】-&gt;【Create Translated  Documents】就可以輕易完成這個工作。 </p>
+<p><img width="500" vspace="5" hspace="5" height="324" border="1" align="absbottom" src="images/080512/ome21.png" alt="" /></p>
+<p>然後就可以在「target」資料夾中看到翻譯後的文檔。 </p>
+<p><img width="500" vspace="5" hspace="5" height="312" border="1" align="absbottom" src="images/080512/ome22.png" alt="" /></p>
+<p>打開 Source 檔和 Target 檔比較一下，就可以發現 CAT Tools  可以幫你保留所有支援文件的特殊格式，讓譯者不需處理特殊格式的保留，僅需完成翻譯工作即可。 </p>
+<div class="note"> <blockquote>
+<p><em><span class="notetitle">Note</span></em></p>
+<p><em>由於目前 OmegaT 處理中文 Glossary 時，因為中文斷句問題，因此無法顯示，因此先略去不提。製作 OmegaT 可讀的 Glossary  檔非常簡單，因為基本上它就是個三欄純文字表格，只要在各欄間用 tab  作為分隔，並記得一詞一行即可，三欄的內容依序分別為「原詞」、「譯詞」和「註解（選擇性輸入）」。製作好的 Glossary 文件副檔名需為 .tab（同語系）或  .utf8（不同語系）。你也可以使用 EXCEL 或 Calc 製作，並轉存為 CSV 檔，只要記得將副名改為 .tag 或 .utf8 即可。</em>  </p>
+</blockquote>  </div>
+<h3 id="lreview-21644-qa">Review 和 QA</h3>
+<p>Review 和 QA 工作在 CAT Tools 的使用方式上，完全和翻譯相同，但不需翻譯，Review  的功能在於找出所有譯者錯譯、漏譯的部分，並修改成正確的翻譯。而 QA 則是必須檢視整份翻譯文件的流暢性和文件風格等，必要時（如和該譯者第一次合作時）可製作 QA  report 評鑑該份翻譯的良好度，但這就和 CAT Tools 的操作無多大關係了。 </p>
+			<!-- Show relate article -->
+				<!-- end -->
+		<div class="article_note">
+		<!-- Add tags use metakey, and show OSSF Newsletter tag: OSSFNL+NUM-->
+		<br><br> <hr style='border: 1px dashed #D2DADB;'><b>自由軟體鑄造場電子報&nbsp;:</b>&nbsp;<a href='previous-issue%3Ftask=view&amp;id=425.html'>第 103 期 Richard Stallman 將於五月中旬訪台</a><br>				<!-- End -->
+					<br>
+					<b>分類: </b><a href="tw/tech-column.html">				技術專欄					</a>				</div>
+			 <!-- AddThis Button BEGIN ID 3001 is the front page article -->
+     			<br><br>
+       <div class="addthis_toolbox addthis_default_style addthis_32x32_style">
+       <a class="addthis_button_preferred_1"></a>
+       <a class="addthis_button_preferred_2"></a>
+       <a class="addthis_button_preferred_3"></a>
+       <a class="addthis_button_preferred_4"></a>
+       <a class="addthis_button_compact"></a>
+       <a class="addthis_counter addthis_bubble_style"></a>
+       </div>
+       <script type="text/javascript">var addthis_config = {"data_track_clickback":true};</script>
+       <script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js#pubid=openfoundry"></script>
+       <!-- AddThis Button END -->
+     <br>
+		<div class="totop" ><a class="rt-totop" href="index.php%3Foption=com_content&amp;task=view&amp;id=1559&amp;Itemid=56.html#" style="outline: medium none;">↑ Top</a></div>
+            <!-- AddThis Button END -->
+
+			</div>
+</div>
+
+		                            </div>
+									<div class="clear"></div>
+								</div>
+								<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+							</div>
+							</div>
+                                                    </div>
+                                            </div>
+                                <div class="rt-grid-3 rt-pull-9">
+                <div id="rt-sidebar-a">
+                                    <div class="square4">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<ul class="menu"><li id="current" class="active item56"><a href="tw/previous-issue.html"><span>電子報總覽</span></a></li><li class="item55"><a href="tw/about-newsletter.html"><span>關於本報</span></a></li></ul>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<ul class="menu"><li class="item115"><a href="tw/foss-news.html"><span>源碼新聞</span></a></li><li class="item141"><a href="tw/case-job.html"><span>接案 / 工作</span></a></li></ul>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+        	                <div class="square1">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-title"><h2 class="title">專欄總覽</h2></div>
+						<div class="clear"></div>
+		                						<div class="module-content">
+		                	<ul class="menu"><li class="item37"><a href="tw/tech-column.html"><span>技術專欄</span></a></li><li class="item40"><a href="tw/foss-programs.html"><span>源碼秘技</span></a></li><li class="item35"><a href="tw/legal-article-.html"><span>法律專欄</span></a></li><li class="item154"><a href="tw/foss-forum.html"><span>自由專欄</span></a></li><li class="item162"><a href="tw/enterprise-application.html"><span>企業應用</span></a></li><li class="item44"><a href="tw/foss-projects.html"><span>源碼專案</span></a></li></ul>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		                <div class="square1">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<p style="text-align: center;"><a href="news%3Fformat=feed&amp;type=rss" target="_black"><img src="images/M_images/news-rss-feed.png" border="0" /></a><br /><a href="https://www.openfoundry.org/rss-feed/Newsletter" target="_black"><img src="images/M_images/newsletter-rss-feed.png" border="0" /></a></p>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		
+                </div>
+            </div>
+
+                    <div class="clear"></div>
+                </div>
+            </div>
+																													</div>
+										<div id="rt-copyright">
+						<div class="rt-grid-12 rt-alpha rt-omega">
+                        <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<div id="desktop-mobile-version-switch"><span id="mobile-version" class="version-switch"><a href="index.php%3Foption=com_content&amp;task=view&amp;id=1559&amp;Itemid=56.html#">行動版</a></span></div>
+自由軟體鑄造場 製作 最佳瀏覽狀態：IE7或Firefox2.0以上 (建議使用Firefox) ‧ 解析度1024*768 <br /> <strong>E-Mail</strong>：<a href="mailto:contact@openfoundry.org">contact@openfoundry.org</a> <strong>Address</strong>：台北市南港區研究院路2段128號 中央研究院資訊科學研究所 . <a href="privacy-policy.html">隱私權條款</a>. <a href="terms-of-use.html">使用條款</a><span style="position: relative; top: 8px; margin-top: -8px;"> <a href="about/8101.html"><img src="images/M_images/rss-feed-all.png" border="0" /></a></span>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+        	
+</div>
+						<div class="clear"></div>
+					</div>
+					<div class="rt-footer-bottom-wrap"><div class="rt-footer-bottom"><div class="rt-footer-bottom2"><div class="rt-footer-bottom3"></div></div></div></div>
+									</div></div></div>
+				<div class="rt-surround-bottom"><div class="rt-surround-bottom2"><div class="rt-surround-bottom3"></div></div></div>
+							</div>
+		</div>
+		<!--
+		<script id="aptureScript">
+						(function (){var a=document.createElement("script");a.defer="true";a.src="http://www.apture.com/js/apture.js?siteToken=vsJttrn";document.getElementsByTagName("head")[0].appendChild(a);})();
+     </script>
+-->
+
+<!-- Piwik -->
+<!-- 			<script type="text/javascript">
+			  var _paq = _paq || [];
+		  _paq.push(["trackPageView"]);
+		  _paq.push(["enableLinkTracking"]);
+
+		    (function() {
+			        var u=(("https:" == document.location.protocol) ? "https" : "https") + "://www.openfoundry.org/piwik/";
+				    _paq.push(["setTrackerUrl", u+"piwik.php"]);
+				    _paq.push(["setSiteId", "1"]);
+				        var d=document, g=d.createElement("script"), s=d.getElementsByTagName("script")[0]; g.type="text/javascript";
+				        g.defer=true; g.async=true; g.src=u+"piwik.js"; s.parentNode.insertBefore(g,s);
+					  })();
+		  </script> -->
+<!-- End Piwik Code -->
+	</body>
+</html>

@@ -1,0 +1,354 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-gb" lang="en-gb" >
+<head>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<link rel="shortcut icon" href="../../../images/favicon.ico" />
+	  <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+  <meta name="robots" content="index, follow" />
+  <meta name="keywords" content="OSSFNL441" />
+  <meta name="title" content="瀏覽網頁要小心！Firefox的幾個安全祕訣" />
+  <meta name="description" content="惡意程式的傳播，幾乎都是透過網路居多，即使只是瀏覽個網頁，都有可能會遭受惡意程式的侵害。除此之外，偽造的網頁和釣魚網站，也虎視眈眈的瞄準著那些大意的朋友。雖然最好的方法是自己要小心，不過上個網頁就神經兮兮的先檢查看看是不是釣魚網站，說起來有點不符合人性，況且有時候正在找資料，壓根兒就不會記得要小心。" />
+  <meta name="generator" content="" />
+  <title>瀏覽網頁要小心！Firefox的幾個安全祕訣 - OpenFoundry</title>
+  <link href="../../../favicon.ico" rel="shortcut icon" type="image/x-icon" />
+  <link rel="stylesheet" href="../../../components/com_gantry/css/gantry.css" type="text/css" />
+  <link rel="stylesheet" href="../../../components/com_gantry/css/grid-12.css" type="text/css" />
+  <link rel="stylesheet" href="../../../components/com_gantry/css/joomla.css" type="text/css" />
+  <link rel="stylesheet" href="../../../templates/rt_quantive_j15/css/joomla.css" type="text/css" />
+  <link rel="stylesheet" href="../../../templates/rt_quantive_j15/css/style1.css" type="text/css" />
+  <link rel="stylesheet" href="../../../templates/rt_quantive_j15/css/light-body.css" type="text/css" />
+  <link rel="stylesheet" href="../../../templates/rt_quantive_j15/css/demo-styles.css" type="text/css" />
+  <link rel="stylesheet" href="../../../templates/rt_quantive_j15/css/template.css" type="text/css" />
+  <link rel="stylesheet" href="../../../templates/rt_quantive_j15/css/typography.css" type="text/css" />
+  <link rel="stylesheet" href="../../../templates/rt_quantive_j15/css/fusionmenu.css" type="text/css" />
+  <style type="text/css">
+    <!--
+#rt-main-surround ul.menu li.active > a, #rt-main-surround ul.menu li.active > .separator, #rt-main-surround ul.menu li.active > .item, #rt-main-surround .square4 ul.menu li:hover > a, #rt-main-surround .square4 ul.menu li:hover > .item, #rt-main-surround .square4 ul.menu li:hover > .separator, .roktabs-links ul li.active span {color:#0088B5;}
+a, #rt-main-surround ul.menu a:hover, #rt-main-surround ul.menu .separator:hover, #rt-main-surround ul.menu .item:hover {color:#0088B5;}
+    -->
+  </style>
+  <script type="text/javascript" src="../../../components/com_jcomments/js/jcomments-v2.1.js%3Fv=2"></script>
+  <script type="text/javascript" src="../../../components/com_jcomments/libraries/joomlatune/ajax.js"></script>
+  <script type="text/javascript" src="../../../media/system/js/mootools.js"></script>
+  <script type="text/javascript" src="../../../media/system/js/caption.js"></script>
+  <script type="text/javascript" src="../../../components/com_gantry/js/gantry-buildspans.js"></script>
+  <script type="text/javascript" src="../../../components/com_gantry/js/gantry-inputs.js"></script>
+  <script type="text/javascript" src="../../../templates/rt_quantive_j15/js/jquery.cookie.js"></script>
+  <script type="text/javascript" src="../../../modules/mod_roknavmenu/themes/fusion/js/fusion.js"></script>
+  <script type="text/javascript" src="../../../modules/mod_ofssologin/js/ofssologin.js"></script>
+  <script type="text/javascript">
+
+			window.addEvent('domready', function() {
+				var modules = ['rt-block'];
+				var header = ['h3','h2','h1'];
+				GantryBuildSpans(modules, header);
+			});
+		InputsExclusion.push('.content_vote','#rt-popup')
+		        window.addEvent('load', function() {
+					new Fusion('ul.menutop', {
+						pill: 0,
+						effect: 'slide and fade',
+						opacity: 1,
+						hideDelay: 500,
+						centered: 0,
+						tweakInitial: {'x': -2, 'y': 0},
+        				tweakSubsequent: {'x': 0, 'y': -14},
+						menuFx: {duration: 200, transition: Fx.Transitions.Sine.easeOut},
+						pillFx: {duration: 400, transition: Fx.Transitions.Back.easeOut}
+					});
+	            });
+  </script>
+<!-- <script type="text/javascript" src="/sso/javascripts/langsync.js"></script> -->
+<!-- <script src="/templates/rt_quantive_j15/js/ossf.js"></script> -->
+<script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-4136519-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
+</head>
+	<body  class="backgroundlevel-low backgroundstyle-style8 bodylevel-med bodystyle-light cssstyle-style1 logostyle-dark font-family-helvetica font-size-is-default menu-type-fusionmenu col12">
+		<div id="rt-main-background">
+			<div class="rt-container">
+																<div id="rt-header">
+					<div class="rt-grid-7 rt-alpha">
+    			<div class="rt-block">
+    	    	<a href="../../../index.html" id="rt-logo"></a>
+    		</div>
+	    
+</div>
+<div class="rt-grid-5 rt-omega">
+                    <div class="square9">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<div class="ofssologin_square9"><a href="../../../index.html">Login</a>&nbsp;&nbsp|&nbsp;&nbsp;<span><a href="https://www.openfoundry.org/tw/component/content/1770/1770?task=view" ><span lang="tw" xml:lang="tw">繁體中文</span></a></li></ul></span><!--Joom!fish V2.0.4 (Lightning)-->
+<!-- &copy; 2003-2009 Think Network, released under the GPL. -->
+<!-- More information: at http://www.joomfish.net -->
+<div class="ofssologin_search_square9">
+  <form id="of_search" action="https://www.openfoundry.org/of/openfoundry/search" method="get" onsubmit="of_search(); return false;">
+    <select id="of_search_type">
+      <option value="Projects"> Projects </option>
+      <option value="Content"> Content </option>
+      <option value="People"> People </option>
+    </select>
+    <input id="query" name="query" id="mod_search_searchword" maxlength="50" alt="search" class="inputbox" type="text" size="28" value="search..."  onblur="if(this.value=='') this.value='search...';" onfocus="if(this.value=='search...') this.value='';" />
+    <input type="hidden" name="commit" value="search" />
+  </form>
+</div></div>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		
+</div>
+					<div class="clear"></div>
+				</div>
+																<div id="rt-navigation"><div id="rt-navigation2"><div id="rt-navigation3">
+					
+<div class="nopill">
+	<ul class="menutop level1 " >
+						<li class="item1 root" >
+					<a class="orphan item bullet" href="../../../index.html"  >
+				<span>
+			    				Home				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item32 root" >
+					<a class="orphan item bullet" href="../../../archived.html"  >
+				<span>
+			    				Projects				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item186 root" >
+					<a class="orphan item bullet" href="../../community.html"  >
+				<span>
+			    				Who&#039;s Who				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item4 root" >
+					<a class="orphan item bullet" href="../../news.html"  >
+				<span>
+			    				News				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item5 root" >
+					<a class="orphan item bullet" href="../../law-and-licensing.html"  >
+				<span>
+			    				Law &amp; Licensing				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item3 root" >
+					<a class="orphan item bullet" href="../../activities.html"  >
+				<span>
+			    				Activities				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item2 root" >
+					<a class="orphan item bullet" href="../../resourcecatalog.html"  >
+				<span>
+			    				Resource Catalog				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item45 root" >
+					<a class="orphan item bullet" href="../../about.html"  >
+				<span>
+			    				About				   
+				</span>
+			</a>
+			
+			
+	</li>	
+				</ul>
+</div>
+
+				    <div class="clear"></div>
+				</div></div></div>
+								<div class="rt-surround"><div class="rt-surround2"><div class="rt-surround3">
+										<div id="rt-showcase-section">
+												<div id="rt-showcase">
+							<div class="rt-grid-12 rt-alpha rt-omega">
+    		<div class="clear"></div>
+		
+		
+                <div class="close-note">
+                    <div class="rt-block">
+               					<div class="module-content">
+                	<div style="font-size:medium; background-image:linear-gradient(120deg,#159957,#4298b2);color:white;padding:20px;margin:-10px -18px;">感謝您對「自由軟體鑄造場」的支持與愛護，十多年來「自由軟體鑄造場」受中央研究院支持，並在資訊科學研究所以及資訊科技創新研究中心執行，現已完成階段性的任務。 本網站預計持續維運至 2021年底，網站內容基本上不會再更動。<br />也紀念我們永遠的朋友 李士傑先生（Shih-Chieh Ilya Li）。</div>				</div>
+            </div>
+                </div>
+		
+</div>
+							<div class="clear"></div>
+						</div>
+																	</div>
+															<div id="rt-main-surround">
+																							              <div id="rt-main" class="mb12">
+                <div class="rt-main-inner">
+                    <div class="rt-grid-12 ">
+                                                <div class="rt-block">
+                            							<div class="square1">
+							<div class="rt-module-surround">
+								<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+								<div class="rt-module-inner">
+		                            <div id="rt-mainbody">
+		                                
+<div class="rt-joomla ">
+	<div class="rt-article">
+		
+				<div class="rt-headline"><h1 class="rt-article-title">瀏覽網頁要小心！Firefox的幾個安全祕訣</h1>		</div>
+		<div class="clear"></div>
+		
+		
+		
+				<div class="rt-articleinfo">
+						<div class="rt-article-icons">
+								<a href="https://www.openfoundry.org/en/component/content/article/1770-firefox?tmpl=component&amp;print=1&amp;page=" title="Print" onclick="window.open(this.href,'win2','status=no,toolbar=no,scrollbars=yes,titlebar=no,menubar=no,resizable=yes,width=640,height=480,directories=no,location=no'); return false;" rel="nofollow"><span class="icon print"></span></a>																</div>
+			
+			<span class="rt-date-posted">
+						 Created at			Monday, 13 October 2008 04:22						&nbsp;&nbsp;&nbsp;&nbsp;						Last Updated on Tuesday, 12 July 2011 14:32						</span>
+
+						<span class="rt-author">
+				Written by Attila			</span>
+				
+					</div>
+		
+		
+		<p>惡意程式的傳播，幾乎都是透過網路居多，即使只是瀏覽個網頁，都有可能會遭受惡意程式的侵害。除此之外，偽造的網頁和釣魚網站，也虎視眈眈的瞄準著那些大意的朋友。雖然最好的方法是自己要小心，不過上個網頁就神經兮兮的先檢查看看是不是釣魚網站，說起來有點不符合人性，況且有時候正在找資料，壓根兒就不會記得要小心。</p>
+<p>如果網頁瀏覽器有協助把關的功能，相信就能減輕使用者的負擔，並且減少上網的心理壓力，多一份安心的感覺。Firefox 這個自由軟體陣營中最主要的瀏覽器向以安全性著稱，只要能善用相關的功能和設定，就能增加瀏覽網頁的安全性。</p>
+
+<p>當然，在此也要提醒大家：軟體的安全功能無法達到100 % 的效果，畢竟正邪雙方的技術都不斷的進步呀！人為的安全檢查還是不可缺的！</p>
+<p><strong>下載</strong></p>
+<p>要使用Firefox，可到這裡下載：<a href="https://www.moztw.org/" target="_blank">https://www.moztw.org/</a><br />在此可以選擇適合的版本，包括作業系統和語言，大家就根據自己的需要來下載。至於安裝，其實蠻容易的，也沒有什麼特別需要注意的，在此就不浪費篇幅。</p>
+<p><strong>使用防釣魚網站功能</strong></p>
+<p>步驟一<br /><a href="../../../images/081012/01.jpg" target="_blank"><img alt="" src="../../../images/081012/01.jpg" height="362" hspace="5" vspace="5" width="500" align="absBottom" border="0" /></a>&nbsp;<br />開啟Firefox後，按一下功能表的「工具＼選項」。<br /><br />補充說明：<br />在Ubuntu Linux下的Firefox並不叫做「選項」，而是「偏好設定」，開啟的地方也不大一樣，是在功能表的「編輯＼偏好設定」。<br />&nbsp;<a href="../../../images/081012/02.png" target="_blank"><img alt="" src="../../../images/081012/02.png" height="339" hspace="5" vspace="5" width="500" align="absBottom" border="0" /></a><br /><br />步驟二<br />&nbsp;<img alt="" src="../../../images/081012/03.jpg" height="500" width="511" /><br />在「安全」這個項目底下，預設的「當我正瀏覽的網站可能是有害網站時告訴我」和「當我正瀏覽的網站可能是偽造網站時告訴我」二個項目是開啟的，這二個就是預防釣魚網站用的，只要啟用後，開啟一個新網頁前會先連線到伺服器去比對，看看所瀏覽的網頁安不安全。如果沒有勾選，最好在看到本文之後，趕快把它們勾選起來吧！<br /><br />步驟三<br />&nbsp;<a href="../../../images/081012/04.jpg" target="_blank"><img alt="" src="../../../images/081012/04.jpg" height="362" hspace="5" vspace="5" width="500" align="absBottom" border="0" /></a><br />回到Firefox後，在網址列輸入想連結的網站名稱，不一定是要完整的網址，即使只是名稱或名稱的一部分也一樣，這裡以「中華郵政」為範例。<br /><br />步驟四<br /><a href="../../../images/081012/05.jpg" target="_blank"><img alt="" src="../../../images/081012/05.jpg" height="362" hspace="5" vspace="5" width="500" align="absBottom" border="0" /></a>&nbsp;<br />此時會有一段忙碌的時間，然後會連結到正確的網頁。這段時間，就是透過預設的搜尋引擎Google先搜尋網頁，然後是透過防釣魚功能檢查，直接連到正確的官網。<br /><br />用這個方法不但能快速找到想連結的網頁，而且實際上也比較安全。不過要注意的是，有時候找到的網頁不見得是自己真正想要的，尤其想找的是產品或新聞，那麼出現的就是Google的搜尋結果頁面。<br /><br />補充說明：<br />有些公司會和Mozila合作，推出特定的客製化版本，直接在網址列中輸入資料的方法可能會無效或結果和這裡不一樣（如奇摩火狐），建議大家使用標準版的Firefox會比較好。<br /><br /><strong>密碼的管理</strong><br /><br />許多網路服務都需要密碼，不過密碼一多，很容易就忘記。要是什麼都紀錄在瀏覽器，又有安全方面的風險。在Firefox內，就有密碼管理相關的功能，能有效降低相關的風險，有需要的朋友不妨使用看看。<br />步驟一<br /><img alt="" src="../../../images/081012/0608.jpg" height="500" width="511" />&nbsp;<br />一樣在選項視窗的安全項目內，如果需要記住密碼，可以勾選「記住每個網站的密碼」，那麼在某個網站輸入密碼的時候，就會同時把密碼紀錄起來。不過這樣有個缺點，就是別人若使用這台電腦，那他就能登入這些已經被記住密碼的網站，個人的隱私和機密也就不保了。所以最好順便勾選「使用主控密碼」，意思就是說，如果要進入需要密碼登入的網站，那麼Firefox就會要求輸入主控密碼，沒有輸入或輸入錯誤就無法登入該網站。</p>
+<p>步驟二<br /><img alt="" src="../../../images/081012/07.jpg" height="297" width="427" />&nbsp;<br />一勾選主控密碼後，就會出現「變更主控密碼」的視窗，然後自行設定需要的密碼即可。密碼最好是英文和數字混合，也要有一定的長度和難度（可參考底下的「密碼品質測量計」顯示的結果，越長表示密碼的難度越高），最好還有自己的記憶規則，否則忘了就不妙啦！<br />補充說明：<br />&nbsp;<img alt="" src="../../../images/081012/0608.jpg" height="500" width="511" /><br />在上圖中，我們可以看到一個「已存密碼」的按鈕，按這個鈕之後可以看到自己在哪些儲存了哪些網站的密碼，若不希望儲存起來，可以在這裡加以刪除。</p>
+<p><strong>啟用警告訊息<br /></strong><br />在網頁上填寫資料是難以避免的事，不過對方的網頁最好是有相關加密措施會比較好。許多網站會採用各式各樣的加密技術，不過有些還是沒有。為了方便讓我們知道所瀏覽的網站是否採用加密的措施，Firefox上只要簡單的幾個步驟，就可以在瀏覽時告訴我們喔！</p>
+<p>步驟一<br /><img alt="" src="../../../images/081012/09.jpg" height="500" width="511" />&nbsp;<br />在選項視窗的安全項目下，按最底下的「警告訊息」旁的「設定」按鈕，好選擇需要的安全警告項目。</p>
+<p>步驟二<br /><img alt="" src="../../../images/081012/10.jpg" height="208" width="258" />&nbsp;<br />在出現的小對話視窗中，根據自己需要勾選要警告的項目，如此當瀏覽的網頁符合其中的項目時，就會通知我們該網頁的狀況。這樣子我們就可以判斷一下，這是不是一個夠安全的網頁，輸入資料是否有被竊取的風險。</p>
+<p>警告訊息一<br /><img alt="" src="../../../images/081012/11.jpg" height="142" width="607" />&nbsp;<br />如果前往的是一個採用了加密技術的網頁，就會出現如上的對話視窗，告訴你這個網頁的狀況。</p>
+<p>警告訊息二<br /><img alt="" src="../../../images/081012/12.jpg" height="142" width="473" />&nbsp;<br />如果要離開加密的網頁，就會出現如上的警告，通知你在之後的瀏覽行為，最好不要輸入個人的隱私或機密資料。當然，在前面的安全警告項目中，得要勾選「離開加密頁面時」。</p>
+<p>警告訊息三<br /><img alt="" src="../../../images/081012/13.jpg" height="155" width="485" />&nbsp;<br />如果在未採用加密或安全措施的網頁輸入資料時，就會出現上圖的警告。除非大家能確定輸入的資料沒有安全方面的顧慮（如搜尋產品資料），那麼就按「繼續」來完成輸入動作，否則最好選擇取消，並且不要在該網頁輸入資料，以免有被竊取的風險。<br /><br />補充說明：<br />設定警告訊息會造成一些瀏覽上的不便，因為可能會常常跳出這些對話視窗，用久了不但覺得煩，也會降低瀏覽網頁的效率。因此如何在安全和方便之間拿捏，大家得要自己好好思考。</p>
+<p><strong>清除隱私資料</strong><br /><br />Cookie的應用，在網路世界中幾乎無所不在，有些網頁若是不接受Cookie，就無法正常顯示。雖然很多網頁公告的隱私權政策是不會非法應用這些資料，不過是否會真的遵行，瀏覽者是無從判斷起的。要是不希望這些東西留在自己的電腦中，那麼先學會如何正確清除吧！</p>
+<p>步驟一<br /><img alt="" src="../../../images/081012/14.jpg" height="500" width="511" />&nbsp;<br />開啟選項視窗後，切換到「個人隱私」的項目內，在最底下有個「隱私資料」的項目，如果希望結束Firefox時就一併把隱私資料清除掉，那麼可以勾選「結束Firefox時清除隱私資料」。不過在這之前，得要先設定好要清除哪些資料，所以按一下右邊的「設定」。</p>
+<p>步驟二<br /><img alt="" src="../../../images/081012/15.jpg" height="276" width="330" />&nbsp;<br />這時會出現一個新對話視窗，裡面是可以清除的範圍，大家可以根據自己的需要加以勾選。要注意的是「已存密碼」這個項目，這裡指的是已經儲存的各網站密碼，不包括主控密碼在內。</p>
+<p><strong>檢視頁面資訊</strong><br /><br />如果想要知道瀏覽的網頁相關的安全狀況或隱私設定，檢視「頁面資訊」是一個不錯的功能，它可以顯示相關的訊息讓我們知道，包括曾經瀏覽過的次數喔！雖然它不能算是安全功能，不過卻有助於我們瞭解瀏覽網頁的一些安全資訊，可作為判斷是否為安全網頁的參考，是一個不可不知道的功能。</p>
+<p>步驟一<br /><a href="../../../images/081012/16.jpg" target="_blank"><img alt="" src="../../../images/081012/16.jpg" height="362" hspace="5" vspace="5" width="500" align="absBottom" border="0" /></a>&nbsp;<br />開啟想檢視的網頁後，按功能表的「工具＼頁面資訊」。<br />補充說明：<br /><a href="../../../images/081012/17.jpg" target="_blank"><img alt="" src="../../../images/081012/17.jpg" height="362" hspace="5" vspace="5" width="500" align="absBottom" border="0" /></a>&nbsp;<br />開啟「頁面資訊」的另一個方法是在網頁上的空白處（也就是非文字和圖片的地方）按滑鼠右鍵，從出現的快顯功能表上點選「檢視頁面資訊」。</p>
+<p>步驟二<br /><a href="../../../images/081012/18.jpg" target="_blank"><img alt="" src="../../../images/081012/18.jpg" height="417" hspace="5" vspace="5" width="500" align="absBottom" border="0" /></a>&nbsp;<br />這時會開啟「頁面資訊」視窗，在「一般」這個項目下，可以知道一些基本資料，最底下也出會出現該網站的連線是否為加密。如果所檢視的加密的網站，還會列出加密的方式和等級。</p>
+<p>步驟三<br />&nbsp;<a href="../../../images/081012/19.jpg" target="_blank"><img alt="" src="../../../images/081012/19.jpg" height="417" hspace="5" vspace="5" width="500" align="absBottom" border="0" /></a><br />按一下「權限」這個項目，可以看到各種在瀏覽器中關於特定顯示項目的設定，我們可以針對這個網頁加以設定，下次在瀏覽這個網頁時，就會使用新的設定值。</p>
+<p>步驟四<br />&nbsp;<a href="../../../images/081012/20.jpg" target="_blank"><img alt="" src="../../../images/081012/20.jpg" height="417" hspace="5" vspace="5" width="500" align="absBottom" border="0" /></a><br />切換到「安全性」這個項目，這裡可以看到有關安全的項目，包括檢視紀錄、是否儲存了Cookie、是否儲存了密碼等。</p>
+<p>以上是使用Firefox時，幾個和安全有關的重要設定，相信適當的運用，必定能讓我們瀏覽網頁時多一分安全保障！</p>
+			<!-- Show relate article -->
+				<!-- end -->
+		<div class="article_note">
+		<!-- Add tags use metakey, and show OSSF Newsletter tag: OSSFNL+NUM-->
+		<br><br> <hr style='border: 1px dashed #D2DADB;'><b>OSSF Newsletter&nbsp;:</b>&nbsp;<a href='../../../previous-issue%3Ftask=view&amp;id=441.html'>第 113 期 再看 Google Chrome</a><br>				<!-- End -->
+					<br>
+					<b>Category: </b><a href="../../foss-programs.html">				FOSS Programs					</a>				</div>
+			 <!-- AddThis Button BEGIN ID 3001 is the front page article -->
+     			<br><br>
+       <div class="addthis_toolbox addthis_default_style addthis_32x32_style">
+       <a class="addthis_button_preferred_1"></a>
+       <a class="addthis_button_preferred_2"></a>
+       <a class="addthis_button_preferred_3"></a>
+       <a class="addthis_button_preferred_4"></a>
+       <a class="addthis_button_compact"></a>
+       <a class="addthis_counter addthis_bubble_style"></a>
+       </div>
+       <script type="text/javascript">var addthis_config = {"data_track_clickback":true};</script>
+       <script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js#pubid=openfoundry"></script>
+       <!-- AddThis Button END -->
+     <br>
+		<div class="totop" ><a class="rt-totop" href="1770%3Ftask=view.html#" style="outline: medium none;">↑ Top</a></div>
+            <!-- AddThis Button END -->
+
+			</div>
+</div>
+
+		                            </div>
+									<div class="clear"></div>
+								</div>
+								<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+							</div>
+							</div>
+                                                    </div>
+                                            </div>
+                                        <div class="clear"></div>
+                </div>
+            </div>
+																													</div>
+										<div id="rt-copyright">
+						<div class="rt-grid-12 rt-alpha rt-omega">
+                        <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<span class="nowrap">Open Source Software Foundry</span><span class="nowrap">‧</span><span class="nowrap"> </span><span class="nowrap">Best  Viewed with IE7.0 or Firefox2.0 above, 1024x768 Resolution. </span><strong>E-Mail</strong>：<a href="mailto:contact@openfoundry.org">contact@openfoundry.org</a> <br /><strong>Address</strong>：No.128, Sec.2, Academia Rd., Institute of Information Science, Academia Sinica, Nangang District, Taipei City 11529, Taiwan (R.O.C). <br /><a href="../../privacy-policy.html">Privacy Policy</a>. <a href="../../terms-of-use.html">Terms-of-use</a> <span style="position: relative; top: 8px; margin-top: -8px;"> <a href="../../../about/8101.html"><img src="../../../images/M_images/rss-feed-all.png" border="0" /></a></span>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+        	
+</div>
+						<div class="clear"></div>
+					</div>
+					<div class="rt-footer-bottom-wrap"><div class="rt-footer-bottom"><div class="rt-footer-bottom2"><div class="rt-footer-bottom3"></div></div></div></div>
+									</div></div></div>
+				<div class="rt-surround-bottom"><div class="rt-surround-bottom2"><div class="rt-surround-bottom3"></div></div></div>
+							</div>
+		</div>
+		<!--
+		<script id="aptureScript">
+						(function (){var a=document.createElement("script");a.defer="true";a.src="http://www.apture.com/js/apture.js?siteToken=vsJttrn";document.getElementsByTagName("head")[0].appendChild(a);})();
+     </script>
+-->
+
+<!-- Piwik -->
+<!-- 			<script type="text/javascript">
+			  var _paq = _paq || [];
+		  _paq.push(["trackPageView"]);
+		  _paq.push(["enableLinkTracking"]);
+
+		    (function() {
+			        var u=(("https:" == document.location.protocol) ? "https" : "https") + "://www.openfoundry.org/piwik/";
+				    _paq.push(["setTrackerUrl", u+"piwik.php"]);
+				    _paq.push(["setSiteId", "1"]);
+				        var d=document, g=d.createElement("script"), s=d.getElementsByTagName("script")[0]; g.type="text/javascript";
+				        g.defer=true; g.async=true; g.src=u+"piwik.js"; s.parentNode.insertBefore(g,s);
+					  })();
+		  </script> -->
+<!-- End Piwik Code -->
+	</body>
+</html>

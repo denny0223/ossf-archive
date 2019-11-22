@@ -1,0 +1,396 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="zh-tw" lang="zh-tw" >
+<head>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<link rel="shortcut icon" href="images/favicon.ico" />
+	  <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+  <meta name="robots" content="index, follow" />
+  <meta name="keywords" content="OSSFNL665" />
+  <meta name="title" content="跨平台影片播放器：Miro 3" />
+  <meta name="description" content="較早前 Google 宣佈推出 'Google TV' 計劃，將來自網際網路的影片內容帶進家中的電視機，可見在不久的將來，「網路影片」將會取代電視，成為多數家庭的主要娛樂。不過，在我們擁有一台 'Google TV' 之前，還是得要透過電腦才能欣賞網路影片。其實，不少可免費下載的影片播放軟體，早已將許多網路影片加入可播放的內容，令這些軟體的用途不再局限於僅能播放電腦內的多媒體檔案。以下介紹的" />
+  <meta name="generator" content="" />
+  <title>跨平台影片播放器：Miro 3 - OpenFoundry</title>
+  <link href="favicon.ico" rel="shortcut icon" type="image/x-icon" />
+  <link rel="stylesheet" href="components/com_gantry/css/gantry.css" type="text/css" />
+  <link rel="stylesheet" href="components/com_gantry/css/grid-12.css" type="text/css" />
+  <link rel="stylesheet" href="components/com_gantry/css/joomla.css" type="text/css" />
+  <link rel="stylesheet" href="templates/rt_quantive_j15/css/joomla.css" type="text/css" />
+  <link rel="stylesheet" href="templates/rt_quantive_j15/css/style1.css" type="text/css" />
+  <link rel="stylesheet" href="templates/rt_quantive_j15/css/light-body.css" type="text/css" />
+  <link rel="stylesheet" href="templates/rt_quantive_j15/css/demo-styles.css" type="text/css" />
+  <link rel="stylesheet" href="templates/rt_quantive_j15/css/template.css" type="text/css" />
+  <link rel="stylesheet" href="templates/rt_quantive_j15/css/typography.css" type="text/css" />
+  <link rel="stylesheet" href="templates/rt_quantive_j15/css/fusionmenu.css" type="text/css" />
+  <style type="text/css">
+    <!--
+#rt-main-surround ul.menu li.active > a, #rt-main-surround ul.menu li.active > .separator, #rt-main-surround ul.menu li.active > .item, #rt-main-surround .square4 ul.menu li:hover > a, #rt-main-surround .square4 ul.menu li:hover > .item, #rt-main-surround .square4 ul.menu li:hover > .separator, .roktabs-links ul li.active span {color:#0088B5;}
+a, #rt-main-surround ul.menu a:hover, #rt-main-surround ul.menu .separator:hover, #rt-main-surround ul.menu .item:hover {color:#0088B5;}
+    -->
+  </style>
+  <script type="text/javascript" src="components/com_jcomments/js/jcomments-v2.1.js%3Fv=2"></script>
+  <script type="text/javascript" src="components/com_jcomments/libraries/joomlatune/ajax.js"></script>
+  <script type="text/javascript" src="media/system/js/mootools.js"></script>
+  <script type="text/javascript" src="media/system/js/caption.js"></script>
+  <script type="text/javascript" src="components/com_gantry/js/gantry-buildspans.js"></script>
+  <script type="text/javascript" src="components/com_gantry/js/gantry-inputs.js"></script>
+  <script type="text/javascript" src="templates/rt_quantive_j15/js/jquery.cookie.js"></script>
+  <script type="text/javascript" src="modules/mod_roknavmenu/themes/fusion/js/fusion.js"></script>
+  <script type="text/javascript" src="modules/mod_ofssologin/js/ofssologin.js"></script>
+  <script type="text/javascript">
+
+			window.addEvent('domready', function() {
+				var modules = ['rt-block'];
+				var header = ['h3','h2','h1'];
+				GantryBuildSpans(modules, header);
+			});
+		InputsExclusion.push('.content_vote','#rt-popup')
+		        window.addEvent('load', function() {
+					new Fusion('ul.menutop', {
+						pill: 0,
+						effect: 'slide and fade',
+						opacity: 1,
+						hideDelay: 500,
+						centered: 0,
+						tweakInitial: {'x': -2, 'y': 0},
+        				tweakSubsequent: {'x': 0, 'y': -14},
+						menuFx: {duration: 200, transition: Fx.Transitions.Sine.easeOut},
+						pillFx: {duration: 400, transition: Fx.Transitions.Back.easeOut}
+					});
+	            });
+  </script>
+<!-- <script type="text/javascript" src="/sso/javascripts/langsync.js"></script> -->
+<!-- <script src="/templates/rt_quantive_j15/js/ossf.js"></script> -->
+<script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-4136519-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
+</head>
+	<body  class="backgroundlevel-low backgroundstyle-style8 bodylevel-med bodystyle-light cssstyle-style1 logostyle-dark font-family-helvetica font-size-is-default menu-type-fusionmenu col12 ">
+		<div id="rt-main-background">
+			<div class="rt-container">
+																<div id="rt-header">
+					<div class="rt-grid-7 rt-alpha">
+    			<div class="rt-block">
+    	    	<a href="index.html" id="rt-logo"></a>
+    		</div>
+	    
+</div>
+<div class="rt-grid-5 rt-omega">
+                    <div class="square9">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<div class="ofssologin_square9"><a href="index.html">登入</a>&nbsp;&nbsp|&nbsp;&nbsp;<span><a href="en/component/content/2361%3Ftask=view.html" ><span lang="en" xml:lang="en">English</span></a></li></ul></span><!--Joom!fish V2.0.4 (Lightning)-->
+<!-- &copy; 2003-2009 Think Network, released under the GPL. -->
+<!-- More information: at http://www.joomfish.net -->
+<div class="ofssologin_search_square9">
+  <form id="of_search" action="https://www.openfoundry.org/of/openfoundry/search" method="get" onsubmit="of_search(); return false;">
+    <select id="of_search_type">
+      <option value="Projects"> 專案 </option>
+      <option value="Content"> 文章 </option>
+      <option value="People"> 人才 </option>
+    </select>
+    <input id="query" name="query" id="mod_search_searchword" maxlength="50" alt="search" class="inputbox" type="text" size="28" value="search..."  onblur="if(this.value=='') this.value='search...';" onfocus="if(this.value=='search...') this.value='';" />
+    <input type="hidden" name="commit" value="search" />
+  </form>
+</div></div>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		
+</div>
+					<div class="clear"></div>
+				</div>
+																<div id="rt-navigation"><div id="rt-navigation2"><div id="rt-navigation3">
+					
+<div class="nopill">
+	<ul class="menutop level1 " >
+						<li class="item1 root" >
+					<a class="orphan item bullet" href="index.html"  >
+				<span>
+			    				首頁				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item32 root" >
+					<a class="orphan item bullet" href="archived.html"  >
+				<span>
+			    				專案				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item186 root" >
+					<a class="orphan item bullet" href="tw/community.html"  >
+				<span>
+			    				Who&#039;s Who				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item4 root" >
+					<a class="orphan item bullet" href="tw/news.html"  >
+				<span>
+			    				新聞				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item5 root" >
+					<a class="orphan item bullet" href="tw/law-and-licensing.html"  >
+				<span>
+			    				法律源地				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item3 root" >
+					<a class="orphan item bullet" href="tw/activities.html"  >
+				<span>
+			    				活動				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item2 root" >
+					<a class="orphan item bullet" href="tw/resourcecatalog%3FName=Value.html"  >
+				<span>
+			    				資源表列				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item45 root" >
+					<a class="orphan item bullet" href="tw/about.html"  >
+				<span>
+			    				關於				   
+				</span>
+			</a>
+			
+			
+	</li>	
+				</ul>
+</div>
+
+				    <div class="clear"></div>
+				</div></div></div>
+								<div class="rt-surround"><div class="rt-surround2"><div class="rt-surround3">
+										<div id="rt-showcase-section">
+												<div id="rt-showcase">
+							<div class="rt-grid-12 rt-alpha rt-omega">
+    		<div class="clear"></div>
+		
+		
+                <div class="close-note">
+                    <div class="rt-block">
+               					<div class="module-content">
+                	<div style="font-size:medium; background-image:linear-gradient(120deg,#159957,#4298b2);color:white;padding:20px;margin:-10px -18px;">感謝您對「自由軟體鑄造場」的支持與愛護，十多年來「自由軟體鑄造場」受中央研究院支持，並在資訊科學研究所以及資訊科技創新研究中心執行，現已完成階段性的任務。 本網站預計持續維運至 2021年底，網站內容基本上不會再更動。<br />也紀念我們永遠的朋友 李士傑先生（Shih-Chieh Ilya Li）。</div>				</div>
+            </div>
+                </div>
+		
+</div>
+							<div class="clear"></div>
+						</div>
+																	</div>
+															<div id="rt-main-surround">
+												<div id="rt-breadcrumbs">
+								<div class="rt-breadcrumb-surround">
+		<a href="index.html" id="breadcrumbs-home"></a>
+		<span class="breadcrumbs pathway">
+<span class="no-link">電子報總覽</span></span>
+	</div>
+	
+							<div class="clear"></div>
+						</div>
+																							              <div id="rt-main" class="sa3-mb9">
+                <div class="rt-main-inner">
+                    <div class="rt-grid-9 rt-push-3">
+                                                <div class="rt-block">
+                            							<div class="square1">
+							<div class="rt-module-surround">
+								<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+								<div class="rt-module-inner">
+		                            <div id="rt-mainbody">
+		                                
+<div class="rt-joomla ">
+	<div class="rt-article">
+		
+				<div class="rt-headline"><h1 class="rt-article-title">跨平台影片播放器：Miro 3</h1>		</div>
+		<div class="clear"></div>
+		
+		
+		
+				<div class="rt-articleinfo">
+						<div class="rt-article-icons">
+								<a href="https://www.openfoundry.org/tw/component/content/2361?tmpl=component&amp;print=1&amp;page=" title="列印" onclick="window.open(this.href,'win2','status=no,toolbar=no,scrollbars=yes,titlebar=no,menubar=no,resizable=yes,width=640,height=480,directories=no,location=no'); return false;" rel="nofollow"><span class="icon print"></span></a>																</div>
+			
+			<span class="rt-date-posted">
+						建立日期			2010-06-01 18:13						&nbsp;&nbsp;&nbsp;&nbsp;						最近更新在 2010-06-07 07:41						</span>
+
+						<span class="rt-author">
+				作者是 線人			</span>
+				
+					</div>
+		
+		
+		較早前 Google 宣佈推出 &quot;Google TV&quot; 計劃，將來自網際網路的影片內容帶進家中的電視機，可見在不久的將來，「網路影片」將會取代電視，成為多數家庭的主要娛樂。不過，在我們擁有一台 &quot;Google TV&quot; 之前，還是得要透過電腦才能欣賞網路影片。其實，不少可免費下載的影片播放軟體，早已將許多網路影片加入可播放的內容，令這些軟體的用途不再局限於僅能播放電腦內的多媒體檔案。以下介紹的 Miro 3 軟體，就以提供網路上超過 6000 種影片為主要賣點。這個軟體除了可用來播放使用者自己的影片及音樂檔案外，更提供搜尋、下載及播放網路影片的功能，當中更支援以 BitTorrent 來下載影片的方式。不過，筆者仍需在此提醒讀者：下載影片前，務必留意該影片的著作權規定是否允許使用者自行下載。<p>&nbsp;</p>
+<p>Miro 目前的最新版本為 3.x，本身以開放原始碼的方式進行開發，並支援 Windows、Mac OS X 及 GNU/Linux 三大作業平台。本文便以 Miro 3.0.2 的 Windows 版本進行示範。<br /><br />&nbsp; * 軟體名稱：Miro <br />&nbsp; * 最新版本：3.0.2<br />&nbsp; * 軟體授權：GNU General Public License (GPLv2)<br />&nbsp; * 系統支援：Windows、Mac OS X、GNU/Linux<br />&nbsp; * 官方網站：<a target="_blank" href="https://www.getmiro.com/">https://www.getmiro.com/</a><br /><br /><strong>瀏覽 HD 影片內容</strong><br /><br />Miro 的賣點之一是提供超過 6000 種網路影片。如果使用者欣賞網路影片只為了打發時間，對於想看哪一類影片較無頭緒的話，便可透過 Miro 內置的影片目錄「Miro 導覽」 (Miro Guide) ，瀏覽該軟體所提供的影片選擇。值得留意的是，因應目前網路影片質素邁向「高解析度」 (High Definition, HD) 的趨勢，Miro 導覽特別設有 &quot;HD Shows&quot; 專區，方便使用者可以直接下載這些經 Miro 挑選過的 HD 影片進行觀看。而如果使用者是使用較大頻寬的網路連線，更可選擇以即時串流的方式觀看線上 HD 影片。<br /><br />使用者啟動 Miro 後，按一下左方的「Miro 導覽」項目，便可看到介面右方顯示出的 Miro 導覽網頁。透過這個網頁，使用者可以瀏覽 Miro 所挑選過的網路影片。點選網頁中的「HD Shows」或「HD Favorites」，更可瀏覽 Miro 提供的 HD 影片頻道。<br /><br /><a href="images/100608/miro01.jpg" target="_blank"><img width="600" vspace="5" hspace="5" height="404" border="0" align="absBottom" src="images/100608/miro01.jpg" alt="" /></a><br /><br />點選網頁中的「HD Favorites」，可看到 Miro 所提供的 HD 影片頻道。將鼠標移至影片頻道的縮圖，便可選擇「ADD TO SIDEBAR」將影片頻道加進左方的「側面窗格」 (sidebar) ，或者選擇「WATCH」即時觀看影片。<br /><br /><a href="images/100608/miro02.jpg" target="_blank"><img width="600" vspace="5" hspace="5" height="404" border="0" align="absBottom" src="images/100608/miro02.jpg" alt="" /></a><br /><br />點選「WATCH」後，使用者可即時觀看該影片頻道最新一集的內容。如果想重溫以往的內容，可在網頁下方中進行搜尋。<br /><br /><a href="images/100608/miro03.jpg" target="_blank"><img width="600" vspace="5" hspace="5" height="404" border="0" align="absBottom" src="images/100608/miro03.jpg" alt="" /></a><br /><br />當使用者按下影片下方控制列最右邊的圖示，便可以「全屏幕」的方式觀看影片內容。<br /><br /><a href="images/100608/miro04.jpg" target="_blank"><img width="600" vspace="5" hspace="5" height="375" border="0" align="absBottom" src="images/100608/miro04.jpg" alt="" /></a><br /><br />既然是網路影片瀏覽器，Miro 本身亦提供網路影片頻道的訂閱功能。使用者透過 Miro 介面，按下所選影片頻道的「ADD FEED TO YOUR SIDEBAR」後，這個影片頻道便會加入 Miro 介面左方「側面窗格」中的「VIDEO FEEDS」。日後當使用者再次啟動 Miro 時，該軟體便會自動下載已訂閱影片頻道的最新內容。<br /><br /><a href="images/100608/miro05.jpg" target="_blank"><img width="600" vspace="5" hspace="5" height="404" border="0" align="absBottom" src="images/100608/miro05.jpg" alt="" /></a><br /><br /><strong>搜尋英語以外的影片內容</strong><br /><br />Miro 不僅提供英語的影片內容。透過 Miro 導覽中 &quot;Video By Language&quot; 或 &quot;Audio By Language&quot;的選項，使用者可以輕易搜尋其他語言的影音內容。<br /><br /><a href="images/100608/miro06.jpg" target="_blank"><img width="600" vspace="5" hspace="5" height="404" border="0" align="absBottom" src="images/100608/miro06.jpg" alt="" /></a><br /><br />透過 Miro，使用者可以找到若干以國語為主的影片頻道，可惜目前數量並不算多。<br /><br /><a href="images/100608/miro07.jpg" target="_blank"><img width="600" vspace="5" hspace="5" height="404" border="0" align="absBottom" src="images/100608/miro07.jpg" alt="" /></a><br /><br />如果使用者想要搜尋指定題材的影片內容，可點選「側面窗格」中的「搜尋影片」，以「關鍵字」的方式進行搜尋。<br /><br /><a href="images/100608/miro08.jpg" target="_blank"><img width="600" vspace="5" hspace="5" height="404" border="0" align="absBottom" src="images/100608/miro08.jpg" alt="" /></a><br /><br /><strong>合法下載開放公眾授權的影音內容</strong><br /><br />上文提到 Miro 可以支援 BitTorrent 的下載方式，其實這樣的下載方式，並不必然涉及對他人著作權利的侵害，以下筆者便以步驟化的方式，介紹如何以 Miro 合法地下載開放公眾授權的影音內容。<br /><br />首先，在 Miro 「側面窗格」中的「WEBSITES」，使用者可點選「LegalTorrents」項目，介面便會出現一個名為 &quot;ClearBits&quot; 的網站，這個網站前稱 &quot;LegalTorrents&quot;，專門提供開放公眾授權內容的 BitTorrent 種子。<br /><br /><a href="images/100608/miro09.jpg" target="_blank"><img width="600" vspace="5" hspace="5" height="404" border="0" align="absBottom" src="images/100608/miro09.jpg" alt="" /></a><br /><br />使用者可以按媒體的種類（如音樂、電影等），瀏覽 ClearBits 合法提供的下載內容，或者以「關鍵字」來搜尋所需內容。<br /><br /><a href="images/100608/miro10.jpg" target="_blank"><img width="600" vspace="5" hspace="5" height="404" border="0" align="absBottom" src="images/100608/miro10.jpg" alt="" /></a><br /><br />如果想下載所需的內容，請在內容的介紹主頁中，點選「Torrent file」。<br /><br /><a href="images/100608/miro11.jpg" target="_blank"><img width="600" vspace="5" hspace="5" height="404" border="0" align="absBottom" src="images/100608/miro11.jpg" alt="" /></a><br /><br />Miro 便會即時取得所選內容的種子檔案，並且以 BitTorrent 的方式開始下載所選的影音內容。 在 Miro 「側面窗格」中的「LIBRARY」、「下載中」，使用者可隨時查閱影音內容的下載進度。<br /><br /><a href="images/100608/miro12.jpg" target="_blank"><img width="600" vspace="5" hspace="5" height="404" border="0" align="absBottom" src="images/100608/miro12.jpg" alt="" /></a><br /><br />透過上述方法所下載的影音內容，會自動於 Miro「側面窗格」中的「LIBRARY」出現。使用者可透過 Miro 隨時播放已下載的影音內容。<br /><br /><a href="images/100608/miro13.jpg" target="_blank"><img width="600" vspace="5" hspace="5" height="404" border="0" align="absBottom" src="images/100608/miro13.jpg" alt="" /></a><br /><br />* <a target="_blank" href="https://www.clearbits.net/">ClearBits 網址</a><br /><br /><strong>◎ 作者簡介</strong><br /><br />線人，任職於香港，求學時期曾經接觸過 Apple II 、 PC 等電腦系統，現今從事與智慧型手機有關的工作，每天的生活都是在不同作業系統（Windows、Mac OS、Linux，還有不同智慧型手機系統）之間遊走。</p>
+			<!-- Show relate article -->
+				<!-- end -->
+		<div class="article_note">
+		<!-- Add tags use metakey, and show OSSF Newsletter tag: OSSFNL+NUM-->
+		<br><br> <hr style='border: 1px dashed #D2DADB;'><b>自由軟體鑄造場電子報&nbsp;:</b>&nbsp;<a href='previous-issue%3Ftask=view&amp;id=665.html'>第 151 期 試算表軟體的另一種選擇 - Gnumeric</a><br>				<!-- End -->
+					<br>
+					<b>分類: </b><a href="tw/foss-programs.html">				源碼秘技					</a>				</div>
+			 <!-- AddThis Button BEGIN ID 3001 is the front page article -->
+     			<br><br>
+       <div class="addthis_toolbox addthis_default_style addthis_32x32_style">
+       <a class="addthis_button_preferred_1"></a>
+       <a class="addthis_button_preferred_2"></a>
+       <a class="addthis_button_preferred_3"></a>
+       <a class="addthis_button_preferred_4"></a>
+       <a class="addthis_button_compact"></a>
+       <a class="addthis_counter addthis_bubble_style"></a>
+       </div>
+       <script type="text/javascript">var addthis_config = {"data_track_clickback":true};</script>
+       <script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js#pubid=openfoundry"></script>
+       <!-- AddThis Button END -->
+     <br>
+		<div class="totop" ><a class="rt-totop" href="index.php%3Foption=com_content&amp;task=view&amp;id=2361&amp;Itemid=56%3Bisletter=1.html#" style="outline: medium none;">↑ Top</a></div>
+            <!-- AddThis Button END -->
+
+			</div>
+</div>
+
+		                            </div>
+									<div class="clear"></div>
+								</div>
+								<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+							</div>
+							</div>
+                                                    </div>
+                                            </div>
+                                <div class="rt-grid-3 rt-pull-9">
+                <div id="rt-sidebar-a">
+                                    <div class="square4">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<ul class="menu"><li id="current" class="active item56"><a href="tw/previous-issue.html"><span>電子報總覽</span></a></li><li class="item55"><a href="tw/about-newsletter.html"><span>關於本報</span></a></li></ul>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<ul class="menu"><li class="item115"><a href="tw/foss-news.html"><span>源碼新聞</span></a></li><li class="item141"><a href="tw/case-job.html"><span>接案 / 工作</span></a></li></ul>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+        	                <div class="square1">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-title"><h2 class="title">專欄總覽</h2></div>
+						<div class="clear"></div>
+		                						<div class="module-content">
+		                	<ul class="menu"><li class="item37"><a href="tw/tech-column.html"><span>技術專欄</span></a></li><li class="item40"><a href="tw/foss-programs.html"><span>源碼秘技</span></a></li><li class="item35"><a href="tw/legal-article-.html"><span>法律專欄</span></a></li><li class="item154"><a href="tw/foss-forum.html"><span>自由專欄</span></a></li><li class="item162"><a href="tw/enterprise-application.html"><span>企業應用</span></a></li><li class="item44"><a href="tw/foss-projects.html"><span>源碼專案</span></a></li></ul>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		                <div class="square1">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<p style="text-align: center;"><a href="news%3Fformat=feed&amp;type=rss" target="_black"><img src="images/M_images/news-rss-feed.png" border="0" /></a><br /><a href="https://www.openfoundry.org/rss-feed/Newsletter" target="_black"><img src="images/M_images/newsletter-rss-feed.png" border="0" /></a></p>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		
+                </div>
+            </div>
+
+                    <div class="clear"></div>
+                </div>
+            </div>
+																													</div>
+										<div id="rt-copyright">
+						<div class="rt-grid-12 rt-alpha rt-omega">
+                        <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<div id="desktop-mobile-version-switch"><span id="mobile-version" class="version-switch"><a href="index.php%3Foption=com_content&amp;task=view&amp;id=2361&amp;Itemid=56%3Bisletter=1.html#">行動版</a></span></div>
+自由軟體鑄造場 製作 最佳瀏覽狀態：IE7或Firefox2.0以上 (建議使用Firefox) ‧ 解析度1024*768 <br /> <strong>E-Mail</strong>：<a href="mailto:contact@openfoundry.org">contact@openfoundry.org</a> <strong>Address</strong>：台北市南港區研究院路2段128號 中央研究院資訊科學研究所 . <a href="privacy-policy.html">隱私權條款</a>. <a href="terms-of-use.html">使用條款</a><span style="position: relative; top: 8px; margin-top: -8px;"> <a href="about/8101.html"><img src="images/M_images/rss-feed-all.png" border="0" /></a></span>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+        	
+</div>
+						<div class="clear"></div>
+					</div>
+					<div class="rt-footer-bottom-wrap"><div class="rt-footer-bottom"><div class="rt-footer-bottom2"><div class="rt-footer-bottom3"></div></div></div></div>
+									</div></div></div>
+				<div class="rt-surround-bottom"><div class="rt-surround-bottom2"><div class="rt-surround-bottom3"></div></div></div>
+							</div>
+		</div>
+		<!--
+		<script id="aptureScript">
+						(function (){var a=document.createElement("script");a.defer="true";a.src="http://www.apture.com/js/apture.js?siteToken=vsJttrn";document.getElementsByTagName("head")[0].appendChild(a);})();
+     </script>
+-->
+
+<!-- Piwik -->
+<!-- 			<script type="text/javascript">
+			  var _paq = _paq || [];
+		  _paq.push(["trackPageView"]);
+		  _paq.push(["enableLinkTracking"]);
+
+		    (function() {
+			        var u=(("https:" == document.location.protocol) ? "https" : "https") + "://www.openfoundry.org/piwik/";
+				    _paq.push(["setTrackerUrl", u+"piwik.php"]);
+				    _paq.push(["setSiteId", "1"]);
+				        var d=document, g=d.createElement("script"), s=d.getElementsByTagName("script")[0]; g.type="text/javascript";
+				        g.defer=true; g.async=true; g.src=u+"piwik.js"; s.parentNode.insertBefore(g,s);
+					  })();
+		  </script> -->
+<!-- End Piwik Code -->
+	</body>
+</html>

@@ -1,0 +1,455 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-gb" lang="en-gb" >
+<head>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<link rel="shortcut icon" href="../../images/favicon.ico" />
+	  <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+  <meta name="robots" content="index, follow" />
+  <meta name="keywords" content="OSSFNL833" />
+  <meta name="title" content="NoSQL 入門指引" />
+  <meta name="description" content="簡介 假設說你想要開發一個網站或應用程式，顯然你需要管理資料的方法，對了，就是資料庫。那麼，你的選擇是 MySQL、MS-SQL、Oracle 或 PostgreSQL？畢竟，沒有什麼能像關聯式資料庫那樣漂亮地運用 SQL 管理資料。 不過嘛，就讓我為你介紹一個獨特且非常規的資料庫模型，NoSQL。NoSQL 意指不僅僅是 SQL，出發點不在於反對" />
+  <meta name="generator" content="" />
+  <title>NoSQL 入門指引 - OpenFoundry</title>
+  <link href="../../favicon.ico" rel="shortcut icon" type="image/x-icon" />
+  <link rel="stylesheet" href="../../components/com_gantry/css/gantry.css" type="text/css" />
+  <link rel="stylesheet" href="../../components/com_gantry/css/grid-12.css" type="text/css" />
+  <link rel="stylesheet" href="../../components/com_gantry/css/joomla.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/joomla.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/style1.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/light-body.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/demo-styles.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/template.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/typography.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/fusionmenu.css" type="text/css" />
+  <style type="text/css">
+    <!--
+#rt-main-surround ul.menu li.active > a, #rt-main-surround ul.menu li.active > .separator, #rt-main-surround ul.menu li.active > .item, #rt-main-surround .square4 ul.menu li:hover > a, #rt-main-surround .square4 ul.menu li:hover > .item, #rt-main-surround .square4 ul.menu li:hover > .separator, .roktabs-links ul li.active span {color:#0088B5;}
+a, #rt-main-surround ul.menu a:hover, #rt-main-surround ul.menu .separator:hover, #rt-main-surround ul.menu .item:hover {color:#0088B5;}
+    -->
+  </style>
+  <script type="text/javascript" src="../../components/com_jcomments/js/jcomments-v2.1.js%3Fv=2"></script>
+  <script type="text/javascript" src="../../components/com_jcomments/libraries/joomlatune/ajax.js"></script>
+  <script type="text/javascript" src="../../media/system/js/mootools.js"></script>
+  <script type="text/javascript" src="../../media/system/js/caption.js"></script>
+  <script type="text/javascript" src="../../components/com_gantry/js/gantry-buildspans.js"></script>
+  <script type="text/javascript" src="../../components/com_gantry/js/gantry-inputs.js"></script>
+  <script type="text/javascript" src="../../templates/rt_quantive_j15/js/jquery.cookie.js"></script>
+  <script type="text/javascript" src="../../modules/mod_roknavmenu/themes/fusion/js/fusion.js"></script>
+  <script type="text/javascript" src="../../modules/mod_ofssologin/js/ofssologin.js"></script>
+  <script type="text/javascript">
+
+			window.addEvent('domready', function() {
+				var modules = ['rt-block'];
+				var header = ['h3','h2','h1'];
+				GantryBuildSpans(modules, header);
+			});
+		InputsExclusion.push('.content_vote','#rt-popup')
+		        window.addEvent('load', function() {
+					new Fusion('ul.menutop', {
+						pill: 0,
+						effect: 'slide and fade',
+						opacity: 1,
+						hideDelay: 500,
+						centered: 0,
+						tweakInitial: {'x': -2, 'y': 0},
+        				tweakSubsequent: {'x': 0, 'y': -14},
+						menuFx: {duration: 200, transition: Fx.Transitions.Sine.easeOut},
+						pillFx: {duration: 400, transition: Fx.Transitions.Back.easeOut}
+					});
+	            });
+  </script>
+<!-- <script type="text/javascript" src="/sso/javascripts/langsync.js"></script> -->
+<!-- <script src="/templates/rt_quantive_j15/js/ossf.js"></script> -->
+<script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-4136519-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
+</head>
+	<body  class="backgroundlevel-low backgroundstyle-style8 bodylevel-med bodystyle-light cssstyle-style1 logostyle-dark font-family-helvetica font-size-is-default menu-type-fusionmenu col12 ">
+		<div id="rt-main-background">
+			<div class="rt-container">
+																<div id="rt-header">
+					<div class="rt-grid-7 rt-alpha">
+    			<div class="rt-block">
+    	    	<a href="../../index.html" id="rt-logo"></a>
+    		</div>
+	    
+</div>
+<div class="rt-grid-5 rt-omega">
+                    <div class="square9">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<div class="ofssologin_square9"><a href="../../index.html">Login</a>&nbsp;&nbsp|&nbsp;&nbsp;<span><a href="../../tw/foss-projects/9040-nosql-.html" ><span lang="tw" xml:lang="tw">繁體中文</span></a></li></ul></span><!--Joom!fish V2.0.4 (Lightning)-->
+<!-- &copy; 2003-2009 Think Network, released under the GPL. -->
+<!-- More information: at http://www.joomfish.net -->
+<div class="ofssologin_search_square9">
+  <form id="of_search" action="https://www.openfoundry.org/of/openfoundry/search" method="get" onsubmit="of_search(); return false;">
+    <select id="of_search_type">
+      <option value="Projects"> Projects </option>
+      <option value="Content"> Content </option>
+      <option value="People"> People </option>
+    </select>
+    <input id="query" name="query" id="mod_search_searchword" maxlength="50" alt="search" class="inputbox" type="text" size="28" value="search..."  onblur="if(this.value=='') this.value='search...';" onfocus="if(this.value=='search...') this.value='';" />
+    <input type="hidden" name="commit" value="search" />
+  </form>
+</div></div>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		
+</div>
+					<div class="clear"></div>
+				</div>
+																<div id="rt-navigation"><div id="rt-navigation2"><div id="rt-navigation3">
+					
+<div class="nopill">
+	<ul class="menutop level1 " >
+						<li class="item1 root" >
+					<a class="orphan item bullet" href="../../index.html"  >
+				<span>
+			    				Home				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item32 root" >
+					<a class="orphan item bullet" href="../../archived.html"  >
+				<span>
+			    				Projects				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item186 root" >
+					<a class="orphan item bullet" href="../community.html"  >
+				<span>
+			    				Who&#039;s Who				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item4 root" >
+					<a class="orphan item bullet" href="../news.html"  >
+				<span>
+			    				News				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item5 root" >
+					<a class="orphan item bullet" href="../law-and-licensing.html"  >
+				<span>
+			    				Law &amp; Licensing				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item3 root" >
+					<a class="orphan item bullet" href="../activities.html"  >
+				<span>
+			    				Activities				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item2 root" >
+					<a class="orphan item bullet" href="../resourcecatalog.html"  >
+				<span>
+			    				Resource Catalog				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item45 root" >
+					<a class="orphan item bullet" href="../about.html"  >
+				<span>
+			    				About				   
+				</span>
+			</a>
+			
+			
+	</li>	
+				</ul>
+</div>
+
+				    <div class="clear"></div>
+				</div></div></div>
+								<div class="rt-surround"><div class="rt-surround2"><div class="rt-surround3">
+										<div id="rt-showcase-section">
+												<div id="rt-showcase">
+							<div class="rt-grid-12 rt-alpha rt-omega">
+    		<div class="clear"></div>
+		
+		
+                <div class="close-note">
+                    <div class="rt-block">
+               					<div class="module-content">
+                	<div style="font-size:medium; background-image:linear-gradient(120deg,#159957,#4298b2);color:white;padding:20px;margin:-10px -18px;">感謝您對「自由軟體鑄造場」的支持與愛護，十多年來「自由軟體鑄造場」受中央研究院支持，並在資訊科學研究所以及資訊科技創新研究中心執行，現已完成階段性的任務。 本網站預計持續維運至 2021年底，網站內容基本上不會再更動。<br />也紀念我們永遠的朋友 李士傑先生（Shih-Chieh Ilya Li）。</div>				</div>
+            </div>
+                </div>
+		
+</div>
+							<div class="clear"></div>
+						</div>
+																	</div>
+															<div id="rt-main-surround">
+												<div id="rt-breadcrumbs">
+								<div class="rt-breadcrumb-surround">
+		<a href="../../index.html" id="breadcrumbs-home"></a>
+		<span class="breadcrumbs pathway">
+<a href="../foss-projects.html" class="pathway">FOSS Projects</a> <img src="../../templates/rt_quantive_j15/images/arrow.png" alt=""  /> <span class="no-link">NoSQL 入門指引</span></span>
+	</div>
+	
+							<div class="clear"></div>
+						</div>
+																							              <div id="rt-main" class="sa3-mb9">
+                <div class="rt-main-inner">
+                    <div class="rt-grid-9 rt-push-3">
+                                                <div class="rt-block">
+                            							<div class="square1">
+							<div class="rt-module-surround">
+								<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+								<div class="rt-module-inner">
+		                            <div id="rt-mainbody">
+		                                
+<div class="rt-joomla ">
+	<div class="rt-article">
+		
+				<div class="rt-headline"><h1 class="rt-article-title">NoSQL 入門指引</h1>		</div>
+		<div class="clear"></div>
+		
+		
+		
+				<div class="rt-articleinfo">
+						<div class="rt-article-icons">
+								<a href="9040-nosql-%3Ftmpl=component&amp;print=1&amp;layout=default&amp;page=.html" title="Print" onclick="window.open(this.href,'win2','status=no,toolbar=no,scrollbars=yes,titlebar=no,menubar=no,resizable=yes,width=640,height=480,directories=no,location=no'); return false;" rel="nofollow"><span class="icon print"></span></a>																</div>
+			
+			<span class="rt-date-posted">
+						 Created at			Monday, 12 August 2013 14:14						&nbsp;&nbsp;&nbsp;&nbsp;						Last Updated on Monday, 12 August 2013 14:35						</span>
+
+						<span class="rt-author">
+				Written by 謝良奇／編譯			</span>
+				
+					</div>
+		
+		
+		<h3>簡介</h3>
+<p>假設說你想要開發一個網站或應用程式，顯然你需要管理資料的方法，對了，就是資料庫。那麼，你的選擇是 MySQL、MS-SQL、Oracle 或 PostgreSQL？畢竟，沒有什麼能像關聯式資料庫那樣漂亮地運用 SQL 管理資料。</p>
+
+<p>不過嘛，就讓我為你介紹一個獨特且非常規的資料庫模型，NoSQL。NoSQL 意指不僅僅是 SQL，出發點不在於反對 SQL，而是對資料儲存提供替代方案。然而，顯然大多數用戶都對 SQL 很熟悉，許多 NoSQL 資料庫也會提供類似 SQL 的查詢介面。</p>
+<br />
+<h3>為什麼要用 NoSQL？</h3>
+<p>這問題問的合理，以下有若干原因：</p>
+<ul>
+<li>管理大規模資料：NoSQL 資料庫能輕易處理大量的讀寫週期、眾多用戶，以及數以 petabytes 計的資料。</li>
+<li>資料庫綱要 (Schema)？不需要：多數 NoSQL 資料庫沒有綱要，所以相當彈性。當涉及到綱要建構之時，它們提供了相當廣泛的選擇空間，能輕易地和物件相對應。這表示再也看不到像是正規化與複雜資料連接 (complex joins) 等字眼。</li>
+<li>開發者親和性：NoSQL 資料庫對各主要程式語言提供了簡單的 API，因此再也用不著複雜的 ORM 框架。如果特定程式語言沒有 API 可用時，還是可以透過簡單的 RESTful API，使用 XML 以及 JSON 格式經由 HTTP 存取資料。</li>
+<li>可用性： 多數分散式 NoSQL 資料庫都提供簡易的資料複製，單一節點的毀損不會過分地影響資料的可用性。</li>
+<li>延展性：NoSQL 資料庫不需要專用的高效能伺服器。事實上，它們可以輕易地運行在一般硬體組成的叢集上，只要增加新節點就可輕易向外延展。</li>
+<li>低延遲：除非你跑的是 trillion 等級資料伺服器組成的叢集，否則 NoSQL 應該可以協助你達成絕佳的低延遲性。當然，延遲本身與可成功載入記憶體中的資料量有關。</li>
+</ul>
+<p></p>
+<br />
+<h3>SQL 思想</h3>
+<p>NoSQL 基本上拋棄了傳統的 SQL 思想，轉而靠往 CAP 定理或稱 Brewer 定理 (Brewer’s Theorem)。該定理由 Eric Brewer 於 2000 年提出，談的是有關一致性、可用性與分區容忍性 (Consistency, Availability and Partition Tolerance，CAP) 這三條基本法則，並指出分散式資料庫最多僅能滿足其中兩個條件。由於採用了較一致性更為寬鬆的最終一致性 (Eventual Consistency)，NoSQL 實現了此一定理，因此大幅改進了可用性與延展性。此一典範通常稱之為 BASE，意指基本可用 (Basically Available)、軟狀態 (Soft state)、最終一致性。</p>
+<br />
+<h3>NoSQL 資料模型</h3>
+<p>NoSQL 之間的主要差異如下：</p>
+<ol>
+<li>文檔儲庫</li>
+<li>階層式</li>
+<li>網絡</li>
+<li>以列為導向</li>
+<li>物件導向</li>
+<li>鍵值 (Key-value) 儲庫</li>
+<li>Triple 儲庫</li>
+</ol>
+<p></p>
+<br />
+<h3>文檔儲庫</h3>
+<p>資料組織簡單到僅有列與行的日子已經一去不返。今天，資料通常以  XML 或 JSON 的格式表達 (基本上我們談的是 Web)。採用 XML 或 JSON 的原因，是上述兩者可攜性都很高，且簡潔又標準化。說白了，把 XML 或 JSON 文件對應到關聯式模型上沒有什麼意義。更聰明的抉擇是運用已經存在的文件儲庫。為什麼？因為 NoSQL 資料庫沒有綱要，不用對 XML 或 JSON 文件事先定義，結果就是每個文件都是彼此獨立的。這樣的資料庫可以用在 CRM、網路相關資料、即時資料等。此模型的著名實作包括 MongoDB、CouchDB、RavenDB。事實上 MongoDB 已經運用在 bit.ly 與 Sourceforge 等網站上。</p>
+<br />
+<h3>階層式資料庫</h3>
+<p>這一類的資料庫將資料以階層相關性的形式加以儲存，也就是樹狀或親子關聯。在關聯式模型中，可以稱之為 1:N 關係。基本上，空間地理資料庫可以用階層形式儲存基本上是階層式的位置資訊。地理標記與地理定位 (geotagging and geolocation) 近來盛行，使得空間地理資料庫變得非常切題，可以被運用在地理資訊系統中，主要的例子包括 PostGIS、Oracle Spatial 等。階層式資料庫著名的實作包括 Microsoft 的 Windows Registry 與 IBM 的 IMS 資料庫。</p>
+<br />
+<h3>圖形 (Graph) 網絡資料庫</h3>
+<p>圖形資料庫是網絡資料庫最普遍的形式，用來儲存可以用圖形 (Graph) 形式表達的資料。基本上，用圖形資料庫儲存的資料會以指數速度成長，因此圖形資料庫最適合儲存會經常改變的資料。撇開理論部分，圖形資料庫最令人驚艷的案例是 Twitter 用以實現用戶追蹤 (follow) 圖形的 FlockDB。FlockDB 使用了 Gizzard 框架達到每秒 1 萬次的資料庫查詢。對圖形進行查詢的典型技術，是從任意或特定起始節點開始，跟著以廣度優先或深度優先方式，走訪整個圖形。多數圖形資料庫允許開發者用簡單的 API 完成查詢工作。除了 FlockDB，知名的圖形資料庫還有 HyperGraphDB 與 Neo4j。</p>
+<br />
+<h3>以列為導向的資料庫</h3>
+<p>Google 針對內部使用的 BigTable 分散式儲存系統，發表研究論文之後，以列為導向的資料庫蔚為風潮。知名的其他實作包括 Hadoop Hbase、Apache Cassandra、HyperTable。</p>
+<p>這類資料庫的實作更像是三維陣列，第一維是行識別碼，第二維是列族 (column family) 與列識別碼，第三則是時間戳記。Facebook、Reddit、Digg 等都運用了以列為導向的資料庫。</p>
+<br />
+<h3>物件導向資料庫</h3>
+<p>雖然物件導向資料庫是否為 NoSQL 資料庫還有爭議，不過因為與傳統關聯式資料庫的資料模型差距甚遠，因此通常被視為是 NoSQL 資料庫其中之一。這類資料庫允許資料以物件形式儲存。知名的像是 db4o、NEO、Versant 等。物件導向資料庫一般被用在研究用途或 web 規模的生產環境中。</p>
+<br />
+<h3>鍵值儲庫</h3>
+<p>鍵值儲庫是以 Amazon 的 Dynamo 研究論文以及分散式雜湊表為基礎。這類資料模型非常簡單，一般只包含一系列的全域鍵值對，每個值各伴隨有獨特的鍵。因此這類資料庫有高度延展性，不以關聯性方式儲存資料。知名實作包括 LinkedIn 開源的 Voldemort 專案、Redis、Tokyo Cabinet 等。</p>
+<br />
+<h3>Triple 儲庫</h3>
+<p>Triple 儲庫以主語、謂語、對象 (subject-predicate-object) 的形式儲存資料，用謂語作為主語和對象間的連接因素。因此，Triple 儲庫也算是網路資料庫的變形。以“Jonny Nitro 閱讀資料中心雜誌”為例，Jonny Nitro 是主語，資料中心雜誌是對象，閱讀則是連接兩者的謂語。很顯然，要把這樣的語義查詢對應到 SQL 相當困難，因此 NoSQL 提供了一個可行的替代方案。Triple 儲庫主要實作包括 Sesame、Jena、Virtuoso、AllegroGraph。</p>
+<br />
+<h3>結論</h3>
+<p>那麼，你已經對 NoSQL 有些瞭解了，但這表示你應該從 SQL 跳到 NoSQL 嗎？這個答案要視個別情況而定。如果你覺得 SQL 查詢太難以對付，NoSQL 對你而言可能同樣不簡單。然而，如果你正在找尋更有彈性的替代方案，且不介意親自動手，你無疑應該嘗試看看 NoSQL。選擇權在你手上。祝你資料管理快樂！</p>
+<br />
+<h3>相關網址：</h3>
+<ol style="list-style-type: decimal;">
+<li>NoSQL 入門指引<br /><a href="https://www.codeproject.com/Articles/630103/A-Beginners-Guide-to-NoSQL" target="_blank">https://www.codeproject.com/Articles/630103/A-Beginners-Guide-to-NoSQL</a></li>
+</ol>
+			<!-- Show relate article -->
+				<!-- end -->
+		<div class="article_note">
+		<!-- Add tags use metakey, and show OSSF Newsletter tag: OSSFNL+NUM-->
+		<br><br> <hr style='border: 1px dashed #D2DADB;'><b>OSSF Newsletter&nbsp;:</b>&nbsp;<a href='../../previous-issue%3Ftask=view&amp;id=833.html'>第 224 期 NoSQL 入門指引</a><br>				<!-- End -->
+					<br>
+					<b>Category: </b><a href="../foss-projects.html">				FOSS Projects					</a>				</div>
+			 <!-- AddThis Button BEGIN ID 3001 is the front page article -->
+     			<br><br>
+       <div class="addthis_toolbox addthis_default_style addthis_32x32_style">
+       <a class="addthis_button_preferred_1"></a>
+       <a class="addthis_button_preferred_2"></a>
+       <a class="addthis_button_preferred_3"></a>
+       <a class="addthis_button_preferred_4"></a>
+       <a class="addthis_button_compact"></a>
+       <a class="addthis_counter addthis_bubble_style"></a>
+       </div>
+       <script type="text/javascript">var addthis_config = {"data_track_clickback":true};</script>
+       <script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js#pubid=openfoundry"></script>
+       <!-- AddThis Button END -->
+     <br>
+		<div class="totop" ><a class="rt-totop" href="9040-nosql-.html#" style="outline: medium none;">↑ Top</a></div>
+            <!-- AddThis Button END -->
+
+			</div>
+</div>
+
+		                            </div>
+									<div class="clear"></div>
+								</div>
+								<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+							</div>
+							</div>
+                                                    </div>
+                                            </div>
+                                <div class="rt-grid-3 rt-pull-9">
+                <div id="rt-sidebar-a">
+                                    <div class="square4">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<ul class="menu"><li class="item56"><a href="../previous-issue.html"><span>Previous Issue</span></a></li><li class="item55"><a href="../about-newsletter.html"><span>About Newsletter</span></a></li></ul>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<ul class="menu"><li class="item115"><a href="../foss-news.html"><span>FOSS News</span></a></li><li class="item141"><a href="../case-job.html"><span>Case and Jobs</span></a></li></ul>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+        	                <div class="square1">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-title"><h2 class="title">Special</h2></div>
+						<div class="clear"></div>
+		                						<div class="module-content">
+		                	<ul class="menu"><li class="item37"><a href="../tech-column.html"><span>Tech Column</span></a></li><li class="item40"><a href="../foss-programs.html"><span>FOSS Programs</span></a></li><li class="item35"><a href="../legal-column.html"><span>Legal Column</span></a></li><li class="item154"><a href="../foss-forum.html"><span>FOSS Forum</span></a></li><li class="item162"><a href="../enterprise-application.html"><span>Enterprise Application</span></a></li><li id="current" class="active item44"><a href="../foss-projects.html"><span>FOSS Projects</span></a></li></ul>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		                <div class="square1">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<p style="text-align: center;"><a href="../../news%3Fformat=feed&amp;type=rss" target="_black"><img src="../../images/M_images/news-rss-feed.png" border="0" /></a><br /><a href="https://www.openfoundry.org/rss-feed/Newsletter" target="_black"><img src="../../images/M_images/newsletter-rss-feed.png" border="0" /></a></p>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		
+                </div>
+            </div>
+
+                    <div class="clear"></div>
+                </div>
+            </div>
+																													</div>
+										<div id="rt-copyright">
+						<div class="rt-grid-12 rt-alpha rt-omega">
+                        <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<span class="nowrap">Open Source Software Foundry</span><span class="nowrap">‧</span><span class="nowrap"> </span><span class="nowrap">Best  Viewed with IE7.0 or Firefox2.0 above, 1024x768 Resolution. </span><strong>E-Mail</strong>：<a href="mailto:contact@openfoundry.org">contact@openfoundry.org</a> <br /><strong>Address</strong>：No.128, Sec.2, Academia Rd., Institute of Information Science, Academia Sinica, Nangang District, Taipei City 11529, Taiwan (R.O.C). <br /><a href="../privacy-policy.html">Privacy Policy</a>. <a href="../terms-of-use.html">Terms-of-use</a> <span style="position: relative; top: 8px; margin-top: -8px;"> <a href="../../about/8101.html"><img src="../../images/M_images/rss-feed-all.png" border="0" /></a></span>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+        	
+</div>
+						<div class="clear"></div>
+					</div>
+					<div class="rt-footer-bottom-wrap"><div class="rt-footer-bottom"><div class="rt-footer-bottom2"><div class="rt-footer-bottom3"></div></div></div></div>
+									</div></div></div>
+				<div class="rt-surround-bottom"><div class="rt-surround-bottom2"><div class="rt-surround-bottom3"></div></div></div>
+							</div>
+		</div>
+		<!--
+		<script id="aptureScript">
+						(function (){var a=document.createElement("script");a.defer="true";a.src="http://www.apture.com/js/apture.js?siteToken=vsJttrn";document.getElementsByTagName("head")[0].appendChild(a);})();
+     </script>
+-->
+
+<!-- Piwik -->
+<!-- 			<script type="text/javascript">
+			  var _paq = _paq || [];
+		  _paq.push(["trackPageView"]);
+		  _paq.push(["enableLinkTracking"]);
+
+		    (function() {
+			        var u=(("https:" == document.location.protocol) ? "https" : "https") + "://www.openfoundry.org/piwik/";
+				    _paq.push(["setTrackerUrl", u+"piwik.php"]);
+				    _paq.push(["setSiteId", "1"]);
+				        var d=document, g=d.createElement("script"), s=d.getElementsByTagName("script")[0]; g.type="text/javascript";
+				        g.defer=true; g.async=true; g.src=u+"piwik.js"; s.parentNode.insertBefore(g,s);
+					  })();
+		  </script> -->
+<!-- End Piwik Code -->
+	</body>
+</html>

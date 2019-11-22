@@ -1,0 +1,396 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-gb" lang="en-gb" >
+<head>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<link rel="shortcut icon" href="../images/favicon.ico" />
+	  <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+  <meta name="robots" content="index, follow" />
+  <meta name="keywords" content="Django, 陳炯廷, Python, Web framework,OSSFNL409" />
+  <meta name="title" content="Django 簡介（實作篇）" />
+  <meta name="description" content="◎ 實做看看吧！既然前一篇講得這麼興奮，那我們就來實作看看吧。以下會以 FreeBSD 為 OS，來實際操作一遍。作業系統的差異只在安裝 Django 時會不同，因此若你是其他版本的使用者，請自己找找 installation 的方式，相信不會太難的啦。 1. 安裝 Django其實安裝這個不難，就用最簡單的 ports 安裝$ cd /usr/ports/www/py-django$ make" />
+  <meta name="generator" content="" />
+  <title>Django 簡介（實作篇） - OpenFoundry</title>
+  <link href="../favicon.ico" rel="shortcut icon" type="image/x-icon" />
+  <link rel="stylesheet" href="../components/com_gantry/css/gantry.css" type="text/css" />
+  <link rel="stylesheet" href="../components/com_gantry/css/grid-12.css" type="text/css" />
+  <link rel="stylesheet" href="../components/com_gantry/css/joomla.css" type="text/css" />
+  <link rel="stylesheet" href="../templates/rt_quantive_j15/css/joomla.css" type="text/css" />
+  <link rel="stylesheet" href="../templates/rt_quantive_j15/css/style1.css" type="text/css" />
+  <link rel="stylesheet" href="../templates/rt_quantive_j15/css/light-body.css" type="text/css" />
+  <link rel="stylesheet" href="../templates/rt_quantive_j15/css/demo-styles.css" type="text/css" />
+  <link rel="stylesheet" href="../templates/rt_quantive_j15/css/template.css" type="text/css" />
+  <link rel="stylesheet" href="../templates/rt_quantive_j15/css/typography.css" type="text/css" />
+  <link rel="stylesheet" href="../templates/rt_quantive_j15/css/fusionmenu.css" type="text/css" />
+  <style type="text/css">
+    <!--
+#rt-main-surround ul.menu li.active > a, #rt-main-surround ul.menu li.active > .separator, #rt-main-surround ul.menu li.active > .item, #rt-main-surround .square4 ul.menu li:hover > a, #rt-main-surround .square4 ul.menu li:hover > .item, #rt-main-surround .square4 ul.menu li:hover > .separator, .roktabs-links ul li.active span {color:#0088B5;}
+a, #rt-main-surround ul.menu a:hover, #rt-main-surround ul.menu .separator:hover, #rt-main-surround ul.menu .item:hover {color:#0088B5;}
+    -->
+  </style>
+  <script type="text/javascript" src="../components/com_jcomments/js/jcomments-v2.1.js%3Fv=2"></script>
+  <script type="text/javascript" src="../components/com_jcomments/libraries/joomlatune/ajax.js"></script>
+  <script type="text/javascript" src="../media/system/js/mootools.js"></script>
+  <script type="text/javascript" src="../media/system/js/caption.js"></script>
+  <script type="text/javascript" src="../components/com_gantry/js/gantry-buildspans.js"></script>
+  <script type="text/javascript" src="../components/com_gantry/js/gantry-inputs.js"></script>
+  <script type="text/javascript" src="../templates/rt_quantive_j15/js/jquery.cookie.js"></script>
+  <script type="text/javascript" src="../modules/mod_roknavmenu/themes/fusion/js/fusion.js"></script>
+  <script type="text/javascript" src="../modules/mod_ofssologin/js/ofssologin.js"></script>
+  <script type="text/javascript">
+
+			window.addEvent('domready', function() {
+				var modules = ['rt-block'];
+				var header = ['h3','h2','h1'];
+				GantryBuildSpans(modules, header);
+			});
+		InputsExclusion.push('.content_vote','#rt-popup')
+		        window.addEvent('load', function() {
+					new Fusion('ul.menutop', {
+						pill: 0,
+						effect: 'slide and fade',
+						opacity: 1,
+						hideDelay: 500,
+						centered: 0,
+						tweakInitial: {'x': -2, 'y': 0},
+        				tweakSubsequent: {'x': 0, 'y': -14},
+						menuFx: {duration: 200, transition: Fx.Transitions.Sine.easeOut},
+						pillFx: {duration: 400, transition: Fx.Transitions.Back.easeOut}
+					});
+	            });
+  </script>
+<!-- <script type="text/javascript" src="/sso/javascripts/langsync.js"></script> -->
+<!-- <script src="/templates/rt_quantive_j15/js/ossf.js"></script> -->
+<script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-4136519-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
+</head>
+	<body  class="backgroundlevel-low backgroundstyle-style8 bodylevel-med bodystyle-light cssstyle-style1 logostyle-dark font-family-helvetica font-size-is-default menu-type-fusionmenu col12 ">
+		<div id="rt-main-background">
+			<div class="rt-container">
+																<div id="rt-header">
+					<div class="rt-grid-7 rt-alpha">
+    			<div class="rt-block">
+    	    	<a href="../index.html" id="rt-logo"></a>
+    		</div>
+	    
+</div>
+<div class="rt-grid-5 rt-omega">
+                    <div class="square9">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<div class="ofssologin_square9"><a href="../index.html">Login</a>&nbsp;&nbsp|&nbsp;&nbsp;<span><a href="https://www.openfoundry.org/tw/tech-column/1350" ><span lang="tw" xml:lang="tw">繁體中文</span></a></li></ul></span><!--Joom!fish V2.0.4 (Lightning)-->
+<!-- &copy; 2003-2009 Think Network, released under the GPL. -->
+<!-- More information: at http://www.joomfish.net -->
+<div class="ofssologin_search_square9">
+  <form id="of_search" action="https://www.openfoundry.org/of/openfoundry/search" method="get" onsubmit="of_search(); return false;">
+    <select id="of_search_type">
+      <option value="Projects"> Projects </option>
+      <option value="Content"> Content </option>
+      <option value="People"> People </option>
+    </select>
+    <input id="query" name="query" id="mod_search_searchword" maxlength="50" alt="search" class="inputbox" type="text" size="28" value="search..."  onblur="if(this.value=='') this.value='search...';" onfocus="if(this.value=='search...') this.value='';" />
+    <input type="hidden" name="commit" value="search" />
+  </form>
+</div></div>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		
+</div>
+					<div class="clear"></div>
+				</div>
+																<div id="rt-navigation"><div id="rt-navigation2"><div id="rt-navigation3">
+					
+<div class="nopill">
+	<ul class="menutop level1 " >
+						<li class="item1 root" >
+					<a class="orphan item bullet" href="../index.html"  >
+				<span>
+			    				Home				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item32 root" >
+					<a class="orphan item bullet" href="../archived.html"  >
+				<span>
+			    				Projects				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item186 root" >
+					<a class="orphan item bullet" href="../en/community.html"  >
+				<span>
+			    				Who&#039;s Who				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item4 root" >
+					<a class="orphan item bullet" href="../en/news.html"  >
+				<span>
+			    				News				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item5 root" >
+					<a class="orphan item bullet" href="../en/law-and-licensing.html"  >
+				<span>
+			    				Law &amp; Licensing				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item3 root" >
+					<a class="orphan item bullet" href="../en/activities.html"  >
+				<span>
+			    				Activities				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item2 root" >
+					<a class="orphan item bullet" href="../en/resourcecatalog.html"  >
+				<span>
+			    				Resource Catalog				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item45 root" >
+					<a class="orphan item bullet" href="../en/about.html"  >
+				<span>
+			    				About				   
+				</span>
+			</a>
+			
+			
+	</li>	
+				</ul>
+</div>
+
+				    <div class="clear"></div>
+				</div></div></div>
+								<div class="rt-surround"><div class="rt-surround2"><div class="rt-surround3">
+										<div id="rt-showcase-section">
+												<div id="rt-showcase">
+							<div class="rt-grid-12 rt-alpha rt-omega">
+    		<div class="clear"></div>
+		
+		
+                <div class="close-note">
+                    <div class="rt-block">
+               					<div class="module-content">
+                	<div style="font-size:medium; background-image:linear-gradient(120deg,#159957,#4298b2);color:white;padding:20px;margin:-10px -18px;">感謝您對「自由軟體鑄造場」的支持與愛護，十多年來「自由軟體鑄造場」受中央研究院支持，並在資訊科學研究所以及資訊科技創新研究中心執行，現已完成階段性的任務。 本網站預計持續維運至 2021年底，網站內容基本上不會再更動。<br />也紀念我們永遠的朋友 李士傑先生（Shih-Chieh Ilya Li）。</div>				</div>
+            </div>
+                </div>
+		
+</div>
+							<div class="clear"></div>
+						</div>
+																	</div>
+															<div id="rt-main-surround">
+												<div id="rt-breadcrumbs">
+								<div class="rt-breadcrumb-surround">
+		<a href="../index.html" id="breadcrumbs-home"></a>
+		<span class="breadcrumbs pathway">
+<a href="../en/tech-column.html" class="pathway">Tech Column</a> <img src="../templates/rt_quantive_j15/images/arrow.png" alt=""  /> <span class="no-link">Django 簡介（實作篇）</span></span>
+	</div>
+	
+							<div class="clear"></div>
+						</div>
+																							              <div id="rt-main" class="sa3-mb9">
+                <div class="rt-main-inner">
+                    <div class="rt-grid-9 rt-push-3">
+                                                <div class="rt-block">
+                            							<div class="square1">
+							<div class="rt-module-surround">
+								<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+								<div class="rt-module-inner">
+		                            <div id="rt-mainbody">
+		                                
+<div class="rt-joomla ">
+	<div class="rt-article">
+		
+				<div class="rt-headline"><h1 class="rt-article-title">Django 簡介（實作篇）</h1>		</div>
+		<div class="clear"></div>
+		
+		
+		
+				<div class="rt-articleinfo">
+						<div class="rt-article-icons">
+								<a href="../en/tech-column/1350-django-%3Ftmpl=component&amp;print=1&amp;layout=default&amp;page=.html" title="Print" onclick="window.open(this.href,'win2','status=no,toolbar=no,scrollbars=yes,titlebar=no,menubar=no,resizable=yes,width=640,height=480,directories=no,location=no'); return false;" rel="nofollow"><span class="icon print"></span></a>																</div>
+			
+			<span class="rt-date-posted">
+						 Created at			Thursday, 27 December 2007 08:00						&nbsp;&nbsp;&nbsp;&nbsp;						Last Updated on Friday, 06 January 2012 10:33						</span>
+
+						<span class="rt-author">
+				Written by 陳炯廷			</span>
+				
+					</div>
+		
+		
+		<strong>◎ 實做看看吧！</strong><br /><br />既然前一篇講得這麼興奮，那我們就來實作看看吧。以下會以 FreeBSD 為 OS，來實際操作一遍。作業系統的差異只在安裝 Django 時會不同，因此若你是其他版本的使用者，請自己找找 installation 的方式，相信不會太難的啦。
+
+<span style="text-decoration: underline;">1. 安裝 Django</span><br /><br />其實安裝這個不難，就用最簡單的 ports 安裝<br /><br />$ cd /usr/ports/www/py-django<br />$ make install clean<br /><br /><span style="text-decoration: underline;">2. 初始設定</span><br /><br />先到自己的目錄設置一個 Django 的專用目錄<br /><br />$ mkdir ~/django<br /><br />然後利用 Django 的工具來產生一個 project<br /><br />$ cd ~/django<br />$ django-admin.py startproject myproject<br /><br />此時你在看一下目錄，會發現多出 myproject 這個目錄，檔案如下：<br /><br />myproject/<br /> __init__.py<br /> manage.py<br /> settings.py<br /> urls.py<br /><br />這些檔案分別代表<br /><br /> * manage.py: 一個可以和這個 Django project 進行各種互動的 command-line 工具<br /> * settings.py: 這個 Django project 的設定檔<br /> * urls.py: 此 Django project 的 URL 設定<br /><br />做完上一個步驟過後，請先編輯 settings.py 的下列資料 (當然你要先去 SQL 開一個給 Django 用的 Database)：<br /><br /> * DATABASE_ENGINE<br /> * DATABASE_NAME<br /> * DATABASE_USER<br /> * DATABASE_PASSWORD<br /><br />設定好之後就可以馬上將 server 先跑起來看看<br /><br />$ python manage.py runserver 140.115.50.23:9005<br /><br />runserver 代表將 server 跑起來，後面可以指定 IP 以及 port，若看到下列訊息，代表有跑成功了<br /><br />Validating models...<br />0 errors found.<br /><br />Starting server on port 9005 with settings module 'myproject.settings'.<br />Go to https://140.115.50.23:9005/ for Django.<br />Quit the server with CONTROL-C (Unix) or CTRL-BREAK (Windows).<br /><br />雖然我們指定了資料庫，但是資料庫裡頭是空的，我們需要先讓 Django 初始化這個資料庫，因此打<br /><br />$ python manage.py init<br /><br />若沒有出現任何錯誤訊息，代表成功！<br /><br /><span style="text-decoration: underline;">3. 建立模型</span><br /><br />還記得上一篇所提到的通訊錄嗎？我們就來實做一個簡易的通訊錄。<br /><br />這份通訊錄有很多欄位，其中有兩個比較特殊，一個是學號欄 (因為我還在學 XD)，我們將它設為 Primary Key；另外一欄則是班別，它會對到另外一個 class (或說 table)，是一個 Foreign Key。<br /><br />但在建立模型之前，我們要先把我們的專案建立 (先前建立的比較像是站台設定，而這邊新增的專案才是我們要寫程式的地方)。<br /><br />$ python manage.py startapp phonebook<br /><br />仔細瞧瞧，多了 phonebook/ 這個資料夾，底下的東西有:<br /><br />phonebook/<br /> __init__.py<br /> models/<br /> __init__.py<br /> phonebook.py<br /> views.py<br /><br />很明顯地，models 就是我們放模型的資料夾，而 views.py 則是擺上一篇所述，url 所對應的程式。<br /><br /><strong>◎ 模型檔</strong><br /><br />依照上述的設計，編輯 models/phonebook.py:<br /><br />from django.core import meta<br /> <br /># Create your models here.<br /> <br />class ClassName(meta.Model):<br /> id = meta.AutoField('ID', primary_key=True)<br /> name = meta.CharField("Class Name", maxlength=10)<br /> def __repr__(self):<br /> return self.name<br /> <br />class Person(meta.Model):<br /> name = meta.CharField("Chinese Name", maxlength=30)<br /> school_num = meta.CharField("Student ID", maxlength=10, primary_key=True)<br /> class_name = meta.ForeignKey(ClassName, verbose_name="class name")<br /> phone = meta.CharField("Phone Number", maxlength=20)<br /> address = meta.CharField("Address", maxlength=100)<br /> birthday = meta.DateField()<br /> email = meta.EmailField()<br /> def __repr__(self):<br /> return self.name<br /><br />各個欄位所代表的意思應該都很淺顯易懂。admin = meta.Admin()代表在 Django 內附的管理程式要顯示該 model。而注意 class_name 的地方，是使用 meta.ForeignKey來做關聯。<br /><br /><strong>◎ 註冊 Project</strong><br /><br />雖然我們利用 manage.py 建立了 phonebook 這個 application，但我們還是要在 settings.py 裡頭設定:<br /><br />INSTALLED_APPS = (<br /> 'myproject.phonebook',<br />)<br /><br /><strong>留意</strong> 後面的逗號要留著唷…<br /><br />這些東西設定好後，可以使用 manage.py 來確認 Django 所產生的 SQL 語法是否正確：<br /><br />$  python manage.py sql phonebook<br />BEGIN;<br />CREATE TABLE `phonebook_classnames` (<br /> `id` mediumint(9) UNSIGNED AUTO_INCREMENT NOT NULL PRIMARY KEY,<br /> `name` varchar(10) NOT NULL<br />);<br />CREATE TABLE `phonebook_persons` (<br /> `name` varchar(30) NOT NULL,<br /> `school_num` varchar(10) NOT NULL PRIMARY KEY,<br /> `class_name_id` integer NOT NULL REFERENCES `phonebook_classnames` (`id`),<br /> `phone` varchar(20) NOT NULL,<br /> `address` varchar(100) NOT NULL,<br /> `birthday` date NOT NULL,<br /> `email` varchar(75) NOT NULL<br />);<br />COMMIT;<br /><br />確認過後，就可以讓 Django 去 SQL 當中把這些表單建立<br /><br />$ python manage.py install phonebook<br /><br /><span style="text-decoration: underline;">4. Admin 介面</span><br /><br />前面已經將模型都建立起來了，但是在我們繼續下去之前，先中場休息，看看別的東西。<br /><br />Django 有一套自己的 Admin 介面，可以讓你輕易的操作 Model 的資料，例如新增、修改、刪除等。然而，這個介面並不是預設就有的，要啟動這個介面，首先要修改一些地方:<br /><br /> * 把 "django.contrib.main" 加到 myproject/settings.py 之中的 INSTALLED_APPS<br /> * 執行 python manage.py install admin。這會將 admin 介面所需要的相關 table 建到 SQL 資料庫中<br /> * 編輯 myproject/urls.py，將 "Uncomment this for admin" 的下一行反註解。這樣 URL 對照才會正確。<br /><br />接著，執行下列指令來新增一個 superuser 給這個 Admin 介面:<br /><br />python manage.py createsuperuser<br /><br />接著他會要你輸入使用者名稱、E-mail 地址以及密碼 (兩次)。<br /><br />現在，把 server 跑起來<br /><br />python manage.py runserver 140.115.50.23:9005<br /><br />然後打開你的瀏覽器，到 https://yoursite:9005/admin/ 下，就應該可以看得到 Admin 的登入畫面了。<br /><br />此時你可能會發現，phonebook 的東西似乎都沒有出現在 admin 介面，為了要讓它出現，我們必須要修改 myproject/phonebook/models.py 這個檔案，在 ClassName 以及 Person 裡頭都加上<br /><br /> class META:<br /> admin = meta.Admin()<br /><br />接著再看看，應該就會出現在 Admin 介面裡頭了。<br /><br /><span style="text-decoration: underline;">5. 設計你的 URL！！</span><br /><br />神奇的功能馬上就要開始了！首先，我們從 URL 開始下手。在前面的步驟 "python manage.py startproject myproject" 時，就產生了一個預設的 URLconf 放在 myproject/urls.py，你可以在 myproject/settings.py 裡頭的 ROOT_URLCONF 看到：<br /><br />ROOT_URLCONF = 'myproject.urls'<br /><br />其實剛剛我們就已經改過這個檔案了，現在 myproject/urls.py 應該長成這樣：<br /><br />from django.conf.urls.defaults import *<br /> <br />urlpatterns = patterns('',<br /> # Example:<br /> # (r'^myproject/', include('myproject.apps.foo.urls.foo')),<br /> <br /> # Uncomment this for admin:<br /> (r'^admin/', include('django.contrib.admin.urls.admin')),<br />)<br /><br />這一行的意思，就是當我 URL 為 https://yoursite:9005/admin/ ，就使用內建的 django.contrib.admin.urls.admin 來處理這個網頁的要求。此時，我們再另外加一行<br /><br /> (r'^pb/', include('myproject.phonebook.urls')),<br /><br />這行的意思是說，當 URL 為 https://yoursite:9005/pb/ 時，則使用 myproject/phonebook/urls.py 來做為 URL 設定。這樣的好處是，你在 myproject 底下可能還有很多不同的 applications，這樣區分不會將<strong>所有 applications 的 URL 設定都混在一個檔裡頭</strong>。<br /><br />因此，接下來請在 myproject/phonebook/ 底下建立一個 urls.py 的檔案，並且下列內容放入檔案內：<br /><br />from django.conf.urls.defaults import *<br /> <br />info_dict = {<br /> 'app_label' : 'phonebook',<br /> 'module_name' : 'persons',<br />}<br /> <br />urlpatterns = patterns('',<br /> (r'^$', 'django.views.generic.list_detail.object_list', info_dict),<br /> (r'^(?P\d+)/$', 'django.views.generic.list_detail.object_detail', info_dict),<br /> (r'^add/$', 'myproject.phonebook.views.create_person')<br />)<br /><br />先解釋 patterns 這三行的意義<br /><br /> 1. 第一行代表當 URL 為 https://yoursite:9005/pb/ 的時候，則呼叫 django 內建的 object_list 來處理<br /> 2. 第二行代表當 URL 為 https://yoursite:9005/pb/<strong>這邊是數字</strong>/ 的時候，呼叫 django 內建的 object_detail 來處理，並且將 <strong>數字</strong> 的部份視為 object_id 這個變數傳給 object_detail<br /> 3. 第三行代表當 URL 為 https://yoursite:9005/pb/add/ 的時候，則使用自訂的 myproject.phonebook.views.create_person 來處理<br /><br /><strong>◎ 什麼是 django 內建的 object_list 及 object_detail 呢？</strong><br /><br />你在瀏覽動態網頁時，是否有發現，網頁其實可以分為幾個模式？以電話簿為例，一定有一頁是電話簿列表，而有一頁是某個人詳細的資料；若是換成 Blog 來說，一定也有一頁是 Blog 的列表，而有一頁是 Blog 文章的內容。因此，Django 在此就將這樣的特性抓出來，給設計動態網頁的人一個通用的程式來使用。<br /><br />當 URL 為 https://yoursite:9005/pb/ 時，我們就設定這一頁就是電話簿列表。當 server 收到這個 request 的時候，對照到 urls.py 就會知道要使用 django.views.generic.list_detail.object_list，而它將所需要的資料處理完之後，會依照 urls.py 上頭定義的 info_dict 去將樣板目錄中的<strong> phonebook/persons</strong>_list.html 找出來，將模板填入之後丟回給瀏覽器。<br /><br /><span style="text-decoration: underline;">6. 設計樣板</span><br /><br />為了先睹為快，我們先不理睬 https://yoursite:9005/pb/add/ 的部份，我們就先將 list 以及 detail 的樣板設計出來，你馬上就可以看出 django 的威力。<br /><br />首先，編輯 myproject/settings.py，找到 TEMPLATE_DIRS 之後，填入一個目錄做為樣板的根目錄 (下面以我自己的設定為例)<br /><br />TEMPLATE_DIRS = (<br /> "/home/yychen/django/templates",<br />)<br /><br />接著，將目錄建立出來<br /><br />$ cd /home/yychen/django<br />$ mkdir templates<br />$ cd templates<br />$ mkdir phonebook<br /><br />建立 templates/phonebook/persons_list.html，並輸入以下內容<br /><br />{% if object_list %}<br /><table border="1"><br /> <tr><br /> <td>學號</td><br /> <td>系級</td><br /> <td>姓名</td><br /> <td>電話</td><br /> <td>E-mail</td><br /> <td>生日</td><br /> </tr><br />{% for object in object_list %}<br /> <tr><br /> <td><a href="https://www.openfoundry.org/{{&#32;object.get_absolute_url&#32;}}{{&#32;object.school_num&#32;}}"><br /> {{ object.school_num }}</a></td><br /> <td>{{ object.get_class_name }}</td><br /> <td>{{ object.name }}</td><br /> <td>{{ object.phone }}</td><br /> <td>{{ object.email }}</td><br /> <td>{{ object.birthday }}</td><br /> </tr><br />{% endfor %}<br /></table><br />{% else %}<br /><p>No entries...</p><br />{% endif %}<br /><a href="https://www.openfoundry.org/add/">Add an entry</a><br /><br />同樣的再建立 templates/phonebook/persons_detail.html，並輸入以下內容：<br /><br /><h1>{{ object.name }}</h1><br /><hr /><br />{% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}<br /> <br /><table border="0"><br /> <tr><br /> <td>姓名</td><br /> <td>{{ object.name }}</td><br /> </tr><br /> <tr><br /> <td>學號</td><br /> <td>{{ object.school_num }}</td><br /> </tr><br /> <tr><br /> <td>班級</td><br /> <td>{{ object.get_class_name }}</td><br /> </tr><br /> <tr><br /> <td>電話</td><br /> <td>{{ object.phone }}</td><br /> </tr><br /> <tr><br /> <td>住址</td><br /> <td>{{ object.address }}</td><br /> </tr><br /> <tr><br /> <td>生日</td><br /> <td>{{ object.birthday }}</td><br /> </tr><br /> <tr><br /> <td>E-mail</td><br /> <td>{{ object.email }}</td><br /> </tr><br /></table><br /><br />做到此時，基本上你已經完成了半成品了！請先進入 admin 介面新增一筆資料，接著瀏覽 https://yoursite:9005/pb/ 看看是否有出現，並且點選學號的部份，就可以觀看詳細資料了！<br /><br /><span style="text-decoration: underline;">7. 輸入表單</span><br /><br />別忘了這邊只是半成品，我們還有新增的部分還沒有做。在輸入表單的部份，一樣有樣板要設計，除此之外，也有程式的部份需要處理。<br /><br /><strong>◎ 程式部份</strong><br /><br />首先，由於 myproject/phonebook/urls.py 裡頭設定當後面是 add/ 時，用的是 myproject.phonebook.views.create_person，因此我們要編輯 views.py，並且在裡頭加上一個叫做 create_person 的 class。程式碼如下：<br /><br /># Create your views here.<br />from django.core.extensions import render_to_response, get_object_or_404<br />from django.core.template import Context, loader<br />from django.core import formfields<br />from django.models.phonebook import persons, classnames<br />from django.utils.httpwrappers import HttpResponse, HttpResponseRedirect<br /> <br />def create_person(request):<br /> manipulator = persons.AddManipulator()<br /> <br /> if request.POST:<br /> new_data = request.POST.copy()<br /> manipulator.do_html2python(new_data)<br /> new_person = manipulator.save(new_data)<br /> <br /> return HttpResponseRedirect("/pb/%s/" % request.POST['school_num'])<br /> <br /> else:<br /> error = new_data = {}<br /> <br /> form = formfields.FormWrapper(manipulator, new_data, error)<br /> return render_to_response('phonebook/create_form', {'form': form})<br /><br />運作方式是這樣的：當我們第一次進入 https://yoursite:9005/pb/add/ 時，我們要新增一筆資料，由於我們什麼都還沒操作，因此 reuqest.POST 會是空的、沒有東西，此時我們就建立一個 manipulator，並且用 django 的 formwrapper 製造出一個 form 的 object。此時將 template/phonebook/create_form.html 這個樣板呼叫出來，並且將 form 這個物件丟進去攪和攪和，將結果丟回給瀏覽器。<br /><br />當我們填好各項欄位之後，我們會將這些欄位資料放入 POST 裡頭，又再丟回給 https://yoursite:9005/pb/add/ 這個網址，因此又是同一程式 (即上述的程式) 接收，此時因為有 request.POST 的資料，因此就將 POST 的資料轉到 manipulator 中，當執行到 manipulator.save() 時，就代表資料存入資料庫了。最後，再將 HTTP 的 Response Redirect 到 https://yoursite:9005/pb/<strong>剛剛新增的學號</strong>/ 過去，亦即可以馬上瀏覽剛剛新增資料的詳細內容了。<br /><br /><strong>◎ Form 的樣板</strong><br /><br />剩下最後一樣東西，就是 Form 的樣版了。<br /><br />新增一個檔案 templates/phonebook/create_form.html，並鍵入下面內容:<br /><br />{% block content %}<br /><h1>Create an entry:</h1><br /> <br /><form method="post"><br /> <p><label for="id_name">Name:</label> {{ form.name }}</p><br /> <p><label for="id_school_num">School id:</label> {{ form.school_num }}</p><br /> <p><label for="id_class_name">Class Name:</label> {{ form.class_name }}</p><br /> <p><label for="id_phone">Phone Number:</label> {{ form.phone }}</p><br /> <p><label for="id_address">Address:</label> {{ form.address }}</p><br /> <p><label for="id_birthday">Birthday:</label> {{ form.birthday }}</p><br /> <p><label for="id_email">Email:</label> {{ form.email }}</p><br /> <input type="submit" /><br /></form><br />{% endblock %}<br /><br />這樣就大功告成了！！<br /><br /><strong>◎ 結語</strong><br /><br />依照這一份說明文件可以快速的開發出一個簡單的電話簿網站，但是有許多詳細的內容並未提及。若是有更進一步的興趣，請至 Django 官方網站查詢文件。<br /><br />然而，官方網站雖然有較詳細的文件，筆者在閱讀時，仍然覺得官方的文件不夠詳細，似乎是由許多碎片組合而成，當我需要知道的某一個簡單的用法及原理時(例如 Form 的處理)，卻無法迅速的從官方文件中找出來，也許是對這個架構不夠熟析的緣故，但也相對的認為官方的文件不夠周全。<br /><br />這個架構的出現是令人振奮的，相信用過類似的東西都會有相同的感覺，期許 Django、Ruby on Rails 及 Turbogears 等 web framework 可以儘早成為一個成熟與完整的框架，讓大家開發網頁更為便利。
+			<!-- Show relate article -->
+		<br><br><h4>You may be interested in the following articles:</h4><ul><li><a href='1330.html'>Django 簡介</a> - <span class='date-posted'>2007-12-15</span></li></ul>		<!-- end -->
+		<div class="article_note">
+		<!-- Add tags use metakey, and show OSSF Newsletter tag: OSSFNL+NUM-->
+		<br><br> <hr style='border: 1px dashed #D2DADB;'><b>OSSF Newsletter&nbsp;:</b>&nbsp;<a href='../previous-issue%3Ftask=view&amp;id=409.html'>第 95 期 Adobe 釋出開放源碼工具 BlazeDS</a><br><b>Tags:</b>&nbsp;<a href='../index.php%3Foption=com_search&amp;Itemid=58&amp;searchphrase=exact_meta&amp;ordering=newest&amp;searchword=Django.html'>Django</a>,&nbsp;&nbsp;<a href='../index.php%3Foption=com_search&amp;Itemid=58&amp;searchphrase=exact_meta&amp;ordering=newest&amp;searchword=&#32;陳炯廷.html'> 陳炯廷</a>,&nbsp;&nbsp;<a href='../index.php%3Foption=com_search&amp;Itemid=58&amp;searchphrase=exact_meta&amp;ordering=newest&amp;searchword=&#32;Python.html'> Python</a>,&nbsp;&nbsp;<a href='../index.php%3Foption=com_search&amp;Itemid=58&amp;searchphrase=exact_meta&amp;ordering=newest&amp;searchword=&#32;Web&#32;framework.html'> Web framework</a>,&nbsp;&nbsp;				<!-- End -->
+					<br>
+					<b>Category: </b><a href="../en/tech-column.html">				Tech Column					</a>				</div>
+			 <!-- AddThis Button BEGIN ID 3001 is the front page article -->
+     			<br><br>
+       <div class="addthis_toolbox addthis_default_style addthis_32x32_style">
+       <a class="addthis_button_preferred_1"></a>
+       <a class="addthis_button_preferred_2"></a>
+       <a class="addthis_button_preferred_3"></a>
+       <a class="addthis_button_preferred_4"></a>
+       <a class="addthis_button_compact"></a>
+       <a class="addthis_counter addthis_bubble_style"></a>
+       </div>
+       <script type="text/javascript">var addthis_config = {"data_track_clickback":true};</script>
+       <script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js#pubid=openfoundry"></script>
+       <!-- AddThis Button END -->
+     <br>
+		<div class="totop" ><a class="rt-totop" href="1350.html#" style="outline: medium none;">↑ Top</a></div>
+            <!-- AddThis Button END -->
+
+			</div>
+</div>
+
+		                            </div>
+									<div class="clear"></div>
+								</div>
+								<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+							</div>
+							</div>
+                                                    </div>
+                                            </div>
+                                <div class="rt-grid-3 rt-pull-9">
+                <div id="rt-sidebar-a">
+                                    <div class="square4">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<ul class="menu"><li class="item56"><a href="../en/previous-issue.html"><span>Previous Issue</span></a></li><li class="item55"><a href="../en/about-newsletter.html"><span>About Newsletter</span></a></li></ul>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<ul class="menu"><li class="item115"><a href="../en/foss-news.html"><span>FOSS News</span></a></li><li class="item141"><a href="../en/case-job.html"><span>Case and Jobs</span></a></li></ul>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+        	                <div class="square1">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-title"><h2 class="title">Special</h2></div>
+						<div class="clear"></div>
+		                						<div class="module-content">
+		                	<ul class="menu"><li id="current" class="active item37"><a href="../en/tech-column.html"><span>Tech Column</span></a></li><li class="item40"><a href="../en/foss-programs.html"><span>FOSS Programs</span></a></li><li class="item35"><a href="../en/legal-column.html"><span>Legal Column</span></a></li><li class="item154"><a href="../en/foss-forum.html"><span>FOSS Forum</span></a></li><li class="item162"><a href="../en/enterprise-application.html"><span>Enterprise Application</span></a></li><li class="item44"><a href="../en/foss-projects.html"><span>FOSS Projects</span></a></li></ul>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		                <div class="square1">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<p style="text-align: center;"><a href="../news%3Fformat=feed&amp;type=rss" target="_black"><img src="../images/M_images/news-rss-feed.png" border="0" /></a><br /><a href="https://www.openfoundry.org/rss-feed/Newsletter" target="_black"><img src="../images/M_images/newsletter-rss-feed.png" border="0" /></a></p>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		
+                </div>
+            </div>
+
+                    <div class="clear"></div>
+                </div>
+            </div>
+																													</div>
+										<div id="rt-copyright">
+						<div class="rt-grid-12 rt-alpha rt-omega">
+                        <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<span class="nowrap">Open Source Software Foundry</span><span class="nowrap">‧</span><span class="nowrap"> </span><span class="nowrap">Best  Viewed with IE7.0 or Firefox2.0 above, 1024x768 Resolution. </span><strong>E-Mail</strong>：<a href="mailto:contact@openfoundry.org">contact@openfoundry.org</a> <br /><strong>Address</strong>：No.128, Sec.2, Academia Rd., Institute of Information Science, Academia Sinica, Nangang District, Taipei City 11529, Taiwan (R.O.C). <br /><a href="../en/privacy-policy.html">Privacy Policy</a>. <a href="../en/terms-of-use.html">Terms-of-use</a> <span style="position: relative; top: 8px; margin-top: -8px;"> <a href="../about/8101.html"><img src="../images/M_images/rss-feed-all.png" border="0" /></a></span>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+        	
+</div>
+						<div class="clear"></div>
+					</div>
+					<div class="rt-footer-bottom-wrap"><div class="rt-footer-bottom"><div class="rt-footer-bottom2"><div class="rt-footer-bottom3"></div></div></div></div>
+									</div></div></div>
+				<div class="rt-surround-bottom"><div class="rt-surround-bottom2"><div class="rt-surround-bottom3"></div></div></div>
+							</div>
+		</div>
+		<!--
+		<script id="aptureScript">
+						(function (){var a=document.createElement("script");a.defer="true";a.src="http://www.apture.com/js/apture.js?siteToken=vsJttrn";document.getElementsByTagName("head")[0].appendChild(a);})();
+     </script>
+-->
+
+<!-- Piwik -->
+<!-- 			<script type="text/javascript">
+			  var _paq = _paq || [];
+		  _paq.push(["trackPageView"]);
+		  _paq.push(["enableLinkTracking"]);
+
+		    (function() {
+			        var u=(("https:" == document.location.protocol) ? "https" : "https") + "://www.openfoundry.org/piwik/";
+				    _paq.push(["setTrackerUrl", u+"piwik.php"]);
+				    _paq.push(["setSiteId", "1"]);
+				        var d=document, g=d.createElement("script"), s=d.getElementsByTagName("script")[0]; g.type="text/javascript";
+				        g.defer=true; g.async=true; g.src=u+"piwik.js"; s.parentNode.insertBefore(g,s);
+					  })();
+		  </script> -->
+<!-- End Piwik Code -->
+	</body>
+</html>

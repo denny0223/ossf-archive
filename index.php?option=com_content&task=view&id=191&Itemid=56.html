@@ -1,0 +1,412 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-gb" lang="en-gb" >
+<head>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<link rel="shortcut icon" href="images/favicon.ico" />
+	  <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+  <meta name="robots" content="index, follow" />
+  <meta name="keywords" content="OSSFNL176" />
+  <meta name="title" content="「2003夏季源碼營」之二" />
+  <meta name="description" content="由於與會人士來自不同的背景，想了解的東西也不同，因此議程分成兩大類，分別是安排給 NGOs 人士和安排給軟體工程師的。安排給 NGOs 人士的課程主要是技術上的如何操作 Linux 作業軟體，從依照自己的需求選擇不同的 Linux 套裝軟體開始，然後一步一步教如何安裝、操作，談論安全性問題的時候也是以基本的軟體知識為主，大部分的課程都是直接上機操作的 hands-on" />
+  <meta name="generator" content="" />
+  <title>「2003夏季源碼營」之二 - OpenFoundry</title>
+  <link href="favicon.ico" rel="shortcut icon" type="image/x-icon" />
+  <link rel="stylesheet" href="components/com_gantry/css/gantry.css" type="text/css" />
+  <link rel="stylesheet" href="components/com_gantry/css/grid-12.css" type="text/css" />
+  <link rel="stylesheet" href="components/com_gantry/css/joomla.css" type="text/css" />
+  <link rel="stylesheet" href="templates/rt_quantive_j15/css/joomla.css" type="text/css" />
+  <link rel="stylesheet" href="templates/rt_quantive_j15/css/style1.css" type="text/css" />
+  <link rel="stylesheet" href="templates/rt_quantive_j15/css/light-body.css" type="text/css" />
+  <link rel="stylesheet" href="templates/rt_quantive_j15/css/demo-styles.css" type="text/css" />
+  <link rel="stylesheet" href="templates/rt_quantive_j15/css/template.css" type="text/css" />
+  <link rel="stylesheet" href="templates/rt_quantive_j15/css/typography.css" type="text/css" />
+  <link rel="stylesheet" href="templates/rt_quantive_j15/css/fusionmenu.css" type="text/css" />
+  <style type="text/css">
+    <!--
+#rt-main-surround ul.menu li.active > a, #rt-main-surround ul.menu li.active > .separator, #rt-main-surround ul.menu li.active > .item, #rt-main-surround .square4 ul.menu li:hover > a, #rt-main-surround .square4 ul.menu li:hover > .item, #rt-main-surround .square4 ul.menu li:hover > .separator, .roktabs-links ul li.active span {color:#0088B5;}
+a, #rt-main-surround ul.menu a:hover, #rt-main-surround ul.menu .separator:hover, #rt-main-surround ul.menu .item:hover {color:#0088B5;}
+    -->
+  </style>
+  <script type="text/javascript" src="components/com_jcomments/js/jcomments-v2.1.js%3Fv=2"></script>
+  <script type="text/javascript" src="components/com_jcomments/libraries/joomlatune/ajax.js"></script>
+  <script type="text/javascript" src="media/system/js/mootools.js"></script>
+  <script type="text/javascript" src="media/system/js/caption.js"></script>
+  <script type="text/javascript" src="components/com_gantry/js/gantry-buildspans.js"></script>
+  <script type="text/javascript" src="components/com_gantry/js/gantry-inputs.js"></script>
+  <script type="text/javascript" src="templates/rt_quantive_j15/js/jquery.cookie.js"></script>
+  <script type="text/javascript" src="modules/mod_roknavmenu/themes/fusion/js/fusion.js"></script>
+  <script type="text/javascript" src="modules/mod_ofssologin/js/ofssologin.js"></script>
+  <script type="text/javascript">
+
+			window.addEvent('domready', function() {
+				var modules = ['rt-block'];
+				var header = ['h3','h2','h1'];
+				GantryBuildSpans(modules, header);
+			});
+		InputsExclusion.push('.content_vote','#rt-popup')
+		        window.addEvent('load', function() {
+					new Fusion('ul.menutop', {
+						pill: 0,
+						effect: 'slide and fade',
+						opacity: 1,
+						hideDelay: 500,
+						centered: 0,
+						tweakInitial: {'x': -2, 'y': 0},
+        				tweakSubsequent: {'x': 0, 'y': -14},
+						menuFx: {duration: 200, transition: Fx.Transitions.Sine.easeOut},
+						pillFx: {duration: 400, transition: Fx.Transitions.Back.easeOut}
+					});
+	            });
+  </script>
+<!-- <script type="text/javascript" src="/sso/javascripts/langsync.js"></script> -->
+<!-- <script src="/templates/rt_quantive_j15/js/ossf.js"></script> -->
+<script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-4136519-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
+</head>
+	<body  class="backgroundlevel-low backgroundstyle-style8 bodylevel-med bodystyle-light cssstyle-style1 logostyle-dark font-family-helvetica font-size-is-default menu-type-fusionmenu col12 ">
+		<div id="rt-main-background">
+			<div class="rt-container">
+																<div id="rt-header">
+					<div class="rt-grid-7 rt-alpha">
+    			<div class="rt-block">
+    	    	<a href="index.html" id="rt-logo"></a>
+    		</div>
+	    
+</div>
+<div class="rt-grid-5 rt-omega">
+                    <div class="square9">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<div class="ofssologin_square9"><a href="index.html">Login</a>&nbsp;&nbsp|&nbsp;&nbsp;<span><a href="tw/component/content/191%3Ftask=view.html" ><span lang="tw" xml:lang="tw">繁體中文</span></a></li></ul></span><!--Joom!fish V2.0.4 (Lightning)-->
+<!-- &copy; 2003-2009 Think Network, released under the GPL. -->
+<!-- More information: at http://www.joomfish.net -->
+<div class="ofssologin_search_square9">
+  <form id="of_search" action="https://www.openfoundry.org/of/openfoundry/search" method="get" onsubmit="of_search(); return false;">
+    <select id="of_search_type">
+      <option value="Projects"> Projects </option>
+      <option value="Content"> Content </option>
+      <option value="People"> People </option>
+    </select>
+    <input id="query" name="query" id="mod_search_searchword" maxlength="50" alt="search" class="inputbox" type="text" size="28" value="search..."  onblur="if(this.value=='') this.value='search...';" onfocus="if(this.value=='search...') this.value='';" />
+    <input type="hidden" name="commit" value="search" />
+  </form>
+</div></div>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		
+</div>
+					<div class="clear"></div>
+				</div>
+																<div id="rt-navigation"><div id="rt-navigation2"><div id="rt-navigation3">
+					
+<div class="nopill">
+	<ul class="menutop level1 " >
+						<li class="item1 root" >
+					<a class="orphan item bullet" href="index.html"  >
+				<span>
+			    				Home				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item32 root" >
+					<a class="orphan item bullet" href="archived.html"  >
+				<span>
+			    				Projects				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item186 root" >
+					<a class="orphan item bullet" href="en/community.html"  >
+				<span>
+			    				Who&#039;s Who				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item4 root" >
+					<a class="orphan item bullet" href="en/news.html"  >
+				<span>
+			    				News				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item5 root" >
+					<a class="orphan item bullet" href="en/law-and-licensing.html"  >
+				<span>
+			    				Law &amp; Licensing				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item3 root" >
+					<a class="orphan item bullet" href="en/activities.html"  >
+				<span>
+			    				Activities				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item2 root" >
+					<a class="orphan item bullet" href="en/resourcecatalog.html"  >
+				<span>
+			    				Resource Catalog				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item45 root" >
+					<a class="orphan item bullet" href="en/about.html"  >
+				<span>
+			    				About				   
+				</span>
+			</a>
+			
+			
+	</li>	
+				</ul>
+</div>
+
+				    <div class="clear"></div>
+				</div></div></div>
+								<div class="rt-surround"><div class="rt-surround2"><div class="rt-surround3">
+										<div id="rt-showcase-section">
+												<div id="rt-showcase">
+							<div class="rt-grid-12 rt-alpha rt-omega">
+    		<div class="clear"></div>
+		
+		
+                <div class="close-note">
+                    <div class="rt-block">
+               					<div class="module-content">
+                	<div style="font-size:medium; background-image:linear-gradient(120deg,#159957,#4298b2);color:white;padding:20px;margin:-10px -18px;">感謝您對「自由軟體鑄造場」的支持與愛護，十多年來「自由軟體鑄造場」受中央研究院支持，並在資訊科學研究所以及資訊科技創新研究中心執行，現已完成階段性的任務。 本網站預計持續維運至 2021年底，網站內容基本上不會再更動。<br />也紀念我們永遠的朋友 李士傑先生（Shih-Chieh Ilya Li）。</div>				</div>
+            </div>
+                </div>
+		
+</div>
+							<div class="clear"></div>
+						</div>
+																	</div>
+															<div id="rt-main-surround">
+												<div id="rt-breadcrumbs">
+								<div class="rt-breadcrumb-surround">
+		<a href="index.html" id="breadcrumbs-home"></a>
+		<span class="breadcrumbs pathway">
+<span class="no-link">Previous Issue</span></span>
+	</div>
+	
+							<div class="clear"></div>
+						</div>
+																							              <div id="rt-main" class="sa3-mb9">
+                <div class="rt-main-inner">
+                    <div class="rt-grid-9 rt-push-3">
+                                                <div class="rt-block">
+                            							<div class="square1">
+							<div class="rt-module-surround">
+								<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+								<div class="rt-module-inner">
+		                            <div id="rt-mainbody">
+		                                
+<div class="rt-joomla ">
+	<div class="rt-article">
+		
+				<div class="rt-headline"><h1 class="rt-article-title">「2003夏季源碼營」之二</h1>		</div>
+		<div class="clear"></div>
+		
+		
+		
+				<div class="rt-articleinfo">
+						<div class="rt-article-icons">
+								<a href="https://www.openfoundry.org/en/component/content/191-2003?tmpl=component&amp;print=1&amp;page=" title="Print" onclick="window.open(this.href,'win2','status=no,toolbar=no,scrollbars=yes,titlebar=no,menubar=no,resizable=yes,width=640,height=480,directories=no,location=no'); return false;" rel="nofollow"><span class="icon print"></span></a>																</div>
+			
+			<span class="rt-date-posted">
+						 Created at			Saturday, 31 January 2004 16:00						&nbsp;&nbsp;&nbsp;&nbsp;						Last Updated on Friday, 18 February 2011 02:20						</span>
+
+						<span class="rt-author">
+				Written by 林鈺維			</span>
+				
+					</div>
+		
+		
+		由於與會人士來自不同的背景，想了解的東西也不同，因此議程分成兩大類，分別是安排給 NGOs 人士和安排給軟體工程師的。安排給 NGOs 人士的課程主要是技術上的如何操作 Linux 作業軟體，從依照自己的需求選擇不同的 Linux 套裝軟體開始，然後一步一步教如何安裝、操作，談論安全性問題的時候也是以基本的軟體知識為主，大部分的課程都是直接上機操作的 hands-on sessions，自己動了手之後就比較有經驗、知道如何操作、可能會出什麼問題、及如何解決，事實上這也和一般自由軟體界的社群成員解決問題的方式很 像，自己下載安裝了不同的程式之後再看會發生什麼問題，然後再解決問題，畢竟，要給 NGOs 組織的人魚吃，不如教他們如何釣魚，這樣的受益才長久。給軟體工程師的課程就比較偏社會工作學，因為工程師一般沒有這類的知識背景，因此他們在和 NGOs 組織的工作者共識的時候無法明確知道她們的需求，因此灌輸工程師們一點點這類的社工背景知識可以幫助他們和 NGOs 使用者溝通和了解使用者的需求，但是也有進階的技術課程讓這些工程師們交流經驗互相學習，最受歡迎的技術課程是討論內容管理系統 (CMS—Content Management System)，網路安全，和如何架站用廣播傳輸資訊等課程，當然，讓 NGOs 工作者和軟體工程師共同討論的時程亦很多，讓大家互相溝通不同的理念。 
+
+(編按：作者林鈺維將親身參與「2003 夏季源碼營」所見所聞寫成長篇雜記，與大家分享參與國際性社群聚會的切身經驗。全文分三期刊登。)
+<p>活動內容-- 每日行程</p>
+<p>[第一天]</p>
+<p>自我介紹以後，就由輔導員帶領所有與會者一起討論幾個自由軟體的基本概念：自由 (freedom), 開放源碼 (open source), 專利/商業 (proprietary/commercial), licenses, domain software/public domain。之後，一個很有趣的團體遊戲表達出這些基本概念在自由軟體社群裡不同的聲音，遊戲規則是這樣的，主持人 Gunner (沒錯—記憶好的看官就會記得Gunner 是我之前提到的可愛的營長大人) 先在地上拉一條線當衡量尺，然後在地上劃尺規，兩端分別代表同意 (100%) 和不同意 (0%)，當主持人唸一道敘述的時候，玩家依照自己同意的程度站在這條尺規上，如果 100% 同意主持人說的，就站在這一端，如果不是 100% 同意，可以站在 80% 或 70% 的地方，一半同意一半不同意的就站在 50% 的地方，完全不同意的就站在尺規的另一端。有點像意見調查。總共有五道題目，第一道題目就很具爭議性：我認為所有資訊都應該無限制地在網路上流通。針對這 個敘述，很多自由軟體開發者 (尤其是 Debian 的社群代表) 和具有社會主義烏托邦思想的玩家站在同意的一端，但是公司基金會或是隱私組織的人就有所保留，主持人分別訪問了站在兩端和中間的玩家，但是這個訪問聽起來 像是辯論，這個遊戲提供了一個輕鬆有趣的方式讓大家溝通不同的理念。</p>
+<p>中午午休四個小時之後(好讓大家有時間到地中海去游泳做日光浴)。下午的討論分為兩部分，分別是給 NGOs 工作者的實作 GNU/Linux 作業系統，非常實務的課程教 NGOs 工作者如何依照自己組織的需求選擇合適的 GNU/Linux 套件和合適的硬體系統，輔導員會說明各個套件的優劣點，然後依照不同的套件分組 (可選擇 Debian、Red Hat、Mandrake、Slakeware、SuSE) 一步一步地教大家如何安裝套件，然後如何使用套件，另外一個討論是給軟體開發者的，討論如何把科技和 NGOs 工作結合在一起，讓 NGOs 組織的工作更便利更有效率。</p>
+<p>第一天晚上的娛樂活動是影片欣賞，播的電影是「開放源碼革命」(Open Source Revolution)，裡面訪問了好幾個自由軟體社群的大ㄎㄚ，像 Richard Stallman，Bruce Parence，Linus Torvalds (還有他的父母)。我並不是非常贊成這部影片裡談的有關自由軟體在亞洲發展的部分，首先，亞洲並不是只有中國才在開發使用自由軟體，而且中國 99% 的作業系統還是微軟視窗，中國政府的政策只是如往常般作秀和誇大用的，再者，片中拍攝中國開發自由軟體狀況的鏡頭非常的刻板印象，我不知道是不是中國人的 生活環境真的那麼糟糕 (又髒又亂穿汗衫工作)，但是他們應該多訪問幾個亞洲國家，例如台灣、日本和印度等等。</p>
+<p>[第二天]</p>
+<p>給 NGOs 工作者的兩場討論都很實務，上午教授簡單好用的介面，如 GNOME 和 KDE，下午介紹網路出版 (Online Publishing) 和內容管理 (Content Management)，介紹網路出版的資料庫 (例如 MySQL) 和內容管理系統 (CMS)。上午，軟體開發者討論如何加強彼此間的合作，下午則由 LINC (Low-Income Networking and Communications) 的資深專員 Dirk Slater 簡報，LINC 是位在紐約市的福利法中心Welfare Law Center 的一個專案，專門幫助低收入無科技背景的草根性組織選擇策略性的硬體和軟體系統，並且建立這些組織成員的電腦專業知識，讓這些組織享有經濟平等和經濟自 由，這個組織在美國有一定的知名度，從 1998 年起已經接受過他們服務的組織將近半百，跨十八個州，這個專案也是一個 E-Rider 的例子。</p>
+<p>第二天晚上的影片欣賞就是播放國際 eRiders 組織的紀錄片。eRiders 的任務是在科技技術上支援 NGOs 組織及其活動，幫助 NGOs 組織的成員了解資訊科技，將資訊科技融入 NGOs 組織的工作，讓 NGOs 組織能使用經濟實惠的資訊科技更有效率地進行 NGOs 的工作，打個比方，有了網路之後，NGOs 組織也比較容易招募義工，建立志願工作的社群網絡。eRiders 的典故是從美國以前西部牛仔巡迴法院來的，他們被稱為 Circuit Rider，加了一個 e- 是因為資訊科技和電子 (Electronic) 以及網路有關。要成為 eRiders 不只要熟悉資訊科技，同時必須具有 NGOs 工作的經驗，如此才能將科技融入NGOs 的工作，而不是一味地光從科技的角度思考。對 NGOs 組織的成員而言，有 eRiders 的幫忙和訓練，能夠讓他們不再那麼依賴電腦公司的工程師，以前，這些工程師在接到電話之後來，但是他們是以接客戶的方式來解決問題，問題解決了就走人，並 沒有深入了解客戶的使用需求，但是 eRiders 有 NGOs 的理念和背景知識，比較容易進行長遠的合作，很多 eRiders 甚至成為 NGOs 組織的義工。eRiders 也有濃厚的地域性，這樣 eRiders 在執行工作的時候才會了解當地文化背景，容易和當地人溝通。夏令營有很多 eRiders，很多影片中的 eRiders 都在現場，包括保加利亞的自由軟體工作者 Vladimir Petkov (Kaladan)，來自捷克年輕活潑的 Gabriel Hrabanova。喬治亞共和國的 eRiders 更是全體動員來參加這個夏令營。能和演員現場對話的感覺真不錯，除了能聆聽他們第一手的經驗分享之外，更能透過對話更進一步了解 eRiders 的工作，來自 Azerbaijan 的 Emin Akhundov 就是在這次夏令營的洗禮後加入國際 E-Rider 組織的行列。</p>
+<p>[第三天]</p>
+<p>早上 NGO 工作者學習如何架設區域性網路 (LAN)，軟體開發者則討論如何採用合適的安全性工具和策略加強 NGOs 組織的網路安全，下午的演講則是針對所有的與會者，分別由 Ethan Zuckerman (伊森) 和 Kwindla Kramer (昆德拉) 演講他們將自由軟體介紹到非洲發展中國家的實例。</p>
+<p>伊森是 Geekcorps 的發起人和 CTO，Geekcorps 創立於 2000 年。Geekcorps 是一個非營利的公司，提供全球資訊科技的志願服務，把志願到發展中國家工作的資訊科技工程師組隊去工作，協助轉移資訊科技到發展中國家，教授當地人民資訊 科技知識並且奠定他們的資訊科技的軟硬體基礎架構。伊森的演講著重在資訊科技資源的分配不均 (Digital Divide)，他說，Geekcorps 的工作幫助發展中國家擺脫對已開發國家的科技依賴，許多非洲國家的資訊科技工程師已經開始從事軟體開發，有助當地的經濟發展，這樣的發展脈絡有可能讓非洲 國家從貧窮的第三世界國家直接邁入資訊科技時代的知識經濟體。因為這些非洲國家在有了資訊科技知識的加持之後，可能會直接從以採集和農業為主的經濟模式， 跳過工業和商業化階段，直接進入知識經濟的時代，但是要建立起當地資訊經濟的模式，軟體在地化是非常重要的步驟，尤其是語言的部分，大部份軟體是以英文寫 成，但是非洲居民大部分說土語或是法語，對發展非洲的資訊工程而言，有沒有良好的法語軟體開發工具可用是關鍵所在。</p>
+<p>昆德拉是 AllAfrica Global Media 的 CTO，這個網路媒體和一百多個出版社合作，平均每天發布八百條消息，在他們的資料庫中已經有六十萬條新聞，可回溯到 1994 年，他們也提供網路主機和空間給非洲的自由和開放源碼軟體基金會 (FOSSFA—free AND Open Source Software Foundation for Africa)，也和奈及利亞，那比亞，和安哥拉政府有合作。</p>
+<p>晚餐過後，有一個場次叫「螺絲起子」(Screwdriver Session)，教大家如何拆解手機和筆記型電腦自己維修，並且將大家各自帶來的舊零件組合在一起成為可用的機器，解構手機和筆記型電腦這些硬體也讓我 們更了解資訊科技的黑盒子裡賣的是什麼藥，不再那麼畏懼機器，這個 DIY 的活動教 NGOs 一些省錢的撇步，尤其對發展中國家的 NGOs 組織來說，硬體設備並不那麼容易得到，如果能回收一些舊的零件再利用，不但省錢也省了等零件運送的時間，另外，這個活動也增廣了與會者對硬體的一些見聞， 有些看似不能拆解的手機，在敲敲打打之後也都被拆解了，清一清裡面的髒東西，可以讓手機的壽命活得更久。</p>
+<p>晚上還有播 Tim O’Reilly 最後封關的演講，談 Licence 的問題，這其實不是影片，而是他最後一次演講的現場錄音配上他的投影片，播的時候有幾個人睡著了，還打呼地很大聲呢，看來這三天來密集的活動已經讓一些人累壞了，但是還有一半的路要走呢。</p>
+<p>(未完待續...)</p>
+相關連結：<br /> 1. <a href="https://www.tacticaltech.org/summersource">Summer Source Croatia<br /> 2. </a><a href="https://zini.ddts.net/enrico/galleries/2003-09-01-Summersource/foto.html">Photos taken at Summer Source Software Camp 2003</a>
+			<!-- Show relate article -->
+		<br><br><h4>You may be interested in the following articles:</h4><ul><li><a href='foss-news/192.html'>「2003夏季源碼營」之三</a> - <span class='date-posted'>2004-01-31</span></li></ul>		<!-- end -->
+		<div class="article_note">
+		<!-- Add tags use metakey, and show OSSF Newsletter tag: OSSFNL+NUM-->
+		<br><br> <hr style='border: 1px dashed #D2DADB;'><b>OSSF Newsletter&nbsp;:</b>&nbsp;<a href='previous-issue%3Ftask=view&amp;id=176.html'>第 11 期 YAPC::Taipei & Perl(下)</a><br>				<!-- End -->
+					<br>
+					<b>Category: </b><a href="en/foss-news.html">				FOSS News					</a>				</div>
+			 <!-- AddThis Button BEGIN ID 3001 is the front page article -->
+     			<br><br>
+       <div class="addthis_toolbox addthis_default_style addthis_32x32_style">
+       <a class="addthis_button_preferred_1"></a>
+       <a class="addthis_button_preferred_2"></a>
+       <a class="addthis_button_preferred_3"></a>
+       <a class="addthis_button_preferred_4"></a>
+       <a class="addthis_button_compact"></a>
+       <a class="addthis_counter addthis_bubble_style"></a>
+       </div>
+       <script type="text/javascript">var addthis_config = {"data_track_clickback":true};</script>
+       <script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js#pubid=openfoundry"></script>
+       <!-- AddThis Button END -->
+     <br>
+		<div class="totop" ><a class="rt-totop" href="index.php%3Foption=com_content&amp;task=view&amp;id=191&amp;Itemid=56.html#" style="outline: medium none;">↑ Top</a></div>
+            <!-- AddThis Button END -->
+
+			</div>
+</div>
+
+		                            </div>
+									<div class="clear"></div>
+								</div>
+								<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+							</div>
+							</div>
+                                                    </div>
+                                            </div>
+                                <div class="rt-grid-3 rt-pull-9">
+                <div id="rt-sidebar-a">
+                                    <div class="square4">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<ul class="menu"><li id="current" class="active item56"><a href="en/previous-issue.html"><span>Previous Issue</span></a></li><li class="item55"><a href="en/about-newsletter.html"><span>About Newsletter</span></a></li></ul>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<ul class="menu"><li class="item115"><a href="en/foss-news.html"><span>FOSS News</span></a></li><li class="item141"><a href="en/case-job.html"><span>Case and Jobs</span></a></li></ul>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+        	                <div class="square1">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-title"><h2 class="title">Special</h2></div>
+						<div class="clear"></div>
+		                						<div class="module-content">
+		                	<ul class="menu"><li class="item37"><a href="en/tech-column.html"><span>Tech Column</span></a></li><li class="item40"><a href="en/foss-programs.html"><span>FOSS Programs</span></a></li><li class="item35"><a href="en/legal-column.html"><span>Legal Column</span></a></li><li class="item154"><a href="en/foss-forum.html"><span>FOSS Forum</span></a></li><li class="item162"><a href="en/enterprise-application.html"><span>Enterprise Application</span></a></li><li class="item44"><a href="en/foss-projects.html"><span>FOSS Projects</span></a></li></ul>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		                <div class="square1">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<p style="text-align: center;"><a href="news%3Fformat=feed&amp;type=rss" target="_black"><img src="images/M_images/news-rss-feed.png" border="0" /></a><br /><a href="https://www.openfoundry.org/rss-feed/Newsletter" target="_black"><img src="images/M_images/newsletter-rss-feed.png" border="0" /></a></p>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		
+                </div>
+            </div>
+
+                    <div class="clear"></div>
+                </div>
+            </div>
+																													</div>
+										<div id="rt-copyright">
+						<div class="rt-grid-12 rt-alpha rt-omega">
+                        <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<span class="nowrap">Open Source Software Foundry</span><span class="nowrap">‧</span><span class="nowrap"> </span><span class="nowrap">Best  Viewed with IE7.0 or Firefox2.0 above, 1024x768 Resolution. </span><strong>E-Mail</strong>：<a href="mailto:contact@openfoundry.org">contact@openfoundry.org</a> <br /><strong>Address</strong>：No.128, Sec.2, Academia Rd., Institute of Information Science, Academia Sinica, Nangang District, Taipei City 11529, Taiwan (R.O.C). <br /><a href="en/privacy-policy.html">Privacy Policy</a>. <a href="en/terms-of-use.html">Terms-of-use</a> <span style="position: relative; top: 8px; margin-top: -8px;"> <a href="about/8101.html"><img src="images/M_images/rss-feed-all.png" border="0" /></a></span>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+        	
+</div>
+						<div class="clear"></div>
+					</div>
+					<div class="rt-footer-bottom-wrap"><div class="rt-footer-bottom"><div class="rt-footer-bottom2"><div class="rt-footer-bottom3"></div></div></div></div>
+									</div></div></div>
+				<div class="rt-surround-bottom"><div class="rt-surround-bottom2"><div class="rt-surround-bottom3"></div></div></div>
+							</div>
+		</div>
+		<!--
+		<script id="aptureScript">
+						(function (){var a=document.createElement("script");a.defer="true";a.src="http://www.apture.com/js/apture.js?siteToken=vsJttrn";document.getElementsByTagName("head")[0].appendChild(a);})();
+     </script>
+-->
+
+<!-- Piwik -->
+<!-- 			<script type="text/javascript">
+			  var _paq = _paq || [];
+		  _paq.push(["trackPageView"]);
+		  _paq.push(["enableLinkTracking"]);
+
+		    (function() {
+			        var u=(("https:" == document.location.protocol) ? "https" : "https") + "://www.openfoundry.org/piwik/";
+				    _paq.push(["setTrackerUrl", u+"piwik.php"]);
+				    _paq.push(["setSiteId", "1"]);
+				        var d=document, g=d.createElement("script"), s=d.getElementsByTagName("script")[0]; g.type="text/javascript";
+				        g.defer=true; g.async=true; g.src=u+"piwik.js"; s.parentNode.insertBefore(g,s);
+					  })();
+		  </script> -->
+<!-- End Piwik Code -->
+	</body>
+</html>

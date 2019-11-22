@@ -1,0 +1,446 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="zh-tw" lang="zh-tw" >
+<head>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<link rel="shortcut icon" href="images/favicon.ico" />
+	  <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+  <meta name="robots" content="index, follow" />
+  <meta name="keywords" content="OSSFNL822" />
+  <meta name="title" content="GK~ 將 HTML 標籤升級成為 Web 元件" />
+  <meta name="description" content="GK 是一個 JQueryPlugin (~4Kb)，可以將自訂的 HTML 標籤包成一個 Web 元件，降低 Web 開發複雜度，讓 Web 開發更便利。透過下面範例，來了解 GK 如何將 HTML 標籤升級為 Web 元件吧！ HTML 畫面範例 HTML 語法 GK 提供三個功能將自訂的 HTML 標籤包成 Web 元件，分別是自訂標籤、事件綁訂、資料處理。接下來介紹如何透過 GK" />
+  <meta name="generator" content="" />
+  <title>GK~ 將 HTML 標籤升級成為 Web 元件 - OpenFoundry</title>
+  <link href="favicon.ico" rel="shortcut icon" type="image/x-icon" />
+  <link rel="stylesheet" href="components/com_gantry/css/gantry.css" type="text/css" />
+  <link rel="stylesheet" href="components/com_gantry/css/grid-12.css" type="text/css" />
+  <link rel="stylesheet" href="components/com_gantry/css/joomla.css" type="text/css" />
+  <link rel="stylesheet" href="templates/rt_quantive_j15/css/joomla.css" type="text/css" />
+  <link rel="stylesheet" href="templates/rt_quantive_j15/css/style1.css" type="text/css" />
+  <link rel="stylesheet" href="templates/rt_quantive_j15/css/light-body.css" type="text/css" />
+  <link rel="stylesheet" href="templates/rt_quantive_j15/css/demo-styles.css" type="text/css" />
+  <link rel="stylesheet" href="templates/rt_quantive_j15/css/template.css" type="text/css" />
+  <link rel="stylesheet" href="templates/rt_quantive_j15/css/typography.css" type="text/css" />
+  <link rel="stylesheet" href="templates/rt_quantive_j15/css/fusionmenu.css" type="text/css" />
+  <style type="text/css">
+    <!--
+#rt-main-surround ul.menu li.active > a, #rt-main-surround ul.menu li.active > .separator, #rt-main-surround ul.menu li.active > .item, #rt-main-surround .square4 ul.menu li:hover > a, #rt-main-surround .square4 ul.menu li:hover > .item, #rt-main-surround .square4 ul.menu li:hover > .separator, .roktabs-links ul li.active span {color:#0088B5;}
+a, #rt-main-surround ul.menu a:hover, #rt-main-surround ul.menu .separator:hover, #rt-main-surround ul.menu .item:hover {color:#0088B5;}
+    -->
+  </style>
+  <script type="text/javascript" src="components/com_jcomments/js/jcomments-v2.1.js%3Fv=2"></script>
+  <script type="text/javascript" src="components/com_jcomments/libraries/joomlatune/ajax.js"></script>
+  <script type="text/javascript" src="media/system/js/mootools.js"></script>
+  <script type="text/javascript" src="media/system/js/caption.js"></script>
+  <script type="text/javascript" src="components/com_gantry/js/gantry-buildspans.js"></script>
+  <script type="text/javascript" src="components/com_gantry/js/gantry-inputs.js"></script>
+  <script type="text/javascript" src="templates/rt_quantive_j15/js/jquery.cookie.js"></script>
+  <script type="text/javascript" src="modules/mod_roknavmenu/themes/fusion/js/fusion.js"></script>
+  <script type="text/javascript" src="modules/mod_ofssologin/js/ofssologin.js"></script>
+  <script type="text/javascript">
+
+			window.addEvent('domready', function() {
+				var modules = ['rt-block'];
+				var header = ['h3','h2','h1'];
+				GantryBuildSpans(modules, header);
+			});
+		InputsExclusion.push('.content_vote','#rt-popup')
+		        window.addEvent('load', function() {
+					new Fusion('ul.menutop', {
+						pill: 0,
+						effect: 'slide and fade',
+						opacity: 1,
+						hideDelay: 500,
+						centered: 0,
+						tweakInitial: {'x': -2, 'y': 0},
+        				tweakSubsequent: {'x': 0, 'y': -14},
+						menuFx: {duration: 200, transition: Fx.Transitions.Sine.easeOut},
+						pillFx: {duration: 400, transition: Fx.Transitions.Back.easeOut}
+					});
+	            });
+  </script>
+<!-- <script type="text/javascript" src="/sso/javascripts/langsync.js"></script> -->
+<!-- <script src="/templates/rt_quantive_j15/js/ossf.js"></script> -->
+<script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-4136519-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
+</head>
+	<body  class="backgroundlevel-low backgroundstyle-style8 bodylevel-med bodystyle-light cssstyle-style1 logostyle-dark font-family-helvetica font-size-is-default menu-type-fusionmenu col12 ">
+		<div id="rt-main-background">
+			<div class="rt-container">
+																<div id="rt-header">
+					<div class="rt-grid-7 rt-alpha">
+    			<div class="rt-block">
+    	    	<a href="index.html" id="rt-logo"></a>
+    		</div>
+	    
+</div>
+<div class="rt-grid-5 rt-omega">
+                    <div class="square9">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<div class="ofssologin_square9"><a href="index.html">登入</a>&nbsp;&nbsp|&nbsp;&nbsp;<span><a href="en/news/8907%3Ftask=view.html" ><span lang="en" xml:lang="en">English</span></a></li></ul></span><!--Joom!fish V2.0.4 (Lightning)-->
+<!-- &copy; 2003-2009 Think Network, released under the GPL. -->
+<!-- More information: at http://www.joomfish.net -->
+<div class="ofssologin_search_square9">
+  <form id="of_search" action="https://www.openfoundry.org/of/openfoundry/search" method="get" onsubmit="of_search(); return false;">
+    <select id="of_search_type">
+      <option value="Projects"> 專案 </option>
+      <option value="Content"> 文章 </option>
+      <option value="People"> 人才 </option>
+    </select>
+    <input id="query" name="query" id="mod_search_searchword" maxlength="50" alt="search" class="inputbox" type="text" size="28" value="search..."  onblur="if(this.value=='') this.value='search...';" onfocus="if(this.value=='search...') this.value='';" />
+    <input type="hidden" name="commit" value="search" />
+  </form>
+</div></div>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		
+</div>
+					<div class="clear"></div>
+				</div>
+																<div id="rt-navigation"><div id="rt-navigation2"><div id="rt-navigation3">
+					
+<div class="nopill">
+	<ul class="menutop level1 " >
+						<li class="item1 root" >
+					<a class="orphan item bullet" href="index.html"  >
+				<span>
+			    				首頁				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item32 root" >
+					<a class="orphan item bullet" href="archived.html"  >
+				<span>
+			    				專案				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item186 root" >
+					<a class="orphan item bullet" href="tw/community.html"  >
+				<span>
+			    				Who&#039;s Who				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item4 active root" >
+					<a class="orphan item bullet" href="tw/news.html"  >
+				<span>
+			    				新聞				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item5 root" >
+					<a class="orphan item bullet" href="tw/law-and-licensing.html"  >
+				<span>
+			    				法律源地				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item3 root" >
+					<a class="orphan item bullet" href="tw/activities.html"  >
+				<span>
+			    				活動				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item2 root" >
+					<a class="orphan item bullet" href="tw/resourcecatalog%3FName=Value.html"  >
+				<span>
+			    				資源表列				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item45 root" >
+					<a class="orphan item bullet" href="tw/about.html"  >
+				<span>
+			    				關於				   
+				</span>
+			</a>
+			
+			
+	</li>	
+				</ul>
+</div>
+
+				    <div class="clear"></div>
+				</div></div></div>
+								<div class="rt-surround"><div class="rt-surround2"><div class="rt-surround3">
+										<div id="rt-showcase-section">
+												<div id="rt-showcase">
+							<div class="rt-grid-12 rt-alpha rt-omega">
+    		<div class="clear"></div>
+		
+		
+                <div class="close-note">
+                    <div class="rt-block">
+               					<div class="module-content">
+                	<div style="font-size:medium; background-image:linear-gradient(120deg,#159957,#4298b2);color:white;padding:20px;margin:-10px -18px;">感謝您對「自由軟體鑄造場」的支持與愛護，十多年來「自由軟體鑄造場」受中央研究院支持，並在資訊科學研究所以及資訊科技創新研究中心執行，現已完成階段性的任務。 本網站預計持續維運至 2021年底，網站內容基本上不會再更動。<br />也紀念我們永遠的朋友 李士傑先生（Shih-Chieh Ilya Li）。</div>				</div>
+            </div>
+                </div>
+		
+</div>
+							<div class="clear"></div>
+						</div>
+																	</div>
+															<div id="rt-main-surround">
+												<div id="rt-breadcrumbs">
+								<div class="rt-breadcrumb-surround">
+		<a href="index.html" id="breadcrumbs-home"></a>
+		<span class="breadcrumbs pathway">
+<span class="no-link">新聞</span></span>
+	</div>
+	
+							<div class="clear"></div>
+						</div>
+																							              <div id="rt-main" class="sa3-mb9">
+                <div class="rt-main-inner">
+                    <div class="rt-grid-9 rt-push-3">
+                                                <div class="rt-block">
+                            							<div class="square1">
+							<div class="rt-module-surround">
+								<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+								<div class="rt-module-inner">
+		                            <div id="rt-mainbody">
+		                                
+<div class="rt-joomla ">
+	<div class="rt-article">
+		
+				<div class="rt-headline"><h1 class="rt-article-title">GK~ 將 HTML 標籤升級成為 Web 元件</h1>		</div>
+		<div class="clear"></div>
+		
+		
+		
+				<div class="rt-articleinfo">
+						<div class="rt-article-icons">
+								<a href="tw/news/8907-gk-html-web-%3Ftmpl=component&amp;print=1&amp;page=.html" title="列印" onclick="window.open(this.href,'win2','status=no,toolbar=no,scrollbars=yes,titlebar=no,menubar=no,resizable=yes,width=640,height=480,directories=no,location=no'); return false;" rel="nofollow"><span class="icon print"></span></a>																</div>
+			
+			<span class="rt-date-posted">
+						建立日期			2013-02-22 00:00						&nbsp;&nbsp;&nbsp;&nbsp;						最近更新在 2013-05-15 13:08						</span>
+
+						<span class="rt-author">
+				作者是 Marty  			</span>
+				
+					</div>
+		
+		
+		<p>GK 是一個 JQueryPlugin (~4Kb)，可以將自訂的 HTML 標籤包成一個 Web 元件，降低 Web 開發複雜度，讓 Web 開發更便利。透過下面範例，來了解 GK 如何將 HTML 標籤升級為 Web 元件吧！</p>
+<p>HTML 畫面範例</p>
+<p><img style="display: block; margin-left: auto; margin-right: auto;" alt="01" src="images/130129/GK/01.jpg" height="143" width="161" /></p>
+
+<p>HTML 語法</p>
+<p style="text-align: center;"><img alt="02" src="images/130129/GK/02.jpg" height="346" width="500" /></p>
+<p>GK 提供三個功能將自訂的 HTML 標籤包成 Web 元件，分別是<strong>自訂標籤、事件綁訂、資料處理</strong>。接下來介紹如何透過 GK 完成將上面 HTML 語法包成 Web 元件。</p>
+<br />
+<h3>一、自訂標籤解譯</h3>
+<p>GK 的自訂標籤功能，用來封裝 HTML 語法，用自訂標籤來顯示，達到簡化使用的目的。下圖是改成 GK 自訂標籤的 HTML 寫法，是不是簡潔多了?</p>
+<p><img style="display: block; margin-left: auto; margin-right: auto;" alt="03" src="images/130129/GK/03.jpg" height="144" width="436" /></p>
+<br />
+<h4>這是怎麼做的?</h4>
+<p>首先 GK 會經由使用者自訂的標籤庫，找到 board 標籤模板，然後取出＜gk:view＞...＜/gk:view＞區塊中的 HTML，並置換 ${title} , ${content} 字串，然後交由瀏覽器進行顯示。在這例子中，${title} 會置換為 News，${content} 則是自訂標籤 board 的 innerHTML 字串。</p>
+<br />
+<p><img style="display: block; margin-left: auto; margin-right: auto;" alt="04" src="images/130129/GK/04.jpg" height="277" width="500" /></p>
+<br />
+<h4>原來 GK 就是模板引擎?</h4>
+<p>不，GK 的使用訴求是，當開發 Web 應用越來越複雜，將有必要進行封裝成為 Web 元件。封裝實做細節，讓開發應用人員能更專注在應用上。並且元件化後，擴充性及重複使用性都可以提高。 所以 GK 並不是模板引擎，GK 的功能是<strong>自訂標籤、事件綁訂、資料處理</strong>等三種功能，可將 HTML 標籤升級為 Web 元件。目前上面這個例子，是先展示自訂標籤解譯的功能。</p>
+<br />
+<h3>二、事件綁定</h3>
+<p>GK 的自訂標籤解譯，可以簡化撰寫 HTML 語法。接下來，經由事件綁定機制，自訂標籤就可以處理事件。例如有個功能，點選 Item1~3 項目時，觸發 onclick 事件進行 alert 顯示。要完成此功能，改法是修改 board 標籤模板，在第 14 行加入了 ${id} 和 ${onclick}，${id} 是 html 傳入的 id，用來控制元件，data-gk-click 就是告訴 GK 要將此元素進行 click 事件綁定。</p>
+<p>接下來，在＜gk:component＞區段，撰寫 Web 元件被觸發時要做的處理，在這只是先簡單的 alert 出目前點選的文字</p>
+<p><img style="display: block; margin-left: auto; margin-right: auto;" alt="05" src="images/130129/GK/05.jpg" height="383" width="500" /></p>
+<p>修改完模板存檔後，重新更新 [F5] 頁面，點選 Item 就會進行 alert。</p>
+<p><img style="display: block; margin-left: auto; margin-right: auto;" alt="06" src="images/130129/GK/06.jpg" height="162" width="473" /></p>
+<p>神奇嗎? 這是因為 GK 會幫忙完成自訂事件綁定，並交由 board 標籤模板中的＜gk:component＞＜/gk:component＞區段實現 onclick 邏輯，而在原本 HTML 語法上，完全不需要做任何的修改，還是原本的寫法。</p>
+<p><img style="display: block; margin-left: auto; margin-right: auto;" alt="07" src="images/130129/GK/07.jpg" height="143" width="272" /></p>
+<p>下圖是說明自訂標籤如何透過標籤模板，再轉由 Browser 顯示的流程</p>
+<br /><img style="display: block; margin-left: auto; margin-right: auto;" alt="08" src="images/130129/GK/08.jpg" height="257" width="500" /><br />
+<h4 style="text-align: justify;">這是怎麼做的?</h4>
+<p>Board 標籤模板可以看成很像是 Java 語言中的 Class，用來定義產生一個物件的屬性及功能。當撰寫 HTML 語法中包含自訂標籤時，就像是 new 了一個物件。GK 將會經由標籤模板產生一個元件實例，並 binding 到目前 HTML 語法中的自訂標籤元素。因此自訂 HTML 標籤就升級成 Web 元件了。</p>
+<p>所以每個自訂標籤，都可以擁有各自的狀態，並且可以撰寫 Model 來處理應用邏輯，所以開發應用的人員，可以使用自訂標籤（也就是 Web 元件）來簡化開發，當隨著自訂標籤模板越來越多，開發就會越來越方便。</p>
+<br />
+<p>而在設計自訂標籤模板部分，考慮的是元件應該提供什麼功能，如何兼顧效能與擴充性，甚至例如現在很夯的 RWD (<a target="_blank" href="https://twitter.com/RWD">Responsive Design</a>)。而使用自訂標籤的開發人員，考慮的則是如何滿足使用者的需求。</p>
+<p>由於開發 Web 應用越來越複雜，GK 可以幫助元件化，清楚切割 View-Component-Model，如此一來就能簡化開發的複雜度。</p>
+<br />
+<h3>三、資料處理</h3>
+<p>以上已經介紹<strong>自訂標籤、事件綁定</strong>的功能，最後設定介紹<strong>資料處理</strong>的功能，當透過 GK 包裝成為 Web 元件後，希望 Web 元件能使用在不同的案例中。達到提高生產力的目的。因此以目前這個範例看來，點選 Item 後要進行的處理，不適合寫在＜gk:component＞區段中，應該改用 gk Model 來處理應用邏輯。在這例子，我們撰寫處理邏輯，希望讓使用者 click Item 時，在 Item 上有顏色效果，如下圖</p>
+<p><img style="display: block; margin-left: auto; margin-right: auto;" alt="09" src="images/130129/GK/09.jpg" height="111" width="162" /></p>
+<p>gk Model 的程式寫法很簡單，如下所示。在 HTML Body 裡面，第 16~20 行是進行顯示，而第 22~27 行就是 gk Model 的程式撰寫。Web 元件收到使用者事件後，會呼叫 gkModel 進行處理。我們要處理的是第 16 行這個 board 自訂標籤，id 為 bbs。所以透過 gk.model[‘bbs’] 告訴 GK 要處理 board 自訂標籤的相關動作。</p>
+<p>在這例子中，當 Item 被點選時，第 23 行會被呼叫，gkModel 就可以直接針對被點選的 Item 元素進行處理，這裡做了換背景顏色的處理。</p>
+<p><img style="display: block; margin-left: auto; margin-right: auto;" alt="10" src="images/130129/GK/10.jpg" height="300" width="475" /></p>
+<br />
+<h4>為什麼要這樣做?</h4>
+<p>View 和 Model 之所以很簡單，是由於 Web Component 封裝了相關的技術細節，要這樣做的原因，是希望藉由切割開發者角色成為兩種角色：<strong>開發應用、研發元件</strong>。這樣開發應用的開發者，就可以更專注在處理業務邏輯 (View-Model)，而不用學習急處理底層技術細節。而研發元件的人，可以專研技術，打造出更棒、更好用的元件 (WebComponent)，這樣的分工，或許才能應付 Web 應用越來越複雜的局面。</p>
+<p><img style="display: block; margin-left: auto; margin-right: auto;" alt="11" src="images/130129/GK/11.jpg" height="318" width="500" /></p>
+<h3>延伸閱讀：</h3>
+<ul>
+<li><a target="_blank" href="https://mobile.ezoui.com/mobile/bootstrap/index.html">GKMobile - 用GK框架結合 JQueryMobile 打造的 OpenSource</a></li>
+<li><a target="_blank" href="https://github.com/ezoengine/GKMobile">GKMobile @GitHub</a></li>
+</ul>
+			<!-- Show relate article -->
+				<!-- end -->
+		<div class="article_note">
+		<!-- Add tags use metakey, and show OSSF Newsletter tag: OSSFNL+NUM-->
+		<br><br> <hr style='border: 1px dashed #D2DADB;'><b>自由軟體鑄造場電子報&nbsp;:</b>&nbsp;<a href='previous-issue%3Ftask=view&amp;id=822.html'>第 213 期 簡論「轉授權／再授權」於公眾授權領域的效力與應用方式</a><br>				<!-- End -->
+					<br>
+					<b>分類: </b><a href="tw/foss-projects.html">				源碼專案					</a>				</div>
+			 <!-- AddThis Button BEGIN ID 3001 is the front page article -->
+     			<br><br>
+       <div class="addthis_toolbox addthis_default_style addthis_32x32_style">
+       <a class="addthis_button_preferred_1"></a>
+       <a class="addthis_button_preferred_2"></a>
+       <a class="addthis_button_preferred_3"></a>
+       <a class="addthis_button_preferred_4"></a>
+       <a class="addthis_button_compact"></a>
+       <a class="addthis_counter addthis_bubble_style"></a>
+       </div>
+       <script type="text/javascript">var addthis_config = {"data_track_clickback":true};</script>
+       <script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js#pubid=openfoundry"></script>
+       <!-- AddThis Button END -->
+     <br>
+		<div class="totop" ><a class="rt-totop" href="index.php%3Foption=com_content&amp;task=view&amp;id=8907&amp;Itemid=4%3Bisletter=1.html#" style="outline: medium none;">↑ Top</a></div>
+            <!-- AddThis Button END -->
+
+			</div>
+</div>
+
+		                            </div>
+									<div class="clear"></div>
+								</div>
+								<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+							</div>
+							</div>
+                                                    </div>
+                                            </div>
+                                <div class="rt-grid-3 rt-pull-9">
+                <div id="rt-sidebar-a">
+                                    <div class="square4">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<ul class="menu"><li class="item56"><a href="tw/previous-issue.html"><span>電子報總覽</span></a></li><li class="item55"><a href="tw/about-newsletter.html"><span>關於本報</span></a></li></ul>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<ul class="menu"><li class="item115"><a href="tw/foss-news.html"><span>源碼新聞</span></a></li><li class="item141"><a href="tw/case-job.html"><span>接案 / 工作</span></a></li></ul>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+        	                <div class="square1">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-title"><h2 class="title">專欄總覽</h2></div>
+						<div class="clear"></div>
+		                						<div class="module-content">
+		                	<ul class="menu"><li class="item37"><a href="tw/tech-column.html"><span>技術專欄</span></a></li><li class="item40"><a href="tw/foss-programs.html"><span>源碼秘技</span></a></li><li class="item35"><a href="tw/legal-article-.html"><span>法律專欄</span></a></li><li class="item154"><a href="tw/foss-forum.html"><span>自由專欄</span></a></li><li class="item162"><a href="tw/enterprise-application.html"><span>企業應用</span></a></li><li class="item44"><a href="tw/foss-projects.html"><span>源碼專案</span></a></li></ul>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		                <div class="square1">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<p style="text-align: center;"><a href="news%3Fformat=feed&amp;type=rss" target="_black"><img src="images/M_images/news-rss-feed.png" border="0" /></a><br /><a href="https://www.openfoundry.org/rss-feed/Newsletter" target="_black"><img src="images/M_images/newsletter-rss-feed.png" border="0" /></a></p>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		
+                </div>
+            </div>
+
+                    <div class="clear"></div>
+                </div>
+            </div>
+																													</div>
+										<div id="rt-copyright">
+						<div class="rt-grid-12 rt-alpha rt-omega">
+                        <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<div id="desktop-mobile-version-switch"><span id="mobile-version" class="version-switch"><a href="index.php%3Foption=com_content&amp;task=view&amp;id=8907&amp;Itemid=4%3Bisletter=1.html#">行動版</a></span></div>
+自由軟體鑄造場 製作 最佳瀏覽狀態：IE7或Firefox2.0以上 (建議使用Firefox) ‧ 解析度1024*768 <br /> <strong>E-Mail</strong>：<a href="mailto:contact@openfoundry.org">contact@openfoundry.org</a> <strong>Address</strong>：台北市南港區研究院路2段128號 中央研究院資訊科學研究所 . <a href="privacy-policy.html">隱私權條款</a>. <a href="terms-of-use.html">使用條款</a><span style="position: relative; top: 8px; margin-top: -8px;"> <a href="about/8101.html"><img src="images/M_images/rss-feed-all.png" border="0" /></a></span>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+        	
+</div>
+						<div class="clear"></div>
+					</div>
+					<div class="rt-footer-bottom-wrap"><div class="rt-footer-bottom"><div class="rt-footer-bottom2"><div class="rt-footer-bottom3"></div></div></div></div>
+									</div></div></div>
+				<div class="rt-surround-bottom"><div class="rt-surround-bottom2"><div class="rt-surround-bottom3"></div></div></div>
+							</div>
+		</div>
+		<!--
+		<script id="aptureScript">
+						(function (){var a=document.createElement("script");a.defer="true";a.src="http://www.apture.com/js/apture.js?siteToken=vsJttrn";document.getElementsByTagName("head")[0].appendChild(a);})();
+     </script>
+-->
+
+<!-- Piwik -->
+<!-- 			<script type="text/javascript">
+			  var _paq = _paq || [];
+		  _paq.push(["trackPageView"]);
+		  _paq.push(["enableLinkTracking"]);
+
+		    (function() {
+			        var u=(("https:" == document.location.protocol) ? "https" : "https") + "://www.openfoundry.org/piwik/";
+				    _paq.push(["setTrackerUrl", u+"piwik.php"]);
+				    _paq.push(["setSiteId", "1"]);
+				        var d=document, g=d.createElement("script"), s=d.getElementsByTagName("script")[0]; g.type="text/javascript";
+				        g.defer=true; g.async=true; g.src=u+"piwik.js"; s.parentNode.insertBefore(g,s);
+					  })();
+		  </script> -->
+<!-- End Piwik Code -->
+	</body>
+</html>

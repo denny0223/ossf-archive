@@ -1,0 +1,370 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-gb" lang="en-gb" >
+<head>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<link rel="shortcut icon" href="../../../images/favicon.ico" />
+	  <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+  <meta name="robots" content="index, follow" />
+  <meta name="keywords" content="OSSFNL579" />
+  <meta name="title" content="Drupal 電子商務的新利器： Ubercart 初探" />
+  <meta name="description" content="Ubercart 是一套在自由軟體領域中快速竄起的電子商務軟體，並與 Drupal 平台整合而成為其外掛模組，若從開發為知名內容管理平台外掛模組的角度來看，不難看出 Ubercart 企圖以強大的內容管理平台結合電子商務功能為賣點，來擴大其市場的接受度，期望透過整合內容管理與電子商務之優點，以發揮一加一大於二之功效。 Ubercart 的起源是由一家販售商業級廚具設備廠商於 2006" />
+  <meta name="generator" content="" />
+  <title>Drupal 電子商務的新利器： Ubercart 初探 - OpenFoundry</title>
+  <link href="../../../favicon.ico" rel="shortcut icon" type="image/x-icon" />
+  <link rel="stylesheet" href="../../../components/com_gantry/css/gantry.css" type="text/css" />
+  <link rel="stylesheet" href="../../../components/com_gantry/css/grid-12.css" type="text/css" />
+  <link rel="stylesheet" href="../../../components/com_gantry/css/joomla.css" type="text/css" />
+  <link rel="stylesheet" href="../../../templates/rt_quantive_j15/css/joomla.css" type="text/css" />
+  <link rel="stylesheet" href="../../../templates/rt_quantive_j15/css/style1.css" type="text/css" />
+  <link rel="stylesheet" href="../../../templates/rt_quantive_j15/css/light-body.css" type="text/css" />
+  <link rel="stylesheet" href="../../../templates/rt_quantive_j15/css/demo-styles.css" type="text/css" />
+  <link rel="stylesheet" href="../../../templates/rt_quantive_j15/css/template.css" type="text/css" />
+  <link rel="stylesheet" href="../../../templates/rt_quantive_j15/css/typography.css" type="text/css" />
+  <link rel="stylesheet" href="../../../templates/rt_quantive_j15/css/fusionmenu.css" type="text/css" />
+  <style type="text/css">
+    <!--
+#rt-main-surround ul.menu li.active > a, #rt-main-surround ul.menu li.active > .separator, #rt-main-surround ul.menu li.active > .item, #rt-main-surround .square4 ul.menu li:hover > a, #rt-main-surround .square4 ul.menu li:hover > .item, #rt-main-surround .square4 ul.menu li:hover > .separator, .roktabs-links ul li.active span {color:#0088B5;}
+a, #rt-main-surround ul.menu a:hover, #rt-main-surround ul.menu .separator:hover, #rt-main-surround ul.menu .item:hover {color:#0088B5;}
+    -->
+  </style>
+  <script type="text/javascript" src="../../../components/com_jcomments/js/jcomments-v2.1.js%3Fv=2"></script>
+  <script type="text/javascript" src="../../../components/com_jcomments/libraries/joomlatune/ajax.js"></script>
+  <script type="text/javascript" src="../../../media/system/js/mootools.js"></script>
+  <script type="text/javascript" src="../../../media/system/js/caption.js"></script>
+  <script type="text/javascript" src="../../../components/com_gantry/js/gantry-buildspans.js"></script>
+  <script type="text/javascript" src="../../../components/com_gantry/js/gantry-inputs.js"></script>
+  <script type="text/javascript" src="../../../templates/rt_quantive_j15/js/jquery.cookie.js"></script>
+  <script type="text/javascript" src="../../../modules/mod_roknavmenu/themes/fusion/js/fusion.js"></script>
+  <script type="text/javascript" src="../../../modules/mod_ofssologin/js/ofssologin.js"></script>
+  <script type="text/javascript">
+
+			window.addEvent('domready', function() {
+				var modules = ['rt-block'];
+				var header = ['h3','h2','h1'];
+				GantryBuildSpans(modules, header);
+			});
+		InputsExclusion.push('.content_vote','#rt-popup')
+		        window.addEvent('load', function() {
+					new Fusion('ul.menutop', {
+						pill: 0,
+						effect: 'slide and fade',
+						opacity: 1,
+						hideDelay: 500,
+						centered: 0,
+						tweakInitial: {'x': -2, 'y': 0},
+        				tweakSubsequent: {'x': 0, 'y': -14},
+						menuFx: {duration: 200, transition: Fx.Transitions.Sine.easeOut},
+						pillFx: {duration: 400, transition: Fx.Transitions.Back.easeOut}
+					});
+	            });
+  </script>
+<!-- <script type="text/javascript" src="/sso/javascripts/langsync.js"></script> -->
+<!-- <script src="/templates/rt_quantive_j15/js/ossf.js"></script> -->
+<script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-4136519-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
+</head>
+	<body  class="backgroundlevel-low backgroundstyle-style8 bodylevel-med bodystyle-light cssstyle-style1 logostyle-dark font-family-helvetica font-size-is-default menu-type-fusionmenu col12">
+		<div id="rt-main-background">
+			<div class="rt-container">
+																<div id="rt-header">
+					<div class="rt-grid-7 rt-alpha">
+    			<div class="rt-block">
+    	    	<a href="../../../index.html" id="rt-logo"></a>
+    		</div>
+	    
+</div>
+<div class="rt-grid-5 rt-omega">
+                    <div class="square9">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<div class="ofssologin_square9"><a href="../../../index.html">Login</a>&nbsp;&nbsp|&nbsp;&nbsp;<span><a href="https://www.openfoundry.org/tw/component/content/2270/2270?task=view" ><span lang="tw" xml:lang="tw">繁體中文</span></a></li></ul></span><!--Joom!fish V2.0.4 (Lightning)-->
+<!-- &copy; 2003-2009 Think Network, released under the GPL. -->
+<!-- More information: at http://www.joomfish.net -->
+<div class="ofssologin_search_square9">
+  <form id="of_search" action="https://www.openfoundry.org/of/openfoundry/search" method="get" onsubmit="of_search(); return false;">
+    <select id="of_search_type">
+      <option value="Projects"> Projects </option>
+      <option value="Content"> Content </option>
+      <option value="People"> People </option>
+    </select>
+    <input id="query" name="query" id="mod_search_searchword" maxlength="50" alt="search" class="inputbox" type="text" size="28" value="search..."  onblur="if(this.value=='') this.value='search...';" onfocus="if(this.value=='search...') this.value='';" />
+    <input type="hidden" name="commit" value="search" />
+  </form>
+</div></div>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		
+</div>
+					<div class="clear"></div>
+				</div>
+																<div id="rt-navigation"><div id="rt-navigation2"><div id="rt-navigation3">
+					
+<div class="nopill">
+	<ul class="menutop level1 " >
+						<li class="item1 root" >
+					<a class="orphan item bullet" href="../../../index.html"  >
+				<span>
+			    				Home				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item32 root" >
+					<a class="orphan item bullet" href="../../../archived.html"  >
+				<span>
+			    				Projects				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item186 root" >
+					<a class="orphan item bullet" href="../../community.html"  >
+				<span>
+			    				Who&#039;s Who				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item4 root" >
+					<a class="orphan item bullet" href="../../news.html"  >
+				<span>
+			    				News				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item5 root" >
+					<a class="orphan item bullet" href="../../law-and-licensing.html"  >
+				<span>
+			    				Law &amp; Licensing				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item3 root" >
+					<a class="orphan item bullet" href="../../activities.html"  >
+				<span>
+			    				Activities				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item2 root" >
+					<a class="orphan item bullet" href="../../resourcecatalog.html"  >
+				<span>
+			    				Resource Catalog				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item45 root" >
+					<a class="orphan item bullet" href="../../about.html"  >
+				<span>
+			    				About				   
+				</span>
+			</a>
+			
+			
+	</li>	
+				</ul>
+</div>
+
+				    <div class="clear"></div>
+				</div></div></div>
+								<div class="rt-surround"><div class="rt-surround2"><div class="rt-surround3">
+										<div id="rt-showcase-section">
+												<div id="rt-showcase">
+							<div class="rt-grid-12 rt-alpha rt-omega">
+    		<div class="clear"></div>
+		
+		
+                <div class="close-note">
+                    <div class="rt-block">
+               					<div class="module-content">
+                	<div style="font-size:medium; background-image:linear-gradient(120deg,#159957,#4298b2);color:white;padding:20px;margin:-10px -18px;">感謝您對「自由軟體鑄造場」的支持與愛護，十多年來「自由軟體鑄造場」受中央研究院支持，並在資訊科學研究所以及資訊科技創新研究中心執行，現已完成階段性的任務。 本網站預計持續維運至 2021年底，網站內容基本上不會再更動。<br />也紀念我們永遠的朋友 李士傑先生（Shih-Chieh Ilya Li）。</div>				</div>
+            </div>
+                </div>
+		
+</div>
+							<div class="clear"></div>
+						</div>
+																	</div>
+															<div id="rt-main-surround">
+																							              <div id="rt-main" class="mb12">
+                <div class="rt-main-inner">
+                    <div class="rt-grid-12 ">
+                                                <div class="rt-block">
+                            							<div class="square1">
+							<div class="rt-module-surround">
+								<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+								<div class="rt-module-inner">
+		                            <div id="rt-mainbody">
+		                                
+<div class="rt-joomla ">
+	<div class="rt-article">
+		
+				<div class="rt-headline"><h1 class="rt-article-title">Drupal 電子商務的新利器： Ubercart 初探</h1>		</div>
+		<div class="clear"></div>
+		
+		
+		
+				<div class="rt-articleinfo">
+						<div class="rt-article-icons">
+								<a href="https://www.openfoundry.org/en/component/content/article/2270-drupal--ubercart-?tmpl=component&amp;print=1&amp;page=" title="Print" onclick="window.open(this.href,'win2','status=no,toolbar=no,scrollbars=yes,titlebar=no,menubar=no,resizable=yes,width=640,height=480,directories=no,location=no'); return false;" rel="nofollow"><span class="icon print"></span></a>																</div>
+			
+			<span class="rt-date-posted">
+						 Created at			Friday, 05 March 2010 08:00						&nbsp;&nbsp;&nbsp;&nbsp;						Last Updated on Wednesday, 08 September 2010 22:20						</span>
+
+						<span class="rt-author">
+				Written by Mr. Straight			</span>
+				
+					</div>
+		
+		
+		Ubercart 是一套在自由軟體領域中快速竄起的電子商務軟體，並與 Drupal 平台整合而成為其外掛模組，若從開發為知名內容管理平台外掛模組的角度來看，不難看出 Ubercart 企圖以強大的內容管理平台結合電子商務功能為賣點，來擴大其市場的接受度，期望透過整合內容管理與電子商務之優點，以發揮一加一大於二之功效。 Ubercart 的起源是由一家販售商業級廚具設備廠商於 2006 年所贊助的開源計畫，該廠商的電子商務平台就是採用 Drupal 加 Ubercart 所建置而成，一直到 2008 年 Ubercart 才釋出 Beta 版本，中間經歷了 1.0 與 2.0 的版本修正，目前共有三位專職人員負責 Ubercart 核心部分的開發與維護，同時致力於提供友善的開發環境以吸引其他開發人員在 Ubercart 上從事開發與應用。
+
+<p>在進行內文的閱讀前，我們可以先討論一下建置電子商務網站可能需要的基本功能，通常基本功能包含商品，訂單，支付，會員及配送等功能，而依照商店的需要可能會再考慮是否需要庫存、促銷與物流管理等等之功能，由此可見要討論 Ubercart 的功能應用在電子商務的範圍很廣，並無法在有限的篇幅內做完善的介紹，所以本文主要著墨於介紹 Ubercart 在商品部分的相關設定與應用。</p>
+<p><br /><strong>◎ Ubercart 的基本資料：</strong></p>
+<p>軟體名稱：Ubercart<br />檔案大小：17.8 MB<br />官方網站：<a href="https://www.ubercart.org/" target="_blank">https://www.ubercart.org/</a><br />適用軟體平台：全平台<br />授權：GNU General Public License (GPL)</p>
+<p><br /><strong>◎ Ubercart 安裝</strong></p>
+<p>目前的 Ubercart 已釋出 2.2 版， 2.2 版本適用於 Drupal 6 的平台，若是讀者是使用 Drupal 5 的平台，可選擇 Ubercart 1.9 的版本進行安裝與建置，本文則以 Ubercart 2.2 版本為範例進行解說。在安裝 Ubercart 之前，需先安裝其他相關的模組，包括 Token，Content Construction Kit (CCK)，FileField，ImageAPI模組內的 ImageAPI, ImageAPI GD2，ImageCache，ImageField，Thickbox，Google Analytics 與 Views 。詳細的安裝說明可以參考其官方網站的說明。</p>
+<p><br /><strong>◎ 商店設定</strong></p>
+<p>Ubercart 安裝完成後，可以在管理者選單（Administer › Store administration，若有啟用Clean URL 可直接在網址建入 /admin/store）找到 Ubercart 的主要設定環境，找到以後首先進行商店的設定，請先至Drupal的模組安裝介面確認Ubercart core package模組中的Store是否已被啟用，確認啟用後請至Administer› Store administration › Configuration› Store settings （或 /admin/store/settings/store）進行商店之基本設定，相關設定包括名稱、地址、連絡方法、日期與幣值等等項目，使用者可依實際情況進行設定。</p>
+<p><a href="../../../images/100309/ubercart/01storeadmin.jpg" target="_blank"><img src="../../../images/100309/ubercart/01storeadmin.jpg" border="0" hspace="5" vspace="5" width="600" height="339" align="absBottom" /></a></p>
+<p><br /><strong>◎ 商品設定</strong></p>
+<p>商店設定完成之後，接下來就是重頭戲，有關商品的設定，熟悉 Drupal 的朋友都知道，Drupal 把各種的內容 (content)，例如預設的 Page 與 Story 都視為一個 node，所以 Ubercart 中的 Product 也是基於 node 所衍生出來，如此的設計使得 Product 也可以與一般的 node 同樣享有讓使用者回應或評分之功能，甚至可以透過 CCK 來對 Product 增加額外的欄位，換句話說，任何適用 node 的功能，同樣也適用於 Product。而 Product 特有的部分就是商品資訊 (Product information) 與運送設置 (Shipping settings)，在商品資訊部分可以設定編號、售價、重量與體積等等資訊，其中售價又可分為建議零售價 (MSRP) ，庫存成本 (Store's cost) 與實際售價 (Customer purchase price) ，而運送設置部分則有運送類型 (Ship type)，商品存放地址與運送費用可以設定。</p>
+<p><a href="../../../images/100309/ubercart/02productinfo.jpg" target="_blank"><img src="../../../images/100309/ubercart/02productinfo.jpg" border="0" hspace="5" vspace="5" width="600" height="489" align="absBottom" /></a></p>
+<p>若是遇到商品的種類眾多，不同商品可能需要提供給使用者不同資訊而 Ubercart 預設的欄位又不夠使用的情況時，例如電腦 CPU 的規格、商品製造地或製造日期等，則可以利用 CCK 的功能幫該商品增加不同的欄位，如此一來在新增商品時，就有額外的欄位可供輸入（CCK 的使用方法並非本文之主要內容，有需要的讀者請自行上網搜尋）。若網站經營者想要的是讓使用者在選購商品時，可以在單一商品的購買上依需求選擇不同屬性時，例如同一款手機可提供不同外觀花色選擇的情況時，則可以利用 Ubercart 的Product Attribute功能來實現，首先先新增一個商品類型 (Product class)，請至Administer › Store administration › Product › Mange classes 或 /admin/store/products/classes 新增一商品類型 Cellphone，在新增後，即可以在 Create content 功能上看見一個新的 content 名稱為 Cellphone。</p>
+<p><a href="../../../images/100309/ubercart/03createcp.jpg" target="_blank"><img src="../../../images/100309/ubercart/03createcp.jpg" border="0" hspace="5" vspace="5" width="600" height="428" align="absBottom" /></a></p>
+<p>但目前 Cellphone 所需要的欄位與預設的 Product 的欄位一模一樣，此時對 Cellphone 增加一個 color 的欄位以供消費者選擇，請至 Administer › Store administration › Attributes（或 /admin/store/attributes），增加一個 Attribute 命名為 color 並設定 color 為下拉式選單 (select box)。</p>
+<p><a href="../../../images/100309/ubercart/04addattrib.jpg" target="_blank"><img src="../../../images/100309/ubercart/04addattrib.jpg" border="0" hspace="5" vspace="5" width="600" height="455" align="absBottom" /></a></p>
+<p>然後在option for color的介面，增加想要的選項，例如海水藍、香檳金、超淨白與尊貴黑等</p>
+<p><a href="../../../images/100309/ubercart/05addoption.jpg" target="_blank"><img src="../../../images/100309/ubercart/05addoption.jpg" border="0" hspace="5" vspace="5" width="600" height="253" align="absBottom" /></a></p>
+<p>值得一提的是在增加選項的介面上 Ubercart 還提供了一個貼心的服務，就是價格的調整，管理者可以依不同選項輸入不同價格，例如外觀為超淨白的 Cellphone 材質較好也較搶手，所以管理者可以設定超淨白項目的調整金額為50，如此一來消費者在選擇購買超淨白花色的 Cellphone 時，需要再加 50 元，當然也可以設定調整金額為負值，以達到促銷的手段。透過 Product Classes，CCK 與 Product Attributes 的搭配下，管理者可以不需撰寫程式就可達到依特性新增不同商品，並同時讓消費者在購買商品時，可以選擇不同的外觀花色，而不同的外觀花色也可能出現金額上的調整。</p>
+<p><a href="../../../images/100309/ubercart/06attributedemo.jpg" target="_blank"><img src="../../../images/100309/ubercart/06attributedemo.jpg" border="0" hspace="5" vspace="5" width="600" height="345" align="absBottom" /></a></p>
+<p><br /><strong>◎ 商品分類</strong></p>
+<p>在介紹完商品的設定後，接下來就是商品的展示，一般來說，電子商務皆會提供商品分類的功能，一方面可讓商品做分類的展示，便利消費者快速找到其需要的商品，另一方面也可以讓管理者將商品做有效的管理，而 Ubercart 核心內的 Catalog 模組，就是用來協助管理者做商品分類的利器，值得一提的是 Catalog 是基於 Drupal 的 Taxonomy 系統所衍生出來的應用，Taxonomy 是 Drupal 用來管理標籤 (Tag)，與將內容做分類的技術，而 Catalog 是 Ubercart 用來產生商品目錄與分類商品的技術。通常 Catalog 被安裝並啟用後，在 Taxonomy 設定介面下（請至Administer › Content management › Taxonomy 或 /admin/content/taxonomy）可以看到一個 Taxonomy 的 Vocabulary 名稱為 Catalog，這個 Catalog 就是預設給 Ubercart 的商品來當作分類與目錄使用的，透過編輯介面可以在 Content types 的設定區域看到 Catalog 已設定給 Product 這個 Content 使用。</p>
+<p><a href="../../../images/100309/ubercart/07catalog.jpg" target="_blank"><img src="../../../images/100309/ubercart/07catalog.jpg" border="0" hspace="5" vspace="5" width="600" height="324" align="absBottom" /></a></p>
+<p>管理者也可以將之設定給其他 Drupal 的 Content，也可以直接在 Catalog 內加上新的 term，例如新增手機與筆記型這兩個 term，此時若在瀏覽器的網址列上直接在你網址後加上 /catalog，就可以直接看到商品分類的展示畫面（沒錯，就是那麼單純），管理者可以依需求再自行增加不同階層的 term。</p>
+<p><a href="../../../images/100309/ubercart/08term.jpg" target="_blank"><img src="../../../images/100309/ubercart/08term.jpg" border="0" hspace="5" vspace="5" width="600" height="295" align="absBottom" /></a></p>
+<p>而 Catalog 分類完成後，在新增或編輯 Product 的介面上就會有 Catalog 的項目與已設定好的 term 供管理者選擇，term 的選擇也同時代表該商品是被分到這個 term 下，如此一來商品與分類就完成關聯的建立，另外 Catalog 也有提供以 tree view 方式展現的 block，供管理者彈性放在網頁兩旁的 region，而 Catalog 其他的設定管理者則可以至 Administer › Store administration › Configuration › Catalog settings 或 /admin/store/settings/catalog 進行調整。</p>
+<p><a href="../../../images/100309/ubercart/09productwithterm.jpg" target="_blank"><img src="../../../images/100309/ubercart/09productwithterm.jpg" border="0" hspace="5" vspace="5" width="600" height="415" align="absBottom" /></a></p>
+<p><br /><strong>◎ 虛擬商品</strong></p>
+<p>由於資訊時代演進快速，人們與資訊的關聯愈來愈緊密，溝通也愈來愈活絡，使得許多具商業價值卻並非以實體型態存在的商品因而誕生，同樣促使一些電子商務網站賣的並非實體商品，而是虛擬商品或稱為數位商品，例如軟體、電子書與線上遊戲的虛擬寶物等等，皆是資訊時代下所誕生的新興產品，為了因應這類型的需求，Ubercart 同樣有支援販售虛擬商品的功能，值得注意的是虛擬商品必須在完成特定動作或滿足特定情況時，才可允許消費者下載，並非只是單純成為商品的附件罷了，例如在訂單完成付款後，消費者才可以取得下載虛擬商品的權限。 進行虛擬商品的設定前，首先需確認是 File Downloads 模組是否已被啟用，請至 Administer › Site building › Modules 下確認，接來就是權限的開放，請至 Administer › User management › Permissions，可以看到在 uc_file module 下有兩個權限功能，下載檔案 (download file) 與查看所有下載 (view all downloads)，通常只要啟用登入使用者 (authenticated user) 具下載檔案功能即可。</p>
+<p><img src="../../../images/100309/ubercart/10permission.jpg" border="0" hspace="5" vspace="5" width="521" height="463" align="absBottom" /></p>
+<p>接下來再到 Administer > Store administration 查看 Status messages 內的 File Downloads 是否啟用正常，若不正常請依訊息指示設定，而通常不正常的情況為檔案路徑沒有設定，設定檔案路徑請至 Administer › Store administration › Configuration › Product settings 下的 File download settings 下設定路徑，完成以上設定使用者才可以有權限下載檔案，此外還有其他的下載限制設定，例如下載次數，可下載的 IP 與期間，請管理者依實際需求進行設定。</p>
+<p><a href="../../../images/100309/ubercart/11filedownload.jpg" target="_blank"><img src="../../../images/100309/ubercart/11filedownload.jpg" border="0" hspace="5" vspace="5" width="600" height="485" align="absBottom" /></a></p>
+<p>以上設定完成後，就只差將虛擬商品關聯至某一商品即可，先上傳虛擬商品至 Drupal 平台，至 Administer › Store administration › Products > View file downloads 選擇上傳檔案，將虛擬商品上傳後即可。</p>
+<p><a href="../../../images/100309/ubercart/12uploadfile.jpg" target="_blank"><img src="../../../images/100309/ubercart/12uploadfile.jpg" border="0" hspace="5" vspace="5" width="600" height="252" align="absBottom" /></a></p>
+<p>然後選擇欲成為虛擬商品的 Product 並切換到編輯模式，選擇 Feature 頁籤，新增一個 file download 的新 Feature，接下來再輸入適當的 SKU （若此商品為單純的虛擬商品，則直接選取原商品的 SKU 即可），設定可以被下載的檔案即可。待上述步驟完成後，當消費者購買該商品時並在訂單完成以後，即可到會員中心 (My account) 的介面下載該檔案。</p>
+<p><a href="../../../images/100309/ubercart/13productwithfile.jpg" target="_blank"><img src="../../../images/100309/ubercart/13productwithfile.jpg" border="0" hspace="5" vspace="5" width="600" height="465" align="absBottom" /></a></p>
+<p>本文初步介紹 Drupal 加上 Ubercart 在電子商務領域的應用，並對商品建置的部分做進一步的說明，包括了商品設定、商品分類與虛擬商品的設定，提供給對 Ubercart 有興趣的讀者參考。</p>
+<p><strong>◎ 作者簡介</strong></p>
+<p>Mr. straight，目前服務於某研究機關，專長在系統分析、網路程式設計、資料庫管理與 data mining，個人對於自由軟體商業應用與授權模式，OpenSource CMS等領域，略有研究及興趣。</p>
+			<!-- Show relate article -->
+				<!-- end -->
+		<div class="article_note">
+		<!-- Add tags use metakey, and show OSSF Newsletter tag: OSSFNL+NUM-->
+		<br><br> <hr style='border: 1px dashed #D2DADB;'><b>OSSF Newsletter&nbsp;:</b>&nbsp;<a href='../../../previous-issue%3Ftask=view&amp;id=579.html'>第 145 期 可疑的中國互聯網絡信息中心 SSL 憑證</a><br>				<!-- End -->
+					<br>
+					<b>Category: </b><a href="../../foss-programs.html">				FOSS Programs					</a>				</div>
+			 <!-- AddThis Button BEGIN ID 3001 is the front page article -->
+     			<br><br>
+       <div class="addthis_toolbox addthis_default_style addthis_32x32_style">
+       <a class="addthis_button_preferred_1"></a>
+       <a class="addthis_button_preferred_2"></a>
+       <a class="addthis_button_preferred_3"></a>
+       <a class="addthis_button_preferred_4"></a>
+       <a class="addthis_button_compact"></a>
+       <a class="addthis_counter addthis_bubble_style"></a>
+       </div>
+       <script type="text/javascript">var addthis_config = {"data_track_clickback":true};</script>
+       <script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js#pubid=openfoundry"></script>
+       <!-- AddThis Button END -->
+     <br>
+		<div class="totop" ><a class="rt-totop" href="2270%3Ftask=view.html#" style="outline: medium none;">↑ Top</a></div>
+            <!-- AddThis Button END -->
+
+			</div>
+</div>
+
+		                            </div>
+									<div class="clear"></div>
+								</div>
+								<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+							</div>
+							</div>
+                                                    </div>
+                                            </div>
+                                        <div class="clear"></div>
+                </div>
+            </div>
+																													</div>
+										<div id="rt-copyright">
+						<div class="rt-grid-12 rt-alpha rt-omega">
+                        <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<span class="nowrap">Open Source Software Foundry</span><span class="nowrap">‧</span><span class="nowrap"> </span><span class="nowrap">Best  Viewed with IE7.0 or Firefox2.0 above, 1024x768 Resolution. </span><strong>E-Mail</strong>：<a href="mailto:contact@openfoundry.org">contact@openfoundry.org</a> <br /><strong>Address</strong>：No.128, Sec.2, Academia Rd., Institute of Information Science, Academia Sinica, Nangang District, Taipei City 11529, Taiwan (R.O.C). <br /><a href="../../privacy-policy.html">Privacy Policy</a>. <a href="../../terms-of-use.html">Terms-of-use</a> <span style="position: relative; top: 8px; margin-top: -8px;"> <a href="../../../about/8101.html"><img src="../../../images/M_images/rss-feed-all.png" border="0" /></a></span>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+        	
+</div>
+						<div class="clear"></div>
+					</div>
+					<div class="rt-footer-bottom-wrap"><div class="rt-footer-bottom"><div class="rt-footer-bottom2"><div class="rt-footer-bottom3"></div></div></div></div>
+									</div></div></div>
+				<div class="rt-surround-bottom"><div class="rt-surround-bottom2"><div class="rt-surround-bottom3"></div></div></div>
+							</div>
+		</div>
+		<!--
+		<script id="aptureScript">
+						(function (){var a=document.createElement("script");a.defer="true";a.src="http://www.apture.com/js/apture.js?siteToken=vsJttrn";document.getElementsByTagName("head")[0].appendChild(a);})();
+     </script>
+-->
+
+<!-- Piwik -->
+<!-- 			<script type="text/javascript">
+			  var _paq = _paq || [];
+		  _paq.push(["trackPageView"]);
+		  _paq.push(["enableLinkTracking"]);
+
+		    (function() {
+			        var u=(("https:" == document.location.protocol) ? "https" : "https") + "://www.openfoundry.org/piwik/";
+				    _paq.push(["setTrackerUrl", u+"piwik.php"]);
+				    _paq.push(["setSiteId", "1"]);
+				        var d=document, g=d.createElement("script"), s=d.getElementsByTagName("script")[0]; g.type="text/javascript";
+				        g.defer=true; g.async=true; g.src=u+"piwik.js"; s.parentNode.insertBefore(g,s);
+					  })();
+		  </script> -->
+<!-- End Piwik Code -->
+	</body>
+</html>

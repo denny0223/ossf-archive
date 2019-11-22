@@ -1,0 +1,988 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="zh-tw" lang="zh-tw" >
+<head>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<link rel="shortcut icon" href="../../images/favicon.ico" />
+	  <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+  <meta name="robots" content="index, follow" />
+  <meta name="keywords" content="OSSFNL870" />
+  <meta name="title" content="第一次用 PHPUnit 寫測試就上手（下）" />
+  <meta name="description" content="上篇文章：第一次用 PHPUnit 寫測試就上手（上） 3. Data Providers（資料提供者） 資料提供者，能提供多筆的測試資料給測試案例進行多次的測試。 使用資料提供者，能讓測試更簡潔，因為，可以將測試的 assertions 與測試資料分開寫。 * ● 測試 3 - 限制報名人數*" />
+  <meta name="generator" content="" />
+  <title>第一次用 PHPUnit 寫測試就上手（下） - OpenFoundry</title>
+  <link href="../../favicon.ico" rel="shortcut icon" type="image/x-icon" />
+  <link rel="stylesheet" href="../../components/com_gantry/css/gantry.css" type="text/css" />
+  <link rel="stylesheet" href="../../components/com_gantry/css/grid-12.css" type="text/css" />
+  <link rel="stylesheet" href="../../components/com_gantry/css/joomla.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/joomla.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/style1.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/light-body.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/demo-styles.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/template.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/typography.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/fusionmenu.css" type="text/css" />
+  <style type="text/css">
+    <!--
+#rt-main-surround ul.menu li.active > a, #rt-main-surround ul.menu li.active > .separator, #rt-main-surround ul.menu li.active > .item, #rt-main-surround .square4 ul.menu li:hover > a, #rt-main-surround .square4 ul.menu li:hover > .item, #rt-main-surround .square4 ul.menu li:hover > .separator, .roktabs-links ul li.active span {color:#0088B5;}
+a, #rt-main-surround ul.menu a:hover, #rt-main-surround ul.menu .separator:hover, #rt-main-surround ul.menu .item:hover {color:#0088B5;}
+    -->
+  </style>
+  <script type="text/javascript" src="../../components/com_jcomments/js/jcomments-v2.1.js%3Fv=2"></script>
+  <script type="text/javascript" src="../../components/com_jcomments/libraries/joomlatune/ajax.js"></script>
+  <script type="text/javascript" src="../../media/system/js/mootools.js"></script>
+  <script type="text/javascript" src="../../media/system/js/caption.js"></script>
+  <script type="text/javascript" src="../../components/com_gantry/js/gantry-buildspans.js"></script>
+  <script type="text/javascript" src="../../components/com_gantry/js/gantry-inputs.js"></script>
+  <script type="text/javascript" src="../../templates/rt_quantive_j15/js/jquery.cookie.js"></script>
+  <script type="text/javascript" src="../../modules/mod_roknavmenu/themes/fusion/js/fusion.js"></script>
+  <script type="text/javascript" src="../../modules/mod_ofssologin/js/ofssologin.js"></script>
+  <script type="text/javascript">
+
+			window.addEvent('domready', function() {
+				var modules = ['rt-block'];
+				var header = ['h3','h2','h1'];
+				GantryBuildSpans(modules, header);
+			});
+		InputsExclusion.push('.content_vote','#rt-popup')
+		        window.addEvent('load', function() {
+					new Fusion('ul.menutop', {
+						pill: 0,
+						effect: 'slide and fade',
+						opacity: 1,
+						hideDelay: 500,
+						centered: 0,
+						tweakInitial: {'x': -2, 'y': 0},
+        				tweakSubsequent: {'x': 0, 'y': -14},
+						menuFx: {duration: 200, transition: Fx.Transitions.Sine.easeOut},
+						pillFx: {duration: 400, transition: Fx.Transitions.Back.easeOut}
+					});
+	            });
+  </script>
+<!-- <script type="text/javascript" src="/sso/javascripts/langsync.js"></script> -->
+<!-- <script src="/templates/rt_quantive_j15/js/ossf.js"></script> -->
+<script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-4136519-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
+</head>
+	<body  class="backgroundlevel-low backgroundstyle-style8 bodylevel-med bodystyle-light cssstyle-style1 logostyle-dark font-family-helvetica font-size-is-default menu-type-fusionmenu col12 ">
+		<div id="rt-main-background">
+			<div class="rt-container">
+																<div id="rt-header">
+					<div class="rt-grid-7 rt-alpha">
+    			<div class="rt-block">
+    	    	<a href="../../index.html" id="rt-logo"></a>
+    		</div>
+	    
+</div>
+<div class="rt-grid-5 rt-omega">
+                    <div class="square9">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<div class="ofssologin_square9"><a href="../../index.html">登入</a>&nbsp;&nbsp|&nbsp;&nbsp;<span><a href="../../en/tech-column/9328.html" ><span lang="en" xml:lang="en">English</span></a></li></ul></span><!--Joom!fish V2.0.4 (Lightning)-->
+<!-- &copy; 2003-2009 Think Network, released under the GPL. -->
+<!-- More information: at http://www.joomfish.net -->
+<div class="ofssologin_search_square9">
+  <form id="of_search" action="https://www.openfoundry.org/of/openfoundry/search" method="get" onsubmit="of_search(); return false;">
+    <select id="of_search_type">
+      <option value="Projects"> 專案 </option>
+      <option value="Content"> 文章 </option>
+      <option value="People"> 人才 </option>
+    </select>
+    <input id="query" name="query" id="mod_search_searchword" maxlength="50" alt="search" class="inputbox" type="text" size="28" value="search..."  onblur="if(this.value=='') this.value='search...';" onfocus="if(this.value=='search...') this.value='';" />
+    <input type="hidden" name="commit" value="search" />
+  </form>
+</div></div>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		
+</div>
+					<div class="clear"></div>
+				</div>
+																<div id="rt-navigation"><div id="rt-navigation2"><div id="rt-navigation3">
+					
+<div class="nopill">
+	<ul class="menutop level1 " >
+						<li class="item1 root" >
+					<a class="orphan item bullet" href="../../index.html"  >
+				<span>
+			    				首頁				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item32 root" >
+					<a class="orphan item bullet" href="../../archived.html"  >
+				<span>
+			    				專案				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item186 root" >
+					<a class="orphan item bullet" href="../community.html"  >
+				<span>
+			    				Who&#039;s Who				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item4 root" >
+					<a class="orphan item bullet" href="../news.html"  >
+				<span>
+			    				新聞				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item5 root" >
+					<a class="orphan item bullet" href="../law-and-licensing.html"  >
+				<span>
+			    				法律源地				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item3 root" >
+					<a class="orphan item bullet" href="../activities.html"  >
+				<span>
+			    				活動				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item2 root" >
+					<a class="orphan item bullet" href="../resourcecatalog%3FName=Value.html"  >
+				<span>
+			    				資源表列				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item45 root" >
+					<a class="orphan item bullet" href="../about.html"  >
+				<span>
+			    				關於				   
+				</span>
+			</a>
+			
+			
+	</li>	
+				</ul>
+</div>
+
+				    <div class="clear"></div>
+				</div></div></div>
+								<div class="rt-surround"><div class="rt-surround2"><div class="rt-surround3">
+										<div id="rt-showcase-section">
+												<div id="rt-showcase">
+							<div class="rt-grid-12 rt-alpha rt-omega">
+    		<div class="clear"></div>
+		
+		
+                <div class="close-note">
+                    <div class="rt-block">
+               					<div class="module-content">
+                	<div style="font-size:medium; background-image:linear-gradient(120deg,#159957,#4298b2);color:white;padding:20px;margin:-10px -18px;">感謝您對「自由軟體鑄造場」的支持與愛護，十多年來「自由軟體鑄造場」受中央研究院支持，並在資訊科學研究所以及資訊科技創新研究中心執行，現已完成階段性的任務。 本網站預計持續維運至 2021年底，網站內容基本上不會再更動。<br />也紀念我們永遠的朋友 李士傑先生（Shih-Chieh Ilya Li）。</div>				</div>
+            </div>
+                </div>
+		
+</div>
+							<div class="clear"></div>
+						</div>
+																	</div>
+															<div id="rt-main-surround">
+												<div id="rt-breadcrumbs">
+								<div class="rt-breadcrumb-surround">
+		<a href="../../index.html" id="breadcrumbs-home"></a>
+		<span class="breadcrumbs pathway">
+<a href="../tech-column.html" class="pathway">技術專欄</a> <img src="../../templates/rt_quantive_j15/images/arrow.png" alt=""  /> <span class="no-link">第一次用 PHPUnit 寫測試就上手（下）</span></span>
+	</div>
+	
+							<div class="clear"></div>
+						</div>
+																							              <div id="rt-main" class="sa3-mb9">
+                <div class="rt-main-inner">
+                    <div class="rt-grid-9 rt-push-3">
+                                                <div class="rt-block">
+                            							<div class="square1">
+							<div class="rt-module-surround">
+								<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+								<div class="rt-module-inner">
+		                            <div id="rt-mainbody">
+		                                
+<div class="rt-joomla ">
+	<div class="rt-article">
+		
+				<div class="rt-headline"><h1 class="rt-article-title">第一次用 PHPUnit 寫測試就上手（下）</h1>		</div>
+		<div class="clear"></div>
+		
+		
+		
+				<div class="rt-articleinfo">
+						<div class="rt-article-icons">
+								<a href="9328-phpunit-testing-ii%3Ftmpl=component&amp;print=1&amp;layout=default&amp;page=.html" title="列印" onclick="window.open(this.href,'win2','status=no,toolbar=no,scrollbars=yes,titlebar=no,menubar=no,resizable=yes,width=640,height=480,directories=no,location=no'); return false;" rel="nofollow"><span class="icon print"></span></a>																</div>
+			
+			<span class="rt-date-posted">
+						建立日期			2014-12-29 16:32						&nbsp;&nbsp;&nbsp;&nbsp;						最近更新在 2014-12-29 16:35						</span>
+
+						<span class="rt-author">
+				作者是 黃儀銘／文			</span>
+				
+					</div>
+		
+		
+		<h3>上篇文章：<a href="9326-phpunit-testing.html" target="_blank">第一次用 PHPUnit 寫測試就上手（上）</a></h3>
+<h4 id="3-data-providers資料提供者">3. Data Providers（資料提供者）</h4>
+<p>資料提供者，能提供多筆的測試資料給測試案例進行多次的測試。</p>
+<p>使用資料提供者，能讓測試更簡潔，因為，可以將測試的 assertions 與測試資料分開寫。</p>
+
+<p><em>* ● 測試 3 - 限制報名人數*</em></p>
+<p>在一開始有提到，活動報名系統，會限制每個活動的報名人數。測試案例要測試多個不同報名人數的活動，如果報名成功，<code>reserve()</code> 會回傳 <code>true</code>，相反的報名失敗則回傳 <code>false</code>。</p>
+<p><strong>src/PHPUnitEventDemo/Event.php</strong></p>
+<div class="highlight">
+<pre><span class="cp"><!--?php 
+
+<span class="k">namespace</span> <span class="nx">PHPUnitEventDemo</span><span class="p">;</span>
+
+<span class="k">class</span> <span class="nc">Event</span>
+<span class="p">{</span>
+    <span class="c1">// ignores ...</span>
+
+    <span class="k">public</span> <span class="k">function</span> <span class="nf">reserve</span><span class="p">(</span><span class="nv">$user</span><span class="p">)</span>
+    <span class="p">{</span>       
+        <span class="c1">// 報名人數是否超過限制 </span>
+        <span class="k">if</span> <span class="p">(</span><span class="nv">$this</span><span class="o">-></span><span class="na">attendee_limit</span> <span class="o">></span> <span class="nv">$this</span><span class="o">-></span><span class="na">getAttendeeNumber</span><span class="p">())</span> <span class="p">{</span>
+            <span class="c1">// 使用者報名</span>
+            <span class="nv">$this</span><span class="o">-></span><span class="na">attendees</span><span class="p">[</span><span class="nv">$user</span><span class="o">-></span><span class="na">id</span><span class="p">]</span> <span class="o">=</span> <span class="nv">$user</span><span class="p">;</span>
+
+            <span class="k">return</span> <span class="k">true</span><span class="p">;</span>
+        <span class="p">}</span>
+
+        <span class="k">return</span> <span class="k">false</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="c1">// ignores ...</span>
+<span class="p">}</span>
+</span></pre>
+</div>
+<p>在 <code>Event</code> 類別的 <code>reserve()</code> 加入判斷，目前報名人數是否超過活動限制的報名人數，如果沒超過，<code>User</code> 物件加入到 <code>$attendees</code> 陣列內，回傳 <code>true</code>，超過的話，則回傳 <code>false</code>。</p>
+<p><strong>tests/EventTest.php</strong></p>
+<div class="highlight">
+<pre><span class="cp"><!--?php
+
+<span class="k">class</span> <span class="nc">EventTest</span> <span class="k">extends</span> <span class="nx">PHPUnit_Framework_TestCase</span>
+<span class="p">{</span>
+    <span class="c1">// ignore ...</span>
+
+    <span class="sd">/**</span>
+<span class="sd">     *  @dataProvider eventsDataProvider</span>
+<span class="sd">     */</span>
+    <span class="k">public</span> <span class="k">function</span> <span class="nf">testAttendeeLimitReserve</span><span class="p">(</span><span class="nv">$eventId</span><span class="p">,</span> <span class="nv">$eventName</span><span class="p">,</span> <span class="nv">$eventStartDate</span><span class="p">,</span> <span class="nv">$eventEndDate</span><span class="p">,</span> <span class="nv">$eventDeadline</span><span class="p">,</span> <span class="nv">$attendeeLimit</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="c1">// 測試報名人數限制</span>
+        <span class="nv">$event</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">\PHPUnitEventDemo\Event</span><span class="p">(</span><span class="nv">$eventId</span><span class="p">,</span> 
+            <span class="nv">$eventName</span><span class="p">,</span> <span class="nv">$eventStartDate</span><span class="p">,</span> <span class="nv">$eventEndDate</span><span class="p">,</span> 
+            <span class="nv">$eventDeadline</span><span class="p">,</span> <span class="nv">$attendeeLimit</span><span class="p">);</span>
+        <span class="nv">$userNumber</span> <span class="o">=</span> <span class="mi">6</span><span class="p">;</span>
+
+        <span class="c1">// 建立不同使用者報名</span>
+        <span class="k">for</span> <span class="p">(</span><span class="nv">$userCount</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span> <span class="nv">$userCount</span> <span class="o"><=</span> <span class="nv">$userNumber</span><span class="p">;</span> <span class="nv">$userCount</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+            <span class="nv">$userId</span> <span class="o">=</span> <span class="nv">$userCount</span><span class="p">;</span>
+            <span class="nv">$userName</span> <span class="o">=</span> <span class="s1">'User '</span> <span class="o">.</span> <span class="nv">$userId</span><span class="p">;</span>
+            <span class="nv">$userEmail</span> <span class="o">=</span> <span class="s1">'user'</span> <span class="o">.</span> <span class="nv">$userId</span> <span class="o">.</span> <span class="s1">'@openfoundry.org'</span><span class="p">;</span>
+            <span class="nv">$user</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">\PHPUnitEventDemo\User</span><span class="p">(</span><span class="nv">$userId</span><span class="p">,</span> <span class="nv">$userName</span><span class="p">,</span> <span class="nv">$userEmail</span><span class="p">);</span>
+
+            <span class="nv">$reservedResult</span> <span class="o">=</span> <span class="nv">$event</span><span class="o">-></span><span class="na">reserve</span><span class="p">(</span><span class="nv">$user</span><span class="p">);</span>
+
+            <span class="c1">// 報名人數是否超過</span>
+            <span class="k">if</span> <span class="p">(</span><span class="nv">$userCount</span> <span class="o">></span> <span class="nv">$attendeeLimit</span><span class="p">)</span> <span class="p">{</span>
+                <span class="c1">// 無法報名</span>
+                <span class="nv">$this</span><span class="o">-></span><span class="na">assertFalse</span><span class="p">(</span><span class="nv">$reservedResult</span><span class="p">);</span>
+            <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+                <span class="nv">$this</span><span class="o">-></span><span class="na">assertTrue</span><span class="p">(</span><span class="nv">$reservedResult</span><span class="p">);</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+
+    <span class="k">public</span> <span class="k">function</span> <span class="nf">eventsDataProvider</span><span class="p">()</span>
+    <span class="p">{</span>
+        <span class="nv">$eventId</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+        <span class="nv">$eventName</span> <span class="o">=</span> <span class="s2">"活動1"</span><span class="p">;</span>
+        <span class="nv">$eventStartDate</span> <span class="o">=</span> <span class="s1">'2014-12-24 12:00:00'</span><span class="p">;</span>
+        <span class="nv">$eventEndDate</span> <span class="o">=</span> <span class="s1">'2014-12-24 13:00:00'</span><span class="p">;</span>
+        <span class="nv">$eventDeadline</span> <span class="o">=</span> <span class="s1">'2014-12-23 23:59:59'</span><span class="p">;</span>
+        <span class="nv">$eventAttendeeFull</span><span class="o">=</span> <span class="mi">5</span><span class="p">;</span>
+        <span class="nv">$eventAttendeeLimitNotFull</span> <span class="o">=</span> <span class="mi">10</span><span class="p">;</span>
+
+        <span class="nv">$eventsData</span> <span class="o">=</span> <span class="k">array</span><span class="p">(</span>
+            <span class="k">array</span><span class="p">(</span>
+                <span class="nv">$eventId</span><span class="p">,</span>
+                <span class="nv">$eventName</span><span class="p">,</span>
+                <span class="nv">$eventStartDate</span><span class="p">,</span>
+                <span class="nv">$eventEndDate</span><span class="p">,</span>
+                <span class="nv">$eventDeadline</span><span class="p">,</span>
+                <span class="nv">$eventAttendeeFull</span>
+            <span class="p">)</span> <span class="p">,</span>
+            <span class="k">array</span><span class="p">(</span>
+                <span class="nv">$eventId</span><span class="p">,</span>
+                <span class="nv">$eventName</span><span class="p">,</span>
+                <span class="nv">$eventStartDate</span><span class="p">,</span>
+                <span class="nv">$eventEndDate</span><span class="p">,</span>
+                <span class="nv">$eventDeadline</span><span class="p">,</span>
+                <span class="nv">$eventAttendeeLimitNotFull</span>
+            <span class="p">)</span>
+        <span class="p">);</span>
+
+        <span class="k">return</span> <span class="nv">$eventsData</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</span></pre>
+</div>
+<p>在 <code>EventTest</code> 類別內，加入一個測試方法為 <code>testAttendeeLimitReserve()</code> 來測試限制報名人數。</p>
+<ul>
+<li><code>testAttendeeLimitReserve()</code> : 標註了 <code>@dataProvider eventsDataProvider</code>，會取得來自 <code>eventsDataProvider()</code> 的測試資料。</li>
+<li><code>eventsDataProvider()</code> : 資料提供者，回傳了一個陣列，第一層陣列有兩個元素，表示有兩筆測試資料；第二層陣列有六個元素，表示每個資料傳到測試案例內為六個引數。</li>
+</ul>
+<p><code>eventsDataProvider()</code> 的活動資料會由 <code>testAttendeeLimitReserve()</code> 接收，共會分別測試兩次，第一次的測試，會收到報名人數 5 個人的活動；第二次則是會收到報名人數 10 個人的活動。</p>
+<p>在 <code>testAttendeeLimitReserve()</code> 測試案例內，會依來自 <code>eventDataProvider()</code> 的回傳值建立不同報名人數的 <code>Event</code> 物件，每個活動都會有 6 個不同的使用者報名，如果已經報名的人數還沒超過活動限制的報名人數，預期 <code>Event</code> 的 <code>reserve()</code> 方法的回傳值為 <code>true</code>，反之，超過活動限制的報名人數，則就會預期回傳 <code>false</code>。</p>
+<p>執行測試：</p>
+<pre class="prettyprint"><code class="language-sh hljs livecodeserver">$ phpunit <span class="hljs-comment">--bootstrap vendor/autoload.php tests/EventTest</span>
+PHPUnit <span class="hljs-number">4.4</span><span class="hljs-number">.0</span> <span class="hljs-keyword">by</span> Sebastian Bergmann.
+
+....
+
+Time: <span class="hljs-number">34</span> ms, Memory: <span class="hljs-number">3.50</span>Mb
+
+OK (<span class="hljs-number">4</span> tests, <span class="hljs-number">16</span> assertions)</code></pre>
+<p>從測試訊息可以看到，在 <code>EventTest</code> 測試中，有 3 個測試案例，但是測試結果跑了 4 個測試，為什麼呢？</p>
+<p>因為 <code>testAttendeeLimitReserve()</code> 使用了 <code>eventsDataProvider()</code> 作為資料提供者，<code>eventsDataProvider()</code> 提供了兩筆資料，這兩筆資料會分別執行兩次測試，加上另外兩個測試案例，所以共有 4 個測試。</p>
+<p><strong>Data Provider 與 Test Dependency 的問題</strong></p>
+<p>先來看例子，再說明會造成的問題。</p>
+<p><strong>tests/EventTest.php</strong></p>
+<div class="highlight">
+<pre><span class="cp"><!--?php
+
+<span class="k">class</span> <span class="nc">EventTest</span> <span class="k">extends</span> <span class="nx">PHPUnit_Framework_TestCase</span>
+<span class="p">{</span>
+    <span class="k">public</span> <span class="k">function</span> <span class="nf">testReserve</span><span class="p">()</span>
+    <span class="p">{</span>
+        <span class="c1">// 測試報名</span>
+
+        <span class="c1">// ignore ...</span>
+    <span class="p">}</span>
+
+    <span class="sd">/**</span>
+<span class="sd">     *  @dataProvider eventsDataProvider</span>
+<span class="sd">     */</span>
+    <span class="k">public</span> <span class="k">function</span> <span class="nf">testAttendeeLimitReserve</span><span class="p">(</span><span class="nv">$eventId</span><span class="p">,</span> <span class="nv">$eventName</span><span class="p">,</span> <span class="nv">$eventStartDate</span><span class="p">,</span> <span class="nv">$eventEndDate</span><span class="p">,</span> <span class="nv">$eventDeadline</span><span class="p">,</span> <span class="nv">$attendeeLimit</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="c1">// 測試報名人數限制</span>
+        <span class="nv">$event</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">\PHPUnitEventDemo\Event</span><span class="p">(</span><span class="nv">$eventId</span><span class="p">,</span> <span class="nv">$eventName</span><span class="p">,</span> <span class="nv">$eventStartDate</span><span class="p">,</span> <span class="nv">$eventEndDate</span><span class="p">,</span> <span class="nv">$eventDeadline</span><span class="p">,</span> <span class="nv">$attendeeLimit</span><span class="p">);</span>
+        <span class="nv">$userNumber</span> <span class="o">=</span> <span class="mi">6</span><span class="p">;</span>
+
+        <span class="c1">// 建立不同使用者報名</span>
+        <span class="k">for</span> <span class="p">(</span><span class="nv">$userCount</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span> <span class="nv">$userCount</span> <span class="o"><=</span> <span class="nv">$userNumber</span><span class="p">;</span> <span class="nv">$userCount</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+            <span class="nv">$userId</span> <span class="o">=</span> <span class="nv">$userCount</span><span class="p">;</span>
+            <span class="nv">$userName</span> <span class="o">=</span> <span class="s1">'User '</span> <span class="o">.</span> <span class="nv">$userId</span><span class="p">;</span>
+            <span class="nv">$userEmail</span> <span class="o">=</span> <span class="s1">'user'</span> <span class="o">.</span> <span class="nv">$userId</span> <span class="o">.</span> <span class="s1">'@openfoundry.org'</span><span class="p">;</span>
+            <span class="nv">$user</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">\PHPUnitEventDemo\User</span><span class="p">(</span><span class="nv">$userId</span><span class="p">,</span> <span class="nv">$userName</span><span class="p">,</span> <span class="nv">$userEmail</span><span class="p">);</span>
+
+            <span class="nv">$reservedResult</span> <span class="o">=</span> <span class="nv">$event</span><span class="o">-></span><span class="na">reserve</span><span class="p">(</span><span class="nv">$user</span><span class="p">);</span>
+
+            <span class="c1">// 報名人數是否超過</span>
+            <span class="k">if</span> <span class="p">(</span><span class="nv">$userCount</span> <span class="o">></span> <span class="nv">$attendeeLimit</span><span class="p">)</span> <span class="p">{</span>
+                <span class="c1">// 無法報名</span>
+                <span class="nv">$this</span><span class="o">-></span><span class="na">assertFalse</span><span class="p">(</span><span class="nv">$reservedResult</span><span class="p">);</span>
+            <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+                <span class="nv">$this</span><span class="o">-></span><span class="na">assertTrue</span><span class="p">(</span><span class="nv">$reservedResult</span><span class="p">);</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+
+        <span class="k">return</span> <span class="p">[</span><span class="nv">$event</span><span class="p">,</span> <span class="nv">$user</span><span class="p">];</span>
+    <span class="p">}</span>
+
+    <span class="k">public</span> <span class="k">function</span> <span class="nf">eventsDataProvider</span><span class="p">()</span>
+    <span class="p">{</span>
+        <span class="c1">// ignore ...</span>
+    <span class="p">}</span>
+
+    <span class="sd">/**</span>
+<span class="sd">     *  @depends testAttendeeLimitReserve</span>
+<span class="sd">     */</span>
+    <span class="k">public</span> <span class="k">function</span> <span class="nf">testUnreserve</span><span class="p">(</span><span class="nv">$objs</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="c1">// 測試取消報名</span>
+
+        <span class="nv">$event</span> <span class="o">=</span> <span class="nv">$objs</span><span class="p">[</span><span class="mi">0</span><span class="p">];</span>
+        <span class="nv">$user</span> <span class="o">=</span> <span class="nv">$objs</span><span class="p">[</span><span class="mi">0</span><span class="p">];</span>
+
+        <span class="c1">// 使用者取消報名</span>
+        <span class="nv">$event</span><span class="o">-></span><span class="na">unreserve</span><span class="p">(</span><span class="nv">$user</span><span class="p">);</span>
+
+        <span class="nv">$unreserveExpectedCount</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+
+        <span class="c1">// 預期報名人數</span>
+        <span class="nv">$this</span><span class="o">-></span><span class="na">assertEquals</span><span class="p">(</span><span class="nv">$unreserveExpectedCount</span><span class="p">,</span> <span class="nv">$event</span><span class="o">-></span><span class="na">getAttendeeNumber</span><span class="p">());</span>
+
+        <span class="c1">// 報名清單中沒有已經取消報名的人</span>
+        <span class="nv">$this</span><span class="o">-></span><span class="na">assertNotContains</span><span class="p">(</span><span class="nv">$user</span><span class="p">,</span> <span class="nv">$event</span><span class="o">-></span><span class="na">attendees</span><span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</span></pre>
+</div>
+<p>原本 <code>testUnreserve()</code> 是依賴 <code>testReserve()</code> ，試著將 <code>testReserve()</code> 改成依賴 <code>testAttendeeLimitReserve()</code>，而 <code>testAttendeeLimitReserve()</code> 使用了<code>eventsDataProvider()</code> 作為資料提供者。</p>
+<p>接著，執行這個測試。</p>
+<pre class="prettyprint"><code class="language-sh hljs vbnet">$ phpunit --bootstrap vendor/autoload.php tests/EventTest
+PHPUnit <span class="hljs-number">4.4</span><span class="hljs-number">.0</span> <span class="hljs-keyword">by</span> Sebastian Bergmann.
+
+...PHP Fatal <span class="hljs-keyword">error</span>:  <span class="hljs-keyword">Call</span> <span class="hljs-keyword">to</span> a member <span class="hljs-keyword">function</span> unreserve() <span class="hljs-keyword">on</span> a non-<span class="hljs-built_in">object</span> <span class="hljs-keyword">in</span> /Users/aming/git/PHPUnit-<span class="hljs-keyword">Event</span>-Demo/tests/EventTest.php <span class="hljs-keyword">on</span> line <span class="hljs-number">114</span>
+PHP Stack trace:
+
+<span class="hljs-preprocessor"># ignore...</span></code></pre>
+<p>從測試結果可以看出來，在執行 <code>testUnreserve()</code> 測試案例的時候，無法取得 <code>$event</code> 物件，表示 <code>testUnreserve()</code> 根本沒取得來自 <code>testAttendeeLimitReserve()</code> producer 所回傳的值。</p>
+<p>所以，在使用相依測試 (Test dependecy) 與資料提供者 (Data provider) 要特別注意，被相依的測試案例，是否有使用資料提供者。</p>
+<h4 id="4-test-exceptions異常測試">4. Test Exceptions（異常測試）</h4>
+<p>開發的時候，除了要確保程式運作正常、功能有達到之外，也要對程式可能會超出正常執行的部分進行異常處理，而不是讓程式直接噴出錯誤訊息或忽然的運作停止，如果是這個情況通常都會丟出一個異常出來，讓程式能順暢的處理錯誤，所以，Test exceptions 主要是預期執行發生錯誤的時候，程式會丟出異常出來。</p>
+<p><strong>● 測試 4 - 防止重複報名</strong></p>
+<p>報名功能需要加入防止相同使用者重複報名相同的活動，如果重複報名的話，就會拋出一個異常出來，接下來的測試，會預期接收到重複報名的異常。</p>
+<p>先撰寫要拋出的異常類別。</p>
+<p><strong>src/PHPUnitEventDemo/EventException.php</strong></p>
+<div class="highlight">
+<pre><span class="cp"><!--?php
+
+<span class="k">namespace</span> <span class="nx">PHPUnitEventDemo</span><span class="p">;</span>
+
+<span class="k">class</span> <span class="nc">EventException</span> <span class="k">extends</span> <span class="nx">\Exception</span>
+<span class="p">{</span>
+    <span class="k">const</span> <span class="no">DUPLICATED_RESERVATION</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+<span class="p">}</span>
+</span></pre>
+</div>
+<p>接下來撰寫拋出異常的實作。</p>
+<p><strong>src/PHPUnitEventDemo/Event.php</strong></p>
+<div class="highlight">
+<pre><span class="cp"><!--?php
+
+<span class="k">namespace</span> <span class="nx">PHPUnitEventDemo</span><span class="p">;</span>
+
+<span class="k">class</span> <span class="nc">Event</span>
+<span class="p">{</span>
+    <span class="c1">// ignore ...</span>
+
+    <span class="k">public</span> <span class="k">function</span> <span class="nf">reserve</span><span class="p">(</span><span class="nv">$user</span><span class="p">)</span>
+    <span class="p">{</span>       
+        <span class="c1">// 報名人數是否超過限制 </span>
+        <span class="k">if</span> <span class="p">(</span><span class="nv">$this</span><span class="o">-></span><span class="na">attendee_limit</span> <span class="o">></span> <span class="nv">$this</span><span class="o">-></span><span class="na">getAttendeeNumber</span><span class="p">())</span> <span class="p">{</span>
+            <span class="c1">// 是否已經報名</span>
+            <span class="k">if</span> <span class="p">(</span><span class="nb">array_key_exists</span><span class="p">(</span><span class="nv">$user</span><span class="o">-></span><span class="na">id</span><span class="p">,</span> <span class="nv">$this</span><span class="o">-></span><span class="na">attendees</span><span class="p">))</span> <span class="p">{</span>
+                <span class="k">throw</span> <span class="k">new</span> <span class="nx">\PHPUnitEventDemo\EventException</span><span class="p">(</span>
+                    <span class="s1">'Duplicated reservation'</span><span class="p">,</span>
+                    <span class="nx">\PHPUnitEventDemo\EventException</span><span class="o">::</span><span class="na">DUPLICATED_RESERVATION</span>
+                <span class="p">);</span>
+            <span class="p">}</span>
+            <span class="c1">// 使用者報名</span>
+            <span class="nv">$this</span><span class="o">-></span><span class="na">attendees</span><span class="p">[</span><span class="nv">$user</span><span class="o">-></span><span class="na">id</span><span class="p">]</span> <span class="o">=</span> <span class="nv">$user</span><span class="p">;</span>
+
+            <span class="k">return</span> <span class="k">true</span><span class="p">;</span>
+        <span class="p">}</span>
+
+        <span class="k">return</span> <span class="k">false</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</span></pre>
+</div>
+<p>因為 <code>Event</code> 的 <code>$attendees</code> 陣列，是用 <code>User</code> 物件 <code>$id</code> 為索引值，來儲存報名使用者的 <code>User</code> 物件。要判別使用者是否已經報名過相同的活動，只要報名的使用者 id 有存在 <code>$attendees</code> 陣列索引值，表示已經有報名活動，如果已報名活動，就會拋出例外。</p>
+<p><strong>tests/EventTest.php</strong></p>
+<div class="highlight">
+<pre><span class="cp"><!--?php
+
+<span class="k">class</span> <span class="nc">EventTest</span> <span class="k">extends</span> <span class="nx">PHPUnit_Framework_TestCase</span>
+<span class="p">{</span>
+    <span class="c1">// ignore ...</span>
+
+    <span class="sd">/**</span>
+<span class="sd">     * @expectedException \PHPUnitEventDemo\EventException</span>
+<span class="sd">     * @expectedExceptionMessage Duplicated reservation</span>
+<span class="sd">     * @expectedExceptionCode 1</span>
+<span class="sd">     */</span>
+    <span class="k">public</span> <span class="k">function</span> <span class="nf">testDuplicatedReservationWithException</span><span class="p">()</span>
+    <span class="p">{</span>
+        <span class="c1">// 測試重複報名，預期丟出異常</span>
+
+        <span class="nv">$eventId</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+        <span class="nv">$eventName</span> <span class="o">=</span> <span class="s1">'活動1'</span><span class="p">;</span>
+        <span class="nv">$eventStartDate</span> <span class="o">=</span> <span class="s1">'2014-12-24 12:00:00'</span><span class="p">;</span>
+        <span class="nv">$eventEndDate</span> <span class="o">=</span> <span class="s1">'2014-12-24 13:30:00'</span><span class="p">;</span>
+        <span class="nv">$eventDeadline</span> <span class="o">=</span> <span class="s1">'2014-12-23 23:59:59'</span><span class="p">;</span>
+        <span class="nv">$eventAttendeeLimit</span> <span class="o">=</span> <span class="mi">10</span><span class="p">;</span>
+        <span class="nv">$event</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">\PHPUnitEventDemo\Event</span><span class="p">(</span><span class="nv">$eventId</span><span class="p">,</span> <span class="nv">$eventName</span><span class="p">,</span> <span class="nv">$eventStartDate</span><span class="p">,</span> <span class="nv">$eventEndDate</span><span class="p">,</span> <span class="nv">$eventDeadline</span><span class="p">,</span> <span class="nv">$eventAttendeeLimit</span><span class="p">);</span>
+
+        <span class="nv">$userId</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+        <span class="nv">$userName</span> <span class="o">=</span> <span class="s1">'User1'</span><span class="p">;</span>
+        <span class="nv">$userEmail</span> <span class="o">=</span> <span class="s1">'</span>
+<span class="s1"> 
+ <script language='JavaScript' type='text/javascript'>
+ <!--
+ var prefix = 'm&#97;&#105;lt&#111;:';
+ var suffix = '';
+ var attribs = '';
+ var path = 'hr' + 'ef' + '=';
+ var addy77959 = '&#117;s&#101;r1' + '&#64;';
+ addy77959 = addy77959 + '&#111;p&#101;nf&#111;&#117;ndry' + '&#46;' + '&#111;rg';
+ document.write( '<a ' + path + '\'' + prefix + addy77959 + suffix + '\'' + attribs + '>' );
+ document.write( addy77959 );
+ document.write( '<\/a>' );
+ //-->
+ </script> <script language='JavaScript' type='text/javascript'>
+ <!--
+ document.write( '<span style=\'display: none;\'>' );
+ //-->
+ </script>這個 E-mail 地址已經被防止灌水惡意程式保護，您需要啟用 Java Script 才能觀看
+ <script language='JavaScript' type='text/javascript'>
+ <!--
+ document.write( '</' );
+ document.write( 'span>' );
+ //-->
+ </script> '</span><span class="p">;</span>
+        <span class="nv">$user</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">\PHPUnitEventDemo\User</span><span class="p">(</span><span class="nv">$userId</span><span class="p">,</span> <span class="nv">$userName</span><span class="p">,</span> <span class="nv">$userEmail</span><span class="p">);</span>
+
+        <span class="c1">// 同一個使用者報名兩次</span>
+        <span class="nv">$event</span><span class="o">-></span><span class="na">reserve</span><span class="p">(</span><span class="nv">$user</span><span class="p">);</span>
+        <span class="nv">$event</span><span class="o">-></span><span class="na">reserve</span><span class="p">(</span><span class="nv">$user</span><span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</span></pre>
+</div>
+<p>在 <code>EventTest</code> 內增加一個 <code>testDuplicatedReservationWithException()</code> 測試案例，在註解內標註：</p>
+<ol>
+<li><code>@expectedException \PHPUnitEventDemo\EventException</code> : 預期的異常類別。</li>
+<li><code>@expectedExceptionMessage Duplicated reservation</code> : 預期的異常訊息。</li>
+<li><code>@expectedExceptionCode 1</code> : 預期的異常代碼。</li>
+</ol>
+<p>也就是，預期在這個測試案例內會接收到 <code>EventException</code> 的異常類別、異常訊息為 <code>Duplicated reservation</code>，異常代碼為 1。</p>
+<p>執行測試：</p>
+<pre class="prettyprint"><code class="language-sh hljs livecodeserver">$ phpunit <span class="hljs-comment">--bootstrap vendor/autoload.php tests/EventTest</span>
+PHPUnit <span class="hljs-number">4.4</span><span class="hljs-number">.0</span> <span class="hljs-keyword">by</span> Sebastian Bergmann.
+
+.....
+
+Time: <span class="hljs-number">53</span> ms, Memory: <span class="hljs-number">3.50</span>Mb
+
+OK (<span class="hljs-number">5</span> tests, <span class="hljs-number">19</span> assertions)</code></pre>
+<h4 id="5-fixtures">5. Fixtures</h4>
+<p>Fixture 能協助測試時，需要用到的測試環境、物件的建立，在測試完後，把測試環境、物件拆解掉，還原到初始化前的狀態。</p>
+<p>主要透過 <code>setUp()</code>與 <code>tearDown()</code> 分別來初始化測試與拆解還原到初始化前的狀態。</p>
+<p>下面一樣利用 <em>test/EventTest.php</em> 來示範，先了解目前測試有哪些問題。</p>
+<p><strong>tests/EventTest.php</strong></p>
+<div class="highlight">
+<pre><span class="cp"><!--?php
+
+<span class="k">class</span> <span class="nc">EventTest</span> <span class="k">extends</span> <span class="nx">PHPUnit_Framework_TestCase</span>
+<span class="p">{</span>
+    <span class="k">public</span> <span class="k">function</span> <span class="nf">testReserve</span><span class="p">()</span>
+    <span class="p">{</span>
+        <span class="c1">// 測試報名</span>
+
+        <span class="nv">$eventId</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+        <span class="nv">$eventName</span> <span class="o">=</span> <span class="s1">'活動1'</span><span class="p">;</span>
+        <span class="nv">$eventStartDate</span> <span class="o">=</span> <span class="s1">'2014-12-24 12:00:00'</span><span class="p">;</span>
+        <span class="nv">$eventEndDate</span> <span class="o">=</span> <span class="s1">'2014-12-24 13:30:00'</span><span class="p">;</span>
+        <span class="nv">$eventDeadline</span> <span class="o">=</span> <span class="s1">'2014-12-23 23:59:59'</span><span class="p">;</span>
+        <span class="nv">$eventAttendeeLimit</span> <span class="o">=</span> <span class="mi">10</span><span class="p">;</span>
+        <span class="nv">$event</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">\PHPUnitEventDemo\Event</span><span class="p">(</span><span class="nv">$eventId</span><span class="p">,</span> <span class="nv">$eventName</span><span class="p">,</span> <span class="nv">$eventStartDate</span><span class="p">,</span> <span class="nv">$eventEndDate</span><span class="p">,</span> <span class="nv">$eventDeadline</span><span class="p">,</span> <span class="nv">$eventAttendeeLimit</span><span class="p">);</span>
+
+        <span class="nv">$userId</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+        <span class="nv">$userName</span> <span class="o">=</span> <span class="s1">'User1'</span><span class="p">;</span>
+        <span class="nv">$userEmail</span> <span class="o">=</span> <span class="s1">'</span>
+<span class="s1"> 
+ <script language='JavaScript' type='text/javascript'>
+ <!--
+ var prefix = 'm&#97;&#105;lt&#111;:';
+ var suffix = '';
+ var attribs = '';
+ var path = 'hr' + 'ef' + '=';
+ var addy50470 = '&#117;s&#101;r1' + '&#64;';
+ addy50470 = addy50470 + '&#111;p&#101;nf&#111;&#117;ndry' + '&#46;' + '&#111;rg';
+ document.write( '<a ' + path + '\'' + prefix + addy50470 + suffix + '\'' + attribs + '>' );
+ document.write( addy50470 );
+ document.write( '<\/a>' );
+ //-->
+ </script> <script language='JavaScript' type='text/javascript'>
+ <!--
+ document.write( '<span style=\'display: none;\'>' );
+ //-->
+ </script>這個 E-mail 地址已經被防止灌水惡意程式保護，您需要啟用 Java Script 才能觀看
+ <script language='JavaScript' type='text/javascript'>
+ <!--
+ document.write( '</' );
+ document.write( 'span>' );
+ //-->
+ </script> '</span><span class="p">;</span>
+        <span class="nv">$user</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">\PHPUnitEventDemo\User</span><span class="p">(</span><span class="nv">$userId</span><span class="p">,</span> <span class="nv">$userName</span><span class="p">,</span> <span class="nv">$userEmail</span><span class="p">);</span>
+
+        <span class="c1">// ignore ...</span>
+    <span class="p">}</span>
+
+    <span class="c1">// ignore ... </span>
+
+    <span class="sd">/**</span>
+<span class="sd">     * @expectedException \PHPUnitEventDemo\EventException</span>
+<span class="sd">     * @expectedExceptionMessage Duplicated reservation</span>
+<span class="sd">     * @expectedExceptionCode 1</span>
+<span class="sd">     */</span>
+    <span class="k">public</span> <span class="k">function</span> <span class="nf">testDuplicatedReservationWithException</span><span class="p">()</span>
+    <span class="p">{</span>
+        <span class="c1">// 測試重複報名，預期丟出異常</span>
+
+        <span class="nv">$eventId</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+        <span class="nv">$eventName</span> <span class="o">=</span> <span class="s1">'活動1'</span><span class="p">;</span>
+        <span class="nv">$eventStartDate</span> <span class="o">=</span> <span class="s1">'2014-12-24 12:00:00'</span><span class="p">;</span>
+        <span class="nv">$eventEndDate</span> <span class="o">=</span> <span class="s1">'2014-12-24 13:30:00'</span><span class="p">;</span>
+        <span class="nv">$eventDeadline</span> <span class="o">=</span> <span class="s1">'2014-12-23 23:59:59'</span><span class="p">;</span>
+        <span class="nv">$eventAttendeeLimit</span> <span class="o">=</span> <span class="mi">10</span><span class="p">;</span>
+        <span class="nv">$event</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">\PHPUnitEventDemo\Event</span><span class="p">(</span><span class="nv">$eventId</span><span class="p">,</span> <span class="nv">$eventName</span><span class="p">,</span> <span class="nv">$eventStartDate</span><span class="p">,</span> <span class="nv">$eventEndDate</span><span class="p">,</span> <span class="nv">$eventDeadline</span><span class="p">,</span> <span class="nv">$eventAttendeeLimit</span><span class="p">);</span>
+
+        <span class="nv">$userId</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+        <span class="nv">$userName</span> <span class="o">=</span> <span class="s1">'User1'</span><span class="p">;</span>
+        <span class="nv">$userEmail</span> <span class="o">=</span> <span class="s1">'</span>
+<span class="s1"> 
+ <script language='JavaScript' type='text/javascript'>
+ <!--
+ var prefix = 'm&#97;&#105;lt&#111;:';
+ var suffix = '';
+ var attribs = '';
+ var path = 'hr' + 'ef' + '=';
+ var addy41495 = '&#117;s&#101;r1' + '&#64;';
+ addy41495 = addy41495 + '&#111;p&#101;nf&#111;&#117;ndry' + '&#46;' + '&#111;rg';
+ document.write( '<a ' + path + '\'' + prefix + addy41495 + suffix + '\'' + attribs + '>' );
+ document.write( addy41495 );
+ document.write( '<\/a>' );
+ //-->
+ </script> <script language='JavaScript' type='text/javascript'>
+ <!--
+ document.write( '<span style=\'display: none;\'>' );
+ //-->
+ </script>這個 E-mail 地址已經被防止灌水惡意程式保護，您需要啟用 Java Script 才能觀看
+ <script language='JavaScript' type='text/javascript'>
+ <!--
+ document.write( '</' );
+ document.write( 'span>' );
+ //-->
+ </script> '</span><span class="p">;</span>
+        <span class="nv">$user</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">\PHPUnitEventDemo\User</span><span class="p">(</span><span class="nv">$userId</span><span class="p">,</span> <span class="nv">$userName</span><span class="p">,</span> <span class="nv">$userEmail</span><span class="p">);</span>
+
+        <span class="c1">// ignore ...</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</span></pre>
+</div>
+<p>注意 <code>testReserve()</code>、<code>testDuplicatedReservationWithException()</code> 兩個測試案例，都需要在測試前建立 <code>Event</code> 與 <code>User</code> 物件，使用 <code>setUp()</code> 在測試前，建立兩個物件，測試完後，<code>tearDown()</code> 再把不需要的物件清空。</p>
+<p>加入 fixtures 後</p>
+<p><strong>tests/PHPUnitEventDemo.php</strong></p>
+<div class="highlight">
+<pre><span class="cp"><!--?php
+
+<span class="k">class</span> <span class="nc">EventTest</span> <span class="k">extends</span> <span class="nx">PHPUnit_Framework_TestCase</span>
+<span class="p">{</span>
+    <span class="k">private</span> <span class="nv">$event</span><span class="p">;</span>
+    <span class="k">private</span> <span class="nv">$user</span><span class="p">;</span>
+
+    <span class="k">public</span> <span class="k">function</span> <span class="nf">setUp</span><span class="p">()</span>
+    <span class="p">{</span>
+        <span class="nv">$eventId</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+        <span class="nv">$eventName</span> <span class="o">=</span> <span class="s1">'活動1'</span><span class="p">;</span>
+        <span class="nv">$eventStartDate</span> <span class="o">=</span> <span class="s1">'2014-12-24 12:00:00'</span><span class="p">;</span>
+        <span class="nv">$eventEndDate</span> <span class="o">=</span> <span class="s1">'2014-12-24 13:30:00'</span><span class="p">;</span>
+        <span class="nv">$eventDeadline</span> <span class="o">=</span> <span class="s1">'2014-12-23 23:59:59'</span><span class="p">;</span>
+        <span class="nv">$eventAttendeeLimit</span> <span class="o">=</span> <span class="mi">10</span><span class="p">;</span>
+        <span class="nv">$this</span><span class="o">-></span><span class="na">event</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">\PHPUnitEventDemo\Event</span><span class="p">(</span><span class="nv">$eventId</span><span class="p">,</span> <span class="nv">$eventName</span><span class="p">,</span> <span class="nv">$eventStartDate</span><span class="p">,</span> <span class="nv">$eventEndDate</span><span class="p">,</span> <span class="nv">$eventDeadline</span><span class="p">,</span> <span class="nv">$eventAttendeeLimit</span><span class="p">);</span>
+
+        <span class="nv">$userId</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+        <span class="nv">$userName</span> <span class="o">=</span> <span class="s1">'User1'</span><span class="p">;</span>
+        <span class="nv">$userEmail</span> <span class="o">=</span> <span class="s1">'</span>
+<span class="s1"> 
+ <script language='JavaScript' type='text/javascript'>
+ <!--
+ var prefix = 'm&#97;&#105;lt&#111;:';
+ var suffix = '';
+ var attribs = '';
+ var path = 'hr' + 'ef' + '=';
+ var addy12775 = '&#117;s&#101;r1' + '&#64;';
+ addy12775 = addy12775 + '&#111;p&#101;nf&#111;&#117;ndry' + '&#46;' + '&#111;rg';
+ document.write( '<a ' + path + '\'' + prefix + addy12775 + suffix + '\'' + attribs + '>' );
+ document.write( addy12775 );
+ document.write( '<\/a>' );
+ //-->
+ </script> <script language='JavaScript' type='text/javascript'>
+ <!--
+ document.write( '<span style=\'display: none;\'>' );
+ //-->
+ </script>這個 E-mail 地址已經被防止灌水惡意程式保護，您需要啟用 Java Script 才能觀看
+ <script language='JavaScript' type='text/javascript'>
+ <!--
+ document.write( '</' );
+ document.write( 'span>' );
+ //-->
+ </script> '</span><span class="p">;</span>
+        <span class="nv">$this</span><span class="o">-></span><span class="na">user</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">\PHPUnitEventDemo\User</span><span class="p">(</span><span class="nv">$userId</span><span class="p">,</span> <span class="nv">$userName</span><span class="p">,</span> <span class="nv">$userEmail</span><span class="p">);</span>
+    <span class="p">}</span>
+    <span class="k">public</span> <span class="k">function</span> <span class="nf">tearDown</span><span class="p">()</span>
+    <span class="p">{</span>
+        <span class="nv">$this</span><span class="o">-></span><span class="na">event</span> <span class="o">=</span> <span class="k">null</span><span class="p">;</span>
+        <span class="nv">$this</span><span class="o">-></span><span class="na">user</span> <span class="o">=</span> <span class="k">null</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="k">public</span> <span class="k">function</span> <span class="nf">testReserve</span><span class="p">()</span>
+    <span class="p">{</span>
+        <span class="c1">// 測試報名</span>
+
+        <span class="c1">// 使用者報名活動</span>
+        <span class="nv">$this</span><span class="o">-></span><span class="na">event</span><span class="o">-></span><span class="na">reserve</span><span class="p">(</span><span class="nv">$this</span><span class="o">-></span><span class="na">user</span><span class="p">);</span>
+
+        <span class="nv">$expectedNumber</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+
+        <span class="c1">// 預期報名人數</span>
+        <span class="nv">$this</span><span class="o">-></span><span class="na">assertEquals</span><span class="p">(</span><span class="nv">$expectedNumber</span><span class="p">,</span> <span class="nv">$this</span><span class="o">-></span><span class="na">event</span><span class="o">-></span><span class="na">getAttendeeNumber</span><span class="p">());</span>
+
+        <span class="c1">// 報名清單中有已經報名的人</span>
+        <span class="nv">$this</span><span class="o">-></span><span class="na">assertContains</span><span class="p">(</span><span class="nv">$this</span><span class="o">-></span><span class="na">user</span><span class="p">,</span> <span class="nv">$this</span><span class="o">-></span><span class="na">event</span><span class="o">-></span><span class="na">attendees</span><span class="p">);</span>
+
+        <span class="k">return</span> <span class="nv">$this</span><span class="o">-></span><span class="na">event</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="c1">// ignore ...</span>
+
+    <span class="sd">/**</span>
+<span class="sd">     * @expectedException \PHPUnitEventDemo\EventException</span>
+<span class="sd">     * @expectedExceptionMessage Duplicated reservation</span>
+<span class="sd">     * @expectedExceptionCode 1</span>
+<span class="sd">     */</span>
+    <span class="k">public</span> <span class="k">function</span> <span class="nf">testDuplicatedReservationWithException</span><span class="p">()</span>
+    <span class="p">{</span>
+        <span class="c1">// 測試重複報名，預期丟出異常</span>
+
+        <span class="c1">// 同一個使用者報名兩次</span>
+        <span class="nv">$this</span><span class="o">-></span><span class="na">event</span><span class="o">-></span><span class="na">reserve</span><span class="p">(</span><span class="nv">$this</span><span class="o">-></span><span class="na">user</span><span class="p">);</span>
+        <span class="nv">$this</span><span class="o">-></span><span class="na">event</span><span class="o">-></span><span class="na">reserve</span><span class="p">(</span><span class="nv">$this</span><span class="o">-></span><span class="na">user</span><span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</span></pre>
+</div>
+<p>把 <code>$event</code>、<code>$user</code> 物件修改成全域變數，接著把建立物件寫在 <code>setUp()</code> 中，清空物件寫在 <code>tearDown()</code>，再將 原本 <code>testReserve()</code> 與 <code>testDuplicatedReservationWithException()</code> 中的 建立 <code>$event</code> 與 <code>$user</code> 物件程式移掉，且使用到這兩個變數改成使用全域變數，也就是 <code>$this->event</code>、<code>$this->user</code>。</p>
+<p>所以在執行測試的時候，運作順序會是： <br /> <code>setUp()</code> → <code>testReserve()</code> → <code>tearDown()</code> → … → <code>setUp()</code> → <code>testDuplicatedReservationWithException()</code> → <code>tearDown()</code></p>
+<h3 id="五設定-phpunit">五、設定 PHPUnit</h3>
+<p>在前面此用 PHPUnit 工具來執行測試時，有用到 <strong>–bootstrap</strong>，在執行測試前先執行 <em>vendor/autoload.php</em> 程式來註冊 autoloading 的 function。可是每次執行測試，都要加上參數有點麻煩，所以，PHPUnit 可以利用 XML 設定檔來設定。</p>
+<p>將 phpunit.xml 設定檔放在專案目錄下，與 src、tests 同一層。</p>
+<p><strong>phpunit.xml</strong></p>
+<div class="highlight">
+<pre><span class="nt"><phpunit</span>
+    <span class="na">bootstrap=</span><span class="s">"./vendor/autoload.php"</span><span class="nt">></span>
+    <span class="nt"></span>
+        <span class="nt"><testsuite</span> <span class="na">name=</span><span class="s">"MyEventTests"</span><span class="nt">></span>
+            <span class="nt"></span>./tests/EventTest.php<span class="nt"></span>
+        <span class="nt"></span>
+    <span class="nt"></span> 
+<span class="nt"></span>
+</pre>
+</div>
+<ul>
+<li><code></code> : 加入 <code>bootstrap</code> 屬性，對應到的值就是要執行的程式檔案。</li>
+<li><code></code> : 在專案底下，能採用不同的測試組合。由一至多個的 。<code></code> 組成。</li>
+<li><code></code> : <code>name</code> 屬性，設定測試組合的名稱。測試組合內會包括許多測試程式檔案。</li>
+</ul>
+<p>執行測試，如果 XML 設定檔檔名不是 phpunit.xml 的話，可以利用 <code>--configuraton</code> 來指定 XML 設定檔的路徑，如果檔名是 phpunit.xml ，就能省略不指定。</p>
+<pre class="prettyprint"><code class="language-sh hljs brainfuck"><span class="hljs-comment">$</span> <span class="hljs-comment">phpunit</span> <span class="hljs-literal">-</span><span class="hljs-literal">-</span><span class="hljs-comment">configuration</span> <span class="hljs-comment">phpunit</span><span class="hljs-string">.</span><span class="hljs-comment">xml</span> <span class="hljs-comment">tests/EventTest</span></code></pre>
+<p>也可以執行不同的測試組合。</p>
+<pre class="prettyprint"><code class="language-sh hljs ruby"><span class="hljs-variable">$ </span>phpunit <span class="hljs-constant">MyEventTests</span></code></pre>
+<p>還有更多 XML 設定檔可以使用，參考：<a href="https://phpunit.de/manual/current/en/appendixes.configuration.html">https://phpunit.de/manual/current/en/appendixes.configuration.html</a></p>
+<h3 id="六code-coverage-分析">六、Code Coverage 分析</h3>
+<p>撰寫好單元測試之後，該如何了解到哪些目標程式還沒有經過測試？目標程式被測試百分比有多少？</p>
+<p>PHPUnit 是利用 <a href="https://github.com/sebastianbergmann/php-code-coverage">PHP_CodeCoverage</a> 來計算程式碼覆蓋率 (Code coverage)，需要安裝 Xdebug。</p>
+<p>該如何產生 Code coverage 呢？ <br /> 先在專案底下建立一個 <em>reports/</em> 目錄，存放 Code coverage 分析的結果。</p>
+<pre class="prettyprint"><code class="language-sh hljs brainfuck"><span class="hljs-comment">$</span> <span class="hljs-comment">phpunit</span> <span class="hljs-literal">-</span><span class="hljs-literal">-</span><span class="hljs-comment">bootstrap</span> <span class="hljs-comment">vendor/autoload</span><span class="hljs-string">.</span><span class="hljs-comment">php</span> <span class="hljs-comment">phpunit</span><span class="hljs-string">.</span><span class="hljs-comment">xml</span> <span class="hljs-literal">-</span><span class="hljs-literal">-</span><span class="hljs-comment">coverage</span><span class="hljs-literal">-</span><span class="hljs-comment">html</span> <span class="hljs-comment">reports/</span> <span class="hljs-comment">tests/</span></code></pre>
+<p>當然，也可以使用 XML 設定檔來設定。</p>
+<p><strong>phpunit.xml</strong></p>
+<div class="highlight">
+<pre><span class="nt"><phpunit</span>
+    <span class="na">bootstrap=</span><span class="s">"./vendor/autoload.php"</span><span class="nt">></span>
+    <span class="nt"></span>
+        <span class="nt"><testsuite</span> <span class="na">name=</span><span class="s">"MyEventTests"</span><span class="nt">></span>
+            <span class="nt"></span>./tests/EventTest.php<span class="nt"></span>
+        <span class="nt"></span>
+    <span class="nt"></span>
+    <span class="nt"></span>
+        <span class="nt"><log</span> <span class="na">type=</span><span class="s">"coverage-html"</span> <span class="na">target=</span><span class="s">"reports/"</span> <span class="na">charset=</span><span class="s">"UTF-8"</span><span class="nt">/></span>
+    <span class="nt"></span>
+<span class="nt"></span>
+</pre>
+</div>
+<p>接著執行測試：</p>
+<pre class="prettyprint"><code class="language-sh hljs ruby"><span class="hljs-variable">$ </span>phpunit tests/</code></pre>
+<p>就可以在 reports/ 下打開 <em>index.html</em> 或其他 HTML 檔案，瀏覽 Code coverage 分析的結果。</p>
+<p><img title="title" src="../../images/141230/PHP-3_resized.jpg" alt="PHP-3 resized" /></p>
+<h3 id="更多資料">更多資料</h3>
+<ul>
+<li>範例程式：<a href="https://github.com/ymhuang0808/PHPUnit-Event-Demo">https://github.com/ymhuang0808/PHPUnit-Event-Demo</a></li>
+<li>PHPUnit 安裝：<a href="https://github.com/ymhuang0808/Hands-On-Writing-Unit-Testing-With-PHPUnit/wiki">https://github.com/ymhuang0808/Hands-On-Writing-Unit-Testing-With-PHPUnit/wiki</a></li>
+<li>參考資料：<a href="https://phpunit.de/documentation.html">https://phpunit.de/documentation.html</a></li>
+</ul>
+			<!-- Show relate article -->
+		<br><br><h4>您也許有興趣閱讀以下文章:</h4><ul><li><a href='../../tech-column/9326.html'>第一次用 PHPUnit 寫測試就上手（上）</a> - <span class='date-posted'>2014-12-29</span></li></ul>		<!-- end -->
+		<div class="article_note">
+		<!-- Add tags use metakey, and show OSSF Newsletter tag: OSSFNL+NUM-->
+		<br><br> <hr style='border: 1px dashed #D2DADB;'><b>自由軟體鑄造場電子報&nbsp;:</b>&nbsp;<a href='../../previous-issue%3Ftask=view&amp;id=870.html'>第 257 期 第一次用 PHPUnit 寫測試就上手（下）</a><br>				<!-- End -->
+					<br>
+					<b>分類: </b><a href="../tech-column.html">				技術專欄					</a>				</div>
+			 <!-- AddThis Button BEGIN ID 3001 is the front page article -->
+     			<br><br>
+       <div class="addthis_toolbox addthis_default_style addthis_32x32_style">
+       <a class="addthis_button_preferred_1"></a>
+       <a class="addthis_button_preferred_2"></a>
+       <a class="addthis_button_preferred_3"></a>
+       <a class="addthis_button_preferred_4"></a>
+       <a class="addthis_button_compact"></a>
+       <a class="addthis_counter addthis_bubble_style"></a>
+       </div>
+       <script type="text/javascript">var addthis_config = {"data_track_clickback":true};</script>
+       <script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js#pubid=openfoundry"></script>
+       <!-- AddThis Button END -->
+     <br>
+		<div class="totop" ><a class="rt-totop" href="9328.html#" style="outline: medium none;">↑ Top</a></div>
+            <!-- AddThis Button END -->
+
+			</div>
+</div>
+
+		                            </div>
+									<div class="clear"></div>
+								</div>
+								<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+							</div>
+							</div>
+                                                    </div>
+                                            </div>
+                                <div class="rt-grid-3 rt-pull-9">
+                <div id="rt-sidebar-a">
+                                    <div class="square4">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<ul class="menu"><li class="item56"><a href="../previous-issue.html"><span>電子報總覽</span></a></li><li class="item55"><a href="../about-newsletter.html"><span>關於本報</span></a></li></ul>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<ul class="menu"><li class="item115"><a href="../foss-news.html"><span>源碼新聞</span></a></li><li class="item141"><a href="../case-job.html"><span>接案 / 工作</span></a></li></ul>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+        	                <div class="square1">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-title"><h2 class="title">專欄總覽</h2></div>
+						<div class="clear"></div>
+		                						<div class="module-content">
+		                	<ul class="menu"><li id="current" class="active item37"><a href="../tech-column.html"><span>技術專欄</span></a></li><li class="item40"><a href="../foss-programs.html"><span>源碼秘技</span></a></li><li class="item35"><a href="../legal-article-.html"><span>法律專欄</span></a></li><li class="item154"><a href="../foss-forum.html"><span>自由專欄</span></a></li><li class="item162"><a href="../enterprise-application.html"><span>企業應用</span></a></li><li class="item44"><a href="../foss-projects.html"><span>源碼專案</span></a></li></ul>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		                <div class="square1">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<p style="text-align: center;"><a href="../../news%3Fformat=feed&amp;type=rss" target="_black"><img src="../../images/M_images/news-rss-feed.png" border="0" /></a><br /><a href="https://www.openfoundry.org/rss-feed/Newsletter" target="_black"><img src="../../images/M_images/newsletter-rss-feed.png" border="0" /></a></p>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		
+                </div>
+            </div>
+
+                    <div class="clear"></div>
+                </div>
+            </div>
+																													</div>
+										<div id="rt-copyright">
+						<div class="rt-grid-12 rt-alpha rt-omega">
+                        <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<div id="desktop-mobile-version-switch"><span id="mobile-version" class="version-switch"><a href="9328.html#">行動版</a></span></div>
+自由軟體鑄造場 製作 最佳瀏覽狀態：IE7或Firefox2.0以上 (建議使用Firefox) ‧ 解析度1024*768 <br /> <strong>E-Mail</strong>：<a href="mailto:contact@openfoundry.org">contact@openfoundry.org</a> <strong>Address</strong>：台北市南港區研究院路2段128號 中央研究院資訊科學研究所 . <a href="../../privacy-policy.html">隱私權條款</a>. <a href="../../terms-of-use.html">使用條款</a><span style="position: relative; top: 8px; margin-top: -8px;"> <a href="../../about/8101.html"><img src="../../images/M_images/rss-feed-all.png" border="0" /></a></span>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+        	
+</div>
+						<div class="clear"></div>
+					</div>
+					<div class="rt-footer-bottom-wrap"><div class="rt-footer-bottom"><div class="rt-footer-bottom2"><div class="rt-footer-bottom3"></div></div></div></div>
+									</div></div></div>
+				<div class="rt-surround-bottom"><div class="rt-surround-bottom2"><div class="rt-surround-bottom3"></div></div></div>
+							</div>
+		</div>
+		<!--
+		<script id="aptureScript">
+						(function (){var a=document.createElement("script");a.defer="true";a.src="http://www.apture.com/js/apture.js?siteToken=vsJttrn";document.getElementsByTagName("head")[0].appendChild(a);})();
+     </script>
+-->
+
+<!-- Piwik -->
+<!-- 			<script type="text/javascript">
+			  var _paq = _paq || [];
+		  _paq.push(["trackPageView"]);
+		  _paq.push(["enableLinkTracking"]);
+
+		    (function() {
+			        var u=(("https:" == document.location.protocol) ? "https" : "https") + "://www.openfoundry.org/piwik/";
+				    _paq.push(["setTrackerUrl", u+"piwik.php"]);
+				    _paq.push(["setSiteId", "1"]);
+				        var d=document, g=d.createElement("script"), s=d.getElementsByTagName("script")[0]; g.type="text/javascript";
+				        g.defer=true; g.async=true; g.src=u+"piwik.js"; s.parentNode.insertBefore(g,s);
+					  })();
+		  </script> -->
+<!-- End Piwik Code -->
+	</body>
+</html>

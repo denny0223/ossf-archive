@@ -1,0 +1,495 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-gb" lang="en-gb" >
+<head>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<link rel="shortcut icon" href="../../images/favicon.ico" />
+	  <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+  <meta name="robots" content="index, follow" />
+  <meta name="keywords" content="OSSFNL866" />
+  <meta name="title" content="給 Linux 使用者的 Git 與 Github 初體驗" />
+  <meta name="description" content="** 本文翻譯自 linux.com，原作者為 C arla Schroder：https://www.linux.com/learn/tutori als/7 96387-beginning-git-and-github-for-linux-users/ ▲圖一：Github 是練習 Git 的好所在。 Git 分散式版本控制系統，是我們使用了 Subversion, CVS," />
+  <meta name="generator" content="" />
+  <title>給 Linux 使用者的 Git 與 Github 初體驗 - OpenFoundry</title>
+  <link href="../../favicon.ico" rel="shortcut icon" type="image/x-icon" />
+  <link rel="stylesheet" href="../../components/com_gantry/css/gantry.css" type="text/css" />
+  <link rel="stylesheet" href="../../components/com_gantry/css/grid-12.css" type="text/css" />
+  <link rel="stylesheet" href="../../components/com_gantry/css/joomla.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/joomla.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/style1.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/light-body.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/demo-styles.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/template.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/typography.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/fusionmenu.css" type="text/css" />
+  <style type="text/css">
+    <!--
+#rt-main-surround ul.menu li.active > a, #rt-main-surround ul.menu li.active > .separator, #rt-main-surround ul.menu li.active > .item, #rt-main-surround .square4 ul.menu li:hover > a, #rt-main-surround .square4 ul.menu li:hover > .item, #rt-main-surround .square4 ul.menu li:hover > .separator, .roktabs-links ul li.active span {color:#0088B5;}
+a, #rt-main-surround ul.menu a:hover, #rt-main-surround ul.menu .separator:hover, #rt-main-surround ul.menu .item:hover {color:#0088B5;}
+    -->
+  </style>
+  <script type="text/javascript" src="../../components/com_jcomments/js/jcomments-v2.1.js%3Fv=2"></script>
+  <script type="text/javascript" src="../../components/com_jcomments/libraries/joomlatune/ajax.js"></script>
+  <script type="text/javascript" src="../../media/system/js/mootools.js"></script>
+  <script type="text/javascript" src="../../media/system/js/caption.js"></script>
+  <script type="text/javascript" src="../../components/com_gantry/js/gantry-buildspans.js"></script>
+  <script type="text/javascript" src="../../components/com_gantry/js/gantry-inputs.js"></script>
+  <script type="text/javascript" src="../../templates/rt_quantive_j15/js/jquery.cookie.js"></script>
+  <script type="text/javascript" src="../../modules/mod_roknavmenu/themes/fusion/js/fusion.js"></script>
+  <script type="text/javascript" src="../../modules/mod_ofssologin/js/ofssologin.js"></script>
+  <script type="text/javascript">
+
+			window.addEvent('domready', function() {
+				var modules = ['rt-block'];
+				var header = ['h3','h2','h1'];
+				GantryBuildSpans(modules, header);
+			});
+		InputsExclusion.push('.content_vote','#rt-popup')
+		        window.addEvent('load', function() {
+					new Fusion('ul.menutop', {
+						pill: 0,
+						effect: 'slide and fade',
+						opacity: 1,
+						hideDelay: 500,
+						centered: 0,
+						tweakInitial: {'x': -2, 'y': 0},
+        				tweakSubsequent: {'x': 0, 'y': -14},
+						menuFx: {duration: 200, transition: Fx.Transitions.Sine.easeOut},
+						pillFx: {duration: 400, transition: Fx.Transitions.Back.easeOut}
+					});
+	            });
+  </script>
+<!-- <script type="text/javascript" src="/sso/javascripts/langsync.js"></script> -->
+<!-- <script src="/templates/rt_quantive_j15/js/ossf.js"></script> -->
+<script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-4136519-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
+</head>
+	<body  class="backgroundlevel-low backgroundstyle-style8 bodylevel-med bodystyle-light cssstyle-style1 logostyle-dark font-family-helvetica font-size-is-default menu-type-fusionmenu col12 ">
+		<div id="rt-main-background">
+			<div class="rt-container">
+																<div id="rt-header">
+					<div class="rt-grid-7 rt-alpha">
+    			<div class="rt-block">
+    	    	<a href="../../index.html" id="rt-logo"></a>
+    		</div>
+	    
+</div>
+<div class="rt-grid-5 rt-omega">
+                    <div class="square9">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<div class="ofssologin_square9"><a href="../../index.html">Login</a>&nbsp;&nbsp|&nbsp;&nbsp;<span><a href="../../tw/foss-programs/9318-git-github-firsttry.html" ><span lang="tw" xml:lang="tw">繁體中文</span></a></li></ul></span><!--Joom!fish V2.0.4 (Lightning)-->
+<!-- &copy; 2003-2009 Think Network, released under the GPL. -->
+<!-- More information: at http://www.joomfish.net -->
+<div class="ofssologin_search_square9">
+  <form id="of_search" action="https://www.openfoundry.org/of/openfoundry/search" method="get" onsubmit="of_search(); return false;">
+    <select id="of_search_type">
+      <option value="Projects"> Projects </option>
+      <option value="Content"> Content </option>
+      <option value="People"> People </option>
+    </select>
+    <input id="query" name="query" id="mod_search_searchword" maxlength="50" alt="search" class="inputbox" type="text" size="28" value="search..."  onblur="if(this.value=='') this.value='search...';" onfocus="if(this.value=='search...') this.value='';" />
+    <input type="hidden" name="commit" value="search" />
+  </form>
+</div></div>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		
+</div>
+					<div class="clear"></div>
+				</div>
+																<div id="rt-navigation"><div id="rt-navigation2"><div id="rt-navigation3">
+					
+<div class="nopill">
+	<ul class="menutop level1 " >
+						<li class="item1 root" >
+					<a class="orphan item bullet" href="../../index.html"  >
+				<span>
+			    				Home				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item32 root" >
+					<a class="orphan item bullet" href="../../archived.html"  >
+				<span>
+			    				Projects				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item186 root" >
+					<a class="orphan item bullet" href="../community.html"  >
+				<span>
+			    				Who&#039;s Who				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item4 root" >
+					<a class="orphan item bullet" href="../news.html"  >
+				<span>
+			    				News				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item5 root" >
+					<a class="orphan item bullet" href="../law-and-licensing.html"  >
+				<span>
+			    				Law &amp; Licensing				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item3 root" >
+					<a class="orphan item bullet" href="../activities.html"  >
+				<span>
+			    				Activities				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item2 root" >
+					<a class="orphan item bullet" href="../resourcecatalog.html"  >
+				<span>
+			    				Resource Catalog				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item45 root" >
+					<a class="orphan item bullet" href="../about.html"  >
+				<span>
+			    				About				   
+				</span>
+			</a>
+			
+			
+	</li>	
+				</ul>
+</div>
+
+				    <div class="clear"></div>
+				</div></div></div>
+								<div class="rt-surround"><div class="rt-surround2"><div class="rt-surround3">
+										<div id="rt-showcase-section">
+												<div id="rt-showcase">
+							<div class="rt-grid-12 rt-alpha rt-omega">
+    		<div class="clear"></div>
+		
+		
+                <div class="close-note">
+                    <div class="rt-block">
+               					<div class="module-content">
+                	<div style="font-size:medium; background-image:linear-gradient(120deg,#159957,#4298b2);color:white;padding:20px;margin:-10px -18px;">感謝您對「自由軟體鑄造場」的支持與愛護，十多年來「自由軟體鑄造場」受中央研究院支持，並在資訊科學研究所以及資訊科技創新研究中心執行，現已完成階段性的任務。 本網站預計持續維運至 2021年底，網站內容基本上不會再更動。<br />也紀念我們永遠的朋友 李士傑先生（Shih-Chieh Ilya Li）。</div>				</div>
+            </div>
+                </div>
+		
+</div>
+							<div class="clear"></div>
+						</div>
+																	</div>
+															<div id="rt-main-surround">
+												<div id="rt-breadcrumbs">
+								<div class="rt-breadcrumb-surround">
+		<a href="../../index.html" id="breadcrumbs-home"></a>
+		<span class="breadcrumbs pathway">
+<a href="../foss-programs.html" class="pathway">FOSS Programs</a> <img src="../../templates/rt_quantive_j15/images/arrow.png" alt=""  /> <span class="no-link">給 Linux 使用者的 Git 與 Github 初體驗</span></span>
+	</div>
+	
+							<div class="clear"></div>
+						</div>
+																							              <div id="rt-main" class="sa3-mb9">
+                <div class="rt-main-inner">
+                    <div class="rt-grid-9 rt-push-3">
+                                                <div class="rt-block">
+                            							<div class="square1">
+							<div class="rt-module-surround">
+								<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+								<div class="rt-module-inner">
+		                            <div id="rt-mainbody">
+		                                
+<div class="rt-joomla ">
+	<div class="rt-article">
+		
+				<div class="rt-headline"><h1 class="rt-article-title">給 Linux 使用者的 Git 與 Github 初體驗</h1>		</div>
+		<div class="clear"></div>
+		
+		
+		
+				<div class="rt-articleinfo">
+						<div class="rt-article-icons">
+								<a href="9318-git-github-firsttry%3Ftmpl=component&amp;print=1&amp;layout=default&amp;page=.html" title="Print" onclick="window.open(this.href,'win2','status=no,toolbar=no,scrollbars=yes,titlebar=no,menubar=no,resizable=yes,width=640,height=480,directories=no,location=no'); return false;" rel="nofollow"><span class="icon print"></span></a>																</div>
+			
+			<span class="rt-date-posted">
+						 Created at			Thursday, 27 November 2014 13:41						&nbsp;&nbsp;&nbsp;&nbsp;						Last Updated on Thursday, 27 November 2014 13:58						</span>
+
+						<span class="rt-author">
+				Written by OSSF 電子報團隊／翻譯			</span>
+				
+					</div>
+		
+		
+		<p>** 本文翻譯自 linux.com，原作者為 Carla Schroder：<a href="https://www.linux.com/learn/tutorials/796387-beginning-git-and-github-for-linux-users/">https://www.linux.com/learn/tutorials/796387-beginning-git-and-github-for-linux-users/</a></p>
+<p><img title="title" src="../../images/141125/fig-1-github.png" alt="圖一：Github 是練習 Git 的好所在。" /> <br /> ▲圖一：Github 是練習 Git 的好所在。</p>
+<p>Git 分散式版本控制系統，是我們使用了 Subversion, CVS, Mercurial 或其他版本控制系統之後的一個貼心的躍進。當有多位開發者共同開發一個專案時，Git 是一個非常棒的分散式開發工具，開發者們可以天馬行空地改程式，而不用擔心會改到爛掉。這篇文章中，我們要嘗試使用 Github 帳號來練習，並進入 Git 的世界中。</p>
+
+<p>Git 在概念上是不同於其他的版本控制系統的。舊的 RCS (Revision Control System) 追蹤透過檔案來記錄版本的改變，而 Git 是類似製作檔案系統的快照 (snapshots)，取代原有用檔案記錄所有版本變更的差異 (diffs)。Git 因此節省了很多的硬體資源，而你可以更不用擔心這些數據的完整性，且隨時可以回復程式碼到未變更前的狀態。</p>
+<p>Git 非常的快速，因為你都是在本機變更你的程式碼，並推送 (push) 到遠端的程式庫 (repository) 中。這個設定讓你對程式碼所做的任何更動都非常安全，因為在你 push 自己的程式碼之前，怎麼改程式都不會影響到遠端的程式碼。Git 的分支 (branch) 系統更是出色，在你自己的主幹 (master branch) 上創造一個分支，並隨心所欲地做任何實驗，然後選擇炸掉 (nuke) 或是推送它到上游 (upstream) 的分支 。當上游的其他開發者都可以運行你寫的程式，或者你也可以創造一個推送請求 (pull request) 來讓大家看看你寫的程式，通過之後它便會合併到主幹上。</p>
+<p>那，如果還是不小心把主要的程式碼搞砸了怎麼辦？沒關係！你隨時可以把你合併的分支回復到未合併的狀態。</p>
+<h3 id="在-github-上練習">在 Github 上練習</h3>
+<p>最快的 Git 練習，就是直接到 Github 上免費開一個帳號！圖一是我的 Github 測試，命名為 playground。新的 Github 帳號預設有一些檔案：README 檔、授權檔案，和快速回報 bug、創造推送請求、文件共筆 (Wiki)，和其它非常有用的功能。</p>
+<p>免費的 Github 帳號只允許公開的程式庫，也就是允許任何人看到和下載你寫的程式。然而，在你未把任何人設定為協作者 (collaborator) 之前，任何人都無法對你的專案提交 (commit) 程式碼。如果你想要有不公開的程式庫，就需要成為付費會員。美金七元一個月，可以有五個不公開的程式庫，以及無上限的公開程式庫和共同開發者 (contributors)。</p>
+<p>Github 還貼心地提供了可複製貼上的網址來讓你方便複製版本庫。你可以在你的電腦上為你的版本庫創造目錄，然後複製到遠端的版本庫上。 <br /> <code> <br />
+$ mkdir git-repos <br />
+$ cd git-repos <br />
+$ git clone https://github.com/AlracWebmaven/playground.git <br />
+Cloning into 'playground'... <br />
+remote: Counting objects: 4, done. <br />
+remote: Compressing objects: 100% (4/4), done. <br />
+remote: Total 4 (delta 0), reused 0 (delta 0) <br />
+Unpacking objects: 100% (4/4), done. <br />
+Checking connectivity... done. <br />
+$ ls playground/ <br />
+LICENSE  README.md <br />
+</code> <br /> 所有的檔案都已經複製到你的電腦，你可以存取和刪除它們，就像一般對檔案的操作一樣。我們來改善 README.md，並學習 Git 分支的美好吧！</p>
+<h3 id="創造分支-branching">創造分支 (Branching)</h3>
+<p>Git 的分支非常的完善，讓我們可以安心地改變和測試程式碼。你可以輕易地創造和刪除分支。我們透過編輯 README.md 來試試看吧： <br /> <code> <br />
+$ cd playground <br />
+$ git checkout -b test <br />
+Switched to a new branch 'test' <br />
+</code> <br /> 用 git status 指令來看看你在哪裡： <br /> <code> <br />
+$ git status <br />
+On branch test <br />
+nothing to commit, working directory clean <br />
+</code> <br /> 你創造了什麼分支？ <br /> <code> <br />
+$ git branch <br />
+* test <br />
+  master <br />
+</code> <br /> 星號表示了主要的分支，也就是直到程式碼被完整地測試沒問題之前，你都不會想要去改動的主幹。現在試試看在 README.md 中做一些更改，然後再次檢查你的狀態： <br /> <code> <br />
+$ git status <br />
+On branch test <br />
+Changes not staged for commit: <br />
+  (use "git add ..." to update what will be committed) <br />
+  (use "git checkout -- ..." to discard changes in working directory) <br />
+        modified:   README.md <br />
+no changes added to commit (use "git add" and/or "git commit -a") <br />
+</code> <br /> 是不是很棒呢？git 告訴你哪裡更動了，而且給了提示。如果要取消這些改變，只需要執行： <br /> <code> <br />
+$ git checkout README.md <br />
+</code> <br /> 或者你可以直接刪除掉分支： <br /> <code> <br />
+$ git checkout master <br />
+$ git branch -D test <br />
+</code> <br /> 或者追蹤這個檔案： <br /> <code> <br />
+$ git add README.md <br />
+$ git status <br />
+On branch test <br />
+Changes to be committed: <br />
+  (use "git reset HEAD ..." to unstage) <br />
+        modified:   README.md <br />
+</code> <br /> 現在 Git 會追蹤 README.md，任何分支都可以使用。Git 給了你很有用的提示 - 如果你改變主意，不想繼續追蹤，執行 ” git reset HEAD README.md”，這樣所有的 Git 上的活動，.git 目錄中的檔案都會被追蹤。所有的一切都以純文字記錄：檔案、校對 (checksum)，使用者的改動紀錄、遠端和本機的檔案庫。</p>
+<p>如果要加入多個檔案呢？你可以全部列出，”git add file1 file2”，或使用 “git add *” 加入全部檔案。</p>
+<p>要刪除檔案時，可以使用 “git rm filename”，這會使檔案在 Git 被刪除，而不會在本機系統中被刪除。如果有很多檔案要刪，可以使用 “git add -u”。</p>
+<h3 id="提交檔案-committing-files">提交檔案 (Committing Files)</h3>
+<p>現在我們來提交檔案吧！這會把檔案加到分支，且對齊他的分支不再有效： <br /> <code> <br />
+$ git commit README.md <br />
+[test 5badf67] changes to readme <br />
+ 1 file changed, 1 insertion(+) <br />
+</code> <br /> 你會被要求提供一個提交的訊息 (commit message)。把這個訊息寫得詳細些，會是個很好的練習，但我們現在還不用太在意這件事情。現在修改好的檔案已經被加入 test 這各分之中，它還沒有被併入主幹或是推送到上游分支，它只是被放在那裡。這是一個很好的停頓點，讓你可以做其他需要做的事情。</p>
+<p>如果有很多檔案要提交呢？你可以使用： <br /> <code> <br />
+$ git commit file1 file2 <br />
+$ git commit -a <br />
+</code> <br /> 來提交特定檔案，或是所有檔案。</p>
+<p>那麼要如何知道哪些提交的檔案還在分支中，未被推送到上游呢？從 git status 是看不出來的，要使用這個指令： <br /> <code> <br />
+$ git log --branches --not --remotes <br />
+commit 5badf677c55d0c53ca13d9753344a2a71de03199 <br />
+Author: Carla Schroder  <br />
+Date:   Thu Nov 20 10:19:38 2014 -0800 <br />
+    changes to readme <br />
+</code> <br /> 這會列出未合併的提交檔案，如果傳回的資料是空的，那就是所有的提交都已經推送到上游。現在我們來推送到上游吧： <br /> <code> <br />
+$ git push origin test <br />
+Counting objects: 7, done. <br />
+Delta compression using up to 8 threads. <br />
+Compressing objects: 100% (3/3), done. <br />
+Writing objects: 100% (3/3), 324 bytes | 0 bytes/s, done. <br />
+Total 3 (delta 1), reused 0 (delta 0) <br />
+To https://github.com/AlracWebmaven/playground.git <br />
+ * [new branch]      test -> test <br />
+</code> <br /> 你可能會被要求輸入 Github 的登入認證。Git 只暫存 15 分鐘，你可以更改這個設定，範例是改為兩小時： <br /> <code> <br />
+$ git config --global credential.helper 'cache --timeout=7200' <br />
+</code> <br /> 現在去 Github 看看你的新分支。Github 會列出你的所有分支，你可以預覽你在不同分支的檔案（圖二）。</p>
+<p><img title="title" src="../../images/141125/fig-2-github.png" alt="圖二：你在 Github 上的新提交和分支。" /> <br /> ▲圖二：你在 Github 上的新提交和分支。</p>
+<p>現在你可以使用 Compare & Pull Request 的按鈕來做 pull request。這給另一個機會，在你合併這些更動之前，再次檢查。你也可以在電腦上用命令列來做 pull request，但會比按下這個按鈕來得複雜，我們現在先用簡單的按鈕就好了。</p>
+<p>Github 讓你可以在純文字中檢視檔案，同時也支援多種標記語言，讓你可以看到這些標記語言所生成的預覽畫面。這樣你就在同一個分支推送更多的變更。你也可以在 Github 上編輯，但這麼做會在線上版本和本機版本之間產生衝突。當你覺得更動是可以的時候，按 Merge pull request 的按鈕，需要按兩次。 Github 會自動地檢測你的 pull request，看它們是不是能被順利地合併，或是有衝突需要解決。</p>
+<p>當你有多個分支，Github 還有一個很好的功能，你可以透過 Edit 按鈕來選擇要合併哪一個分支。</p>
+<p><img title="title" src="../../images/141125/fig-3-github.png" alt="圖三：選擇要合併的分支。" /> <br /> ▲圖三：選擇要合併的分支。</p>
+<p>合併之後，按下 Delete Branch 的按鈕來保持程式庫的乾淨。然後在你的本機電腦上透過 pull 指令來讓 Git 可以刪除你已經合併了的分支： <br /> <code> <br />
+$ git checkout master <br />
+$ git pull origin master <br />
+$ git branch -d test <br />
+</code> <br /> 你可以用 -D 來強制刪除： <br /> <code> <br />
+$ git branch -D test <br />
+</code></p>
+<h3 id="復原更動">復原更動</h3>
+<p>同樣的，這個動作還是用 Github 的按鈕來做比較簡單。它可以顯示出所有變更，讓你可以透過這些按鈕來復原任何一項變動，甚至可以回復已經刪除了的分支。</p>
+<p>你也可以透過命令列來做上面所有的任務，但比較複雜。要看詳細的教學，可以參考免費的 <a href="https://git-scm.com/book/en/v2">Git book</a>。</p>
+			<!-- Show relate article -->
+				<!-- end -->
+		<div class="article_note">
+		<!-- Add tags use metakey, and show OSSF Newsletter tag: OSSFNL+NUM-->
+		<br><br> <hr style='border: 1px dashed #D2DADB;'><b>OSSF Newsletter&nbsp;:</b>&nbsp;<a href='../../previous-issue%3Ftask=view&amp;id=866.html'>第 254 期 受雇人利用 GPL 元件開發公司產品的著作權歸屬與運用疑義解析</a><br>				<!-- End -->
+					<br>
+					<b>Category: </b><a href="../foss-programs.html">				FOSS Programs					</a>				</div>
+			 <!-- AddThis Button BEGIN ID 3001 is the front page article -->
+     			<br><br>
+       <div class="addthis_toolbox addthis_default_style addthis_32x32_style">
+       <a class="addthis_button_preferred_1"></a>
+       <a class="addthis_button_preferred_2"></a>
+       <a class="addthis_button_preferred_3"></a>
+       <a class="addthis_button_preferred_4"></a>
+       <a class="addthis_button_compact"></a>
+       <a class="addthis_counter addthis_bubble_style"></a>
+       </div>
+       <script type="text/javascript">var addthis_config = {"data_track_clickback":true};</script>
+       <script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js#pubid=openfoundry"></script>
+       <!-- AddThis Button END -->
+     <br>
+		<div class="totop" ><a class="rt-totop" href="9318-git-github-firsttry.html#" style="outline: medium none;">↑ Top</a></div>
+            <!-- AddThis Button END -->
+
+			</div>
+</div>
+
+		                            </div>
+									<div class="clear"></div>
+								</div>
+								<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+							</div>
+							</div>
+                                                    </div>
+                                            </div>
+                                <div class="rt-grid-3 rt-pull-9">
+                <div id="rt-sidebar-a">
+                                    <div class="square4">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<ul class="menu"><li class="item56"><a href="../previous-issue.html"><span>Previous Issue</span></a></li><li class="item55"><a href="../about-newsletter.html"><span>About Newsletter</span></a></li></ul>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<ul class="menu"><li class="item115"><a href="../foss-news.html"><span>FOSS News</span></a></li><li class="item141"><a href="../case-job.html"><span>Case and Jobs</span></a></li></ul>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+        	                <div class="square1">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-title"><h2 class="title">Special</h2></div>
+						<div class="clear"></div>
+		                						<div class="module-content">
+		                	<ul class="menu"><li class="item37"><a href="../tech-column.html"><span>Tech Column</span></a></li><li id="current" class="active item40"><a href="../foss-programs.html"><span>FOSS Programs</span></a></li><li class="item35"><a href="../legal-column.html"><span>Legal Column</span></a></li><li class="item154"><a href="../foss-forum.html"><span>FOSS Forum</span></a></li><li class="item162"><a href="../enterprise-application.html"><span>Enterprise Application</span></a></li><li class="item44"><a href="../foss-projects.html"><span>FOSS Projects</span></a></li></ul>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		                <div class="square1">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<p style="text-align: center;"><a href="../../news%3Fformat=feed&amp;type=rss" target="_black"><img src="../../images/M_images/news-rss-feed.png" border="0" /></a><br /><a href="https://www.openfoundry.org/rss-feed/Newsletter" target="_black"><img src="../../images/M_images/newsletter-rss-feed.png" border="0" /></a></p>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		
+                </div>
+            </div>
+
+                    <div class="clear"></div>
+                </div>
+            </div>
+																													</div>
+										<div id="rt-copyright">
+						<div class="rt-grid-12 rt-alpha rt-omega">
+                        <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<span class="nowrap">Open Source Software Foundry</span><span class="nowrap">‧</span><span class="nowrap"> </span><span class="nowrap">Best  Viewed with IE7.0 or Firefox2.0 above, 1024x768 Resolution. </span><strong>E-Mail</strong>：<a href="mailto:contact@openfoundry.org">contact@openfoundry.org</a> <br /><strong>Address</strong>：No.128, Sec.2, Academia Rd., Institute of Information Science, Academia Sinica, Nangang District, Taipei City 11529, Taiwan (R.O.C). <br /><a href="../privacy-policy.html">Privacy Policy</a>. <a href="../terms-of-use.html">Terms-of-use</a> <span style="position: relative; top: 8px; margin-top: -8px;"> <a href="../../about/8101.html"><img src="../../images/M_images/rss-feed-all.png" border="0" /></a></span>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+        	
+</div>
+						<div class="clear"></div>
+					</div>
+					<div class="rt-footer-bottom-wrap"><div class="rt-footer-bottom"><div class="rt-footer-bottom2"><div class="rt-footer-bottom3"></div></div></div></div>
+									</div></div></div>
+				<div class="rt-surround-bottom"><div class="rt-surround-bottom2"><div class="rt-surround-bottom3"></div></div></div>
+							</div>
+		</div>
+		<!--
+		<script id="aptureScript">
+						(function (){var a=document.createElement("script");a.defer="true";a.src="http://www.apture.com/js/apture.js?siteToken=vsJttrn";document.getElementsByTagName("head")[0].appendChild(a);})();
+     </script>
+-->
+
+<!-- Piwik -->
+<!-- 			<script type="text/javascript">
+			  var _paq = _paq || [];
+		  _paq.push(["trackPageView"]);
+		  _paq.push(["enableLinkTracking"]);
+
+		    (function() {
+			        var u=(("https:" == document.location.protocol) ? "https" : "https") + "://www.openfoundry.org/piwik/";
+				    _paq.push(["setTrackerUrl", u+"piwik.php"]);
+				    _paq.push(["setSiteId", "1"]);
+				        var d=document, g=d.createElement("script"), s=d.getElementsByTagName("script")[0]; g.type="text/javascript";
+				        g.defer=true; g.async=true; g.src=u+"piwik.js"; s.parentNode.insertBefore(g,s);
+					  })();
+		  </script> -->
+<!-- End Piwik Code -->
+	</body>
+</html>

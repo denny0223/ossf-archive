@@ -1,0 +1,495 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-gb" lang="en-gb" >
+<head>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<link rel="shortcut icon" href="../../images/favicon.ico" />
+	  <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+  <meta name="robots" content="index, follow" />
+  <meta name="keywords" content="OSSFNL557" />
+  <meta name="title" content="Vim - 自動補齊" />
+  <meta name="description" content="自動補齊 (Auto-Completion) 一直是每個整合環境編輯器 (IDE) 都必備的一項功能，因此 Vim 也不例外的支援了自動補齊 (Auto-Completion) 的功能。 其中最大的不同就是使用者可以撰寫或設定自己的補齊函式 (Completion Function)，其中還包含了使用者定義補齊 (User-defined completion)、全補齊" />
+  <meta name="generator" content="" />
+  <title>Vim - 自動補齊 - OpenFoundry</title>
+  <link href="../../favicon.ico" rel="shortcut icon" type="image/x-icon" />
+  <link rel="stylesheet" href="../../components/com_gantry/css/gantry.css" type="text/css" />
+  <link rel="stylesheet" href="../../components/com_gantry/css/grid-12.css" type="text/css" />
+  <link rel="stylesheet" href="../../components/com_gantry/css/joomla.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/joomla.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/style1.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/light-body.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/demo-styles.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/template.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/typography.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/fusionmenu.css" type="text/css" />
+  <style type="text/css">
+    <!--
+#rt-main-surround ul.menu li.active > a, #rt-main-surround ul.menu li.active > .separator, #rt-main-surround ul.menu li.active > .item, #rt-main-surround .square4 ul.menu li:hover > a, #rt-main-surround .square4 ul.menu li:hover > .item, #rt-main-surround .square4 ul.menu li:hover > .separator, .roktabs-links ul li.active span {color:#0088B5;}
+a, #rt-main-surround ul.menu a:hover, #rt-main-surround ul.menu .separator:hover, #rt-main-surround ul.menu .item:hover {color:#0088B5;}
+    -->
+  </style>
+  <script type="text/javascript" src="../../components/com_jcomments/js/jcomments-v2.1.js%3Fv=2"></script>
+  <script type="text/javascript" src="../../components/com_jcomments/libraries/joomlatune/ajax.js"></script>
+  <script type="text/javascript" src="../../media/system/js/mootools.js"></script>
+  <script type="text/javascript" src="../../media/system/js/caption.js"></script>
+  <script type="text/javascript" src="../../components/com_gantry/js/gantry-buildspans.js"></script>
+  <script type="text/javascript" src="../../components/com_gantry/js/gantry-inputs.js"></script>
+  <script type="text/javascript" src="../../templates/rt_quantive_j15/js/jquery.cookie.js"></script>
+  <script type="text/javascript" src="../../modules/mod_roknavmenu/themes/fusion/js/fusion.js"></script>
+  <script type="text/javascript" src="../../modules/mod_ofssologin/js/ofssologin.js"></script>
+  <script type="text/javascript">
+
+			window.addEvent('domready', function() {
+				var modules = ['rt-block'];
+				var header = ['h3','h2','h1'];
+				GantryBuildSpans(modules, header);
+			});
+		InputsExclusion.push('.content_vote','#rt-popup')
+		        window.addEvent('load', function() {
+					new Fusion('ul.menutop', {
+						pill: 0,
+						effect: 'slide and fade',
+						opacity: 1,
+						hideDelay: 500,
+						centered: 0,
+						tweakInitial: {'x': -2, 'y': 0},
+        				tweakSubsequent: {'x': 0, 'y': -14},
+						menuFx: {duration: 200, transition: Fx.Transitions.Sine.easeOut},
+						pillFx: {duration: 400, transition: Fx.Transitions.Back.easeOut}
+					});
+	            });
+  </script>
+<!-- <script type="text/javascript" src="/sso/javascripts/langsync.js"></script> -->
+<!-- <script src="/templates/rt_quantive_j15/js/ossf.js"></script> -->
+<script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-4136519-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
+</head>
+	<body  class="backgroundlevel-low backgroundstyle-style8 bodylevel-med bodystyle-light cssstyle-style1 logostyle-dark font-family-helvetica font-size-is-default menu-type-fusionmenu col12 ">
+		<div id="rt-main-background">
+			<div class="rt-container">
+																<div id="rt-header">
+					<div class="rt-grid-7 rt-alpha">
+    			<div class="rt-block">
+    	    	<a href="../../index.html" id="rt-logo"></a>
+    		</div>
+	    
+</div>
+<div class="rt-grid-5 rt-omega">
+                    <div class="square9">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<div class="ofssologin_square9"><a href="../../index.html">Login</a>&nbsp;&nbsp|&nbsp;&nbsp;<span><a href="../../tw/tech-column/2215.html" ><span lang="tw" xml:lang="tw">繁體中文</span></a></li></ul></span><!--Joom!fish V2.0.4 (Lightning)-->
+<!-- &copy; 2003-2009 Think Network, released under the GPL. -->
+<!-- More information: at http://www.joomfish.net -->
+<div class="ofssologin_search_square9">
+  <form id="of_search" action="https://www.openfoundry.org/of/openfoundry/search" method="get" onsubmit="of_search(); return false;">
+    <select id="of_search_type">
+      <option value="Projects"> Projects </option>
+      <option value="Content"> Content </option>
+      <option value="People"> People </option>
+    </select>
+    <input id="query" name="query" id="mod_search_searchword" maxlength="50" alt="search" class="inputbox" type="text" size="28" value="search..."  onblur="if(this.value=='') this.value='search...';" onfocus="if(this.value=='search...') this.value='';" />
+    <input type="hidden" name="commit" value="search" />
+  </form>
+</div></div>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		
+</div>
+					<div class="clear"></div>
+				</div>
+																<div id="rt-navigation"><div id="rt-navigation2"><div id="rt-navigation3">
+					
+<div class="nopill">
+	<ul class="menutop level1 " >
+						<li class="item1 root" >
+					<a class="orphan item bullet" href="../../index.html"  >
+				<span>
+			    				Home				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item32 root" >
+					<a class="orphan item bullet" href="../../archived.html"  >
+				<span>
+			    				Projects				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item186 root" >
+					<a class="orphan item bullet" href="../community.html"  >
+				<span>
+			    				Who&#039;s Who				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item4 root" >
+					<a class="orphan item bullet" href="../news.html"  >
+				<span>
+			    				News				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item5 root" >
+					<a class="orphan item bullet" href="../law-and-licensing.html"  >
+				<span>
+			    				Law &amp; Licensing				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item3 root" >
+					<a class="orphan item bullet" href="../activities.html"  >
+				<span>
+			    				Activities				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item2 root" >
+					<a class="orphan item bullet" href="../resourcecatalog.html"  >
+				<span>
+			    				Resource Catalog				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item45 root" >
+					<a class="orphan item bullet" href="../about.html"  >
+				<span>
+			    				About				   
+				</span>
+			</a>
+			
+			
+	</li>	
+				</ul>
+</div>
+
+				    <div class="clear"></div>
+				</div></div></div>
+								<div class="rt-surround"><div class="rt-surround2"><div class="rt-surround3">
+										<div id="rt-showcase-section">
+												<div id="rt-showcase">
+							<div class="rt-grid-12 rt-alpha rt-omega">
+    		<div class="clear"></div>
+		
+		
+                <div class="close-note">
+                    <div class="rt-block">
+               					<div class="module-content">
+                	<div style="font-size:medium; background-image:linear-gradient(120deg,#159957,#4298b2);color:white;padding:20px;margin:-10px -18px;">感謝您對「自由軟體鑄造場」的支持與愛護，十多年來「自由軟體鑄造場」受中央研究院支持，並在資訊科學研究所以及資訊科技創新研究中心執行，現已完成階段性的任務。 本網站預計持續維運至 2021年底，網站內容基本上不會再更動。<br />也紀念我們永遠的朋友 李士傑先生（Shih-Chieh Ilya Li）。</div>				</div>
+            </div>
+                </div>
+		
+</div>
+							<div class="clear"></div>
+						</div>
+																	</div>
+															<div id="rt-main-surround">
+												<div id="rt-breadcrumbs">
+								<div class="rt-breadcrumb-surround">
+		<a href="../../index.html" id="breadcrumbs-home"></a>
+		<span class="breadcrumbs pathway">
+<a href="../tech-column.html" class="pathway">Tech Column</a> <img src="../../templates/rt_quantive_j15/images/arrow.png" alt=""  /> <span class="no-link">Vim - 自動補齊</span></span>
+	</div>
+	
+							<div class="clear"></div>
+						</div>
+																							              <div id="rt-main" class="sa3-mb9">
+                <div class="rt-main-inner">
+                    <div class="rt-grid-9 rt-push-3">
+                                                <div class="rt-block">
+                            							<div class="square1">
+							<div class="rt-module-surround">
+								<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+								<div class="rt-module-inner">
+		                            <div id="rt-mainbody">
+		                                
+<div class="rt-joomla ">
+	<div class="rt-article">
+		
+				<div class="rt-headline"><h1 class="rt-article-title">Vim - 自動補齊</h1>		</div>
+		<div class="clear"></div>
+		
+		
+		
+				<div class="rt-articleinfo">
+						<div class="rt-article-icons">
+								<a href="2215%3Ftmpl=component&amp;print=1&amp;layout=default&amp;page=.html" title="Print" onclick="window.open(this.href,'win2','status=no,toolbar=no,scrollbars=yes,titlebar=no,menubar=no,resizable=yes,width=640,height=480,directories=no,location=no'); return false;" rel="nofollow"><span class="icon print"></span></a>																</div>
+			
+			<span class="rt-date-posted">
+						 Created at			Sunday, 13 December 2009 22:24						&nbsp;&nbsp;&nbsp;&nbsp;						Last Updated on Sunday, 24 January 2010 18:40						</span>
+
+						<span class="rt-author">
+				Written by Cornelius			</span>
+				
+					</div>
+		
+		
+		<p>自動補齊 (Auto-Completion) 一直是每個整合環境編輯器 (IDE) 都必備的一項功能，因此 Vim 也不例外的支援了自動補齊 (Auto-Completion) 的功能。</p>
+<p>其中最大的不同就是使用者可以撰寫或設定自己的補齊函式 (Completion Function)，其中還包含了使用者定義補齊 (User-defined completion)、全補齊 (Omni-completion)、關鍵字補齊 (Keyword completion)、檔案名稱補齊 (Filename completion)、字典補齊 (Dictionary completion)、詞庫補齊 (Thesaurus completion) 以及 Vim 指令補齊 (Vim command completion ) 等等各種的自動補完方式。 <br /></p><p>其中，使用者定義補齊 (User-defined completion) 以及全補齊 (Omni-completion)是可以由使用者定義函式 (Function)來延展補齊的精確性以及廣度。而字典檔補齊 (Dictionary completion) 以及詞庫補齊 (Thesaurus)則採用讀取外部文字檔案來做字典來源的補齊。</p>
+<p>我們接下來將一一介紹基本的補齊操作以及各種補齊方式的使用，再進階進入撰寫自己的自動補齊函式。自動補齊主要在插入模式 (Insert Mode) 以 Ctrl-x 鍵作為補齊觸發鍵，再接上一個補齊類型的觸發鍵。</p>
+<p><br />以下是內建的補齊列表:</p>
+<p>&nbsp;&nbsp;&nbsp; C-x C-l&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 行補齊<br />&nbsp;&nbsp;&nbsp; C-x C-n&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 以目前檔案做關鍵字補齊&nbsp;&nbsp;&nbsp;&nbsp;<br />&nbsp;&nbsp;&nbsp; C-x C-k&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 由字典補齊<br />&nbsp;&nbsp;&nbsp; C-x C-t&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 由分類詞庫補齊<br />&nbsp;&nbsp;&nbsp; C-x C-i&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 從目前以及被引入的檔案為來源做關鍵字補齊<br />&nbsp;&nbsp;&nbsp; C-x C-]&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 標籤 (tags) 補齊<br />&nbsp;&nbsp;&nbsp; C-x C-f&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 檔案名稱補齊<br />&nbsp;&nbsp;&nbsp; C-x C-d&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 定義或巨集補齊<br />&nbsp;&nbsp;&nbsp; C-x C-v&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Vim 指令補齊<br />&nbsp;&nbsp;&nbsp; C-x C-u&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 使用者定義函式補齊<br />&nbsp;&nbsp;&nbsp; C-x C-o&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 全補齊函式做補齊<br />&nbsp;&nbsp;&nbsp; C-x s&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 拼字校正補齊<br />&nbsp;&nbsp;&nbsp; C-n&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 關鍵字補齊，不過依據 `complete` 選項來決定關鍵字來源</p>
+<p><br />接下來對每種補齊方式一一做說明。</p>
+<blockquote dir="ltr" style="MARGIN-RIGHT: 0px">
+<p><br /><strong>※ Ctrl-x Ctrl-l 行補齊 (Line completion):</strong></p>
+<p>以往前搜尋行，找出與目前行相同開始的行做補齊項目 (Completion Item)。並且以 `complete`選項來決定來源的項目。行補齊將忽略縮排。使用行補齊 (Ctrl-x Ctrl-l)之後，可以再次按下 Ctrl-x Ctrl-l，這樣就會將當前行的補齊結果作為下一行的補齊。</p>
+<p><br /><strong>※ Ctrl-x Ctrl-n 以目前檔案內容做關鍵字補齊 (Keyword completion):</strong></p>
+<p>可使用 Ctrl-x Ctrl-n 往後搜尋關鍵字做補齊，Ctrl-x Ctrl-p 往前搜尋關鍵字補齊。可參考 `iskeyword` 選項來定義關鍵字的字元。</p>
+<p><br /><strong>※ Ctrl-x Ctrl-k 字典補齊 (Dictionary completion):</strong></p>
+<p>使用 `dictionary`選項所設定的字典檔案來做自動補齊。將使用字典檔案內的關鍵字來做自動補齊。舉例來說，新增字典檔案到目前的 `dictionary` 選項可用 set dictionary+=/path/to/you_dictionary 那麼 Ctrl-x Ctrl-k 時，便可以以這個字典檔作為補齊。</p>
+<p><br /><strong>※ Ctrl-x Ctrl-t 分類詞庫補齊 (Thesaurus completion):</strong></p>
+<p>其實和字典補齊 (Dictionary completion) 很類似，差異在 Thesaurus completion 所作的是在分類詞庫裡頭找到符合的關鍵字之後，相同一行的其他關鍵字會成為補齊的選項。</p>
+<p><br /><strong>※ Ctrl-x Ctrl-I 由引入檔做關鍵字補齊</strong></p>
+<p>常在撰寫程式碼時用到，舉例來說，在 C/C++ 程式碼我們寫:</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; #include &ldquo;stdio.h&rdquo;</p>
+<p>那麼在 Ctrl-x Ctrl-i 做補齊的時候，Vim 會自動去 stdio.h 裡面搜尋符合的關鍵字。但是要注意的是 `path` 選項，記得將 C 語言或任何其他語言的引入檔路徑加入 `path`。以 C 語言為例:</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; set path+=/usr/share/include/glib/</p>
+<p>如此 Vim 才會在相關路徑內找到你的標頭檔。</p>
+<p><br /><strong>※ Ctrl-x Ctrl-]&nbsp; 標籤補齊 (Tag completion)</strong></p>
+<p>由標籤檔 (tags file) 來取得關鍵字來做自動補齊。標籤檔通常由 `ctags` 所產生。</p>
+<p><br /><strong>※ Ctrl-x Ctrl-f 檔案名稱補齊 (Filename completion)</strong></p>
+<p>此種補齊用以補齊檔案名稱或者路徑。（可使用 `isfname` 選項來決定檔案名稱的樣式 (Pattern)）</p>
+<p><br /><strong>※ Ctrl-x Ctrl-d 定義或巨集補齊 (Definitions and Macros completion)</strong></p>
+<p>在目前檔案以及引入檔案的內容搜尋定義以及巨集名稱做補齊。</p>
+<p><br /><strong>※ Ctrl-x Ctrl-v Vim 命令補齊 (Vim command completion)</strong></p>
+<p>Vim 命令補齊，撰寫 Vim script 時非常有用。</p>
+<p><br /><strong>※ Ctrl-x Ctrl-u 使用者定義補齊 (User-defined completion)</strong></p>
+<p>由使用者定義的函式來補齊，使用者可撰寫自己的函式來客製化補齊，可透過 `completefunc` 選項來設置補齊函式。</p>
+<p><br /><strong>※ Ctrl-x Ctrl-o 全補齊 (Omni completion)</strong></p>
+<p>全補齊類似使用者定義函式補齊，不過通常為特定檔案類型做補齊。可透過 `omnifunc` 選項定義函式名稱。</p>
+<p><br /><strong>※ Ctrl-x s 拼字校正補齊 (Spelling suggestions completion)</strong></p>
+<p>批字校正補齊會在游標前或是游標上的字上提供建議的單字作為取代。<br />由於 Ctrl-s 會使得某些 Terminal 造成 scroll lock，所以建議直接以 Ctrl-x s 來呼叫拼字補齊。</p>
+<p><br /><strong>※ Ctrl-n&nbsp;&nbsp;&nbsp; 關鍵字補齊 (由 `complete` 選項決定關鍵字來源)</strong></p>
+<p>這種補齊由 `complete` 選項決定關鍵字補齊。</p>
+</blockquote>
+<p><br /><strong>◎ 簡單介紹 `complete` 選項：</strong></p>
+<p><br />&nbsp;&nbsp;&nbsp; `complete` 為一字串，選項由逗號分別，預設的 `complete` 值為 &ldquo;.,w,b,u,t,i&rdquo;<br />&nbsp;&nbsp;&nbsp; 各個選項的說明如下:</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; .&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 掃描目前 Buffer。</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; w&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 掃描其他視窗的 Buffer</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; b&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 掃描其他在清單中的 Buffer</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; u&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 掃描已經卸載的 Buffer（但仍然在 Buffer 清單中）</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; U&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 掃描不在 Buffer 清單內的 Buffer。也就是 Unlisted Buffer ，被隱藏起來的 Buffer。</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; k&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 掃描 `dictionary` 指定的字典做補齊。</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; kspell&nbsp;&nbsp; 使用目前的拼字檢查做補齊。</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; k{dict}&nbsp; 掃描檔案 {dict} ，可以同時有多個 k 旗標設置，來掃描不同的字典檔。</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 譬如說&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; :set cpt=k/usr/dict/*,k~/spanish</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; s&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 使用 `thesaurus` 選項做分類詞庫補齊。</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; s{tsr}&nbsp;&nbsp; 掃描 {tsr} 檔案做分類詞庫補齊。</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; i&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 掃描目前的檔案以及引入的檔案。</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; d&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 掃描目前的檔案以及引入的檔案，並且做定義 (defined name) 或巨集(macro) 的補齊。</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ]&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 使用標籤補齊 (tag completion)</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; t&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 同 &ldquo;]&rdquo;</p>
+<p>&nbsp;&nbsp;&nbsp; 所以預設的選項 &quot;.,w,b,u,t,i&quot; 意思就是掃描:</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 1. 目前的 Buffer<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 2. 其他視窗的 Buffer<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 3. 其他載入的 Buffer<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 4. 其他卸載的 Buffer<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 5. 標籤 (tags)<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 6. 引入檔</p>
+<p><strong><br />◎ 使用者定義補齊 (User-defined Completion) 以及全補齊 (Omni Completion)：<br /></strong></p>
+<p>&nbsp;&nbsp;&nbsp; 介紹如何定義補齊函式 (Completion Function)<br /></p>
+<p>&nbsp;&nbsp;&nbsp; Completion Function 的運作方式:<br />&nbsp;&nbsp;&nbsp; <br />&nbsp;&nbsp;&nbsp; 第一次被呼叫必須先找到補齊的定位點，函式必須回傳補齊定位點的位置。（為整數）<br />&nbsp;&nbsp;&nbsp; 第二次被呼叫時，函式會被給予已輸入字串作為參數，Completion function 再<br />&nbsp;&nbsp;&nbsp; 利用此字串搜尋需補齊的項目，並且回傳。</p>
+<p>&nbsp;&nbsp;&nbsp; 基本上補齊函式的原型為:</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; function! CompletionFunc(findstart,base)</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; endfunction</p>
+<p>&nbsp;&nbsp;&nbsp; 其中 CompletionFunc 為你的補齊函式名稱，這個函式必須取得兩個參數<br />&nbsp;&nbsp;&nbsp; a:findstart 以及 a:base。</p>
+<p>&nbsp;&nbsp;&nbsp; a:findstart 參數第一次被呼叫時，會被設定為 1 ，此時我們必須找到補齊的定位點，<br />&nbsp;&nbsp;&nbsp; 並且回傳補齊定位點的位置。</p>
+<p>&nbsp;&nbsp;&nbsp; 第二次被呼叫時，a:findstart 會為 0 ，a:base 會被設定為游標位置至補齊定位點的字串</p>
+<p>&nbsp;&nbsp;&nbsp; 假設我們輸入字串至:</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; how comple<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ^<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; cursor</p>
+<p>&nbsp;&nbsp;&nbsp; 那麼按下 C-x C-o 或 C-x C-u 呼叫函式補齊時，我們第一次會接到 a:findstart 為 1<br />&nbsp;&nbsp;&nbsp; 我們回傳 5 (c 的位置) ，第二次時，我們會接到 a:base 回 &quot;comple&quot;<br />&nbsp;&nbsp;&nbsp; ，接著我們可回傳 一串列作為可補齊的項目，如:</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [ &quot;complete&quot; , &quot;completion&quot; , &quot;completefunc&quot; ]<br />&nbsp;&nbsp;&nbsp; <br />&nbsp;&nbsp;&nbsp; 假設我們只回傳</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [&quot;completion&quot;] </p>
+<p>&nbsp;&nbsp;&nbsp; 那麼就會自動補齊至 &quot;completion&quot;。</p>
+<p>&nbsp;&nbsp;&nbsp; 所以 Completion Function 的範本基本上可以寫成:</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; function! Func(findstart,base)<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; if a:findstart<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &quot; 尋找補齊定位點</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; return <br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; else<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &quot; 使用 a:base 尋找補齊項目</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; return<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; endif<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; endfunction</p>
+<p>&nbsp;&nbsp;&nbsp; 那麼一個簡單的月份補齊函式可以這樣寫：（取自 vim help 文件 complete-functions 條目）</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; fun! CompleteMonths(findstart, base)<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; if a:findstart<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &quot; locate the start of the word<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; let line = getline('.')<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; let start = col('.') - 1<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; while start &gt; 0 &amp;&amp; line[start - 1] =~ '\a'<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; let start -= 1<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; endwhile<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; return start<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; else<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &quot; find months matching with &quot;a:base&quot;<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; let res = []<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; for m in split(&quot;Jan Feb Mar Apr May Jun Jul Aug Sep Oct Nov Dec&quot;)<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; if m =~ '^' . a:base<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; call add(res, m)<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; endif<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; endfor<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; return res<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; endif<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; endfun<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; set completefunc=CompleteMonths</p>
+<p>&nbsp;&nbsp;&nbsp; 在回傳補齊項目的串列時，我們也可以是回傳 Dictionary<br />&nbsp;&nbsp;&nbsp; 的串列，換而言之就是由雜湊 (hash) 組成的串列，這個雜湊可以有以下索引值:</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; word&nbsp;&nbsp;&nbsp; 補齊字串</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; abbr&nbsp;&nbsp;&nbsp; 補齊字串的縮寫，當不為空值時，abbr 會成為補齊選單<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 用以顯示補齊字串的字串。</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; menu&nbsp;&nbsp;&nbsp; 標注的文字<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 用以顯示在補齊項目後面。</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; info&nbsp;&nbsp;&nbsp; 額外資訊，當不為空時，額外資訊會被顯示在預覽視窗中。</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; kind&nbsp;&nbsp;&nbsp; 該項目的補齊類型。（為單個字元）</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; icase&nbsp;&nbsp; 忽略大小寫，為 1 時將忽略大小寫。<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 同樣的補齊項目會被視為同一個項目。</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; dup&nbsp;&nbsp;&nbsp;&nbsp; 決定重複的字是否加入補齊選單</p>
+<p>&nbsp;&nbsp;&nbsp; 譬如說:</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; let list = []<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; for item in items<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; if item.text =~ '^'.a:base<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; cal add(list, { 'word': item.text , 'abbr' : item.abbr , 'menu' : item.file })<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; endif<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; endfor<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; return list</p>
+<p>&nbsp;&nbsp;&nbsp; 上述寫法是將所有結果處完之後才回傳<br />&nbsp;&nbsp;&nbsp; 有時補齊項目需要花比較久的時間搜尋，那麼我們可以利用 complete_add() 以及<br />&nbsp;&nbsp;&nbsp; complete_check() 函式來即時插入補齊項目，而不需要等待所有搜尋完成:</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; for item in items<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; if item.text =~ '^'.a:base<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; cal complete_add({ 'word': item.text , 'abbr' : item.abbr , 'menu' : item.file })<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; endif<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; if complete_check()<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; break<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; endif<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; endfor</p>
+<p><br /><strong>◎ 特定檔案類型的全補齊 (Omni completion)</strong></p>
+<p>&nbsp;&nbsp;&nbsp; 可參考 *compl-omni-filetypes* 條目，<br />&nbsp;&nbsp;&nbsp; 此章節針對各種檔案類型的補齊做了說明。</p>
+<p>&nbsp;&nbsp;&nbsp; Vim 已經內建了大部份主要程式語言的全補齊函式 (Omni completion<br />&nbsp;&nbsp;&nbsp; function)，相關程式碼可以參考 $VIMRUNTIME/autoload/*complete.vim<br /></p>
+<p><strong>◎ 相關 Plugin</strong></p>
+<p>&nbsp;&nbsp;&nbsp; <a href="https://www.vim.org/scripts/script.php?script_id=1879" target="_blank"><strong>AutoComplPop</strong></a></p>
+<p>&nbsp;&nbsp;&nbsp; Takeshi Nishida 寫的 AutoComplPop (ACP)<br />&nbsp;&nbsp;&nbsp; 可以自動呼叫補齊函式，不需另外按快捷鍵呼叫，ACP 會在已定義的 樣式 (Pattern)<br />&nbsp;&nbsp;&nbsp; 呼叫相對應的補齊模式。</p>
+<p>&nbsp;&nbsp;&nbsp; 使用 <a href="https://search.cpan.org/dist/Vimana/" target="_blank">Vimana </a>可直接安裝<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; $ vimana install autocomplpop</p>
+<p>&nbsp;&nbsp;&nbsp; <a href="https://www.vim.org/scripts/script.php?script_id=2620" target="_blank"><strong>NeoComplCache</strong></a></p>
+<p>&nbsp;&nbsp;&nbsp; 由於多數補齊函式運作繁複且花費許多時間剖析字串，所以 <br />&nbsp;&nbsp;&nbsp; 日本的 Shougo Matsushita 寫了 NeoComplCache 來做 Completion 的快取。</p>
+<p>&nbsp;&nbsp;&nbsp; 使用 <a href="https://search.cpan.org/dist/Vimana/" target="_blank">Vimana</a> 可直接安裝<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; $ vimana install neocomplcache<br /></p>
+<p><strong>◎作者簡介</strong></p>
+<p>Cornelius，目前在 AIINK（愛印網），以 Perl 語言開發的 Jifty web framework 從事網站開發相關工作。於 CPAN - Perl 模組典藏網維護多個 Perl 模組，參與 Jifty, SD 等 Perl 相關開放原始碼專案 。主要以 Vim 做為開發工具，著有 cpan.vim , perl-completion.vim , perldoc.vim 等多個 vim 相關 Plugin。&nbsp;<br />&nbsp;<a href="https://www.github.com/c9s" target="_blank">Github</a><br />&nbsp;<a href="https://twitter.com/c9s" target="_blank">Twitter</a><br />&nbsp;<a href="https://www.plurk.com/c9s" target="_blank">Plurk<br /></a>&nbsp;<a href="https://c9s.blogspot.com/" target="_blank">Blog</a><br />&nbsp;<a href="https://groups.google.com/group/vim-taiwan" target="_blank">Google group</a></p>
+			<!-- Show relate article -->
+				<!-- end -->
+		<div class="article_note">
+		<!-- Add tags use metakey, and show OSSF Newsletter tag: OSSFNL+NUM-->
+		<br><br> <hr style='border: 1px dashed #D2DADB;'><b>OSSF Newsletter&nbsp;:</b>&nbsp;<a href='../../previous-issue%3Ftask=view&amp;id=557.html'>第 140 期 維基百科‧一刀未剪版</a><br>				<!-- End -->
+					<br>
+					<b>Category: </b><a href="../tech-column.html">				Tech Column					</a>				</div>
+			 <!-- AddThis Button BEGIN ID 3001 is the front page article -->
+     			<br><br>
+       <div class="addthis_toolbox addthis_default_style addthis_32x32_style">
+       <a class="addthis_button_preferred_1"></a>
+       <a class="addthis_button_preferred_2"></a>
+       <a class="addthis_button_preferred_3"></a>
+       <a class="addthis_button_preferred_4"></a>
+       <a class="addthis_button_compact"></a>
+       <a class="addthis_counter addthis_bubble_style"></a>
+       </div>
+       <script type="text/javascript">var addthis_config = {"data_track_clickback":true};</script>
+       <script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js#pubid=openfoundry"></script>
+       <!-- AddThis Button END -->
+     <br>
+		<div class="totop" ><a class="rt-totop" href="2215.html#" style="outline: medium none;">↑ Top</a></div>
+            <!-- AddThis Button END -->
+
+			</div>
+</div>
+
+		                            </div>
+									<div class="clear"></div>
+								</div>
+								<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+							</div>
+							</div>
+                                                    </div>
+                                            </div>
+                                <div class="rt-grid-3 rt-pull-9">
+                <div id="rt-sidebar-a">
+                                    <div class="square4">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<ul class="menu"><li class="item56"><a href="../previous-issue.html"><span>Previous Issue</span></a></li><li class="item55"><a href="../about-newsletter.html"><span>About Newsletter</span></a></li></ul>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<ul class="menu"><li class="item115"><a href="../foss-news.html"><span>FOSS News</span></a></li><li class="item141"><a href="../case-job.html"><span>Case and Jobs</span></a></li></ul>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+        	                <div class="square1">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-title"><h2 class="title">Special</h2></div>
+						<div class="clear"></div>
+		                						<div class="module-content">
+		                	<ul class="menu"><li id="current" class="active item37"><a href="../tech-column.html"><span>Tech Column</span></a></li><li class="item40"><a href="../foss-programs.html"><span>FOSS Programs</span></a></li><li class="item35"><a href="../legal-column.html"><span>Legal Column</span></a></li><li class="item154"><a href="../foss-forum.html"><span>FOSS Forum</span></a></li><li class="item162"><a href="../enterprise-application.html"><span>Enterprise Application</span></a></li><li class="item44"><a href="../foss-projects.html"><span>FOSS Projects</span></a></li></ul>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		                <div class="square1">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<p style="text-align: center;"><a href="../../news%3Fformat=feed&amp;type=rss" target="_black"><img src="../../images/M_images/news-rss-feed.png" border="0" /></a><br /><a href="https://www.openfoundry.org/rss-feed/Newsletter" target="_black"><img src="../../images/M_images/newsletter-rss-feed.png" border="0" /></a></p>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		
+                </div>
+            </div>
+
+                    <div class="clear"></div>
+                </div>
+            </div>
+																													</div>
+										<div id="rt-copyright">
+						<div class="rt-grid-12 rt-alpha rt-omega">
+                        <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<span class="nowrap">Open Source Software Foundry</span><span class="nowrap">‧</span><span class="nowrap"> </span><span class="nowrap">Best  Viewed with IE7.0 or Firefox2.0 above, 1024x768 Resolution. </span><strong>E-Mail</strong>：<a href="mailto:contact@openfoundry.org">contact@openfoundry.org</a> <br /><strong>Address</strong>：No.128, Sec.2, Academia Rd., Institute of Information Science, Academia Sinica, Nangang District, Taipei City 11529, Taiwan (R.O.C). <br /><a href="../privacy-policy.html">Privacy Policy</a>. <a href="../terms-of-use.html">Terms-of-use</a> <span style="position: relative; top: 8px; margin-top: -8px;"> <a href="../../about/8101.html"><img src="../../images/M_images/rss-feed-all.png" border="0" /></a></span>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+        	
+</div>
+						<div class="clear"></div>
+					</div>
+					<div class="rt-footer-bottom-wrap"><div class="rt-footer-bottom"><div class="rt-footer-bottom2"><div class="rt-footer-bottom3"></div></div></div></div>
+									</div></div></div>
+				<div class="rt-surround-bottom"><div class="rt-surround-bottom2"><div class="rt-surround-bottom3"></div></div></div>
+							</div>
+		</div>
+		<!--
+		<script id="aptureScript">
+						(function (){var a=document.createElement("script");a.defer="true";a.src="http://www.apture.com/js/apture.js?siteToken=vsJttrn";document.getElementsByTagName("head")[0].appendChild(a);})();
+     </script>
+-->
+
+<!-- Piwik -->
+<!-- 			<script type="text/javascript">
+			  var _paq = _paq || [];
+		  _paq.push(["trackPageView"]);
+		  _paq.push(["enableLinkTracking"]);
+
+		    (function() {
+			        var u=(("https:" == document.location.protocol) ? "https" : "https") + "://www.openfoundry.org/piwik/";
+				    _paq.push(["setTrackerUrl", u+"piwik.php"]);
+				    _paq.push(["setSiteId", "1"]);
+				        var d=document, g=d.createElement("script"), s=d.getElementsByTagName("script")[0]; g.type="text/javascript";
+				        g.defer=true; g.async=true; g.src=u+"piwik.js"; s.parentNode.insertBefore(g,s);
+					  })();
+		  </script> -->
+<!-- End Piwik Code -->
+	</body>
+</html>

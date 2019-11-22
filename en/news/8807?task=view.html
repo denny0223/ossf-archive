@@ -1,0 +1,834 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-gb" lang="en-gb" >
+<head>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<link rel="shortcut icon" href="../../images/favicon.ico" />
+	  <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+  <meta name="robots" content="index, follow" />
+  <meta name="keywords" content="OSSFNL804" />
+  <meta name="title" content="Simile Widget Timeline - 用靜態網頁表現時間線" />
+  <meta name="description" content="簡介 Timeline 可讓網頁建立者在靜態網頁上，顯示複雜的時間線示意圖。 Timeline 是 MIT 'SIMILE Project' 釋出的一項開源作品。該計劃提供了一些結構精美的網路小程式 (widget) 供人自由運用，而 Timeline 元件就是這其中之一。 要使用它，您得懂一些基本的 html 與程式設計邏輯才行－很基本的就行。其他的，我會一步一步地示範給您看的。 安裝說明" />
+  <meta name="generator" content="" />
+  <title>Simile Widget Timeline - 用靜態網頁表現時間線 - OpenFoundry</title>
+  <link href="../../favicon.ico" rel="shortcut icon" type="image/x-icon" />
+  <link rel="stylesheet" href="../../components/com_jcomments/tpl/default/style.css%3Fv=10.css" type="text/css" />
+  <link rel="stylesheet" href="../../components/com_gantry/css/gantry.css" type="text/css" />
+  <link rel="stylesheet" href="../../components/com_gantry/css/grid-12.css" type="text/css" />
+  <link rel="stylesheet" href="../../components/com_gantry/css/joomla.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/joomla.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/style1.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/light-body.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/demo-styles.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/template.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/typography.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/fusionmenu.css" type="text/css" />
+  <style type="text/css">
+    <!--
+#rt-main-surround ul.menu li.active > a, #rt-main-surround ul.menu li.active > .separator, #rt-main-surround ul.menu li.active > .item, #rt-main-surround .square4 ul.menu li:hover > a, #rt-main-surround .square4 ul.menu li:hover > .item, #rt-main-surround .square4 ul.menu li:hover > .separator, .roktabs-links ul li.active span {color:#0088B5;}
+a, #rt-main-surround ul.menu a:hover, #rt-main-surround ul.menu .separator:hover, #rt-main-surround ul.menu .item:hover {color:#0088B5;}
+    -->
+  </style>
+  <script type="text/javascript" src="../../components/com_jcomments/js/jcomments-v2.1.js%3Fv=2"></script>
+  <script type="text/javascript" src="../../components/com_jcomments/libraries/joomlatune/ajax.js"></script>
+  <script type="text/javascript" src="../../media/system/js/mootools.js"></script>
+  <script type="text/javascript" src="../../media/system/js/caption.js"></script>
+  <script type="text/javascript" src="../../components/com_gantry/js/gantry-buildspans.js"></script>
+  <script type="text/javascript" src="../../components/com_gantry/js/gantry-inputs.js"></script>
+  <script type="text/javascript" src="../../templates/rt_quantive_j15/js/jquery.cookie.js"></script>
+  <script type="text/javascript" src="../../modules/mod_roknavmenu/themes/fusion/js/fusion.js"></script>
+  <script type="text/javascript" src="../../modules/mod_ofssologin/js/ofssologin.js"></script>
+  <script type="text/javascript">
+
+			window.addEvent('domready', function() {
+				var modules = ['rt-block'];
+				var header = ['h3','h2','h1'];
+				GantryBuildSpans(modules, header);
+			});
+		InputsExclusion.push('.content_vote','#rt-popup')
+		        window.addEvent('load', function() {
+					new Fusion('ul.menutop', {
+						pill: 0,
+						effect: 'slide and fade',
+						opacity: 1,
+						hideDelay: 500,
+						centered: 0,
+						tweakInitial: {'x': -2, 'y': 0},
+        				tweakSubsequent: {'x': 0, 'y': -14},
+						menuFx: {duration: 200, transition: Fx.Transitions.Sine.easeOut},
+						pillFx: {duration: 400, transition: Fx.Transitions.Back.easeOut}
+					});
+	            });
+  </script>
+<!-- <script type="text/javascript" src="/sso/javascripts/langsync.js"></script> -->
+<!-- <script src="/templates/rt_quantive_j15/js/ossf.js"></script> -->
+<script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-4136519-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
+</head>
+	<body  class="backgroundlevel-low backgroundstyle-style8 bodylevel-med bodystyle-light cssstyle-style1 logostyle-dark font-family-helvetica font-size-is-default menu-type-fusionmenu col12 ">
+		<div id="rt-main-background">
+			<div class="rt-container">
+																<div id="rt-header">
+					<div class="rt-grid-7 rt-alpha">
+    			<div class="rt-block">
+    	    	<a href="../../index.html" id="rt-logo"></a>
+    		</div>
+	    
+</div>
+<div class="rt-grid-5 rt-omega">
+                    <div class="square9">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<div class="ofssologin_square9"><a href="../../index.html">Login</a>&nbsp;&nbsp|&nbsp;&nbsp;<span><a href="https://www.openfoundry.org/tw/news/8807?task=view" ><span lang="tw" xml:lang="tw">繁體中文</span></a></li></ul></span><!--Joom!fish V2.0.4 (Lightning)-->
+<!-- &copy; 2003-2009 Think Network, released under the GPL. -->
+<!-- More information: at http://www.joomfish.net -->
+<div class="ofssologin_search_square9">
+  <form id="of_search" action="https://www.openfoundry.org/of/openfoundry/search" method="get" onsubmit="of_search(); return false;">
+    <select id="of_search_type">
+      <option value="Projects"> Projects </option>
+      <option value="Content"> Content </option>
+      <option value="People"> People </option>
+    </select>
+    <input id="query" name="query" id="mod_search_searchword" maxlength="50" alt="search" class="inputbox" type="text" size="28" value="search..."  onblur="if(this.value=='') this.value='search...';" onfocus="if(this.value=='search...') this.value='';" />
+    <input type="hidden" name="commit" value="search" />
+  </form>
+</div></div>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		
+</div>
+					<div class="clear"></div>
+				</div>
+																<div id="rt-navigation"><div id="rt-navigation2"><div id="rt-navigation3">
+					
+<div class="nopill">
+	<ul class="menutop level1 " >
+						<li class="item1 root" >
+					<a class="orphan item bullet" href="../../index.html"  >
+				<span>
+			    				Home				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item32 root" >
+					<a class="orphan item bullet" href="../../archived.html"  >
+				<span>
+			    				Projects				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item186 root" >
+					<a class="orphan item bullet" href="../community.html"  >
+				<span>
+			    				Who&#039;s Who				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item4 root" >
+					<a class="orphan item bullet" href="../news.html"  >
+				<span>
+			    				News				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item5 root" >
+					<a class="orphan item bullet" href="../law-and-licensing.html"  >
+				<span>
+			    				Law &amp; Licensing				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item3 root" >
+					<a class="orphan item bullet" href="../activities.html"  >
+				<span>
+			    				Activities				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item2 root" >
+					<a class="orphan item bullet" href="../resourcecatalog.html"  >
+				<span>
+			    				Resource Catalog				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item45 root" >
+					<a class="orphan item bullet" href="../about.html"  >
+				<span>
+			    				About				   
+				</span>
+			</a>
+			
+			
+	</li>	
+				</ul>
+</div>
+
+				    <div class="clear"></div>
+				</div></div></div>
+								<div class="rt-surround"><div class="rt-surround2"><div class="rt-surround3">
+										<div id="rt-showcase-section">
+												<div id="rt-showcase">
+							<div class="rt-grid-12 rt-alpha rt-omega">
+    		<div class="clear"></div>
+		
+		
+                <div class="close-note">
+                    <div class="rt-block">
+               					<div class="module-content">
+                	<div style="font-size:medium; background-image:linear-gradient(120deg,#159957,#4298b2);color:white;padding:20px;margin:-10px -18px;">感謝您對「自由軟體鑄造場」的支持與愛護，十多年來「自由軟體鑄造場」受中央研究院支持，並在資訊科學研究所以及資訊科技創新研究中心執行，現已完成階段性的任務。 本網站預計持續維運至 2021年底，網站內容基本上不會再更動。<br />也紀念我們永遠的朋友 李士傑先生（Shih-Chieh Ilya Li）。</div>				</div>
+            </div>
+                </div>
+		
+</div>
+							<div class="clear"></div>
+						</div>
+																	</div>
+															<div id="rt-main-surround">
+												<div id="rt-breadcrumbs">
+								<div class="rt-breadcrumb-surround">
+		<a href="../../index.html" id="breadcrumbs-home"></a>
+		<span class="breadcrumbs pathway">
+<span class="no-link">News</span></span>
+	</div>
+	
+							<div class="clear"></div>
+						</div>
+																							              <div id="rt-main" class="sa3-mb9">
+                <div class="rt-main-inner">
+                    <div class="rt-grid-9 rt-push-3">
+                                                <div class="rt-block">
+                            							<div class="square1">
+							<div class="rt-module-surround">
+								<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+								<div class="rt-module-inner">
+		                            <div id="rt-mainbody">
+		                                
+<div class="rt-joomla ">
+	<div class="rt-article">
+		
+				<div class="rt-headline"><h1 class="rt-article-title">Simile Widget Timeline - 用靜態網頁表現時間線</h1>		</div>
+		<div class="clear"></div>
+		
+		
+		
+				<div class="rt-articleinfo">
+						<div class="rt-article-icons">
+								<a href="https://www.openfoundry.org/en/news/8807-simile-widget-timeline-?tmpl=component&amp;print=1&amp;page=" title="Print" onclick="window.open(this.href,'win2','status=no,toolbar=no,scrollbars=yes,titlebar=no,menubar=no,resizable=yes,width=640,height=480,directories=no,location=no'); return false;" rel="nofollow"><span class="icon print"></span></a>																</div>
+			
+			<span class="rt-date-posted">
+						 Created at			Friday, 21 September 2012 13:35						&nbsp;&nbsp;&nbsp;&nbsp;						Last Updated on Wednesday, 15 May 2013 12:58						</span>
+
+						<span class="rt-author">
+				Written by 林雪凡（林誠夏／編修）			</span>
+				
+					</div>
+		
+		
+		<h2>簡介</h2>
+<p>Timeline 可讓網頁建立者在靜態網頁上，顯示複雜的時間線示意圖。</p>
+<p>Timeline 是 MIT "SIMILE Project" 釋出的一項開源作品。該計劃提供了一些結構精美的網路小程式 (widget) 供人自由運用，而 Timeline 元件就是這其中之一。</p>
+<p>要使用它，您得懂一些基本的 html 與程式設計邏輯才行－很基本的就行。其他的，我會一步一步地示範給您看的。</p>
+
+<h2>安裝說明</h2>
+<p>本軟體不用安裝，請打開您的文字編輯器，直接在網頁上建立時間線吧。</p>
+<h2>快速開始</h2>
+官網提供了簡單易懂的快速開始導覽（見：<a target="_blank" href="https://code.google.com/p/simile-widgets/wiki/Timeline_GettingStarted">https://code.google.com/p/simile-widgets/wiki/Timeline_GettingStarted</a>），本文是以我自己理解並實驗的方式來進行解說。
+<h3>建立基礎面板</h3>
+<p>首先，您必須擁有一個標準的 .html 檔案，這檔案就是要秀出您時間線的檔案。若您原本沒有現存的 html 檔，您可以先建立一個空白的來玩玩。</p>
+<p>一個標準的 HTML5 空白頁面，內容會像是這樣……</p>
+<pre>1 ＜!DOCTYPE html＞
+2 ＜html＞
+3     ＜head＞
+4         ＜meta charset="UTF-8" /＞
+5     ＜/head＞
+6     ＜body＞
+7     ＜/body＞
+8 ＜/html＞
+</pre>
+<p>有了網頁，我們這才能夠開始在網頁中載入 Timeline 的 API。</p>
+<p>請在 ＜head＞ 區段中塞入以下程式碼：</p>
+<pre>＜script src="https://static.simile.mit.edu/timeline/api-2.3.0/timeline-api.js?bundle=true" type="text/javascript"＞＜/script＞
+</pre>
+<p>網頁將會變成：</p>
+<pre> 1 ＜!DOCTYPE html>
+ 2 ＜html>
+ 3     ＜head>
+ 4         ＜meta charset="UTF-8" />
+ 5         ＜!-- 就這行 --＞＜script src="https://static.simile.mit.edu/timeline/api-2.3.0/timeline-api.js?bundle=true" type="text/javascript"＞＜script＞
+ 6     ＜/head＞
+ 7     ＜body＞
+ 8     ＜/body＞
+ 9 ＜/html＞
+</pre>
+<p>這邊載入的是 2.3.0 版本的 API。Timeline 還有 2.3.1 版本的 API 可用，不過既然官網教學示範中是採用 2.3.0 版本，筆者這邊也索性乖乖照辦了。有興趣嘗鮮的人，可以把路徑改一改，試試新版 API 有什麼好處。</p>
+<p>API 準備完畢後，就將時間線欄位塞入網頁中。</p>
+<p>請將以下的程式碼放入 ＜body＞ 中，就放入到您想插入 Timeline 的地方。</p>
+<pre>1 ＜div id="my-timeline" style="height: 350px; border: 1px solid #aaa"＞＜/div＞
+2 ＜noscript＞
+3     This page uses Javascript to show you a Timeline. Please enable Javascript in your browser to see the full page. Thank you.
+4 ＜/noscript＞
+</pre>
+<p>＜div＞ 是一個欄位，我們等會兒會用 Timeline 填充它，唯一需要注意的是：id 必須和 API 指定的目標對象一致（目前還沒指定）。至於 Timeline 的大小，可直接用 html 與 CSS 語句加以調整。</p>
+<p>如果使用者的瀏覽器不允許 Javascript 執行， ＜noscript＞ 內的東西會顯示出來，好提醒讀者修改瀏覽器的設定。</p>
+<p>終於要運用 API 了！請自行在 ＜body＞ 中找地方加入以下程式碼（用 ＜script＞ 標籤括起來），或是運用外部 .js 檔案來運行。</p>
+<pre> 
+ 1 var tl;
+ 2 function onLoad() {
+ 3     var bandInfos = [
+ 4         Timeline.createBandInfo({
+ 5             width:          "70%",
+ 6             intervalUnit:   Timeline.DateTime.MONTH,
+ 7             intervalPixels: 100
+ 8         }),
+ 9         Timeline.createBandInfo({
+10             width:          "30%",
+11             intervalUnit:   Timeline.DateTime.YEAR,
+12             intervalPixels: 200
+13         })
+14     ];
+15     tl = Timeline.create(document.getElementById("my-timeline"), bandInfos);
+16 }
+17 
+18 var resizeTimerID = null;
+19 function onResize() {
+20     if (resizeTimerID == null) {
+21         resizeTimerID = window.setTimeout(function() {
+22             resizeTimerID = null;
+23             tl.layout();
+24         }, 500);
+25     }
+26 }
+</pre>
+<p>注意 tl = Timeline.create() 那行，id 必須要和先前準備好的欄位 id 相同。</p>
+<p>參看上方 onLoad() 中的設定，這部份可讓我們在先前預備的 ＜div＞ 中加入兩個「時間線」元素。（以 javascript 的角度來說，那兩個時間線的基礎設定資料，被存放在名叫 bandInfos 的容器中）。</p>
+<p>bandInfos 中定義了兩條時間線的資料。其中，intervalPixels 表示每個格子的寬度，至於 intervalUnit 則表示了格子的單位。如果您不懂此處說的「格子」是什麼意思，請看看待會兒的截圖，您一定會馬上理解的。</p>
+<p>在 Timeline.createBandInfo() 中，還有更多設定可以調整，想進一步了解請看 Timeline 的官方文件：<a target="_blank" href="https://code.google.com/p/simile-widgets/wiki/Timeline_TimelineClass">https://code.google.com/p/simile-widgets/wiki/Timeline_TimelineClass</a>。</p>
+<p>繼續吧。</p>
+<p>上面固然做了設定，但 onLoad() 其實還沒執行。請把 onLoad() 和 onResize() 兩個函式作為事件掛到 ＜body＞ 上面，讓他們跑起來：</p>
+<pre>1 ＜!-- 將 ＜body＞ 修改為以下的樣子： --＞
+2 ＜body onload="onLoad();" onresize="onResize();"＞
+</pre>
+<p style="text-align: justify;">現在您可以把 html 放入瀏覽器觀察看看，應該已經能顯示出兩條時間條了。</p>
+<p style="text-align: justify;"><img alt="Timeline 01" src="../../images/120925/Timeline_01.png" height="368" width="637" /></p>
+▲ 圖1：兩條時間帶
+<p>您大可用滑鼠拉拉看這兩條時間帶，您會發現它們是彼此獨立的，這不對。應該要讓他們關聯起來：</p>
+<pre>1 //在 bandInfos = [...] 下面加入這兩行
+2 bandInfos[1].syncWith = 0;
+3 bandInfos[1].highlight = true;
+</pre>
+<p>bandInfos[1].syncWith = 0 意味著從第二個元素同步往第一個元素，您若反過來指定 bandInfos[0].syncWith = 1 也可以將時間帶連上。不過為了讓 highlight 功能正確運作，要從大單位（如年）的時間帶連向小單位（如：月）的時間帶，而不要反過來。</p>
+<p>再回去看瀏覽器，底下果然出現了 highlight 的部份。拉拉看上下兩個時間條，也會同步滑動了。</p>
+<p>效果挺好的不是嗎？</p>
+<p><img alt="Timeline 02" src="../../images/120925/Timeline_02.png" height="367" width="637" /></p>
+<p>▲ 圖2：連結後的時間帶。效果要拖拉才能看出，圖上只能看到 highlight 的效果。</p>
+<h3>加入事件</h3>
+<p>緞帶已經綁好了，不過上面還是一片空白。我們應該給它一點裝飾品。</p>
+<p>修改 onLoad()，讓緞帶加入事件來源。</p>
+<pre>1 function onLoad() {
+2   //新增下面這行
+3   var eventSource = new Timeline.DefaultEventSource();
+4   var bandInfos = [
+5       Timeline.createBandInfo({
+6           //新增下面這行
+7           eventSource:    eventSource,
+8           width:          "70%",
+9           intervalUnit:   Timeline.DateTime.MONTH,
+10           intervalPixels: 100
+11       }),
+12       Timeline.createBandInfo({
+13           //新增下面這行
+14           eventSource:    eventSource,
+15           width:          "30%",
+16           intervalUnit:   Timeline.DateTime.YEAR,
+17           intervalPixels: 200
+18       })
+19   ];
+20   bandInfos[1].syncWith = 0;
+21   bandInfos[1].highlight = true;
+22
+23   tl = Timeline.create(document.getElementById("my-timeline"), bandInfos);
+24   //新增下面這行
+25   Timeline.loadXML("example1.xml", function(xml, url) { eventSource.loadXML(xml, url); });
+26 }
+</pre>
+<p>上圖中總共增加了四行，來設定事件資料來源。</p>
+<p>從最上面開始，先用 Timeline.DefaultEventSource() 創建事件來源物件，然後將事件來源物件指派給時間帶，最後去將實體資料與事件來源物件關聯起來，將來源繫結到 xml 檔案上。</p>
+<p>程式碼的部份，這麼做就可以了。然而目前我們還沒有編寫任何 xml，所以暫時還沒能看到變化。</p>
+<p>xml 怎麼寫？雪凡在這邊提供了一個範例：</p>
+<pre>1 
+4
+5   ＜event
+6       start="2012-5-27"
+7       title="罰勤中……"＞
+8   ＜/event>
+9
+10   ＜event
+11       start="2012-9-6"
+12       end="2012-9-8"
+13       title="紅色炸彈來襲！"＞
+14       老油條終於結婚，記得買西裝。
+15   ＜/event＞
+16
+17   ＜event
+18       start="2012-5-2"
+19       end="2012-7-14"
+20       isDuration="true"
+21       title="畢業前衝刺！"＞
+22   ＜/event＞
+23
+24   ＜event
+25       start="2012-7-20"
+26       latestStart="2012-7-30"
+27       earliestEnd="2012-8-19"
+28       end="2012-9-1"
+29       durationEvent="true"
+30       title="有適度考察異國風情的必要"＞
+31   ＜/event＞
+32
+33 ＜/data＞
+
+</pre>
+<p>修改好後刷新瀏覽器，您應該能看到類似於下方的介面：</p>
+<p><img alt="Timeline 03" src="../../images/120925/Timeline_03.png" height="368" width="637" /></p>
+<p>▲ 圖3：加入事件後的時間帶。</p>
+<span class="inset-right yellowbox"> <span class="inset-right-title">小心 Same origin policy</span>如果您在本機路徑中，運行上述的程式碼（瀏覽器路徑會顯示 file:///...），您可能無法得出正確結果。
+<p>這是因為基於某些安全考量，javascript 不允許本地程式存取其他檔案，所以您將無法載入 .xml。無論如何，您得把這些資料與程式，全部丟上網頁伺服器，才能讓它們乖乖工作。</p>
+<p>搭網頁伺服器很麻煩。若您手邊沒有現成的伺服器可供測試，您也可以打開終端機，用 python 產生一個臨時的伺服器：</p>
+<pre>1 # 開啟 shell 在程式碼目錄中，「擇一」使用以下指令
+2 python3 -m http.server 8000 # 使用 python 3.x 搭建簡易伺服器
+3 python -m SimpleHTTPServer  # 使用 python 2.x 版本也行
+</pre>
+<p>鍵入指令後，您就可以用像 https://127.0.0.1:8000/example.html 的格式，來（在網頁瀏覽器中）打開剛剛的 html 檔案。如果您對本主題有興趣，請參看<a target="_blank" href="https://en.wikipedia.org/wiki/Same_origin_policy">英文維基百科的說明頁</a>。</p>
+</span>
+<p>這就解說一下，上面寫的 xml 是怎麼回事：</p>
+<p>xml的 ＜data＞ 標籤中有兩個參數： wiki-url 與 wiki-section。這兩個參數是用來指定「討論維基」用的。</p>
+<p>在 Timeline 中，每個「事件 (Event)」都會自動產生相對應的討論連結，而討論連結的格式為：「wiki-url + wiki-section + event title」</p>
+<p>在上面的例子中，假設使用者點擊了「紅色炸彈來襲！」的討論按鈕，該使用者就會被帶往 <span style="font-size: 60%;"></span>https://xxx.sinica.edu.tw/wiki/whiteboard/紅色炸彈來襲！這個位置。</p>
+<p>如此一來，要怎麼設定那兩個參數很清楚了。當然如果您沒有 wiki 那就不用理它。</p>
+<p><img alt="Timeline 04" src="../../images/120925/Timeline_04.png" height="366" width="637" /></p>
+<p>▲ 圖4：點擊時間條上的項目會出現對話框，裡面有前往討論頁面的連結可按。</p>
+<p>其他方面，您可用 title 決定要顯示什麼文字、用 start 設定開始時間、用 end 設定結束時間、用 isDuration（或 durationEvent）來標誌這是一個時間段事件，此外，還可以在 <event></event> 標籤中夾入文字做為細部說明。如果您想知道還有哪些 Event 變數可用，請見官方說明頁 (<a target="_blank" href="https://code.google.com/p/simile-widgets/wiki/Timeline_EventSources">https://code.google.com/p/simile-widgets/wiki/Timeline_EventSources</a>)。</p>
+<p>到此，所有必備的東西都設定完成。接下來是美容時間。</p>
+<h3>畫面調整</h3>
+<p>onLoad() 中還有些東西可以加入：</p>
+<pre>1   var bandInfos = [
+2      Timeline.createBandInfo({
+3           eventSource:    eventSource,
+4           width:          "70%",
+5           date:           "Jun 28 2012 00:00:00 GMT", // 注意這行
+6           intervalUnit:   Timeline.DateTime.MONTH,
+7           intervalPixels: 100
+8       }),
+9       Timeline.createBandInfo({
+10           eventSource:    eventSource,
+11           width:          "30%",
+12           date:           "Jun 28 2012 00:00:00 GMT", // 注意這行
+13           overview:       true, // 注意這行
+14           intervalUnit:   Timeline.DateTime.YEAR,
+15           intervalPixels: 200
+16       })
+17   ];
+</pre>
+<p>date 允許您指定「載入時要將時間滑到哪個位置」；至於 overview 則可讓時間條變成概覽畫面。概覽畫面的意思是說：所有文字都會消去，只留下時間段示意圖的意思……請看下圖的範例：</p>
+<p><img alt="Timeline 05" src="../../images/120925/Timeline_05.png" height="369" width="637" /></p>
+<p>▲ 圖5：將下方的時間條設成 overview，效果很明顯。</p>
+<p>有了以上的知識，基本的 Timeline 運用就沒問題了。</p>
+<h2>深入閱讀</h2>
+<p>筆者找不到本軟體的 API 參考手冊，只有一拖拉庫的 How-To 文件。雖然 How-To 文件沒什麼不好呀，但深入鑽研時總有些苦手……</p>
+<p>不管怎麼說，推荐清單還是列出來了，請看：</p>
+<ol style="list-style-type: decimal;">
+<li>快速開始：<a target="_blank" href="https://code.google.com/p/simile-widgets/wiki/Timeline_GettingStarted">https://code.google.com/p/simile-widgets/wiki/Timeline_GettingStarted</a>。本文就是參考這份快速開始文件撰寫的。</li>
+<li>官方文件清單：<a target="_blank" href="https://code.google.com/p/simile-widgets/w/list">https://code.google.com/p/simile-widgets/w/list</a>。官方文件的索引頁 (index page) 不好用，要找東西直接挖清單比較快。另外也請愛用頁面上的搜索條。</li>
+<li>Timeline 類別的 API 介紹：<a target="_blank" href="https://code.google.com/p/simile-widgets/wiki/Timeline_TimelineClass">https://code.google.com/p/simile-widgets/wiki/Timeline_TimelineClass</a>。</li>
+<li>Event 的可能參數一覽：<a target="_blank" href="https://code.google.com/p/simile-widgets/wiki/Timeline_EventSources">https://code.google.com/p/simile-widgets/wiki/Timeline_EventSources</a>。</li>
+</ol><hr id="system-readmore" />
+			<!-- Show relate article -->
+				<!-- end -->
+		<div class="article_note">
+		<!-- Add tags use metakey, and show OSSF Newsletter tag: OSSFNL+NUM-->
+		<br><br> <hr style='border: 1px dashed #D2DADB;'><b>OSSF Newsletter&nbsp;:</b>&nbsp;<a href='../../previous-issue%3Ftask=view&amp;id=804.html'>第 204 期 Simile Widget Timeline - 用靜態網頁表現時間線</a><br>				<!-- End -->
+					<br>
+					<b>Category: </b><a href="../tech-column.html">				Tech Column					</a>				</div>
+			 <!-- AddThis Button BEGIN ID 3001 is the front page article -->
+     			<br><br>
+       <div class="addthis_toolbox addthis_default_style addthis_32x32_style">
+       <a class="addthis_button_preferred_1"></a>
+       <a class="addthis_button_preferred_2"></a>
+       <a class="addthis_button_preferred_3"></a>
+       <a class="addthis_button_preferred_4"></a>
+       <a class="addthis_button_compact"></a>
+       <a class="addthis_counter addthis_bubble_style"></a>
+       </div>
+       <script type="text/javascript">var addthis_config = {"data_track_clickback":true};</script>
+       <script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js#pubid=openfoundry"></script>
+       <!-- AddThis Button END -->
+     <br>
+		<div class="totop" ><a class="rt-totop" href="8807%3Ftask=view.html#" style="outline: medium none;">↑ Top</a></div>
+            <!-- AddThis Button END -->
+
+		<script type="text/javascript">
+var jcomments=new JComments(8807, 'com_content','https://openfoundry.org/index.php?option=com_jcomments&amp;tmpl=component&amp;lang=');
+jcomments.setList('comments-list');
+</script>
+<div id="jc">
+<div id="comments"><h4>Comments<a class="refresh" href="8807%3Ftask=view.html#" title="Refresh comments list" onclick="jcomments.showPage(8807,'com_content',0);return false;">&nbsp;</a></h4>
+<div id="comments-list" class="comments-list">
+        <div class="even" id="comment-item-316"><div class="rbox"><div class="rbox_tr"><div class="rbox_tl"><div class="rbox_t">&nbsp;</div></div></div><div class="rbox_m">
+<div class="comment-avatar"><img src="http://www.gravatar.com/avatar.php?gravatar_id=24c1c6390cf15e30d283ef1d7a98844c&amp;default=https%3A%2F%2Fwww.openfoundry.org%2Fcomponents%2Fcom_jcomments%2Fimages%2Fno_avatar.png" alt="" /></div>
+<div class="comment-box avatar-indent">
+<span class="comments-vote">
+	<span id="comment-vote-holder-316">
+<a href="8807%3Ftask=view.html#" class="vote-good" title="Good comment!" onclick="jcomments.voteComment(316, 1);return false;"></a><a href="8807%3Ftask=view.html#" class="vote-poor" title="Poor comment!" onclick="jcomments.voteComment(316, -1);return false;"></a>
+<span class="vote-none">0</span>
+	</span>
+</span>
+<a class="comment-anchor" href="../tech-column/8807-simile-widget-timeline-.html#comment-316" id="comment-316">#1</a>
+<span class="comment-author">Kevin Chiou</span>
+<span class="comment-date">2012-09-26 01:58</span>
+<div class="comment-body" id="comment-body-316">遇到有人用同樣的套件，感覺真窩<span style="font-size:0px;padding:0;margin:0;"> </span>心 <img src="../../components/com_jcomments/images/smiles/laugh.gif" border="0" alt="" /><br /><br />這套件的缺點就是文件不足，但其<span style="font-size:0px;padding:0;margin:0;"> </span>實裡面有蠻多可以研究的，但可惜<span style="font-size:0px;padding:0;margin:0;"> </span>好像開發已經停止了，很久沒見更<span style="font-size:0px;padding:0;margin:0;"> </span>新。<br />我也正試著將其優化，並改進一些<span style="font-size:0px;padding:0;margin:0;"> </span>bug，有機會可以交流交流。</div>
+</div><div class="clear"></div>
+</div><div class="rbox_br"><div class="rbox_bl"><div class="rbox_b">&nbsp;</div></div></div></div>
+</div>
+        <div class="odd" id="comment-item-317"><div class="rbox"><div class="rbox_tr"><div class="rbox_tl"><div class="rbox_t">&nbsp;</div></div></div><div class="rbox_m">
+<div class="comment-avatar"><img src="http://www.gravatar.com/avatar.php?gravatar_id=f4c05b4f2542c4153b85472f8dc00f99&amp;default=https%3A%2F%2Fwww.openfoundry.org%2Fcomponents%2Fcom_jcomments%2Fimages%2Fno_avatar.png" alt="" /></div>
+<div class="comment-box avatar-indent">
+<span class="comments-vote">
+	<span id="comment-vote-holder-317">
+<a href="8807%3Ftask=view.html#" class="vote-good" title="Good comment!" onclick="jcomments.voteComment(317, 1);return false;"></a><a href="8807%3Ftask=view.html#" class="vote-poor" title="Poor comment!" onclick="jcomments.voteComment(317, -1);return false;"></a>
+<span class="vote-none">0</span>
+	</span>
+</span>
+<a class="comment-anchor" href="../tech-column/8807-simile-widget-timeline-.html#comment-317" id="comment-317">#2</a>
+<a class="author-homepage" href="https://wfst.blogspot.com" rel="nofollow" title="&#x6797&#x96ea&#x51e1">&#x6797&#x96ea&#x51e1</a>
+<span class="comment-date">2012-09-26 13:27</span>
+<div class="comment-body" id="comment-body-317">寫稿查資料時，也有發現它很久沒<span style="font-size:0px;padding:0;margin:0;"> </span>更新，讓咱有些介意……<br /><br />不過還是寫了，畢竟是不錯用的東<span style="font-size:0px;padding:0;margin:0;"> </span>西啊。 <img src="../../components/com_jcomments/images/smiles/lol.gif" border="0" alt="" /></div>
+</div><div class="clear"></div>
+</div><div class="rbox_br"><div class="rbox_bl"><div class="rbox_b">&nbsp;</div></div></div></div>
+</div>
+        <div class="even" id="comment-item-337"><div class="rbox"><div class="rbox_tr"><div class="rbox_tl"><div class="rbox_t">&nbsp;</div></div></div><div class="rbox_m">
+<div class="comment-avatar"><img src="http://www.gravatar.com/avatar.php?gravatar_id=546442d9535062a49671b46695f2aba4&amp;default=https%3A%2F%2Fwww.openfoundry.org%2Fcomponents%2Fcom_jcomments%2Fimages%2Fno_avatar.png" alt="" /></div>
+<div class="comment-box avatar-indent">
+<span class="comments-vote">
+	<span id="comment-vote-holder-337">
+<a href="8807%3Ftask=view.html#" class="vote-good" title="Good comment!" onclick="jcomments.voteComment(337, 1);return false;"></a><a href="8807%3Ftask=view.html#" class="vote-poor" title="Poor comment!" onclick="jcomments.voteComment(337, -1);return false;"></a>
+<span class="vote-none">0</span>
+	</span>
+</span>
+<a class="comment-anchor" href="../tech-column/8807-simile-widget-timeline-.html#comment-337" id="comment-337">#3</a>
+<span class="comment-author">Kevin ele</span>
+<span class="comment-date">2012-12-01 10:47</span>
+<div class="comment-body" id="comment-body-337">請問一下，我已經在網站頁面中把<span style="font-size:0px;padding:0;margin:0;"> </span>TimeLine框架架好了。<br />但是xml沒辦法上去，把xml<span style="font-size:0px;padding:0;margin:0;"> </span>建好後要怎麼讓它顯示在Time<span style="font-size:0px;padding:0;margin:0;"> </span>Line框架內?</div>
+</div><div class="clear"></div>
+</div><div class="rbox_br"><div class="rbox_bl"><div class="rbox_b">&nbsp;</div></div></div></div>
+</div>
+        <div class="odd" id="comment-item-338"><div class="rbox"><div class="rbox_tr"><div class="rbox_tl"><div class="rbox_t">&nbsp;</div></div></div><div class="rbox_m">
+<div class="comment-avatar"><img src="http://www.gravatar.com/avatar.php?gravatar_id=f4c05b4f2542c4153b85472f8dc00f99&amp;default=https%3A%2F%2Fwww.openfoundry.org%2Fcomponents%2Fcom_jcomments%2Fimages%2Fno_avatar.png" alt="" /></div>
+<div class="comment-box avatar-indent">
+<span class="comments-vote">
+	<span id="comment-vote-holder-338">
+<a href="8807%3Ftask=view.html#" class="vote-good" title="Good comment!" onclick="jcomments.voteComment(338, 1);return false;"></a><a href="8807%3Ftask=view.html#" class="vote-poor" title="Poor comment!" onclick="jcomments.voteComment(338, -1);return false;"></a>
+<span class="vote-good">+1</span>
+	</span>
+</span>
+<a class="comment-anchor" href="../tech-column/8807-simile-widget-timeline-.html#comment-338" id="comment-338">#4</a>
+<a class="author-homepage" href="https://wfst.bolgspot.com" rel="nofollow" title="&#x6797&#x96ea&#x51e1">&#x6797&#x96ea&#x51e1</a>
+<span class="comment-date">2012-12-03 16:16</span>
+<div class="comment-body" id="comment-body-338"><span class="quote">Quoting Kevin ele:</span><blockquote>請問一下，我已經在網站頁面中把<span style="font-size:0px;padding:0;margin:0;"> </span>TimeLine框架架好了。<br />但是xml沒辦法上去，把xml<span style="font-size:0px;padding:0;margin:0;"> </span>建好後要怎麼讓它顯示在Time<span style="font-size:0px;padding:0;margin:0;"> </span>Line框架內?</blockquote><br />請問您是不是是透過本機檔案路徑<span style="font-size:0px;padding:0;margin:0;"> </span>來測試 html 檔案（瀏覽器的路徑列會顯示成 file:///xxx/yyy/zzz.html 這樣）<br /><br />如果您直接使用本機檔案來進行開<span style="font-size:0px;padding:0;margin:0;"> </span>發測試，會正好跑到添加 xml 這步時，發現 xml 中的事件顯示不出來。我當初研究<span style="font-size:0px;padding:0;margin:0;"> </span>時也在這一步上卡了很久……<br /><br />請您務必使用網頁伺服器進行測試<span style="font-size:0px;padding:0;margin:0;"> </span>（瀏覽器路徑列上應該會是 http 開頭，而非 file 開頭）</div>
+</div><div class="clear"></div>
+</div><div class="rbox_br"><div class="rbox_bl"><div class="rbox_b">&nbsp;</div></div></div></div>
+</div>
+        <div class="even" id="comment-item-347"><div class="rbox"><div class="rbox_tr"><div class="rbox_tl"><div class="rbox_t">&nbsp;</div></div></div><div class="rbox_m">
+<div class="comment-avatar"><img src="http://www.gravatar.com/avatar.php?gravatar_id=61100ae3fd39afdfb0b7d6f3e0d3488e&amp;default=https%3A%2F%2Fwww.openfoundry.org%2Fcomponents%2Fcom_jcomments%2Fimages%2Fno_avatar.png" alt="" /></div>
+<div class="comment-box avatar-indent">
+<span class="comments-vote">
+	<span id="comment-vote-holder-347">
+<a href="8807%3Ftask=view.html#" class="vote-good" title="Good comment!" onclick="jcomments.voteComment(347, 1);return false;"></a><a href="8807%3Ftask=view.html#" class="vote-poor" title="Poor comment!" onclick="jcomments.voteComment(347, -1);return false;"></a>
+<span class="vote-none">0</span>
+	</span>
+</span>
+<a class="comment-anchor" href="../tech-column/8807-simile-widget-timeline-.html#comment-347" id="comment-347">#5</a>
+<span class="comment-author">Kevin ele</span>
+<span class="comment-date">2012-12-18 23:04</span>
+<div class="comment-body" id="comment-body-347">是網站的，並且XML應該是有讀<span style="font-size:0px;padding:0;margin:0;"> </span>取到。因為我只要一改<br />Timeline.loadXML("這裡的名稱.xml", function(xml, url) { eventSource.loadXML(xml, url); });<br />26 }<br />他就會說找不到DATA，但是改<span style="font-size:0px;padding:0;margin:0;"> </span>回來後跟之前一樣只有時間軸而沒<span style="font-size:0px;padding:0;margin:0;"> </span>有點，另外請問一下。使用DRE<span style="font-size:0px;padding:0;margin:0;"> </span>AMWEAVER要怎麼寫出讓使<span style="font-size:0px;padding:0;margin:0;"> </span>用者可以自行加入"點"跟"內容"的程式?</div>
+</div><div class="clear"></div>
+</div><div class="rbox_br"><div class="rbox_bl"><div class="rbox_b">&nbsp;</div></div></div></div>
+</div>
+        <div class="odd" id="comment-item-348"><div class="rbox"><div class="rbox_tr"><div class="rbox_tl"><div class="rbox_t">&nbsp;</div></div></div><div class="rbox_m">
+<div class="comment-avatar"><img src="http://www.gravatar.com/avatar.php?gravatar_id=f4c05b4f2542c4153b85472f8dc00f99&amp;default=https%3A%2F%2Fwww.openfoundry.org%2Fcomponents%2Fcom_jcomments%2Fimages%2Fno_avatar.png" alt="" /></div>
+<div class="comment-box avatar-indent">
+<span class="comments-vote">
+	<span id="comment-vote-holder-348">
+<a href="8807%3Ftask=view.html#" class="vote-good" title="Good comment!" onclick="jcomments.voteComment(348, 1);return false;"></a><a href="8807%3Ftask=view.html#" class="vote-poor" title="Poor comment!" onclick="jcomments.voteComment(348, -1);return false;"></a>
+<span class="vote-none">0</span>
+	</span>
+</span>
+<a class="comment-anchor" href="../tech-column/8807-simile-widget-timeline-.html#comment-348" id="comment-348">#6</a>
+<a class="author-homepage" href="https://wfst.blogspot.com" rel="nofollow" title="&#x6797&#x96ea&#x51e1">&#x6797&#x96ea&#x51e1</a>
+<span class="comment-date">2012-12-19 14:58</span>
+<div class="comment-body" id="comment-body-348">這樣一來還真難說了……我猜：<br />如果您xml是用複製的話，請注<span style="font-size:0px;padding:0;margin:0;"> </span>意半型角括號與全型角括號的差別<span style="font-size:0px;padding:0;margin:0;"> </span>(請用半型取代全型，因顯示方便<span style="font-size:0px;padding:0;margin:0;"> </span>文內都是全型)<br />DREAMWERAVER 沒用過，很抱歉幫不上忙。</div>
+</div><div class="clear"></div>
+</div><div class="rbox_br"><div class="rbox_bl"><div class="rbox_b">&nbsp;</div></div></div></div>
+</div>
+        <div class="even" id="comment-item-349"><div class="rbox"><div class="rbox_tr"><div class="rbox_tl"><div class="rbox_t">&nbsp;</div></div></div><div class="rbox_m">
+<div class="comment-avatar"><img src="http://www.gravatar.com/avatar.php?gravatar_id=61100ae3fd39afdfb0b7d6f3e0d3488e&amp;default=https%3A%2F%2Fwww.openfoundry.org%2Fcomponents%2Fcom_jcomments%2Fimages%2Fno_avatar.png" alt="" /></div>
+<div class="comment-box avatar-indent">
+<span class="comments-vote">
+	<span id="comment-vote-holder-349">
+<a href="8807%3Ftask=view.html#" class="vote-good" title="Good comment!" onclick="jcomments.voteComment(349, 1);return false;"></a><a href="8807%3Ftask=view.html#" class="vote-poor" title="Poor comment!" onclick="jcomments.voteComment(349, -1);return false;"></a>
+<span class="vote-none">0</span>
+	</span>
+</span>
+<a class="comment-anchor" href="../tech-column/8807-simile-widget-timeline-.html#comment-349" id="comment-349">#7</a>
+<span class="comment-author">Kevin ele</span>
+<span class="comment-date">2012-12-19 23:19</span>
+<div class="comment-body" id="comment-body-349">林雪凡 謝謝你的解答<br />我有把他的文字轉成我們正常在使<span style="font-size:0px;padding:0;margin:0;"> </span>用的，不過還是無法</div>
+</div><div class="clear"></div>
+</div><div class="rbox_br"><div class="rbox_bl"><div class="rbox_b">&nbsp;</div></div></div></div>
+</div>
+        <div class="odd" id="comment-item-350"><div class="rbox"><div class="rbox_tr"><div class="rbox_tl"><div class="rbox_t">&nbsp;</div></div></div><div class="rbox_m">
+<div class="comment-avatar"><img src="http://www.gravatar.com/avatar.php?gravatar_id=73f379b945d1f9959aefbe62973ce7b5&amp;default=https%3A%2F%2Fwww.openfoundry.org%2Fcomponents%2Fcom_jcomments%2Fimages%2Fno_avatar.png" alt="" /></div>
+<div class="comment-box avatar-indent">
+<span class="comments-vote">
+	<span id="comment-vote-holder-350">
+<a href="8807%3Ftask=view.html#" class="vote-good" title="Good comment!" onclick="jcomments.voteComment(350, 1);return false;"></a><a href="8807%3Ftask=view.html#" class="vote-poor" title="Poor comment!" onclick="jcomments.voteComment(350, -1);return false;"></a>
+<span class="vote-none">0</span>
+	</span>
+</span>
+<a class="comment-anchor" href="../tech-column/8807-simile-widget-timeline-.html#comment-350" id="comment-350">#8</a>
+<span class="comment-author">Fla</span>
+<span class="comment-date">2013-01-06 16:20</span>
+<div class="comment-body" id="comment-body-350">請問，我已經把時間軸的程式碼(<span style="font-size:0px;padding:0;margin:0;"> </span>HTML)和"點(XML)"加上"timeline_2.3.0"放在同一個資料夾，並且呼叫得出<span style="font-size:0px;padding:0;margin:0;"> </span>來。但是"點"上不去是有什麼沒有注意到的問題<span style="font-size:0px;padding:0;margin:0;"> </span>嗎?求解<br />已經把全形字改為正常使用字體，<span style="font-size:0px;padding:0;margin:0;"> </span>並且是開白的HTML和XML只<span style="font-size:0px;padding:0;margin:0;"> </span>有上述的程式碼</div>
+</div><div class="clear"></div>
+</div><div class="rbox_br"><div class="rbox_bl"><div class="rbox_b">&nbsp;</div></div></div></div>
+</div>
+        <div class="even" id="comment-item-351"><div class="rbox"><div class="rbox_tr"><div class="rbox_tl"><div class="rbox_t">&nbsp;</div></div></div><div class="rbox_m">
+<div class="comment-avatar"><img src="http://www.gravatar.com/avatar.php?gravatar_id=0b75379cf8bb398ecdc1ae506f28bb64&amp;default=https%3A%2F%2Fwww.openfoundry.org%2Fcomponents%2Fcom_jcomments%2Fimages%2Fno_avatar.png" alt="" /></div>
+<div class="comment-box avatar-indent">
+<span class="comments-vote">
+	<span id="comment-vote-holder-351">
+<a href="8807%3Ftask=view.html#" class="vote-good" title="Good comment!" onclick="jcomments.voteComment(351, 1);return false;"></a><a href="8807%3Ftask=view.html#" class="vote-poor" title="Poor comment!" onclick="jcomments.voteComment(351, -1);return false;"></a>
+<span class="vote-none">0</span>
+	</span>
+</span>
+<a class="comment-anchor" href="../tech-column/8807-simile-widget-timeline-.html#comment-351" id="comment-351">#9</a>
+<a class="author-homepage" href="https://wfst.blogspot.com" rel="nofollow" title="林雪凡">林雪凡</a>
+<span class="comment-date">2013-01-07 10:37</span>
+<div class="comment-body" id="comment-body-351">多謝回報！<br /><br />排除了所有先前提過的問題後，我<span style="font-size:0px;padding:0;margin:0;"> </span>發現了一個新問題可能和 fla & Kevin ele 碰上的麻煩有關。那就是時間的格<span style="font-size:0px;padding:0;margin:0;"> </span>式。<br />我原本是在 chromium 中進行測試的，此時一切正常，但<span style="font-size:0px;padding:0;margin:0;"> </span>到了 Firefox 底下，幾乎所有的點都消失了。<br />問題在此：<br /><span class="quote">Quote:</span><blockquote>＜event <br /> start="2012-7-20"<br /> latestStart="2012-7-30"<br /> earliestEnd="2012-8-19"<br /> end="2012-9-1"<br /> durationEvent="true"<br /> title="有適度考察異國風情的必要"＞<br />＜/event＞</blockquote><br />所有的時間表示，在 fx 中不接受用 "-" 作為分隔符號，但在 chromium 中可以（理由不明）。反正將 "-" 改換成空格就行了。如下……<br /><span class="quote">Quote:</span><blockquote>＜event <br /> start="2012 7 20"<br /> latestStart="2012 7 30"<br /> earliestEnd="2012 8 19"<br /> end="2012 9 1"<br /> durationEvent="true"<br /> title="有適度考察異國風情的必要"＞<br />＜/event＞</blockquote><br />因為手邊機器不允許，暫時沒測試<span style="font-size:0px;padding:0;margin:0;"> </span>其他瀏覽器中是否也有類似問題。<span style="font-size:0px;padding:0;margin:0;"> </span><br />這個奇怪的瑕疵還請各位多加留意<span style="font-size:0px;padding:0;margin:0;"> </span>。</div>
+</div><div class="clear"></div>
+</div><div class="rbox_br"><div class="rbox_bl"><div class="rbox_b">&nbsp;</div></div></div></div>
+</div>
+        <div class="odd" id="comment-item-354"><div class="rbox"><div class="rbox_tr"><div class="rbox_tl"><div class="rbox_t">&nbsp;</div></div></div><div class="rbox_m">
+<div class="comment-avatar"><img src="http://www.gravatar.com/avatar.php?gravatar_id=6c34cc630db0f02bd14e2665a8f6148b&amp;default=https%3A%2F%2Fwww.openfoundry.org%2Fcomponents%2Fcom_jcomments%2Fimages%2Fno_avatar.png" alt="" /></div>
+<div class="comment-box avatar-indent">
+<span class="comments-vote">
+	<span id="comment-vote-holder-354">
+<a href="8807%3Ftask=view.html#" class="vote-good" title="Good comment!" onclick="jcomments.voteComment(354, 1);return false;"></a><a href="8807%3Ftask=view.html#" class="vote-poor" title="Poor comment!" onclick="jcomments.voteComment(354, -1);return false;"></a>
+<span class="vote-none">0</span>
+	</span>
+</span>
+<a class="comment-anchor" href="../tech-column/8807-simile-widget-timeline-.html#comment-354" id="comment-354">#10</a>
+<span class="comment-author">曼</span>
+<span class="comment-date">2013-01-22 16:17</span>
+<div class="comment-body" id="comment-body-354">你好<br />不好意思打擾了<br />我想請問一下關於add event的部分<br />我照你的步驟做 但是時間軸上面都沒有出現<br />不知道是xml格式有問題嗎?</div>
+</div><div class="clear"></div>
+</div><div class="rbox_br"><div class="rbox_bl"><div class="rbox_b">&nbsp;</div></div></div></div>
+</div>
+        <div class="even" id="comment-item-356"><div class="rbox"><div class="rbox_tr"><div class="rbox_tl"><div class="rbox_t">&nbsp;</div></div></div><div class="rbox_m">
+<div class="comment-avatar"><img src="http://www.gravatar.com/avatar.php?gravatar_id=f4c05b4f2542c4153b85472f8dc00f99&amp;default=https%3A%2F%2Fwww.openfoundry.org%2Fcomponents%2Fcom_jcomments%2Fimages%2Fno_avatar.png" alt="" /></div>
+<div class="comment-box avatar-indent">
+<span class="comments-vote">
+	<span id="comment-vote-holder-356">
+<a href="8807%3Ftask=view.html#" class="vote-good" title="Good comment!" onclick="jcomments.voteComment(356, 1);return false;"></a><a href="8807%3Ftask=view.html#" class="vote-poor" title="Poor comment!" onclick="jcomments.voteComment(356, -1);return false;"></a>
+<span class="vote-none">0</span>
+	</span>
+</span>
+<a class="comment-anchor" href="../tech-column/8807-simile-widget-timeline-.html#comment-356" id="comment-356">#11</a>
+<a class="author-homepage" href="https://wfst.blogspot.com" rel="nofollow" title="&#x6797&#x96ea&#x51e1">&#x6797&#x96ea&#x51e1</a>
+<span class="comment-date">2013-01-28 09:46</span>
+<div class="comment-body" id="comment-body-356">您好 曼：<br /><br />請問您有考慮過 #9 提出的問題嗎？光這樣說，我們這<span style="font-size:0px;padding:0;margin:0;"> </span>邊也很難幫您抓問題呢。<br /><br />不過，我推薦您可以參考一下 OSSF 做的 timeline 原始檔：<br /><a href="http://https://ossftimeline.openfoundry.org/" target="_blank" rel="external nofollow">ossftimeline.openfoundry.org/</a><br />以及 xml：<br /><a href="http://https://ossftimeline.openfoundry.org/timeline.xml" target="_blank" rel="external nofollow">ossftimeline.openfoundry.org/.../</a><br /><br />說不定看過實際可運作的 timeline 後，您就能發現到一些您的問題了<span style="font-size:0px;padding:0;margin:0;"> </span>。</div>
+</div><div class="clear"></div>
+</div><div class="rbox_br"><div class="rbox_bl"><div class="rbox_b">&nbsp;</div></div></div></div>
+</div>
+        <div class="odd" id="comment-item-416"><div class="rbox"><div class="rbox_tr"><div class="rbox_tl"><div class="rbox_t">&nbsp;</div></div></div><div class="rbox_m">
+<div class="comment-avatar"><img src="http://www.gravatar.com/avatar.php?gravatar_id=a225cd83b257d22444a4dc7398919c00&amp;default=https%3A%2F%2Fwww.openfoundry.org%2Fcomponents%2Fcom_jcomments%2Fimages%2Fno_avatar.png" alt="" /></div>
+<div class="comment-box avatar-indent">
+<span class="comments-vote">
+	<span id="comment-vote-holder-416">
+<a href="8807%3Ftask=view.html#" class="vote-good" title="Good comment!" onclick="jcomments.voteComment(416, 1);return false;"></a><a href="8807%3Ftask=view.html#" class="vote-poor" title="Poor comment!" onclick="jcomments.voteComment(416, -1);return false;"></a>
+<span class="vote-none">0</span>
+	</span>
+</span>
+<a class="comment-anchor" href="../tech-column/8807-simile-widget-timeline-.html#comment-416" id="comment-416">#12</a>
+<span class="comment-author">timeline</span>
+<span class="comment-date">2013-05-14 16:15</span>
+<div class="comment-body" id="comment-body-416">請問怎麼讓這個時間線控件支持w<span style="font-size:0px;padding:0;margin:0;"> </span>3c標準協議，或者怎麼改動代碼讓<span style="font-size:0px;padding:0;margin:0;"> </span>他能在w3c標準中運行</div>
+</div><div class="clear"></div>
+</div><div class="rbox_br"><div class="rbox_bl"><div class="rbox_b">&nbsp;</div></div></div></div>
+</div>
+        <div class="even" id="comment-item-417"><div class="rbox"><div class="rbox_tr"><div class="rbox_tl"><div class="rbox_t">&nbsp;</div></div></div><div class="rbox_m">
+<div class="comment-avatar"><img src="http://www.gravatar.com/avatar.php?gravatar_id=a225cd83b257d22444a4dc7398919c00&amp;default=https%3A%2F%2Fwww.openfoundry.org%2Fcomponents%2Fcom_jcomments%2Fimages%2Fno_avatar.png" alt="" /></div>
+<div class="comment-box avatar-indent">
+<span class="comments-vote">
+	<span id="comment-vote-holder-417">
+<a href="8807%3Ftask=view.html#" class="vote-good" title="Good comment!" onclick="jcomments.voteComment(417, 1);return false;"></a><a href="8807%3Ftask=view.html#" class="vote-poor" title="Poor comment!" onclick="jcomments.voteComment(417, -1);return false;"></a>
+<span class="vote-none">0</span>
+	</span>
+</span>
+<a class="comment-anchor" href="../tech-column/8807-simile-widget-timeline-.html#comment-417" id="comment-417">#13</a>
+<span class="comment-author">timeline</span>
+<span class="comment-date">2013-05-14 16:17</span>
+<div class="comment-body" id="comment-body-417">本人電子郵箱：gm_zouhu<span style="font-size:0px;padding:0;margin:0;"> </span><span onclick="jcomments.jump2email(417, '6fa0543a190db8140c3d56ca4229be29');" class="email" onmouseover="this.className='emailactive';" onmouseout="this.className='email';">awei<img src="../../components/com_jcomments/images/email.png" border="0"/>163.com</span>.版主能留個聯繫方式嗎，本人把簡<span style="font-size:0px;padding:0;margin:0;"> </span>化後的源碼發給你，但求幫忙解決<span style="font-size:0px;padding:0;margin:0;"> </span>w3c問題</div>
+</div><div class="clear"></div>
+</div><div class="rbox_br"><div class="rbox_bl"><div class="rbox_b">&nbsp;</div></div></div></div>
+</div>
+</div>
+<div id="comments-list-footer"><a class="refresh" href="8807%3Ftask=view.html#" title="Refresh comments list" onclick="jcomments.showPage(8807,'com_content',0);return false;">Refresh comments list</a></div>
+</div>
+<div id="comments-footer" align="center"><a href="http://www.joomlatune.com" title="JComments" target="_blank">JComments</a></div>
+<script type="text/javascript">
+jcomments.setAntiCache(1,0,0);
+</script> 
+</div>	</div>
+</div>
+
+		                            </div>
+									<div class="clear"></div>
+								</div>
+								<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+							</div>
+							</div>
+                                                    </div>
+                                            </div>
+                                <div class="rt-grid-3 rt-pull-9">
+                <div id="rt-sidebar-a">
+                                    <div class="square4">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<ul class="menu"><li class="item56"><a href="../previous-issue.html"><span>Previous Issue</span></a></li><li class="item55"><a href="../about-newsletter.html"><span>About Newsletter</span></a></li></ul>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<ul class="menu"><li class="item115"><a href="../foss-news.html"><span>FOSS News</span></a></li><li class="item141"><a href="../case-job.html"><span>Case and Jobs</span></a></li></ul>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+        	                <div class="square1">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-title"><h2 class="title">Special</h2></div>
+						<div class="clear"></div>
+		                						<div class="module-content">
+		                	<ul class="menu"><li class="item37"><a href="../tech-column.html"><span>Tech Column</span></a></li><li class="item40"><a href="../foss-programs.html"><span>FOSS Programs</span></a></li><li class="item35"><a href="../legal-column.html"><span>Legal Column</span></a></li><li class="item154"><a href="../foss-forum.html"><span>FOSS Forum</span></a></li><li class="item162"><a href="../enterprise-application.html"><span>Enterprise Application</span></a></li><li class="item44"><a href="../foss-projects.html"><span>FOSS Projects</span></a></li></ul>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		                <div class="square1">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<p style="text-align: center;"><a href="../../news%3Fformat=feed&amp;type=rss" target="_black"><img src="../../images/M_images/news-rss-feed.png" border="0" /></a><br /><a href="https://www.openfoundry.org/rss-feed/Newsletter" target="_black"><img src="../../images/M_images/newsletter-rss-feed.png" border="0" /></a></p>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		
+                </div>
+            </div>
+
+                    <div class="clear"></div>
+                </div>
+            </div>
+																													</div>
+										<div id="rt-copyright">
+						<div class="rt-grid-12 rt-alpha rt-omega">
+                        <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<span class="nowrap">Open Source Software Foundry</span><span class="nowrap">‧</span><span class="nowrap"> </span><span class="nowrap">Best  Viewed with IE7.0 or Firefox2.0 above, 1024x768 Resolution. </span><strong>E-Mail</strong>：<a href="mailto:contact@openfoundry.org">contact@openfoundry.org</a> <br /><strong>Address</strong>：No.128, Sec.2, Academia Rd., Institute of Information Science, Academia Sinica, Nangang District, Taipei City 11529, Taiwan (R.O.C). <br /><a href="../privacy-policy.html">Privacy Policy</a>. <a href="../terms-of-use.html">Terms-of-use</a> <span style="position: relative; top: 8px; margin-top: -8px;"> <a href="../../about/8101.html"><img src="../../images/M_images/rss-feed-all.png" border="0" /></a></span>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+        	
+</div>
+						<div class="clear"></div>
+					</div>
+					<div class="rt-footer-bottom-wrap"><div class="rt-footer-bottom"><div class="rt-footer-bottom2"><div class="rt-footer-bottom3"></div></div></div></div>
+									</div></div></div>
+				<div class="rt-surround-bottom"><div class="rt-surround-bottom2"><div class="rt-surround-bottom3"></div></div></div>
+							</div>
+		</div>
+		<!--
+		<script id="aptureScript">
+						(function (){var a=document.createElement("script");a.defer="true";a.src="http://www.apture.com/js/apture.js?siteToken=vsJttrn";document.getElementsByTagName("head")[0].appendChild(a);})();
+     </script>
+-->
+
+<!-- Piwik -->
+<!-- 			<script type="text/javascript">
+			  var _paq = _paq || [];
+		  _paq.push(["trackPageView"]);
+		  _paq.push(["enableLinkTracking"]);
+
+		    (function() {
+			        var u=(("https:" == document.location.protocol) ? "https" : "https") + "://www.openfoundry.org/piwik/";
+				    _paq.push(["setTrackerUrl", u+"piwik.php"]);
+				    _paq.push(["setSiteId", "1"]);
+				        var d=document, g=d.createElement("script"), s=d.getElementsByTagName("script")[0]; g.type="text/javascript";
+				        g.defer=true; g.async=true; g.src=u+"piwik.js"; s.parentNode.insertBefore(g,s);
+					  })();
+		  </script> -->
+<!-- End Piwik Code -->
+	</body>
+</html>

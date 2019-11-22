@@ -1,0 +1,411 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-gb" lang="en-gb" >
+<head>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<link rel="shortcut icon" href="../../images/favicon.ico" />
+	  <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+  <meta name="robots" content="index, follow" />
+  <meta name="keywords" content="OSSFNL737" />
+  <meta name="title" content="用自由軟體 Plone 來架設網站(7)－版型調整" />
+  <meta name="description" content="在前篇文章裡，透過 ZMI 和網頁介面，我們已經完成不少佈景主題的調整，有了這些知識和經驗，接下來，我們要在檔案系統裡，練習程式碼的調整方式，認識更多佈景主題的相關細節，包括 main_template.pt 的語法細節，Viewlet Manager 的調整方法，和 Viewlet 的註冊方式。 main_template.pt 是 Plone 的核心樣版檔案，它負責決定佈景主題的" />
+  <meta name="generator" content="" />
+  <title>用自由軟體 Plone 來架設網站(7)－版型調整 - OpenFoundry</title>
+  <link href="../../favicon.ico" rel="shortcut icon" type="image/x-icon" />
+  <link rel="stylesheet" href="../../components/com_gantry/css/gantry.css" type="text/css" />
+  <link rel="stylesheet" href="../../components/com_gantry/css/grid-12.css" type="text/css" />
+  <link rel="stylesheet" href="../../components/com_gantry/css/joomla.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/joomla.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/style1.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/light-body.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/demo-styles.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/template.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/typography.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/fusionmenu.css" type="text/css" />
+  <style type="text/css">
+    <!--
+#rt-main-surround ul.menu li.active > a, #rt-main-surround ul.menu li.active > .separator, #rt-main-surround ul.menu li.active > .item, #rt-main-surround .square4 ul.menu li:hover > a, #rt-main-surround .square4 ul.menu li:hover > .item, #rt-main-surround .square4 ul.menu li:hover > .separator, .roktabs-links ul li.active span {color:#0088B5;}
+a, #rt-main-surround ul.menu a:hover, #rt-main-surround ul.menu .separator:hover, #rt-main-surround ul.menu .item:hover {color:#0088B5;}
+    -->
+  </style>
+  <script type="text/javascript" src="../../components/com_jcomments/js/jcomments-v2.1.js%3Fv=2"></script>
+  <script type="text/javascript" src="../../components/com_jcomments/libraries/joomlatune/ajax.js"></script>
+  <script type="text/javascript" src="../../media/system/js/mootools.js"></script>
+  <script type="text/javascript" src="../../media/system/js/caption.js"></script>
+  <script type="text/javascript" src="../../components/com_gantry/js/gantry-buildspans.js"></script>
+  <script type="text/javascript" src="../../components/com_gantry/js/gantry-inputs.js"></script>
+  <script type="text/javascript" src="../../templates/rt_quantive_j15/js/jquery.cookie.js"></script>
+  <script type="text/javascript" src="../../modules/mod_roknavmenu/themes/fusion/js/fusion.js"></script>
+  <script type="text/javascript" src="../../modules/mod_ofssologin/js/ofssologin.js"></script>
+  <script type="text/javascript">
+
+			window.addEvent('domready', function() {
+				var modules = ['rt-block'];
+				var header = ['h3','h2','h1'];
+				GantryBuildSpans(modules, header);
+			});
+		InputsExclusion.push('.content_vote','#rt-popup')
+		        window.addEvent('load', function() {
+					new Fusion('ul.menutop', {
+						pill: 0,
+						effect: 'slide and fade',
+						opacity: 1,
+						hideDelay: 500,
+						centered: 0,
+						tweakInitial: {'x': -2, 'y': 0},
+        				tweakSubsequent: {'x': 0, 'y': -14},
+						menuFx: {duration: 200, transition: Fx.Transitions.Sine.easeOut},
+						pillFx: {duration: 400, transition: Fx.Transitions.Back.easeOut}
+					});
+	            });
+  </script>
+<!-- <script type="text/javascript" src="/sso/javascripts/langsync.js"></script> -->
+<!-- <script src="/templates/rt_quantive_j15/js/ossf.js"></script> -->
+<script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-4136519-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
+</head>
+	<body  class="backgroundlevel-low backgroundstyle-style8 bodylevel-med bodystyle-light cssstyle-style1 logostyle-dark font-family-helvetica font-size-is-default menu-type-fusionmenu col12 ">
+		<div id="rt-main-background">
+			<div class="rt-container">
+																<div id="rt-header">
+					<div class="rt-grid-7 rt-alpha">
+    			<div class="rt-block">
+    	    	<a href="../../index.html" id="rt-logo"></a>
+    		</div>
+	    
+</div>
+<div class="rt-grid-5 rt-omega">
+                    <div class="square9">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<div class="ofssologin_square9"><a href="../../index.html">Login</a>&nbsp;&nbsp|&nbsp;&nbsp;<span><a href="../../tw/foss-programs/8380--plone-7.html" ><span lang="tw" xml:lang="tw">繁體中文</span></a></li></ul></span><!--Joom!fish V2.0.4 (Lightning)-->
+<!-- &copy; 2003-2009 Think Network, released under the GPL. -->
+<!-- More information: at http://www.joomfish.net -->
+<div class="ofssologin_search_square9">
+  <form id="of_search" action="https://www.openfoundry.org/of/openfoundry/search" method="get" onsubmit="of_search(); return false;">
+    <select id="of_search_type">
+      <option value="Projects"> Projects </option>
+      <option value="Content"> Content </option>
+      <option value="People"> People </option>
+    </select>
+    <input id="query" name="query" id="mod_search_searchword" maxlength="50" alt="search" class="inputbox" type="text" size="28" value="search..."  onblur="if(this.value=='') this.value='search...';" onfocus="if(this.value=='search...') this.value='';" />
+    <input type="hidden" name="commit" value="search" />
+  </form>
+</div></div>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		
+</div>
+					<div class="clear"></div>
+				</div>
+																<div id="rt-navigation"><div id="rt-navigation2"><div id="rt-navigation3">
+					
+<div class="nopill">
+	<ul class="menutop level1 " >
+						<li class="item1 root" >
+					<a class="orphan item bullet" href="../../index.html"  >
+				<span>
+			    				Home				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item32 root" >
+					<a class="orphan item bullet" href="../../archived.html"  >
+				<span>
+			    				Projects				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item186 root" >
+					<a class="orphan item bullet" href="../community.html"  >
+				<span>
+			    				Who&#039;s Who				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item4 root" >
+					<a class="orphan item bullet" href="../news.html"  >
+				<span>
+			    				News				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item5 root" >
+					<a class="orphan item bullet" href="../law-and-licensing.html"  >
+				<span>
+			    				Law &amp; Licensing				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item3 root" >
+					<a class="orphan item bullet" href="../activities.html"  >
+				<span>
+			    				Activities				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item2 root" >
+					<a class="orphan item bullet" href="../resourcecatalog.html"  >
+				<span>
+			    				Resource Catalog				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item45 root" >
+					<a class="orphan item bullet" href="../about.html"  >
+				<span>
+			    				About				   
+				</span>
+			</a>
+			
+			
+	</li>	
+				</ul>
+</div>
+
+				    <div class="clear"></div>
+				</div></div></div>
+								<div class="rt-surround"><div class="rt-surround2"><div class="rt-surround3">
+										<div id="rt-showcase-section">
+												<div id="rt-showcase">
+							<div class="rt-grid-12 rt-alpha rt-omega">
+    		<div class="clear"></div>
+		
+		
+                <div class="close-note">
+                    <div class="rt-block">
+               					<div class="module-content">
+                	<div style="font-size:medium; background-image:linear-gradient(120deg,#159957,#4298b2);color:white;padding:20px;margin:-10px -18px;">感謝您對「自由軟體鑄造場」的支持與愛護，十多年來「自由軟體鑄造場」受中央研究院支持，並在資訊科學研究所以及資訊科技創新研究中心執行，現已完成階段性的任務。 本網站預計持續維運至 2021年底，網站內容基本上不會再更動。<br />也紀念我們永遠的朋友 李士傑先生（Shih-Chieh Ilya Li）。</div>				</div>
+            </div>
+                </div>
+		
+</div>
+							<div class="clear"></div>
+						</div>
+																	</div>
+															<div id="rt-main-surround">
+												<div id="rt-breadcrumbs">
+								<div class="rt-breadcrumb-surround">
+		<a href="../../index.html" id="breadcrumbs-home"></a>
+		<span class="breadcrumbs pathway">
+<a href="../foss-programs.html" class="pathway">FOSS Programs</a> <img src="../../templates/rt_quantive_j15/images/arrow.png" alt=""  /> <span class="no-link">用自由軟體 Plone 來架設網站(7)－版型調整</span></span>
+	</div>
+	
+							<div class="clear"></div>
+						</div>
+																							              <div id="rt-main" class="sa3-mb9">
+                <div class="rt-main-inner">
+                    <div class="rt-grid-9 rt-push-3">
+                                                <div class="rt-block">
+                            							<div class="square1">
+							<div class="rt-module-surround">
+								<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+								<div class="rt-module-inner">
+		                            <div id="rt-mainbody">
+		                                
+<div class="rt-joomla ">
+	<div class="rt-article">
+		
+				<div class="rt-headline"><h1 class="rt-article-title">用自由軟體 Plone 來架設網站(7)－版型調整</h1>		</div>
+		<div class="clear"></div>
+		
+		
+		
+				<div class="rt-articleinfo">
+						<div class="rt-article-icons">
+								<a href="8380--plone-7%3Ftmpl=component&amp;print=1&amp;layout=default&amp;page=.html" title="Print" onclick="window.open(this.href,'win2','status=no,toolbar=no,scrollbars=yes,titlebar=no,menubar=no,resizable=yes,width=640,height=480,directories=no,location=no'); return false;" rel="nofollow"><span class="icon print"></span></a>																</div>
+			
+			<span class="rt-date-posted">
+						 Created at			Tuesday, 28 June 2011 13:58						&nbsp;&nbsp;&nbsp;&nbsp;						Last Updated on Wednesday, 12 October 2011 11:35						</span>
+
+						<span class="rt-author">
+				Written by marr			</span>
+				
+					</div>
+		
+		
+		<p>在前篇文章裡，透過 ZMI 和網頁介面，我們已經完成不少佈景主題的調整，有了這些知識和經驗，接下來，我們要在檔案系統裡，練習程式碼的調整方式，認識更多佈景主題的相關細節，包括 main_template.pt 的語法細節，Viewlet Manager 的調整方法，和 Viewlet 的註冊方式。 <br /><br />main_template.pt 是 Plone 的核心樣版檔案，它負責決定佈景主題的 layout 位置，像是表頁區塊、表尾區塊、主要內容區塊等，在 Plone 3.0 之後，視覺元件的再利用工作，不再採用 METAL 巨集的方法，而是改用 Viewlet Manager 和 Viewlet 的方式。本文將示範在檔案系統裡，管理 Viewlet Manager 的技巧。</p>
+
+<p><br /><br /></p>
+<h3>預設的佈景主題</h3>
+<p>對一般使用者而言，Plone 4.x 的預設佈景主題是 Sunburst，不過，從開發者的角度來看，所有佈景主題的程式碼，預設是以一個稱為 Plone Default 的佈景主題為基礎，你可以進入 buildout-cache/eggs 目錄，在 Products/CMFPlone/profiles/default/viewlets.xml 找到 skinname="Plone Default" 的設定值，在 Products/CMFPlone/profiles/default/skins.xml 找到 default_skin="Plone Default" 和 skin-path name="Plone Default" 的設定值。 <br /> <br /><a href="../../images/110628/plone7/01.png" target="_blank"><img src="../../images/110628/plone7/01.png" border="0" width="450" /></a><br />▲ 圖1 Plone Default 的 viewlets.xml 內容 <br /> <br />Sunburst 就是以 Plone Default 為基礎，加上自製的 CSS 檔案而成，你可以在 plonetheme/sunburst/profiles/default/skins.xml 找到 skin-path name="Sunburst Theme" based-on="Plone Default" 的設定值。 <br /> <br /><a href="../../images/110628/plone7/02.png" target="_blank"><img src="../../images/110628/plone7/02.png" border="0" width="450" /></a><br />▲ 圖2 Sunburst 的 skins.xml 內容 <br /> <br />除了 Sunburst 之外，還有一個稱為 Plone Classic 的佈景主題，也是以 Plone Default 為基礎，它的目錄在 plonetheme/classic 裡。 <br /> <br />利用 Plone Default 的程式碼為基礎，是維護升級相容度的慣例作法，這種作法足以應付多數情況的需求。</p>
+<h3>建立模組專案</h3>
+<p>佈景主題是 Plone 的模組專案，同樣可以透過 paster 來建立，不過，我們改用 zopeskel 程式，它是包了糖衣的 paster 程式，使用 plone3_theme 參數，再接上 plonetheme.mytheme 專案名稱，就能建立新的模組，如圖3 所示。 <br /> <br /><a href="../../images/110628/plone7/03.png" target="_blank"><img src="../../images/110628/plone7/03.png" border="0" width="412" height="138" /></a><br />▲ 圖3 使用 zopeskel 建立 plone3_theme 專案 <br /> <br />接著會出現數個問題，我們只要指定 Skin Name 就行，以填寫 MyTheme 為例，安裝模組後，在 ZMI 的 portal_skins 裡，會看得到 MyTheme 的 Skin 選項。最簡化的情況下，其餘問題都按 Enter 就行，如圖4 所示。 <br /> <br /><a href="../../images/110628/plone7/04.png" target="_blank"><img src="../../images/110628/plone7/04.png" border="0" width="450" /></a><br />▲ 圖4 模組專案問題的回覆範例 <br /> <br />想要安裝啟用 plonetheme.mytheme，把它寫進 buildout.cfg 檔案，如圖5 所示。 <br /> <br /><a href="../../images/110628/plone7/05.png" target="_blank"><img src="../../images/110628/plone7/05.png" border="0" width="263" height="147" /></a><br />▲ 圖5 plonetheme.mytheme 的 buildout.cfg 範例 <br /> <br />執行 bin/buildout 之後，可以在 Site Setup 看到這個模組，代表已經可以啟用它，如圖6 所示。 <br /> <br /><a href="../../images/110628/plone7/06.png" target="_blank"><img src="../../images/110628/plone7/06.png" border="0" width="324" height="61" /></a><br />▲ 圖6 plonetheme.mytheme 成為可安裝模組 <br /> <br />不過，剛建立的 plonetheme.mytheme 非常單調，若此時啟用它，反而會弄亂佈景主題，如果遇到弄亂的情況，可以到 Theme settings 裡，手動指定 Default theme 為 Sunburst Theme 後，就能恢復。</p>
+<h3>視覺元件技術項目</h3>
+<p>Plone 視覺元件架構裡，最底層的技術項目，彼此之間的關連性，可以用圖7 來表示。 <br /> <br /><a href="../../images/110628/plone7/07.png" target="_blank"><img src="../../images/110628/plone7/07.png" border="0" width="450" /></a><br />▲ 圖7 視覺元件的關連示意 <br /> <br />對照 plone3_theme 專案的檔案目錄樹狀圖，更容易了解上述技術項目的關係，如圖8 所示。我們把 plonetheme.mytheme.egg-info、setup.cfg、setup.py 之類的檔案從樹狀圖裡移除，因為它們屬於 Python egg 的設定內容，暫時不需要理會。 <br /> <br /><a href="../../images/110628/plone7/08.png" target="_blank"><img src="../../images/110628/plone7/08.png" border="0" width="450" /></a><br />▲ 圖8 plone3_theme 專案的檔案系統樹狀圖 <br /> <br />首先要關注的，是 plonetheme/mytheme 目錄裡的 configure.zcml 檔案，它註冊了模組的起始資訊，包括通知系統導入其他 ZCML 檔案或目錄，以＜include package=".browser /＞為例，當中的 . （點符號） 代表和 configure.zcml 同樣位置的目錄，如圖9 所示。 <br /> <br /><a href="../../images/110628/plone7/09.png" target="_blank"><img src="../../images/110628/plone7/09.png" border="0" width="491" height="211" /></a><br />▲ 圖9 plonetheme.mytheme/configure.zcml 範例 <br /> <br />常見的佈景主題修改工作，例如調整 Viewlet 的顯示與否、順序位置等，只需要修改 Viewlet Manager 的設定值，更複雜的調整工作，例如自訂型別的顯示方式，則需要註冊新的 Viewlet Manager、Viewlet、Browser View 等，接著，我們將示範修改的方法。</p>
+<h3>Viewlet Manager 管理方式</h3>
+<p>從 Zope 3.2 開始，content provider 是產生網頁內容的元件，通常以 Page Template 型式存在，在前文裡，我們介紹 main_template 是控制 Viewlet Manager 的重要檔案，它的預設位置在 Products/CMFPlone/skins/plone_templates/main_template.pt，這個檔案只呼叫 Viewlet Manager，再由 Viewlet Manager 管理 Viewlet 的細節，包括註冊、順序、顯示方式等。 <br /> <br />以檔案裡＜div tal:replace="structure provider:plone.portaltop" /＞為例，provider 表示式是配合 Zope 3 而生的新語法，用來呼叫 content provider，像 Viewlet 和 Viewlet Manager 是兩個常見的 content provider。</p>
+<div><br />所有的 Viewlet Manager 和 Viewlet 定義在 plone.app.layout 模組的 viewlets 目錄裡，在 viewlets/configure.zcml 檔案可以找到定義值，範例如圖10 所示。 <br /> <br /><a href="../../images/110628/plone7/10.png" target="_blank"><img src="../../images/110628/plone7/10.png" border="0" width="507" height="90" /></a><br />▲ 圖10 Viewlet Manager 的定義範例 <br /> <br />範例裡的 IPortalHeader 是一個 marker interface，實作這個介面的 Viewlet Manager 名稱是 plone.portalheader，它將管理 plone.skip_links、plone.searchbox、plone.logo、plone.global_sections、plone.personal_bar 這幾個 Viewlet，範例如圖11 所示。 <br /> <br /><a href="../../images/110628/plone7/11.png" target="_blank"><img src="../../images/110628/plone7/11.png" border="0" width="450" /></a><br />▲ 圖11 Viewlet 的定義範例 <br /> <br />範例裡的＜browser:viewlet /＞使用 manager=".interfaces.IPortalHeader" 的話，就是歸屬 plone.portalheader 的 Viewlet。以 plone.logo 這個 Viewlet 為例，它的 Python Class 定義在 viewlets/common.py 檔案，內容如圖12 所示。 <br /> <br /><a href="../../images/110628/plone7/12.png" target="_blank"><img src="../../images/110628/plone7/12.png" border="0" width="450" /></a><br />▲ 圖12 plone.logo 的 Python Class 範例 <br /> <br />範例裡的 index = ViewPageTemplateFile('logo.pt') 代表 LogoViewlet 會呼叫 logo.pt 檔案，回傳 Page Template 的執行結果，其程式碼內容如圖13 所示。 <br /> <br /><a href="../../images/110628/plone7/13.png" target="_blank"><img src="../../images/110628/plone7/13.png" border="0" width="450" /></a><br />▲ 圖13 logo.pt 的 Page Template 內容 <br /> <br />範例裡的 tal:attributes="href view/navigation_root_url" 代表 href 的屬性值，將指定為 view/navigation_root_url，其中的 view 代表 plone.logo 的執行結果，同樣的道理，tal:replace="structure view/logo_tag" 也是要讀取另一個 plone.logo 的執行結果，它的程式碼在圖12 裡看得到。 <br /> <br />找不到 navigation_root_url 的程式碼嗎? 由於 LogoViewlet 是繼承 ViewletBase 的 Python Class，這些變數值在 ViewletBase 裡已經定義好，同時，你也會看到 ViewletBase 實作了 zope.viewlet.interfaces.IViewlet 介面，如圖14 所示。 <br /> <br /><a href="../../images/110628/plone7/14.png" target="_blank"><img src="../../images/110628/plone7/14.png" border="0" width="450" /></a><br />▲ 圖14 ViewletBase 的 Python Class 內容 <br /> <br />值得一提的是，除了呼叫 Python Class 的方式，Viewlet 還可以直接呼叫 Page Template 的內容，使用 template="portal_header.pt" 之類的方式，如圖15 所示。 <br /> <br /><a href="../../images/110628/plone7/15.png" target="_blank"><img src="../../images/110628/plone7/15.png" border="0" /></a><br />▲ 圖15 Viewlet 呼叫 Page Template 的定義範例 <br /> <br />
+<h3>調整 Viewlet 的順序和顯示</h3>
+我們在圖10 看到 Viewlet Manager 是 OrderedViewletManager 的 instance，這代表它所管理的 Viewlet 可以按照順序存取，預設的順序值記錄在 Products/CMFPlone/profiles/default/viewlets.xml 檔案裡，如圖16 所示。 <br /> <br /><a href="../../images/110628/plone7/16.png" target="_blank"><img src="../../images/110628/plone7/16.png" border="0" width="450" /></a><br />▲ 圖16 Plone Default 的 viewlets.xml 範例 <br /> <br />那麼，如何在我們的 plonetheme.mytheme 模組，調整 Viewlet 在 Viewlet Manager 裡的順序呢？第一種方式，是全數列舉法，直接複製 Products/CMFPlone/profiles/default/viewlets.xml 內容，放到 plonetheme/mytheme/profiles/default/viewlets.xml 裡，最後再按需要進行編輯。 <br /> <br />第二種方式，則是部份列舉法，利用 based-on="Plone Default" 語法，取得 Plone Default 的順序值後，再個別指定 Viewlet 的順序，例如想把 plone.logo 移到 plone.portalheader 的最上方，範例如圖17 所示。 <br /> <br /><a href="../../images/110628/plone7/17.png" target="_blank"><img src="../../images/110628/plone7/17.png" border="0" width="450" /></a><br />▲ 圖17 調整 plone.logo 順序的設定範例 <br /> <br />想要將 plone.searchbox 隱藏起來，可以用＜hidden /＞語法，範例如圖18 所示。 <br /> <br /><a href="../../images/110628/plone7/18.png" target="_blank"><img src="../../images/110628/plone7/18.png" border="0" width="450" /></a><br />▲ 圖18 隱藏 plone.searchbox 的設定範例 <br /> <br />日後需要再顯示 plone.searchbox 的話，可以在＜hidden /＞裡使用 remove 語法，範例如圖19 所示。 <br /> <br /><a href="../../images/110628/plone7/19.png" target="_blank"><img src="../../images/110628/plone7/19.png" border="0" width="450" /></a><br />▲ 圖19 重新顯示 plone.searchbox 的設定範例 <br /> <br />
+<h3>新增 Viewlet</h3>
+假設我們想在 plonetheme.mytheme 模組，新增一個 Viewlet，併在 plone.portalfooter Viewlet Manager 裡，顯示貢獻者的資訊。仿照已知的運作原理，首先，可以在 browser/viewlets.py 檔案裡建立一個 Python Class，並配合一個 viewlet.pt 檔案來顯示 Page Template 內容，如圖20 所示。 <br /> <br /><a href="../../images/110628/plone7/20.png" target="_blank"><img src="../../images/110628/plone7/20.png" border="0" width="450" /></a><br />▲ 圖20 自製 Viewlet 的 Python Class 範例 <br /> <br />viewlet.pt 的程式碼內容，利用 tal:content="view/designer" 來顯示 designer 的變數資訊，除了 i18n 語法待日後介紹外，其餘都是單純的 HTML 內容，如圖21 所示。  <br /> <br /><a href="../../images/110628/plone7/21.png" target="_blank"><img src="../../images/110628/plone7/21.png" border="0" width="450" /></a><br />▲ 圖21 自製 Viewlet 的 Page Template 範例 <br /> <br />接著，在 plonetheme/mytheme/browser/configure.zcml 註冊新的 Viewlet，例如使用 mytheme.credits 當作名稱，如圖22 所示。 <br /> <br /><a href="../../images/110628/plone7/22.png" target="_blank"><img src="../../images/110628/plone7/22.png" border="0" width="450" /></a><br />▲ 圖22 註冊自製的 Viewlet 範例 <br /> <br />在 plonetheme/mytheme/profiles/default/viewlets.xml 指定 Viewlet 的順序，例如放在 plone.colophon 之後，如圖23 所示。 <br /> <br /><a href="../../images/110628/plone7/23.png" target="_blank"><img src="../../images/110628/plone7/23.png" border="0" width="450" /></a><br />▲ 圖23 指定自製 Viewlet 順序的範例 <br /> <br />
+<h3>結論</h3>
+Viewlet 和 Viewlet Manager 把 Plone 的視覺元件，有效地組織起來，在本文裡，我們練習幾個常見的調整工作，在檔案系統裡直接管理程式碼，包括註冊 Viewlet、顯示或隱藏 Viewlet。認識視覺元件的運作原理後，透過這些管理工具和調整技巧，我們可以控制佈景主題的每一項細節。值得一提的是，之前範例裡出現 i18n 或 locales 的設定值，都跟語系在地化工作有關，將在日後的篇幅介紹。 <br /> <br />想要建立佈景主題，除了上述的傳統方式外，Plone 4.1 預計將導入新的架構方法，讓我們直接利用靜態 HTML 網頁，加上規則定義，即時產生內容與佈景主題整合後的網頁。這項新進展，可以提供另一條途徑，吸引更多網頁設計人員參與 Plone 的開發。</div>
+			<!-- Show relate article -->
+		<br><br><h4>You may be interested in the following articles:</h4><ul><li><a href='../../foss-programs/8411.html'>用自由軟體 Plone 來架設網站(10)－連接資料庫</a> - <span class='date-posted'>2011-08-05</span></li><li><a href='../../foss-programs/8402.html'>用自由軟體 Plone 來架設網站(9)－多媒體結合</a> - <span class='date-posted'>2011-07-25</span></li><li><a href='../../foss-programs/8392.html'>用自由軟體 Plone 來架設網站(8)－內容查詢</a> - <span class='date-posted'>2011-07-12</span></li><li><a href='../../foss-programs/8353.html'>用自由軟體 Plone 來架設網站 (6)－動態網頁</a> - <span class='date-posted'>2011-06-09</span></li><li><a href='../../foss-programs/8346.html'>用自由軟體 Plone 來架設網站 (5)－元件架構</a> - <span class='date-posted'>2011-05-20</span></li><li><a href='../../foss-programs/8320.html'>用自由軟體 Plone 來架設網站 (4)－建立專案</a> - <span class='date-posted'>2011-05-04</span></li><li><a href='../../foss-programs/8318.html'>用自由軟體 Plone 來架設網站 (3)— 內部設定</a> - <span class='date-posted'>2011-04-25</span></li><li><a href='../../foss-programs/8294.html'>用自由軟體 Plone 來架設網站 (2)— 內容管理</a> - <span class='date-posted'>2011-04-11</span></li><li><a href='../../foss-programs/8288.html'>用自由軟體 Plone 來架設網站 (1)— 基礎安裝</a> - <span class='date-posted'>2011-03-21</span></li></ul>		<!-- end -->
+		<div class="article_note">
+		<!-- Add tags use metakey, and show OSSF Newsletter tag: OSSFNL+NUM-->
+		<br><br> <hr style='border: 1px dashed #D2DADB;'><b>OSSF Newsletter&nbsp;:</b>&nbsp;<a href='../../previous-issue%3Ftask=view&amp;id=737.html'>第 175 期 淺談著作財產權讓與適用於 copyleft 開源軟體所產生的問題及因應之道</a><br>				<!-- End -->
+					<br>
+					<b>Category: </b><a href="../foss-programs.html">				FOSS Programs					</a>				</div>
+			 <!-- AddThis Button BEGIN ID 3001 is the front page article -->
+     			<br><br>
+       <div class="addthis_toolbox addthis_default_style addthis_32x32_style">
+       <a class="addthis_button_preferred_1"></a>
+       <a class="addthis_button_preferred_2"></a>
+       <a class="addthis_button_preferred_3"></a>
+       <a class="addthis_button_preferred_4"></a>
+       <a class="addthis_button_compact"></a>
+       <a class="addthis_counter addthis_bubble_style"></a>
+       </div>
+       <script type="text/javascript">var addthis_config = {"data_track_clickback":true};</script>
+       <script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js#pubid=openfoundry"></script>
+       <!-- AddThis Button END -->
+     <br>
+		<div class="totop" ><a class="rt-totop" href="8380--plone-7.html#" style="outline: medium none;">↑ Top</a></div>
+            <!-- AddThis Button END -->
+
+			</div>
+</div>
+
+		                            </div>
+									<div class="clear"></div>
+								</div>
+								<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+							</div>
+							</div>
+                                                    </div>
+                                            </div>
+                                <div class="rt-grid-3 rt-pull-9">
+                <div id="rt-sidebar-a">
+                                    <div class="square4">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<ul class="menu"><li class="item56"><a href="../previous-issue.html"><span>Previous Issue</span></a></li><li class="item55"><a href="../about-newsletter.html"><span>About Newsletter</span></a></li></ul>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<ul class="menu"><li class="item115"><a href="../foss-news.html"><span>FOSS News</span></a></li><li class="item141"><a href="../case-job.html"><span>Case and Jobs</span></a></li></ul>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+        	                <div class="square1">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-title"><h2 class="title">Special</h2></div>
+						<div class="clear"></div>
+		                						<div class="module-content">
+		                	<ul class="menu"><li class="item37"><a href="../tech-column.html"><span>Tech Column</span></a></li><li id="current" class="active item40"><a href="../foss-programs.html"><span>FOSS Programs</span></a></li><li class="item35"><a href="../legal-column.html"><span>Legal Column</span></a></li><li class="item154"><a href="../foss-forum.html"><span>FOSS Forum</span></a></li><li class="item162"><a href="../enterprise-application.html"><span>Enterprise Application</span></a></li><li class="item44"><a href="../foss-projects.html"><span>FOSS Projects</span></a></li></ul>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		                <div class="square1">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<p style="text-align: center;"><a href="../../news%3Fformat=feed&amp;type=rss" target="_black"><img src="../../images/M_images/news-rss-feed.png" border="0" /></a><br /><a href="https://www.openfoundry.org/rss-feed/Newsletter" target="_black"><img src="../../images/M_images/newsletter-rss-feed.png" border="0" /></a></p>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		
+                </div>
+            </div>
+
+                    <div class="clear"></div>
+                </div>
+            </div>
+																													</div>
+										<div id="rt-copyright">
+						<div class="rt-grid-12 rt-alpha rt-omega">
+                        <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<span class="nowrap">Open Source Software Foundry</span><span class="nowrap">‧</span><span class="nowrap"> </span><span class="nowrap">Best  Viewed with IE7.0 or Firefox2.0 above, 1024x768 Resolution. </span><strong>E-Mail</strong>：<a href="mailto:contact@openfoundry.org">contact@openfoundry.org</a> <br /><strong>Address</strong>：No.128, Sec.2, Academia Rd., Institute of Information Science, Academia Sinica, Nangang District, Taipei City 11529, Taiwan (R.O.C). <br /><a href="../privacy-policy.html">Privacy Policy</a>. <a href="../terms-of-use.html">Terms-of-use</a> <span style="position: relative; top: 8px; margin-top: -8px;"> <a href="../../about/8101.html"><img src="../../images/M_images/rss-feed-all.png" border="0" /></a></span>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+        	
+</div>
+						<div class="clear"></div>
+					</div>
+					<div class="rt-footer-bottom-wrap"><div class="rt-footer-bottom"><div class="rt-footer-bottom2"><div class="rt-footer-bottom3"></div></div></div></div>
+									</div></div></div>
+				<div class="rt-surround-bottom"><div class="rt-surround-bottom2"><div class="rt-surround-bottom3"></div></div></div>
+							</div>
+		</div>
+		<!--
+		<script id="aptureScript">
+						(function (){var a=document.createElement("script");a.defer="true";a.src="http://www.apture.com/js/apture.js?siteToken=vsJttrn";document.getElementsByTagName("head")[0].appendChild(a);})();
+     </script>
+-->
+
+<!-- Piwik -->
+<!-- 			<script type="text/javascript">
+			  var _paq = _paq || [];
+		  _paq.push(["trackPageView"]);
+		  _paq.push(["enableLinkTracking"]);
+
+		    (function() {
+			        var u=(("https:" == document.location.protocol) ? "https" : "https") + "://www.openfoundry.org/piwik/";
+				    _paq.push(["setTrackerUrl", u+"piwik.php"]);
+				    _paq.push(["setSiteId", "1"]);
+				        var d=document, g=d.createElement("script"), s=d.getElementsByTagName("script")[0]; g.type="text/javascript";
+				        g.defer=true; g.async=true; g.src=u+"piwik.js"; s.parentNode.insertBefore(g,s);
+					  })();
+		  </script> -->
+<!-- End Piwik Code -->
+	</body>
+</html>

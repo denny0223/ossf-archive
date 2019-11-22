@@ -1,0 +1,369 @@
+	<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+	<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-gb" lang="en-gb" >
+		<head>
+			  <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+  <meta name="robots" content="noindex, nofollow" />
+  <meta name="keywords" content="Require.js, backbone.js, OSSFNL790" />
+  <meta name="title" content="利用 RequireJs 將 Backbone.js 程式模組化" />
+  <meta name="description" content="◎ 本文轉載自 網站製作學習誌。 之前分享了初探 RequireJS 一文後，對 RequireJS 已經有一定的瞭解，但後來實際應用到 Backbone.js 程式上時，發現了一些要特別注意的事項。 以下便是我在整合兩者時的筆記。 baseUrl 選項 在 初探 RequireJS 的範例中，我是這樣寫的： js/main. js 1 require({ 2 paths: { 3" />
+  <meta name="generator" content="" />
+  <title>利用 RequireJs 將 Backbone.js 程式模組化</title>
+  <link href="../../favicon.ico" rel="shortcut icon" type="image/x-icon" />
+  <link rel="stylesheet" href="../../components/com_gantry/css/gantry.css" type="text/css" />
+  <link rel="stylesheet" href="../../components/com_gantry/css/grid-12.css" type="text/css" />
+  <link rel="stylesheet" href="../../components/com_gantry/css/joomla.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/joomla.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/style1.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/light-body.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/demo-styles.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/template.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/typography.css" type="text/css" />
+  <style type="text/css">
+    <!--
+#rt-main-surround ul.menu li.active > a, #rt-main-surround ul.menu li.active > .separator, #rt-main-surround ul.menu li.active > .item, #rt-main-surround .square4 ul.menu li:hover > a, #rt-main-surround .square4 ul.menu li:hover > .item, #rt-main-surround .square4 ul.menu li:hover > .separator, .roktabs-links ul li.active span {color:#0088B5;}
+a, #rt-main-surround ul.menu a:hover, #rt-main-surround ul.menu .separator:hover, #rt-main-surround ul.menu .item:hover {color:#0088B5;}
+    -->
+  </style>
+  <script type="text/javascript" src="../../components/com_jcomments/js/jcomments-v2.1.js%3Fv=2"></script>
+  <script type="text/javascript" src="../../components/com_jcomments/libraries/joomlatune/ajax.js"></script>
+  <script type="text/javascript" src="../../media/system/js/mootools.js"></script>
+  <script type="text/javascript" src="../../media/system/js/caption.js"></script>
+  <script type="text/javascript" src="../../components/com_gantry/js/gantry-buildspans.js"></script>
+  <script type="text/javascript" src="../../components/com_gantry/js/gantry-inputs.js"></script>
+  <script type="text/javascript">
+
+			window.addEvent('domready', function() {
+				var modules = ['rt-block'];
+				var header = ['h3','h2','h1'];
+				GantryBuildSpans(modules, header);
+			});
+		InputsExclusion.push('.content_vote','#rt-popup')
+  </script>
+		</head>
+		<body  class="backgroundlevel-low backgroundstyle-style8 bodylevel-med bodystyle-light cssstyle-style1 logostyle-dark font-family-helvetica font-size-is-default menu-type-fusionmenu col12 ">
+			<div id="rt-main-surround">
+				<div class="rt-container">
+					<div class="rt-block">
+						<div id="rt-mainbody">
+					    	
+<div class="rt-joomla ">
+	<div class="rt-article">
+		
+				<div class="rt-headline"><h1 class="rt-article-title">利用 RequireJs 將 Backbone.js 程式模組化</h1>		</div>
+		<div class="clear"></div>
+		
+		
+		
+				<div class="rt-articleinfo">
+						<div class="rt-article-icons">
+				<a href="8679-requirejs-x-backbonejs%3Ftmpl=component&amp;print=1&amp;layout=default&amp;page=.html#" onclick="window.print();return false;"><span class="icon print"></span></a>									<span class="icon printscreen">
+						<a href="8679-requirejs-x-backbonejs%3Ftmpl=component&amp;print=1&amp;layout=default&amp;page=.html#" onclick="window.print();return false;"><img src="../../images/M_images/printButton.png" alt="Print"  /></a>					</span>
+							</div>
+			
+			<span class="rt-date-posted">
+						 Created at			Friday, 20 April 2012 13:29						&nbsp;&nbsp;&nbsp;&nbsp;						Last Updated on Thursday, 04 October 2012 22:46						</span>
+
+						<span class="rt-author">
+				Written by Jace Ju			</span>
+				
+					</div>
+		
+		
+		<p>◎ 本文轉載自 <a href="https://www.jaceju.net/blog/archives/requirejs-x-backbone/" target="_blank">網站製作學習誌</a>。</p>
+<p>之前分享了<a href="https://www.jaceju.net/blog/archives/beginning-requirejs/">初探 RequireJS</a> 一文後，對 RequireJS 已經有一定的瞭解，但後來實際應用到 Backbone.js 程式上時，發現了一些要特別注意的事項。</p>
+<p>以下便是我在整合兩者時的筆記。</p>
+
+<h3>baseUrl 選項</h3>
+<p>在 <a href="https://www.jaceju.net/blog/archives/beginning-requirejs/">初探 RequireJS</a> 的範例中，我是這樣寫的：</p>
+<span>js/main.js</span>
+<pre><code> 1　require({
+ 2　 paths: {
+ 3　    "order": "../lib/requirejs/order",
+ 4　    "lib": "../lib"
+ 5　  }
+ 6　});
+ 7
+ 8　require([
+ 9　  'app',
+10　  'order!lib/jquery/jquery-min',
+11　  'order!lib/underscore/underscore-min',
+12　  'order!lib/backbone/backbone-min'
+13　], function (App) {
+14　  App.initialize();
+15　});</code></pre>
+<p>事實上這會影響我們在用 <code>r.js</code> 時的編譯，所以第一步我們先加上 baseUrl 選項：</p>
+<span>js/main.js </span>
+<pre><code> 1　require({
+ 2　  baseUrl: './',
+ 3　  paths: {
+ 4　    order: 'lib/requirejs/order',
+ 5　  }
+ 6　});
+ 7
+ 8　require([
+ 9　  'js/old_app',
+10　  'order!lib/jquery/jquery-min',
+11　  'order!lib/underscore/underscore-min',
+12　  'order!lib/backbone/backbone-min'
+13　], function (App) {
+14　  App.initialize();
+15　});
+</code></pre>
+<p>baseUrl 是指讓 RequireJS 搜尋模組路徑時的起始位置；如果是用 <code>./</code> 的話，指的就是 index.html 所在的網址。</p>
+<p>這樣一來我們就不用設定 <code>lib</code> 的別名了。</p>
+<p class="note">註：接下來的範例裡，除非必要，否則將不會特別提到選項的部份。</p>
+<hr />
+<h3>第三方套件載入時機</h3>
+<p>先前我們的 <code>js/app.js</code> 是這樣寫的：</p>
+<span>js/app.js </span>
+<pre><code> 1　define(function () {
+ 2　  return {
+ 3　    initialize: function () {
+ 4　      var Model = Backbone.Model.extend({
+ 5　        // ...
+ 6　      });
+ 7　      var View = Backbone.View.extend({
+ 8　        // ...
+ 9　      });
+10　      var model = new Model();
+11　      var view = new View({
+12　        model: model
+13　      })
+14　    }
+15　  }
+16　});
+</code></pre>
+<p>在 <code>initialize</code> 方法裡我把所有的程式碼都塞在這裡，而當我想把 model/view 分離出來時，卻遇到了很大的難題。</p>
+<p>首先我想把 Model 分離出來，所以加入一個 <code>js/model/Model.js</code> 如下：</p>
+<span>js/model/Model.js </span>
+<pre><code> 1　define(function () {
+ 2　  return Backbone.Model.extend({
+ 3　    // ...
+ 4　  });
+ 5　});
+</code></pre>
+<p>然後把 <code>js/app.js</code> 改寫成：</p>
+<span>js/app.js </span>
+<pre><code> 1　define([
+ 2　  'js/model/Model'
+ 3　], function (Model) {
+ 4　  return {
+ 5　    initialize: function () {
+ 6　      var View = Backbone.View.extend({
+ 7　        // ...
+ 8　      });
+ 9　      var model = new Model();
+10　      var view = new View({
+11　        model: model
+12　      })
+13　    }
+14　  }
+15　});
+</code></pre>
+<p>重新執行，結果瀏覽器告訴我：<code>Backbone is not defined</code>。</p>
+<p>怎麼回事呢？</p>
+<p>原因是 js 檔案的載入順序，以及 factory 執行的時機。我們來分析一下整個程式的載入流程：</p>
+<ol>
+<li>
+<p>載入 js/app.js 。</p>
+</li>
+<li>
+<p>載入 js/model/Config.js 。</p>
+</li>
+<li>
+<p>執行 js/model/Config.js 的工廠方法。</p>
+</li>
+<li>
+<p>載入 jQuery 。</p>
+</li>
+<li>
+<p>載入 underscore.js 。</p>
+</li>
+<li>
+<p>載入 Backbone.js 。</p>
+</li>
+<li>
+<p>執行 js/app.js 的工廠方法。</p>
+</li>
+<li>
+<p>執行 js/app.js 的 <code>initialize</code> 方法。</p>
+</li>
+</ol>
+<p>還記得 <code>define</code> API 會在相依的模組完載入後就執行工廠方法嗎？</p>
+<p>這裡我們的 <code>js/model/Config.js</code> 因為沒有指定相依模組，所以載入後就會直接執行其工廠方法。但是因為 Backbone.js 等第三方套件還沒載入，所以在第三個步驟時，瀏覽器就噴錯誤給我們了。</p>
+<p>怎麼解決呢？第一個方法是把 <code>js/main.js</code> 中的 <code>'js/app'</code> 移到第三方套件後載入，不過得再加入不必要的 namespace：</p>
+<span>js/main.js </span>
+<pre><code> 1　require([
+ 2　  'order!lib/jquery/jquery-min',
+ 3　  'order!lib/underscore/underscore-min',
+ 4　  'order!lib/backbone/backbone-min',
+ 5　  'order!js_1/app',
+ 6　], function (_jQuery, _Underscore, _Backbone, App) {
+ 7　  App.initialize();
+ 8　});
+</code></pre>
+<p class="note">註：要記得相依的 js 模組會與 callback 的參數從左至右一一對應。</p>
+<p>這樣確實就可以讓模組依照我們相要的順序依序載入了。</p>
+<p>不過那些用不到的 namespace 真的很礙眼，還好 JavaScript 可以讓我們不需要寫它們；我們直接改用 <code>arguments</code> 來將 <code>App</code> 載入：</p>
+<span>js/main.js </span>
+<pre><code> 1　require([
+ 2　  'order!lib/jquery/jquery-min',
+ 3　  'order!lib/underscore/underscore-min',
+ 4　  'order!lib/backbone/backbone-min',
+ 5　  'order!js/app',
+ 6　], function () {
+ 7　  App = _.last(arguments);
+ 8　  App.initialize();
+ 9　});
+</code></pre>
+<p>這樣就看不到那些無用的 namespace 了。</p>
+<hr />
+<h3>物件還是建構式</h3>
+<p>仔細比較 <code>js/app.js</code> 與 <code>js/model/Model.js</code>，一個是回傳純物件 <code>{...}</code>，一個是回傳 <code>Backbone.Model.extend({...})</code>，這兩者有什麼不同呢？</p>
+<p>純物件的方式，我們可以直接使用它的方法：</p>
+<pre><code> 1　App.initialize();
+</code></pre>
+<p>而 <code>Backbone.Model.extend({...})</code> 回傳的則是一個建構函式，我們要用 <code>new</code> 關鍵字來使用它：</p>
+<span>js/app.js </span>
+<pre><code> 1　define([
+ 2　  'js/model/Model'
+ 3　], function (Model) {
+ 4　  return {
+ 5　    initialize: function () {
+ 6　      var model = new Model();
+ 7　    }
+ 8　  }
+ 9　});
+</code></pre>
+<p>另外千萬不要直接回傳 new 之後的 Model 或是 View，也就是：</p>
+<span>js/model/Model.js </span>
+<pre><code> 1　define(function () {
+ 2　  return new Backbone.Model.extend({
+ 3　    // ...
+ 4　  });
+ 5　});
+</code></pre>
+<p>因為這樣一來回傳的是物件，而非建構函式，開發上就會造成問題。</p>
+<hr />
+<h3>錯誤的 order plugin 用法</h3>
+<p>RequireJS 的 order plugin 可以讓我們依序載入模組，但它卻還是有所限制。</p>
+<p>假設我把前面的第三方套件放到 <code>js/vendor.js</code> 裡面：</p>
+<span>js/vendor.js </span>
+<pre><code> 1　define([
+ 2　  'order!lib/jquery/jquery-min',
+ 3　  'order!lib/underscore/underscore-min',
+ 4　  'order!lib/backbone/backbone-min',
+ 5　], function () {});
+</code></pre>
+<p>然後把 <code>js/main.js</code> 改成：</p>
+<span>js/main.js </span>
+<pre><code> 1　require([
+ 2　  'order!js/vendor',
+ 3　  'order!js/app',
+ 4　], function (Vendor, App) {
+ 5　  App.initialize();
+</code></pre>
+<p>這時我發現程式處於一種不穩定的狀態，也就是時好時壞。</p>
+<p>這是因為我們使用的是非同步載入的方式，但 order plugin 只能確保同一個檔案裡的載入順序，當跨到不同檔案時，order plugin 就會失效了。</p>
+<hr />
+<h3>r.js 注意事項</h3>
+<p>原本以為 <code>r.js</code> 能夠取用 <code>js/main.js</code> 裡的設定，但後來測試的結果是不行。所以在使用 <code>r.js</code> 編譯檔案時，如果有以下的設定：</p>
+<span>js/main.js </span>
+<pre><code> 1　require({
+ 2　  baseUrl: './',
+ 3　  paths: {
+ 4　    order: 'lib/requirejs/order',
+ 5　    text: 'lib/requirejs/text'
+ 6　  }
+ 7　});
+</code></pre>
+<p>那麼在下 <code>r.js</code> 指令時，就要把它們都加入：</p>
+<pre><code> 1　r.js -o \
+ 2　name=js/main \
+ 3　out=js/main-built.js \
+ 4　baseUrl="./" \
+ 5　paths.order="lib/requirejs/order" \
+ 6　paths.text="lib/requirejs/text"
+</code></pre>
+<p>這樣一來，才能編出正確的單一壓縮 js 檔案。</p>
+<p>不過每次要下這麼長的指令還真麻煩，還好 <code>r.js</code> 也提供了方便的用法，就是建立一個 build profile ；我們只需要在專案根目錄加上一個 <code>build.js</code> ：</p>
+<pre><code> 1　({
+ 2　  baseUrl: './',
+ 3　  name: 'js/main',
+ 4　  out: 'main-built.js',
+ 5　  paths: {
+ 6　    order: 'lib/requirejs/order',
+ 7　    text: 'lib/requirejs/text'
+ 8　  }
+ 9　})
+</code></pre>
+<p>然後利用 <code>build.js</code> 來重新最佳化：</p>
+<pre><code> 1　r.js -o build.js
+</code></pre>
+<p>效果就是一樣的了。</p>
+<p>build profile 的其他選項請參考官方提供的 <a href="https://github.com/jrburke/r.js/blob/master/build/example.build.js">build.js 範例</a>。</p>
+<hr />
+<h3>text plugin</h3>
+<p>RequireJS 提供了一個很棒的非同步樣版載入模組，名為 <code>text</code>；它可以幫我們把外部的 html 檔案載入，並當做字串使用。用法如下：</p>
+<span>js/view/View.js </span>
+<pre><code> 1　define([
+ 2　  'text!template/view_template.html'
+ 3　], function (viewTemplate) {
+ 4　  return Backbone.View.extend({
+ 5　    initialize: function () {
+ 6　      this.$el.html(viewTemplate);
+ 7　    },
+ 8　  });
+ 9　});
+</code></pre>
+<p class="note">註： <code>text</code> 是 <code>lib/requirejs/text</code> 的別名。</p>
+<p>有趣的是，它在透過 <code>r.js</code> 編譯時，就會把樣版檔直接編譯為字串，而不再經外部載入。</p>
+<p>假設 <code>template/view_template.html</code> 的內容為：</p>
+<span>template/view_template.html </span>
+<pre><code> 1　＜p＞This is template.＜/p＞
+</code></pre>
+<p>那麼透過 <code>r.js</code> 編譯後的結果如下：（已經有重新格式化）</p>
+<pre><code> 1　/* other modules */, define("text!template/view_template.html", [], function () {
+ 2　  return "＜p＞This is template.＜/p＞"
+ 3　}), define("js/view/View", ["text!template/view_template.html"], function (a) {
+ 4　  return Backbone.View.extend({
+ 5　    initialize: function () {
+ 6　      this.$el.html(a)
+ 7　    }
+ 8　  })
+ 9　})
+</code></pre>
+<p>從上面的範例就可以看到 text plugin 把 <code>template/view_template.html</code> 變成一個會回傳字串的模組了。</p>
+			<!-- Show relate article -->
+				<!-- end -->
+		<div class="article_note">
+		<!-- Add tags use metakey, and show OSSF Newsletter tag: OSSFNL+NUM-->
+		<br><br> <hr style='border: 1px dashed #D2DADB;'><b>OSSF Newsletter&nbsp;:</b>&nbsp;<a href='../../previous-issue%3Ftask=view&amp;id=790.html'>第 195 期 利用 RequireJs 將 Backbone.js 程式模組化</a><br><b>Tags:</b>&nbsp;<a href='../../index.php%3Foption=com_search&amp;Itemid=58&amp;searchphrase=exact_meta&amp;ordering=newest&amp;searchword=Require.js.html'>Require.js</a>,&nbsp;&nbsp;<a href='../../index.php%3Foption=com_search&amp;Itemid=58&amp;searchphrase=exact_meta&amp;ordering=newest&amp;searchword=&#32;backbone.js.html'> backbone.js</a>,&nbsp;&nbsp;				<!-- End -->
+					<br>
+					<b>Category: </b><a href="../tech-column.html">				Tech Column					</a>				</div>
+			 <!-- AddThis Button BEGIN ID 3001 is the front page article -->
+     			<br><br>
+       <div class="addthis_toolbox addthis_default_style addthis_32x32_style">
+       <a class="addthis_button_preferred_1"></a>
+       <a class="addthis_button_preferred_2"></a>
+       <a class="addthis_button_preferred_3"></a>
+       <a class="addthis_button_preferred_4"></a>
+       <a class="addthis_button_compact"></a>
+       <a class="addthis_counter addthis_bubble_style"></a>
+       </div>
+       <script type="text/javascript">var addthis_config = {"data_track_clickback":true};</script>
+       <script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js#pubid=openfoundry"></script>
+       <!-- AddThis Button END -->
+     <br>
+		<div class="totop" ><a class="rt-totop" href="8679-requirejs-x-backbonejs%3Ftmpl=component&amp;print=1&amp;layout=default&amp;page=.html#" style="outline: medium none;">↑ Top</a></div>
+            <!-- AddThis Button END -->
+
+			</div>
+</div>
+
+						</div>
+					</div>
+				</div>
+			</div>
+		</body>
+	</html>

@@ -1,0 +1,117 @@
+	<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+	<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-gb" lang="en-gb" >
+		<head>
+			  <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+  <meta name="robots" content="noindex, nofollow" />
+  <meta name="keywords" content="BlueStacks, Android, Virtualbox, AMD, Google,OSSFNL766" />
+  <meta name="title" content="從 BlueStacks 談對於開源碼的開發及再應用" />
+  <meta name="description" content=" ◎ 本文原載 linuxpilot 108 期（2011 年 12 月號），原作者文章連結 由於 iOS 和 Android 的快速成長，也讓許多小型遊戲和軟體在行動裝置上發展。雖然是針對行動裝置開發的軟體，可是還是會讓許多人希望在電腦上使用。過去大多使用的辦法是在電腦上安裝 Android SDK，使用當中的虛擬機來運行 Android 並且嘗試安裝上 AppMarket 來使用。 而" />
+  <meta name="generator" content="" />
+  <title>從 BlueStacks 談對於開源碼的開發及再應用</title>
+  <link href="../../favicon.ico" rel="shortcut icon" type="image/x-icon" />
+  <link rel="stylesheet" href="../../components/com_gantry/css/gantry.css" type="text/css" />
+  <link rel="stylesheet" href="../../components/com_gantry/css/grid-12.css" type="text/css" />
+  <link rel="stylesheet" href="../../components/com_gantry/css/joomla.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/joomla.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/style1.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/light-body.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/demo-styles.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/template.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/typography.css" type="text/css" />
+  <style type="text/css">
+    <!--
+#rt-main-surround ul.menu li.active > a, #rt-main-surround ul.menu li.active > .separator, #rt-main-surround ul.menu li.active > .item, #rt-main-surround .square4 ul.menu li:hover > a, #rt-main-surround .square4 ul.menu li:hover > .item, #rt-main-surround .square4 ul.menu li:hover > .separator, .roktabs-links ul li.active span {color:#0088B5;}
+a, #rt-main-surround ul.menu a:hover, #rt-main-surround ul.menu .separator:hover, #rt-main-surround ul.menu .item:hover {color:#0088B5;}
+    -->
+  </style>
+  <script type="text/javascript" src="../../components/com_jcomments/js/jcomments-v2.1.js%3Fv=2"></script>
+  <script type="text/javascript" src="../../components/com_jcomments/libraries/joomlatune/ajax.js"></script>
+  <script type="text/javascript" src="../../media/system/js/mootools.js"></script>
+  <script type="text/javascript" src="../../media/system/js/caption.js"></script>
+  <script type="text/javascript" src="../../components/com_gantry/js/gantry-buildspans.js"></script>
+  <script type="text/javascript" src="../../components/com_gantry/js/gantry-inputs.js"></script>
+  <script type="text/javascript">
+
+			window.addEvent('domready', function() {
+				var modules = ['rt-block'];
+				var header = ['h3','h2','h1'];
+				GantryBuildSpans(modules, header);
+			});
+		InputsExclusion.push('.content_vote','#rt-popup')
+  </script>
+		</head>
+		<body  class="backgroundlevel-low backgroundstyle-style8 bodylevel-med bodystyle-light cssstyle-style1 logostyle-dark font-family-helvetica font-size-is-default menu-type-fusionmenu col12 ">
+			<div id="rt-main-surround">
+				<div class="rt-container">
+					<div class="rt-block">
+						<div id="rt-mainbody">
+					    	
+<div class="rt-joomla ">
+	<div class="rt-article">
+		
+				<div class="rt-headline"><h1 class="rt-article-title">從 BlueStacks 談對於開源碼的開發及再應用</h1>		</div>
+		<div class="clear"></div>
+		
+		
+		
+				<div class="rt-articleinfo">
+						<div class="rt-article-icons">
+				<a href="8543-talk-about-the-open-source-development-and-utilization-from-the-bluestack-project%3Ftmpl=component&amp;print=1&amp;layout=default&amp;page=.html#" onclick="window.print();return false;"><span class="icon print"></span></a>									<span class="icon printscreen">
+						<a href="8543-talk-about-the-open-source-development-and-utilization-from-the-bluestack-project%3Ftmpl=component&amp;print=1&amp;layout=default&amp;page=.html#" onclick="window.print();return false;"><img src="../../images/M_images/printButton.png" alt="Print"  /></a>					</span>
+							</div>
+			
+			<span class="rt-date-posted">
+						 Created at			Wednesday, 14 December 2011 09:16						&nbsp;&nbsp;&nbsp;&nbsp;						Last Updated on Wednesday, 14 December 2011 17:25						</span>
+
+						<span class="rt-author">
+				Written by droger			</span>
+				
+					</div>
+		
+		
+		<blockquote>
+<p>◎ 本文原載 <a href="https://www.linuxpilot.com/publication" target="_blank">linuxpilot 108 期（2011 年 12 月號）</a>，原作者<a href="https://droger.pixnet.net/blog/post/30087453" target="_blank">文章連結</a></p>
+</blockquote>
+<p>由於 iOS 和 Android 的快速成長，也讓許多小型遊戲和軟體在行動裝置上發展。雖然是針對行動裝置開發的軟體，可是還是會讓許多人希望在電腦上使用。過去大多使用的辦法是在電腦上安裝 Android SDK，使用當中的虛擬機來運行 Android 並且嘗試安裝上 AppMarket 來使用。</p>
+<p>而 BlueStacks 這個新推出的軟體，在 2012 年中旬時就放出消息，當時主要是表示會推出可以讓電腦也使用 Android 程式。不同於一些支援 Windows/Android 雙開機；需要韌體支援的方式。而是讓每台電腦都可以在安裝後使用 Android 的軟體。在 BlueStacks 於 2011 年 10 月釋放出 Alpha 版本之後，我也前往下載來使用。對於 BlueStacks 的技術，其實只要使用過一次大致上就可以了解其背後的基礎。外傳大致上是使用 Virtualbox 的虛擬技術加上 Android 的環境。目前由於是 Alpha 版的關係，整體尚不穩定，而且會比較明顯感受到電腦效能被拖慢。</p>
+<p>不過 BlueStacks 陸續獲得投資，私募基金或是像 AMD 的投顧基金也都有贊助 BlueStacks。其原因在於 BlueStacks 利用開源碼的技術實現了一些創意。首先 BlueStacks 在介面上實現了一些整合，看起來是使用虛擬技術的 Seamless 無縫視窗的方式，讓 BlueStacks 本身的外觀不會明顯覺得是虛擬系統，而是看起來像是桌面小工具那樣。</p>
+<p>再來由於 Google 官方 APPMARKET 的支援是需要獲得 Google 方面的付費授權，所以 BlueStacks 採用的是透過自己的網路來下載 APP 軟體到電腦當中。也可以讓 Android 行動裝置在安裝他們提供的軟體之後，將想要安裝的軟體下載到安裝 BlueStacks 的電腦上，這部分類似 APPMARKET 的網頁版下載安裝機制。</p>
+<p>雖然 BlueStacks 目前尚不穩定，可以使用的軟體也才三十多種還不多。不過他讓人覺得值得注意和效法的是，針對一個單一需求，將一些開放原始碼技術重新拼湊和整合。其實目前開放原始碼界的各種軟體都已經相當豐富，然而卻還是停留在跟進商業軟體的腳步。常常都會看到國內外的開源碼網站，最喜歡貼的資訊就是某某軟體的幾十種替代方案。然而雖然那些替代軟體也相當好用，不過在一些特定需求的時候，去找一些替代軟體，都多多少少會發現一些不適用的地方。<br />開放原始碼的發展，應該要逐步去正確地尋找使用者的需求，去真正針對該需求開發並且最佳化。最佳化不僅僅只是針對程式碼的順利運行，還包括整個使用流程、互動介面或是整個軟體使用後續生態環境建立的順暢。以 BlueStacks 來說，雖然他的技術，說起來只是用虛擬機跑一個 Android 系統這麼簡單的方式。但是他的設計就讓使用者省去很多麻煩，比如不需要特別再去設置虛擬機的配置，建立一個下載軟體的流程機制，讓使用者不用自己去傷腦筋該怎麼把軟體下載下來。相關的操作也盡量簡化讓使用者不會太過困擾。這些都是過去許多開放原始碼軟體所不會注意到的部分。</p>
+<p>或許因為開放原始碼很多都是從非商業性的出發點來做考量，所以才會導致許多軟體都是為了替代商業封閉軟體的需求才產生。但是在這樣的發展久了會出現一個現象，開放原始碼軟體如果一直都只是追在商業軟體的步伐後頭，其後續發展的規模就會被限制住。因為建立在一個先有軟體的替代需求底下，本身就是已經限縮其發展規模的範圍了。</p>
+<p>所以找出使用者的需求、建立一個嶄新的創意軟體，才會是開源碼軟體蓬勃發展的先機。讓一個軟體能做出使用者想要做，但是其他軟體辦不到的事情。而不是一直被商業軟體給牽著鼻子走，變成只是跟在後面跑、造成開放原始碼軟體只是一種替代方案的印象。像開源碼軟體當中，許多科學計算的軟體，因為是針對一些特定研究所產生的，而同時也有許多相關的需要也剛好可以被拿來使用，就是主動針對需求產生不同於商業封閉軟體的情況。</p>
+<p>只是科學運算這樣的領域比較小眾，所以不容易被察覺。不過要找出一個真正能被使用者需要或需求的創新軟體，本身就是一個比較難的狀況。在這裡稍微舉例來說，譬如像 Blender 3D 繪圖軟體相當強大，可以製作動畫或遊戲，但是由於 Blender 本身介面相當複雜。當使用者如果只是要做一個簡單的東西就很難上手；或者是其實只是要使用當中的某個模組，卻必須要熟悉整個軟體，造成曠日費時的狀況。這些都可以作為是重新取用開源碼軟體的部分，重新再作改善的方向。</p>
+<p>雖然使用開放原始碼來拼湊出針對使用者需求的想法、或是自己的創意，這樣的方式說起來似乎很簡單。但是事實上卻需要花費相當大的時間和技術基礎。比如必須要相當熟悉不同開放軟體當中使用的技術，並且相當熟悉軟體的程式碼架構，才能夠在跨軟體整合時能夠進行順利。或是像不同開源碼軟體之間的軟體授權是否相合適，也是需要注意的細節。</p>
+<p>雖然這種方式，其優點是在於可以承襲軟體發展的一些現有成果，但是或許也還是需要花很多時間去幫相關軟體除 BUG。不過讓原始碼的循環再使用，使其更加活絡，本身就是符合開放原始碼的精神。並且也會間接幫助到原始運用到的軟體本身。而開始將開發軟體的重點，放在如何讓使用者會更想去使用，並且符合需求。而不是僅著重在軟體的功能實現，讓許多功能重複的軟體一直出現，卻總是會出現不同的不適用狀況，避免讓使用者必須不斷嘗試不同套軟體而耗費許多時間，反而因此造成開放原始碼較為次等的負面印象。</p>
+			<!-- Show relate article -->
+				<!-- end -->
+		<div class="article_note">
+		<!-- Add tags use metakey, and show OSSF Newsletter tag: OSSFNL+NUM-->
+		<br><br> <hr style='border: 1px dashed #D2DADB;'><b>OSSF Newsletter&nbsp;:</b>&nbsp;<a href='../../previous-issue%3Ftask=view&amp;id=766.html'>第 187 期 PaaS：程式語言開發在雲端「Programming in Paas」（上）</a><br><b>Tags:</b>&nbsp;<a href='../../index.php%3Foption=com_search&amp;Itemid=58&amp;searchphrase=exact_meta&amp;ordering=newest&amp;searchword=BlueStacks.html'>BlueStacks</a>,&nbsp;&nbsp;<a href='../../index.php%3Foption=com_search&amp;Itemid=58&amp;searchphrase=exact_meta&amp;ordering=newest&amp;searchword=&#32;Android.html'> Android</a>,&nbsp;&nbsp;<a href='../../index.php%3Foption=com_search&amp;Itemid=58&amp;searchphrase=exact_meta&amp;ordering=newest&amp;searchword=&#32;Virtualbox.html'> Virtualbox</a>,&nbsp;&nbsp;<a href='../../index.php%3Foption=com_search&amp;Itemid=58&amp;searchphrase=exact_meta&amp;ordering=newest&amp;searchword=&#32;AMD.html'> AMD</a>,&nbsp;&nbsp;<a href='../../index.php%3Foption=com_search&amp;Itemid=58&amp;searchphrase=exact_meta&amp;ordering=newest&amp;searchword=&#32;Google.html'> Google</a>,&nbsp;&nbsp;				<!-- End -->
+					<br>
+					<b>Category: </b><a href="../foss-projects.html">				FOSS Projects					</a>				</div>
+			 <!-- AddThis Button BEGIN ID 3001 is the front page article -->
+     			<br><br>
+       <div class="addthis_toolbox addthis_default_style addthis_32x32_style">
+       <a class="addthis_button_preferred_1"></a>
+       <a class="addthis_button_preferred_2"></a>
+       <a class="addthis_button_preferred_3"></a>
+       <a class="addthis_button_preferred_4"></a>
+       <a class="addthis_button_compact"></a>
+       <a class="addthis_counter addthis_bubble_style"></a>
+       </div>
+       <script type="text/javascript">var addthis_config = {"data_track_clickback":true};</script>
+       <script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js#pubid=openfoundry"></script>
+       <!-- AddThis Button END -->
+     <br>
+		<div class="totop" ><a class="rt-totop" href="8543-talk-about-the-open-source-development-and-utilization-from-the-bluestack-project%3Ftmpl=component&amp;print=1&amp;layout=default&amp;page=.html#" style="outline: medium none;">↑ Top</a></div>
+            <!-- AddThis Button END -->
+
+			</div>
+</div>
+
+						</div>
+					</div>
+				</div>
+			</div>
+		</body>
+	</html>

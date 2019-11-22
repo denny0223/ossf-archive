@@ -1,0 +1,417 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-gb" lang="en-gb" >
+<head>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<link rel="shortcut icon" href="../../images/favicon.ico" />
+	  <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+  <meta name="robots" content="index, follow" />
+  <meta name="keywords" content="Ruby, License, GPL 2.0, BSD,OSSFNL754" />
+  <meta name="title" content="開放原始碼的相容與互斥性：從 Ruby 社群變更開放原始碼授權來探討" />
+  <meta name="description" content="前言 Ruby 是屬於開放原始碼的物件導向程式語言，近年因 Ruby on Rails (RoR) 開放網頁應用框架的興起而廣為人知，並於 2006 年由 TIOBE 獲選為年度程式語言。過去，Ruby 採用 GPL-2.0 或 Ruby 授權 的雙重開放原始碼授權，但從 2011 年 7 月 31 日所釋出的 Ruby 1.9.3 preview1" />
+  <meta name="generator" content="" />
+  <title>開放原始碼的相容與互斥性：從 Ruby 社群變更開放原始碼授權來探討 - OpenFoundry</title>
+  <link href="../../favicon.ico" rel="shortcut icon" type="image/x-icon" />
+  <link rel="stylesheet" href="../../components/com_gantry/css/gantry.css" type="text/css" />
+  <link rel="stylesheet" href="../../components/com_gantry/css/grid-12.css" type="text/css" />
+  <link rel="stylesheet" href="../../components/com_gantry/css/joomla.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/joomla.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/style1.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/light-body.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/demo-styles.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/template.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/typography.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/fusionmenu.css" type="text/css" />
+  <style type="text/css">
+    <!--
+#rt-main-surround ul.menu li.active > a, #rt-main-surround ul.menu li.active > .separator, #rt-main-surround ul.menu li.active > .item, #rt-main-surround .square4 ul.menu li:hover > a, #rt-main-surround .square4 ul.menu li:hover > .item, #rt-main-surround .square4 ul.menu li:hover > .separator, .roktabs-links ul li.active span {color:#0088B5;}
+a, #rt-main-surround ul.menu a:hover, #rt-main-surround ul.menu .separator:hover, #rt-main-surround ul.menu .item:hover {color:#0088B5;}
+    -->
+  </style>
+  <script type="text/javascript" src="../../components/com_jcomments/js/jcomments-v2.1.js%3Fv=2"></script>
+  <script type="text/javascript" src="../../components/com_jcomments/libraries/joomlatune/ajax.js"></script>
+  <script type="text/javascript" src="../../media/system/js/mootools.js"></script>
+  <script type="text/javascript" src="../../media/system/js/caption.js"></script>
+  <script type="text/javascript" src="../../components/com_gantry/js/gantry-buildspans.js"></script>
+  <script type="text/javascript" src="../../components/com_gantry/js/gantry-inputs.js"></script>
+  <script type="text/javascript" src="../../templates/rt_quantive_j15/js/jquery.cookie.js"></script>
+  <script type="text/javascript" src="../../modules/mod_roknavmenu/themes/fusion/js/fusion.js"></script>
+  <script type="text/javascript" src="../../modules/mod_ofssologin/js/ofssologin.js"></script>
+  <script type="text/javascript">
+
+			window.addEvent('domready', function() {
+				var modules = ['rt-block'];
+				var header = ['h3','h2','h1'];
+				GantryBuildSpans(modules, header);
+			});
+		InputsExclusion.push('.content_vote','#rt-popup')
+		        window.addEvent('load', function() {
+					new Fusion('ul.menutop', {
+						pill: 0,
+						effect: 'slide and fade',
+						opacity: 1,
+						hideDelay: 500,
+						centered: 0,
+						tweakInitial: {'x': -2, 'y': 0},
+        				tweakSubsequent: {'x': 0, 'y': -14},
+						menuFx: {duration: 200, transition: Fx.Transitions.Sine.easeOut},
+						pillFx: {duration: 400, transition: Fx.Transitions.Back.easeOut}
+					});
+	            });
+  </script>
+<!-- <script type="text/javascript" src="/sso/javascripts/langsync.js"></script> -->
+<!-- <script src="/templates/rt_quantive_j15/js/ossf.js"></script> -->
+<script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-4136519-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
+</head>
+	<body  class="backgroundlevel-low backgroundstyle-style8 bodylevel-med bodystyle-light cssstyle-style1 logostyle-dark font-family-helvetica font-size-is-default menu-type-fusionmenu col12 ">
+		<div id="rt-main-background">
+			<div class="rt-container">
+																<div id="rt-header">
+					<div class="rt-grid-7 rt-alpha">
+    			<div class="rt-block">
+    	    	<a href="../../index.html" id="rt-logo"></a>
+    		</div>
+	    
+</div>
+<div class="rt-grid-5 rt-omega">
+                    <div class="square9">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<div class="ofssologin_square9"><a href="../../index.html">Login</a>&nbsp;&nbsp|&nbsp;&nbsp;<span><a href="https://www.openfoundry.org/tw/news/8419?task=view" ><span lang="tw" xml:lang="tw">繁體中文</span></a></li></ul></span><!--Joom!fish V2.0.4 (Lightning)-->
+<!-- &copy; 2003-2009 Think Network, released under the GPL. -->
+<!-- More information: at http://www.joomfish.net -->
+<div class="ofssologin_search_square9">
+  <form id="of_search" action="https://www.openfoundry.org/of/openfoundry/search" method="get" onsubmit="of_search(); return false;">
+    <select id="of_search_type">
+      <option value="Projects"> Projects </option>
+      <option value="Content"> Content </option>
+      <option value="People"> People </option>
+    </select>
+    <input id="query" name="query" id="mod_search_searchword" maxlength="50" alt="search" class="inputbox" type="text" size="28" value="search..."  onblur="if(this.value=='') this.value='search...';" onfocus="if(this.value=='search...') this.value='';" />
+    <input type="hidden" name="commit" value="search" />
+  </form>
+</div></div>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		
+</div>
+					<div class="clear"></div>
+				</div>
+																<div id="rt-navigation"><div id="rt-navigation2"><div id="rt-navigation3">
+					
+<div class="nopill">
+	<ul class="menutop level1 " >
+						<li class="item1 root" >
+					<a class="orphan item bullet" href="../../index.html"  >
+				<span>
+			    				Home				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item32 root" >
+					<a class="orphan item bullet" href="../../archived.html"  >
+				<span>
+			    				Projects				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item186 root" >
+					<a class="orphan item bullet" href="../community.html"  >
+				<span>
+			    				Who&#039;s Who				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item4 root" >
+					<a class="orphan item bullet" href="../news.html"  >
+				<span>
+			    				News				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item5 root" >
+					<a class="orphan item bullet" href="../law-and-licensing.html"  >
+				<span>
+			    				Law &amp; Licensing				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item3 root" >
+					<a class="orphan item bullet" href="../activities.html"  >
+				<span>
+			    				Activities				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item2 root" >
+					<a class="orphan item bullet" href="../resourcecatalog.html"  >
+				<span>
+			    				Resource Catalog				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item45 root" >
+					<a class="orphan item bullet" href="../about.html"  >
+				<span>
+			    				About				   
+				</span>
+			</a>
+			
+			
+	</li>	
+				</ul>
+</div>
+
+				    <div class="clear"></div>
+				</div></div></div>
+								<div class="rt-surround"><div class="rt-surround2"><div class="rt-surround3">
+										<div id="rt-showcase-section">
+												<div id="rt-showcase">
+							<div class="rt-grid-12 rt-alpha rt-omega">
+    		<div class="clear"></div>
+		
+		
+                <div class="close-note">
+                    <div class="rt-block">
+               					<div class="module-content">
+                	<div style="font-size:medium; background-image:linear-gradient(120deg,#159957,#4298b2);color:white;padding:20px;margin:-10px -18px;">感謝您對「自由軟體鑄造場」的支持與愛護，十多年來「自由軟體鑄造場」受中央研究院支持，並在資訊科學研究所以及資訊科技創新研究中心執行，現已完成階段性的任務。 本網站預計持續維運至 2021年底，網站內容基本上不會再更動。<br />也紀念我們永遠的朋友 李士傑先生（Shih-Chieh Ilya Li）。</div>				</div>
+            </div>
+                </div>
+		
+</div>
+							<div class="clear"></div>
+						</div>
+																	</div>
+															<div id="rt-main-surround">
+												<div id="rt-breadcrumbs">
+								<div class="rt-breadcrumb-surround">
+		<a href="../../index.html" id="breadcrumbs-home"></a>
+		<span class="breadcrumbs pathway">
+<span class="no-link">News</span></span>
+	</div>
+	
+							<div class="clear"></div>
+						</div>
+																							              <div id="rt-main" class="sa3-mb9">
+                <div class="rt-main-inner">
+                    <div class="rt-grid-9 rt-push-3">
+                                                <div class="rt-block">
+                            							<div class="square1">
+							<div class="rt-module-surround">
+								<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+								<div class="rt-module-inner">
+		                            <div id="rt-mainbody">
+		                                
+<div class="rt-joomla ">
+	<div class="rt-article">
+		
+				<div class="rt-headline"><h1 class="rt-article-title">開放原始碼的相容與互斥性：從 Ruby 社群變更開放原始碼授權來探討</h1>		</div>
+		<div class="clear"></div>
+		
+		
+		
+				<div class="rt-articleinfo">
+						<div class="rt-article-icons">
+								<a href="https://www.openfoundry.org/en/news/8419-ruby-change-license?tmpl=component&amp;print=1&amp;page=" title="Print" onclick="window.open(this.href,'win2','status=no,toolbar=no,scrollbars=yes,titlebar=no,menubar=no,resizable=yes,width=640,height=480,directories=no,location=no'); return false;" rel="nofollow"><span class="icon print"></span></a>																</div>
+			
+			<span class="rt-date-posted">
+						 Created at			Wednesday, 17 August 2011 16:33						&nbsp;&nbsp;&nbsp;&nbsp;						Last Updated on Monday, 17 October 2011 10:05						</span>
+
+						<span class="rt-author">
+				Written by 曾義峰			</span>
+				
+					</div>
+		
+		
+		<h3>前言</h3>
+<p><br /><br /><a href="https://www.ruby-lang.org/" target="_blank">Ruby</a> 是屬於開放原始碼的物件導向程式語言，近年因 <a href="https://rubyonrails.org/" target="_blank">Ruby on Rails (RoR)</a> 開放網頁應用框架的興起而廣為人知，並於 2006 年由 TIOBE 獲選為年度程式語言。<br /><br />過去，Ruby 採用 <a href="https://www.gnu.org/licenses/gpl-2.0.html" target="_blank">GPL-2.0</a> 或 <a href="https://www.ruby-lang.org/en/LICENSE.txt" target="_blank">Ruby 授權</a> 的雙重開放原始碼授權，但從 2011 年 7 月 31 日所釋出的 Ruby 1.9.3 preview1 版本裡，筆者發現除了功能性的改進外，對於開放原始碼授權也進行了大幅度的變更。</p>
+
+<p><br /><br />此次 Ruby 社群將原本「GPL-2.0 或 Ruby 授權的雙重開放原始碼授權」，變更為「<a href="https://www.opensource.org/licenses/bsd-license.php" target="_blank">BSD-2-Clause</a> 或 Ruby 授權的雙重開放原始碼授權」。其中最重大的改變，就是將 GPL-2.0 變更為 BSD-2-Clause。這引起了許多開放原始碼社群的注意，尤其是 Ruby 程式語言的開發及應用者本身，因為授權的變更將影響專案的開發模式或商業利用。<br /><br />筆者從 <a href="https://www.ruby-lang.org/en/community/ruby-core/" target="_blank">Ruby 原始碼的版本控制系統</a>中追蹤，發現早在 2010 年 9 月 15 日的 29262 版本號紀錄中，Ruby 社群已進行此次授權的變更。<br /><br /><a href="../../images/110823/Ruby/image01.png" target="_blank"><img src="../../images/110823/Ruby/image01.png" border="0" alt="image01" width="450" height="194" /></a><br />▲ 圖1 Ruby 核心原始碼第 29262 版本號的紀錄。<br /><br />在軟體專案開發過程中，不管是開放原始碼軟體或非開放原始碼軟體，除了要達到新功能的需求外，還要兼具法律授權條款的相容性要求。也就是除了要認知軟體的合法性及適用範圍外，還需要分析各軟體授權間是否存在互斥性。如果專案中，某些軟體的授權是具有關聯且互斥的，這意謂著這些軟體在法律上並不允許共存於此專案中，此時若強制進行散佈或使用，將面臨侵權的法律責任風險。<br /><br />為了進一步分析此案例，筆者接下來將與讀者一起探討開放原始碼授權的互斥關係，並尋找 Ruby 社群為何要進行授權變更的原因。<br /><br /><br /></p>
+<h3>GPL-2.0 與 GPL-3.0 的授權互斥性</h3>
+<p><br /><br />自由軟體基金會 (Free Software Foundation) 明確指出 GPL-2.0 與 GPL-3.0 是彼此互斥的，這意謂著在同一專案中，該兩款授權的軟體是不得同時共存的。我們也可以從 GPL-2.0 條款原文中找到互斥的相關條文說明。<br /><br />其中 GPL-2.0 條款第 4 款，</p>
+<blockquote>
+<p style="margin-left: 30px;">4. You may not copy, modify, sublicense, or distribute the Program    except as expressly provided under this License.  Any attempt    otherwise to copy, modify, sublicense or distribute the Program is    void, and will automatically terminate your rights under this License.    However, parties who have received copies, or rights, from you under    this License will not have their licenses terminated so long as such    parties remain in full compliance.</p>
+</blockquote>
+<p>以及，第 6 款，</p>
+<blockquote>
+<p style="margin-left: 30px;">6. Each time you redistribute the Program (or any work based on the    Program), the recipient automatically receives a license from the    original licensor to copy, distribute or modify the Program subject to    these terms and conditions.  You may not impose any further    restrictions on the recipients' exercise of the rights granted herein.    You are not responsible for enforcing compliance by third parties to    this License.</p>
+</blockquote>
+<p><br />從 4 與 6 條款中得知，GPL-2.0 是不容許在該條款外，另行新增權利與限制，否則不僅違反了 GPL-2.0 的授權聲明，使用者對於該軟體的 GPL-2.0 授權也隨即終止，也就是不得再繼續使用該軟體。然而我們在 GPL-3.0 條款中，也可以發現 GPL-3.0 相較於 GPL-2.0 的內容外，確實也另行新增了許多不同的條款內容，例如復權機制、額外添附條款，以及禁止將原始碼進行 Tivolization 的運用等等新規定，而這些新增的部分並不符合 GPL-2.0 的規定。<br /><br />除此之外，Richard Stallman 本人也另行撰寫專文表述 GPL-3.0 與 GPL-2.0 之原始碼是直接不具相容性的 [註1]。因此，在 GPL-2.0 與 GPL-3.0 兩者的條款內容中，我們也可以肯定 GPL-2.0 與 GPL-3.0 是個互斥條款。<br /><br /><br /></p>
+<h3>GNU Readline Library 6.0 的授權變更</h3>
+<p><br /><br />為了鼓勵與推動新的 GPL-3.0 授權條款，自由軟體基金會逐步的將旗下 <a href="https://www.gnu.org/software/software.html" target="_blank">GNU 軟體專案</a>由 GPL-2.0+ 變更為 GPL-3.0+ [註2]。這種作法可以促使（或迫使）一些軟體專案為了相容性而進行授權的變更，進而改選擇 GPL-3.0 或其它相容條款。從上一章可以了解，因為 GPL-2.0 與 GPL-3.0 的互斥性，這項改變將造成許多開放原始碼專案必須重新檢視目前所採用的授權組合是否仍然合乎授權相容性。<br /><br />GNUReadline Library 是 GNU 軟體專案中的其中一項。從 2009 年 2 月 20 日釋出的 GNUReadline 6.0 及其後版本，開始使用 GPL-3.0+ 授權條款釋出。這代表著，如果 Ruby 使用 GNUReadline 6.0 或其後版本時，整個 Ruby 專案中將不得再採用與 GPL-3.0 互斥的條款，其中當然也包括了 GPL-2.0。<br /><br />不幸地，在 Ruby 程式語言中，為了支援 editable command lines 的功能，函式庫在編譯時會選擇使用 GNUReadline 或是 <a href="https://sourceforge.net/projects/libedit/" target="_blank">Libedit</a>。這些選擇可以在 Ruby 原始碼庫中的 ext/readline/extconf.rb 程式中發現。<br /><br /><a href="../../images/110823/Ruby/image02.png" target="_blank"><img src="../../images/110823/Ruby/image02.png" border="0" alt="image02" width="400" height="426" /></a><br />▲ 圖2 ext/readline/extconf.rb 部分原始碼。<br /><br />過去，由於 Ruby 使用 GPL-2.0 與 Ruby 授權的雙重開放原始碼授權釋出，再加上 Ruby 授權與 GPL（無論是 GPL-2.0 或 GPL-3.0）存在著互斥不相容性。所以當 Ruby 在編譯時若選擇 GNUReadline，則最終授權還可以由雙重授權轉變為 GPL-2.0 的單一授權；反之，若選擇 Libedit，則最終授權也可以轉變為 Ruby 授權的單一授權。<br /><br />但是若繼續使用 GNUReadline 6.0 及其後版本時，會因為 Ruby 本身授權的關係，不僅最終無法以 GPL-2.0 授權釋出，也無法以 Ruby 授權來釋出。這使得 Ruby 的散佈者面臨了侵權的風險。<br /><br />社群為了因應 GNUReadline 6.0 及其後版本授權變更的互斥性，被迫於 2010 年 6 月 1 日的 28118 版本號中，在 ext/readline/extconf.rb 程式加入了拒用 GNUReadline 6.0 及其後版本的判斷條件。<br /><br /><a href="../../images/110823/Ruby/image03.png" target="_blank"><img src="../../images/110823/Ruby/image03.png" border="0" alt="image03" width="450" height="106" /></a><br />▲ 圖3 Ruby 核心原始碼第 28118 版本號的紀錄。<br /><br />如此的作法，確保了 Ruby 若繼續使用 GNUReadline 時，會主動避開 6.0 及其後版本，使得最終授權仍可變更為 GPL-2.0，而暫時解決了授權互斥性的問題。<br /><br />在此過渡時期，Ruby 開發者彼此間持續討論著授權議題。直到 29262 版本號時，才將 Ruby 的授權變更為「BSD-2-Clause 或 Ruby 授權的雙重開放原始碼授權」，並於 2010 年 9 月 15 日的 29264 版本號中，將先前拒用 GNUReadline 6.0 及其後版本的判斷條件去除。<br /><br /><a href="../../images/110823/Ruby/image04.png" target="_blank"><img src="../../images/110823/Ruby/image04.png" border="0" alt="image04" width="450" height="102" /></a><br />▲ 圖4 Ruby 核心原始碼第 29264 版本號的紀錄。<br /><br />此後，Ruby 專案終於可以繼續自由選擇 GNUReadline 或是 Libedit，而不用再擔心授權互斥性的問題。<br /><br /><br /></p>
+<h3>Ruby 社群為何不選擇 GPL-3.0+ ？</h3>
+<p><br /><br />其實除了上述的選擇外，Ruby 社群還可以有別的選擇，例如全面升級為 GPL-3.0+。<br /><br />也就是如果 Ruby 變更為 「GPL-3.0+ 或 Ruby 授權的雙重開放原始碼授權」。在編譯時選擇 GNUReadline 時，最終授權將可由雙重授權變更為 GPL-3.0+ 的單一授權；反之，若選擇 Libedit 則最終授權將可由雙重授權變更為 Ruby 授權的單一授權。如此先前遇到的問題依然可以解決，但又為何 Ruby 社群選擇的不是 GPL-3.0+ 而是 BSD-2-Clause？<br /><br />這個問題的答案可以從「<a href="https://www.ruby-forum.com/topic/216010" target="_blank">Change Ruby's License to BSDL + Ruby's dual license</a>」的討論串中得到解答。<br /><br />根據 Naruse 的說法，選擇 BSD-2-Clause 授權條款時，開發者不僅可以繼續使用 GPL-3.0 的軟體，也可以把原本是 Ruby 授權的程式改由 BSD 授權來撰寫。當然，除了 Naruse 在該文中所述的優點外，筆者認為這個改變還帶來了其它的優點，如：<br /><br />－因為 BSD-2-Clause 授權條款相容於 GPL-2.0 及 GPL-3.0。所以開發者不僅可以繼續使用 GPL-2.0 的軟體專案，也可以選擇 GPL-3.0 的軟體專案。這擴大了開發者擁有的選擇性，但最後仍然要確保最終的授權是否具互斥性，也就是在同一專案中，要避免同時選用 GPL-2.0 與 GPL-3.0。<br />－更有利於整合其它與 GPL 互斥的開放原始碼授權條款的軟體專案，以納百川，成其大。<br /><br /><br /></p>
+<h3>結論</h3>
+<p><br /><br />在此案例中，我們可以看到一個正確處理授權互斥的流程。<br /><br />1. 當發現專案授權衝突發生時，馬上進行排除或隔離。本案中 Ruby 社群將 GNUReadline 6.0 及其後版本先行排除。<br />2. 專案成員進行理性的討論，並重新選擇一個最適合專案的授權組合。<br />3. 最後修正專案授權聲明，並恢復先前處理的狀態。<br /><br />在 Ruby 社群中，筆者看到了一種不同的開放心態。與其它軟體專案不同的是，他們並非將授權變更為常見的 GPL-3.0 或 GPL-3.0+，而是回頭探究本身專案的特性以及未來發展的需求，最後選擇了一個最適合自己的授權組合－BSD-2-Clause 或 Ruby 授權。這項調整不僅為開發人員帶來了更多的選擇權利，也使得 Ruby 更可以容納更多不同種類的開放原始碼授權專案。<br /><br /></p>
+<h3>註解</h3>
+<p><br /><br />註1：「[Why Upgrade to GPL Version 3](https://gplv3.fsf.org/rms-why.html)」。專文第三段："When we say that GPLv2 and GPLv3 are incompatible, it means there is no legal way to combine code under GPLv2 with code under GPLv3 in a single program. This is because both GPLv2 and GPLv3 are copyleft licenses: each of them says, “If you include code under this license in a larger program, the larger program must be under this license too.” There is no way to make them compatible. We could add a GPLv2-compatibility clause to GPLv3, but it wouldn't do the job, because GPLv2 would need a similar clause."<br /><br />註2：加號(+)意謂著「後續版本」(or later)。如 GPL-2.0+ 代表 GPL-2.0、GPL-3.0 及未來新的 GPL 授權版本；而 GPL-3.0+ 代表 GPL-3.0 及未來新的 GPL 授權版本。<br /><br /><br /></p>
+<h3>相關連結</h3>
+<p><br /><br />Ruby 官方網站 <a href="https://www.ruby-lang.org/" target="_blank">https://www.ruby-lang.org/ </a><br /><br />GPL-2.0 授權全文 <a href="https://www.gnu.org/licenses/gpl-2.0.html" target="_blank">https://www.gnu.org/licenses/gpl-2.0.html </a><br /><br />Ruby 授權全文 <a href="https://www.ruby-lang.org/en/LICENSE.txt" target="_blank">https://www.ruby-lang.org/en/LICENSE.txt </a><br /><br />BSD-2-Clause 授權全文 <a href="https://www.opensource.org/licenses/bsd-license.php" target="_blank">https://www.opensource.org/licenses/bsd-license.php </a><br /><br />Ruby 原始碼版本控制庫 <a href="https://www.ruby-lang.org/en/community/ruby-core/" target="_blank">https://www.ruby-lang.org/en/community/ruby-core/ </a><br /><br />GPL-3.0 授權全文 <a href="https://www.gnu.org/copyleft/gpl-3.0.html" target="_blank">https://www.gnu.org/copyleft/gpl-3.0.html</a> <br /><br />GNU 軟體專案清單 <a href="https://www.gnu.org/software/software.html" target="_blank">https://www.gnu.org/software/software.html </a><br /><br />GNU Readline Library 官方網站 <a href="https://www.gnu.org/s/readline/" target="_blank">https://www.gnu.org/s/readline/</a> <br /><br />Libedit 官方網站 <a href="https://sourceforge.net/projects/libedit/" target="_blank">https://sourceforge.net/projects/libedit/</a></p>
+			<!-- Show relate article -->
+				<!-- end -->
+		<div class="article_note">
+		<!-- Add tags use metakey, and show OSSF Newsletter tag: OSSFNL+NUM-->
+		<br><br> <hr style='border: 1px dashed #D2DADB;'><b>OSSF Newsletter&nbsp;:</b>&nbsp;<a href='../../previous-issue%3Ftask=view&amp;id=754.html'>第 179 期 「臺灣博碩士論文知識加值系統」強力徵求論文全文的網路下載與公示授權！</a><br><b>Tags:</b>&nbsp;<a href='../../index.php%3Foption=com_search&amp;Itemid=58&amp;searchphrase=exact_meta&amp;ordering=newest&amp;searchword=Ruby.html'>Ruby</a>,&nbsp;&nbsp;<a href='../../index.php%3Foption=com_search&amp;Itemid=58&amp;searchphrase=exact_meta&amp;ordering=newest&amp;searchword=&#32;License.html'> License</a>,&nbsp;&nbsp;<a href='../../index.php%3Foption=com_search&amp;Itemid=58&amp;searchphrase=exact_meta&amp;ordering=newest&amp;searchword=&#32;GPL&#32;2.0.html'> GPL 2.0</a>,&nbsp;&nbsp;<a href='../../index.php%3Foption=com_search&amp;Itemid=58&amp;searchphrase=exact_meta&amp;ordering=newest&amp;searchword=&#32;BSD.html'> BSD</a>,&nbsp;&nbsp;				<!-- End -->
+					<br>
+					<b>Category: </b><a href="../enterprise-application.html">				Enterprise Application					</a>				</div>
+			 <!-- AddThis Button BEGIN ID 3001 is the front page article -->
+     			<br><br>
+       <div class="addthis_toolbox addthis_default_style addthis_32x32_style">
+       <a class="addthis_button_preferred_1"></a>
+       <a class="addthis_button_preferred_2"></a>
+       <a class="addthis_button_preferred_3"></a>
+       <a class="addthis_button_preferred_4"></a>
+       <a class="addthis_button_compact"></a>
+       <a class="addthis_counter addthis_bubble_style"></a>
+       </div>
+       <script type="text/javascript">var addthis_config = {"data_track_clickback":true};</script>
+       <script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js#pubid=openfoundry"></script>
+       <!-- AddThis Button END -->
+     <br>
+		<div class="totop" ><a class="rt-totop" href="8419%3Ftask=view.html#" style="outline: medium none;">↑ Top</a></div>
+            <!-- AddThis Button END -->
+
+			</div>
+</div>
+
+		                            </div>
+									<div class="clear"></div>
+								</div>
+								<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+							</div>
+							</div>
+                                                    </div>
+                                            </div>
+                                <div class="rt-grid-3 rt-pull-9">
+                <div id="rt-sidebar-a">
+                                    <div class="square4">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<ul class="menu"><li class="item56"><a href="../previous-issue.html"><span>Previous Issue</span></a></li><li class="item55"><a href="../about-newsletter.html"><span>About Newsletter</span></a></li></ul>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<ul class="menu"><li class="item115"><a href="../foss-news.html"><span>FOSS News</span></a></li><li class="item141"><a href="../case-job.html"><span>Case and Jobs</span></a></li></ul>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+        	                <div class="square1">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-title"><h2 class="title">Special</h2></div>
+						<div class="clear"></div>
+		                						<div class="module-content">
+		                	<ul class="menu"><li class="item37"><a href="../tech-column.html"><span>Tech Column</span></a></li><li class="item40"><a href="../foss-programs.html"><span>FOSS Programs</span></a></li><li class="item35"><a href="../legal-column.html"><span>Legal Column</span></a></li><li class="item154"><a href="../foss-forum.html"><span>FOSS Forum</span></a></li><li class="item162"><a href="../enterprise-application.html"><span>Enterprise Application</span></a></li><li class="item44"><a href="../foss-projects.html"><span>FOSS Projects</span></a></li></ul>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		                <div class="square1">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<p style="text-align: center;"><a href="../../news%3Fformat=feed&amp;type=rss" target="_black"><img src="../../images/M_images/news-rss-feed.png" border="0" /></a><br /><a href="https://www.openfoundry.org/rss-feed/Newsletter" target="_black"><img src="../../images/M_images/newsletter-rss-feed.png" border="0" /></a></p>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		
+                </div>
+            </div>
+
+                    <div class="clear"></div>
+                </div>
+            </div>
+																													</div>
+										<div id="rt-copyright">
+						<div class="rt-grid-12 rt-alpha rt-omega">
+                        <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<span class="nowrap">Open Source Software Foundry</span><span class="nowrap">‧</span><span class="nowrap"> </span><span class="nowrap">Best  Viewed with IE7.0 or Firefox2.0 above, 1024x768 Resolution. </span><strong>E-Mail</strong>：<a href="mailto:contact@openfoundry.org">contact@openfoundry.org</a> <br /><strong>Address</strong>：No.128, Sec.2, Academia Rd., Institute of Information Science, Academia Sinica, Nangang District, Taipei City 11529, Taiwan (R.O.C). <br /><a href="../privacy-policy.html">Privacy Policy</a>. <a href="../terms-of-use.html">Terms-of-use</a> <span style="position: relative; top: 8px; margin-top: -8px;"> <a href="../../about/8101.html"><img src="../../images/M_images/rss-feed-all.png" border="0" /></a></span>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+        	
+</div>
+						<div class="clear"></div>
+					</div>
+					<div class="rt-footer-bottom-wrap"><div class="rt-footer-bottom"><div class="rt-footer-bottom2"><div class="rt-footer-bottom3"></div></div></div></div>
+									</div></div></div>
+				<div class="rt-surround-bottom"><div class="rt-surround-bottom2"><div class="rt-surround-bottom3"></div></div></div>
+							</div>
+		</div>
+		<!--
+		<script id="aptureScript">
+						(function (){var a=document.createElement("script");a.defer="true";a.src="http://www.apture.com/js/apture.js?siteToken=vsJttrn";document.getElementsByTagName("head")[0].appendChild(a);})();
+     </script>
+-->
+
+<!-- Piwik -->
+<!-- 			<script type="text/javascript">
+			  var _paq = _paq || [];
+		  _paq.push(["trackPageView"]);
+		  _paq.push(["enableLinkTracking"]);
+
+		    (function() {
+			        var u=(("https:" == document.location.protocol) ? "https" : "https") + "://www.openfoundry.org/piwik/";
+				    _paq.push(["setTrackerUrl", u+"piwik.php"]);
+				    _paq.push(["setSiteId", "1"]);
+				        var d=document, g=d.createElement("script"), s=d.getElementsByTagName("script")[0]; g.type="text/javascript";
+				        g.defer=true; g.async=true; g.src=u+"piwik.js"; s.parentNode.insertBefore(g,s);
+					  })();
+		  </script> -->
+<!-- End Piwik Code -->
+	</body>
+</html>

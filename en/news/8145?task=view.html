@@ -1,0 +1,394 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-gb" lang="en-gb" >
+<head>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<link rel="shortcut icon" href="../../images/favicon.ico" />
+	  <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+  <meta name="robots" content="index, follow" />
+  <meta name="keywords" content="OSSFNL685" />
+  <meta name="title" content="Mozilla 釋出新的 JavaScript 效能測試標竿 Kraken" />
+  <meta name="description" content="Mozilla 不久前釋出了新的 JavaScript 效能測試標竿（benchmark）Kraken。Mozilla 團隊表示開發者耗費許多時間，以最佳化其程式碼來改善瀏覽器在特定測試標竿上的效能。然而這些努力不見得能創造出更好的使用者體驗。根據 Mozilla 工程師 Rob Sayre 的說法，Kraken 轉而專注於實際的工作負載和先進的應用軟體。 Rob 表示，他們相信 Kraken" />
+  <meta name="generator" content="" />
+  <title>Mozilla 釋出新的 JavaScript 效能測試標竿 Kraken - OpenFoundry</title>
+  <link href="../../favicon.ico" rel="shortcut icon" type="image/x-icon" />
+  <link rel="stylesheet" href="../../components/com_gantry/css/gantry.css" type="text/css" />
+  <link rel="stylesheet" href="../../components/com_gantry/css/grid-12.css" type="text/css" />
+  <link rel="stylesheet" href="../../components/com_gantry/css/joomla.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/joomla.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/style1.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/light-body.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/demo-styles.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/template.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/typography.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/fusionmenu.css" type="text/css" />
+  <style type="text/css">
+    <!--
+#rt-main-surround ul.menu li.active > a, #rt-main-surround ul.menu li.active > .separator, #rt-main-surround ul.menu li.active > .item, #rt-main-surround .square4 ul.menu li:hover > a, #rt-main-surround .square4 ul.menu li:hover > .item, #rt-main-surround .square4 ul.menu li:hover > .separator, .roktabs-links ul li.active span {color:#0088B5;}
+a, #rt-main-surround ul.menu a:hover, #rt-main-surround ul.menu .separator:hover, #rt-main-surround ul.menu .item:hover {color:#0088B5;}
+    -->
+  </style>
+  <script type="text/javascript" src="../../components/com_jcomments/js/jcomments-v2.1.js%3Fv=2"></script>
+  <script type="text/javascript" src="../../components/com_jcomments/libraries/joomlatune/ajax.js"></script>
+  <script type="text/javascript" src="../../media/system/js/mootools.js"></script>
+  <script type="text/javascript" src="../../media/system/js/caption.js"></script>
+  <script type="text/javascript" src="../../components/com_gantry/js/gantry-buildspans.js"></script>
+  <script type="text/javascript" src="../../components/com_gantry/js/gantry-inputs.js"></script>
+  <script type="text/javascript" src="../../templates/rt_quantive_j15/js/jquery.cookie.js"></script>
+  <script type="text/javascript" src="../../modules/mod_roknavmenu/themes/fusion/js/fusion.js"></script>
+  <script type="text/javascript" src="../../modules/mod_ofssologin/js/ofssologin.js"></script>
+  <script type="text/javascript">
+
+			window.addEvent('domready', function() {
+				var modules = ['rt-block'];
+				var header = ['h3','h2','h1'];
+				GantryBuildSpans(modules, header);
+			});
+		InputsExclusion.push('.content_vote','#rt-popup')
+		        window.addEvent('load', function() {
+					new Fusion('ul.menutop', {
+						pill: 0,
+						effect: 'slide and fade',
+						opacity: 1,
+						hideDelay: 500,
+						centered: 0,
+						tweakInitial: {'x': -2, 'y': 0},
+        				tweakSubsequent: {'x': 0, 'y': -14},
+						menuFx: {duration: 200, transition: Fx.Transitions.Sine.easeOut},
+						pillFx: {duration: 400, transition: Fx.Transitions.Back.easeOut}
+					});
+	            });
+  </script>
+<!-- <script type="text/javascript" src="/sso/javascripts/langsync.js"></script> -->
+<!-- <script src="/templates/rt_quantive_j15/js/ossf.js"></script> -->
+<script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-4136519-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
+</head>
+	<body  class="backgroundlevel-low backgroundstyle-style8 bodylevel-med bodystyle-light cssstyle-style1 logostyle-dark font-family-helvetica font-size-is-default menu-type-fusionmenu col12 ">
+		<div id="rt-main-background">
+			<div class="rt-container">
+																<div id="rt-header">
+					<div class="rt-grid-7 rt-alpha">
+    			<div class="rt-block">
+    	    	<a href="../../index.html" id="rt-logo"></a>
+    		</div>
+	    
+</div>
+<div class="rt-grid-5 rt-omega">
+                    <div class="square9">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<div class="ofssologin_square9"><a href="../../index.html">Login</a>&nbsp;&nbsp|&nbsp;&nbsp;<span><a href="https://www.openfoundry.org/tw/news/8145?task=view" ><span lang="tw" xml:lang="tw">繁體中文</span></a></li></ul></span><!--Joom!fish V2.0.4 (Lightning)-->
+<!-- &copy; 2003-2009 Think Network, released under the GPL. -->
+<!-- More information: at http://www.joomfish.net -->
+<div class="ofssologin_search_square9">
+  <form id="of_search" action="https://www.openfoundry.org/of/openfoundry/search" method="get" onsubmit="of_search(); return false;">
+    <select id="of_search_type">
+      <option value="Projects"> Projects </option>
+      <option value="Content"> Content </option>
+      <option value="People"> People </option>
+    </select>
+    <input id="query" name="query" id="mod_search_searchword" maxlength="50" alt="search" class="inputbox" type="text" size="28" value="search..."  onblur="if(this.value=='') this.value='search...';" onfocus="if(this.value=='search...') this.value='';" />
+    <input type="hidden" name="commit" value="search" />
+  </form>
+</div></div>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		
+</div>
+					<div class="clear"></div>
+				</div>
+																<div id="rt-navigation"><div id="rt-navigation2"><div id="rt-navigation3">
+					
+<div class="nopill">
+	<ul class="menutop level1 " >
+						<li class="item1 root" >
+					<a class="orphan item bullet" href="../../index.html"  >
+				<span>
+			    				Home				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item32 root" >
+					<a class="orphan item bullet" href="../../archived.html"  >
+				<span>
+			    				Projects				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item186 root" >
+					<a class="orphan item bullet" href="../community.html"  >
+				<span>
+			    				Who&#039;s Who				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item4 root" >
+					<a class="orphan item bullet" href="../news.html"  >
+				<span>
+			    				News				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item5 root" >
+					<a class="orphan item bullet" href="../law-and-licensing.html"  >
+				<span>
+			    				Law &amp; Licensing				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item3 root" >
+					<a class="orphan item bullet" href="../activities.html"  >
+				<span>
+			    				Activities				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item2 root" >
+					<a class="orphan item bullet" href="../resourcecatalog.html"  >
+				<span>
+			    				Resource Catalog				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item45 root" >
+					<a class="orphan item bullet" href="../about.html"  >
+				<span>
+			    				About				   
+				</span>
+			</a>
+			
+			
+	</li>	
+				</ul>
+</div>
+
+				    <div class="clear"></div>
+				</div></div></div>
+								<div class="rt-surround"><div class="rt-surround2"><div class="rt-surround3">
+										<div id="rt-showcase-section">
+												<div id="rt-showcase">
+							<div class="rt-grid-12 rt-alpha rt-omega">
+    		<div class="clear"></div>
+		
+		
+                <div class="close-note">
+                    <div class="rt-block">
+               					<div class="module-content">
+                	<div style="font-size:medium; background-image:linear-gradient(120deg,#159957,#4298b2);color:white;padding:20px;margin:-10px -18px;">感謝您對「自由軟體鑄造場」的支持與愛護，十多年來「自由軟體鑄造場」受中央研究院支持，並在資訊科學研究所以及資訊科技創新研究中心執行，現已完成階段性的任務。 本網站預計持續維運至 2021年底，網站內容基本上不會再更動。<br />也紀念我們永遠的朋友 李士傑先生（Shih-Chieh Ilya Li）。</div>				</div>
+            </div>
+                </div>
+		
+</div>
+							<div class="clear"></div>
+						</div>
+																	</div>
+															<div id="rt-main-surround">
+												<div id="rt-breadcrumbs">
+								<div class="rt-breadcrumb-surround">
+		<a href="../../index.html" id="breadcrumbs-home"></a>
+		<span class="breadcrumbs pathway">
+<span class="no-link">News</span></span>
+	</div>
+	
+							<div class="clear"></div>
+						</div>
+																							              <div id="rt-main" class="sa3-mb9">
+                <div class="rt-main-inner">
+                    <div class="rt-grid-9 rt-push-3">
+                                                <div class="rt-block">
+                            							<div class="square1">
+							<div class="rt-module-surround">
+								<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+								<div class="rt-module-inner">
+		                            <div id="rt-mainbody">
+		                                
+<div class="rt-joomla ">
+	<div class="rt-article">
+		
+				<div class="rt-headline"><h1 class="rt-article-title">Mozilla 釋出新的 JavaScript 效能測試標竿 Kraken</h1>		</div>
+		<div class="clear"></div>
+		
+		
+		
+				<div class="rt-articleinfo">
+						<div class="rt-article-icons">
+								<a href="https://www.openfoundry.org/en/news/8145-mozilla-javascript-kraken?tmpl=component&amp;print=1&amp;page=" title="Print" onclick="window.open(this.href,'win2','status=no,toolbar=no,scrollbars=yes,titlebar=no,menubar=no,resizable=yes,width=640,height=480,directories=no,location=no'); return false;" rel="nofollow"><span class="icon print"></span></a>																</div>
+			
+			<span class="rt-date-posted">
+						 Created at			Thursday, 23 September 2010 00:00						&nbsp;&nbsp;&nbsp;&nbsp;						Last Updated on Wednesday, 09 May 2012 15:11						</span>
+
+						<span class="rt-author">
+				Written by 謝良奇/編譯			</span>
+				
+					</div>
+		
+		
+		Mozilla 不久前釋出了新的 JavaScript 效能測試標竿（benchmark）Kraken。Mozilla 團隊表示開發者耗費許多時間，以最佳化其程式碼來改善瀏覽器在特定測試標竿上的效能。然而這些努力不見得能創造出更好的使用者體驗。根據 Mozilla 工程師 Rob Sayre 的說法，Kraken 轉而專注於實際的工作負載和先進的應用軟體。<br /><br />Rob 表示，他們相信 Kraken 之中使用的測試標竿，在反映現實工作負載以推動瀏覽器效能向前邁進這一點上，有著更好的表現。而這正是如今眾人所認為，開放 Web 技術腳步過於緩慢的一部份，他們希望能有一套測試標竿，能夠反映出在實現未來應用軟體上的進展。<br /><br />這項新的測試標竿指出，搭載了新 JaegerMonkey JavaScript 引擎的 Firefox 4，要比現有的 Firefox 3.6 穩定版本快上 2.5 倍。<br /><br />另一位 Mozilla 成員 Nicholas Nethercote 指出 Hennessy 和 Patterson 的電腦架構（Computer Architecture）一書，來說明今日的測試標竿現況。Hennessy 和 Patterson 列舉出測試標竿的 5 大種類，由最佳到最差為：實際的應用軟體、修改過的應用軟體、核心、玩具測試標竿、人造測試標竿。<br /><br />Rob 表示，他們認為 Kraken 向正確方向跨出了一步。鑑於他們會建構其測試集並推動開放 Web 的功能向前邁進，以及讓工作負載更為實際並富有變化，Kraken 會在未來數週至數月內快速演進。<br /><br />當然，Rob 指出，正如他們其他專案，Kraken 會是開放源碼軟體，他們歡迎來自更廣大社群的貢獻和參與。<br /><br />Kraken 是否能夠一舉拿下 Sunspider、Google 的 V8、Mozilla 的 Dromaeo 這些測試標竿目前的地位，還有待觀察。正如所有廠商贊助的測試標竿一樣，Mozilla 的競爭對手難免會擔心，這套新測試標竿是否會不公而偏向自家產品。不過既然 Kraken 的程式碼採用開放源碼授權來釋出，該團隊要克服這些爭議相對來說會簡單許多。<br /><br /><br />相關網址：<br />1.Kraken 釋出<br /><a target="_blank" href="https://blog.mozilla.com/rob-sayre/2010/09/14/release-the-kraken/">https://blog.mozilla.com/rob-sayre/2010/09/14/release-the-kraken/</a><br />2.Mozilla 釋出 Kraken：新的 JavaScript 測試標竿<br /><a href="https://www.readwriteweb.com/archives/mozilla_releases_the_kraken_a_new_javascript_bench.php" target="_blank">https://www.readwriteweb.com/archives/mozilla_releases_the_kraken_a_new_javascript_bench.php</a><br /><br />3.Mozilla 推出 Kraken<br /><a href="https://news.slashdot.org/story/10/09/15/0231216/Mozilla-Unleashes-the-Kraken?from=rss" target="_blank">https://news.slashdot.org/story/10/09/15/0231216/Mozilla-Unleashes-the-Kraken?from=rss</a>
+			<!-- Show relate article -->
+		<br><br><h4>You may be interested in the following articles:</h4><ul><li><a href='../../foss-news/9047.html'>困頓中求轉進 - BlackBerry 與 Mozilla 持續合作 Peach Fuzzing</a> - <span class='date-posted'>2013-08-26</span></li><li><a href='../../foss-news/8909.html'>Mozilla 正式發布 Firefox OS 開發用手機</a> - <span class='date-posted'>2013-01-28</span></li><li><a href='../../foss-news/8747.html'>Mozilla B2G 改名為 Firefox OS，將於明年初發售</a> - <span class='date-posted'>2012-07-09</span></li><li><a href='../../foss-news/8662.html'>Mozilla 推出網頁遊戲 BrowserQuest</a> - <span class='date-posted'>2012-04-06</span></li><li><a href='../../foss-news/8646.html'>Mozilla 考慮讓行動版 Firefox 支援 H.264 視頻編解碼器</a> - <span class='date-posted'>2012-03-22</span></li><li><a href='../../foss-news/8587.html'>Mozilla 釋出 MPL 2.0 版</a> - <span class='date-posted'>2012-01-16</span></li><li><a href='../../foss-news/8504.html'>Mozilla 釋出以 Bing 為預設搜尋引擎的 Firefox 版本</a> - <span class='date-posted'>2011-11-07</span></li><li><a href='../../foss-news/8469.html'>Mozilla 工作小組建議為企業用戶減緩釋出時程</a> - <span class='date-posted'>2011-10-03</span></li><li><a href='../../foss-news/8454.html'>Mozilla 快速釋出週期引發批評  前志願者指臭蟲回應緩慢</a> - <span class='date-posted'>2011-09-18</span></li><li><a href='../../foss-news/8412.html'>Mozilla 宣佈以 Web 技術為基礎的行動作業系統</a> - <span class='date-posted'>2011-07-25</span></li><li><a href='../../foss-news/8388.html'>經理人惹惱 Firefox 企業用戶 Mozilla 部落格發文平息怒火</a> - <span class='date-posted'>2011-07-04</span></li><li><a href='../../foss-news/8348.html'>Mozilla 拒絕美國政府要求移除 Firefox 附加元件</a> - <span class='date-posted'>2011-05-11</span></li><li><a href='../../foss-news/8276.html'>【社群採訪】- 創意十足的 Mozilla Firefox 社群 - Mozilla Taiwan</a> - <span class='date-posted'>2011-03-07</span></li><li><a href='../../foss-news/8205.html'>Mozilla 營收成長 34%</a> - <span class='date-posted'>2010-12-09</span></li><li><a href='../../foss-news/8167.html'>Mozilla 啟用群眾外包網站診斷 Firefox 的疑難雜症</a> - <span class='date-posted'>2010-10-22</span></li><li><a href='../../foss-news/8140.html'>Mozilla 釋出 Firefox 行動版本 Fennec Alpha</a> - <span class='date-posted'>2010-09-08</span></li><li><a href='../../foss-news/8139.html'>Mozilla 雲端開發環境 Bespin 改名 Skywriter</a> - <span class='date-posted'>2010-09-06</span></li><li><a href='../../foss-news/2043.html'>一窺 Mozilla Firefox 擴充套件開發</a> - <span class='date-posted'>2009-04-07</span></li><li><a href='../../foss-news/293.html'>Firefox 延伸套件比賽落幕 Firefox 為 Mozilla 賺進百萬美元</a> - <span class='date-posted'>2006-03-10</span></li><li><a href='../../foss-news/381.html'>Mozilla 行動裝置瀏覽器 Minimo 釋出預覽版本</a> - <span class='date-posted'>2005-07-22</span></li><li><a href='../../foss-news/290.html'>Firefox 下載達 7500 萬 Mozilla 版圖人力同擴張</a> - <span class='date-posted'>2005-07-19</span></li><li><a href='../../foss-news/382.html'>Mozilla 行銷網站 SpreadFirefox.com 遭入侵</a> - <span class='date-posted'>2005-07-16</span></li><li><a href='../../foss-news/678.html'>Mozilla.org 宣佈成立基金會 持續 Mozilla 專案發展</a> - <span class='date-posted'>2003-07-21</span></li></ul>		<!-- end -->
+		<div class="article_note">
+		<!-- Add tags use metakey, and show OSSF Newsletter tag: OSSFNL+NUM-->
+		<br><br> <hr style='border: 1px dashed #D2DADB;'><b>OSSF Newsletter&nbsp;:</b>&nbsp;<a href='../../previous-issue%3Ftask=view&amp;id=685.html'>第 158 期 Westinghouse 在 BusyBox 案件之侵權賠償解析–企業應規劃衡量利用自由軟體的法律風險</a><br>				<!-- End -->
+					<br>
+					<b>Category: </b><a href="../foss-news.html">				FOSS News					</a>				</div>
+			 <!-- AddThis Button BEGIN ID 3001 is the front page article -->
+     			<br><br>
+       <div class="addthis_toolbox addthis_default_style addthis_32x32_style">
+       <a class="addthis_button_preferred_1"></a>
+       <a class="addthis_button_preferred_2"></a>
+       <a class="addthis_button_preferred_3"></a>
+       <a class="addthis_button_preferred_4"></a>
+       <a class="addthis_button_compact"></a>
+       <a class="addthis_counter addthis_bubble_style"></a>
+       </div>
+       <script type="text/javascript">var addthis_config = {"data_track_clickback":true};</script>
+       <script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js#pubid=openfoundry"></script>
+       <!-- AddThis Button END -->
+     <br>
+		<div class="totop" ><a class="rt-totop" href="8145%3Ftask=view.html#" style="outline: medium none;">↑ Top</a></div>
+            <!-- AddThis Button END -->
+
+			</div>
+</div>
+
+		                            </div>
+									<div class="clear"></div>
+								</div>
+								<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+							</div>
+							</div>
+                                                    </div>
+                                            </div>
+                                <div class="rt-grid-3 rt-pull-9">
+                <div id="rt-sidebar-a">
+                                    <div class="square4">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<ul class="menu"><li class="item56"><a href="../previous-issue.html"><span>Previous Issue</span></a></li><li class="item55"><a href="../about-newsletter.html"><span>About Newsletter</span></a></li></ul>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<ul class="menu"><li class="item115"><a href="../foss-news.html"><span>FOSS News</span></a></li><li class="item141"><a href="../case-job.html"><span>Case and Jobs</span></a></li></ul>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+        	                <div class="square1">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-title"><h2 class="title">Special</h2></div>
+						<div class="clear"></div>
+		                						<div class="module-content">
+		                	<ul class="menu"><li class="item37"><a href="../tech-column.html"><span>Tech Column</span></a></li><li class="item40"><a href="../foss-programs.html"><span>FOSS Programs</span></a></li><li class="item35"><a href="../legal-column.html"><span>Legal Column</span></a></li><li class="item154"><a href="../foss-forum.html"><span>FOSS Forum</span></a></li><li class="item162"><a href="../enterprise-application.html"><span>Enterprise Application</span></a></li><li class="item44"><a href="../foss-projects.html"><span>FOSS Projects</span></a></li></ul>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		                <div class="square1">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<p style="text-align: center;"><a href="../../news%3Fformat=feed&amp;type=rss" target="_black"><img src="../../images/M_images/news-rss-feed.png" border="0" /></a><br /><a href="https://www.openfoundry.org/rss-feed/Newsletter" target="_black"><img src="../../images/M_images/newsletter-rss-feed.png" border="0" /></a></p>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		
+                </div>
+            </div>
+
+                    <div class="clear"></div>
+                </div>
+            </div>
+																													</div>
+										<div id="rt-copyright">
+						<div class="rt-grid-12 rt-alpha rt-omega">
+                        <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<span class="nowrap">Open Source Software Foundry</span><span class="nowrap">‧</span><span class="nowrap"> </span><span class="nowrap">Best  Viewed with IE7.0 or Firefox2.0 above, 1024x768 Resolution. </span><strong>E-Mail</strong>：<a href="mailto:contact@openfoundry.org">contact@openfoundry.org</a> <br /><strong>Address</strong>：No.128, Sec.2, Academia Rd., Institute of Information Science, Academia Sinica, Nangang District, Taipei City 11529, Taiwan (R.O.C). <br /><a href="../privacy-policy.html">Privacy Policy</a>. <a href="../terms-of-use.html">Terms-of-use</a> <span style="position: relative; top: 8px; margin-top: -8px;"> <a href="../../about/8101.html"><img src="../../images/M_images/rss-feed-all.png" border="0" /></a></span>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+        	
+</div>
+						<div class="clear"></div>
+					</div>
+					<div class="rt-footer-bottom-wrap"><div class="rt-footer-bottom"><div class="rt-footer-bottom2"><div class="rt-footer-bottom3"></div></div></div></div>
+									</div></div></div>
+				<div class="rt-surround-bottom"><div class="rt-surround-bottom2"><div class="rt-surround-bottom3"></div></div></div>
+							</div>
+		</div>
+		<!--
+		<script id="aptureScript">
+						(function (){var a=document.createElement("script");a.defer="true";a.src="http://www.apture.com/js/apture.js?siteToken=vsJttrn";document.getElementsByTagName("head")[0].appendChild(a);})();
+     </script>
+-->
+
+<!-- Piwik -->
+<!-- 			<script type="text/javascript">
+			  var _paq = _paq || [];
+		  _paq.push(["trackPageView"]);
+		  _paq.push(["enableLinkTracking"]);
+
+		    (function() {
+			        var u=(("https:" == document.location.protocol) ? "https" : "https") + "://www.openfoundry.org/piwik/";
+				    _paq.push(["setTrackerUrl", u+"piwik.php"]);
+				    _paq.push(["setSiteId", "1"]);
+				        var d=document, g=d.createElement("script"), s=d.getElementsByTagName("script")[0]; g.type="text/javascript";
+				        g.defer=true; g.async=true; g.src=u+"piwik.js"; s.parentNode.insertBefore(g,s);
+					  })();
+		  </script> -->
+<!-- End Piwik Code -->
+	</body>
+</html>

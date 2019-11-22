@@ -1,0 +1,277 @@
+<html>
+
+<head>
+<meta http-equiv="Content-Language" content="en-us">
+<meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+<title>Prism-MW - Architectural Middleware for Mobile and Embedded Systems</title>
+<link href="https://csse.usc.edu/~softarch/Prism/Prism&#32;Homepage&#32;Stylesheet.css" rel="stylesheet" type="text/css">
+
+</head>
+
+<body>
+<p align="center">
+
+<table width="770" border="0" cellpadding="0" cellspacing="0" class="layoutCentered">
+
+<tr>
+<td width="770"><img src="https://csse.usc.edu/~softarch/Prism/images/Prism_Logo_Long.jpg" alt="Prism - Middleware for Mobile and Embedded Systems" title="Prism - Middleware for Mobile and Embedded Systems" border="0" id="head" name="head"/></td>
+</tr>
+
+</table>
+
+<table width="820" cellspacing="0" cellpadding="4" bgcolor="#000000">
+	<tr>
+		<td>
+			<table width="100%" cellspacing="5" cellpadding="15">
+				<tr>
+				
+					<td bgcolor="#FFFFFF" bordercolor="#FFFFFF">
+						
+						<p align="left"><b>Welcome to the Prism-MW homepage.</b>  PrismMW is an extensible middleware platform 
+						that enables efficient implementation, deployment, and execution of distributed software systems in terms 
+						of their architectural elements: components, connectors, configurations, and events.<br><br></p>
+						
+						<p align="left"><b><font face="Arial" size="3">Benefits</font></b></p>
+						
+						<p>Prism-MW is a middleware targeted at applications in highly distributed, resource constrained, heterogeneous, and 
+						mobile settings. The key properties of Prism-MW are its native, and flexible, support for architectural abstractions 
+						(including architectural styles), efficiency, scalability, and extensibility. These properties are enabled by Prism-MW’s 
+						extensive separation of concerns that spans several dimensions:
+						
+						<ul>
+							<li>By adopting an explicit architectural perspective, Prism-MW has inherited the separation of computation (handled by components) 
+							from interaction (handled by ports and connectors) intrinsic to software architectures.</li>
+							
+							<li>By providing a simple mechanism for supporting multiple architectural styles (possibly in a single application), Prism-MW allows 
+							system developers to separate cleanly a system’s design from its implementation; Prism-MW’s style extensions automatically ensure all 
+							relevant architectural relationships and properties.</li>
+							
+							<li>Prism-MW’s extensive use of abstract classes and interfaces, as well as minimized dependencies among its classes, allow tailoring 
+							implementation-level concerns (e.g., the ability to select different schedulers independently of dispatchers or to compose distribution, 
+							XML encoding, and compression facilities for network-based interactions).</li>
+							
+							<li>Finally, Prism-MW completely separates an application’s conceptual architecture from its realization. For example, each component 
+							in an architecture may be implemented in multiple PLs; those implementations are fully interchangeable if ExtensiblePorts with the appropriate 
+							implementations of the AbstractXMLConversion class are used.</li>
+							
+						</ul>
+						
+						<br></p>
+						
+						<p align="left"><b><font face="Arial" size="3">Design</font></b></p>
+						
+						<img src="https://csse.usc.edu/~softarch/Prism/images/PrismMW_class_diag.JPG" alt="Prism-MW Class Diagram" title="Prism-MW Class Diagram" border="0"/>
+						
+						<p align="center"><b>UML Class Diagram of PrismMW. Middleware core classes are in gray and dark gray.</b></p>
+						
+						<p>A distributed system implemented in Prism-MW consists of
+						a number of <b>Architecture</b> objects, each of which serves as a
+						container for a single subsystem and delimits an address
+						space. <b>Components</b> within and across the different Architecture
+						objects interact by exchanging <b>Events</b>. The default
+						implementation of Prism-MW uses a circular array for
+						storing all events in a single address space. This allowed us
+						to optimize event processing by introducing a pool of
+						shepherd threads to handle events sent by any
+						component in a given address space. The size of the thread
+						pool is adjustable. Since the event queue is of a fixed size
+						(determined at system construction-time), we also use a
+						producer-consumer algorithm to keep event production
+						under control and supply shepherd threads with a constant
+						stream of events to process.<br><br></p>
+
+						<a name="downloads"></a>
+						
+						<p align="left"><b><font face="Arial" size="3">Downloads</font></b></p>
+						
+						<p><b>The following versions of Prism-MW run on JVM 1.4.1 or higher.</b></p>
+						
+						<p><a href="https://csse.usc.edu/~softarch/Prism/code/PrismMW-Lite.zip">Download Prism-MW Java Lite 1.0.1</a></p>
+						
+						<p>Prism-MW Lite is a minimal subset of Prism-MW, intended for use in academic courses.<br><br></p>
+						
+						<p><b>The following versions of Prism-MW run on JVM 1.1.8 or higher and on Pocket PC handheld devices running the Jeode Runtime virtual machine.</b></p>
+						
+						<p><a href="https://csse.usc.edu/~softarch/Prism/code/PrismMW2_1.zip">Download Prism-MW Java 2.1</a></p>
+						
+						<p>Prism-MW 2.1 is the first version of Prism-MW that supports multiple styles.</p>
+						
+						<p><a href="https://csse.usc.edu/~softarch/Prism/code/PrismMW2.zip">Download Prism-MW Java 2.0</a></p>
+						
+						<p>Includes the following packages:</p>
+						
+								<p>Prism.core package contains the classes from the middleware core.<br>
+						
+								Prism.extensions.comp contains the ExtensibleComponent class and its extensions.<br>
+						
+								Prism.extensions.conn contains the ExtensibleConnector class and its extensions.<br>
+						
+								Prism.extensions.evt contains the ExtensibleEvent class and its extensions.<br>
+						
+								Prism.extensions.port contains the ExtensiblePort class and its extensions.<br>
+						
+								Prism.handler contains event handler classes.<br>
+						
+								Prism.util contains several helper classes needed by other packages.<br>
+						
+								Prism.test contains several sample test application.</p>
+						
+						 <p><a href="https://csse.usc.edu/~softarch/Prism/code/PrismMW2Security.zip">Download Prism-MW Java 2.0 Security Extension</a></p>
+						 
+						 <p>Includes the following packages:</p>
+						
+								<p>Prism.extensions.port.security package contains security extension.</p>
+						
+						 <p><a href="https://csse.usc.edu/~softarch/Prism/code/PrismMW1.zip">Download Prism-MW Java 1.0</a></p>
+						 
+						 <p>Includes the following packages:</p>
+						
+								<p>Prism.framework package contains the classes from the middleware core.<br>
+						
+								Prism.conn.distribution package contains border connectors used in communication across machine boundaries.<br>
+						
+								Prism.util contains several helper classes needed by other packages.<br>
+						
+								Prism.test contains a sample test application.<br><br></p>
+								
+						<p><b>The following versions of Prism-MW run on Microsoft Embedded Visual C++ and Windows CE.</b></p>
+						 
+						<p>The framework is available as source code or as a dynamic link library which can be easily linked with an application. The link library 
+						is named FWDLL. The source code includes sample test applications.</p>
+						
+						<p><a href="https://csse.usc.edu/~softarch/Prism/code/PrismCppSrc.zip">Download Prism-MW C++ 1.0 Source</a></p>
+						
+						<p><a href="https://csse.usc.edu/~softarch/Prism/code/PrismCppLib.zip">Download Prism-MW C++ 1.0 Library</a></p>
+								
+						<a name="documentation"></a>
+						
+						<p align="left"><b><font face="Arial" size="3">Documentation</font></b></p>
+						
+						<p><a href="https://csse.usc.edu/~softarch/Prism/doc/PrismLite/public/">Prism-MW Lite 1.0 Documentation</a></p>
+						
+						<p>The Javadocs for Prism-MW Lite 1.0</p>
+						
+						<p><a href="https://csse.usc.edu/~softarch/Prism/doc/PrismMW2_1/public/">Prism-MW 2.1 Documentation</a></p>
+						
+						<p>The Javadocs for Prism-MW 2.1.</p>
+						
+						<p><a href="https://csse.usc.edu/~softarch/Prism/doc/PrismMW1/public/">Prism-MW 1.0 Documentation</a></p>
+						
+						<p>The Javadocs for Prism-MW 1.0.<br><br></p>
+						
+						<a name="publications"></a>
+						
+						<p align="left"><b><font face="Arial" size="3">Technical Papers</font></b></p>
+
+						<p>Marija Mikic-Rakic, Sam Malek, and Nenad Medvidovic. "Architecture-Driven Software Mobility in Support of QoS Requirements."
+						In proceedings of the International Workshop on Software Architectures and Mobility (SAM), Leipzig, Germany, May 2008.<br><br>
+						
+						George Edwards, Chiyoung Seo, Daniel Popescu, Sam malek, and Nenad Medvidovic. "Self-* Software Architectures and Component Middleware in Pervasive Environments." In proceedings of the 5th International Workshop on Middleware for Pervasive and Ad-Hoc Computing (MPAC 2007), Newport Beach, Orange County, California, November 2007.
+						<br><br>
+						
+						Sam Malek, Chiyoung Seo, Sharmila Ravula, Brad Petrus, and Nenad Medvidovic. "Reconceptualizing a Family of Heterogeneous Embedded Systems via Explicit Architectural Support." In proceedings of the 29th International Conference on Software Engineering (ICSE 2007), Minneapolis, Minnesota, May 2007 .
+						<br><br>
+						
+						Chiyoung Seo, Sam Malek, George Edwards, Nenad Medvidovic, Brad Petrus, and Sharmila Ravula. "Exploring the Role of Software Architecture in Dynamic and Fault Tolerant Pervasive Systems." In proceedings of the Workshop on Software Engineering of Pervasive Computing Applications, Systems and Environments (SEPCASE 07), Minneapolis, MN, May 2007.
+						<br><br>
+						
+						Sam Malek, Chiyoung Seo, and Nenad Medvidovic. "Tailoring an Architectural Middleware Platform to a Heterogeneous Embedded Environment." In proceedings of the 6th International Workshop on Software Engineering and Middleware (SEM 2006), Portland, Oregon, November 2006.
+						<br><br>
+						
+						Sam Malek, Chiyoung Seo, Sharmila Ravula, Brad Petrus, and Nenad Medvidovic. "Providing Middleware-Level Facilities to Support Architecture-Based Development of Software Systems in Pervasive Environments." In proceedings of the 4th International Workshop on Middleware for Pervasive and Ad-Hoc Computing (MPAC 2006), Melbourne, Australia, November 2006.<br><br>
+						
+						Sam Malek, Marija Mikic-Rakic, and Nenad Medvidovic. "A Style-Aware Architectural Middleware for Resource Constrained, Distributed Systems." IEEE Transactions on Software Engineering, vol. 31, no. 3, March 2005.<br><br>
+						
+			Marija Mikic-Rakic, Sam Malek, Nels Beckman, and Nenad Medvidovic.
+				"Improving Availability of Distributed Event-Based Systems via Run-Time Monitoring and Analysis."
+				Proceedings of Twin Workshops on Architecting Dependable Systems (WADS 2004), Edinburgh, UK, May 25, 2004 and Florence, Italy, June 30, 2004.
+				(<A href="https://csse.usc.edu/~softarch/Prism/publications/WADS_2004.pdf">pdf</A>)<br><br>
+
+			Marija Mikic-Rakic and Nenad Medvidovic.
+				"Software Architectural Support for Disconnected Operation in Highly Distributed Environments."
+				Proceedings of the 7th International Symposium on Component Based Software Engineering (CBSE-7), Edinburgh, UK, May 24-25, 2004.
+				(<A href="https://csse.usc.edu/~softarch/Prism/publications/CBSE_2004.pdf">pdf</A>)<br><br>
+
+			Marija Mikic-Rakic, Sam Malek, Nels Beckman, and Nenad Medvidovic.
+				"A Tailorable Environment for Assessing the Quality of Deployment Architectures in Highly Distributed Settings."
+				Proceedings of the 2nd International Working Conference on Component Deployment (CD 2004), Edinburgh, UK, May 20-21, 2004.
+				(<a href="https://csse.usc.edu/~softarch/Prism/publications/CD_2004.pdf">pdf</a>)<br><br>
+				
+			Marija Mikic-Rakic and Nenad Medvidovic.
+				"Support for Disconnected Operation via Architectural Self-Reconfiguration."
+				Proceedings of the First International Conference on Autonomic Computing (ICAC-04), New York, NY, May 17-18, 2004.
+				(<a href="https://csse.usc.edu/~softarch/Prism/publications/ICAC_2004.pdf">pdf</a>)<br><br>
+
+			Nenad Medvidovic, Sam Malek, and Marija Mikic-Rakic.
+				"Software Architectures and Embedded Systems."
+				Proceedings of the Monterey Workshop on Software Engineering for Embedded Systems (SEES 2003), pages 65-71, Chicago, IL, September 24-26, 2003.
+				(<a href="https://csse.usc.edu/~softarch/Prism/publications/SoftArch_Embedded_2003.pdf">pdf</a>)<br><br>
+
+			N. Medvidovic, M. Mikic-Rakic, N. R. Mehta, S. Malek. "Software Architectural Support for Handheld Computing"
+			IEEE Computer, special issue on handheld computing, September 2003.
+			(<a href="https://csse.usc.edu/~softarch/Prism/publications/IEEE.pdf">pdf</a>)<br><br>
+
+  			M. Mikic-Rakic, N. Medvidovic. "Adaptable Architectural Middleware for Programming-in-the-Small-and-Many".
+			ACM/IFIP/USENIX International Middleware Conference, Rio de Janeiro, Brazil, June 2003.
+			(<A href="https://csse.usc.edu/~softarch/Prism/publications/Middleware.pdf">pdf</A>)<br><br>
+			
+			M. Mikic-Rakic, N. Medvidovic. "Architecture-Level Support for Software Component Deployment in Resource
+			Constrained Environments". First International IFIP/ACM Working Conference on Component Deployment. Berlin, Germany, June 2002.
+			(<A href="https://csse.usc.edu/~softarch/Prism/publications/Deployment.pdf">pdf</A>)<br><br>
+			
+			N. Medvidovic, M. Mikic-Rakic. "Programming-in-the-Many: A Software Engineering Paradigm for the 21st
+			Century." Workshop on New Visions for Software Design and Productivity: Research and Applications, Nashville, Tennessee, December 2001.
+			(<A href="https://csse.usc.edu/~softarch/Prism/publications/NewVisions.pdf">pdf</A>)<br><br>
+			
+			N. Medvidovic, M. Mikic-Rakic. "Architectural Support for Programming-in-the-Many." Submitted. Available as
+			Technical Report, USC-CSE-2001-506, University of Southern California, October 2001.
+			(<a href="https://csse.usc.edu/~softarch/Prism/publications/PitM.pdf">pdf</a>)<br><br></p>
+				
+					</td>
+					
+
+
+					<td width="180" bgcolor="#7D0000" align="right" valign="top">
+					
+						
+						<span class="style2">
+						<p>CONTACT<br>
+						<a href="http://csse.usc.edu/~neno/">Nenad Medvidovic</a><br>
+						941 W. 37th Place<br>
+						University of Southern California<br>
+						Los Angeles, CA 90089<br>
+						Office: SAL 338<br>
+						Phone: 213-740-5579<br>
+						Email: <a href="mailto:neno@usc.edu">neno@usc.edu</a></p>
+						</span>
+						<hr>
+					  
+						<p><span class="style1"><a href="../../../../../en/resourcecatalog/Embedded/Midware/prism-mw/visit.html#downloads">DOWNLOADS</a></span><br>
+						<a href="https://csse.usc.edu/~softarch/Prism/code/PrismMW-Lite.zip" class="navLink">Prism-MW Lite 1.0</a><br>
+						<a href="https://csse.usc.edu/~softarch/Prism/code/PrismCppSrc.zip" class="navLink">Prism-MW C++ 1.0</a><br>
+						<a href="https://csse.usc.edu/~softarch/Prism/code/PrismMW2_1.zip" class="navLink">Prism-MW Java 2.1</a><br>
+						<a href="https://csse.usc.edu/~softarch/Prism/code/PrismMW2.zip" class="navLink">Prism-MW Java 2.0</a><br>
+						<a href="https://csse.usc.edu/~softarch/Prism/code/PrismMW2Security.zip" class="navLink">Prism-MW Java 2.0 Security Extension</a><br>
+						<a href="https://csse.usc.edu/~softarch/Prism/code/PrismMW1.zip" class="navLink">Prism-MW Java 1.0</a><br>
+						<hr>
+						
+						<p><span class="style1"><a href="../../../../../en/resourcecatalog/Embedded/Midware/prism-mw/visit.html#documentation">DOCUMENTATION</a></span><br>
+						<a href="https://csse.usc.edu/~softarch/Prism/doc/PrismLite/public/" class="navLink">Prism-MW Lite 1.0</a><br>
+						<a href="https://csse.usc.edu/~softarch/Prism/doc/PrismMW2_1/public/" class="navLink">Prism-MW Java 2.1</a><br>
+						<a href="https://csse.usc.edu/~softarch/Prism/doc/PrismMW1/public/" class="navLink">Prism-MW Java 1.0</a><br>
+						<hr>
+						
+						<p><span class="style1"><a href="../../../../../en/resourcecatalog/Embedded/Midware/prism-mw/visit.html#publications">TECHNICAL PAPERS</a></span></a><br>
+						<hr>
+						
+					</td>
+
+				</tr>
+			</table>
+		</td>
+	</tr>
+</table>
+</p>
+</body>
+
+</html>

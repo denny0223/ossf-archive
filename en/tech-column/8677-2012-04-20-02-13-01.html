@@ -1,0 +1,479 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-gb" lang="en-gb" >
+<head>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<link rel="shortcut icon" href="../../images/favicon.ico" />
+	  <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+  <meta name="robots" content="index, follow" />
+  <meta name="keywords" content="網頁製作,,OSSFNL788" />
+  <meta name="title" content="新創網站這樣開發才夠快" />
+  <meta name="description" content="◎ 本文轉載自 Blog.XDite.net。 借 用新創網站 這樣開發才夠快這篇格式，希望不要介意。我主要是想闡述以前在 T 客邦的經驗方法。 T 客邦在一年半裡面，就從台灣 Alexa 400 名以外，衝進台灣 Alexa 100 名內。這一年半時間技術團隊開發出了四個大網站，數十個子網站，和背後一群深厚的基礎建設 (HA, backup, PV stat, advertising" />
+  <meta name="generator" content="" />
+  <title>新創網站這樣開發才夠快 - OpenFoundry</title>
+  <link href="../../favicon.ico" rel="shortcut icon" type="image/x-icon" />
+  <link rel="stylesheet" href="../../components/com_gantry/css/gantry.css" type="text/css" />
+  <link rel="stylesheet" href="../../components/com_gantry/css/grid-12.css" type="text/css" />
+  <link rel="stylesheet" href="../../components/com_gantry/css/joomla.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/joomla.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/style1.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/light-body.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/demo-styles.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/template.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/typography.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/fusionmenu.css" type="text/css" />
+  <style type="text/css">
+    <!--
+#rt-main-surround ul.menu li.active > a, #rt-main-surround ul.menu li.active > .separator, #rt-main-surround ul.menu li.active > .item, #rt-main-surround .square4 ul.menu li:hover > a, #rt-main-surround .square4 ul.menu li:hover > .item, #rt-main-surround .square4 ul.menu li:hover > .separator, .roktabs-links ul li.active span {color:#0088B5;}
+a, #rt-main-surround ul.menu a:hover, #rt-main-surround ul.menu .separator:hover, #rt-main-surround ul.menu .item:hover {color:#0088B5;}
+    -->
+  </style>
+  <script type="text/javascript" src="../../components/com_jcomments/js/jcomments-v2.1.js%3Fv=2"></script>
+  <script type="text/javascript" src="../../components/com_jcomments/libraries/joomlatune/ajax.js"></script>
+  <script type="text/javascript" src="../../media/system/js/mootools.js"></script>
+  <script type="text/javascript" src="../../media/system/js/caption.js"></script>
+  <script type="text/javascript" src="../../components/com_gantry/js/gantry-buildspans.js"></script>
+  <script type="text/javascript" src="../../components/com_gantry/js/gantry-inputs.js"></script>
+  <script type="text/javascript" src="../../templates/rt_quantive_j15/js/jquery.cookie.js"></script>
+  <script type="text/javascript" src="../../modules/mod_roknavmenu/themes/fusion/js/fusion.js"></script>
+  <script type="text/javascript" src="../../modules/mod_ofssologin/js/ofssologin.js"></script>
+  <script type="text/javascript">
+
+			window.addEvent('domready', function() {
+				var modules = ['rt-block'];
+				var header = ['h3','h2','h1'];
+				GantryBuildSpans(modules, header);
+			});
+		InputsExclusion.push('.content_vote','#rt-popup')
+		        window.addEvent('load', function() {
+					new Fusion('ul.menutop', {
+						pill: 0,
+						effect: 'slide and fade',
+						opacity: 1,
+						hideDelay: 500,
+						centered: 0,
+						tweakInitial: {'x': -2, 'y': 0},
+        				tweakSubsequent: {'x': 0, 'y': -14},
+						menuFx: {duration: 200, transition: Fx.Transitions.Sine.easeOut},
+						pillFx: {duration: 400, transition: Fx.Transitions.Back.easeOut}
+					});
+	            });
+  </script>
+<!-- <script type="text/javascript" src="/sso/javascripts/langsync.js"></script> -->
+<!-- <script src="/templates/rt_quantive_j15/js/ossf.js"></script> -->
+<script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-4136519-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
+</head>
+	<body  class="backgroundlevel-low backgroundstyle-style8 bodylevel-med bodystyle-light cssstyle-style1 logostyle-dark font-family-helvetica font-size-is-default menu-type-fusionmenu col12 ">
+		<div id="rt-main-background">
+			<div class="rt-container">
+																<div id="rt-header">
+					<div class="rt-grid-7 rt-alpha">
+    			<div class="rt-block">
+    	    	<a href="../../index.html" id="rt-logo"></a>
+    		</div>
+	    
+</div>
+<div class="rt-grid-5 rt-omega">
+                    <div class="square9">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<div class="ofssologin_square9"><a href="../../index.html">Login</a>&nbsp;&nbsp|&nbsp;&nbsp;<span><a href="../../tw/tech-column/8677-2012-04-20-02-13-01.html" ><span lang="tw" xml:lang="tw">繁體中文</span></a></li></ul></span><!--Joom!fish V2.0.4 (Lightning)-->
+<!-- &copy; 2003-2009 Think Network, released under the GPL. -->
+<!-- More information: at http://www.joomfish.net -->
+<div class="ofssologin_search_square9">
+  <form id="of_search" action="https://www.openfoundry.org/of/openfoundry/search" method="get" onsubmit="of_search(); return false;">
+    <select id="of_search_type">
+      <option value="Projects"> Projects </option>
+      <option value="Content"> Content </option>
+      <option value="People"> People </option>
+    </select>
+    <input id="query" name="query" id="mod_search_searchword" maxlength="50" alt="search" class="inputbox" type="text" size="28" value="search..."  onblur="if(this.value=='') this.value='search...';" onfocus="if(this.value=='search...') this.value='';" />
+    <input type="hidden" name="commit" value="search" />
+  </form>
+</div></div>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		
+</div>
+					<div class="clear"></div>
+				</div>
+																<div id="rt-navigation"><div id="rt-navigation2"><div id="rt-navigation3">
+					
+<div class="nopill">
+	<ul class="menutop level1 " >
+						<li class="item1 root" >
+					<a class="orphan item bullet" href="../../index.html"  >
+				<span>
+			    				Home				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item32 root" >
+					<a class="orphan item bullet" href="../../archived.html"  >
+				<span>
+			    				Projects				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item186 root" >
+					<a class="orphan item bullet" href="../community.html"  >
+				<span>
+			    				Who&#039;s Who				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item4 root" >
+					<a class="orphan item bullet" href="../news.html"  >
+				<span>
+			    				News				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item5 root" >
+					<a class="orphan item bullet" href="../law-and-licensing.html"  >
+				<span>
+			    				Law &amp; Licensing				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item3 root" >
+					<a class="orphan item bullet" href="../activities.html"  >
+				<span>
+			    				Activities				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item2 root" >
+					<a class="orphan item bullet" href="../resourcecatalog.html"  >
+				<span>
+			    				Resource Catalog				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item45 root" >
+					<a class="orphan item bullet" href="../about.html"  >
+				<span>
+			    				About				   
+				</span>
+			</a>
+			
+			
+	</li>	
+				</ul>
+</div>
+
+				    <div class="clear"></div>
+				</div></div></div>
+								<div class="rt-surround"><div class="rt-surround2"><div class="rt-surround3">
+										<div id="rt-showcase-section">
+												<div id="rt-showcase">
+							<div class="rt-grid-12 rt-alpha rt-omega">
+    		<div class="clear"></div>
+		
+		
+                <div class="close-note">
+                    <div class="rt-block">
+               					<div class="module-content">
+                	<div style="font-size:medium; background-image:linear-gradient(120deg,#159957,#4298b2);color:white;padding:20px;margin:-10px -18px;">感謝您對「自由軟體鑄造場」的支持與愛護，十多年來「自由軟體鑄造場」受中央研究院支持，並在資訊科學研究所以及資訊科技創新研究中心執行，現已完成階段性的任務。 本網站預計持續維運至 2021年底，網站內容基本上不會再更動。<br />也紀念我們永遠的朋友 李士傑先生（Shih-Chieh Ilya Li）。</div>				</div>
+            </div>
+                </div>
+		
+</div>
+							<div class="clear"></div>
+						</div>
+																	</div>
+															<div id="rt-main-surround">
+												<div id="rt-breadcrumbs">
+								<div class="rt-breadcrumb-surround">
+		<a href="../../index.html" id="breadcrumbs-home"></a>
+		<span class="breadcrumbs pathway">
+<a href="../tech-column.html" class="pathway">Tech Column</a> <img src="../../templates/rt_quantive_j15/images/arrow.png" alt=""  /> <span class="no-link">新創網站這樣開發才夠快</span></span>
+	</div>
+	
+							<div class="clear"></div>
+						</div>
+																							              <div id="rt-main" class="sa3-mb9">
+                <div class="rt-main-inner">
+                    <div class="rt-grid-9 rt-push-3">
+                                                <div class="rt-block">
+                            							<div class="square1">
+							<div class="rt-module-surround">
+								<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+								<div class="rt-module-inner">
+		                            <div id="rt-mainbody">
+		                                
+<div class="rt-joomla ">
+	<div class="rt-article">
+		
+				<div class="rt-headline"><h1 class="rt-article-title">新創網站這樣開發才夠快</h1>		</div>
+		<div class="clear"></div>
+		
+		
+		
+				<div class="rt-articleinfo">
+						<div class="rt-article-icons">
+								<a href="8677-2012-04-20-02-13-01%3Ftmpl=component&amp;print=1&amp;layout=default&amp;page=.html" title="Print" onclick="window.open(this.href,'win2','status=no,toolbar=no,scrollbars=yes,titlebar=no,menubar=no,resizable=yes,width=640,height=480,directories=no,location=no'); return false;" rel="nofollow"><span class="icon print"></span></a>																</div>
+			
+			<span class="rt-date-posted">
+						 Created at			Friday, 20 April 2012 10:04						&nbsp;&nbsp;&nbsp;&nbsp;						Last Updated on Tuesday, 24 April 2012 09:37						</span>
+
+						<span class="rt-author">
+				Written by XDite			</span>
+				
+					</div>
+		
+		
+		<p>◎ 本文轉載自 <a href="https://blog.xdite.net/posts/2012/04/07/startup-rapid-development/" target="_blank">Blog.XDite.net</a>。</p>
+<p>借用<a href="https://www.kuobrothers.com/article-124.htm" target="_blank">新創網站這樣開發才夠快</a>這篇格式，希望不要介意。我主要是想闡述以前在 <a href="https://www.techbang.com/" target="_blank">T 客邦</a>的經驗方法。</p>
+<p>T 客邦在一年半裡面，就從台灣 Alexa 400 名以外，衝進台灣 Alexa 100 名內。這一年半時間技術團隊開發出了四個大網站，數十個子網站，和背後一群深厚的基礎建設 (HA, backup, PV stat, advertising system…etc.)。T17 實際開發的工時在 2.5 個月以內。</p>
+<p>我是一個軟體工程師，過去六年我都在開發網站。在新創公司裡，速度節省時間、時間就是金錢、金錢就可以再去請更多工程師讓整個開發速度更快。學校並沒有教很多「軟體工程」的方法，或是怎樣才算是一個好的 Programmer。這些東西在台灣業界其實不存在的，大家都是邊做邊摸，從經驗中學習。我從書籍上和網路上學了很多能讓團隊更有效率的做事方法，因為我相信我在新創團隊裡我必須先這樣，用業界公認覺得快，且快得有道理的方式。底下是幾點可以和大家分享的。</p>
+<br />
+<h2>1. 讓全團隊都用一個成熟的開發框架和環境：</h2>
+<p>我的專長是 Ruby on Rails。我並沒有偏好推薦別人如果現在是用 PHP 或 .NET 或 JAVA，就要不計成本的導入新框架。就像我其實也沒有很喜歡硬導入 Scala 或 Node.js 一樣。它們可以在它們派得上用途的地方加分，但是絕對不能是主體。道理很簡單，我不認為他們成熟到夠讓所有成員快速上手，不重造輪子。</p>
+<p>一般團隊喜歡用 PHP。因為 PHP 工程師好找，Rails 工程師不好找。但在我一路走下來的經驗，我認為這是一個「假命題」。因為在人力市場和公司實際運作的狀況裡面，你會發現這個命題不怎麼牢靠。沒錯，你是找的到 PHP 工程師，但很抱歉，很多人寫的 code 是不能用（更精確的說是 write only）的居多。（我沒有冒犯 PHP 開發者的意思）</p>
+<p>原因是 PHP 開發並沒有太多一致性的規範，基本上就是愛怎麼寫就怎麼寫。這導致了即使你團隊裡面就算裡面有一個很厲害的開發者，也是沒有多大的用處。因為大家 coding style 不一樣，甚至連網站結構也不一樣。補人幾乎是沒有辦法發揮到加成作用，大家只能各寫各的，就算爆炸了也幾乎只有當初的作者可以修。</p>
+<p>這在我眼中是極度浪費團隊戰力的元兇。</p>
+<p>Rails 沒有這樣的狀況嗎？這是我覺得 Rails 優勢的地方，它是一個非常熱門的 Framework（只有在台灣你可能沒有感覺到他很熱門）。因為這是一套 Framework，也就是它本身有很強的約束性，至少 MVC 和 routing 規則，一般就算新手也不會亂放的太離譜。寫 code 有一定的潛規則存在。</p>
+<p>開發中遇到任何東西發生錯誤了以後，開發者幾乎可以用 Google 找到任何可能發生的原因，修復完畢。而這幾乎不是一般自建 Framework 可以比的上的地方，如果你在公司自建一套 Framework，基本上發生任何問題，最後幾乎都得去煩當初設計的 Architect 才行。（這也是很浪費錢的地方，因為 Architect 的薪水都很貴）。</p>
+<p>學習曲線過高，我也不覺得這件事真的存在。Rails 高手是難尋沒有錯，但是 Rails 中低手只要訓練得當，生產力也是非常驚人。因此只要把重心放在如何協助一般想入門者，可以快速克服入門幾大門檻（搞定開發環境，RESTful，Plugin，Debug，Deploy），剩下的部分就可以靠網路教材和實戰訓練出來。這也是我發明 <a href="https://rails-101.logdown.com/" target="_blank">Rails 101</a>的原因。</p>
+<p>我設計這一套教材的目的是要讓所有新進的開發者，在最長兩週時間內要學完基本 Linux 指令、Git、Rails 所有基礎的知識、佈署、SCSS 撰寫等等，一個月之內就能上戰場跟我們一起開發功能開發新網站。這樣的進度很誇張嗎？不，不誇張。這裡的每一個開發者都有這樣的程度，他們有些人應徵時是連 Rails 都不會寫的。你能相信連T客邦的 PM 和 ART 他們也會寫 Rails 嗎？ (no kidding)</p>
+<p>寫 Code 規則怎麼規範？同事和我從社群中吸收了很多 Best Practices，我們把這些東西整理出來變成新手指南、最佳實踐，甚至是包裝成 Gem 和 Generator，越後進的開發者能花越少的時間追上前輩，在短時間他們的作品也能跟前輩一樣預先搭載 Best Practices。我最近也開始在撰寫另外一本書 <a href="https://rails-101.logdown.com/books/3-essential-rails-pattern" target="_blank">Essential Rails Pattern for Beginners</a>。</p>
+<p>Rails 本身還有豐富的 Ecosystem，和預設的架構最佳實踐就更不用說了。</p>
+<p>新創團隊資源很少，人事預算沒有這麼夠，反而要巧妙的運用天然資源並讓團體戰力*3才行。</p>
+<br />
+<h2>2. 功能設計給當下使用，考慮一定程度的擴充性：</h2>
+<p>我也不相信在新創團隊有人可以預知未來，即使很多東西看起來未來往那個方向擴充很合理。對我來說，我在設計功能時並不會 overthinking，甚至我也禁止同事 overthinking。因為專案中最高的原則是 get things done，not over design。</p>
+<p>但這不代表在設計上不需要留一定程度的擴充性，在內部的工作流程通常最後一道是有 refactor 整理空間的。在這時候同事會把雜亂的 code，整理回當初規範中必須寫的樣子。如果這是常見功能，一再出現，就必須整理成 Library，或架構 Pattern。一但是 Pattern，擴充性就留出來了。</p>
+<p>在之後新的專案中，就可以拿上一個案子打下來的基礎一再重複利用再利用。甚至最後竟然還有 Event Generator 這種東西…(Authenication , Rails Admin, SEO, …etc.)。</p>
+<br />
+<h2>3. 程式本身即註解</h2>
+<p>一般軟體實踐上本身也不贊成寫註解。而是鼓勵程式本身即要可以表達自己的行為。如果寫的程式亂七八糟讓人看不懂，進 review 時是會被回退的。我們團隊能夠被接受的程式是可以寫得很笨拙，但每個同事都看得懂。因為笨拙但能理解，其他前輩有時間可以去 refactor。但亂寫，之後就沒人動得了了。</p>
+<br />
+<h2>4. 盡力寫下所有的 documentation</h2>
+<p>世界上沒有人能夠寫出一份完整的系統架構書可以詳盡的描述現在系統上真實的狀況。但是一個好的 issue tracking system 和寫的 commit log，可以能夠很好的協助你了解為什麼現在系統會是這樣設計的，為什麼當時會做出這樣的決策，導致程式必須要這樣設計。</p>
+<p>在新人訓練期時，我通常會訓練新人要有將任何實作上遇到任何的 detail 和狀況詳細 document 在票上的習慣。而在完成整個專案時或者是技術架構稍具規模雛形時，要把這些 ticket 上的筆記梳理紀錄下來。</p>
+<p>這樣會對整個團隊程度的躍升會有非常強大的正面效益。同時在人員流動（新進或離職）時，衝擊會非常非常的小。</p>
+<p>因為至少很多的“basic”的教育成本，在這部分會幾近於 0。一路都在 startup 的歷練，讓我很早就理解到一件事，人員流動幾乎是無可避免的，所以重要的是要怎樣讓人員流動造成的衝擊更小。</p>
+<p>在新創事業讓同事投資一項新技術，也是很昂貴的。所以要學的話，大家一定也都全都要會，否則就會一直很貴。</p>
+<p>這是 documentation 可以帶來的價值。</p>
+<br />
+<h2>5. 要有測試環境和 policy</h2>
+<p>從昂貴的教訓裡面我學到的就是一定要有測試環境和 policy。在 Rails 中將環境切分成好幾份，並沒有超困難。而且一定要有測試環境（staging），是因為每個人開發的環境不一樣，在當下 focus 在自己電腦前，很多設計並不會考慮那麼多。丟上 remote server 你才會知道炸掉一大片，或者是 performance 極度不好。這都是會傷害商業 credit 或者搞砸交易的（比如說你跟客戶談好明天 on 檔一支幾十萬的廣告，但明天因為人為疏失倒站一天，請問你要去挪誰的 queue 給他，一天到晚發生這樣的事。誰要跟你做生意？）。</p>
+<p>至於 policy 就更重要了。</p>
+<p>很多加班的狀況其實都是不必要發生的。比如說在頭腦不清醒的時候寫了爛 code commit 上去。導致自己清醒時要去清理這攤爛泥。在吃飯前或下班前 deploy 了最新版的 code，結果中午倒站數小時；原本可以準時下班，十點都走不了。</p>
+<p>但寫了好東西不直接 commit master 和不馬上 deploy，會讓 RD 非常癢。這種病連我都不能倖免。</p>
+<p>但是商業網站是不能一天到晚失火的，團隊還是有人要去捍衛這種大局。所以最後也只好執行了這樣的規範：</p>
+<ol>
+<li>寫功能一律上 feature branch</li>
+<li>上線前必須使用 staging server, apply feature branch 測過一輪</li>
+<li>絕對不在中午 11 點 - 12:00 deploy，絕對不在 17:00 後 deploy。</li>
+<li>deploy 流程必須使用工具自動化，出事要能 rollback。</li>
+</ol>
+<p>執行了這樣的 rule 之後，幾乎就沒有人需要餓著肚子修 bug，半夜因為軟體的問題跳起來加班修理了。</p>
+<p>因為我深信：長期處在失火／救火的環境下，會快速減低一個團隊的戰力。</p>
+<p>熱血的投入通常會讓人有假象，我投入的工時越高，成果會越好。事實上這是一個徹底的偽命題。而創業初期的不穩定，忙碌，失火，更讓你會有只要我努力加班，一切就改善的錯覺。腎上腺素最多只能讓你撐三個月，接下來一切都會破滅的。做一個網站要到可以出場，大家比的是命長，而不是 Startup weekend 冠軍。</p>
+<br />
+<h2>6. PM 的話聽聽當參考就好，但要好好溝通</h2>
+<p>在很多情形下，PM 也許規劃出來的方案 A，需要 10 小時。但你知道可以把它改變成方案 B，只需要 3 小時。但前提是，你要好好的去追問出來，為什麼他會做出 A 設計案這樣。不可否認台灣具備專業素養的 PM 極度稀少，能遇到一個就是燒香了。所以很大的程度遇到的可能是一個只會照抄其他網站畫架構圖的人，或者是負責賣廣告的 Sales 自己兼，但這都不要緊。要緊的是你要問出為何這樣設計，因為他的外行程度可能會讓他估出一個讓公司嚴重虧本的實作案，你卻沒阻止他。或者是這個案子架構是合理的公司方向，但你卻誤解背後的設計原理擅自修改而失效：</p>
+<ol>
+<li>一個設計方案會這樣設計的背後原因有很多個，有可能是：</li>
+<li>PM 路上隨便抄</li>
+<li>PM 自己喜歡這麼做</li>
+<li>ART 要求</li>
+<li>客戶要求</li>
+<li>這是 key feature，一定得這樣作，否則失去此系統意義</li>
+</ol><br />
+<p>所以不能是自己喜歡 B 就 B。開發一個系統一定有「成本」、「預計收益」，而實作的方案必須要去找出這兩者的平衡點。這就是靠溝通溝通溝通…</p>
+<br />
+<h2>7. 要寫出一定程度的程式碼</h2>
+<p>要使用 HTML/CSS 架構設計網頁，不要濫用 ORM，不要重造輪子，不要寫出會被人公幹的 code，這些都是基本的開發常識。很多新創網站寫出第一版很快，但之後就陷入開發泥淖，無法配合業務模型快速調整，幾乎 90% 的原因以上都是因為第一版 code 爛到當初的開發者自己也改不太動，結果光是後續調整架構做小改版就耗掉超多時間，變成超大致命傷。</p>
+<br />
+<h2>8. 要追求一定以上的網頁效能，tune 在刀口上</h2>
+<p>不追求效能實在是一句非常不可思議的話。</p>
+<p>不可否認有些開發者效能和 Fancy 技術實在追求過頭，比如說甚至一開始就用 <a href="https://documentcloud.github.com/backbone/" target="_blank">Backbone</a> 寫整個網站，或者是從頭到尾使用 Node.js 寫網站。這都是一開始就打算寫 mobile 版 web service 給 mobile phone 使用才需要做的事。因為 3G 的 Latency 實在太大，要盡力的壓縮頻寬使用量和追求頁面 response time。</p>
+<p>但實作一個 Desktop 版網站完全沒必要。而在 website performance tuning 的時候，優先調整的也是 Frontend Performance，因為 C/P 值高很多，壓縮一下 CSS 也許就可以省 3 秒。db 或程式語言 tune 的要死可能才省 0.1 秒。</p>
+<p>而網站的指標和 User Experinece 並不是說打的開就好。比如說網站開的速度會直接影響 Search Engine 和 Alexa 排名，不知道這到底有多少人曉得？還有一般使用者對於 Blog / Album 和 Video 各自能夠忍受的 response time 根本是不同的，Video 大家可以忍個 5 秒還沒打開都能接受，但是相簿和網誌開一頁要 5 秒這大概就沒人要用了吧…</p>
+<p>效能調校這件事，過與不及都是不好的事。</p>
+<br />
+<h2>9. 少用 Fancy 的東西，實作前先估算成本與效益</h2>
+<p>身為開發者，世界上每天會冒出很多新的好東西，這些不去玩玩看手實在會手癢。但是其實每引入一項都會有一定的成本存在，而且效益／成本比不見得是你當初想的那樣。</p>
+<p>比如說一直追 Rails 新版，換上效能很好的 Ruby 1.9.2，改用 SCSS 去寫 CSS，改用 CoffeeScript 寫 JavaScript。Apply 新發明的 Asset Pipeline 架構。這些都是很新很棒的東西。（T客邦都有，架構從最早的 2.3.2 一直 upgrade 到 3.1.3，內行人才知道這樣工程有多大）</p>
+<p>但跟其他事物的道理其實是一樣的，新的東西就有新風險。而且通常引入這些東西，不是自己一個人爽就好，是大家都要用的東西。</p>
+<p>所以通常我是這樣做的：先 branch 一個版本，我自己或是請資深 RD 自己下去把整個實作方法都做出來或者是進行評估，確定可行後整理成可行的 SOP。才大大幅推行。</p>
+<p>如果是新想法，則是在一個 event 或是小版面先行製作嘗試效果。</p>
+<p>好的東西是不錯。但不要孤注一擲。</p>
+<br />
+<p>綜合以上，我想說的是：在開發初期，任何一點戰力都是相當寶貴的，所以沒有什麼理由把程式碼亂扔，不實行一定的規則而導致到處都失火。永遠都在做重複的白工。</p>
+<p>任何舉措，最好都要是能以盡量把成本壓到差不多低，但效益都非常高。</p>
+<p>以上我上面所說的這些東西都不是我的創舉，事實上幾乎所有 Rapid Development, Agile Development, 還有很多 Engineering Blog 常常都在聊這樣的話題。</p>
+<p>我發現很多工程師朋友常常有自幹且認為自己的東西最好的傾向。認為外界的方法「絕對」不適用在自己的團隊上，美國的常態並不適合在台灣使用。但事實上這世界真的非常大，說實在真的沒什麼理由把自己的成長速度綁在自己的眼界裡面，很多的 principle 在不同產業不同國家都是適用的。多看看別人怎麼做，你會驚訝這些方法的引入，對自己事業加成的幅度是多麼驚人的。</p>
+<br />
+<p>P.S.貢獻一個不是八卦的八卦：T 客邦從來就不是一間網路公司，這是一支傳統出版社裡面的數位團隊。技術團隊大概永遠只有五個人：1 Leader, 1 PM, 3 RD, 1 ART。兩年以來幾乎都是這樣的狀況…</p>
+			<!-- Show relate article -->
+				<!-- end -->
+		<div class="article_note">
+		<!-- Add tags use metakey, and show OSSF Newsletter tag: OSSFNL+NUM-->
+		<br><br> <hr style='border: 1px dashed #D2DADB;'><b>OSSF Newsletter&nbsp;:</b>&nbsp;<a href='../../previous-issue%3Ftask=view&amp;id=788.html'>第 194 期 初探 RequireJS</a><br><b>Tags:</b>&nbsp;<a href='../../index.php%3Foption=com_search&amp;Itemid=58&amp;searchphrase=exact_meta&amp;ordering=newest&amp;searchword=網頁製作.html'>網頁製作</a>,&nbsp;&nbsp;<a href='../../index.php%3Foption=com_search&amp;Itemid=58&amp;searchphrase=exact_meta&amp;ordering=newest&amp;searchword=.html'></a>,&nbsp;&nbsp;				<!-- End -->
+					<br>
+					<b>Category: </b><a href="../tech-column.html">				Tech Column					</a>				</div>
+			 <!-- AddThis Button BEGIN ID 3001 is the front page article -->
+     			<br><br>
+       <div class="addthis_toolbox addthis_default_style addthis_32x32_style">
+       <a class="addthis_button_preferred_1"></a>
+       <a class="addthis_button_preferred_2"></a>
+       <a class="addthis_button_preferred_3"></a>
+       <a class="addthis_button_preferred_4"></a>
+       <a class="addthis_button_compact"></a>
+       <a class="addthis_counter addthis_bubble_style"></a>
+       </div>
+       <script type="text/javascript">var addthis_config = {"data_track_clickback":true};</script>
+       <script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js#pubid=openfoundry"></script>
+       <!-- AddThis Button END -->
+     <br>
+		<div class="totop" ><a class="rt-totop" href="8677-2012-04-20-02-13-01.html#" style="outline: medium none;">↑ Top</a></div>
+            <!-- AddThis Button END -->
+
+			</div>
+</div>
+
+		                            </div>
+									<div class="clear"></div>
+								</div>
+								<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+							</div>
+							</div>
+                                                    </div>
+                                            </div>
+                                <div class="rt-grid-3 rt-pull-9">
+                <div id="rt-sidebar-a">
+                                    <div class="square4">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<ul class="menu"><li class="item56"><a href="../previous-issue.html"><span>Previous Issue</span></a></li><li class="item55"><a href="../about-newsletter.html"><span>About Newsletter</span></a></li></ul>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<ul class="menu"><li class="item115"><a href="../foss-news.html"><span>FOSS News</span></a></li><li class="item141"><a href="../case-job.html"><span>Case and Jobs</span></a></li></ul>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+        	                <div class="square1">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-title"><h2 class="title">Special</h2></div>
+						<div class="clear"></div>
+		                						<div class="module-content">
+		                	<ul class="menu"><li id="current" class="active item37"><a href="../tech-column.html"><span>Tech Column</span></a></li><li class="item40"><a href="../foss-programs.html"><span>FOSS Programs</span></a></li><li class="item35"><a href="../legal-column.html"><span>Legal Column</span></a></li><li class="item154"><a href="../foss-forum.html"><span>FOSS Forum</span></a></li><li class="item162"><a href="../enterprise-application.html"><span>Enterprise Application</span></a></li><li class="item44"><a href="../foss-projects.html"><span>FOSS Projects</span></a></li></ul>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		                <div class="square1">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<p style="text-align: center;"><a href="../../news%3Fformat=feed&amp;type=rss" target="_black"><img src="../../images/M_images/news-rss-feed.png" border="0" /></a><br /><a href="https://www.openfoundry.org/rss-feed/Newsletter" target="_black"><img src="../../images/M_images/newsletter-rss-feed.png" border="0" /></a></p>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		
+                </div>
+            </div>
+
+                    <div class="clear"></div>
+                </div>
+            </div>
+																													</div>
+										<div id="rt-copyright">
+						<div class="rt-grid-12 rt-alpha rt-omega">
+                        <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<span class="nowrap">Open Source Software Foundry</span><span class="nowrap">‧</span><span class="nowrap"> </span><span class="nowrap">Best  Viewed with IE7.0 or Firefox2.0 above, 1024x768 Resolution. </span><strong>E-Mail</strong>：<a href="mailto:contact@openfoundry.org">contact@openfoundry.org</a> <br /><strong>Address</strong>：No.128, Sec.2, Academia Rd., Institute of Information Science, Academia Sinica, Nangang District, Taipei City 11529, Taiwan (R.O.C). <br /><a href="../privacy-policy.html">Privacy Policy</a>. <a href="../terms-of-use.html">Terms-of-use</a> <span style="position: relative; top: 8px; margin-top: -8px;"> <a href="../../about/8101.html"><img src="../../images/M_images/rss-feed-all.png" border="0" /></a></span>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+        	
+</div>
+						<div class="clear"></div>
+					</div>
+					<div class="rt-footer-bottom-wrap"><div class="rt-footer-bottom"><div class="rt-footer-bottom2"><div class="rt-footer-bottom3"></div></div></div></div>
+									</div></div></div>
+				<div class="rt-surround-bottom"><div class="rt-surround-bottom2"><div class="rt-surround-bottom3"></div></div></div>
+							</div>
+		</div>
+		<!--
+		<script id="aptureScript">
+						(function (){var a=document.createElement("script");a.defer="true";a.src="http://www.apture.com/js/apture.js?siteToken=vsJttrn";document.getElementsByTagName("head")[0].appendChild(a);})();
+     </script>
+-->
+
+<!-- Piwik -->
+<!-- 			<script type="text/javascript">
+			  var _paq = _paq || [];
+		  _paq.push(["trackPageView"]);
+		  _paq.push(["enableLinkTracking"]);
+
+		    (function() {
+			        var u=(("https:" == document.location.protocol) ? "https" : "https") + "://www.openfoundry.org/piwik/";
+				    _paq.push(["setTrackerUrl", u+"piwik.php"]);
+				    _paq.push(["setSiteId", "1"]);
+				        var d=document, g=d.createElement("script"), s=d.getElementsByTagName("script")[0]; g.type="text/javascript";
+				        g.defer=true; g.async=true; g.src=u+"piwik.js"; s.parentNode.insertBefore(g,s);
+					  })();
+		  </script> -->
+<!-- End Piwik Code -->
+	</body>
+</html>

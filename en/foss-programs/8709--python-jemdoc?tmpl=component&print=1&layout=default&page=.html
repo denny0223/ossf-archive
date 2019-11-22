@@ -1,0 +1,201 @@
+	<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+	<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-gb" lang="en-gb" >
+		<head>
+			  <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+  <meta name="robots" content="noindex, nofollow" />
+  <meta name="keywords" content="OSSFNL793" />
+  <meta name="title" content="由 Python 實現的靜態網頁產生工具－ jemdoc" />
+  <meta name="description" content="簡介 繼上次介紹 nanoc 以後，筆者接續比較了多款靜態的頁面生成工具。本次將介紹一款由 Python 實現的靜態網頁產生工具－ jemdoc。jemdoc 是一個輕量的標記語言，專門用於表現網站的內容與排版。jemdoc 能讀取設定檔跟選單來作更豐富的調整以符合使用者需求。因而讓管理靜態網頁變得非常的方便跟簡易。而相較於 nanoc，jemdoc" />
+  <meta name="generator" content="" />
+  <title>由 Python 實現的靜態網頁產生工具－ jemdoc</title>
+  <link href="../../favicon.ico" rel="shortcut icon" type="image/x-icon" />
+  <link rel="stylesheet" href="../../components/com_gantry/css/gantry.css" type="text/css" />
+  <link rel="stylesheet" href="../../components/com_gantry/css/grid-12.css" type="text/css" />
+  <link rel="stylesheet" href="../../components/com_gantry/css/joomla.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/joomla.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/style1.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/light-body.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/demo-styles.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/template.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/typography.css" type="text/css" />
+  <style type="text/css">
+    <!--
+#rt-main-surround ul.menu li.active > a, #rt-main-surround ul.menu li.active > .separator, #rt-main-surround ul.menu li.active > .item, #rt-main-surround .square4 ul.menu li:hover > a, #rt-main-surround .square4 ul.menu li:hover > .item, #rt-main-surround .square4 ul.menu li:hover > .separator, .roktabs-links ul li.active span {color:#0088B5;}
+a, #rt-main-surround ul.menu a:hover, #rt-main-surround ul.menu .separator:hover, #rt-main-surround ul.menu .item:hover {color:#0088B5;}
+    -->
+  </style>
+  <script type="text/javascript" src="../../components/com_jcomments/js/jcomments-v2.1.js%3Fv=2"></script>
+  <script type="text/javascript" src="../../components/com_jcomments/libraries/joomlatune/ajax.js"></script>
+  <script type="text/javascript" src="../../media/system/js/mootools.js"></script>
+  <script type="text/javascript" src="../../media/system/js/caption.js"></script>
+  <script type="text/javascript" src="../../components/com_gantry/js/gantry-buildspans.js"></script>
+  <script type="text/javascript" src="../../components/com_gantry/js/gantry-inputs.js"></script>
+  <script type="text/javascript">
+
+			window.addEvent('domready', function() {
+				var modules = ['rt-block'];
+				var header = ['h3','h2','h1'];
+				GantryBuildSpans(modules, header);
+			});
+		InputsExclusion.push('.content_vote','#rt-popup')
+  </script>
+		</head>
+		<body  class="backgroundlevel-low backgroundstyle-style8 bodylevel-med bodystyle-light cssstyle-style1 logostyle-dark font-family-helvetica font-size-is-default menu-type-fusionmenu col12 ">
+			<div id="rt-main-surround">
+				<div class="rt-container">
+					<div class="rt-block">
+						<div id="rt-mainbody">
+					    	
+<div class="rt-joomla ">
+	<div class="rt-article">
+		
+				<div class="rt-headline"><h1 class="rt-article-title">由 Python 實現的靜態網頁產生工具－ jemdoc</h1>		</div>
+		<div class="clear"></div>
+		
+		
+		
+				<div class="rt-articleinfo">
+						<div class="rt-article-icons">
+				<a href="8709--python-jemdoc%3Ftmpl=component&amp;print=1&amp;layout=default&amp;page=.html#" onclick="window.print();return false;"><span class="icon print"></span></a>									<span class="icon printscreen">
+						<a href="8709--python-jemdoc%3Ftmpl=component&amp;print=1&amp;layout=default&amp;page=.html#" onclick="window.print();return false;"><img src="../../images/M_images/printButton.png" alt="Print"  /></a>					</span>
+							</div>
+			
+			<span class="rt-date-posted">
+						 Created at			Monday, 28 May 2012 09:02						&nbsp;&nbsp;&nbsp;&nbsp;						Last Updated on Tuesday, 29 May 2012 11:39						</span>
+
+						<span class="rt-author">
+				Written by Kent			</span>
+				
+					</div>
+		
+		
+		<h2>簡介</h2>
+<p>繼上次介紹 <a href="../../tw/resourcecatalog/Program-Development/Programming-Languages/ruby/Web-framework/nanoc.html" target="_blank">nanoc</a> 以後，筆者接續比較了多款靜態的頁面生成工具。本次將介紹一款由 Python 實現的靜態網頁產生工具－ jemdoc。jemdoc 是一個輕量的標記語言，專門用於表現網站的內容與排版。jemdoc 能讀取設定檔跟選單來作更豐富的調整以符合使用者需求。因而讓管理靜態網頁變得非常的方便跟簡易。而相較於 nanoc，jemdoc 並不是那麼的複雜，支援的功能或許也不是那麼的多，但是 jemdoc 讓學習曲線不那麼的陡峭，它的設計非常直觀，只要適應 jemdoc 的語言跟熟悉 HTML 跟 CSS，jemdoc 並不是一個需要花很多時間學習的工具。jemdoc 雖然很簡單，但由於有著內建支援 LaTeX 方程式表格的功能，這讓 jemdoc 的表現力大大地提升了。jemdoc 的設計哲學就是要讓網頁生成更容易，因此 jemdoc 產生出來的內容，可以非常輕易的發佈到伺服器上，而無需多安裝套件或煩惱相容性的問題。</p>
+<p>本文將介紹 jemdoc 的入門知識，接續帶領讀者實作一個簡易的個人網頁（就如同上次用 nanoc 實作），透過實例輕鬆學習使用 jemdoc 的方式，協助讀者在未來可以很輕易的使用這個工具產生編輯自己的靜態網站。</p>
+<br />
+<h2>安裝說明</h2>
+<p>以下的篇幅將說明 jemdoc 的用法跟實作。</p>
+<p>首先，建議讀者創建一個新的資料夾來存放本次實作的相關檔案。我們的目標是創建一個個人的網頁。在實際進入實作前，我們先來介紹 jemdoc 的語法。就如同先前的 markdown，jemdoc 試著利用直觀的方式來標記使用者想要的文章格式。</p>
+<p>jemdoc 的標記語法非常的簡單，如果想要標示斜體，可以用 `/text/`。若是要有粗體的字，則用 `*text*`。jemdoc 還有一個很特別的內建格式：monospace。這種格式讓每一個字的橫軸距離都一樣。jemdoc 還有一些好用的標記，以下是一個簡單的整理：</p>
+<p>--<span style="white-space: pre;"> </span>會產生兩個字元長的分節號</p>
+<p>---<span style="white-space: pre;"> </span>會產生三個字元長的分節號</p>
+<p>~<span style="white-space: pre;"> </span>是一個空格</p>
+<p>＃<span style="white-space: pre;"> </span>是註解的開始</p>
+<p>'' &nbsp;及 &nbsp;“”<span style="white-space: pre;"> </span>就如螢幕上顯示的被產生</p>
+<p>\n<span style="white-space: pre;"> </span>就像是 C 跟相關語言裡面一樣會換行</p>
+<p>$LaTeX equation$<span style="white-space: pre;"> </span>在金錢符號裡輸入公式即可產生一個透過 LaTeX 生成的圖檔接著，我們再介紹一些標題與文章段落的標記。</p>
+<p>在 jemdoc 中，標題跟列表有被很好的支援。標題的層級可以透過 `=` 的數量來決定。譬如：</p>
+<pre>= header1 title<br />== header 2 title<br />=== header 3 title</pre>
+<p>如上面所示，jemdoc 會分別產生三個不同層級的標題。</p>
+<p>列表的層級也可以透過類似的方式實現，如果是簡易的列表，則是用 `-` 來表示。如果需要標示數字順序的話，則是用 `.`。此外，jemdoc 還有一個很方便的內建標記 `:`，我們可以用此的格式來表現，例如︰｛term｝ definition`</p>
+<p>以下是綜合剛剛的幾個標記一起的實作：</p>
+<pre>- Bullet level one<br />&nbsp; &nbsp; -- Bullet level two<br />. Number level one<br />&nbsp; &nbsp; .. Number level two<br />&nbsp; &nbsp; .. Number level two (again)<br />: &nbsp;light markup<br />: &nbsp;a great alternative, but more complicated</pre>
+<p>此範例產生出來的格式如下：</p>
+<p><a href="../../images/120529/jemdoc/img1.png" target="_blank"><img src="../../images/120529/jemdoc/img1.png" border="0" /></a></p>
+<p>▲ 圖1</p>
+<p>最後，再介紹一個標記語法用來標記文字區塊。以下是語法的使用方式：</p>
+<pre>~~~<br />｛Block Title｝｛mode｝<br />text block section: you can type whatever you want here.<br />~~~</pre>
+<p>其中兩個用大括弧，涵括的文字並不是一定需要的。如果沒有提供內容，這個文字區塊就不會有標題。而 mode 提供一些額外的樣式，但也可以直接使用預設。</p>
+<br />
+<h2>實例研究</h2>
+<p>接下來此部份，將會帶讀者製作一個簡易的個人網頁，並藉此熟悉一下 jemdoc 的運作方式。</p>
+<p>先前有提到 jemdoc 非常簡單，不需要額外去學習開發架構，就可以快速上手。現在我們假設你已經有一個叫 index.jemdoc 的文檔，輸入指令：</p>
+<pre>python jemdoc.py index.jemdoc</pre>
+<p>完成後，就會有一個 index.html 的檔案被生成。建立一個叫 index.jemdoc 的新檔案，然後加入以下內容：</p>
+<pre># jemdoc: menu<br />= Kent Chen -- my web page&nbsp;<br />[https://example.com/ Kent Chen]<br />([
+ <script language='JavaScript' type='text/javascript'>
+ <!--
+ var prefix = 'm&#97;&#105;lt&#111;:';
+ var suffix = '';
+ var attribs = '';
+ var path = 'hr' + 'ef' + '=';
+ var addy22297 = 'k' + '&#64;';
+ addy22297 = addy22297 + '&#101;x&#97;mpl&#101;' + '&#46;' + 'c&#111;m';
+ document.write( '<a ' + path + '\'' + prefix + addy22297 + suffix + '\'' + attribs + '>' );
+ document.write( addy22297 );
+ document.write( '<\/a>' );
+ //-->
+ </script> <script language='JavaScript' type='text/javascript'>
+ <!--
+ document.write( '<span style=\'display: none;\'>' );
+ //-->
+ </script>This e-mail address is being protected from spambots. You need JavaScript enabled to view it
+ <script language='JavaScript' type='text/javascript'>
+ <!--
+ document.write( '</' );
+ document.write( 'span>' );
+ //-->
+ </script>])<br />Hi this is my home page<br />== second level<br />This is an example:<br />~~~<br />Look at this block!<br />~~~<br /><br />=== next level<br />level 3 now!</pre>
+<p>首先介紹一下，剛剛所沒有觸及到的部分。jemdoc 有一種叫做 modeline 的機制，熟悉 Vim 的朋友或許可以比較容易理解，不過基本上這讓 jemdoc 可以很精簡的作出一些設定。這裡 `# jemdoc: menu` 就是 modeline。包含這行的文檔會自動處於運用 menu 的 modeline 機制。jemdoc 會在編譯的時候查找一個叫做 MENU 的文檔並依據 MENU 編譯相對應的格式。`index.html` 是指定當下的檔案。</p>
+<p>以下是一個 MENU 的範例：</p>
+<pre>Personal<br />&nbsp; bio [bio.html]<br />&nbsp; contact [contact.html]<br />Projects<br />&nbsp; jemdoc tutorial [tutorial.html]</pre>
+<p>簡單的說，此格式就是母選單跟子選單的分類。這讓初學 jemdoc 的新手很輕易的就能夠上手。接下來，我們編輯一個叫做 contact.jemdoc 的文檔，這裡的內容會連結到選單的 contact 選項（編譯候選單會在左邊）。輸入以下的內容到文件內：</p>
+<pre># jemdoc: menu<br />Shoot me an email! [
+ <script language='JavaScript' type='text/javascript'>
+ <!--
+ var prefix = 'm&#97;&#105;lt&#111;:';
+ var suffix = '';
+ var attribs = '';
+ var path = 'hr' + 'ef' + '=';
+ var addy36080 = 'k' + '&#64;';
+ addy36080 = addy36080 + '&#101;x&#97;mpl&#101;' + '&#46;' + 'c&#111;m';
+ document.write( '<a ' + path + '\'' + prefix + addy36080 + suffix + '\'' + attribs + '>' );
+ document.write( addy36080 );
+ document.write( '<\/a>' );
+ //-->
+ </script> <script language='JavaScript' type='text/javascript'>
+ <!--
+ document.write( '<span style=\'display: none;\'>' );
+ //-->
+ </script>This e-mail address is being protected from spambots. You need JavaScript enabled to view it
+ <script language='JavaScript' type='text/javascript'>
+ <!--
+ document.write( '</' );
+ document.write( 'span>' );
+ //-->
+ </script>]<br />+monospace+</pre>
+<p>這樣我們就很輕易地完成我們的個人網站的分頁面了。編譯之前編輯過的檔案，然後點選 index.html。你應該會看到以下的頁面：</p>
+<p><a href="../../images/120529/jemdoc/img2.png" target="_blank"><img src="../../images/120529/jemdoc/img2.png" border="0" /></a></p>
+<p>▲ 圖2</p>
+<p>再來，我們點入contact。你應該可以看到以下的頁面：</p>
+<p><a href="../../images/120529/jemdoc/img3.png" target="_blank"><img src="../../images/120529/jemdoc/img3.png" border="0" /></a></p>
+<p>▲ 圖3</p>
+<p>就這樣，筆者帶領讀者做出了一個簡單的網站。</p>
+<br />
+<h2>結論</h2>
+<p>相較於 nanoc，jemdoc 是款相對輕量的網頁生成工具。然而，對於一般簡易的靜態網頁，jemdoc 的內建功能已經完全可以滿足一般需求。jemdoc 由於簡單的架構加上直觀的標記語言，這對需要簡易操作的使用者而言，不失為一種選擇。</p>
+<h2>參考資料</h2>
+<p>jemdoc 官方網站，<a href="https://jemdoc.jaboc.net/index.html" target="_blank">https://jemdoc.jaboc.net/index.html</a></p>
+			<!-- Show relate article -->
+				<!-- end -->
+		<div class="article_note">
+		<!-- Add tags use metakey, and show OSSF Newsletter tag: OSSFNL+NUM-->
+		<br><br> <hr style='border: 1px dashed #D2DADB;'><b>OSSF Newsletter&nbsp;:</b>&nbsp;<a href='../../previous-issue%3Ftask=view&amp;id=793.html'>第 196 期 從 Copyleft 看自由開源軟體授權相容性</a><br>				<!-- End -->
+					<br>
+					<b>Category: </b><a href="../foss-programs.html">				FOSS Programs					</a>				</div>
+			 <!-- AddThis Button BEGIN ID 3001 is the front page article -->
+     			<br><br>
+       <div class="addthis_toolbox addthis_default_style addthis_32x32_style">
+       <a class="addthis_button_preferred_1"></a>
+       <a class="addthis_button_preferred_2"></a>
+       <a class="addthis_button_preferred_3"></a>
+       <a class="addthis_button_preferred_4"></a>
+       <a class="addthis_button_compact"></a>
+       <a class="addthis_counter addthis_bubble_style"></a>
+       </div>
+       <script type="text/javascript">var addthis_config = {"data_track_clickback":true};</script>
+       <script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js#pubid=openfoundry"></script>
+       <!-- AddThis Button END -->
+     <br>
+		<div class="totop" ><a class="rt-totop" href="8709--python-jemdoc%3Ftmpl=component&amp;print=1&amp;layout=default&amp;page=.html#" style="outline: medium none;">↑ Top</a></div>
+            <!-- AddThis Button END -->
+
+			</div>
+</div>
+
+						</div>
+					</div>
+				</div>
+			</div>
+		</body>
+	</html>

@@ -1,0 +1,668 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-gb" lang="en-gb" >
+<head>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<link rel="shortcut icon" href="../../images/favicon.ico" />
+	  <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+  <meta name="robots" content="index, follow" />
+  <meta name="keywords" content="OSSFNL581" />
+  <meta name="title" content="要安裝、開機應用還是掃毒救援隨身碟？一個 Unetbootin 全搞定！" />
+  <meta name="description" content="以往想要安裝諸如 Ubuntu 等的 Linux 作業系統，最基本的做法不外乎是到該作業系統的官方網站下載 ISO 影像檔，接著用燒錄軟體燒錄到光碟片內，再以光碟開機的方式進行安裝。這樣的方式在大容量隨身碟不普及，且電腦不支援 USB 隨身碟開機的年代，可說是唯一的安裝解決方案，不過以今日的觀點來看，這樣的方式不是很經濟。 畢竟，Linux" />
+  <meta name="generator" content="" />
+  <title>要安裝、開機應用還是掃毒救援隨身碟？一個 Unetbootin 全搞定！ - OpenFoundry</title>
+  <link href="../../favicon.ico" rel="shortcut icon" type="image/x-icon" />
+  <link rel="stylesheet" href="../../components/com_jcomments/tpl/default/style.css%3Fv=10.css" type="text/css" />
+  <link rel="stylesheet" href="../../components/com_gantry/css/gantry.css" type="text/css" />
+  <link rel="stylesheet" href="../../components/com_gantry/css/grid-12.css" type="text/css" />
+  <link rel="stylesheet" href="../../components/com_gantry/css/joomla.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/joomla.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/style1.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/light-body.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/demo-styles.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/template.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/typography.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/fusionmenu.css" type="text/css" />
+  <style type="text/css">
+    <!--
+#rt-main-surround ul.menu li.active > a, #rt-main-surround ul.menu li.active > .separator, #rt-main-surround ul.menu li.active > .item, #rt-main-surround .square4 ul.menu li:hover > a, #rt-main-surround .square4 ul.menu li:hover > .item, #rt-main-surround .square4 ul.menu li:hover > .separator, .roktabs-links ul li.active span {color:#0088B5;}
+a, #rt-main-surround ul.menu a:hover, #rt-main-surround ul.menu .separator:hover, #rt-main-surround ul.menu .item:hover {color:#0088B5;}
+    -->
+  </style>
+  <script type="text/javascript" src="../../components/com_jcomments/js/jcomments-v2.1.js%3Fv=2"></script>
+  <script type="text/javascript" src="../../components/com_jcomments/libraries/joomlatune/ajax.js"></script>
+  <script type="text/javascript" src="../../media/system/js/mootools.js"></script>
+  <script type="text/javascript" src="../../media/system/js/caption.js"></script>
+  <script type="text/javascript" src="../../components/com_gantry/js/gantry-buildspans.js"></script>
+  <script type="text/javascript" src="../../components/com_gantry/js/gantry-inputs.js"></script>
+  <script type="text/javascript" src="../../templates/rt_quantive_j15/js/jquery.cookie.js"></script>
+  <script type="text/javascript" src="../../modules/mod_roknavmenu/themes/fusion/js/fusion.js"></script>
+  <script type="text/javascript" src="../../modules/mod_ofssologin/js/ofssologin.js"></script>
+  <script type="text/javascript">
+
+			window.addEvent('domready', function() {
+				var modules = ['rt-block'];
+				var header = ['h3','h2','h1'];
+				GantryBuildSpans(modules, header);
+			});
+		InputsExclusion.push('.content_vote','#rt-popup')
+		        window.addEvent('load', function() {
+					new Fusion('ul.menutop', {
+						pill: 0,
+						effect: 'slide and fade',
+						opacity: 1,
+						hideDelay: 500,
+						centered: 0,
+						tweakInitial: {'x': -2, 'y': 0},
+        				tweakSubsequent: {'x': 0, 'y': -14},
+						menuFx: {duration: 200, transition: Fx.Transitions.Sine.easeOut},
+						pillFx: {duration: 400, transition: Fx.Transitions.Back.easeOut}
+					});
+	            });
+  </script>
+<!-- <script type="text/javascript" src="/sso/javascripts/langsync.js"></script> -->
+<!-- <script src="/templates/rt_quantive_j15/js/ossf.js"></script> -->
+<script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-4136519-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
+</head>
+	<body  class="backgroundlevel-low backgroundstyle-style8 bodylevel-med bodystyle-light cssstyle-style1 logostyle-dark font-family-helvetica font-size-is-default menu-type-fusionmenu col12 ">
+		<div id="rt-main-background">
+			<div class="rt-container">
+																<div id="rt-header">
+					<div class="rt-grid-7 rt-alpha">
+    			<div class="rt-block">
+    	    	<a href="../../index.html" id="rt-logo"></a>
+    		</div>
+	    
+</div>
+<div class="rt-grid-5 rt-omega">
+                    <div class="square9">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<div class="ofssologin_square9"><a href="../../index.html">Login</a>&nbsp;&nbsp|&nbsp;&nbsp;<span><a href="../../tw/foss-programs/2278--unetbootin-.html" ><span lang="tw" xml:lang="tw">繁體中文</span></a></li></ul></span><!--Joom!fish V2.0.4 (Lightning)-->
+<!-- &copy; 2003-2009 Think Network, released under the GPL. -->
+<!-- More information: at http://www.joomfish.net -->
+<div class="ofssologin_search_square9">
+  <form id="of_search" action="https://www.openfoundry.org/of/openfoundry/search" method="get" onsubmit="of_search(); return false;">
+    <select id="of_search_type">
+      <option value="Projects"> Projects </option>
+      <option value="Content"> Content </option>
+      <option value="People"> People </option>
+    </select>
+    <input id="query" name="query" id="mod_search_searchword" maxlength="50" alt="search" class="inputbox" type="text" size="28" value="search..."  onblur="if(this.value=='') this.value='search...';" onfocus="if(this.value=='search...') this.value='';" />
+    <input type="hidden" name="commit" value="search" />
+  </form>
+</div></div>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		
+</div>
+					<div class="clear"></div>
+				</div>
+																<div id="rt-navigation"><div id="rt-navigation2"><div id="rt-navigation3">
+					
+<div class="nopill">
+	<ul class="menutop level1 " >
+						<li class="item1 root" >
+					<a class="orphan item bullet" href="../../index.html"  >
+				<span>
+			    				Home				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item32 root" >
+					<a class="orphan item bullet" href="../../archived.html"  >
+				<span>
+			    				Projects				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item186 root" >
+					<a class="orphan item bullet" href="../community.html"  >
+				<span>
+			    				Who&#039;s Who				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item4 root" >
+					<a class="orphan item bullet" href="../news.html"  >
+				<span>
+			    				News				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item5 root" >
+					<a class="orphan item bullet" href="../law-and-licensing.html"  >
+				<span>
+			    				Law &amp; Licensing				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item3 root" >
+					<a class="orphan item bullet" href="../activities.html"  >
+				<span>
+			    				Activities				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item2 root" >
+					<a class="orphan item bullet" href="../resourcecatalog.html"  >
+				<span>
+			    				Resource Catalog				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item45 root" >
+					<a class="orphan item bullet" href="../about.html"  >
+				<span>
+			    				About				   
+				</span>
+			</a>
+			
+			
+	</li>	
+				</ul>
+</div>
+
+				    <div class="clear"></div>
+				</div></div></div>
+								<div class="rt-surround"><div class="rt-surround2"><div class="rt-surround3">
+										<div id="rt-showcase-section">
+												<div id="rt-showcase">
+							<div class="rt-grid-12 rt-alpha rt-omega">
+    		<div class="clear"></div>
+		
+		
+                <div class="close-note">
+                    <div class="rt-block">
+               					<div class="module-content">
+                	<div style="font-size:medium; background-image:linear-gradient(120deg,#159957,#4298b2);color:white;padding:20px;margin:-10px -18px;">感謝您對「自由軟體鑄造場」的支持與愛護，十多年來「自由軟體鑄造場」受中央研究院支持，並在資訊科學研究所以及資訊科技創新研究中心執行，現已完成階段性的任務。 本網站預計持續維運至 2021年底，網站內容基本上不會再更動。<br />也紀念我們永遠的朋友 李士傑先生（Shih-Chieh Ilya Li）。</div>				</div>
+            </div>
+                </div>
+		
+</div>
+							<div class="clear"></div>
+						</div>
+																	</div>
+															<div id="rt-main-surround">
+												<div id="rt-breadcrumbs">
+								<div class="rt-breadcrumb-surround">
+		<a href="../../index.html" id="breadcrumbs-home"></a>
+		<span class="breadcrumbs pathway">
+<a href="../foss-programs.html" class="pathway">FOSS Programs</a> <img src="../../templates/rt_quantive_j15/images/arrow.png" alt=""  /> <span class="no-link">要安裝、開機應用還是掃毒救援隨身碟？一個 Unetbootin 全搞定！</span></span>
+	</div>
+	
+							<div class="clear"></div>
+						</div>
+																							              <div id="rt-main" class="sa3-mb9">
+                <div class="rt-main-inner">
+                    <div class="rt-grid-9 rt-push-3">
+                                                <div class="rt-block">
+                            							<div class="square1">
+							<div class="rt-module-surround">
+								<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+								<div class="rt-module-inner">
+		                            <div id="rt-mainbody">
+		                                
+<div class="rt-joomla ">
+	<div class="rt-article">
+		
+				<div class="rt-headline"><h1 class="rt-article-title">要安裝、開機應用還是掃毒救援隨身碟？一個 Unetbootin 全搞定！</h1>		</div>
+		<div class="clear"></div>
+		
+		
+		
+				<div class="rt-articleinfo">
+						<div class="rt-article-icons">
+								<a href="2278--unetbootin-%3Ftmpl=component&amp;print=1&amp;layout=default&amp;page=.html" title="Print" onclick="window.open(this.href,'win2','status=no,toolbar=no,scrollbars=yes,titlebar=no,menubar=no,resizable=yes,width=640,height=480,directories=no,location=no'); return false;" rel="nofollow"><span class="icon print"></span></a>																</div>
+			
+			<span class="rt-date-posted">
+						 Created at			Monday, 22 March 2010 07:34						&nbsp;&nbsp;&nbsp;&nbsp;						Last Updated on Wednesday, 08 September 2010 22:19						</span>
+
+						<span class="rt-author">
+				Written by Attila			</span>
+				
+					</div>
+		
+		
+		<p>以往想要安裝諸如 Ubuntu 等的 Linux 作業系統，最基本的做法不外乎是到該作業系統的官方網站下載 ISO 影像檔，接著用燒錄軟體燒錄到光碟片內，再以光碟開機的方式進行安裝。這樣的方式在大容量隨身碟不普及，且電腦不支援 USB 隨身碟開機的年代，可說是唯一的安裝解決方案，不過以今日的觀點來看，這樣的方式不是很經濟。</p>
+<p>畢竟，Linux 的套件不但多樣，而且版本的推陳出新也很快，如果想要嚐試不同套件及其新版本，那將會燒出好多張安裝光碟片。例如 Ubuntu 一年會出兩個版本（通常在四月和十月），如果每個版本都要燒成光碟，那不是很浪費嗎？（安裝好的 Ubuntu 也可以直接透過網路來升級到新的系統，不過有時候部份新增功能會有無法使用的現象，如 Ubuntu 9.10 開始使用 EX4 檔案系統，直接升級就無法讓開機碟更換為該檔案系統；又應用程式若有所變動時，升級後在選單部分有可能會產生錯誤，像 Attila 由 Ubuntu 9.04 直接升級為 9.10 時，影片瀏覽程式就產生此現象）。若是改用可重複使用的隨身碟來製作安裝碟，不是比較經濟環保嗎？（當然也可使用可重複燒錄的光碟片，不過製作所需的時間真的比 USB 隨身碟多太多！）</p>
+
+<p>除此之外，製作可直接應用的開機光碟（Live CD），也是許多人愛用的方式。這樣的方式有許多好處，例如使用只能燒錄一次的光碟片來製作，無論如何都不用怕會被感染惡意程式；其次是可在任何一台支援光碟開機的電腦上使用，不但可省去繁冗的安裝和設定程序，也可把自己習慣使用的系統、應用程式帶著跑，達到隨時隨地都可使用的境界。（當然，部分硬體如網卡等有可能無法驅動使用）</p>
+<p>想要製作上述各種應用隨身碟的做法有很多，每個方法繁簡不一，其中最方便的莫過於利用 Unetbootine，尤其是在 Windows 作業系統底下（此點乃直接從官網轉述）。不只如此，Unetbootin 還能製作系統救援、系統工具、掃毒救援等各種隨身碟等，可以說從系統安裝到系統救援等可能用到的各種類型隨身碟都可製作！如此方便的工具，當然值得大家好好認識囉！</p>
+<p><strong>＊ Unetbootin 的基本資料：<br /></strong>軟體名稱：Unetbootin<br />檔案大小：4.5 MB<br />官方網站：<a href="https://unetbootin.sourceforge.net/" target="_blank">https://unetbootin.sourceforge.net/</a><br />下載網址：<a href="https://sourceforge.net/projects/unetbootin/" target="_blank">SourceForge.net UNetbootin</a><br />適用軟體平台：Microsoft Windows（2000/XP/Vista/7）, or Linux<br />授權：GNU General Public License (GPL)</p>
+<p><br /><strong>＊使用前的心得分享</strong></p>
+<p>要利用 Unetbootin 製作各種形式的開機隨身碟之前，有幾點心得要和大家分享：</p>
+<p><span style="text-decoration: underline;">1. 使用存取速度較高的隨身碟</span></p>
+<p>製作系統工具、救援和安裝碟，都可以透過網路下載，隨身碟的存取速度並不需要多快，只要高於網路下載的即可（大多數的隨身碟都有這樣的本事）。若是使用下載回來的 ISO 檔來製作安裝碟，最好使用存取速度高的隨身碟。因為 ISO 檔通常比較大，所需的製作時間通常會比較久，要是速度不夠快，豈不是浪費時間？做好之後用來安裝作業系統時，所需的時間也會比較多（和採用光碟片比起來，無論製作和安裝都還是快上許多）。目前高速隨身碟的價格已經下滑，不再是可望而不可及的產品，既然要節省製作和安裝的時間，就一次省多一點吧！</p>
+<p><span style="text-decoration: underline;">2. 注意隨身碟的容量計算標準</span></p>
+<p>製作各類開機隨身碟的容量並不需要太大，如系統工具、掃毒救援等，只要 128 MB；使用 CD ISO 檔的安裝碟則只要 1 GB 就綽綽有餘。若想要使用 DVD 的 ISO 檔來製作安裝碟，那麼就得使用 8 GB 以上的隨身碟。為何不用 4 GB 就好？這是因為隨身碟廠商用來計算容量所採用的標準是 1 GB  1000MB，不是採用電腦科學的標準（1 GB = 1024 MB），二者之間的計算基礎不同，所提供的空間和所需的空間會有些微差異，製作安裝碟時就會因容量不足而失敗！（在此特別感謝孟逵兄及時提供高速 8 GB 隨身碟，得以完成相關測試！）<br /><br /><img src="../../images/100322/00.jpg" border="0" hspace="5" vspace="5" width="367" height="416" align="absBottom" /><br /> <br />圖 1：產品標明為 8 GB 的隨身碟，在作業系統內所顯示的只有 7.44 GB。其中的差異，正是容量計算標準不一的結果。</p>
+<p><span style="text-decoration: underline;">3. 要先確定待安裝的電腦支援 USB 隨身碟開機</span></p>
+<p>目前的電腦大多已經支援 USB 隨身碟開機，但部份較舊的電腦則否，在這些舊機器上使用開機隨身碟前，最好先確認一下該電腦的主機板是否支援 USB 隨身碟開機，免得高高興興的做好開機碟，卻因電腦不支援 USB 隨身碟開機而不能用，這豈不是白忙一場嗎？除此之外，某些主機板使用 4 GB 以上的隨身碟進行開機時，會出現「Boot error」的字樣，無法完成開機的程序，所以想要利用 DVD ISO 檔來製作安裝碟之前，別忘了先確認一下主機板是否能用。（通常主機板的說明手冊是不會有這類訊息，嘗試錯誤似乎是唯一的方式……）</p>
+<p>這一些都準備好之後，就可以快快樂樂地使用 Unetbootin 啦！</p>
+<p><br /><strong>＊直接下載來源檔製作各類開機碟</strong></p>
+<p>Unetbootin 在製作過程中，對於來源檔的取得，不外乎有兩種方式，一是直接利用內建選項的相關網址，自行透過網路下載並製作，其二則是直接使用事先下載至電腦內的 ISO 檔來製作。前者的優點是需要時才下載，不過在製作安裝光碟時，除了少數安裝與開機應用合一的 Linux 發行套件，一般只會製作最精簡的安裝隨身碟，真正安裝時，往往還需要上網下載相關的檔案，而後者正可以彌補這樣的缺點。</p>
+<p>二者的做法和過程幾乎完全一模一樣，為求完整，二種方式本文都會加以介紹，現在先來看看透過網路下載的方式吧！（採用此方式時，請別忘了要保持網路暢通喔！）</p>
+<p>步驟一：</p>
+<p>(<img src="../../images/100322/01.jpg" border="0" hspace="5" vspace="5" width="245" height="58" align="absBottom" />)<br /> <br />將 Unetbootin 下載回來之後，記得先把隨身碟連接到電腦，並確定隨身碟可正常使用，然後才在程式上面點二下滑鼠，啟動這個程式。</p>
+<p><span style="text-decoration: underline;">［補充說明］</span><br />如果沒有先把隨身碟接上電腦會怎樣呢？不會怎樣，只是 Unetbootin 會找不到隨身碟而已！要是發生這種情形，那只有把 Unetbootin 先關閉，然後再開啟一次 Unetbootin。</p>
+<p>步驟二：</p>
+<p><img src="../../images/100322/02.jpg" border="0" hspace="5" vspace="5" width="532" height="387" align="absBottom" /><br /> <br />這個程式並不需要安裝，會直接開啟主程式介面。首先我們要指定想用的隨身碟。左下角的「Type」預設是「隨身碟」，其右邊的「Drive」會根據 Type 所選的項目，自動顯示相關的磁碟機代號，也就是我們已經接上的隨身碟。</p>
+<p>如果在 Type 內選擇「硬碟」，那麼 Drive 內就會把電腦內可用的開機硬碟顯示出來（勾選其上的Show All Drives (use with Care) 則會顯示所有的硬碟及其分割出來的磁碟），所以要是選擇硬碟時要小心，以免影響硬碟內的資料或系統。</p>
+<p><span style="text-decoration: underline;">［補充說明］</span><br />Unetbootin 本身是多國語言版本，會自動根據作業系統的語系而顯示相關的語言。但在  377 之後的版本，部分的介面內容不知為何會顯示為英文。雖然不影響使用，卻讓人有為德不卒的感覺。<br /><br /><img src="../../images/100322/377.jpg" border="0" hspace="5" vspace="5" width="532" height="387" align="absBottom" /><br /><br />話雖如此，Attila 並不建議大家使用 377 版。因為它可選用的發行套件和類型都比較少，相對的實用性自然較差，所以還是建議大家使用新的版本為佳。</p>
+<p>步驟三：</p>
+<p><img src="../../images/100322/03.jpg" border="0" hspace="5" vspace="5" width="532" height="387" align="absBottom" /><br /> <br />預設是使用「Distribution」（發行套件），此一選項就是要採用網路下載的方式來製作各式各樣的隨身碟。</p>
+<p>接著在其右邊的欄位內選擇要使用的套件或系統工具、救援工具、掃毒救援軟體等，範例內所選的是 Ubuntu 這個發行套件。</p>
+<p><span style="text-decoration: underline;">［補充說明］<br /></span>除了各式各樣的 Liunix 發行套件之外，Unetbootin 也可選擇各種系統工具，如 Parted Magic、SystemRescueCD、Super Grub Disk、Dr.Web Antivirus、F-Secure Rescue CD、Kaspersky Rescue Disk、Backtrack、Ophcrack、NTPasswd、Gujin、Smart Boot Manager (SBM)、FreeDOS等，詳情請見官網(<a href="https://unetbootin.sourceforge.net/#features">https://unetbootin.sourceforge.net/#features</a>)。<br />不過在實際使用時，卻發現一些官網沒有列出來的項目，如 Super Ubuntu。至於有何奧妙，就留給大家自行試試看囉！</p>
+<p>步驟四：</p>
+<p><img src="../../images/100322/04.jpg" border="0" hspace="5" vspace="5" width="532" height="387" align="absBottom" /><br /> <br />選定發行套件之後，接著就是選擇該套件的版本。不同套件可用的版本多寡不一，視該套件而定。要注意的是，選擇不同套件的同時，底下會出現有關該套件的簡易介紹和安裝說明，告訴使用者該套件的特色，以及 Unetbootin 對於該套件提供的各種安裝類型和要點為何。<br />選擇完畢後，按一下［確定］。</p>
+<p><span style="text-decoration: underline;">［補充說明］</span><br />有關安裝的各種類型和要點，發行套件不同，內容也不同。以上述範例來說，當選擇 Ubuntu 的套件之後，主要的安裝類型共有「Live」、「NetInstall」、「HD Media」等三種，Live 就是指開機應用隨身碟（Live CD的隨身碟版），開機後可直接使用，裡面也有安裝選項，需要時可直接啟動來安裝。NetInstall 是允許透過FTP來安裝，可安裝 Kbuntu 等其他衍生版本。至於 HD Media 則是讓使用者可以選用事先下載到硬碟或隨身碟的安裝 ISO 檔。但要注意的是，此安裝 ISO 檔必須存放在硬碟或隨身碟的根目錄底下，例如隨身碟的磁碟機代號為 F:，那麼 ISO 檔就直接存放於其下，也就是說它的路徑如下：</p>
+<p>F:\ubuntu-9.10-desktop-i386.iso</p>
+<p>不過經過實際測試，存放在隨身碟內的安裝成功率較低（會出現找不到 ISO 檔的現象），而存放在電腦內的 C: 磁碟內，其安裝的成功率是 100 %！其路徑和存放在隨身碟相似：</p>
+<p>C:\ubuntu-9.10-desktop-i386.iso</p>
+<p>步驟五：</p>
+<p><img src="../../images/100322/05.jpg" border="0" hspace="5" vspace="5" width="532" height="387" align="absBottom" /> <br /><br />此時該程式會自動連接到官方網站並進行檔案的下載。下載完畢會自動進行相關動作，如提取並複製檔案、安裝 Bootloader 等。此時可以做點別的事，才不會有空等加浪費時間的感覺。</p>
+<p><span style="text-decoration: underline;">［補充說明］</span><br />Ubuntu 的安裝與開機應用是整合在一起的，所以選用 Live 版本時，下載的還是安裝用的 ISO 檔。只是 Unetbootin 預設的下載網址是 Ubuntu 的官網，要是遇到下載熱門時段，那真的是會讓人等到海枯石爛！遇到這種情形時，可以先到比較不塞的 Mirror 站下載 ISO 檔回來，改用後面將要提到的方式來製作，如此會比較省時省力且省網路資源。</p>
+<p>另外，如果選用 NetInstall 來製作安裝碟時，實際進行安裝時，可以選擇想要的下載網址。例如語系選擇繁體中文後，就會看到好幾個可用的網址，包括台灣主要的 Mirror 站，如此就可以根據當時網路的狀況來選擇下載的地方，以便加快安裝的速度。</p>
+<p>步驟六：</p>
+<p><img src="../../images/100322/06.jpg" border="0" hspace="5" vspace="5" width="532" height="387" align="absBottom" /><br /> <br />此一畫面出現時，開機應用隨身碟的製作就算大功告成。如果要立刻在該電腦上使用或安裝，那麼可以按［現在重新開機］。要注意的是，重開機之後，要記得先進入 BIOS 內設定好 USB 隨身碟開機選項，否則就無法使用剛製作好的隨身碟來開機。</p>
+<p>如只是製作隨身碟來用，則按［退出］結束 Unetbootin 即可。</p>
+<p><span style="text-decoration: underline;">［補充說明］<br /></span>BIOS 內的 USB 開機選項，雖然不同廠牌的主機板或筆記型電腦各有所不同，不過大體上都大同小異。一般來說，多數都是先把 USB 隨身碟連接到電腦上（某些主機板和筆電則不需要），然後才開機進入 BIOS 選項內，在選擇開機裝置（Boot Device）內就會看到所連接的 USB 隨身碟。把它設為第一開機順序後並儲存，再重開機時就會以該隨身碟來開機。</p>
+<p><br /><strong>＊實際開機使用</strong></p>
+<p>隨身碟製作完成了，電腦的 USB 開機選項也設定好了之後，當然要來看看隨身碟如何使用。以 Netbootin 製作完成的隨身碟，使用的方法大致上都差不多，所別者只是選項的多寡和應用內容不同而已。（至於不同性質的隨身碟，其實際使用的操作方式則不在本文的範圍之內）</p>
+<p>底下就以前面所完成的開機應用碟為例，簡單看一下相關步驟和畫面。</p>
+<p>步驟一：</p>
+<p><a href="../../images/100322/07.jpg" target="_blank"><img src="../../images/100322/07.jpg" border="0" hspace="5" vspace="5" width="600" height="455" align="absBottom" /></a><br /> <br />設定好 USB 開機後重新開機，就會以該隨身碟開機，此時會載入隨身碟內的開機檔案，然後出現 Unetbootin 的選單。選單的內容多寡，和所製作的隨身碟類型有關。</p>
+<p>此選單的操作是透過鍵盤，想在項目之間移動，只要按鍵盤上的向下鍵（↓）和向上鍵（↑）即可；選定項目要執行時，就按 Enter 鍵。預設要執行的項目是 Default，這裡要使用的也是這一項，因此直接按 Enter 鍵即可。</p>
+<p>步驟二：</p>
+<p><a href="../../images/100322/08.png" target="_blank"><img src="../../images/100322/08.png" border="0" hspace="5" vspace="5" width="600" height="450" align="absBottom" /></a> <br /><br />經過一連串的檔案載入動作之後，很快就完成 Ubuntu Live CD 的開機，桌面左邊就有install Ubuntu 9.10 的選項，需要安裝時，就可在其上按二下滑鼠。</p>
+<p>如果拿光碟開機來比較所需要的時間，使用隨身碟的方式真的快很多！簡直有如雲泥之別！</p>
+<p><br /><strong>＊以預先下載回來的 ISO 檔來製作安裝碟</strong></p>
+<p>從前面的製作方式，不難發現 Unetbootin 在製作各種隨身碟時，先是把 ISO 檔或相關檔案下載到 Windwos 的暫存檔資料夾內，然後解壓縮後再存入隨身碟內，所以影響製作時間的關鍵，就在於頻寬、網路狀況和隨身碟的儲存速度。</p>
+<p>通常發行套件的 ISO 檔，CD 版的容量大約 689 MB；DVD 版則約 3.85 GB，以目前寬頻已經相當普及的情況來說，需要的下載時間不能算長（當然，會因頻寬大小和當時網路狀況而有頗大的差異）。但是官網的下載速度通常會比區域性的 Mirror 站來的低，在 Unetbootin 不能讓使用者自行選擇載點的情況下，自行到下載速度較高的 Mirror 站把 ISO 檔抓回來，製作上還是會比較省一點時間。</p>
+<p>況且，自行抓檔案還可使用續傳軟體，今天沒空抓完，明天還可繼續，使用 Unetbootin 可不行喲！</p>
+<p>步驟一：</p>
+<p><img src="../../images/100322/09.jpg" border="0" hspace="5" vspace="5" width="532" height="394" align="absBottom" /> <br /><br />點選「Diskimage」，預設的檔案類型是 ISO（另一個選項則是磁片，也就是說可以從磁片去讀取可用的映象檔）。接著按最右邊的［選擇映象檔］按鈕。</p>
+<p>步驟二：</p>
+<p><img src="../../images/100322/10.jpg" border="0" hspace="5" vspace="5" width="563" height="390" align="absBottom" /><br /> <br />開啟儲存映象檔的資料夾，點選要使用的映象檔後，按一下［開啟］。</p>
+<p>步驟三：</p>
+<p><img src="../../images/100322/11.jpg" border="0" hspace="5" vspace="5" width="532" height="394" align="absBottom" /><br /> <br />選擇好要使用的映象檔後，接下來當然就是按下［確定］囉！</p>
+<p>步驟四：</p>
+<p><img src="../../images/100322/12.jpg" border="0" hspace="5" vspace="5" width="532" height="394" align="absBottom" /><br /> <br />和前面不同的是，第一步驟會跳過（別忘了，來源檔已經在自己的電腦內），Unetbootin 會直接從第二步驟開始進行。此時製作的速度，完全看解壓縮的速度和隨身碟的儲存速度高低而定。（如果使用高速碟，這一步驟大約 3 分鐘以內，比光碟燒錄快上很多！）</p>
+<p>步驟五：</p>
+<p><img src="../../images/100322/13.jpg" border="0" hspace="5" vspace="5" width="532" height="394" align="absBottom" /><br /> <br />製作完成後，如要立刻使用，就按［現在重新開機］（別忘了設定開機順序），如是製作來用於其他電腦，則按［退出］，完成安裝用隨身碟的製作。</p>
+<p>以 Unetbootin 來製作各類型的開機隨身碟，如系統工具、開機救援、掃毒救援、開機應用、安裝等，操作方式都相同，步驟也不多，加上它的更新速度相當快，可使用的發行套件相當多，可說是建立各種應用隨身碟的最佳工具。</p>
+<p><span style="text-decoration: underline;">［補充說明］<br /></span>Unetbootin 也可允許使用者自行指定 Kernel 和 initrd 檔案的方式，製作自己特定需求的隨身碟。不過想用這樣的方式，對於 Linux 必須有一定的了解才行，加上每個人的需求不同，此處就不加以介紹。</p>
+			<!-- Show relate article -->
+				<!-- end -->
+		<div class="article_note">
+		<!-- Add tags use metakey, and show OSSF Newsletter tag: OSSFNL+NUM-->
+		<br><br> <hr style='border: 1px dashed #D2DADB;'><b>OSSF Newsletter&nbsp;:</b>&nbsp;<a href='../../previous-issue%3Ftask=view&amp;id=581.html'>第 146 期 從 BusyBox 案談起：台灣業者侵權利用自由軟體所面對的法律風險</a><br>				<!-- End -->
+					<br>
+					<b>Category: </b><a href="../foss-programs.html">				FOSS Programs					</a>				</div>
+			 <!-- AddThis Button BEGIN ID 3001 is the front page article -->
+     			<br><br>
+       <div class="addthis_toolbox addthis_default_style addthis_32x32_style">
+       <a class="addthis_button_preferred_1"></a>
+       <a class="addthis_button_preferred_2"></a>
+       <a class="addthis_button_preferred_3"></a>
+       <a class="addthis_button_preferred_4"></a>
+       <a class="addthis_button_compact"></a>
+       <a class="addthis_counter addthis_bubble_style"></a>
+       </div>
+       <script type="text/javascript">var addthis_config = {"data_track_clickback":true};</script>
+       <script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js#pubid=openfoundry"></script>
+       <!-- AddThis Button END -->
+     <br>
+		<div class="totop" ><a class="rt-totop" href="2278--unetbootin-.html#" style="outline: medium none;">↑ Top</a></div>
+            <!-- AddThis Button END -->
+
+		<script type="text/javascript">
+var jcomments=new JComments(2278, 'com_content','https://openfoundry.org/index.php?option=com_jcomments&amp;tmpl=component&amp;lang=');
+jcomments.setList('comments-list');
+</script>
+<div id="jc">
+<div id="comments"><h4>Comments<a class="refresh" href="2278--unetbootin-.html#" title="Refresh comments list" onclick="jcomments.showPage(2278,'com_content',0);return false;">&nbsp;</a></h4>
+<div id="comments-list" class="comments-list">
+        <div class="even" id="comment-item-30"><div class="rbox"><div class="rbox_tr"><div class="rbox_tl"><div class="rbox_t">&nbsp;</div></div></div><div class="rbox_m">
+<div class="comment-avatar"><img src="http://www.gravatar.com/avatar.php?gravatar_id=ca8878cdda1fc673c1f712f79bc8e708&amp;default=https%3A%2F%2Fwww.openfoundry.org%2Fcomponents%2Fcom_jcomments%2Fimages%2Fno_avatar.png" alt="" /></div>
+<div class="comment-box avatar-indent">
+<span class="comments-vote">
+	<span id="comment-vote-holder-30">
+<a href="2278--unetbootin-.html#" class="vote-good" title="Good comment!" onclick="jcomments.voteComment(30, 1);return false;"></a><a href="2278--unetbootin-.html#" class="vote-poor" title="Poor comment!" onclick="jcomments.voteComment(30, -1);return false;"></a>
+<span class="vote-good">+1</span>
+	</span>
+</span>
+<a class="comment-anchor" href="2278--unetbootin-.html#comment-30" id="comment-30">#1</a>
+<span class="comment-author">JJ</span>
+<span class="comment-date">2010-04-14 02:32</span>
+<div class="comment-body" id="comment-body-30">讚 , <img src="../../components/com_jcomments/images/smiles/lol.gif" border="0" alt="" /></div>
+</div><div class="clear"></div>
+</div><div class="rbox_br"><div class="rbox_bl"><div class="rbox_b">&nbsp;</div></div></div></div>
+</div>
+        <div class="odd" id="comment-item-31"><div class="rbox"><div class="rbox_tr"><div class="rbox_tl"><div class="rbox_t">&nbsp;</div></div></div><div class="rbox_m">
+<div class="comment-avatar"><img src="http://www.gravatar.com/avatar.php?gravatar_id=d0c97b26c00da67e7b04ab909a594c5c&amp;default=https%3A%2F%2Fwww.openfoundry.org%2Fcomponents%2Fcom_jcomments%2Fimages%2Fno_avatar.png" alt="" /></div>
+<div class="comment-box avatar-indent">
+<span class="comments-vote">
+	<span id="comment-vote-holder-31">
+<a href="2278--unetbootin-.html#" class="vote-good" title="Good comment!" onclick="jcomments.voteComment(31, 1);return false;"></a><a href="2278--unetbootin-.html#" class="vote-poor" title="Poor comment!" onclick="jcomments.voteComment(31, -1);return false;"></a>
+<span class="vote-none">0</span>
+	</span>
+</span>
+<a class="comment-anchor" href="2278--unetbootin-.html#comment-31" id="comment-31">#2</a>
+<span class="comment-author">Attila</span>
+<span class="comment-date">2010-04-15 19:49</span>
+<div class="comment-body" id="comment-body-31">To JJ：<br />謝謝你的肯定！</div>
+</div><div class="clear"></div>
+</div><div class="rbox_br"><div class="rbox_bl"><div class="rbox_b">&nbsp;</div></div></div></div>
+</div>
+        <div class="even" id="comment-item-32"><div class="rbox"><div class="rbox_tr"><div class="rbox_tl"><div class="rbox_t">&nbsp;</div></div></div><div class="rbox_m">
+<div class="comment-avatar"><img src="http://www.gravatar.com/avatar.php?gravatar_id=1d5d19c3dcb59851391d9f4cd31a6158&amp;default=https%3A%2F%2Fwww.openfoundry.org%2Fcomponents%2Fcom_jcomments%2Fimages%2Fno_avatar.png" alt="" /></div>
+<div class="comment-box avatar-indent">
+<span class="comments-vote">
+	<span id="comment-vote-holder-32">
+<a href="2278--unetbootin-.html#" class="vote-good" title="Good comment!" onclick="jcomments.voteComment(32, 1);return false;"></a><a href="2278--unetbootin-.html#" class="vote-poor" title="Poor comment!" onclick="jcomments.voteComment(32, -1);return false;"></a>
+<span class="vote-none">0</span>
+	</span>
+</span>
+<a class="comment-anchor" href="2278--unetbootin-.html#comment-32" id="comment-32">#3</a>
+<span class="comment-author">st.ll</span>
+<span class="comment-date">2010-04-16 02:35</span>
+<div class="comment-body" id="comment-body-32">說明好詳細，大推!!</div>
+</div><div class="clear"></div>
+</div><div class="rbox_br"><div class="rbox_bl"><div class="rbox_b">&nbsp;</div></div></div></div>
+</div>
+        <div class="odd" id="comment-item-33"><div class="rbox"><div class="rbox_tr"><div class="rbox_tl"><div class="rbox_t">&nbsp;</div></div></div><div class="rbox_m">
+<div class="comment-avatar"><img src="http://www.gravatar.com/avatar.php?gravatar_id=d0c97b26c00da67e7b04ab909a594c5c&amp;default=https%3A%2F%2Fwww.openfoundry.org%2Fcomponents%2Fcom_jcomments%2Fimages%2Fno_avatar.png" alt="" /></div>
+<div class="comment-box avatar-indent">
+<span class="comments-vote">
+	<span id="comment-vote-holder-33">
+<a href="2278--unetbootin-.html#" class="vote-good" title="Good comment!" onclick="jcomments.voteComment(33, 1);return false;"></a><a href="2278--unetbootin-.html#" class="vote-poor" title="Poor comment!" onclick="jcomments.voteComment(33, -1);return false;"></a>
+<span class="vote-good">+2</span>
+	</span>
+</span>
+<a class="comment-anchor" href="2278--unetbootin-.html#comment-33" id="comment-33">#4</a>
+<span class="comment-author">Attila</span>
+<span class="comment-date">2010-04-19 06:18</span>
+<div class="comment-body" id="comment-body-33">To st.ll：<br />說清楚，講明白，讓有興趣的朋友<span style="font-size:0px;padding:0;margin:0;"> </span>少走冤枉路，就是我寫教學文的基<span style="font-size:0px;padding:0;margin:0;"> </span>本要求！謝謝你願意推薦啦！<br /><br />大家的肯定是我繼續寫下去的動力<span style="font-size:0px;padding:0;margin:0;"> </span>！</div>
+</div><div class="clear"></div>
+</div><div class="rbox_br"><div class="rbox_bl"><div class="rbox_b">&nbsp;</div></div></div></div>
+</div>
+        <div class="even" id="comment-item-37"><div class="rbox"><div class="rbox_tr"><div class="rbox_tl"><div class="rbox_t">&nbsp;</div></div></div><div class="rbox_m">
+<div class="comment-avatar"><img src="http://www.gravatar.com/avatar.php?gravatar_id=765a004abcb55e2d6c4a9407c86737be&amp;default=https%3A%2F%2Fwww.openfoundry.org%2Fcomponents%2Fcom_jcomments%2Fimages%2Fno_avatar.png" alt="" /></div>
+<div class="comment-box avatar-indent">
+<span class="comments-vote">
+	<span id="comment-vote-holder-37">
+<a href="2278--unetbootin-.html#" class="vote-good" title="Good comment!" onclick="jcomments.voteComment(37, 1);return false;"></a><a href="2278--unetbootin-.html#" class="vote-poor" title="Poor comment!" onclick="jcomments.voteComment(37, -1);return false;"></a>
+<span class="vote-none">0</span>
+	</span>
+</span>
+<a class="comment-anchor" href="2278--unetbootin-.html#comment-37" id="comment-37">#5</a>
+<span class="comment-author">NiNi</span>
+<span class="comment-date">2010-05-17 09:03</span>
+<div class="comment-body" id="comment-body-37">原來的Ubuntu Live CD開啟時可以選語文，這個就不<span style="font-size:0px;padding:0;margin:0;"> </span>行了，要怎麼設定成繁體中文開啟<span style="font-size:0px;padding:0;margin:0;"> </span>Ubuntu呢</div>
+</div><div class="clear"></div>
+</div><div class="rbox_br"><div class="rbox_bl"><div class="rbox_b">&nbsp;</div></div></div></div>
+</div>
+        <div class="odd" id="comment-item-38"><div class="rbox"><div class="rbox_tr"><div class="rbox_tl"><div class="rbox_t">&nbsp;</div></div></div><div class="rbox_m">
+<div class="comment-avatar"><img src="http://www.gravatar.com/avatar.php?gravatar_id=d0c97b26c00da67e7b04ab909a594c5c&amp;default=https%3A%2F%2Fwww.openfoundry.org%2Fcomponents%2Fcom_jcomments%2Fimages%2Fno_avatar.png" alt="" /></div>
+<div class="comment-box avatar-indent">
+<span class="comments-vote">
+	<span id="comment-vote-holder-38">
+<a href="2278--unetbootin-.html#" class="vote-good" title="Good comment!" onclick="jcomments.voteComment(38, 1);return false;"></a><a href="2278--unetbootin-.html#" class="vote-poor" title="Poor comment!" onclick="jcomments.voteComment(38, -1);return false;"></a>
+<span class="vote-good">+1</span>
+	</span>
+</span>
+<a class="comment-anchor" href="2278--unetbootin-.html#comment-38" id="comment-38">#6</a>
+<span class="comment-author">Attila</span>
+<span class="comment-date">2010-05-18 06:51</span>
+<div class="comment-body" id="comment-body-38">To NiNi：<br />使用 Unetbootin 開機之後的預設選項，確實不會出<span style="font-size:0px;padding:0;margin:0;"> </span>現選擇語系的畫面。不過，Une<span style="font-size:0px;padding:0;margin:0;"> </span>tbootin 一開機進去會出現一小段文字提示<span style="font-size:0px;padding:0;margin:0;"> </span>，就是按一下 Tab 鍵後，可以修改選單項目。我個人<span style="font-size:0px;padding:0;margin:0;"> </span>「猜測」，若是知道怎麼修改選單<span style="font-size:0px;padding:0;margin:0;"> </span>項目（進去是文字介面，一堆我自<span style="font-size:0px;padding:0;margin:0;"> </span>己也不懂的東西......），應該可以讓這樣的項目出現。<span style="font-size:0px;padding:0;margin:0;"> </span>只是我自己對 Linux 的了解非常有限，完全不知道怎麼<span style="font-size:0px;padding:0;margin:0;"> </span>修改，所以這完全是我個人的猜測<span style="font-size:0px;padding:0;margin:0;"> </span>啦！完全幫不上忙真是抱歉......我很期待其他 Linux 的高手可以幫忙解答！<br /><br /><br />（我真的是還在摸索 Linux 的門外漢啦！）</div>
+</div><div class="clear"></div>
+</div><div class="rbox_br"><div class="rbox_bl"><div class="rbox_b">&nbsp;</div></div></div></div>
+</div>
+        <div class="even" id="comment-item-40"><div class="rbox"><div class="rbox_tr"><div class="rbox_tl"><div class="rbox_t">&nbsp;</div></div></div><div class="rbox_m">
+<div class="comment-avatar"><img src="http://www.gravatar.com/avatar.php?gravatar_id=04e05de112d0701c8e12d91ffebbf7aa&amp;default=https%3A%2F%2Fwww.openfoundry.org%2Fcomponents%2Fcom_jcomments%2Fimages%2Fno_avatar.png" alt="" /></div>
+<div class="comment-box avatar-indent">
+<span class="comments-vote">
+	<span id="comment-vote-holder-40">
+<a href="2278--unetbootin-.html#" class="vote-good" title="Good comment!" onclick="jcomments.voteComment(40, 1);return false;"></a><a href="2278--unetbootin-.html#" class="vote-poor" title="Poor comment!" onclick="jcomments.voteComment(40, -1);return false;"></a>
+<span class="vote-none">0</span>
+	</span>
+</span>
+<a class="comment-anchor" href="2278--unetbootin-.html#comment-40" id="comment-40">#7</a>
+<span class="comment-author">NiNi</span>
+<span class="comment-date">2010-05-19 09:57</span>
+<div class="comment-body" id="comment-body-40">我有試過在開機參數中加上 locale=zh_TW.UTF-8 ，但是開進Ubuntu 10.04 i386 LiveCD(USB?)以後，[桌面]等字樣是中文沒<span style="font-size:0px;padding:0;margin:0;"> </span>錯，但是Gnome Menu仍是English。可<span style="font-size:0px;padding:0;margin:0;"> </span>是用Firefox 上Yahoo可以顯示中文啊，不<span style="font-size:0px;padding:0;margin:0;"> </span>解</div>
+</div><div class="clear"></div>
+</div><div class="rbox_br"><div class="rbox_bl"><div class="rbox_b">&nbsp;</div></div></div></div>
+</div>
+        <div class="odd" id="comment-item-41"><div class="rbox"><div class="rbox_tr"><div class="rbox_tl"><div class="rbox_t">&nbsp;</div></div></div><div class="rbox_m">
+<div class="comment-avatar"><img src="http://www.gravatar.com/avatar.php?gravatar_id=d0c97b26c00da67e7b04ab909a594c5c&amp;default=https%3A%2F%2Fwww.openfoundry.org%2Fcomponents%2Fcom_jcomments%2Fimages%2Fno_avatar.png" alt="" /></div>
+<div class="comment-box avatar-indent">
+<span class="comments-vote">
+	<span id="comment-vote-holder-41">
+<a href="2278--unetbootin-.html#" class="vote-good" title="Good comment!" onclick="jcomments.voteComment(41, 1);return false;"></a><a href="2278--unetbootin-.html#" class="vote-poor" title="Poor comment!" onclick="jcomments.voteComment(41, -1);return false;"></a>
+<span class="vote-none">0</span>
+	</span>
+</span>
+<a class="comment-anchor" href="2278--unetbootin-.html#comment-41" id="comment-41">#8</a>
+<span class="comment-author">Attila</span>
+<span class="comment-date">2010-05-20 03:47</span>
+<div class="comment-body" id="comment-body-41">To NiNi：<br />......<br /><br />說真的，你比我還厲害呢！我還不<span style="font-size:0px;padding:0;margin:0;"> </span>知道怎麼加參數......Orz</div>
+</div><div class="clear"></div>
+</div><div class="rbox_br"><div class="rbox_bl"><div class="rbox_b">&nbsp;</div></div></div></div>
+</div>
+        <div class="even" id="comment-item-68"><div class="rbox"><div class="rbox_tr"><div class="rbox_tl"><div class="rbox_t">&nbsp;</div></div></div><div class="rbox_m">
+<div class="comment-avatar"><img src="http://www.gravatar.com/avatar.php?gravatar_id=3ffd9e30d08e41c56410f6c926f0ad62&amp;default=https%3A%2F%2Fwww.openfoundry.org%2Fcomponents%2Fcom_jcomments%2Fimages%2Fno_avatar.png" alt="" /></div>
+<div class="comment-box avatar-indent">
+<span class="comments-vote">
+	<span id="comment-vote-holder-68">
+<a href="2278--unetbootin-.html#" class="vote-good" title="Good comment!" onclick="jcomments.voteComment(68, 1);return false;"></a><a href="2278--unetbootin-.html#" class="vote-poor" title="Poor comment!" onclick="jcomments.voteComment(68, -1);return false;"></a>
+<span class="vote-none">0</span>
+	</span>
+</span>
+<a class="comment-anchor" href="2278--unetbootin-.html#comment-68" id="comment-68">#9</a>
+<span class="comment-author">John</span>
+<span class="comment-date">2010-09-25 23:46</span>
+<div class="comment-body" id="comment-body-68">如何加上掃毒程式呢?打算要掃NTFS格式的硬碟機。<span style="font-size:0px;padding:0;margin:0;"> </span></div>
+</div><div class="clear"></div>
+</div><div class="rbox_br"><div class="rbox_bl"><div class="rbox_b">&nbsp;</div></div></div></div>
+</div>
+        <div class="odd" id="comment-item-69"><div class="rbox"><div class="rbox_tr"><div class="rbox_tl"><div class="rbox_t">&nbsp;</div></div></div><div class="rbox_m">
+<div class="comment-avatar"><img src="http://www.gravatar.com/avatar.php?gravatar_id=d0c97b26c00da67e7b04ab909a594c5c&amp;default=https%3A%2F%2Fwww.openfoundry.org%2Fcomponents%2Fcom_jcomments%2Fimages%2Fno_avatar.png" alt="" /></div>
+<div class="comment-box avatar-indent">
+<span class="comments-vote">
+	<span id="comment-vote-holder-69">
+<a href="2278--unetbootin-.html#" class="vote-good" title="Good comment!" onclick="jcomments.voteComment(69, 1);return false;"></a><a href="2278--unetbootin-.html#" class="vote-poor" title="Poor comment!" onclick="jcomments.voteComment(69, -1);return false;"></a>
+<span class="vote-none">0</span>
+	</span>
+</span>
+<a class="comment-anchor" href="2278--unetbootin-.html#comment-69" id="comment-69">#10</a>
+<span class="comment-author">Attila</span>
+<span class="comment-date">2010-09-28 18:33</span>
+<div class="comment-body" id="comment-body-69">To John:<br />如果你只是針對某台主機或外接硬<span style="font-size:0px;padding:0;margin:0;"> </span>碟要進行掃描，我建議可以使用 Unetbootin 製作掃毒專用碟，官方網站提到可<span style="font-size:0px;padding:0;margin:0;"> </span>用的有Dr.Web Antivirus, F-Secure Rescue CD, and Kaspersky Rescue Disk 等。只是這些掃毒軟體部分已經不<span style="font-size:0px;padding:0;margin:0;"> </span>提供新的版本，有多大效果就有待<span style="font-size:0px;padding:0;margin:0;"> </span>實證囉！<br /><br />另外，有個方法是製作好開機應用<span style="font-size:0px;padding:0;margin:0;"> </span>時（如 Ubuntu Live CD），完成開機程序後，可以透<span style="font-size:0px;padding:0;margin:0;"> </span>過應用程式的安裝，直接加裝 ClamWin 來使用。只是這個方法在重新開機<span style="font-size:0px;padding:0;margin:0;"> </span>後，會因為恢復成Live CD 的初始值而無效，必須再重裝一次<span style="font-size:0px;padding:0;margin:0;"> </span>。所以，要透過這個工具來掃毒前<span style="font-size:0px;padding:0;margin:0;"> </span>，請先確定有無合適的新版掃毒軟<span style="font-size:0px;padding:0;margin:0;"> </span>體可用，再擇優來用比較妥當。</div>
+</div><div class="clear"></div>
+</div><div class="rbox_br"><div class="rbox_bl"><div class="rbox_b">&nbsp;</div></div></div></div>
+</div>
+        <div class="even" id="comment-item-99"><div class="rbox"><div class="rbox_tr"><div class="rbox_tl"><div class="rbox_t">&nbsp;</div></div></div><div class="rbox_m">
+<div class="comment-avatar"><img src="http://www.gravatar.com/avatar.php?gravatar_id=36b4560dfd470e380291e708acfd2fc3&amp;default=https%3A%2F%2Fwww.openfoundry.org%2Fcomponents%2Fcom_jcomments%2Fimages%2Fno_avatar.png" alt="" /></div>
+<div class="comment-box avatar-indent">
+<span class="comments-vote">
+	<span id="comment-vote-holder-99">
+<a href="2278--unetbootin-.html#" class="vote-good" title="Good comment!" onclick="jcomments.voteComment(99, 1);return false;"></a><a href="2278--unetbootin-.html#" class="vote-poor" title="Poor comment!" onclick="jcomments.voteComment(99, -1);return false;"></a>
+<span class="vote-none">0</span>
+	</span>
+</span>
+<a class="comment-anchor" href="2278--unetbootin-.html#comment-99" id="comment-99">#11</a>
+<span class="comment-author">c2ming</span>
+<span class="comment-date">2010-12-30 01:26</span>
+<div class="comment-body" id="comment-body-99">好詳細的說明. <br />請問已下載的ISO檔, 又可否用指令完成製作安裝手指(<span style="font-size:0px;padding:0;margin:0;"> </span>隨身碟)?</div>
+</div><div class="clear"></div>
+</div><div class="rbox_br"><div class="rbox_bl"><div class="rbox_b">&nbsp;</div></div></div></div>
+</div>
+        <div class="odd" id="comment-item-100"><div class="rbox"><div class="rbox_tr"><div class="rbox_tl"><div class="rbox_t">&nbsp;</div></div></div><div class="rbox_m">
+<div class="comment-avatar"><img src="http://www.gravatar.com/avatar.php?gravatar_id=d0c97b26c00da67e7b04ab909a594c5c&amp;default=https%3A%2F%2Fwww.openfoundry.org%2Fcomponents%2Fcom_jcomments%2Fimages%2Fno_avatar.png" alt="" /></div>
+<div class="comment-box avatar-indent">
+<span class="comments-vote">
+	<span id="comment-vote-holder-100">
+<a href="2278--unetbootin-.html#" class="vote-good" title="Good comment!" onclick="jcomments.voteComment(100, 1);return false;"></a><a href="2278--unetbootin-.html#" class="vote-poor" title="Poor comment!" onclick="jcomments.voteComment(100, -1);return false;"></a>
+<span class="vote-none">0</span>
+	</span>
+</span>
+<a class="comment-anchor" href="2278--unetbootin-.html#comment-100" id="comment-100">#12</a>
+<span class="comment-author">Attila</span>
+<span class="comment-date">2010-12-30 04:14</span>
+<div class="comment-body" id="comment-body-100">To c2ming:<br /><br />抱歉，我對 Windows 的指令不是很熟，Linux的指<span style="font-size:0px;padding:0;margin:0;"> </span>令更不熟，所以不知道該怎麼把下<span style="font-size:0px;padding:0;margin:0;"> </span>載的 ISO 檔用指令來完成隨身碟的製作。印<span style="font-size:0px;padding:0;margin:0;"> </span>象中，曾經看過其他網友寫過這一<span style="font-size:0px;padding:0;margin:0;"> </span>類的文章，甚至詳細說明指令的應<span style="font-size:0px;padding:0;margin:0;"> </span>用及優缺點，煩請自行 Google 一下吧！（我習慣的方法都是使用<span style="font-size:0px;padding:0;margin:0;"> </span>圖形介面的工具，算是一個對文字<span style="font-size:0px;padding:0;margin:0;"> </span>指令有畏懼感的使用者）</div>
+</div><div class="clear"></div>
+</div><div class="rbox_br"><div class="rbox_bl"><div class="rbox_b">&nbsp;</div></div></div></div>
+</div>
+</div>
+<div id="comments-list-footer"><a class="refresh" href="2278--unetbootin-.html#" title="Refresh comments list" onclick="jcomments.showPage(2278,'com_content',0);return false;">Refresh comments list</a></div>
+</div>
+<div id="comments-footer" align="center"><a href="http://www.joomlatune.com" title="JComments" target="_blank">JComments</a></div>
+<script type="text/javascript">
+jcomments.setAntiCache(1,0,0);
+</script> 
+</div>	</div>
+</div>
+
+		                            </div>
+									<div class="clear"></div>
+								</div>
+								<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+							</div>
+							</div>
+                                                    </div>
+                                            </div>
+                                <div class="rt-grid-3 rt-pull-9">
+                <div id="rt-sidebar-a">
+                                    <div class="square4">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<ul class="menu"><li class="item56"><a href="../previous-issue.html"><span>Previous Issue</span></a></li><li class="item55"><a href="../about-newsletter.html"><span>About Newsletter</span></a></li></ul>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<ul class="menu"><li class="item115"><a href="../foss-news.html"><span>FOSS News</span></a></li><li class="item141"><a href="../case-job.html"><span>Case and Jobs</span></a></li></ul>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+        	                <div class="square1">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-title"><h2 class="title">Special</h2></div>
+						<div class="clear"></div>
+		                						<div class="module-content">
+		                	<ul class="menu"><li class="item37"><a href="../tech-column.html"><span>Tech Column</span></a></li><li id="current" class="active item40"><a href="../foss-programs.html"><span>FOSS Programs</span></a></li><li class="item35"><a href="../legal-column.html"><span>Legal Column</span></a></li><li class="item154"><a href="../foss-forum.html"><span>FOSS Forum</span></a></li><li class="item162"><a href="../enterprise-application.html"><span>Enterprise Application</span></a></li><li class="item44"><a href="../foss-projects.html"><span>FOSS Projects</span></a></li></ul>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		                <div class="square1">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<p style="text-align: center;"><a href="../../news%3Fformat=feed&amp;type=rss" target="_black"><img src="../../images/M_images/news-rss-feed.png" border="0" /></a><br /><a href="https://www.openfoundry.org/rss-feed/Newsletter" target="_black"><img src="../../images/M_images/newsletter-rss-feed.png" border="0" /></a></p>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		
+                </div>
+            </div>
+
+                    <div class="clear"></div>
+                </div>
+            </div>
+																													</div>
+										<div id="rt-copyright">
+						<div class="rt-grid-12 rt-alpha rt-omega">
+                        <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<span class="nowrap">Open Source Software Foundry</span><span class="nowrap">‧</span><span class="nowrap"> </span><span class="nowrap">Best  Viewed with IE7.0 or Firefox2.0 above, 1024x768 Resolution. </span><strong>E-Mail</strong>：<a href="mailto:contact@openfoundry.org">contact@openfoundry.org</a> <br /><strong>Address</strong>：No.128, Sec.2, Academia Rd., Institute of Information Science, Academia Sinica, Nangang District, Taipei City 11529, Taiwan (R.O.C). <br /><a href="../privacy-policy.html">Privacy Policy</a>. <a href="../terms-of-use.html">Terms-of-use</a> <span style="position: relative; top: 8px; margin-top: -8px;"> <a href="../../about/8101.html"><img src="../../images/M_images/rss-feed-all.png" border="0" /></a></span>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+        	
+</div>
+						<div class="clear"></div>
+					</div>
+					<div class="rt-footer-bottom-wrap"><div class="rt-footer-bottom"><div class="rt-footer-bottom2"><div class="rt-footer-bottom3"></div></div></div></div>
+									</div></div></div>
+				<div class="rt-surround-bottom"><div class="rt-surround-bottom2"><div class="rt-surround-bottom3"></div></div></div>
+							</div>
+		</div>
+		<!--
+		<script id="aptureScript">
+						(function (){var a=document.createElement("script");a.defer="true";a.src="http://www.apture.com/js/apture.js?siteToken=vsJttrn";document.getElementsByTagName("head")[0].appendChild(a);})();
+     </script>
+-->
+
+<!-- Piwik -->
+<!-- 			<script type="text/javascript">
+			  var _paq = _paq || [];
+		  _paq.push(["trackPageView"]);
+		  _paq.push(["enableLinkTracking"]);
+
+		    (function() {
+			        var u=(("https:" == document.location.protocol) ? "https" : "https") + "://www.openfoundry.org/piwik/";
+				    _paq.push(["setTrackerUrl", u+"piwik.php"]);
+				    _paq.push(["setSiteId", "1"]);
+				        var d=document, g=d.createElement("script"), s=d.getElementsByTagName("script")[0]; g.type="text/javascript";
+				        g.defer=true; g.async=true; g.src=u+"piwik.js"; s.parentNode.insertBefore(g,s);
+					  })();
+		  </script> -->
+<!-- End Piwik Code -->
+	</body>
+</html>

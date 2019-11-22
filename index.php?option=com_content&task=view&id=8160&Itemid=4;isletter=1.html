@@ -1,0 +1,635 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="zh-tw" lang="zh-tw" >
+<head>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<link rel="shortcut icon" href="images/favicon.ico" />
+	  <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+  <meta name="robots" content="index, follow" />
+  <meta name="keywords" content="Scribus,OSSFNL689" />
+  <meta name="title" content="用自由軟體 Scribus 來輸出文件（1）-基本操作" />
+  <meta name="description" content=" Scribus 是一套開源的桌上出版軟體（Desktop Publish Software）。從 2001 年開始開發，支援 CMYK、分隔線、ICC 色彩管理等專業出版功能，並且也能將檔案輸出成 PDF 格式。可與排版軟體的老大哥 Adobe InDesign、QuarkXPress" />
+  <meta name="generator" content="" />
+  <title>用自由軟體 Scribus 來輸出文件（1）-基本操作 - OpenFoundry</title>
+  <link href="favicon.ico" rel="shortcut icon" type="image/x-icon" />
+  <link rel="stylesheet" href="components/com_jcomments/tpl/default/style.css%3Fv=10.css" type="text/css" />
+  <link rel="stylesheet" href="components/com_gantry/css/gantry.css" type="text/css" />
+  <link rel="stylesheet" href="components/com_gantry/css/grid-12.css" type="text/css" />
+  <link rel="stylesheet" href="components/com_gantry/css/joomla.css" type="text/css" />
+  <link rel="stylesheet" href="templates/rt_quantive_j15/css/joomla.css" type="text/css" />
+  <link rel="stylesheet" href="templates/rt_quantive_j15/css/style1.css" type="text/css" />
+  <link rel="stylesheet" href="templates/rt_quantive_j15/css/light-body.css" type="text/css" />
+  <link rel="stylesheet" href="templates/rt_quantive_j15/css/demo-styles.css" type="text/css" />
+  <link rel="stylesheet" href="templates/rt_quantive_j15/css/template.css" type="text/css" />
+  <link rel="stylesheet" href="templates/rt_quantive_j15/css/typography.css" type="text/css" />
+  <link rel="stylesheet" href="templates/rt_quantive_j15/css/fusionmenu.css" type="text/css" />
+  <style type="text/css">
+    <!--
+#rt-main-surround ul.menu li.active > a, #rt-main-surround ul.menu li.active > .separator, #rt-main-surround ul.menu li.active > .item, #rt-main-surround .square4 ul.menu li:hover > a, #rt-main-surround .square4 ul.menu li:hover > .item, #rt-main-surround .square4 ul.menu li:hover > .separator, .roktabs-links ul li.active span {color:#0088B5;}
+a, #rt-main-surround ul.menu a:hover, #rt-main-surround ul.menu .separator:hover, #rt-main-surround ul.menu .item:hover {color:#0088B5;}
+    -->
+  </style>
+  <script type="text/javascript" src="components/com_jcomments/js/jcomments-v2.1.js%3Fv=2"></script>
+  <script type="text/javascript" src="components/com_jcomments/libraries/joomlatune/ajax.js"></script>
+  <script type="text/javascript" src="media/system/js/mootools.js"></script>
+  <script type="text/javascript" src="media/system/js/caption.js"></script>
+  <script type="text/javascript" src="components/com_gantry/js/gantry-buildspans.js"></script>
+  <script type="text/javascript" src="components/com_gantry/js/gantry-inputs.js"></script>
+  <script type="text/javascript" src="templates/rt_quantive_j15/js/jquery.cookie.js"></script>
+  <script type="text/javascript" src="modules/mod_roknavmenu/themes/fusion/js/fusion.js"></script>
+  <script type="text/javascript" src="modules/mod_ofssologin/js/ofssologin.js"></script>
+  <script type="text/javascript">
+
+			window.addEvent('domready', function() {
+				var modules = ['rt-block'];
+				var header = ['h3','h2','h1'];
+				GantryBuildSpans(modules, header);
+			});
+		InputsExclusion.push('.content_vote','#rt-popup')
+		        window.addEvent('load', function() {
+					new Fusion('ul.menutop', {
+						pill: 0,
+						effect: 'slide and fade',
+						opacity: 1,
+						hideDelay: 500,
+						centered: 0,
+						tweakInitial: {'x': -2, 'y': 0},
+        				tweakSubsequent: {'x': 0, 'y': -14},
+						menuFx: {duration: 200, transition: Fx.Transitions.Sine.easeOut},
+						pillFx: {duration: 400, transition: Fx.Transitions.Back.easeOut}
+					});
+	            });
+  </script>
+<!-- <script type="text/javascript" src="/sso/javascripts/langsync.js"></script> -->
+<!-- <script src="/templates/rt_quantive_j15/js/ossf.js"></script> -->
+<script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-4136519-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
+</head>
+	<body  class="backgroundlevel-low backgroundstyle-style8 bodylevel-med bodystyle-light cssstyle-style1 logostyle-dark font-family-helvetica font-size-is-default menu-type-fusionmenu col12 ">
+		<div id="rt-main-background">
+			<div class="rt-container">
+																<div id="rt-header">
+					<div class="rt-grid-7 rt-alpha">
+    			<div class="rt-block">
+    	    	<a href="index.html" id="rt-logo"></a>
+    		</div>
+	    
+</div>
+<div class="rt-grid-5 rt-omega">
+                    <div class="square9">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<div class="ofssologin_square9"><a href="index.html">登入</a>&nbsp;&nbsp|&nbsp;&nbsp;<span><a href="en/news/8160%3Ftask=view.html" ><span lang="en" xml:lang="en">English</span></a></li></ul></span><!--Joom!fish V2.0.4 (Lightning)-->
+<!-- &copy; 2003-2009 Think Network, released under the GPL. -->
+<!-- More information: at http://www.joomfish.net -->
+<div class="ofssologin_search_square9">
+  <form id="of_search" action="https://www.openfoundry.org/of/openfoundry/search" method="get" onsubmit="of_search(); return false;">
+    <select id="of_search_type">
+      <option value="Projects"> 專案 </option>
+      <option value="Content"> 文章 </option>
+      <option value="People"> 人才 </option>
+    </select>
+    <input id="query" name="query" id="mod_search_searchword" maxlength="50" alt="search" class="inputbox" type="text" size="28" value="search..."  onblur="if(this.value=='') this.value='search...';" onfocus="if(this.value=='search...') this.value='';" />
+    <input type="hidden" name="commit" value="search" />
+  </form>
+</div></div>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		
+</div>
+					<div class="clear"></div>
+				</div>
+																<div id="rt-navigation"><div id="rt-navigation2"><div id="rt-navigation3">
+					
+<div class="nopill">
+	<ul class="menutop level1 " >
+						<li class="item1 root" >
+					<a class="orphan item bullet" href="index.html"  >
+				<span>
+			    				首頁				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item32 root" >
+					<a class="orphan item bullet" href="archived.html"  >
+				<span>
+			    				專案				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item186 root" >
+					<a class="orphan item bullet" href="tw/community.html"  >
+				<span>
+			    				Who&#039;s Who				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item4 active root" >
+					<a class="orphan item bullet" href="tw/news.html"  >
+				<span>
+			    				新聞				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item5 root" >
+					<a class="orphan item bullet" href="tw/law-and-licensing.html"  >
+				<span>
+			    				法律源地				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item3 root" >
+					<a class="orphan item bullet" href="tw/activities.html"  >
+				<span>
+			    				活動				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item2 root" >
+					<a class="orphan item bullet" href="tw/resourcecatalog%3FName=Value.html"  >
+				<span>
+			    				資源表列				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item45 root" >
+					<a class="orphan item bullet" href="tw/about.html"  >
+				<span>
+			    				關於				   
+				</span>
+			</a>
+			
+			
+	</li>	
+				</ul>
+</div>
+
+				    <div class="clear"></div>
+				</div></div></div>
+								<div class="rt-surround"><div class="rt-surround2"><div class="rt-surround3">
+										<div id="rt-showcase-section">
+												<div id="rt-showcase">
+							<div class="rt-grid-12 rt-alpha rt-omega">
+    		<div class="clear"></div>
+		
+		
+                <div class="close-note">
+                    <div class="rt-block">
+               					<div class="module-content">
+                	<div style="font-size:medium; background-image:linear-gradient(120deg,#159957,#4298b2);color:white;padding:20px;margin:-10px -18px;">感謝您對「自由軟體鑄造場」的支持與愛護，十多年來「自由軟體鑄造場」受中央研究院支持，並在資訊科學研究所以及資訊科技創新研究中心執行，現已完成階段性的任務。 本網站預計持續維運至 2021年底，網站內容基本上不會再更動。<br />也紀念我們永遠的朋友 李士傑先生（Shih-Chieh Ilya Li）。</div>				</div>
+            </div>
+                </div>
+		
+</div>
+							<div class="clear"></div>
+						</div>
+																	</div>
+															<div id="rt-main-surround">
+												<div id="rt-breadcrumbs">
+								<div class="rt-breadcrumb-surround">
+		<a href="index.html" id="breadcrumbs-home"></a>
+		<span class="breadcrumbs pathway">
+<span class="no-link">新聞</span></span>
+	</div>
+	
+							<div class="clear"></div>
+						</div>
+																							              <div id="rt-main" class="sa3-mb9">
+                <div class="rt-main-inner">
+                    <div class="rt-grid-9 rt-push-3">
+                                                <div class="rt-block">
+                            							<div class="square1">
+							<div class="rt-module-surround">
+								<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+								<div class="rt-module-inner">
+		                            <div id="rt-mainbody">
+		                                
+<div class="rt-joomla ">
+	<div class="rt-article">
+		
+				<div class="rt-headline"><h1 class="rt-article-title">用自由軟體 Scribus 來輸出文件（1）-基本操作</h1>		</div>
+		<div class="clear"></div>
+		
+		
+		
+				<div class="rt-articleinfo">
+						<div class="rt-article-icons">
+								<a href="tw/news/8160--scribus-1-%3Ftmpl=component&amp;print=1&amp;page=.html" title="列印" onclick="window.open(this.href,'win2','status=no,toolbar=no,scrollbars=yes,titlebar=no,menubar=no,resizable=yes,width=640,height=480,directories=no,location=no'); return false;" rel="nofollow"><span class="icon print"></span></a>																</div>
+			
+			<span class="rt-date-posted">
+						建立日期			2010-10-11 19:26						&nbsp;&nbsp;&nbsp;&nbsp;						最近更新在 2012-02-03 14:43						</span>
+
+						<span class="rt-author">
+				作者是 陳瑞霖、李婉婷／文			</span>
+				
+					</div>
+		
+		
+		<p><br /> Scribus 是一套開源的桌上出版軟體（Desktop Publish Software）。從 2001 年開始開發，支援 CMYK、分隔線、ICC 色彩管理等專業出版功能，並且也能將檔案輸出成 PDF 格式。可與排版軟體的老大哥 Adobe InDesign、QuarkXPress 媲美。<br />在這裡要特別說明的是，桌上出版軟體與文書處理軟體的定位有很大的不同。桌上出版軟體著重在版面的排列，你可以很自由的決定文字、圖片放在頁面的何處。而文書處理軟體的強項則是在於文字排序、索引方面的處理。</p>
+
+<p><a href="images/101012/Scribusbasic/scribusbasic01.png" target="_blank"><img src="images/101012/Scribusbasic/scribusbasic01.png" border="0" alt="（來源：Wiki Commons）" width="125" height="125" style="border: 1px solid black; margin: 5px; float: left;" /></a> 軟體名稱：Scribus<br />最新版本：1.3.3.14<br /> 軟體授權：GNU General Public License Version 2　(GPL2)　or any later version<br />系 統支援：Debian and Ubuntu；Windows 2000/XP/Vista/7；Mac OS X；OS/2 and eComStation；OpenSUSE and SUSE Linux Enterprise；Red Hat/Fedora；CentOS；Mandriva<br /><br /></p>
+<div><br />（來源：<a href="https://commons.wikimedia.org/wiki/File:Scribus_logo.svg" target="_blank">Wiki Commons</a>）<br /><br /></div>
+<p>官方網站：<a href="https://www.scribus.net/" target="_blank">https://www.scribus.net/</a><br />下載網址：<a href="https://sourceforge.net/projects/scribus/files/" target="_blank">https://sourceforge.net/projects/scribus/files/</a><br /><br />**以下操作使用 Ubuntu 10.04 版為範例，其他作業系統下的操作大致相同。<br /> <br />本文將介紹 Scribus 的基本功能，如何建立新文件，插入文字、匯入圖片，以及加上簡單的美工設計。<br />Scribus 版本則為 Ubuntu Software Center 下載的 Scribus Stable，版本號為 1.3.3.13。</p>
+<h4>建立新文件</h4>
+<p>以下範例要建立兩頁A4 大小的宣傳文件。<br /><br /><img src="images/101012/Scribusbasic/scribusbasic02.png" border="0" alt="alt" title="Original Resolution - 502x312px / Original Resolution - 502x312px" width="500.5705128205128" height="299" style="border: 0.25em groove #0000ee; cursor: pointer;" /><br /> ▲ 圖1</p>
+<p>1. 選擇頁面大小，在這邊我們選擇尺寸為 A4。<br /> 2. 頁數選擇 2。   <br /> 3. 選擇左頁還是右頁是第一頁，這邊我們選擇左頁。<br /><br /><br />如果發現頁面太小，可以在功能表【頁面】-&gt;【管理頁面屬性】，〔頁面尺寸〕中做更改。假如要插入新的頁面，也是在功能表中【頁面】，選擇【插入】。</p>
+<h4>建立文字框</h4>
+<p>1. 選擇〔新增文字框〕。   <br /> 2. 用滑鼠拉出你要的文字框大小。<br /><a href="images/101012/Scribusbasic/scribusbasic03.png" target="_blank"><img src="images/101012/Scribusbasic/scribusbasic03.png" border="0" alt="alt" title="Original Resolution - 425x356px" width="363.15449438202245" height="299" style="border: 0.25em groove #0000ee; cursor: pointer;" /></a><br />▲ 圖2</p>
+<p>接下來要使用故事編輯器，故事編輯器是 Scribus 內建的文字編輯器。在桌上出版的領域，文字通常使用文書處理器處理過後，才匯入桌上出版軟體做後續的編排。但假如只是簡單的文字編輯，其實內建的故事編輯器就能勝任。<br /> <br /> 1. 點選工具列上的〔故事編輯器〕。<br /> 2. 打開故事編輯器後，先別急著輸入中文。<br /><a href="images/101012/Scribusbasic/scribusbasic04.png" target="_blank"><img src="images/101012/Scribusbasic/scribusbasic04.png" border="0" alt="alt" title="Original Resolution - 525x379px" width="426.50923482849606" height="299" style="cursor: pointer;" /></a><br /> ▲ 圖3</p>
+<p><br /> 1. 對著左邊的欄位按滑鼠，選擇【編輯樣式】。   <br /> 2. 選擇〔新建〕。<br /><br /><a href="images/101012/Scribusbasic/scribusbasic05.png" target="_blank"><img src="images/101012/Scribusbasic/scribusbasic05.png" border="0" alt="alt" title="Original Resolution - 450x321px" width="432.01869158878503" height="299" style="border: 0;" /></a><br /> ▲ 圖4</p>
+<p><br />**由於 Scribus 處理中文能力不大好，很容易一不小心就當掉。建議不要直接在 Scribus 中打中文字. 建議先在其他的文書處理器如 gedit 上打上中文，再貼到 Scribus的〔故事編輯器〕裡。<br /> <br />選擇中文字型，請依據自己電腦系統中安裝的字型選擇，範例中使用 WenQuanYi Micro Hei（文泉驛微米黑）。要顯示中文字一定要選中文字型，才會正常顯示。<br /> <br /><a href="images/101012/Scribusbasic/scribusbasic06.png" target="_blank"><img src="images/101012/Scribusbasic/scribusbasic06.png" border="0" alt="alt" title="Original Resolution - 450x416px" width="326.0528846153846" height="299" style="border: 0;" /></a><br />▲ 圖5</p>
+<p>選擇字體的顏色。</p>
+<p><a href="images/101012/Scribusbasic/scribusbasic07.png" target="_blank"><img src="images/101012/Scribusbasic/scribusbasic07.png" border="0" alt="alt" title="Original Resolution - 450x413px" width="328.6537530266344" height="299" style="border: 0;" /></a><br /> ▲ 圖6</p>
+<p> </p>
+<p>1. 選擇陰影效果。<br /> 2. 選擇文字排列效果，我們這裡選擇[置中]。<br /><a href="images/101012/Scribusbasic/scribusbasic08.png" target="_blank"><img src="images/101012/Scribusbasic/scribusbasic08.png" border="0" alt="alt" title="Original Resolution - 450x416px" width="326.0528846153846" height="299" style="border: 0;" /></a><br /> ▲ 圖7</p>
+<p>按下儲存後即完成樣式的新增。<br /><br /><a href="images/101012/Scribusbasic/scribusbasic09.png" target="_blank"><img src="images/101012/Scribusbasic/scribusbasic09.png" border="0" alt="alt" width="245" height="230" /></a><br />▲ 圖8</p>
+<p>1. 選擇各段落要套用的樣式。   <br /> 2. 按下〔更新文字框並退出〕按鈕，即會儲存變更並退出故事編輯器。<br /> <br /><a href="images/101012/Scribusbasic/scribusbasic10.png" target="_blank"><img src="images/101012/Scribusbasic/scribusbasic10.png" border="0" alt="alt" title="Original Resolution - 450x323px" width="429.14551083591334" height="299" style="border: 0;" /></a></p>
+<p>▲ 圖9</p>
+<h4>從外部文件匯入文字到文字框中</h4>
+<p><br />由於 Scribus 是排版軟體，因此我們在這裡匯入已經寫好的稿件，在 Scribus 裡做後續的處理。<br /> <br />在先前的文字框下面新增一個文字框，按下右鍵，【匯入文字】<br /><br />**在功能表中也能叫出匯入文字的功能，選擇【檔案】-&gt;【匯入】-&gt;【匯入文字】。<br /><a href="images/101012/Scribusbasic/scribusbasic11.png" target="_blank"><img src="images/101012/Scribusbasic/scribusbasic11.png" border="0" alt="alt" title="Original Resolution - 350x408px" width="251.94607843137254" height="299" style="border: 0;" /></a><br /> ▲ 圖10</p>
+<p>選擇要匯入的檔案。<br /><a href="images/101012/Scribusbasic/scribusbasic12.png" target="_blank"><img src="images/101012/Scribusbasic/scribusbasic12.png" border="0" alt="alt" width="450" style="border: 0;" /></a><br />▲ 圖11</p>
+<p><br />由於 Scribus 預設的字型不是中文，因此匯入中文會無法顯示。<br /> <a href="images/101012/Scribusbasic/scribusbasic13.png" target="_blank"><img src="images/101012/Scribusbasic/scribusbasic13.png" border="0" alt="alt" title="Original Resolution - 450x338px" width="408.6804733727811" height="299" style="border: 0;" /></a><br />▲ 圖12</p>
+<p><br />依照前面的操作步驟新增樣式，文中新增 Chinese 樣式並套用匯入的文字。<br /><a href="images/101012/Scribusbasic/scribusbasic14.png" target="_blank"><img src="images/101012/Scribusbasic/scribusbasic14.png" border="0" alt="alt" title="Original Resolution - 450x323px" width="429.14551083591334" height="299" style="border: 0;" /></a><br /> ▲ 圖13</p>
+<p><br />退出故事編輯器後，顯示一切正常了。<br /><a href="images/101012/Scribusbasic/scribusbasic15.png" target="_blank"><img src="images/101012/Scribusbasic/scribusbasic15.png" border="0" alt="alt" title="Original Resolution - 450x328px" width="422.11585365853654" height="298.99999999999994" style="border: 0;" /></a><br />▲ 圖14</p>
+<p> </p>
+<h4>新增形狀</h4>
+<p>一份出版品，不只有文字，還要有圖片以及其他裝飾，才稱得上完整。接下來我們要介紹在文字框下加入色塊。<br /> <br />選擇〔插入形狀〕。<br /><a href="images/101012/Scribusbasic/scribusbasic16.png" target="_blank"><img src="images/101012/Scribusbasic/scribusbasic16.png" border="0" alt="alt" width="440" style="border: 0;" /></a><br />▲ 圖15</p>
+<p>插入後是一團黑的長方形，文字都看不到了，別擔心，按滑鼠右鍵【屬性】。<br /> <a href="images/101012/Scribusbasic/scribusbasic17.png"><img src="images/101012/Scribusbasic/scribusbasic17.png" border="0" alt="alt" title="Original Resolution - 450x325px" width="426.3076923076923" height="299" style="border: 0;" /></a><br />▲ 圖16</p>
+<p>挑選形狀的顏色, 以及所挑選顏色的陰影及透明度，在這裡我們陰影及透明度都設 20% 。<br /><a href="images/101012/Scribusbasic/scribusbasic18.png" target="_blank"><img src="images/101012/Scribusbasic/scribusbasic18.png" border="0" alt="alt" title="Original Resolution - 277x596px" width="121.83724832214764" height="298.99999999999994" style="cursor: pointer;" /></a><br /> ▲ 圖17</p>
+<p>挑選自己想要的顏色，調整陰影及透明度後，我們可以看到文字了。<br />對著我們剛編輯的形狀，按右鍵選擇【圖層】-&gt;【降低】。<br /><a href="images/101012/Scribusbasic/scribusbasic19.png" target="_blank"><img src="images/101012/Scribusbasic/scribusbasic19.png" border="0" alt="alt" width="400" height="287" /></a><br /> ▲ 圖18</p>
+<p>這樣一來形狀就在下面，能點到文字框了。如果要對文字框內的文字做變動，就很方便了。<br /><a href="images/101012/Scribusbasic/scribusbasic20.png" target="_blank"><img src="images/101012/Scribusbasic/scribusbasic20.png" border="0" alt="alt" title="Original Resolution - 450x325px" width="426.3076923076923" height="299" style="border: 0;" /></a><br />▲ 圖19</p>
+<p><br />完成了簡單的文字編排以及加上形狀！接下來要加些圖案來修飾充滿文字的版面了。<br /> <a href="images/101012/Scribusbasic/scribusbasic21.png" target="_blank"><img src="images/101012/Scribusbasic/scribusbasic21.png" border="0" alt="alt" title="Original Resolution - 450x313px" width="443.87859424920134" height="299" style="border: 0;" /></a><br />▲ 圖20</p>
+<p> </p>
+<h4>匯入圖片</h4>
+<p>文字稿排好後，美編工作當然也少不了。點選[插入]按下【文字框】，接著拖曳出一個框框，按滑鼠右鍵選擇【匯入影像】。<br /> <a href="images/101012/Scribusbasic/scribusbasic22.png"><img src="images/101012/Scribusbasic/scribusbasic22.png" border="0" alt="alt" width="350" style="border: 0;" /></a><br />▲ 圖21</p>
+<p><br />選取你要匯入的圖片。<br /><a href="images/101012/Scribusbasic/scribusbasic23.png"><img src="images/101012/Scribusbasic/scribusbasic23.png" border="0" alt="alt" width="450" style="border: 0;" /></a><br /> ▲ 圖22</p>
+<p><br />插入之後會發現一個問題，剛剛所畫的框可能太大或太小，這時可選擇[物件]，點選【調整框體適應圖片大小】，這樣就可以完整呈現你要的圖片了。<br /><a href="images/101012/Scribusbasic/scribusbasic24.png" target="_blank"><img src="images/101012/Scribusbasic/scribusbasic24.png" border="0" alt="alt" width="400" style="border: 0;" /></a><br /> ▲ 圖23</p>
+<p><br />一樣按滑鼠右鍵，選擇【圖像效果】，會跳出視窗。這從裡你可以對剛匯入的圖片做出效果，像是將圖片做反轉，原本黑色的字就可以反轉成白色的了。<br /><a href="images/101012/Scribusbasic/scribusbasic25.png" target="_blank"><img src="images/101012/Scribusbasic/scribusbasic25.png" border="0" alt="alt" width="350" style="border: 0;" /><br /></a>▲ 圖24</p>
+<p> </p>
+<h4>圖形編輯</h4>
+<p>排版時會用到許多色塊，讓版面不再單調，首先先畫出一個長方形。只要選取剛畫的圖形後，點選[視窗]找到【屬性】後按下去，會跳出一個視窗，很多有關於圖形的顏色、位置、形狀就可以在這邊做變化。<br /><a href="images/101012/Scribusbasic/scribusbasic26.png" target="_blank"><img src="images/101012/Scribusbasic/scribusbasic26.png" border="0" alt="alt" width="200" height="527" /></a><br /> ▲ 圖25</p>
+<p><br />在「屬性」這個視窗裏，點選【形狀】-&gt;【編輯形狀】，所有有關於外框形狀的調整都可以在這裡達成，可以盡情發會創意，可以像這樣按下這個按鈕，把圖形壓扁。<br /><a href="images/101012/Scribusbasic/scribusbasic27.png" target="_blank"><img src="images/101012/Scribusbasic/scribusbasic27.png" border="0" alt="alt" width="350" style="border: 0;" /></a><br /> ▲ 圖26</p>
+<p><br />在顏色部份還可以做漸層，如下圖，在【普通】底下點選其中一個。<br /><a href="images/101012/Scribusbasic/scribusbasic28.png" target="_blank"><img src="images/101012/Scribusbasic/scribusbasic28.png" border="0" alt="alt" title="Original Resolution - 259x559px" width="121.3613595706619" height="299" style="cursor: pointer;" /></a><br />▲ 圖27</p>
+<p><br />點選之後會出現右邊的長條形狀，可以看到長條底下有幾個小三角形，每個小三角形代表著不同的漸層的顏色位置，選取後可以改變那個位置的顏色，將小三角形左右移動可以調整漸層的寬度做出不同漸層變化。還可以自己增加小三角形，做出多種顏色的漸層效果。<br /> <a href="images/101012/Scribusbasic/scribusbasic29.png" target="_blank"><img src="images/101012/Scribusbasic/scribusbasic29.png" border="0" alt="alt" title="Original Resolution - 450x339px" width="407.3805309734513" height="299" style="border: 0.25em groove #0000ee; cursor: pointer;" /></a><br />▲ 圖28</p>
+<p><br />將先前匯入的圖片跟剛做好的圖形疊在一起就完成了。<br /><a href="images/101012/Scribusbasic/scribusbasic30.png" target="_blank"><img src="images/101012/Scribusbasic/scribusbasic30.png" border="0" alt="alt" title="Original Resolution - 450x325px" width="426.3076923076923" height="299" style="border: 0;" /></a><br /> ▲ 圖29</p>
+<p><br />要製作出對稱圖形只需要選擇【屬性】-&gt;【X，Y，Z】，有個按鈕雙箭頭的按鈕，就可以調整上下翻轉或是水平翻轉的效果。<br /><a href="images/101012/Scribusbasic/scribusbasic31.png" target="_blank"><img src="images/101012/Scribusbasic/scribusbasic31.png" border="0" alt="alt" title="Original Resolution - 261x538px" width="128.57806691449815" height="299" style="cursor: pointer;" /></a><br /> ▲ 圖30</p>
+<p><br />只要善用圖形跟文字自己就可以做出不錯的文件排版了！<br /><a href="images/101012/Scribusbasic/scribusbasic32.png" target="_blank"><img src="images/101012/Scribusbasic/scribusbasic32.png" border="0" alt="alt" title="Original Resolution - 450x325px" width="426.3076923076923" height="299" style="border: 0;" /></a><br />▲ 圖31</p>
+<p><br />**在使用的時候請切記一定要隨時存檔喔！不然辛苦做好的心血很容易就會泡湯，因為通常排版軟體佔太多的系統資源，常常會有軟體當掉的風險，因此養成隨時儲存的好習慣是不可少的。</p>
+			<!-- Show relate article -->
+		<br><br><h4>您也許有興趣閱讀以下文章:</h4><ul><li><a href='foss-programs/8262.html'>用自由軟體 Scribus 來輸出文件（5）- 文字應用</a> - <span class='date-posted'>2011-02-21</span></li><li><a href='foss-programs/8231.html'>用自由軟體 Scribus 來輸出文件（4）- 製作模板並轉為 PDF 輸出</a> - <span class='date-posted'>2011-01-05</span></li><li><a href='foss-programs/8211.html'>用自由軟體 Scribus 來輸出文件（3）-製作活動海報及手冊</a> - <span class='date-posted'>2010-12-13</span></li><li><a href='foss-programs/8179.html'>用自由軟體 Scribus 來輸出文件（2）-製作大富翁棋盤</a> - <span class='date-posted'>2010-11-04</span></li></ul>		<!-- end -->
+		<div class="article_note">
+		<!-- Add tags use metakey, and show OSSF Newsletter tag: OSSFNL+NUM-->
+		<br><br> <hr style='border: 1px dashed #D2DADB;'><b>自由軟體鑄造場電子報&nbsp;:</b>&nbsp;<a href='previous-issue%3Ftask=view&amp;id=689.html'>第 159 期 中央研究院 10 月 23 日盛大舉辦「99 年院區開放參觀活動」</a><br><b>標籤:</b>&nbsp;<a href='index.php%3Foption=com_search&amp;Itemid=58&amp;searchphrase=exact_meta&amp;ordering=newest&amp;searchword=Scribus.html'>Scribus</a>,&nbsp;&nbsp;				<!-- End -->
+					<br>
+					<b>分類: </b><a href="tw/foss-programs.html">				源碼秘技					</a>				</div>
+			 <!-- AddThis Button BEGIN ID 3001 is the front page article -->
+     			<br><br>
+       <div class="addthis_toolbox addthis_default_style addthis_32x32_style">
+       <a class="addthis_button_preferred_1"></a>
+       <a class="addthis_button_preferred_2"></a>
+       <a class="addthis_button_preferred_3"></a>
+       <a class="addthis_button_preferred_4"></a>
+       <a class="addthis_button_compact"></a>
+       <a class="addthis_counter addthis_bubble_style"></a>
+       </div>
+       <script type="text/javascript">var addthis_config = {"data_track_clickback":true};</script>
+       <script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js#pubid=openfoundry"></script>
+       <!-- AddThis Button END -->
+     <br>
+		<div class="totop" ><a class="rt-totop" href="index.php%3Foption=com_content&amp;task=view&amp;id=8160&amp;Itemid=4%3Bisletter=1.html#" style="outline: medium none;">↑ Top</a></div>
+            <!-- AddThis Button END -->
+
+		<script type="text/javascript">
+var jcomments=new JComments(8160, 'com_content','https://openfoundry.org/index.php?option=com_jcomments&amp;tmpl=component&amp;lang=');
+jcomments.setList('comments-list');
+</script>
+<div id="jc">
+<div id="comments"><h4>評論<a class="refresh" href="index.php%3Foption=com_content&amp;task=view&amp;id=8160&amp;Itemid=4%3Bisletter=1.html#" title="重新整理評論列表" onclick="jcomments.showPage(8160,'com_content',0);return false;">&nbsp;</a></h4>
+<div id="comments-list" class="comments-list">
+        <div class="even" id="comment-item-108"><div class="rbox"><div class="rbox_tr"><div class="rbox_tl"><div class="rbox_t">&nbsp;</div></div></div><div class="rbox_m">
+<div class="comment-avatar"><img src="http://www.gravatar.com/avatar.php?gravatar_id=387bf8db0cce99b83f36434a0b28ce4d&amp;default=https%3A%2F%2Fwww.openfoundry.org%2Fcomponents%2Fcom_jcomments%2Fimages%2Fno_avatar.png" alt="" /></div>
+<div class="comment-box avatar-indent">
+<span class="comments-vote">
+	<span id="comment-vote-holder-108">
+<a href="index.php%3Foption=com_content&amp;task=view&amp;id=8160&amp;Itemid=4%3Bisletter=1.html#" class="vote-good" title="優質的評論" onclick="jcomments.voteComment(108, 1);return false;"></a><a href="index.php%3Foption=com_content&amp;task=view&amp;id=8160&amp;Itemid=4%3Bisletter=1.html#" class="vote-poor" title="差勁的評論" onclick="jcomments.voteComment(108, -1);return false;"></a>
+<span class="vote-none">0</span>
+	</span>
+</span>
+<a class="comment-anchor" href="tw/foss-programs/8160--scribus-1-.html#comment-108" id="comment-108">#1</a>
+<span class="comment-author">中文  問題</span>
+<span class="comment-date">2011-02-26 20:33</span>
+<div class="comment-body" id="comment-body-108">請問您<br />我安裝好了scribus後，要<span style="font-size:0px;padding:0;margin:0;"> </span>輸入中文都不行，也在scrib<span style="font-size:0px;padding:0;margin:0;"> </span>us找不到有中文字型，可否幫我<span style="font-size:0px;padding:0;margin:0;"> </span>忙，一個步驟一個步驟教教我<br />感恩！<br />email <span onclick="jcomments.jump2email(108, '387bf8db0cce99b83f36434a0b28ce4d');" class="email" onmouseover="this.className='emailactive';" onmouseout="this.className='email';">willion.ko<img src="components/com_jcomments/images/email.png" border="0"/>gmail.com</span></div>
+</div><div class="clear"></div>
+</div><div class="rbox_br"><div class="rbox_bl"><div class="rbox_b">&nbsp;</div></div></div></div>
+</div>
+        <div class="odd" id="comment-item-109"><div class="rbox"><div class="rbox_tr"><div class="rbox_tl"><div class="rbox_t">&nbsp;</div></div></div><div class="rbox_m">
+<div class="comment-avatar"><img src="http://www.gravatar.com/avatar.php?gravatar_id=157cb4d2b2e81468aa6185584bddf4a8&amp;default=https%3A%2F%2Fwww.openfoundry.org%2Fcomponents%2Fcom_jcomments%2Fimages%2Fno_avatar.png" alt="" /></div>
+<div class="comment-box avatar-indent">
+<span class="comments-vote">
+	<span id="comment-vote-holder-109">
+<a href="index.php%3Foption=com_content&amp;task=view&amp;id=8160&amp;Itemid=4%3Bisletter=1.html#" class="vote-good" title="優質的評論" onclick="jcomments.voteComment(109, 1);return false;"></a><a href="index.php%3Foption=com_content&amp;task=view&amp;id=8160&amp;Itemid=4%3Bisletter=1.html#" class="vote-poor" title="差勁的評論" onclick="jcomments.voteComment(109, -1);return false;"></a>
+<span class="vote-good">+1</span>
+	</span>
+</span>
+<a class="comment-anchor" href="tw/foss-programs/8160--scribus-1-.html#comment-109" id="comment-109">#2</a>
+<a class="author-homepage" href="index.html" rel="nofollow" title="陳瑞霖">陳瑞霖</a>
+<span class="comment-date">2011-03-04 00:39</span>
+<div class="comment-body" id="comment-body-109">你好：<br /><br />由於Scribus的中文字型是<span style="font-size:0px;padding:0;margin:0;"> </span>用英文檔名顯示，所以不會顯示「<span style="font-size:0px;padding:0;margin:0;"> </span>標楷體」而是"kaiu"。以下是常用的中文字型英文名字<span style="font-size:0px;padding:0;margin:0;"> </span>對照表：<br /><br />常用字體中英文名字對照<br />kaiu.ttf	標楷體<br />mingliu.ttc	細明體 & 新細明體 & 細明體_HKSCS<br /><br />msjh.ttf	微軟正黑<br />msyh.ttf	微軟雅黑<br /><br />至於中文輸入，記得要先在別的文<span style="font-size:0px;padding:0;margin:0;"> </span>書處理程式打好，再貼上文字框中<span style="font-size:0px;padding:0;margin:0;"> </span>。做用故事編輯器，並且選擇中文<span style="font-size:0px;padding:0;margin:0;"> </span>字型。文章中前半段有詳述，可以<span style="font-size:0px;padding:0;margin:0;"> </span>再回頭看看。</div>
+</div><div class="clear"></div>
+</div><div class="rbox_br"><div class="rbox_bl"><div class="rbox_b">&nbsp;</div></div></div></div>
+</div>
+        <div class="even" id="comment-item-136"><div class="rbox"><div class="rbox_tr"><div class="rbox_tl"><div class="rbox_t">&nbsp;</div></div></div><div class="rbox_m">
+<div class="comment-avatar"><img src="http://www.gravatar.com/avatar.php?gravatar_id=e6f2ac34126e78e950589dd3412b4a5b&amp;default=https%3A%2F%2Fwww.openfoundry.org%2Fcomponents%2Fcom_jcomments%2Fimages%2Fno_avatar.png" alt="" /></div>
+<div class="comment-box avatar-indent">
+<span class="comments-vote">
+	<span id="comment-vote-holder-136">
+<a href="index.php%3Foption=com_content&amp;task=view&amp;id=8160&amp;Itemid=4%3Bisletter=1.html#" class="vote-good" title="優質的評論" onclick="jcomments.voteComment(136, 1);return false;"></a><a href="index.php%3Foption=com_content&amp;task=view&amp;id=8160&amp;Itemid=4%3Bisletter=1.html#" class="vote-poor" title="差勁的評論" onclick="jcomments.voteComment(136, -1);return false;"></a>
+<span class="vote-none">0</span>
+	</span>
+</span>
+<a class="comment-anchor" href="tw/foss-programs/8160--scribus-1-.html#comment-136" id="comment-136">#3</a>
+<span class="comment-author">hohoya</span>
+<span class="comment-date">2011-06-03 16:28</span>
+<div class="comment-body" id="comment-body-136">您好!我只能用一種細明體 其他會出現紅色的框框<br />另外我已下載GIMP但是點選編<span style="font-size:0px;padding:0;margin:0;"> </span>輯圖片都會顯示"GIMP遺失"<br />請幫助我!</div>
+</div><div class="clear"></div>
+</div><div class="rbox_br"><div class="rbox_bl"><div class="rbox_b">&nbsp;</div></div></div></div>
+</div>
+        <div class="odd" id="comment-item-150"><div class="rbox"><div class="rbox_tr"><div class="rbox_tl"><div class="rbox_t">&nbsp;</div></div></div><div class="rbox_m">
+<div class="comment-avatar"><img src="http://www.gravatar.com/avatar.php?gravatar_id=4da052ed0151ed329ee83a5a07da97e6&amp;default=https%3A%2F%2Fwww.openfoundry.org%2Fcomponents%2Fcom_jcomments%2Fimages%2Fno_avatar.png" alt="" /></div>
+<div class="comment-box avatar-indent">
+<span class="comments-vote">
+	<span id="comment-vote-holder-150">
+<a href="index.php%3Foption=com_content&amp;task=view&amp;id=8160&amp;Itemid=4%3Bisletter=1.html#" class="vote-good" title="優質的評論" onclick="jcomments.voteComment(150, 1);return false;"></a><a href="index.php%3Foption=com_content&amp;task=view&amp;id=8160&amp;Itemid=4%3Bisletter=1.html#" class="vote-poor" title="差勁的評論" onclick="jcomments.voteComment(150, -1);return false;"></a>
+<span class="vote-none">0</span>
+	</span>
+</span>
+<a class="comment-anchor" href="tw/foss-programs/8160--scribus-1-.html#comment-150" id="comment-150">#4</a>
+<span class="comment-author">路人</span>
+<span class="comment-date">2011-06-20 08:15</span>
+<div class="comment-body" id="comment-body-150">謝謝您的教學!!<br />終於解決中文輸入的問題，<br />感謝你們 :)</div>
+</div><div class="clear"></div>
+</div><div class="rbox_br"><div class="rbox_bl"><div class="rbox_b">&nbsp;</div></div></div></div>
+</div>
+        <div class="even" id="comment-item-151"><div class="rbox"><div class="rbox_tr"><div class="rbox_tl"><div class="rbox_t">&nbsp;</div></div></div><div class="rbox_m">
+<div class="comment-avatar"><img src="http://www.gravatar.com/avatar.php?gravatar_id=157cb4d2b2e81468aa6185584bddf4a8&amp;default=https%3A%2F%2Fwww.openfoundry.org%2Fcomponents%2Fcom_jcomments%2Fimages%2Fno_avatar.png" alt="" /></div>
+<div class="comment-box avatar-indent">
+<span class="comments-vote">
+	<span id="comment-vote-holder-151">
+<a href="index.php%3Foption=com_content&amp;task=view&amp;id=8160&amp;Itemid=4%3Bisletter=1.html#" class="vote-good" title="優質的評論" onclick="jcomments.voteComment(151, 1);return false;"></a><a href="index.php%3Foption=com_content&amp;task=view&amp;id=8160&amp;Itemid=4%3Bisletter=1.html#" class="vote-poor" title="差勁的評論" onclick="jcomments.voteComment(151, -1);return false;"></a>
+<span class="vote-none">0</span>
+	</span>
+</span>
+<a class="comment-anchor" href="tw/foss-programs/8160--scribus-1-.html#comment-151" id="comment-151">#5</a>
+<a class="author-homepage" href="index.html" rel="nofollow" title="陳瑞霖">陳瑞霖</a>
+<span class="comment-date">2011-06-20 11:58</span>
+<div class="comment-body" id="comment-body-151">To三樓，看一下Scribus<span style="font-size:0px;padding:0;margin:0;"> </span>中的偏好設定，外部工具選項，是<span style="font-size:0px;padding:0;margin:0;"> </span>否指向GIMP程式安裝的路徑<br />謝謝四樓的鼓勵，我們會繼續加油<span style="font-size:0px;padding:0;margin:0;"> </span>的</div>
+</div><div class="clear"></div>
+</div><div class="rbox_br"><div class="rbox_bl"><div class="rbox_b">&nbsp;</div></div></div></div>
+</div>
+        <div class="odd" id="comment-item-167"><div class="rbox"><div class="rbox_tr"><div class="rbox_tl"><div class="rbox_t">&nbsp;</div></div></div><div class="rbox_m">
+<div class="comment-avatar"><img src="http://www.gravatar.com/avatar.php?gravatar_id=d9242d7281b470456a112f7fe0d192e5&amp;default=https%3A%2F%2Fwww.openfoundry.org%2Fcomponents%2Fcom_jcomments%2Fimages%2Fno_avatar.png" alt="" /></div>
+<div class="comment-box avatar-indent">
+<span class="comments-vote">
+	<span id="comment-vote-holder-167">
+<a href="index.php%3Foption=com_content&amp;task=view&amp;id=8160&amp;Itemid=4%3Bisletter=1.html#" class="vote-good" title="優質的評論" onclick="jcomments.voteComment(167, 1);return false;"></a><a href="index.php%3Foption=com_content&amp;task=view&amp;id=8160&amp;Itemid=4%3Bisletter=1.html#" class="vote-poor" title="差勁的評論" onclick="jcomments.voteComment(167, -1);return false;"></a>
+<span class="vote-none">0</span>
+	</span>
+</span>
+<a class="comment-anchor" href="tw/foss-programs/8160--scribus-1-.html#comment-167" id="comment-167">#6</a>
+<span class="comment-author">lonml</span>
+<span class="comment-date">2011-08-27 19:00</span>
+<div class="comment-body" id="comment-body-167">終於找到教程了，謝謝你的付出！<span style="font-size:0px;padding:0;margin:0;"> </span></div>
+</div><div class="clear"></div>
+</div><div class="rbox_br"><div class="rbox_bl"><div class="rbox_b">&nbsp;</div></div></div></div>
+</div>
+        <div class="even" id="comment-item-176"><div class="rbox"><div class="rbox_tr"><div class="rbox_tl"><div class="rbox_t">&nbsp;</div></div></div><div class="rbox_m">
+<div class="comment-avatar"><img src="http://www.gravatar.com/avatar.php?gravatar_id=26c3f66d7be86d7936be0c93cb318a97&amp;default=https%3A%2F%2Fwww.openfoundry.org%2Fcomponents%2Fcom_jcomments%2Fimages%2Fno_avatar.png" alt="" /></div>
+<div class="comment-box avatar-indent">
+<span class="comments-vote">
+	<span id="comment-vote-holder-176">
+<a href="index.php%3Foption=com_content&amp;task=view&amp;id=8160&amp;Itemid=4%3Bisletter=1.html#" class="vote-good" title="優質的評論" onclick="jcomments.voteComment(176, 1);return false;"></a><a href="index.php%3Foption=com_content&amp;task=view&amp;id=8160&amp;Itemid=4%3Bisletter=1.html#" class="vote-poor" title="差勁的評論" onclick="jcomments.voteComment(176, -1);return false;"></a>
+<span class="vote-good">+1</span>
+	</span>
+</span>
+<a class="comment-anchor" href="tw/foss-programs/8160--scribus-1-.html#comment-176" id="comment-176">#7</a>
+<span class="comment-author">花花</span>
+<span class="comment-date">2011-09-07 11:19</span>
+<div class="comment-body" id="comment-body-176">老師您好，謝謝您的教學，獲益良<span style="font-size:0px;padding:0;margin:0;"> </span>多。但是我遇到問題，想向您請較<span style="font-size:0px;padding:0;margin:0;"> </span>。使用新細明體，在故事編輯器可<span style="font-size:0px;padding:0;margin:0;"> </span>以顯現字體，但回到Scribu<span style="font-size:0px;padding:0;margin:0;"> </span>s仍舊是紅色框框，到底是哪裡出<span style="font-size:0px;padding:0;margin:0;"> </span>了問題呢?</div>
+</div><div class="clear"></div>
+</div><div class="rbox_br"><div class="rbox_bl"><div class="rbox_b">&nbsp;</div></div></div></div>
+</div>
+        <div class="odd" id="comment-item-346"><div class="rbox"><div class="rbox_tr"><div class="rbox_tl"><div class="rbox_t">&nbsp;</div></div></div><div class="rbox_m">
+<div class="comment-avatar"><img src="http://www.gravatar.com/avatar.php?gravatar_id=e9d021ec42e40e33280fd5f949bd7c0e&amp;default=https%3A%2F%2Fwww.openfoundry.org%2Fcomponents%2Fcom_jcomments%2Fimages%2Fno_avatar.png" alt="" /></div>
+<div class="comment-box avatar-indent">
+<span class="comments-vote">
+	<span id="comment-vote-holder-346">
+<a href="index.php%3Foption=com_content&amp;task=view&amp;id=8160&amp;Itemid=4%3Bisletter=1.html#" class="vote-good" title="優質的評論" onclick="jcomments.voteComment(346, 1);return false;"></a><a href="index.php%3Foption=com_content&amp;task=view&amp;id=8160&amp;Itemid=4%3Bisletter=1.html#" class="vote-poor" title="差勁的評論" onclick="jcomments.voteComment(346, -1);return false;"></a>
+<span class="vote-none">0</span>
+	</span>
+</span>
+<a class="comment-anchor" href="tw/foss-programs/8160--scribus-1-.html#comment-346" id="comment-346">#8</a>
+<span class="comment-author">shelly</span>
+<span class="comment-date">2012-12-14 12:01</span>
+<div class="comment-body" id="comment-body-346">您好，想請教您，字體"斜體"要如何操作???</div>
+</div><div class="clear"></div>
+</div><div class="rbox_br"><div class="rbox_bl"><div class="rbox_b">&nbsp;</div></div></div></div>
+</div>
+        <div class="even" id="comment-item-537"><div class="rbox"><div class="rbox_tr"><div class="rbox_tl"><div class="rbox_t">&nbsp;</div></div></div><div class="rbox_m">
+<div class="comment-avatar"><img src="http://www.gravatar.com/avatar.php?gravatar_id=73d8cd2d4ad795b0a6d0c70c833f24cc&amp;default=https%3A%2F%2Fwww.openfoundry.org%2Fcomponents%2Fcom_jcomments%2Fimages%2Fno_avatar.png" alt="" /></div>
+<div class="comment-box avatar-indent">
+<span class="comments-vote">
+	<span id="comment-vote-holder-537">
+<a href="index.php%3Foption=com_content&amp;task=view&amp;id=8160&amp;Itemid=4%3Bisletter=1.html#" class="vote-good" title="優質的評論" onclick="jcomments.voteComment(537, 1);return false;"></a><a href="index.php%3Foption=com_content&amp;task=view&amp;id=8160&amp;Itemid=4%3Bisletter=1.html#" class="vote-poor" title="差勁的評論" onclick="jcomments.voteComment(537, -1);return false;"></a>
+<span class="vote-none">0</span>
+	</span>
+</span>
+<a class="comment-anchor" href="tw/foss-programs/8160--scribus-1-.html#comment-537" id="comment-537">#9</a>
+<span class="comment-author">陳瑞賓</span>
+<span class="comment-date">2015-03-19 11:28</span>
+<div class="comment-body" id="comment-body-537">中文輸入還是很不方便@@<br />我想問的是, 我用1.4.4版本, 照你教學, 使用故事編輯器, 但, 沒辦法新增樣式, 他只會跳出兩個選項, 一是沒有樣式, 另一個是default paragraph style<br />請問要在那邊新增樣式呢?</div>
+</div><div class="clear"></div>
+</div><div class="rbox_br"><div class="rbox_bl"><div class="rbox_b">&nbsp;</div></div></div></div>
+</div>
+        <div class="odd" id="comment-item-539"><div class="rbox"><div class="rbox_tr"><div class="rbox_tl"><div class="rbox_t">&nbsp;</div></div></div><div class="rbox_m">
+<div class="comment-avatar"><img src="http://www.gravatar.com/avatar.php?gravatar_id=5683f6aabe42fd692d788f5066e30602&amp;default=https%3A%2F%2Fwww.openfoundry.org%2Fcomponents%2Fcom_jcomments%2Fimages%2Fno_avatar.png" alt="" /></div>
+<div class="comment-box avatar-indent">
+<span class="comments-vote">
+	<span id="comment-vote-holder-539">
+<a href="index.php%3Foption=com_content&amp;task=view&amp;id=8160&amp;Itemid=4%3Bisletter=1.html#" class="vote-good" title="優質的評論" onclick="jcomments.voteComment(539, 1);return false;"></a><a href="index.php%3Foption=com_content&amp;task=view&amp;id=8160&amp;Itemid=4%3Bisletter=1.html#" class="vote-poor" title="差勁的評論" onclick="jcomments.voteComment(539, -1);return false;"></a>
+<span class="vote-none">0</span>
+	</span>
+</span>
+<a class="comment-anchor" href="tw/foss-programs/8160--scribus-1-.html#comment-539" id="comment-539">#10</a>
+<span class="comment-author">erictwq</span>
+<span class="comment-date">2015-03-27 14:34</span>
+<div class="comment-body" id="comment-body-539">你好,感謝分享這麼好用的軟體,<span style="font-size:0px;padding:0;margin:0;"> </span>但是我安裝完後顏色的選擇很少,<span style="font-size:0px;padding:0;margin:0;"> </span>可以請你貼一下新增顏色的教程嗎<span style="font-size:0px;padding:0;margin:0;"> </span>??或是一次輸入所有顏色範例的教程<span style="font-size:0px;padding:0;margin:0;"> </span>.我的版本是1.4.5~感謝@@</div>
+</div><div class="clear"></div>
+</div><div class="rbox_br"><div class="rbox_bl"><div class="rbox_b">&nbsp;</div></div></div></div>
+</div>
+        <div class="even" id="comment-item-540"><div class="rbox"><div class="rbox_tr"><div class="rbox_tl"><div class="rbox_t">&nbsp;</div></div></div><div class="rbox_m">
+<div class="comment-avatar"><img src="http://www.gravatar.com/avatar.php?gravatar_id=5683f6aabe42fd692d788f5066e30602&amp;default=https%3A%2F%2Fwww.openfoundry.org%2Fcomponents%2Fcom_jcomments%2Fimages%2Fno_avatar.png" alt="" /></div>
+<div class="comment-box avatar-indent">
+<span class="comments-vote">
+	<span id="comment-vote-holder-540">
+<a href="index.php%3Foption=com_content&amp;task=view&amp;id=8160&amp;Itemid=4%3Bisletter=1.html#" class="vote-good" title="優質的評論" onclick="jcomments.voteComment(540, 1);return false;"></a><a href="index.php%3Foption=com_content&amp;task=view&amp;id=8160&amp;Itemid=4%3Bisletter=1.html#" class="vote-poor" title="差勁的評論" onclick="jcomments.voteComment(540, -1);return false;"></a>
+<span class="vote-none">0</span>
+	</span>
+</span>
+<a class="comment-anchor" href="tw/foss-programs/8160--scribus-1-.html#comment-540" id="comment-540">#11</a>
+<span class="comment-author">erictwq</span>
+<span class="comment-date">2015-03-27 15:09</span>
+<div class="comment-body" id="comment-body-540">TO#9<br />邊輯樣式請按F3,不過每次新開一個檔案就要再重<span style="font-size:0px;padding:0;margin:0;"> </span>新編輯一次,這點我也很困擾,有<span style="font-size:0px;padding:0;margin:0;"> </span>沒有儲存範本的方法阿??</div>
+</div><div class="clear"></div>
+</div><div class="rbox_br"><div class="rbox_bl"><div class="rbox_b">&nbsp;</div></div></div></div>
+</div>
+</div>
+<div id="comments-list-footer"><a class="refresh" href="index.php%3Foption=com_content&amp;task=view&amp;id=8160&amp;Itemid=4%3Bisletter=1.html#" title="重新整理評論列表" onclick="jcomments.showPage(8160,'com_content',0);return false;">重新整理評論列表</a></div>
+</div>
+<div id="comments-footer" align="center"><a href="http://www.joomlatune.com" title="JComments" target="_blank">JComments</a></div>
+<script type="text/javascript">
+jcomments.setAntiCache(1,0,0);
+</script> 
+</div>	</div>
+</div>
+
+		                            </div>
+									<div class="clear"></div>
+								</div>
+								<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+							</div>
+							</div>
+                                                    </div>
+                                            </div>
+                                <div class="rt-grid-3 rt-pull-9">
+                <div id="rt-sidebar-a">
+                                    <div class="square4">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<ul class="menu"><li class="item56"><a href="tw/previous-issue.html"><span>電子報總覽</span></a></li><li class="item55"><a href="tw/about-newsletter.html"><span>關於本報</span></a></li></ul>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<ul class="menu"><li class="item115"><a href="tw/foss-news.html"><span>源碼新聞</span></a></li><li class="item141"><a href="tw/case-job.html"><span>接案 / 工作</span></a></li></ul>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+        	                <div class="square1">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-title"><h2 class="title">專欄總覽</h2></div>
+						<div class="clear"></div>
+		                						<div class="module-content">
+		                	<ul class="menu"><li class="item37"><a href="tw/tech-column.html"><span>技術專欄</span></a></li><li class="item40"><a href="tw/foss-programs.html"><span>源碼秘技</span></a></li><li class="item35"><a href="tw/legal-article-.html"><span>法律專欄</span></a></li><li class="item154"><a href="tw/foss-forum.html"><span>自由專欄</span></a></li><li class="item162"><a href="tw/enterprise-application.html"><span>企業應用</span></a></li><li class="item44"><a href="tw/foss-projects.html"><span>源碼專案</span></a></li></ul>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		                <div class="square1">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<p style="text-align: center;"><a href="news%3Fformat=feed&amp;type=rss" target="_black"><img src="images/M_images/news-rss-feed.png" border="0" /></a><br /><a href="https://www.openfoundry.org/rss-feed/Newsletter" target="_black"><img src="images/M_images/newsletter-rss-feed.png" border="0" /></a></p>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		
+                </div>
+            </div>
+
+                    <div class="clear"></div>
+                </div>
+            </div>
+																													</div>
+										<div id="rt-copyright">
+						<div class="rt-grid-12 rt-alpha rt-omega">
+                        <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<div id="desktop-mobile-version-switch"><span id="mobile-version" class="version-switch"><a href="index.php%3Foption=com_content&amp;task=view&amp;id=8160&amp;Itemid=4%3Bisletter=1.html#">行動版</a></span></div>
+自由軟體鑄造場 製作 最佳瀏覽狀態：IE7或Firefox2.0以上 (建議使用Firefox) ‧ 解析度1024*768 <br /> <strong>E-Mail</strong>：<a href="mailto:contact@openfoundry.org">contact@openfoundry.org</a> <strong>Address</strong>：台北市南港區研究院路2段128號 中央研究院資訊科學研究所 . <a href="privacy-policy.html">隱私權條款</a>. <a href="terms-of-use.html">使用條款</a><span style="position: relative; top: 8px; margin-top: -8px;"> <a href="about/8101.html"><img src="images/M_images/rss-feed-all.png" border="0" /></a></span>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+        	
+</div>
+						<div class="clear"></div>
+					</div>
+					<div class="rt-footer-bottom-wrap"><div class="rt-footer-bottom"><div class="rt-footer-bottom2"><div class="rt-footer-bottom3"></div></div></div></div>
+									</div></div></div>
+				<div class="rt-surround-bottom"><div class="rt-surround-bottom2"><div class="rt-surround-bottom3"></div></div></div>
+							</div>
+		</div>
+		<!--
+		<script id="aptureScript">
+						(function (){var a=document.createElement("script");a.defer="true";a.src="http://www.apture.com/js/apture.js?siteToken=vsJttrn";document.getElementsByTagName("head")[0].appendChild(a);})();
+     </script>
+-->
+
+<!-- Piwik -->
+<!-- 			<script type="text/javascript">
+			  var _paq = _paq || [];
+		  _paq.push(["trackPageView"]);
+		  _paq.push(["enableLinkTracking"]);
+
+		    (function() {
+			        var u=(("https:" == document.location.protocol) ? "https" : "https") + "://www.openfoundry.org/piwik/";
+				    _paq.push(["setTrackerUrl", u+"piwik.php"]);
+				    _paq.push(["setSiteId", "1"]);
+				        var d=document, g=d.createElement("script"), s=d.getElementsByTagName("script")[0]; g.type="text/javascript";
+				        g.defer=true; g.async=true; g.src=u+"piwik.js"; s.parentNode.insertBefore(g,s);
+					  })();
+		  </script> -->
+<!-- End Piwik Code -->
+	</body>
+</html>

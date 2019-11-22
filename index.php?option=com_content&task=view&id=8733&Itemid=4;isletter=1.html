@@ -1,0 +1,563 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="zh-tw" lang="zh-tw" >
+<head>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<link rel="shortcut icon" href="images/favicon.ico" />
+	  <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+  <meta name="robots" content="index, follow" />
+  <meta name="keywords" content="GitHub, PEAR, OSSFNL796" />
+  <meta name="title" content="利用 GitHub 建立自己的 PEAR 頻道" />
+  <meta name="description" content="目前一些主流的語言都有提供所謂的套件管理機制，像是 Perl 的 CPAN，Ruby 的 gem，Node.js 的 npm 等等。而它們都屬於集中式的管理，可以讓開發者上傳自己所開發的套件。 當然 PHP 也是有套件管理機 制，那就是 PEAR (PHP Extension and Application Repository)。只是 PEAR" />
+  <meta name="generator" content="" />
+  <title>利用 GitHub 建立自己的 PEAR 頻道 - OpenFoundry</title>
+  <link href="favicon.ico" rel="shortcut icon" type="image/x-icon" />
+  <link rel="stylesheet" href="components/com_gantry/css/gantry.css" type="text/css" />
+  <link rel="stylesheet" href="components/com_gantry/css/grid-12.css" type="text/css" />
+  <link rel="stylesheet" href="components/com_gantry/css/joomla.css" type="text/css" />
+  <link rel="stylesheet" href="templates/rt_quantive_j15/css/joomla.css" type="text/css" />
+  <link rel="stylesheet" href="templates/rt_quantive_j15/css/style1.css" type="text/css" />
+  <link rel="stylesheet" href="templates/rt_quantive_j15/css/light-body.css" type="text/css" />
+  <link rel="stylesheet" href="templates/rt_quantive_j15/css/demo-styles.css" type="text/css" />
+  <link rel="stylesheet" href="templates/rt_quantive_j15/css/template.css" type="text/css" />
+  <link rel="stylesheet" href="templates/rt_quantive_j15/css/typography.css" type="text/css" />
+  <link rel="stylesheet" href="templates/rt_quantive_j15/css/fusionmenu.css" type="text/css" />
+  <style type="text/css">
+    <!--
+#rt-main-surround ul.menu li.active > a, #rt-main-surround ul.menu li.active > .separator, #rt-main-surround ul.menu li.active > .item, #rt-main-surround .square4 ul.menu li:hover > a, #rt-main-surround .square4 ul.menu li:hover > .item, #rt-main-surround .square4 ul.menu li:hover > .separator, .roktabs-links ul li.active span {color:#0088B5;}
+a, #rt-main-surround ul.menu a:hover, #rt-main-surround ul.menu .separator:hover, #rt-main-surround ul.menu .item:hover {color:#0088B5;}
+    -->
+  </style>
+  <script type="text/javascript" src="components/com_jcomments/js/jcomments-v2.1.js%3Fv=2"></script>
+  <script type="text/javascript" src="components/com_jcomments/libraries/joomlatune/ajax.js"></script>
+  <script type="text/javascript" src="media/system/js/mootools.js"></script>
+  <script type="text/javascript" src="media/system/js/caption.js"></script>
+  <script type="text/javascript" src="components/com_gantry/js/gantry-buildspans.js"></script>
+  <script type="text/javascript" src="components/com_gantry/js/gantry-inputs.js"></script>
+  <script type="text/javascript" src="templates/rt_quantive_j15/js/jquery.cookie.js"></script>
+  <script type="text/javascript" src="modules/mod_roknavmenu/themes/fusion/js/fusion.js"></script>
+  <script type="text/javascript" src="modules/mod_ofssologin/js/ofssologin.js"></script>
+  <script type="text/javascript">
+
+			window.addEvent('domready', function() {
+				var modules = ['rt-block'];
+				var header = ['h3','h2','h1'];
+				GantryBuildSpans(modules, header);
+			});
+		InputsExclusion.push('.content_vote','#rt-popup')
+		        window.addEvent('load', function() {
+					new Fusion('ul.menutop', {
+						pill: 0,
+						effect: 'slide and fade',
+						opacity: 1,
+						hideDelay: 500,
+						centered: 0,
+						tweakInitial: {'x': -2, 'y': 0},
+        				tweakSubsequent: {'x': 0, 'y': -14},
+						menuFx: {duration: 200, transition: Fx.Transitions.Sine.easeOut},
+						pillFx: {duration: 400, transition: Fx.Transitions.Back.easeOut}
+					});
+	            });
+  </script>
+<!-- <script type="text/javascript" src="/sso/javascripts/langsync.js"></script> -->
+<!-- <script src="/templates/rt_quantive_j15/js/ossf.js"></script> -->
+<script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-4136519-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
+</head>
+	<body  class="backgroundlevel-low backgroundstyle-style8 bodylevel-med bodystyle-light cssstyle-style1 logostyle-dark font-family-helvetica font-size-is-default menu-type-fusionmenu col12 ">
+		<div id="rt-main-background">
+			<div class="rt-container">
+																<div id="rt-header">
+					<div class="rt-grid-7 rt-alpha">
+    			<div class="rt-block">
+    	    	<a href="index.html" id="rt-logo"></a>
+    		</div>
+	    
+</div>
+<div class="rt-grid-5 rt-omega">
+                    <div class="square9">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<div class="ofssologin_square9"><a href="index.html">登入</a>&nbsp;&nbsp|&nbsp;&nbsp;<span><a href="en/news/8733%3Ftask=view.html" ><span lang="en" xml:lang="en">English</span></a></li></ul></span><!--Joom!fish V2.0.4 (Lightning)-->
+<!-- &copy; 2003-2009 Think Network, released under the GPL. -->
+<!-- More information: at http://www.joomfish.net -->
+<div class="ofssologin_search_square9">
+  <form id="of_search" action="https://www.openfoundry.org/of/openfoundry/search" method="get" onsubmit="of_search(); return false;">
+    <select id="of_search_type">
+      <option value="Projects"> 專案 </option>
+      <option value="Content"> 文章 </option>
+      <option value="People"> 人才 </option>
+    </select>
+    <input id="query" name="query" id="mod_search_searchword" maxlength="50" alt="search" class="inputbox" type="text" size="28" value="search..."  onblur="if(this.value=='') this.value='search...';" onfocus="if(this.value=='search...') this.value='';" />
+    <input type="hidden" name="commit" value="search" />
+  </form>
+</div></div>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		
+</div>
+					<div class="clear"></div>
+				</div>
+																<div id="rt-navigation"><div id="rt-navigation2"><div id="rt-navigation3">
+					
+<div class="nopill">
+	<ul class="menutop level1 " >
+						<li class="item1 root" >
+					<a class="orphan item bullet" href="index.html"  >
+				<span>
+			    				首頁				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item32 root" >
+					<a class="orphan item bullet" href="archived.html"  >
+				<span>
+			    				專案				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item186 root" >
+					<a class="orphan item bullet" href="tw/community.html"  >
+				<span>
+			    				Who&#039;s Who				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item4 active root" >
+					<a class="orphan item bullet" href="tw/news.html"  >
+				<span>
+			    				新聞				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item5 root" >
+					<a class="orphan item bullet" href="tw/law-and-licensing.html"  >
+				<span>
+			    				法律源地				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item3 root" >
+					<a class="orphan item bullet" href="tw/activities.html"  >
+				<span>
+			    				活動				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item2 root" >
+					<a class="orphan item bullet" href="tw/resourcecatalog%3FName=Value.html"  >
+				<span>
+			    				資源表列				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item45 root" >
+					<a class="orphan item bullet" href="tw/about.html"  >
+				<span>
+			    				關於				   
+				</span>
+			</a>
+			
+			
+	</li>	
+				</ul>
+</div>
+
+				    <div class="clear"></div>
+				</div></div></div>
+								<div class="rt-surround"><div class="rt-surround2"><div class="rt-surround3">
+										<div id="rt-showcase-section">
+												<div id="rt-showcase">
+							<div class="rt-grid-12 rt-alpha rt-omega">
+    		<div class="clear"></div>
+		
+		
+                <div class="close-note">
+                    <div class="rt-block">
+               					<div class="module-content">
+                	<div style="font-size:medium; background-image:linear-gradient(120deg,#159957,#4298b2);color:white;padding:20px;margin:-10px -18px;">感謝您對「自由軟體鑄造場」的支持與愛護，十多年來「自由軟體鑄造場」受中央研究院支持，並在資訊科學研究所以及資訊科技創新研究中心執行，現已完成階段性的任務。 本網站預計持續維運至 2021年底，網站內容基本上不會再更動。<br />也紀念我們永遠的朋友 李士傑先生（Shih-Chieh Ilya Li）。</div>				</div>
+            </div>
+                </div>
+		
+</div>
+							<div class="clear"></div>
+						</div>
+																	</div>
+															<div id="rt-main-surround">
+												<div id="rt-breadcrumbs">
+								<div class="rt-breadcrumb-surround">
+		<a href="index.html" id="breadcrumbs-home"></a>
+		<span class="breadcrumbs pathway">
+<span class="no-link">新聞</span></span>
+	</div>
+	
+							<div class="clear"></div>
+						</div>
+																							              <div id="rt-main" class="sa3-mb9">
+                <div class="rt-main-inner">
+                    <div class="rt-grid-9 rt-push-3">
+                                                <div class="rt-block">
+                            							<div class="square1">
+							<div class="rt-module-surround">
+								<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+								<div class="rt-module-inner">
+		                            <div id="rt-mainbody">
+		                                
+<div class="rt-joomla ">
+	<div class="rt-article">
+		
+				<div class="rt-headline"><h1 class="rt-article-title">利用 GitHub 建立自己的 PEAR 頻道</h1>		</div>
+		<div class="clear"></div>
+		
+		
+		
+				<div class="rt-articleinfo">
+						<div class="rt-article-icons">
+								<a href="tw/news/8733--github-pear-%3Ftmpl=component&amp;print=1&amp;page=.html" title="列印" onclick="window.open(this.href,'win2','status=no,toolbar=no,scrollbars=yes,titlebar=no,menubar=no,resizable=yes,width=640,height=480,directories=no,location=no'); return false;" rel="nofollow"><span class="icon print"></span></a>																</div>
+			
+			<span class="rt-date-posted">
+						建立日期			2012-06-25 15:21						&nbsp;&nbsp;&nbsp;&nbsp;						最近更新在 2013-05-15 13:06						</span>
+
+						<span class="rt-author">
+				作者是 Jace Ju			</span>
+				
+					</div>
+		
+		
+		<p>目前一些主流的語言都有提供所謂的套件管理機制，像是 Perl 的 <a href="https://www.cpan.org/" target="_blank">CPAN</a>，Ruby 的 <a href="https://rubygems.org/" target="_blank">gem</a>，Node.js 的 <a href="https://npmjs.org/" target="_blank">npm</a> 等等。而它們都屬於集中式的管理，可以讓開發者上傳自己所開發的套件。</p>
+<p>當然 PHP 也是有套件管理機制，那就是 <a href="https://pear.php.net/" target="_blank">PEAR</a> (PHP Extension and Application Repository)。只是 PEAR 官方為了套件的品質，所以在審查機制上非常嚴格；這也使得開發者很難把自己的成果，藉由官方提供的管道來分享給其他人。</p>
+<p>雖然後來陸續有一些高手實作了某些方案，想要解決這個問題，但可惜都不了了之。</p>
+<p>註：相關的資訊可以參考 <a href="https://c9s.blogspot.tw/" target="_blank">c9s</a> 在 OSDC 的介紹：<a href="https://speakerdeck.com/u/c9s/p/osdctw-2012-the-ecosystems-of-php-and-perl" target="_blank">OSDC.TW 2012 - The ecosystems of PHP and Perl</a>。</p>
+
+<p>在 PEAR 中，套件會被放在 PEAR Channel Server 上面，這個 Server 就像是套件的倉庫；例如 PEAR 官方的 PEAR Channel Server 就是 pear.php.net。一個 Server 就是一個頻道 (Channel)，這個頻道就是 pear 指令用來識別及取得套件來源的地方。</p>
+<p>那麼除了官方的頻道外，我們能不能建立自己的 PEAR 頻道，以便管理自己開發的套件呢？當然是可以的，接下來本篇文章就要為大家介紹如何達到這個目的。</p>
+<h2>建立頻道</h2>
+<p>事實上所謂的 PEAR 頻道其實就是個網站，它必須要能存放套件的原始碼，並且提供套件的更新資訊。這些內容一般來說是靜態的，所以我們只需要有個網站空間就可以建立一個 PEAR 頻道。</p>
+<p>這裡筆者選用 <a href="https://github.com/" target="_blank">GitHub</a>，因為它可以用 git 讓我們方便管理，而且也不限制流量與空間；就我們的需求來說，是一個不錯的選擇。</p>
+<p><strong>建立 GitHub Repository</strong></p>
+<p>首先我們要到 <a href="https://github.com/" target="_blank">GitHub</a> 申請一個免費帳號，這裡筆者就不再詳述申請流程，請各位自行參考 GitHub 的網站。</p>
+<p>接下來要建立一個 <a href="https://github.com/new" target="_blank">Repository</a>，名稱格式為 [a-z0-9\-]+（千萬不要包含底線，這樣 pear 指令會無法判讀），這裡筆者用 pear 作為範例。</p>
+<p><a href="images/120626/GitHub/01.png" target="_blank"><img src="images/120626/GitHub/01.png" border="0" width="640" /></a></p>
+<p>▲ 圖1</p>
+<p>建立好之後，就可以用以下的 git 位址來存取：</p>
+<p>https://github.com/yourusername/pear</p>
+<p><strong>建立頻道內容</strong></p>
+<p>有了空間後，接下來就該建立頻道的內容了。只是頻道的內容該用什麼樣的格式？有沒有什麼方便的工具能幫我們處理這個問題呢？</p>
+<p>答案當然是有的，<a href="https://pirum.sensiolabs.org/" target="_blank">Pirum</a> 就是這樣的一個解決方案。</p>
+<p>Pirum 是一個 PEAR Channel Server 管理工具，它可以幫我們建立與管理 PEAR 頻道內容，同時也能把套件加入頻道中。</p>
+<p>它的安裝方式很簡單，直接使用 pear 指令安裝即可：</p>
+<pre>pear channel-discover pear.pirum-project.org
+pear install pirum/Pirum
+</pre>
+<p>這樣一來我們就有一個 pirum 指令可以用了。</p>
+<p>接下來在本機端建立一個目錄（這裡筆者假設是 /path/to/pear_repository），裡面放一個 pirum.xml 檔案：</p>
+<pre>mkdir /path/to/pear_repository
+cd /path/to/pear_repository
+vi pirum.xml
+</pre>
+<p>內容如下：</p>
+<pre>＜?xml version="1.0" encoding="UTF-8" ?＞
+＜server＞
+    ＜name＞yourusername.github.com/pear＜/name＞
+    ＜summary＞My PEAR Channel＜/summary＞
+    ＜alias＞yourusername＜/alias＞
+    ＜url＞https://yourusername.github.com/pear＜/url＞
+＜/server＞
+</pre>
+<p>其中 name 表示頻道完整名稱，一般就是頻道網站的位址（但不包含 https://）；summary 則是頻道網站的標題；alias 是頻道別名，讓我們在用 pear 指令管理頻道時不需要輸入完整名稱；最後 url 則是讓使用者可以使用瀏覽器查看的頻道網址。</p>
+<p>將 pirum.xml 存檔後，就可以用 pirum 指令來建立頻道內容。</p>
+<pre>pirum build .</pre>
+<p>如果一切正常的話，應該會出現：</p>
+<pre>Pirum 1.1.4 by Fabien Potencier
+Available commands:
+  pirum build target_dir
+  pirum add target_dir Pirum-1.0.0.tgz
+  pirum remove target_dir Pirum-1.0.0.tgz
+
+Running the build command:
+   INFO   Building channel.
+   INFO   Building maintainers.
+   INFO   Building categories.
+   INFO   Building packages.
+   INFO   Building composer repository.
+   INFO   Building releases.
+   INFO   Building index.
+   INFO   Building feed.
+   INFO   Updating PEAR server files.
+   INFO   Command build run successfully.
+</pre>
+<p>現在我們可以利用 git 指令把這些內容送到我們前面建立好的 GitHub Repository 上面了：</p>
+<pre>git init
+git remote add origin git＠github.com:yourusername/pear.git
+git add *
+git commit -m 'init pear channel'
+git branch gh-pages
+git checkout gh-pages
+git push -u origin master
+git push -u origin gh-pages
+</pre>
+<p>特別要注意的是，遠端分支必須還要加上 gh-pages，這樣 GitHub 才會把這些新增的檔案當做是網站內容。</p>
+<p>稍等幾分鐘，GitHub 會幫我們把 gh-pages 的內容放到 https://yourname.github.com/pear 上。用瀏覽器打開這個網址，應該會出現以下畫面：</p>
+<p><a href="images/120626/GitHub/02.png" target="_blank"><img src="images/120626/GitHub/02.png" border="0" width="640" /></a></p>
+<p>▲ 圖2</p>
+<h2>使用新建立的頻道</h2>
+<p>現在我們已經有了自己專屬的 PEAR 頻道，以下就來看看怎麼使用它。</p>
+<p><strong>加入新頻道</strong></p>
+<p>我們可以將頻道加到本機的 PEAR 中，用以下的指令就可以在 PEAR 上註冊我們剛剛建立的頻道：</p>
+<pre>pear channel-discover yourusername.github.com/pear</pre>
+<p><strong>查看頻道中的套件</strong></p>
+<p>接著我們可以用以下的指令來查看這個頻道中有什麼套件：</p>
+<pre>pear remote-list -c yourusername</pre>
+<p>如果出現：</p>
+<pre>(no packages available yet)</pre>
+<p>是正常的，因為我們還沒有加入任何套件。</p>
+<p>註：執行 pear 指令時，如果有權限問題的話，可以加上 sudo 來執行。</p>
+<p><strong>更新頻道資訊</strong></p>
+<p>當頻道更新資訊時，要如何知道呢？我們可以透過以下指令來更新：</p>
+<pre>pear channel-update yourusername</pre>
+<p>通常這個動作是在新增套件或更新套件前要先做的。</p>
+<p>但如果 PEAR 中已經有很多頻道和套件，那麼一一手動更新太麻煩了，直接用以下指令就可以一次更新：</p>
+<pre>pear update-channels
+pear upgrade-all</pre>
+<h2>套件管理</h2>
+<p>有了頻道後，接下來就可以放套件放上去了。</p>
+<p>跟建立頻道一樣，建立一個 PEAR 套件也是需要制式的設定檔；只是 PEAR 官方給的設定檔規格實在是太複雜了，一般開發者可能還沒寫完設定檔就會先放棄 PEAR 了。</p>
+<p>有沒有什麼好工具可以協助我們呢？當然有！目前有兩套很強大也很方便的工具，分別是：<a href="https://phix-project.org/" target="_blank">Phix</a> 及 <a href="https://c9s.blogspot.tw/" target="_blank">c9s</a> 的 <a href="https://github.com/c9s/Onion" target="_blank">Onion</a>。</p>
+<p>筆者強力推薦大家使用 Onion，因為它的設定檔較為簡單便捷，而且還能處理佈署專案時的套件相依性；再加上作者是台灣人，有任何疑問都可以直接到 GitHub 上請教他。</p>
+<p>註：原本筆者是使用 Phix 作為範例，不過有 c9s 的加持，筆者就改用 Onion 了；在這裡要特別感謝他。</p>
+<p><strong>建立套件架構</strong></p>
+<p>在 Onion 的說明檔裡已經提到如何製作 PEAR 套件了，這邊筆者僅做簡單的流程說明。</p>
+<p>首先我們要先建立一個套件的存放路徑，這個路徑是任意的，這裡筆者用 /path/to/first_package 為例。</p>
+<pre>mkdir /path/to/first_package</pre>
+<p>接著在這個套件目錄下建立三個資料夾：src 、 doc 及 tests，這三個資料夾是 Onion 最基本的要求。</p>
+<pre>cd /path/to/first_package
+mkdir src
+mkdir doc
+mkdir tests
+</pre>
+<p>現在我們可以在 src 資料夾裡建立我們的套件內容，這裡筆者先假設我們的套件命名空間為 FirstPackage，其中包含了一個 FirstClass 類別，它的路徑就是 src/FirstPackage/FirstClass.php。</p>
+<pre>mkdir src/FirstPackage
+vi src/FirstPackage/FirstClass.php
+</pre>
+<p>當然這裡示範的套件內容是比較簡單的，實作上我們可能還會有更多類別或命令列程式等。往後有機會的話，筆者會再另文介紹 PEAR 套件製作與測試的相關方法，在這之前大家可以先參考其他 PEAR 套件的原始碼。</p>
+<p><strong>用 Onion 包裝套件</strong></p>
+<p>接下來就是 Onion 最令人激賞的功能之一：利用簡單的 INI 設定檔來產生複雜的套件 XML 描述檔。</p>
+<p>繼續在 /path/to/first_package 下建立一個 package.ini 檔：</p>
+<pre>vi package.ini</pre>
+<p>內容如下：</p>
+<pre>[package]
+name = FirstPackage
+desc = My First Package
+version = 0.0.1
+author = yourusername 
+channel = yourusername.github.com/pear
+</pre>
+<p>這是 Onion 所要求最小的設定，詳細的設定方式可以參考<a href="https://github.com/c9s/Onion/blob/master/README.md#a-more-detailed-example" target="_blank">官方說明</a>。</p>
+<p>有了 package.ini 這個設定檔後，我們可以用以下指令來一次建立出套件的包裝檔：</p>
+<pre>onion build --pear</pre>
+<p>成功的話，就會在 /path/to/first_package 下得到一個 FirstPackage-0.0.1.tgz 套件檔，它就是我們要放到頻道供使用者下載的檔案。</p>
+<p><strong>將套件包裝檔加入頻道</strong></p>
+<p>接著我們就要用 Pirum 來將套件包裝檔加到頻道中，一樣在 /path/to/first_package 這個路徑下，執行以下指令：</p>
+<pre>pirum add /path/to/pear_repository FirstPackage-0.0.1.tgz</pre>
+<p>這樣一來 Pirum 會幫我們分析套件內容，將它加到頻道中，並且更新頻道中的相關資訊。</p>
+<p>當然加入套件後，就得把更新的頻道內容上傳到 GitHub 上：</p>
+<pre>cd /path/to/pear_repository <br />git add * <br />git commit -m 'add first pacakge' <br />git push -u origin gh-pages</pre>
+<p>最後驗證一下套件是否上傳成功：</p>
+<pre>pear channel-update yourusername
+pear remote-list -c yourusername</pre>
+<p>正確無誤的話，應該就會看到以下訊息了：</p>
+<pre>Channel yourusername Available packages:
+==================================
+Package      Version
+FirstPackage -n/a-</pre>
+<p>現在就可以透過 pear 指令來線上安裝我們的套件：</p>
+<pre>pear install yourusername/FirstPackage-0.0.1</pre>
+<p>套件更新後也是相同的處理模式，請各位舉一反三自行實驗看看。</p>
+<p>當然這裡還有很多細節沒有提到，這點就留待往後介紹如何開發 PEAR 套件時再介紹。</p>
+<h2>給頻道一個專屬網域</h2>
+<p>如果各位有自行管理的 DNS，那麼我們可以讓自己的 PEAR 頻道有一個專屬的網域名稱。</p>
+<p>假設我們已經有 yourusername.com 這個網域名，而我們希望用 pear.yourusername.com 這個網域名稱來指向我們的頻道。</p>
+<p>第一步我們先在網域管理商的 DNS 管理畫面中新增一筆 A 記錄，主機名稱為 pear，IP 則指向 204.232.175.78（參考自 <a href="https://help.github.com/articles/setting-up-a-custom-domain-with-pages" target="_blank">GitHub:Help - Setting up a custom domain with Pages</a>）。</p>
+<p>接著在 /path/to/pear_repository 下建立一個 CNAME 檔案，其內容如下：</p>
+<pre>pear.yourusername.com</pre>
+<p>然後參考前面的做法，將新增的 CNAME 檔案用 git 指令推上 GitHub。</p>
+<p>接下來回頭修改 /path/to/pear_repository/pirum.xml，將原來的 yourusername.github.com/pear 改成 pear.yourusername.com ：</p>
+<pre>＜?xml version="1.0" encoding="UTF-8" ?＞
+＜server＞
+    ＜name＞pear.yourusername.com＜/name＞
+    ＜summary＞My PEAR Channel＜/summary＞
+    ＜alias＞yourusername＜/alias＞
+    ＜url＞https://pear.yourusername.com＜/url＞
+＜/server＞</pre>
+<p>最後再重新執行一次前面的步驟即可。</p>
+<p>視 DNS 更新的時間，大約一小時到一天後，頻道就可以用專屬網域名稱了。</p>
+<h2>結論</h2>
+<p>PEAR 在設計上或許沒有其他語言套件管理機制來得方便，但是利用 Pirum 及 Onion 可以幫我們處理掉大部份麻煩的事情。配合上 GitHub Pages 這個免費的網頁空間，我們就能夠方便建立出自己專屬的 PEAR 頻道。</p>
+			<!-- Show relate article -->
+				<!-- end -->
+		<div class="article_note">
+		<!-- Add tags use metakey, and show OSSF Newsletter tag: OSSFNL+NUM-->
+		<br><br> <hr style='border: 1px dashed #D2DADB;'><b>自由軟體鑄造場電子報&nbsp;:</b>&nbsp;<a href='previous-issue%3Ftask=view&amp;id=796.html'>第 198 期 利用 GitHub 建立自己的 PEAR 頻道</a><br><b>標籤:</b>&nbsp;<a href='index.php%3Foption=com_search&amp;Itemid=58&amp;searchphrase=exact_meta&amp;ordering=newest&amp;searchword=GitHub.html'>GitHub</a>,&nbsp;&nbsp;<a href='index.php%3Foption=com_search&amp;Itemid=58&amp;searchphrase=exact_meta&amp;ordering=newest&amp;searchword=&#32;PEAR.html'> PEAR</a>,&nbsp;&nbsp;				<!-- End -->
+					<br>
+					<b>分類: </b><a href="tw/tech-column.html">				技術專欄					</a>				</div>
+			 <!-- AddThis Button BEGIN ID 3001 is the front page article -->
+     			<br><br>
+       <div class="addthis_toolbox addthis_default_style addthis_32x32_style">
+       <a class="addthis_button_preferred_1"></a>
+       <a class="addthis_button_preferred_2"></a>
+       <a class="addthis_button_preferred_3"></a>
+       <a class="addthis_button_preferred_4"></a>
+       <a class="addthis_button_compact"></a>
+       <a class="addthis_counter addthis_bubble_style"></a>
+       </div>
+       <script type="text/javascript">var addthis_config = {"data_track_clickback":true};</script>
+       <script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js#pubid=openfoundry"></script>
+       <!-- AddThis Button END -->
+     <br>
+		<div class="totop" ><a class="rt-totop" href="index.php%3Foption=com_content&amp;task=view&amp;id=8733&amp;Itemid=4%3Bisletter=1.html#" style="outline: medium none;">↑ Top</a></div>
+            <!-- AddThis Button END -->
+
+			</div>
+</div>
+
+		                            </div>
+									<div class="clear"></div>
+								</div>
+								<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+							</div>
+							</div>
+                                                    </div>
+                                            </div>
+                                <div class="rt-grid-3 rt-pull-9">
+                <div id="rt-sidebar-a">
+                                    <div class="square4">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<ul class="menu"><li class="item56"><a href="tw/previous-issue.html"><span>電子報總覽</span></a></li><li class="item55"><a href="tw/about-newsletter.html"><span>關於本報</span></a></li></ul>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<ul class="menu"><li class="item115"><a href="tw/foss-news.html"><span>源碼新聞</span></a></li><li class="item141"><a href="tw/case-job.html"><span>接案 / 工作</span></a></li></ul>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+        	                <div class="square1">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-title"><h2 class="title">專欄總覽</h2></div>
+						<div class="clear"></div>
+		                						<div class="module-content">
+		                	<ul class="menu"><li class="item37"><a href="tw/tech-column.html"><span>技術專欄</span></a></li><li class="item40"><a href="tw/foss-programs.html"><span>源碼秘技</span></a></li><li class="item35"><a href="tw/legal-article-.html"><span>法律專欄</span></a></li><li class="item154"><a href="tw/foss-forum.html"><span>自由專欄</span></a></li><li class="item162"><a href="tw/enterprise-application.html"><span>企業應用</span></a></li><li class="item44"><a href="tw/foss-projects.html"><span>源碼專案</span></a></li></ul>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		                <div class="square1">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<p style="text-align: center;"><a href="news%3Fformat=feed&amp;type=rss" target="_black"><img src="images/M_images/news-rss-feed.png" border="0" /></a><br /><a href="https://www.openfoundry.org/rss-feed/Newsletter" target="_black"><img src="images/M_images/newsletter-rss-feed.png" border="0" /></a></p>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		
+                </div>
+            </div>
+
+                    <div class="clear"></div>
+                </div>
+            </div>
+																													</div>
+										<div id="rt-copyright">
+						<div class="rt-grid-12 rt-alpha rt-omega">
+                        <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<div id="desktop-mobile-version-switch"><span id="mobile-version" class="version-switch"><a href="index.php%3Foption=com_content&amp;task=view&amp;id=8733&amp;Itemid=4%3Bisletter=1.html#">行動版</a></span></div>
+自由軟體鑄造場 製作 最佳瀏覽狀態：IE7或Firefox2.0以上 (建議使用Firefox) ‧ 解析度1024*768 <br /> <strong>E-Mail</strong>：<a href="mailto:contact@openfoundry.org">contact@openfoundry.org</a> <strong>Address</strong>：台北市南港區研究院路2段128號 中央研究院資訊科學研究所 . <a href="privacy-policy.html">隱私權條款</a>. <a href="terms-of-use.html">使用條款</a><span style="position: relative; top: 8px; margin-top: -8px;"> <a href="about/8101.html"><img src="images/M_images/rss-feed-all.png" border="0" /></a></span>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+        	
+</div>
+						<div class="clear"></div>
+					</div>
+					<div class="rt-footer-bottom-wrap"><div class="rt-footer-bottom"><div class="rt-footer-bottom2"><div class="rt-footer-bottom3"></div></div></div></div>
+									</div></div></div>
+				<div class="rt-surround-bottom"><div class="rt-surround-bottom2"><div class="rt-surround-bottom3"></div></div></div>
+							</div>
+		</div>
+		<!--
+		<script id="aptureScript">
+						(function (){var a=document.createElement("script");a.defer="true";a.src="http://www.apture.com/js/apture.js?siteToken=vsJttrn";document.getElementsByTagName("head")[0].appendChild(a);})();
+     </script>
+-->
+
+<!-- Piwik -->
+<!-- 			<script type="text/javascript">
+			  var _paq = _paq || [];
+		  _paq.push(["trackPageView"]);
+		  _paq.push(["enableLinkTracking"]);
+
+		    (function() {
+			        var u=(("https:" == document.location.protocol) ? "https" : "https") + "://www.openfoundry.org/piwik/";
+				    _paq.push(["setTrackerUrl", u+"piwik.php"]);
+				    _paq.push(["setSiteId", "1"]);
+				        var d=document, g=d.createElement("script"), s=d.getElementsByTagName("script")[0]; g.type="text/javascript";
+				        g.defer=true; g.async=true; g.src=u+"piwik.js"; s.parentNode.insertBefore(g,s);
+					  })();
+		  </script> -->
+<!-- End Piwik Code -->
+	</body>
+</html>

@@ -1,0 +1,1380 @@
+<!DOCTYPE html>
+<html>
+<head>
+  
+
+<!--  required for compatability with IE8 and required to force meulo IE10 to regular IE10 -->
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1,requiresActiveX=ulue"/>
+<meta http-equiv="Content-Language" content="en_US"/>
+
+<script>
+  if (window.matchMedia('(max-device-width: 679px)').matches) {
+    // If the device is smaller then our desktop breakpoint, write a 500px fixed width viewport.
+    // This will ensure the user is correctly zoomed at the mobile styles are applied
+    document.write('<meta name="viewport" content="width=500, user-scalable=yes">');
+  } else {
+    // If the device is larger then our desktop breakpoint, write a device-width viewport.
+    document.write('<meta name="viewport" content="width=device-width, initial-scale=1">');
+  }
+</script>
+
+
+<meta name="description" content="Turbo.net lets teams and enterprises get work done quickly and securely, on PCs, Macs, mobile devices, and the cloud."/>
+
+
+<!-- Show link to iOS app -->
+<meta name="apple-itunes-app" content="app-id=1394795519"/>
+<meta name="google-play-app" content="app-id=net.turbo.android.launcher"/>
+
+
+<link rel="shortcut icon" href="https://turbo.net/favicon.ico?v=6.15.2016"/>
+<link rel="apple-touch-icon" href="https://turbo.net/favicon.ico?v=6.15.2016"/>
+<!--<link rel="android-touch-icon" href="/android-icon.png?v=6.15.2016" />-->
+
+<!-- condensed.css is served by the connect asset manager in server boot.js -->
+<link rel="stylesheet" href="https://turbo.net/css/condensed.css?v=11.21.2019.16" />
+
+<!-- specify the chrome extension to inline install if necessary -->
+
+<link rel="chrome-webstore-item" href="https://chrome.google.com/webstore/detail/ldibmiofagdkgiphkcokpooepankmacl">
+
+<!-- scripts that may be loaded outside of head -->
+<script>
+    Spoon_User = '' || undefined;
+    Spoon_UserToken = '' || undefined;
+    Spoon_EdgeSupport = 'true' === 'true';
+    Spoon_ApiSiteRoot = 'https://api.turbo.net'
+    Spoon_RdpWebRoot = 'https://broker.turbo.net'
+    Spoon_WebUrl = 'https://turbo.net'
+    Spoon_WorkloadManagerUrl = 'https://turbo.net'
+    Spoon_Environment = 'production'
+    Spoon_MacClientVersion = '19.10.2112'
+    Spoon_PluginInstallUrl = '' || undefined; // point onboarding to the correct web
+    Turbo_DefaultLaunchLocation = 'remote';
+    Turbo_DefaultLaunchLocationWindows = 'remote';
+    Turbo_DefaultTunnel = 'rxp';
+    Turbo_HideLaunchLocations = false;
+    Turbo_SSOProviders = [{"emailSuffix":"azuretest1.griffith.edu.au","portal":"https:\x2F\x2Fgriffith-stage.start.turbo.net\x2F"},{"emailSuffix":"griffith.edu.au","portal":"https:\x2F\x2Fgriffith.start.turbo.net\x2F"},{"emailSuffix":"cqu.edu.au","portal":"https:\x2F\x2Fcqu.start.turbo.net\x2F"},{"portal":"https:\x2F\x2Fturbohq.turbo.net\x2F"},{"portal":"https:\x2F\x2Fturbohq-adfs.turbo.net\x2F"},{"portal":"https:\x2F\x2Flcps.start.turbo.net\x2F"},{"emailSuffix":"griffithuni.edu.au","portal":"https:\x2F\x2Fgriffithuni.start.turbo.net\x2F"},{"emailSuffix":"ecu.edu.au","portal":"https:\x2F\x2Fecu.start.turbo.net\x2F"},{"emailSuffix":"bond.edu.au","portal":"https:\x2F\x2Fsoftware.bond.edu.au\x2F"},{"emailSuffix":"dsdmail.net","portal":"https:\x2F\x2Fdsd.start.turbo.net\x2F"}];
+
+    var profile = undefined
+    var sessionUser = undefined
+
+    // point cmds to the correct hub
+
+    // must use server side if, otherwise sets the string to "undefined"
+    
+        Spoon_HubUrl = 'https://turbo.net/io';
+    
+
+    // prevent stray occurrences of `console.log` from causing errors in IE
+    (function (window) {
+        var console = window.console || (window.console = {});
+        console.log || (console.log = function () {});
+        console.warn || (console.warn = function () {});
+
+        // Only log console.debug on non-production environments
+        console.debug = function () {
+          if (Spoon_Environment !== "production") {
+            if(typeof console === 'object' && console.log && console.log.apply) {
+              // Maintain the console context when passing through the console.log.
+              // Required for proper object printing
+              console.log.apply(console, arguments);
+            } else {
+              // IE9 does not support console.log.apply.
+              console.log(arguments)
+            }
+          }
+        };
+    }(this));
+
+    // Safari, in Private Browsing Mode, looks like it supports localStorage but all calls to setItem
+    // throw QuotaExceededError. We're going to detect this and just silently drop any calls to setItem
+    // to avoid the entire page breaking, without having to do a check at each usage of Storage.
+    if (typeof localStorage === 'object') {
+      try {
+        localStorage.setItem('localStorage', 1);
+        localStorage.removeItem('localStorage');
+      } catch (e) {
+        Storage.prototype._setItem = Storage.prototype.setItem;
+        Storage.prototype.setItem = function() {};
+        console.error('Your web browser does not support storing settings locally. In Safari, the most common cause of this is using "Private Browsing Mode". Some settings may not save or some features may not work properly for you.');
+      }
+    }
+</script>
+
+<!-- condensed.js is served by the connect asset manager in server boot.js -->
+<!-- set id to 'USETURBOEXTENSION' so that turbo.net browser extensions know that start scripts are available and that the content scripts should execute -->
+<script id="USETURBOEXTENSION" type="text/javascript" src="https://turbo.net/js/condensed.js?v=11.21.2019.16"></script>
+
+
+<!-- Proxima Nova is a paid font and cannot be downloaded directly from the google font apis. -->
+<!-- Instead, serve them from turbo.net. -->
+<script>
+    // We use the Web Font Loader to hook into the fontactive and fontinactive events.
+    // This allows us to fallback in case our custom fonts are blocked.
+    // https://github.com/typekit/webfontloader
+    WebFont.load({
+      custom: {
+        families: ['Proxima Nova:n4,i4,n6,n7,n3'],
+        urls: ['/webfonts/fonts.css?v=11.21.2019.16'] /* resource urls required for IE9 */
+      },
+      fontactive: function(fname, fstyle) {
+        var fnameId = fname.replace(/ /g, "-").toLowerCase()
+        if (sessionStorage)
+          sessionStorage.removeItem('wf-inactive-'+fnameId)
+      },
+      fontinactive: function(fname, fstyle) {
+        console.log("Failed to load font:", fname, fstyle)
+
+        // Immediately call the icon fallback on the 2nd page load.
+        // This optimization is optional, may be disabled in some environments.
+        var fnameId = fname.replace(/ /g, "-").toLowerCase()
+        if (sessionStorage)
+          sessionStorage.setItem('wf-inactive-'+fnameId, true)
+
+        loadFallbackIconsIf()
+      }
+    });
+</script>
+
+<script>
+  // Fonts failed to load, use png or svg backups for spoondings
+  function loadFallbackIconsIf() {
+    var $icons = $('i[data-icon-fallback]')
+
+    $icons.each(function (i, icon) {
+      var $this = $(icon)
+      var src = $this.attr('data-icon-fallback')
+
+      if (src.indexOf(".svg") >= 0) {
+        // Load svg into <object> tag and cover it with an invisible div.
+        // Click events will not propagate out of the object context, so we need to block them from entering.
+        $this.replaceWith('<div class="icon-fallback-wrap"><object class="icon-fallback" type="image/svg+xml" data="https://turbo.net/'&#32;+&#32;src&#32;+&#32;'"/><div class="icon-fallback-mask"></div></div>')
+      } else {
+        $this.replaceWith('<img class="icon-fallback" src="https://turbo.net/'&#32;+&#32;src&#32;+&#32;'"/>')
+      }
+    })
+  }
+
+  if (!sessionStorage.getItem('originalUrl')) {
+      sessionStorage.setItem('originalUrl', window.location.href.split("?")[0])
+  }
+  if (!sessionStorage.getItem('originalReferrer')) {
+      sessionStorage.setItem('originalReferrer', document.referrer.split("?")[0])
+  }
+
+  $(function(){
+    // Immediately load fallbacks for spoondings if they failed to load last time
+    if (sessionStorage && sessionStorage.getItem('wf-inactive-spoondings') === 'true')
+      loadFallbackIconsIf()
+
+    $(document).on('keyup', function(e){
+      if (e.keyCode == 27) { // ESC
+        Modals.hideAll();
+      }
+    })
+
+    // Override default bootstrap dropdown click behavior. Don't close dropdown on inside click
+    $('.dropdown.keep-open').on('click', keepBootstrapDropdownOpen);
+
+    // apply the placeholder correction for ie
+    if (typeof refreshIEPlaceholders !== "undefined") refreshIEPlaceholders()
+
+    if (window.location.hash == '#spoon.net') {
+        // hide the hash part
+        history.pushState("", document.title, window.location.pathname + window.location.search);
+
+        var $n = $('<div id="spoonMovedNotification" class="alert alert-warning floating-notification in" role="alert">'+
+          '<button type="button" class="close"><span>×</span></button>'+
+          '<span>The spoon.net page has moved to its new home at <a class="new-home-link" href="visit.html"></a>. Please update your bookmarks.'+
+          '</div>');
+
+        $n.find('.new-home-link').attr('href', window.location.href).html(window.location.href)
+
+        $n.find('.close').click(function() {
+            $n.removeClass('in')
+
+            // Let css transition finish before hiding
+            setTimeout(function() {
+                $n.hide()
+            }, 100)
+        })
+
+        $('#container').prepend($n)
+    }
+
+    // Auto-download pc or mac client after login
+    if ($.urlParam("download") === "mac") {
+      Onboarding.downloadMacClient()
+
+      // Remove download param
+      window.history.replaceState({}, document.title, window.location.pathname);
+    }
+
+    if ($.urlParam("download") === "pc") {
+      Onboarding.show()
+
+      // Remove download param
+      window.history.replaceState({}, document.title, window.location.pathname);
+    }
+  })
+
+  var FreePricePlan = { id: 0, level: 0, name: 'Free', displayName: 'Free', monthlyPrice: 0, annualPrice: 0, annualPricePerMonth: 0 }
+  var CurrentPricePlans = [{"level":0,"sku":"turbo-basic","displayName":"Basic","monthlyPrice":0,"annualPrice":0,"includedSeats":1,"monthlyPricePerExtraSeat":0,"annualPricePerExtraSeat":0,"firstMonthPrice":null,"id":0,"name":"Basic","annualPricePerMonth":0},{"level":259,"sku":"turbo-personal","displayName":"Personal","monthlyPrice":12,"annualPrice":108,"includedSeats":1,"monthlyPricePerExtraSeat":0,"annualPricePerExtraSeat":0,"firstMonthPrice":null,"id":259,"name":"Personal","annualPricePerMonth":9},{"level":261,"sku":"turbo-pro","displayName":"Pro","monthlyPrice":34,"annualPrice":348,"includedSeats":1,"monthlyPricePerExtraSeat":0,"annualPricePerExtraSeat":0,"firstMonthPrice":0.01,"id":261,"name":"Pro","annualPricePerMonth":29}]
+  var PricePlansByLevel = {"0":{"level":0,"sku":"turbo-basic","displayName":"Basic","monthlyPrice":0,"annualPrice":0,"includedSeats":1,"monthlyPricePerExtraSeat":0,"annualPricePerExtraSeat":0,"firstMonthPrice":null,"id":0,"name":"Basic","annualPricePerMonth":0},"257":{"level":257,"sku":"turbo-student","displayName":"Student","monthlyPrice":24,"annualPrice":228,"includedSeats":1,"monthlyPricePerExtraSeat":0,"annualPricePerExtraSeat":0,"firstMonthPrice":null,"id":257,"name":"Student","annualPricePerMonth":19},"259":{"level":259,"sku":"turbo-personal","displayName":"Personal","monthlyPrice":12,"annualPrice":108,"includedSeats":1,"monthlyPricePerExtraSeat":0,"annualPricePerExtraSeat":0,"firstMonthPrice":null,"id":259,"name":"Personal","annualPricePerMonth":9},"261":{"level":261,"sku":"turbo-pro","displayName":"Pro","monthlyPrice":34,"annualPrice":348,"includedSeats":1,"monthlyPricePerExtraSeat":0,"annualPricePerExtraSeat":0,"firstMonthPrice":0.01,"id":261,"name":"Pro","annualPricePerMonth":29},"263":{"level":263,"sku":"turbo-creative","displayName":"Creative","monthlyPrice":44,"annualPrice":468,"includedSeats":1,"monthlyPricePerExtraSeat":0,"annualPricePerExtraSeat":0,"firstMonthPrice":null,"id":263,"name":"Creative","annualPricePerMonth":39},"267":{"level":267,"sku":"turbo-engineer","displayName":"Power","monthlyPrice":104,"annualPrice":1188,"includedSeats":1,"monthlyPricePerExtraSeat":0,"annualPricePerExtraSeat":0,"firstMonthPrice":null,"id":267,"name":"Power","annualPricePerMonth":99},"286":{"level":286,"sku":"spoon-team","displayName":"Team","monthlyPrice":59,"annualPrice":588,"includedSeats":3,"monthlyPricePerExtraSeat":19,"annualPricePerExtraSeat":168,"firstMonthPrice":null,"id":286,"name":"Team","annualPricePerMonth":49},"291":{"level":291,"sku":"turbo-team","displayName":"Team","monthlyPrice":54,"annualPrice":588,"includedSeats":1,"monthlyPricePerExtraSeat":54,"annualPricePerExtraSeat":588,"firstMonthPrice":null,"id":291,"name":"Team","annualPricePerMonth":49}}
+
+
+  var Products = [{"app":"dist","productName":"Turbo Server Distribution License","unitPrice":0,"quickBooksSku":""},{"app":"server","productName":"Turbo Server Node","unitPrice":1950,"quickBooksSku":"SVM"},{"app":"studio","productName":"Turbo Studio 17","unitPrice":1400,"quickBooksSku":"STU"},{"app":"studioEval","productName":"Turbo Studio 17 Eval","unitPrice":0,"quickBooksSku":""},{"app":"studio-maint","productName":"Turbo Studio 17 Maintenance","unitPrice":800,"quickBooksSku":""},{"app":"vm","productName":"Turbo Server","unitPrice":2950,"quickBooksSku":"SVM-SRV"},{"app":"vmConcurrent","productName":"Turbo End User (Concurrent User)","unitPrice":96,"quickBooksSku":"SVM-SRV-CC"},{"app":"vmEval","productName":"Turbo Server Eval","unitPrice":0,"quickBooksSku":""},{"app":"vmNamed","productName":"Turbo End User (Named User)","unitPrice":24,"quickBooksSku":"SVM-SRV"},{"app":"office","productName":"Microsoft Office Standard","unitPrice":11.95,"quickBooksSku":""},{"app":"workspace","productName":"Turbo.net Workspace","unitPrice":0,"quickBooksSku":"WRKSPC"}]
+  var ProductsById = {"dist":{"app":"dist","productName":"Turbo Server Distribution License","unitPrice":0,"quickBooksSku":""},"server":{"app":"server","productName":"Turbo Server Node","unitPrice":1950,"quickBooksSku":"SVM"},"studio":{"app":"studio","productName":"Turbo Studio 17","unitPrice":1400,"quickBooksSku":"STU"},"studioEval":{"app":"studioEval","productName":"Turbo Studio 17 Eval","unitPrice":0,"quickBooksSku":""},"studio-maint":{"app":"studio-maint","productName":"Turbo Studio 17 Maintenance","unitPrice":800,"quickBooksSku":""},"vm":{"app":"vm","productName":"Turbo Server","unitPrice":2950,"quickBooksSku":"SVM-SRV"},"vmConcurrent":{"app":"vmConcurrent","productName":"Turbo End User (Concurrent User)","unitPrice":96,"quickBooksSku":"SVM-SRV-CC"},"vmEval":{"app":"vmEval","productName":"Turbo Server Eval","unitPrice":0,"quickBooksSku":""},"vmNamed":{"app":"vmNamed","productName":"Turbo End User (Named User)","unitPrice":24,"quickBooksSku":"SVM-SRV"},"office":{"app":"office","productName":"Microsoft Office Standard","unitPrice":11.95,"quickBooksSku":""},"workspace":{"app":"workspace","productName":"Turbo.net Workspace","unitPrice":0,"quickBooksSku":"WRKSPC"}}
+
+  var SubLevels = {
+      personal: 259, pro: 261, team: 291
+  }
+
+  var FeatureSwitches = {
+      remoteApp: false
+  }
+
+  var RemoteAppRegions = [{"id":"australia-east","name":"Australia East","remoteAppUrl":"https://australia-east.turbo.net"},{"id":"north-europe","name":"Europe North","remoteAppUrl":"https://north-europe.turbo.net"},{"id":"east-us","name":"US East","remoteAppUrl":"https://east-us.turbo.net"},{"id":"us-west","name":"US West","remoteAppUrl":"https://broker.turbo.net"}]
+  var RemoteAppRegionsById = {"australia-east":{"id":"australia-east","name":"Australia East","remoteAppUrl":"https://australia-east.turbo.net"},"us-west":{"id":"us-west","name":"US West","remoteAppUrl":"https://broker.turbo.net"},"east-us":{"id":"east-us","name":"US East","remoteAppUrl":"https://east-us.turbo.net"},"north-europe":{"id":"north-europe","name":"Europe North","remoteAppUrl":"https://north-europe.turbo.net"}}
+
+  // Delay loads css file. Function loadCSS(file).
+  // https://github.com/filamentgroup/loadCSS
+  !function(e){"use strict"
+      var n=function(n,t,o){function i(e){return f.body?e():void setTimeout(function(){i(e)})}var d,r,a,l,f=e.document,s=f.createElement("link"),u=o||"all"
+          return t?d=t:(r=(f.body||f.getElementsByTagName("head")[0]).childNodes,d=r[r.length-1]),a=f.styleSheets,s.rel="stylesheet",s.href=n,s.media="only x",i(function(){d.parentNode.insertBefore(s,t?d:d.nextSibling)}),l=function(e){for(var n=s.href,t=a.length;t--;)if(a[t].href===n)return e()
+              setTimeout(function(){l(e)})},s.addEventListener&&s.addEventListener("load",function(){this.media=u}),s.onloadcssdefined=l,l(function(){s.media!==u&&(s.media=u)}),s}
+      "undefined"!=typeof exports?exports.loadCSS=n:e.loadCSS=n}("undefined"!=typeof global?global:this)
+</script>
+
+<script type="text/javascript">
+  // Show app banner on android
+  new SmartBanner({
+    daysHidden: 15,   // days to hide banner after close button is clicked (defaults to 15)
+    daysReminder: 90, // days to hide banner after "VIEW" button is clicked (defaults to 90)
+    appStoreLanguage: 'us', // language code for the App Store (defaults to user's browser language)
+    title: 'Turbo.net',
+    button: 'VIEW',
+    store: {
+      android: 'In Google Play'
+    },
+    price: {
+      android: 'FREE'
+    }
+  });
+</script>
+
+<!-- Facebook Pixel Code -->
+<script>
+  !function(f,b,e,v,n,t,s)
+  {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+    n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+    if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+    n.queue=[];t=b.createElement(e);t.async=!0;
+    t.src=v;s=b.getElementsByTagName(e)[0];
+    s.parentNode.insertBefore(t,s)}(window, document,'script',
+  'https://connect.facebook.net/en_US/fbevents.js');
+  fbq('init', '1301510249993660');
+  fbq('track', 'PageView');
+</script>
+<noscript><img height="1" width="1" style="display:none"
+src="https://www.facebook.com/tr?id=1301510249993660&ev=PageView&noscript=1"
+    /></noscript>
+<!-- End Facebook Pixel Code -->
+
+  <title>Deliver your apps instantly, everywhere - Turbo.net</title>
+
+  <!-- Open Graph meta tags -->
+  <meta property="og:title" content="Deliver your apps instantly, everywhere - Turbo.net"/>
+  <meta property="og:site_name" content="Turbo.net"/>
+  <meta property="og:url" content="https://turbo.net"/>
+  <meta property="og:image" content="https://turbo.net/images/share_preview_turbo.png"/>
+  <meta property="og:description" content="Turbo.net lets teams and enterprises get work done quickly and securely,<br/>on PCs, Macs, mobile devices, and the cloud."/>
+
+  <!-- Styles -->
+  <link rel="stylesheet" href="https://turbo.net/css/home.css?v=11.21.2019.16">
+
+  <script>
+    function scrollToSection(id) {
+      $('html, body').animate({
+        scrollTop: $('#'+id).offset().top
+      }, 300);
+    }
+  </script>
+
+</head>
+<body class="w-mobile">
+<noscript id="js-warning">
+  <strong>JavaScript is required to use this site.</strong> Please enable JavaScript for a better experience.
+</noscript>
+
+<div id="container">
+  <header id="nav-wrap" class="super-header floating-header">
+    <nav id="universalHeader" class="fixedWidthBody clearfix">
+      <div id="left-header" class="clearfix pull-left">
+        <a id="turbo-logo" href="visit.html">
+          <img src="https://turbo.net/images/turbo-wordmark-color.png"/>
+        </a>
+      </div>
+
+      <div class="pull-right">
+        
+
+<div id="sitemap" class="navitem" role="navigation">
+  <a id="hubLink" href="https://turbo.net/hub" class="nav-link " >Browse</a>
+  <a id="pricingLink" href="https://turbo.net/pricing" class="nav-link " >Pricing</a>
+  <a id="docsLink" href="https://turbo.net/docs" class="nav-link " >Docs</a>
+</div>
+
+<div id="mobile-sitemap" class="dropdown gray-dropdown">
+  <div data-toggle="dropdown">
+    <i class="fa fa-navicon"></i>
+  </div>
+  <ul class="dropdown-menu dropdown-menu-right">
+    <li>
+      <a id="hubLink" href="https://turbo.net/hub" class="nav-link " >Browse</a>
+    </li>
+    <li>
+      <a id="pricingLink" href="https://turbo.net/pricing" class="nav-link " >Pricing</a>
+    </li>
+    <li class="">
+      <a id="docsLink" href="https://turbo.net/docs" class="nav-link " >Docs</a>
+    </li>
+  </ul>
+</div>
+
+<script>
+  $(function() {
+    // Change selection style when switching tabs
+    var $sitemapTabs = $('#sitemap').find('[data-toggle="tab"]')
+    $sitemapTabs.on('click', function() {
+      $sitemapTabs.removeClass('selected')
+      $(this).addClass('selected')
+    })
+  })
+</script>
+        <div id="loginPanel" class="navitem">
+  
+  <div class="loggedOut hidden-xs-turbo">
+    <a class="flat-btn login-link white" href="javascript://" onclick="LoginUtils.login('/dashboard')">Sign In</a>
+  </div>
+  <div class="loggedOut hidden-md-turbo">
+    <a class="flat-btn login-link" href="javascript://" onclick="LoginUtils.login('/dashboard')">Sign In</a>
+  </div>
+  
+</div>
+      </div>
+    </nav>
+  </header>
+    
+  <div class="promo-header">
+    <div class="fixedWidthBody splash-header-text">
+      <div class="row">
+        <div class="col-md-turbo-8">
+          <h1 class="home-title text-left">Deliver your apps<br/>instantly, everywhere.</h1>
+          <p class="text-left">Turbo.net lets teams and enterprises get work done quickly and securely,<br/>on PCs, Macs, mobile devices, and the cloud.</p>
+
+          <div id="action-links">
+            <a style="display: none;" class="flat-btn solid install-btn" href="javascript:Onboarding.showIfRequired()" title="Download Turbo.net for Windows">
+  <i class="fa fa-windows" style="margin-right: .5em;"></i>Download for Windows
+</a>
+<a style="display: none;" class="flat-btn solid mac-install-btn" href="javascript:Onboarding.downloadMacClient()" title="Download Turbo.net for Mac">
+  <i class="fa fa-apple" style="margin-right: .5em;"></i>Download for Mac
+</a>
+
+<script>
+  function showInstallButtonIf() {
+    var buttons = document.getElementsByClassName('install-btn')
+    var isVisible = !UserAgent.isUnsupportedUA()
+
+    for (var i = 0; i < buttons.length; i++) {
+      if (isVisible) {
+        buttons[i].style.display = 'inline-block';
+      } else {
+        buttons[i].parentElement.removeChild(buttons[i]);
+      }
+    }
+  }
+
+  function showMacInstallButtonIf() {
+    var buttons = document.getElementsByClassName('mac-install-btn')
+    var isVisible = UserAgent.isMacDesktop()
+
+    for (var i = 0; i < buttons.length; i++) {
+      if (isVisible) {
+        buttons[i].style.display = 'inline-block';
+      } else {
+        buttons[i].parentElement.removeChild(buttons[i]);
+      }
+    }
+  }
+
+  showInstallButtonIf()
+  showMacInstallButtonIf()
+</script>
+
+
+            <!--<a id="open-dashboard-btn" class="flat-btn" href="/create">
+              Create Workspace
+            </a>-->
+            <a id="open-dashboard-btn" class="flat-btn" href="https://turbo.net/dashboard">
+              Open Workspace
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div id="view-more-link-wrap">
+      <div class="fixedWidthBody">
+        <a id="view-more-link" href="javascript:scrollToSection('enterprise-and-education')">
+          <img src="https://turbo.net/images/homepage/icons/down-arrow-gray.png" /><span>Learn More</span>
+        </a>
+      </div>
+    </div>
+
+    <div id="os-list">
+      <a href="javascript:Onboarding.showIfRequired()" title="Download Turbo.net for Windows">
+        <i class="fa fa-windows"></i>
+      </a>
+      <a href="https://itunes.apple.com/us/app/turbo-net/id1394795519?mt=8" target="_blank" title="Download on the App Store">
+        <i class="fa fa-apple"></i>
+      </a>
+      <a href="https://play.google.com/store/apps/details?id=net.turbo.android.launcher" target="_blank" title="Get it on Google Play">
+        <i class="fa fa-android"></i>
+      </a>
+      <a href="https://play.google.com/store/apps/details?id=net.turbo.android.launcher" target="_blank" title="Get it on Google Play">
+        <i class="fa fa-chrome"></i>
+      </a>
+    </div>
+  </div>
+
+  <div id="admin-features" class="section-wrap solution-row dark" style="display: none;">
+    <div class="fixedWidthBody splash-header-text">
+      <h2 class="section-header text-center">Better experience. Lower cost.</h2>
+
+      <p class="text-center" style="margin-bottom: 80px;">A hybrid, elastic architecture minimizes costs while providing virtually unbounded scaleability.</p>
+
+      <div class="row">
+        <div class="col-md-turbo-4 clearfix">
+          <i class="fa fa-desktop"></i>
+          <p>Eliminate 80% of legacy physical computer lab devices.</p>
+        </div>
+        <div class="col-md-turbo-4 clearfix">
+          <i class="fa fa-cloud"></i>
+          <p>Migrate administration and datacenter operations to the cloud.</p>
+        </div>
+        <div class="col-md-turbo-4 clearfix">
+          <i class="fa fa-repeat"></i>
+          <p>Outsource application packaging, updates, and patching.</p>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-turbo-4 clearfix">
+          <i class="fa fa-lock"></i>
+          <p>Centrally manage application entitlements, distribution, and licensing.</p>
+        </div>
+        <div class="col-md-turbo-4 clearfix">
+          <i class="fa fa-users"></i>
+          <p>Authenticate with existing Active Directory, Azure AD, OAuth, and LDAP directory services.</p>
+        </div>
+        <div class="col-md-turbo-4 clearfix">
+          <i class="fa fa-line-chart"></i>
+          <p>Elastic architecture scales up and down as required, minimizing infrastructure costs.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="apps" class="section-wrap solution-row" style="display: none;">
+    <div class="fixedWidthBody splash-header-text">
+      <div class="row">
+        <div class="col-md-turbo-6 hidden-xs-turbo text-center">
+          <img id="app-list-img" src="https://turbo.net/images/education/app-list.png?v=11.21.2019.16" style="width: auto;">
+        </div>
+        <div class="col-md-turbo-6">
+          <h2 class="section-header">1000s of apps,<br>ready to deploy.</h2>
+
+          <div class="hidden-md-turbo text-center">
+            <img id="app-list-img" src="https://turbo.net/images/education/app-list.png?v=11.21.2019.16" style="width: auto; margin-bottom: 60px;">
+          </div>
+
+          <p>The Turbo.net Hub offers instant access to thousands of applications.</p>
+          <p>Easy-to-use tools allow combining of applications and components to create lab environments or deploy custom applications. </p>
+          <p style="margin-bottom: 20px;">
+            <a href="https://turbo.net/hub">Browse the Turbo.net Hub<i class="fa fa-arrow-circle-right"></i></a>
+          </p>
+          <p>
+            <a href="https://turbo.net/studio">Explore Turbo Studio<i class="fa fa-arrow-circle-right"></i></a>
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="enterprise-and-education" class="section-wrap solution-row">
+    <div class="fixedWidthBody splash-header-text">
+      <div class="row">
+        <div class="col-md-turbo-4">
+          <h2 class="section-header">Enterprise</h2>
+
+          <p>Deploy custom containerized applications on desktops, on-premises servers, and public and private clouds.</p>
+
+          <a href="https://turbo.net/enterprise" class="flat-btn white">Go to Enterprise</a>
+        </div>
+        <div class="col-md-turbo-4 col-md-turbo-offset-3" style="padding-right: 20px;">
+          <h2 class="section-header">Education</h2>
+
+          <p>The Student Digital Workspace brings applications to every campus and personal device.</p>
+
+          <a href="https://turbo.net/education" class="flat-btn white">Go to Education</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="related-repos" class="section-wrap solution-row dark">
+    <div class="fixedWidthBody splash-header-text">
+      <h2 class="section-header text-center" style="margin-bottom: 40px;">Test Drive a Workspace</h2>
+      <p class="text-center">Here are some of the incredible ways people use Turbo.net to create, educate, and transform.</p>
+      
+
+<script>
+  // Recompute ellipsis when resizing the window
+  $(window).resize(function() {
+    trimDescription()
+  })
+
+  $(function() {
+    // Recompute ellipsis on begin slide
+    $('.carousel').on('slide.bs.carousel', function () {
+      // Let carousel item appear first, because the ellipsis plugin can only operate on visibile elements
+      setTimeout(function() {
+        trimDescription()
+      }, 0)
+    })
+  })
+
+  function trimDescription() {
+    var $repoSummaries = $('.related-apps-carousel').find('.repo-description')
+
+    $.each($repoSummaries, function() {
+      var $this = $(this)
+      var origText = $this.attr('data-original-text') || $this.text()
+      $this.attr('data-original-text', origText)
+      $this.text(origText).ellipsis({row: 5});
+    })
+  }
+</script>
+
+<div id="related-apps-carousel" class="related-apps-carousel carousel slide hidden-xs-turbo" data-ride="carousel" data-interval="">
+  <div class="carousel-inner" role="listbox">
+    
+    <div class="item active">
+      <div class="row">
+        
+        <div class="col-xs-turbo-6 col-md-turbo-3">
+          <a href="https://turbo.net/channels/browsers" class="related-repo-wrap text-center light" style=" background-image: url(https://turbo.net/&);">
+            <div class="repo-link-wrap">
+              <div class="repo-icon-wrap padded x-large" style="background-color: #1b7e45">
+                <img alt="Browser Sandbox's icon" class="repo-icon" src="https://turbo.net/channels/browsers/icon.png">
+              </div>
+            </div>
+
+            <p class="repo-title ellipsis">Browser Sandbox</p>
+            <p class="repo-description">Run IE, Chrome, Firefox, and other browsers online, right on your desktop or tablet.</p>
+          </a>
+        </div>
+        
+        <div class="col-xs-turbo-6 col-md-turbo-3">
+          <a href="https://turbo.net/channels/ide" class="related-repo-wrap text-center light" style=" background-image: url(https://turbo.net/&);">
+            <div class="repo-link-wrap">
+              <div class="repo-icon-wrap padded x-large" style="background-color: #999999">
+                <img alt="Online IDEs's icon" class="repo-icon" src="https://turbo.net/channels/ide/icon.png">
+              </div>
+            </div>
+
+            <p class="repo-title ellipsis">Online IDEs</p>
+            <p class="repo-description">Run Eclipse, VS Code, NetBeans, and other IDEs online.</p>
+          </a>
+        </div>
+        
+        <div class="col-xs-turbo-6 col-md-turbo-3">
+          <a href="https://turbo.net/channels/sql" class="related-repo-wrap text-center dark" style="background-color: #A81F1E; background-image: url(https://turbo.net/&);">
+            <div class="repo-link-wrap">
+              <div class="repo-icon-wrap padded x-large" style="background-color: #A81F1E">
+                <img alt="SQL Sandbox's icon" class="repo-icon" src="https://turbo.net/channels/sql/icon.png">
+              </div>
+            </div>
+
+            <p class="repo-title ellipsis">SQL Sandbox</p>
+            <p class="repo-description">Run SQL Server, SSMS, MySQL and other databases online.</p>
+          </a>
+        </div>
+        
+        <div class="col-xs-turbo-6 col-md-turbo-3">
+          <a href="https://turbo.net/run/google/chrome" class="related-repo-wrap text-center " style="background-color: light; ">
+            <div class="repo-link-wrap">
+              <div class="repo-icon-wrap padded x-large" style="background-color: #BAE4FF">
+                <img alt="Chrome's icon" class="repo-icon" src="https://turbo.net/io/users/google/repos/chrome/upload/icon/chrome_flat_by_packrobottom-d6dyj4l.png">
+              </div>
+            </div>
+
+            <p class="repo-title ellipsis">Chrome</p>
+            <p class="repo-description">Free web browser developed by Google, enhanced for performance and privacy.</p>
+          </a>
+        </div>
+        
+      </div>
+    </div>
+    
+    <div class="item ">
+      <div class="row">
+        
+        <div class="col-xs-turbo-6 col-md-turbo-3">
+          <a href="https://turbo.net/run/eclipse/eclipse" class="related-repo-wrap text-center " style="background-color: light; ">
+            <div class="repo-link-wrap">
+              <div class="repo-icon-wrap padded x-large" style="background-color: #a39cc3">
+                <img alt="Eclipse's icon" class="repo-icon" src="https://turbo.net/io/users/eclipse/repos/eclipse/upload/icon/eclipse.png">
+              </div>
+            </div>
+
+            <p class="repo-title ellipsis">Eclipse</p>
+            <p class="repo-description">An open source IDE for Java development.</p>
+          </a>
+        </div>
+        
+        <div class="col-xs-turbo-6 col-md-turbo-3">
+          <a href="https://turbo.net/run/microsoft/ie" class="related-repo-wrap text-center " style="background-color: light; ">
+            <div class="repo-link-wrap">
+              <div class="repo-icon-wrap padded x-large" style="background-color: #80bfff">
+                <img alt="Internet Explorer's icon" class="repo-icon" src="https://turbo.net/io/users/microsoft/repos/ie/upload/icon/swatch-%20ie-%20256.png">
+              </div>
+            </div>
+
+            <p class="repo-title ellipsis">Internet Explorer</p>
+            <p class="repo-description">Creating entirely new experiences on the web that are fast, beautiful, and perfect for touch.</p>
+          </a>
+        </div>
+        
+        <div class="col-xs-turbo-6 col-md-turbo-3">
+          <a href="https://turbo.net/run/oracle/netbeans" class="related-repo-wrap text-center " style="background-color: light; ">
+            <div class="repo-link-wrap">
+              <div class="repo-icon-wrap padded x-large" style="background-color: #80ccff">
+                <img alt="NetBeans IDE's icon" class="repo-icon" src="https://turbo.net/io/users/oracle/repos/netbeans/upload/icon/netbeans.png">
+              </div>
+            </div>
+
+            <p class="repo-title ellipsis">NetBeans IDE</p>
+            <p class="repo-description">A free IDE for developing Java desktop, mobile, and web applications, including PHP and C/C++ plugin support.</p>
+          </a>
+        </div>
+        
+        <div class="col-xs-turbo-6 col-md-turbo-3">
+          <a href="https://turbo.net/run/npp/notepadplusplus" class="related-repo-wrap text-center " style="background-color: light; ">
+            <div class="repo-link-wrap">
+              <div class="repo-icon-wrap padded x-large" style="background-color: #e6ffcc">
+                <img alt="Notepad++'s icon" class="repo-icon" src="https://turbo.net/io/users/npp/repos/notepadplusplus/upload/icon/Notepad_plus_plus.png">
+              </div>
+            </div>
+
+            <p class="repo-title ellipsis">Notepad++</p>
+            <p class="repo-description">Notepad++ is a free source code editor which supports several programming languages.</p>
+          </a>
+        </div>
+        
+      </div>
+    </div>
+    
+    <div class="item ">
+      <div class="row">
+        
+        <div class="col-xs-turbo-6 col-md-turbo-3">
+          <a href="https://turbo.net/run/powerbi/powerbi" class="related-repo-wrap text-center " style="background-color: light; ">
+            <div class="repo-link-wrap">
+              <div class="repo-icon-wrap  x-large" style="background-color: #E4CA2F">
+                <img alt="Power BI Desktop's icon" class="repo-icon" src="https://turbo.net/io/users/powerbi/repos/powerbi/upload/icon/icon.png">
+              </div>
+            </div>
+
+            <p class="repo-title ellipsis">Power BI Desktop</p>
+            <p class="repo-description">Create rich, interactive reports with visual analytics at your fingertips.</p>
+          </a>
+        </div>
+        
+        <div class="col-xs-turbo-6 col-md-turbo-3">
+          <a href="https://turbo.net/run/sketchup/sketchup" class="related-repo-wrap text-center " style="background-color: light; ">
+            <div class="repo-link-wrap">
+              <div class="repo-icon-wrap  x-large" style="background-color: transparent">
+                <img alt="SketchUp's icon" class="repo-icon" src="https://turbo.net/io/users/sketchup/repos/sketchup/upload/icon/sketchup.jpg">
+              </div>
+            </div>
+
+            <p class="repo-title ellipsis">SketchUp</p>
+            <p class="repo-description">The easiest way to draw in 3D</p>
+          </a>
+        </div>
+        
+        <div class="col-xs-turbo-6 col-md-turbo-3">
+          <a href="https://turbo.net/run/sqlserver/ssms-sqlserver" class="related-repo-wrap text-center " style="background-color: light; ">
+            <div class="repo-link-wrap">
+              <div class="repo-icon-wrap padded x-large" style="background-color: #C9C9C9">
+                <img alt="SQL Server Express with SSMS's icon" class="repo-icon" src="https://turbo.net/io/users/sqlserver/repos/ssms-sqlserver/upload/icon/icon_ssms2016%5B1%5D.png">
+              </div>
+            </div>
+
+            <p class="repo-title ellipsis">SQL Server Express with SSMS</p>
+            <p class="repo-description">SSMS and SQL Server 2016 Express bundle</p>
+          </a>
+        </div>
+        
+        <div class="col-xs-turbo-6 col-md-turbo-3">
+          <a href="https://turbo.net/run/viber/viber" class="related-repo-wrap text-center " style="background-color: light; ">
+            <div class="repo-link-wrap">
+              <div class="repo-icon-wrap  x-large" style="background-color: transparent">
+                <img alt="Viber's icon" class="repo-icon" src="https://turbo.net/io/users/viber/repos/viber/upload/icon/viber-iconV2.png">
+              </div>
+            </div>
+
+            <p class="repo-title ellipsis">Viber</p>
+            <p class="repo-description">Connect across the world for free with calls, texts, and photos. </p>
+          </a>
+        </div>
+        
+      </div>
+    </div>
+    
+  </div>
+
+  
+  <!-- Controls -->
+  <a class="left carousel-control" href="visit.html#related-apps-carousel" role="button" data-slide="prev">
+    <span class="fa fa-chevron-left" aria-hidden="true"></span>
+    <span class="sr-only">Previous</span>
+  </a>
+  <a class="right carousel-control" href="visit.html#related-apps-carousel" role="button" data-slide="next">
+    <span class="fa fa-chevron-right" aria-hidden="true"></span>
+    <span class="sr-only">Next</span>
+  </a>
+  
+
+  
+  <script>trimDescription()</script>
+</div>
+      
+
+<script>
+  // Recompute ellipsis when resizing the window
+  $(window).resize(function() {
+    trimDescription()
+  })
+
+  $(function() {
+    // Recompute ellipsis on begin slide
+    $('.carousel').on('slide.bs.carousel', function () {
+      // Let carousel item appear first, because the ellipsis plugin can only operate on visibile elements
+      setTimeout(function() {
+        trimDescription()
+      }, 0)
+    })
+  })
+
+  function trimDescription() {
+    var $repoSummaries = $('.related-apps-carousel').find('.repo-description')
+
+    $.each($repoSummaries, function() {
+      var $this = $(this)
+      var origText = $this.attr('data-original-text') || $this.text()
+      $this.attr('data-original-text', origText)
+      $this.text(origText).ellipsis({row: 5});
+    })
+  }
+</script>
+
+<div id="related-apps-carousel-mobile" class="related-apps-carousel carousel slide hidden-md-turbo" data-ride="carousel" data-interval="">
+  <div class="carousel-inner" role="listbox">
+    
+    <div class="item active">
+      <div class="row">
+        
+        <div class="col-xs-turbo-6 col-md-turbo-3">
+          <a href="https://turbo.net/channels/browsers" class="related-repo-wrap text-center light" style=" background-image: url(https://turbo.net/&);">
+            <div class="repo-link-wrap">
+              <div class="repo-icon-wrap padded x-large" style="background-color: #1b7e45">
+                <img alt="Browser Sandbox's icon" class="repo-icon" src="https://turbo.net/channels/browsers/icon.png">
+              </div>
+            </div>
+
+            <p class="repo-title ellipsis">Browser Sandbox</p>
+            <p class="repo-description">Run IE, Chrome, Firefox, and other browsers online, right on your desktop or tablet.</p>
+          </a>
+        </div>
+        
+        <div class="col-xs-turbo-6 col-md-turbo-3">
+          <a href="https://turbo.net/channels/ide" class="related-repo-wrap text-center light" style=" background-image: url(https://turbo.net/&);">
+            <div class="repo-link-wrap">
+              <div class="repo-icon-wrap padded x-large" style="background-color: #999999">
+                <img alt="Online IDEs's icon" class="repo-icon" src="https://turbo.net/channels/ide/icon.png">
+              </div>
+            </div>
+
+            <p class="repo-title ellipsis">Online IDEs</p>
+            <p class="repo-description">Run Eclipse, VS Code, NetBeans, and other IDEs online.</p>
+          </a>
+        </div>
+        
+      </div>
+    </div>
+    
+    <div class="item ">
+      <div class="row">
+        
+        <div class="col-xs-turbo-6 col-md-turbo-3">
+          <a href="https://turbo.net/channels/sql" class="related-repo-wrap text-center dark" style="background-color: #A81F1E; background-image: url(https://turbo.net/&);">
+            <div class="repo-link-wrap">
+              <div class="repo-icon-wrap padded x-large" style="background-color: #A81F1E">
+                <img alt="SQL Sandbox's icon" class="repo-icon" src="https://turbo.net/channels/sql/icon.png">
+              </div>
+            </div>
+
+            <p class="repo-title ellipsis">SQL Sandbox</p>
+            <p class="repo-description">Run SQL Server, SSMS, MySQL and other databases online.</p>
+          </a>
+        </div>
+        
+        <div class="col-xs-turbo-6 col-md-turbo-3">
+          <a href="https://turbo.net/run/google/chrome" class="related-repo-wrap text-center " style="background-color: light; ">
+            <div class="repo-link-wrap">
+              <div class="repo-icon-wrap padded x-large" style="background-color: #BAE4FF">
+                <img alt="Chrome's icon" class="repo-icon" src="https://turbo.net/io/users/google/repos/chrome/upload/icon/chrome_flat_by_packrobottom-d6dyj4l.png">
+              </div>
+            </div>
+
+            <p class="repo-title ellipsis">Chrome</p>
+            <p class="repo-description">Free web browser developed by Google, enhanced for performance and privacy.</p>
+          </a>
+        </div>
+        
+      </div>
+    </div>
+    
+    <div class="item ">
+      <div class="row">
+        
+        <div class="col-xs-turbo-6 col-md-turbo-3">
+          <a href="https://turbo.net/run/eclipse/eclipse" class="related-repo-wrap text-center " style="background-color: light; ">
+            <div class="repo-link-wrap">
+              <div class="repo-icon-wrap padded x-large" style="background-color: #a39cc3">
+                <img alt="Eclipse's icon" class="repo-icon" src="https://turbo.net/io/users/eclipse/repos/eclipse/upload/icon/eclipse.png">
+              </div>
+            </div>
+
+            <p class="repo-title ellipsis">Eclipse</p>
+            <p class="repo-description">An open source IDE for Java development.</p>
+          </a>
+        </div>
+        
+        <div class="col-xs-turbo-6 col-md-turbo-3">
+          <a href="https://turbo.net/run/microsoft/ie" class="related-repo-wrap text-center " style="background-color: light; ">
+            <div class="repo-link-wrap">
+              <div class="repo-icon-wrap padded x-large" style="background-color: #80bfff">
+                <img alt="Internet Explorer's icon" class="repo-icon" src="https://turbo.net/io/users/microsoft/repos/ie/upload/icon/swatch-%20ie-%20256.png">
+              </div>
+            </div>
+
+            <p class="repo-title ellipsis">Internet Explorer</p>
+            <p class="repo-description">Creating entirely new experiences on the web that are fast, beautiful, and perfect for touch.</p>
+          </a>
+        </div>
+        
+      </div>
+    </div>
+    
+    <div class="item ">
+      <div class="row">
+        
+        <div class="col-xs-turbo-6 col-md-turbo-3">
+          <a href="https://turbo.net/run/oracle/netbeans" class="related-repo-wrap text-center " style="background-color: light; ">
+            <div class="repo-link-wrap">
+              <div class="repo-icon-wrap padded x-large" style="background-color: #80ccff">
+                <img alt="NetBeans IDE's icon" class="repo-icon" src="https://turbo.net/io/users/oracle/repos/netbeans/upload/icon/netbeans.png">
+              </div>
+            </div>
+
+            <p class="repo-title ellipsis">NetBeans IDE</p>
+            <p class="repo-description">A free IDE for developing Java desktop, mobile, and web applications, including PHP and C/C++ plugin support.</p>
+          </a>
+        </div>
+        
+        <div class="col-xs-turbo-6 col-md-turbo-3">
+          <a href="https://turbo.net/run/npp/notepadplusplus" class="related-repo-wrap text-center " style="background-color: light; ">
+            <div class="repo-link-wrap">
+              <div class="repo-icon-wrap padded x-large" style="background-color: #e6ffcc">
+                <img alt="Notepad++'s icon" class="repo-icon" src="https://turbo.net/io/users/npp/repos/notepadplusplus/upload/icon/Notepad_plus_plus.png">
+              </div>
+            </div>
+
+            <p class="repo-title ellipsis">Notepad++</p>
+            <p class="repo-description">Notepad++ is a free source code editor which supports several programming languages.</p>
+          </a>
+        </div>
+        
+      </div>
+    </div>
+    
+    <div class="item ">
+      <div class="row">
+        
+        <div class="col-xs-turbo-6 col-md-turbo-3">
+          <a href="https://turbo.net/run/powerbi/powerbi" class="related-repo-wrap text-center " style="background-color: light; ">
+            <div class="repo-link-wrap">
+              <div class="repo-icon-wrap  x-large" style="background-color: #E4CA2F">
+                <img alt="Power BI Desktop's icon" class="repo-icon" src="https://turbo.net/io/users/powerbi/repos/powerbi/upload/icon/icon.png">
+              </div>
+            </div>
+
+            <p class="repo-title ellipsis">Power BI Desktop</p>
+            <p class="repo-description">Create rich, interactive reports with visual analytics at your fingertips.</p>
+          </a>
+        </div>
+        
+        <div class="col-xs-turbo-6 col-md-turbo-3">
+          <a href="https://turbo.net/run/sketchup/sketchup" class="related-repo-wrap text-center " style="background-color: light; ">
+            <div class="repo-link-wrap">
+              <div class="repo-icon-wrap  x-large" style="background-color: transparent">
+                <img alt="SketchUp's icon" class="repo-icon" src="https://turbo.net/io/users/sketchup/repos/sketchup/upload/icon/sketchup.jpg">
+              </div>
+            </div>
+
+            <p class="repo-title ellipsis">SketchUp</p>
+            <p class="repo-description">The easiest way to draw in 3D</p>
+          </a>
+        </div>
+        
+      </div>
+    </div>
+    
+    <div class="item ">
+      <div class="row">
+        
+        <div class="col-xs-turbo-6 col-md-turbo-3">
+          <a href="https://turbo.net/run/sqlserver/ssms-sqlserver" class="related-repo-wrap text-center " style="background-color: light; ">
+            <div class="repo-link-wrap">
+              <div class="repo-icon-wrap padded x-large" style="background-color: #C9C9C9">
+                <img alt="SQL Server Express with SSMS's icon" class="repo-icon" src="https://turbo.net/io/users/sqlserver/repos/ssms-sqlserver/upload/icon/icon_ssms2016%5B1%5D.png">
+              </div>
+            </div>
+
+            <p class="repo-title ellipsis">SQL Server Express with SSMS</p>
+            <p class="repo-description">SSMS and SQL Server 2016 Express bundle</p>
+          </a>
+        </div>
+        
+        <div class="col-xs-turbo-6 col-md-turbo-3">
+          <a href="https://turbo.net/run/viber/viber" class="related-repo-wrap text-center " style="background-color: light; ">
+            <div class="repo-link-wrap">
+              <div class="repo-icon-wrap  x-large" style="background-color: transparent">
+                <img alt="Viber's icon" class="repo-icon" src="https://turbo.net/io/users/viber/repos/viber/upload/icon/viber-iconV2.png">
+              </div>
+            </div>
+
+            <p class="repo-title ellipsis">Viber</p>
+            <p class="repo-description">Connect across the world for free with calls, texts, and photos. </p>
+          </a>
+        </div>
+        
+      </div>
+    </div>
+    
+  </div>
+
+  
+  <!-- Controls -->
+  <a class="left carousel-control" href="visit.html#related-apps-carousel-mobile" role="button" data-slide="prev">
+    <span class="fa fa-chevron-left" aria-hidden="true"></span>
+    <span class="sr-only">Previous</span>
+  </a>
+  <a class="right carousel-control" href="visit.html#related-apps-carousel-mobile" role="button" data-slide="next">
+    <span class="fa fa-chevron-right" aria-hidden="true"></span>
+    <span class="sr-only">Next</span>
+  </a>
+  
+
+  
+  <script>trimDescription()</script>
+</div>
+    </div>
+  </div>
+
+  <div id="latest-updates-promo" class="section-wrap solution-row">
+    <div class="black-overlay"></div>
+
+    <div id="category-browser-table" class="category-browser-table borderless-table large">
+      <div class="fixedWidthBody">
+        <div class="row">
+          <div id="browse-apps-col" class="col-md-turbo-6">
+            <h2 class="section-header">Browse the Hub</h2>
+
+            <ul class="borderless-table-body">
+              <li class="group-item clearfix">
+                <div class="col-xs-turbo-12 col-icon-and-name">
+                  <a href="https://turbo.net/hub/category/web">
+                    <div class="repo-icon-wrap padded">
+                      <img alt="Browsers category" class="repo-icon" src="https://turbo.net/images/icons/categories/browsers.png">
+                    </div>Browsers
+                  </a>
+                </div>
+              </li>
+              <li class="group-item clearfix">
+                <div class="col-xs-turbo-12 col-icon-and-name">
+                  <a href="https://turbo.net/hub/category/chat">
+                    <div class="repo-icon-wrap padded">
+                      <img alt="Chat category" class="repo-icon" src="https://turbo.net/images/icons/categories/chat.png">
+                    </div>Chat
+                  </a>
+                </div>
+              </li>
+              <li class="group-item clearfix">
+                <div class="col-xs-turbo-12 col-icon-and-name">
+                  <a href="https://turbo.net/hub/category/data" title="Data and Business Intelligence">
+                    <div class="repo-icon-wrap padded">
+                      <img alt="Data category" class="repo-icon" src="https://turbo.net/images/icons/categories/data.png">
+                    </div>Data and BI
+                  </a>
+                </div>
+              </li>
+              <li class="group-item clearfix">
+                <div class="col-xs-turbo-12 col-icon-and-name">
+                  <a href="https://turbo.net/hub/category/developer">
+                    <div class="repo-icon-wrap padded">
+                      <img alt="Developer category" class="repo-icon" src="https://turbo.net/images/icons/categories/developer.png">
+                    </div>Developer
+                  </a>
+                </div>
+              </li>
+              <li class="group-item clearfix">
+                <div class="col-xs-turbo-12 col-icon-and-name">
+                  <a href="https://turbo.net/erp">
+                    <div class="repo-icon-wrap padded">
+                      <img alt="Tools category" class="repo-icon" src="https://turbo.net/images/icons/erp-white.png">
+                    </div>ERP
+                  </a>
+                </div>
+              </li>
+              <li class="group-item clearfix">
+                <div class="col-xs-turbo-12 col-icon-and-name">
+                  <a href="https://turbo.net/hub/category/media">
+                    <div class="repo-icon-wrap padded">
+                      <img alt="Media category" class="repo-icon" src="https://turbo.net/images/icons/categories/media.png">
+                    </div>Media
+                  </a>
+                </div>
+              </li>
+              <li class="group-item clearfix">
+                <div class="col-xs-turbo-12 col-icon-and-name">
+                  <a href="https://turbo.net/hub/category/productivity">
+                    <div class="repo-icon-wrap padded">
+                      <img alt="Productivity category" class="repo-icon" src="https://turbo.net/images/icons/categories/productivity.png">
+                    </div>Productivity
+                  </a>
+                </div>
+              </li>
+              <li class="group-item clearfix">
+                <div class="col-xs-turbo-12 col-icon-and-name">
+                  <a href="https://turbo.net/hub/category/servers">
+                    <div class="repo-icon-wrap padded">
+                      <img alt="Server category" class="repo-icon" src="https://turbo.net/images/icons/categories/server.png">
+                    </div>Servers
+                  </a>
+                </div>
+              </li>
+              <li class="group-item clearfix">
+                <div class="col-xs-turbo-12 col-icon-and-name">
+                  <a href="https://turbo.net/hub/category/tools">
+                    <div class="repo-icon-wrap padded">
+                      <img alt="Tools category" class="repo-icon" src="https://turbo.net/images/icons/categories/tools.png">
+                    </div>Tools
+                  </a>
+                </div>
+              </li>
+            </ul>
+          </div>
+
+          <div id="featured-apps-col" class="col-md-turbo-6 tools-col">
+            <h2 class="section-header" style="margin-bottom: 72px;">Tools &amp; Resources</h2>
+
+            <a href="https://turbo.net/studio">
+              <img alt="Turbo Studio" class="small-icon" src="https://turbo.net/images/icons/categories/tools.png" style="vertical-align: -3px;">Turbo Studio
+            </a>
+            <p class="gray-text">Authoring environment for creating your own containerized applications and components.</p>
+
+            <a href="https://turbo.net/server">
+              <img alt="Turbo Server" class="small-icon" src="https://turbo.net/images/icons/categories/server.png" style="vertical-align: -4px;">Turbo Server
+            </a>
+            <p class="gray-text">Bring Turbo.net on-premises for enhanced performance and enterprise grade features and robustness.</p>
+
+            <a href="https://turbo.net/ci">
+              <i class="fa fa-recycle"></i>Turbo CI
+            </a>
+            <p class="gray-text">Cloud hosted continuous integration (CI) automatically validates and updates application images.</p>
+
+            <a href="https://github.com/turboapps" target="_blank">
+              <i class="fa fa-github"></i>Turbo on GitHub
+            </a>
+            <p class="gray-text">Official Git repositories for open source Turbo projects, plugins, and resources.</p>
+
+            <a href="https://turbo.net/downloads">
+              <i class="small-icon fa fa-download" style="vertical-align: -2px;"></i>All Downloads
+            </a>
+            <p class="gray-text">All Turbo.net clients, servers, extensions, tools, and more.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="footer-cta" class="section-wrap solution-row text-center dark">
+    <a href="https://turbo.net/buy" class="flat-btn solid ">Buy</a>
+
+    <p id="customers-header" class="text-center">Thousands of the world's most effective organizations empower their people with Turbo.net.</p>
+    
+
+<style>
+  .customers-grid-row {
+    height: 100px;
+    overflow: hidden; /* Hide overflowing tiles */
+    text-align: center;
+  }
+
+  .customers-grid-row + .customers-grid-row {
+    margin-top: 20px;
+  }
+
+  .customers-grid-cell {
+    display: none; /* Show after flip is inited */
+    height: 100px;
+    width: 123px;
+  }
+
+  .customers-grid-cell + .customers-grid-cell {
+    margin-left: 11px;
+  }
+
+  .customers-grid-cell .front,
+  .customers-grid-cell .back {
+    height: 100px;
+    width: 125px;
+    background-color: #FFF;
+    background-image: url('https://turbo.net/images/customers/customers-sheet-sm-gray.png');
+    background-size: 8875px 100px;
+    transition: transform 0.5s ease-out !important;
+  }
+</style>
+
+<script src="https://turbo.net/js/lib/jquery.flip.js"></script>
+<script>
+  $(function() {
+    var $cells = $('.customers-grid-cell')
+    $cells.flip({trigger: 'manual', axis: 'x'}).css('display', 'inline-block')
+    startFlip()
+  })
+
+  var recentIdxs = [44,1,21,42,64,56,54,32]
+
+  var flipInterval;
+
+  function startFlip() {
+    window.clearInterval(flipInterval);
+    flipInterval = window.setInterval(_flipCells, 6000);
+  }
+  function stopFlip() {
+    window.clearInterval(flipInterval);
+  }
+
+  if(window.addEventListener) {
+    window.addEventListener('focus', startFlip);
+    window.addEventListener('blur', stopFlip);
+  } else { // IE8
+    window.attachEvent("focus", startFlip);
+    window.attachEvent("blur", stopFlip);
+  }
+
+  function _flipCells() {
+    $('.customers-grid-cell').each(function(i) {
+      var $cell = $(this)
+      setTimeout(function() {
+        _flipCell($cell)
+      }, i * 50)
+    })
+  }
+
+  function _flipCell($cell) {
+    // Prevent browser from buffering animations while the window is inactive
+    $cell.stop(true,true);
+    $cell.find('.front, .back').stop(true,true);
+
+    var nextIdx = _getCustomerImageIndex()
+    var nextX = nextIdx * -125
+
+    $cell.attr('data-image-idx', nextIdx)
+
+    var flipData = $cell.data("flip-model");
+    if (flipData.isFlipped) {
+      $cell.find('.front').css('background-position', nextX+'px 0')
+    } else {
+      $cell.find('.back').css('background-position', nextX+'px 0')
+    }
+
+    // Keep 40 most recent customer icons in memory
+    recentIdxs.push(nextIdx)
+    recentIdxs = recentIdxs.slice(-40)
+
+    $cell.flip('toggle')
+  }
+
+  // Exclude visible images
+  function _getCustomerImageIndex() {
+    var validIdxs = [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55,56,57,58,59,60,61,62,63,64,65,66,67,68,69,70]
+
+        validIdxs = $(validIdxs).not(recentIdxs).get();
+
+    return validIdxs[Math.floor(Math.random() * validIdxs.length)]
+  }
+</script>
+
+<div id="customers-grid">
+  <div class="customers-grid-row clearfix">
+    
+    <div class="customers-grid-cell" id="customers-grid-cell-0" data-image-idx="0">
+      <div class="front" style="background-position: -5500px 0"></div>
+      <div class="back" style="background-position: -5500px 0"></div>
+    </div>
+    
+    <div class="customers-grid-cell" id="customers-grid-cell-1" data-image-idx="1">
+      <div class="front" style="background-position: -125px 0"></div>
+      <div class="back" style="background-position: -125px 0"></div>
+    </div>
+    
+    <div class="customers-grid-cell" id="customers-grid-cell-2" data-image-idx="2">
+      <div class="front" style="background-position: -2625px 0"></div>
+      <div class="back" style="background-position: -2625px 0"></div>
+    </div>
+    
+    <div class="customers-grid-cell" id="customers-grid-cell-3" data-image-idx="3">
+      <div class="front" style="background-position: -5250px 0"></div>
+      <div class="back" style="background-position: -5250px 0"></div>
+    </div>
+    
+    <div class="customers-grid-cell" id="customers-grid-cell-4" data-image-idx="4">
+      <div class="front" style="background-position: -8000px 0"></div>
+      <div class="back" style="background-position: -8000px 0"></div>
+    </div>
+    
+    <div class="customers-grid-cell" id="customers-grid-cell-5" data-image-idx="5">
+      <div class="front" style="background-position: -7000px 0"></div>
+      <div class="back" style="background-position: -7000px 0"></div>
+    </div>
+    
+    <div class="customers-grid-cell" id="customers-grid-cell-6" data-image-idx="6">
+      <div class="front" style="background-position: -6750px 0"></div>
+      <div class="back" style="background-position: -6750px 0"></div>
+    </div>
+    
+    <div class="customers-grid-cell" id="customers-grid-cell-7" data-image-idx="7">
+      <div class="front" style="background-position: -4000px 0"></div>
+      <div class="back" style="background-position: -4000px 0"></div>
+    </div>
+    
+  </div>
+</div>
+  </div>
+
+
+  <footer id="universalFooter">
+  <div class="footerText fixedWidthBody">
+    <div class="footerLeft">
+      <span class="copywrite">&copy; Turbo.net</span>
+      
+      <a href="https://turbo.net/terms">Terms</a>
+      <a target="_blank" href="https://support.turbo.net" >Support</a>
+
+      <div class="dropup gray-dropdown" style="margin-left: 25px; display: inline-block;">
+        <a data-toggle="dropdown" href="javascript://">&bull;&bull;&bull;</a>
+        <ul class="dropdown-menu">
+          <li>
+            <a href="https://turbo.net/about">About</a>
+          </li>
+          <li>
+            <a href="https://turbo.net/hub">Browse</a>
+          </li>
+          <li>
+            <a href="https://turbo.net/docs/getting-started">Tour</a>
+          </li>
+          <li>
+            <a href="https://turbo.net/download">Downloads</a>
+          </li>
+          <li>
+            <a href="https://turbo.net/jobs">Jobs</a>
+          </li>
+          <li>
+            <a target="_blank" href="http://blog.turbo.net">Blog</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="footerRight hidden-xs-turbo">
+      <a href="https://twitter.com/turbohq" target="_blank">
+        <i class="fa fa-twitter"></i>
+      </a>
+      <a href="http://facebook.com/turbohq" target="_blank">
+        <i class="fa fa-facebook-square"></i>
+      </a>
+      <a href="https://www.youtube.com/channel/UCOt8IkZs0pWSKxsgxs7sv_A" target="_blank">
+        <i class="fa fa-youtube-play"></i>
+      </a>
+      <a href="mailto:support@turbo.net">
+        <i class="fa fa-envelope"></i>
+      </a>
+    </div>
+  </div>
+</footer>
+<!-- placeholder -->
+<div class="footerSpacer"></div>
+</div>
+</body>
+
+<script>
+  var loc = window.location;
+
+  // Prevent subdomains, such as development and dev-stage.spoon.net, from posting analytic events
+  if ((loc.hostname.toLowerCase() == "turbo.net" || loc.hostname.toLowerCase() == "www.turbo.net") && loc.port.length == 0) {
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-51722-3', 'auto');
+    ga('send', 'pageview');
+  } else {
+    console.log('GA is being simulated, not on a production environment','UA-51722-3')
+    window.ga = function(a,b,c,d) { console.log('GA',a,b,c,d) }
+  }
+  /**
+   * Temporary measure, if we're not sure if GA events arrive correctly.
+   * In that case send the event as single string to our own server.
+   * The server does nothing with it, however, it will be visible in the access logs.
+   * @type {{sendEvent}}
+   */
+  var GoogleAnalyticsSanityCheck = function(){
+    var sendEvent = function(eventName){
+      $.ajax('/rest/0.1/ga-sanity-check/'+eventName)
+      return
+    }
+    return {
+      sendEvent:sendEvent
+    }
+  }();
+
+</script>
+</html>

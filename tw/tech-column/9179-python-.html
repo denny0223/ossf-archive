@@ -1,0 +1,802 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="zh-tw" lang="zh-tw" >
+<head>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<link rel="shortcut icon" href="../../images/favicon.ico" />
+	  <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+  <meta name="robots" content="index, follow" />
+  <meta name="keywords" content="OSSFNL846" />
+  <meta name="title" content="Python 程式碼風格指引" />
+  <meta name="description" content="◎ 本文轉載自 https://wiki.jiayun.org/P EP_8_- -_Style_Guide_for_Python_Code#References，原作者為 Guido van Rossum、Barry Warsaw，翻譯者為：JiaYun 簡介 本文件提供 Python 主要發行版本標準程式庫中的 Python 程式碼所用的撰寫慣例。關於 Python 的 C 實作中所用的 C" />
+  <meta name="generator" content="" />
+  <title>Python 程式碼風格指引 - OpenFoundry</title>
+  <link href="../../favicon.ico" rel="shortcut icon" type="image/x-icon" />
+  <link rel="stylesheet" href="../../components/com_gantry/css/gantry.css" type="text/css" />
+  <link rel="stylesheet" href="../../components/com_gantry/css/grid-12.css" type="text/css" />
+  <link rel="stylesheet" href="../../components/com_gantry/css/joomla.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/joomla.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/style1.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/light-body.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/demo-styles.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/template.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/typography.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/fusionmenu.css" type="text/css" />
+  <style type="text/css">
+    <!--
+#rt-main-surround ul.menu li.active > a, #rt-main-surround ul.menu li.active > .separator, #rt-main-surround ul.menu li.active > .item, #rt-main-surround .square4 ul.menu li:hover > a, #rt-main-surround .square4 ul.menu li:hover > .item, #rt-main-surround .square4 ul.menu li:hover > .separator, .roktabs-links ul li.active span {color:#0088B5;}
+a, #rt-main-surround ul.menu a:hover, #rt-main-surround ul.menu .separator:hover, #rt-main-surround ul.menu .item:hover {color:#0088B5;}
+    -->
+  </style>
+  <script type="text/javascript" src="../../components/com_jcomments/js/jcomments-v2.1.js%3Fv=2"></script>
+  <script type="text/javascript" src="../../components/com_jcomments/libraries/joomlatune/ajax.js"></script>
+  <script type="text/javascript" src="../../media/system/js/mootools.js"></script>
+  <script type="text/javascript" src="../../media/system/js/caption.js"></script>
+  <script type="text/javascript" src="../../components/com_gantry/js/gantry-buildspans.js"></script>
+  <script type="text/javascript" src="../../components/com_gantry/js/gantry-inputs.js"></script>
+  <script type="text/javascript" src="../../templates/rt_quantive_j15/js/jquery.cookie.js"></script>
+  <script type="text/javascript" src="../../modules/mod_roknavmenu/themes/fusion/js/fusion.js"></script>
+  <script type="text/javascript" src="../../modules/mod_ofssologin/js/ofssologin.js"></script>
+  <script type="text/javascript">
+
+			window.addEvent('domready', function() {
+				var modules = ['rt-block'];
+				var header = ['h3','h2','h1'];
+				GantryBuildSpans(modules, header);
+			});
+		InputsExclusion.push('.content_vote','#rt-popup')
+		        window.addEvent('load', function() {
+					new Fusion('ul.menutop', {
+						pill: 0,
+						effect: 'slide and fade',
+						opacity: 1,
+						hideDelay: 500,
+						centered: 0,
+						tweakInitial: {'x': -2, 'y': 0},
+        				tweakSubsequent: {'x': 0, 'y': -14},
+						menuFx: {duration: 200, transition: Fx.Transitions.Sine.easeOut},
+						pillFx: {duration: 400, transition: Fx.Transitions.Back.easeOut}
+					});
+	            });
+  </script>
+<!-- <script type="text/javascript" src="/sso/javascripts/langsync.js"></script> -->
+<!-- <script src="/templates/rt_quantive_j15/js/ossf.js"></script> -->
+<script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-4136519-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
+</head>
+	<body  class="backgroundlevel-low backgroundstyle-style8 bodylevel-med bodystyle-light cssstyle-style1 logostyle-dark font-family-helvetica font-size-is-default menu-type-fusionmenu col12 ">
+		<div id="rt-main-background">
+			<div class="rt-container">
+																<div id="rt-header">
+					<div class="rt-grid-7 rt-alpha">
+    			<div class="rt-block">
+    	    	<a href="../../index.html" id="rt-logo"></a>
+    		</div>
+	    
+</div>
+<div class="rt-grid-5 rt-omega">
+                    <div class="square9">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<div class="ofssologin_square9"><a href="../../index.html">登入</a>&nbsp;&nbsp|&nbsp;&nbsp;<span><a href="../../en/tech-column/9179-python-.html" ><span lang="en" xml:lang="en">English</span></a></li></ul></span><!--Joom!fish V2.0.4 (Lightning)-->
+<!-- &copy; 2003-2009 Think Network, released under the GPL. -->
+<!-- More information: at http://www.joomfish.net -->
+<div class="ofssologin_search_square9">
+  <form id="of_search" action="https://www.openfoundry.org/of/openfoundry/search" method="get" onsubmit="of_search(); return false;">
+    <select id="of_search_type">
+      <option value="Projects"> 專案 </option>
+      <option value="Content"> 文章 </option>
+      <option value="People"> 人才 </option>
+    </select>
+    <input id="query" name="query" id="mod_search_searchword" maxlength="50" alt="search" class="inputbox" type="text" size="28" value="search..."  onblur="if(this.value=='') this.value='search...';" onfocus="if(this.value=='search...') this.value='';" />
+    <input type="hidden" name="commit" value="search" />
+  </form>
+</div></div>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		
+</div>
+					<div class="clear"></div>
+				</div>
+																<div id="rt-navigation"><div id="rt-navigation2"><div id="rt-navigation3">
+					
+<div class="nopill">
+	<ul class="menutop level1 " >
+						<li class="item1 root" >
+					<a class="orphan item bullet" href="../../index.html"  >
+				<span>
+			    				首頁				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item32 root" >
+					<a class="orphan item bullet" href="../../archived.html"  >
+				<span>
+			    				專案				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item186 root" >
+					<a class="orphan item bullet" href="../community.html"  >
+				<span>
+			    				Who&#039;s Who				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item4 root" >
+					<a class="orphan item bullet" href="../news.html"  >
+				<span>
+			    				新聞				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item5 root" >
+					<a class="orphan item bullet" href="../law-and-licensing.html"  >
+				<span>
+			    				法律源地				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item3 root" >
+					<a class="orphan item bullet" href="../activities.html"  >
+				<span>
+			    				活動				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item2 root" >
+					<a class="orphan item bullet" href="../resourcecatalog%3FName=Value.html"  >
+				<span>
+			    				資源表列				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item45 root" >
+					<a class="orphan item bullet" href="../about.html"  >
+				<span>
+			    				關於				   
+				</span>
+			</a>
+			
+			
+	</li>	
+				</ul>
+</div>
+
+				    <div class="clear"></div>
+				</div></div></div>
+								<div class="rt-surround"><div class="rt-surround2"><div class="rt-surround3">
+										<div id="rt-showcase-section">
+												<div id="rt-showcase">
+							<div class="rt-grid-12 rt-alpha rt-omega">
+    		<div class="clear"></div>
+		
+		
+                <div class="close-note">
+                    <div class="rt-block">
+               					<div class="module-content">
+                	<div style="font-size:medium; background-image:linear-gradient(120deg,#159957,#4298b2);color:white;padding:20px;margin:-10px -18px;">感謝您對「自由軟體鑄造場」的支持與愛護，十多年來「自由軟體鑄造場」受中央研究院支持，並在資訊科學研究所以及資訊科技創新研究中心執行，現已完成階段性的任務。 本網站預計持續維運至 2021年底，網站內容基本上不會再更動。<br />也紀念我們永遠的朋友 李士傑先生（Shih-Chieh Ilya Li）。</div>				</div>
+            </div>
+                </div>
+		
+</div>
+							<div class="clear"></div>
+						</div>
+																	</div>
+															<div id="rt-main-surround">
+												<div id="rt-breadcrumbs">
+								<div class="rt-breadcrumb-surround">
+		<a href="../../index.html" id="breadcrumbs-home"></a>
+		<span class="breadcrumbs pathway">
+<a href="../tech-column.html" class="pathway">技術專欄</a> <img src="../../templates/rt_quantive_j15/images/arrow.png" alt=""  /> <span class="no-link">Python 程式碼風格指引</span></span>
+	</div>
+	
+							<div class="clear"></div>
+						</div>
+																							              <div id="rt-main" class="sa3-mb9">
+                <div class="rt-main-inner">
+                    <div class="rt-grid-9 rt-push-3">
+                                                <div class="rt-block">
+                            							<div class="square1">
+							<div class="rt-module-surround">
+								<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+								<div class="rt-module-inner">
+		                            <div id="rt-mainbody">
+		                                
+<div class="rt-joomla ">
+	<div class="rt-article">
+		
+				<div class="rt-headline"><h1 class="rt-article-title">Python 程式碼風格指引</h1>		</div>
+		<div class="clear"></div>
+		
+		
+		
+				<div class="rt-articleinfo">
+						<div class="rt-article-icons">
+								<a href="9179-python-%3Ftmpl=component&amp;print=1&amp;layout=default&amp;page=.html" title="列印" onclick="window.open(this.href,'win2','status=no,toolbar=no,scrollbars=yes,titlebar=no,menubar=no,resizable=yes,width=640,height=480,directories=no,location=no'); return false;" rel="nofollow"><span class="icon print"></span></a>																</div>
+			
+			<span class="rt-date-posted">
+						建立日期			2014-02-20 11:21						&nbsp;&nbsp;&nbsp;&nbsp;						最近更新在 2014-02-26 13:52						</span>
+
+						<span class="rt-author">
+				作者是 JiaYun／翻譯			</span>
+				
+					</div>
+		
+		
+		<p>◎ 本文轉載自 <a target="_blank" href="https://wiki.jiayun.org/PEP_8_--_Style_Guide_for_Python_Code#References">https://wiki.jiayun.org/PEP_8_--_Style_Guide_for_Python_Code#References</a>，原作者為 Guido van Rossum、Barry Warsaw，翻譯者為：JiaYun<jiayun at="AT" gmail="gmail" com="gmail.com"></jiayun></p>
+<h3>簡介</h3>
+<p>本文件提供 Python 主要發行版本標準程式庫中的 Python 程式碼所用的撰寫慣例。關於 Python 的 C 實作中所用的 C 語言風格指引，請參考相關的 PEP[1]。</p>
+<p>本文件改寫自 Guido 所寫的 Python 風格指引文章 [2]，並增添一些 Barry 的風格指引 [5] 的內容。當兩者有衝突時，本 PEP 以 Guido 風格為準。本 PEP 可能仍未完成（事實上，可能永遠不會完工＜眨眼＞）。</p>
+<br />
+<h3>愚蠢的一致性是小心眼中的妖怪</h3>
+<p>Guido 的重要見解之一是：程式碼被閱讀的次數，遠大於被撰寫的次數。提供本指引的目的，是為了增進程式碼的可讀性，並使 Python 程式碼在各方面保持一致性。如同 <a target="_blank" href="https://www.python.org/dev/peps/pep-0020">PEP 20</a> [6] 所說的「可讀性至關重要」。</p>
+<p>風格指引關注的是一致性。和本指引一致很重要，在專案中保持一致性又更重要，但在 module 或 function 中保持一致性則最重要。</p>
+<p>但更更重要的是：知道何時該不一致 －－ 有時候風格指引就是無法適用。有疑惑時，運用你的最佳判斷力。看看其他例子，並決定何者最好看。需要的時候，儘管發問。</p>
+<p>打破特定規則的兩個好理由：</p>
+<ol>
+<li>使用該規則會造成程式碼可讀性變差，特別是對習慣該規則的人來說，可讀性也變差的時候。</li>
+<li>為了和前後（可能是因為歷史性因素）打破該規則的程式碼保持一致性時 －－ 雖然這也是清理他人雜亂程式碼的時機（在真正的 Extreme Programming 開發中）。</li>
+</ol><br />
+<h3>程式碼編排</h3>
+<p><strong>縮排</strong></p>
+<p>每個縮排層級使用 4 個空白。</p>
+<p>在相當舊的程式碼中，為了一致可以繼續使用 tab。</p>
+<p><strong>tab 或空白？</strong></p>
+<p>絕對不要混用 tab 和空白。</p>
+<p>縮排 Python 最常用的方式是只用空白。第二常用的方式是只用 tab。混用 tab 和空白來縮排的程式碼，應該轉成只用空白。在呼叫 Python 直譯器時加上 -t 選項，它會對混用 tab 和空白的程式發出警告。若使用 -tt 選項，則發出的會是錯誤。非常推薦使用這些選項！</p>
+<p>對於新專案來說，只用空白比用 tab 更受推薦。大多數編輯器都有相關設定，可以很容易做到這點。</p>
+<p><strong>每行最大長度</strong></p>
+<p>將每一行限制在最多 79 個字元之內。</p>
+<p>仍然有很多裝置受限於每行 80 個字元；而且視窗寬度限制在 80 個字元內，可以方便讓多個視窗並排。這些裝置的預設斷行機制會破壞程式碼的顯示結構，而使程式碼更難理解。所以，請將每一行限制在最多 79 個字元之內。對於大區段的文字（docstring 或註解），建議每行限制在 72 個字元內。</p>
+<p>建議的斷行方式是運用圓括號、方括號、大括號在 Python 中隱含的行接續作用。若需要，也可以對 expression 增加額外的圓括號，但有時只用反斜線看起來會更好。確保接續的行有妥善縮排。一些例子：</p>
+<pre>class Rectangle(Blob):
+ 
+    def __init__(self, width, height,
+                 color='black', emphasis=None, highlight=0):
+        if width == 0 and height == 0 and \
+           color == 'red' and emphasis == 'strong' or \
+           highlight > 100:
+            raise ValueError("sorry, you lose")
+        if width == 0 and height == 0 and (color == 'red' or
+                                           emphasis is None):
+            raise ValueError("I don't think so")
+        Blob.__init__(self, width, height,
+                      color, emphasis, highlight)
+</pre>
+<br />
+<p><strong>空白行</strong></p>
+<p>將最高層級的 function 和 class 定義以兩個空白行分隔。</p>
+<p>class 內的 method 定義之間以一個空白行分隔。</p>
+<p>額外的空白行可以（謹慎地）用於分隔不同群組的相關 function。在一群相關的單行程式碼中（例如一組空的實作），空白行可以省略。</p>
+<p>在 function 中，小心地使用空白行來表示邏輯上的分段。</p>
+<p>Python 將 control-L（也就是 ^L）換頁字元視為空白。很多工具將這字元用於表示換頁，所以在你的檔案中，可以用它來為各相關區段作分頁。</p>
+<br />
+<p><strong>編碼</strong> (<a target="_blank" href="https://www.python.org/dev/peps/pep-0263">PEP 263</a>)</p>
+<p>Python 核心發行版本中的程式碼應該都使用 ASCII 或 Latin-1（即 ISO-8859-1）編碼。對於 Python 3.0 或以上版本，UTF-8 比 Latin-1 更建議使用，參考 PEP 3120。</p>
+<p>使用 ASCII（或 UTF-8，在 Python 3.0 時）的程式檔案不該使用編碼指示（像是 "coding: utf-8"）。Latin-1（或 UTF-8）應該只用在註解或 docstring 提到作者的名字需要時；否則建議在字串常量中，使用 \x、\u 或 \U 等轉義字符來表示非 ASCII 資料。</p>
+<p>對於 Python 3.0 或以上版本，標準程式庫規定使用以下方針（參考 <a target="_blank" href="https://www.python.org/dev/peps/pep-3131">PEP 3131</a>）：所有 Python 標準程式庫中的識別字「必須」使用僅含 ASCII 的識別字，而且「應該」在可能的時候都用英文的單字（很多情況下所用的縮寫或技術術語並不是英語）。另外，字串常量或註解也都必須是 ASCII 編碼。例外情況只能是 (a) 測試非 ASCII 功能的測試案例，和 (b) 作者的名字。名字不是拉丁字母組成的作者，「必須」提供名字的拉丁音譯。</p>
+<p>對於擁有全球性使用者的開放原始碼專案，也鼓勵採用類似的方針。</p>
+<br />
+<h3>import</h3>
+<ul style="list-style-type: square;">
+<li>import 通常應該分成不同行，例如：</li>
+<p>這樣寫：</p>
+<pre>import os
+import sys
+</pre>
+<p>不要寫：</p>
+<pre>import sys, os
+</pre>
+<p>但這種情況是可以的：</p>
+<pre>from subprocess import Popen, PIPE
+</pre>
+<li>import 應該永遠放在檔案頂端，也就是在 module 的註解和 docstring 之後，而在 module 的全域變數和常數之前。</li>
+</ul>
+<p>    import 應該以以下順序分組：</p>
+<ol>
+<li>標準程式庫的 import</li>
+<li>相關第三方程式庫的 import</li>
+<li>己方應用程式/程式庫特定的 import</li>
+<p>每組 import 之間應該以一個空白行分隔。 將任何相關的 __all__ 細述放在 import 之下。</p>
+</ol>
+<ul style="list-style-type: square;">
+<li>極不鼓勵在 package 之間使用相對 import。</li>
+<p>所有 import 都要永遠用 package 的絕對路徑。雖然現在 PEP 328 [7] 已經在 Python 2.5 中完全實作，但它明確表明相對 import 的方式仍不鼓勵使用；絕對 import 更有可攜性，通常也更有可讀性。</p>
+<li>從含有 class 定義的 module 中 import class 時，這樣寫通常是可以的</li>
+<pre>from myclass import MyClass
+from foo.bar.yourclass import YourClass
+</pre>
+<p>如果會造成命名衝突，可以改成</p>
+<pre>import myclass
+import foo.bar.yourclass
+</pre>
+<p>然後使用 "myclass.MyClass" 和 "foo.bar.yourclass.YourClass"</p>
+</ul>
+<br />
+<h3>expression 和 statement 中的空白</h3>
+<p><strong>惱人瑣事</strong></p>
+<p>在以下情況避免使用額外的空白：</p>
+<ul style="list-style-type: square;">
+<li>緊連在圓括號、方括號、大括號之內。</li>
+<p>這樣寫：</p>
+<pre>spam(ham[1], {eggs: 2})
+</pre>
+<p>不要寫：</p>
+<pre>spam( ham[ 1 ], { eggs: 2 } )
+</pre>
+<li>逗號、分號、冒號前：</li>
+<p>這樣寫：</p>
+<pre>    if x == 4: print x, y; x, y = y, x
+</pre>
+<p>不要寫：</p>
+<pre>    if x == 4 : print x , y ; x , y = y , x
+</pre>
+<li>函式呼叫的參數傳遞左括號前：</li>
+<p>這樣寫：</p>
+<pre>    spam(1)
+</pre>
+<p>不要寫：</p>
+<pre>spam (1)
+</pre>
+<li>索引和 slice 的左括號前：</li>
+<p>這樣寫：</p>
+<pre>    dict['key'] = list[index]
+</pre>
+<p>不要寫：</p>
+<pre>    dict ['key'] = list [index]
+</pre>
+<li>在賦值（或其他）運算子前後用了一個以上的空白，只為了和另一個對齊。</li>
+<p>這樣寫：</p>
+<pre>    x = 1
+    y = 2
+    long_variable = 3
+</pre>
+<p>不要寫：</p>
+<pre>    x             = 1
+    y             = 2
+    long_variable = 3
+</pre>
+</ul>
+<br />
+<p><strong>其他建議</strong></p>
+<ul style="list-style-type: square;">
+<li>永遠在這些二元運算子前後加上一個空白：賦值（=）、增量賦值（+=, -= 之類）、比較（==, ＜, ＞, !=, ＜＞, ＜=, ＞=, in, not in, is, is not）、邏輯（and, or, not）。</li>
+<li>算術運算子前後使用空白：</li>
+<p>這樣寫：</p>
+<pre>i = i + 1
+submitted += 1
+x = x * 2 - 1
+hypot2 = x * x + y * y
+c = (a + b) * (a - b)
+</pre>
+<p>不要寫：</p>
+<pre>i=i+1
+submitted +=1
+x = x*2 - 1
+hypot2 = x*x + y*y
+c = (a+b) * (a-b)
+</pre>
+<li>當 '=' 符號是用在關鍵字參數或預設參數值時，不要加空白。</li>
+<p>這樣寫：</p>
+<pre>    def complex(real, imag=0.0):
+        return magic(r=real, i=imag)
+</pre>
+<p>不要寫：</p>
+<pre>    def complex(real, imag = 0.0):
+        return magic(r = real, i = imag)
+</pre>
+<li>複合 statement（一行有多個 statement）通常不鼓勵使用。</li>
+<p>這樣寫：</p>
+<pre>    if foo == 'blah':
+        do_blah_thing()
+    do_one()
+    do_two()
+    do_three()
+</pre>
+<p>盡量不要寫：</p>
+<pre>    if foo == 'blah': do_blah_thing()
+    do_one(); do_two(); do_three()
+</pre>
+<p>雖然有時 if/for/while 的主體短，可以整個放在同一行，但絕對不要在多子句時這麼做。也要避免摺疊這類長行！</p>
+<p>盡量不要寫：</p>
+<pre>    if foo == 'blah': do_blah_thing()
+    for x in lst: total += x
+    while t ＜ 10: t = delay()
+</pre>
+<p>更是別寫：</p>
+<pre>    if foo == 'blah': do_blah_thing()
+    else: do_non_blah_thing()
+     
+    try: something()
+    finally: cleanup()
+     
+    do_one(); do_two(); do_three(long, argument,
+                                 list, like, this)
+     
+    if foo == 'blah': one(); two(); three()
+</pre>
+</ul>
+<br />
+<h3>註解</h3>
+<p>註解和程式碼牴觸比沒有註解還糟。更改程式碼之後，永遠將更新註解列為優先事項。</p>
+<p>註解應該是完整的句子。當註解是片語或句子時，第一個單字應該大寫，除非它是一個小寫開頭的識別字（絕對不要改變識別字的大小寫！）。</p>
+<p>果註解很短，結尾的句點可以省略。區塊註解通常包含由完整句子組成的一或多個段落，其中每個句子都該以句點作結尾。</p>
+<p>每個句子的句點後應該加兩個空白。</p>
+<p>寫英文時，Strunk 和 White 的 "The Elements of Style" 值得參考。</p>
+<p>非英語系國家的 Python 程式設計師：請用英文寫註解，除非 120% 確定不會有不懂你語言的人閱讀你的程式碼。</p>
+<p><strong>區塊註解</strong></p>
+<p>區塊註解通常用來註解下方的一段（或全部）程式碼，並和程式碼使用相同縮排層級。區塊註解的每一行開頭都是 # 和一個空白（除非該行在註解中需要縮排）。</p>
+<p>區塊註解中的段落之間，以只有一個 # 的行分隔。</p>
+<p><strong>行內註解</strong></p>
+<p>有節制地使用行內註解。</p>
+<p>行內註解是和 statement 在同一行的註解。行內註解和 statement 之間應該至少用兩個空白分隔。行內註解的開頭應該是 # 和一個空白。</p>
+<p>行內註解若只陳述明顯事實，則是不必要且實際上是造成干擾的。不要這樣寫：</p>
+<pre>x = x + 1                 # Increment x
+</pre>
+<p>但有時，這樣是有用的</p>
+<pre>x = x + 1                 # Compensate for border
+</pre>
+<br />
+<h3>文件字串</h3>
+<p>好的文件字串（即 docstring）撰寫慣例載於 PEP 257 [3]。</p>
+<ul style="list-style-type: square;">
+<li>所有 public 的 module、function、class、method 都該寫文件字串。非 public 的 method 不需要寫文件字串，但應該用註解描述該 method 的作用。這註解應該放在 "def" 行之下。</li>
+<li>PEP 257 敘述了好的文件字串慣例。注意最重要的是，多行文件字串結尾的 """ 應該自己獨立一行，而且前面最好加一個空白行，例如：</li>
+<pre>    """Return a foobang
+     
+    Optional plotz says to frobnicate the bizbaz first.
+     
+    """
+</pre>
+<li>對於只有一行的 docstring，結尾的 """ 可以放在同一行。</li>
+</ul>
+<br />
+<h3>版本紀錄</h3>
+<p>如果需要在原始檔中加進 Subversion、CVS 或 RCS 的資料，可以這樣做：</p>
+<pre>__version__ = "$Revision: 60919 $"
+# $Source$
+</pre>
+<p>這幾行應該放在 module 的 docstring 之下，而在其他程式碼之前，並在上下各以一個空白行分隔。（譯註：Subversion 的話，第二行應該可以改用 "# $Id$"）</p>
+<br />
+<h3>命名慣例</h3>
+<p>Python 程式庫的命名慣例有點混亂，所以不太可能讓它完全一致 －－ 不過這裡提供的是目前建議的命名標準。新的 module 和 package（包括第三方 framework）都應該依此標準撰寫，不過當現存的程式庫用的是不同風格時，保持內部的一致性比較重要。</p>
+<p><strong>命名風格敘述</strong></p>
+<p>有許多不同的命名風格，不論用在何處，能夠將它們辨認出來會很有幫助。</p>
+<p>以下命名風格通常可以分辨出來：</p>
+<ul style="list-style-type: square;">
+<li>b （單個小寫字母）</li>
+<li>B （單個大寫字母）</li>
+<li>lowercase （小寫）</li>
+<li>lower_case_with_underscores （含底線的小寫）</li>
+<li>UPPERCASE （大寫）</li>
+<li>UPPER_CASE_WITH_UNDERSCORES （含底線的大寫）</li>
+<li>CapitalizedWords （字首大寫，又稱 CapWords 或 CamelCase －－ 如此稱呼是因為字母看起來崎嶇不平[4])，有時也稱為 StudlyCaps。</li>
+<br />
+<p>注意：如果有縮寫字，將縮寫字的每個字母大寫。也就是寫 HTTPServerError 比 HttpServerError 好。</p>
+<li>mixedCase （類似字首大寫，只差開頭單字的第一個字母是小寫）</li>
+<li>Capitalized_Words_With_Underscores （字首大寫加底線，很醜！）</li>
+<p>也有一種風格是用一個獨特的短字首將相關的名稱歸類在一起。這方法在 Python 中用得不多，但為了完整還是需要一提。例如 os.stat() function 回傳一個 tuple，其中各項的名稱習慣上都類似 st_mode，st_size，st_mtime 之類。（這是為了強調這些欄位和 POSIX system call struct 的對應關係，幫助程式設計師熟悉。）</p>
+<p>X11 程式庫的所有 public function 都以 X 開頭。在 Python 中，這種風格通常是不需要的，因為 attribute 和 method 名稱前面都會接物件名稱，而 function 名稱前面則會接 module 名稱。</p>
+<p>另外，以下是幾種開頭或結尾加底線的特殊格式（這些通常可以和任何大小寫慣例合用）：</p>
+<li>_single_leading_underscore 開頭單一底線：不具強制力的「內部用」標示。在 "from M import *" 時不會 import 名稱是單一底線開頭的項目。</li>
+<li>single_trailing_underscore_ 結尾單一底線：慣例上用於避免和 Python 關鍵字衝突，例</li>
+<pre>    Tkinter.Toplevel(master, class_='ClassName')
+</pre>
+<li>__double_leading_underscore 開頭雙底線：用來命名 class 的 attribute 時，會造成 name mangling（class FooBar 中，__boo 會變成 _FooBar__boo；參考下方相關處）。</li>
+<li>__double_leading_and_trailing_underscore__ 開頭和結尾雙底線：存在於使用者控制的命名空間中的「魔術」物件。例如 __init__、__import__、__file__。不要自創這類的名稱，只照文件說明去使用它們就好。</li>
+</ul>
+<br />
+<p><strong>命名慣例規範</strong></p>
+<p><strong>避免使用的名稱</strong></p>
+<p>不要用單個 `l'（小寫 L）、`O'（大寫 o）、`I'（大寫 i）當變數名稱。</p>
+<p>在某些字型，這些字元和數字的一和零難以分辨。需要暫時用 `l' 時，改用 `L'。</p>
+<p><strong>package 和 module 名稱</strong></p>
+<p>module 應該用全小寫的簡短名稱。若能增加可讀性，可以在其中加入底線。Python 的 package 也該用全小寫的簡短名稱，但底線不鼓勵使用。</p>
+<p>因為 module 名稱對應到檔案名稱，而有些檔案系統不會區分大小寫且會將長名稱縮短，所以選擇相當簡短的 module 名稱很重要 －－ 雖然這在 Unix 上不是問題，但會在需要將程式移植到舊的 Mac 或 Windows 版本以及 DOS 時產生問題。</p>
+<p>當 C 或 C++ 寫的擴充 module 有對應的 Python module 提供高階介面（比較物件導向）時，C/C++ 的 module 開頭會有一個底線（像是 _socket）。</p>
+<p><strong>class 名稱</strong></p>
+<p>幾乎沒有例外，class 名稱使用字首大寫慣例。僅供內部用的 class，名稱前會加一個底線。</p>
+<p><strong>exception 名稱</strong></p>
+<p>因為 exception 必須是 class，class 的命名慣例在此適用。不過 exception 實際是代表錯誤時，名稱必須用 "Error" 當字尾。</p>
+<p><strong>全域變數名稱</strong></p>
+<p>（希望這些變數只是為了在一個 module 內部使用。）全域變數命名慣例幾乎和 function 一樣。</p>
+<p>設計以 "from M import *" 使用的 module 應該用 __all__ 機制避免將全域變數匯出，或者按照較舊的慣例將這些全域變數字首都加一個底線（你可能也想藉此來將這些全域變數標示為「module 內部用」）。</p>
+<p><strong>function 名稱</strong></p>
+<p>function 名稱應該全部小寫，為了可讀性，單字間可用底線分隔。</p>
+<p>mixedCase 只能用在這種風格已佔多數的程式碼中（例如 threading.py），或者為了保持相容性時。</p>
+<p><strong>function 和 method 參數</strong></p>
+<p>instance method 的第一個參數永遠用 'self'。</p>
+<p>class method 的第一個參數永遠用 'cls'。</p>
+<p>當 function 參數名稱和保留的關鍵字衝突時，在字尾加一個底線比用縮寫或拼寫省略好。因此 "print_" 比 "prnt" 好。（可能更好的是用同義字避免這類衝突。）</p>
+<p><strong>method 名稱和 instance 變數</strong></p>
+<p>使用 function 的命名規則：小寫並在需要時用底線分隔單字增加可讀性。</p>
+<p>只有非 public 的 method 和 instance 變數才在開頭加一個底線。</p>
+<p>為了避免和 subclass 衝突，可在開頭加雙底線以利用 Python 的 name mangling 機制。</p>
+<p>Python 會用 class 名稱 mangle 這些雙底線開頭的名稱：如果 class Foo 有個叫做 __a 的 attribute，它無法以 Foo.__a 存取。（執意存取的使用者可以透過 Foo._Foo__a 存取。）一般而言，雙底線開頭只應該用在避免為繼承設計的 class 的 attribute 名稱衝突。</p>
+<p>注意：雙底線開頭的名稱有一些爭議（見下方）。</p>
+<p><strong><br /></strong></p>
+<p><strong>為繼承而設計</strong></p>
+<p>永遠決定好 class 的 method 和 instance 變數（全部統稱為：attribute）是該 public 或非 public。不確定時，選擇非 public；在之後將它改成 public 比將 public attribute 改成非 public 容易。</p>
+<p>public attribute 是在保證不會有不相容變動下，預計供 class 的不相關用戶使用的。非 public attribute 則是不打算供第三方使用；不需要保證非 public 的 attribute 不會變動或甚至移除。</p>
+<p>這裡不用 "private" 這個詞，是因為 Python 中沒有任何 attribute 可以真正是 private（若不費一番不必要的苦工）。</p>
+<p>另一類 attribute 是那些屬於 "subclass API" 的一部分的（在其他語言通常叫做 "protected"）。有些 class 是專門設計成要被繼承，以擴展或修改 class 的功能。設計這種 class 時，注意明確地決定哪些 attribute 是 public，哪些是 subclass API 的一部分，哪些則是只供 class 本身使用。</p>
+<p>謹記這些 Pythonic 指導原則：</p>
+<ul style="list-style-type: square;">
+<li>public 的 attribute 開頭不該有底線。</li>
+<li>如果 public 的 attribute 名稱和保留的關鍵字衝突，在名稱後加一個底線。這樣做比用縮寫或省略拼寫好。（不過雖然有這項規則，'cls' 還是建議用在變數或參數是一個 class 的時候，特別是 class method 的第一個參數。）</li>
+<p>注意：參考上面有關 class method 參數名稱的建議。</p>
+<li>對於簡單的資料型 public attribute，最好只提供 attribute 名稱，不要有複雜的 accessor/mutator method。要記得 Python 為以後的改進提供容易的辦法，以便你發現簡單的資料型 attribute 需要發展成函式型的功能時利用。在那種情況下，用 property 將函式性的實作隱藏在簡單資料型 attribute 的存取語法後面。</li>
+<li style="margin-left: 30px;">注意一：property 只在 new-style class 中有作用。（譯註：new-style class 表示至少繼承了一個 class；classic class 則完全沒繼承別的 class）</li>
+<li style="margin-left: 30px;">注意二：試著讓函式型功能沒有副作用，雖然像暫存之類的副作用通常是好的。</li>
+<li style="margin-left: 30px;">注意三：避免將 property 用在需要大量運算的處理上；attribute 表示法會讓呼叫端相信它存取起來是（較）不費工的。</li>
+<li>如果 class 打算被繼承，但有些 attribute 不想讓 subclass 使用，考慮將它們命名成開頭有雙底線而結尾沒有底線。這會啟動 Python 的 name mangling 機制，讓 class 名稱被 mangle 到 attribute 的名稱。如此有助於避免 subclass 的 attribute 不小心用了相同名稱時造成的衝突。</li>
+<li style="margin-left: 30px;">注意一：只有單單 class 名稱（不含 module 和 package）會用於 mangle 之後的名稱，所以如果 subclass 選擇了相同的 class 名稱和 attribute 名稱，還是會導致名稱衝突。</li>
+<li style="margin-left: 30px;">注意二：name mangling 可能會使得某些用途上較不方便（像是 debug 和 __getattr__()）。不過 name mangling 機制有完善的文件說明，很容易可以手動處理。</li>
+<li style="margin-left: 30px;">注意三：不是每個人都喜歡 name mangling。試著在避免意外名稱衝突的需要，和使用者可能是進階使用者之間取得平衡。</li>
+</ul>
+<br />
+<h3>程式撰寫建議</h3>
+<ul style="list-style-type: square;">
+<li>程式應該以不會在特定 Python 實作（PyPy, Jython, IronPython, Pyrex, Psyco 之類）上不利的方式撰寫。</li>
+<p>舉例來說，不要依賴 CPython 對像 a+=b 或 a=a+b 這類形式的 statement 的高效能就地字串串接實作。這些 statement 在 Jython 中執行比較慢。在程式庫效能要求高的部分，應該使用 ''.join() 形式。這樣可以確保串接在各種實作中，都只耗費線性時間。</p>
+<li>和像 None 這樣的 singleton 比較時，應該永遠使用 'is' 或 'is not'，絕對不要用相等運算子。</li>
+<p>也要注意寫了 "if x" 但其實是想表達 "if x is not None" 的情況 －－ 例如，測試預設值是 None 的變數或參數是否設了新值時。新值可能是在邏輯判斷中有機會被當作 false 的型別（例如容器）！</p>
+<li>使用 class 型 exception</li>
+<p>字串型 exception 在新程式碼中禁止使用，因為這功能將在 Python 2.6 移除。 module 和 package 應該定義它們自己特定的基礎 exception class，這些 class 應該是內建 Exception class 的 subclass。永遠寫上 class 的文件字串。例如：</p>
+<pre>class MessageError(Exception):
+    """Base class for errors in the email package."""
+</pre>
+<p>class 命名慣例適用於此，只是如果 exception 是代表錯誤時，exception class 名稱字尾要加上 'Error'。非錯誤類的 exception 不需要加特定字尾。</p>
+<li>發出 exception 時，寫成 "raise ValueError('message')" 而不要用舊格式 "raise ValueError, 'message'"。</li>
+<p>推薦括號格式是因為，exception 參數很長或包含格式化字串時，由於有括號，可以不必用行接續字元。舊的格式將在 Python 3000 （譯註：3.0）中移除。</p>
+<li>捕捉 exception 時，盡可能註明特定的 exception 而不要只用空的 'except:' 子句。</li>
+<p>例如：</p>
+<pre>try:
+    import platform_specific_module
+except ImportError:
+    platform_specific_module = None
+</pre>
+<p>空的 'except:' 子句會捕捉 SystemExit 和 KeyboardInterrupt 這兩個 exception，造成 Control-C 無法中止程式，而且可能掩蓋住其他問題。如果想捕捉所有代表程式錯誤的 exception，可以用 'except Exception:'。</p>
+<p>有個好的法則是限制空的 'except' 子句只能用在兩種情況：</p>
+<ol>
+<li>exception 會被印出或記錄，至少使用者能注意到有錯誤發生。</li>
+<li>程式需要做些清理工作，但之後就用 'raise' 將 exception 往上發。'try ...finally' 是處理此情況較好的方式。</li>
+</ol>
+<li>此外，對於所有 try/except 子句，將 'try' 子句的程式碼數量限制在所需的最少數量。如此也能避免掩飾住 bug。</li>
+<p>這麼寫：</p>
+<pre>try:
+    value = collection[key]
+except KeyError:
+    return key_not_found(key)
+else:
+    return handle_value(value)
+</pre>
+<p>不要寫：</p>
+<pre>try:
+    # Too broad! （太廣！）
+    return handle_value(collection[key])
+except KeyError:
+    # Will also catch KeyError raised by handle_value()
+    # （也會捕捉到 handle_value() 發出的 KeyError）
+    return key_not_found(key)
+</pre>
+<li>用字串的 method 而不要用 string module 的 function。</li>
+<p>字串的 method 總是快得多，而且和 unicode 字串共用同樣的 API。需要相容於比 Python 2.0 舊的版本時，可以打破此規則。</p>
+<li>用 ''.startswith() 和 ''.endswith() 比對字串的字首和字尾，而不要用字串 slice。</li>
+<p>startswith() 和 endswith() 更清楚明白且不容易出錯。例如：</p>
+<p>這麼寫：</p>
+<pre>if foo.startswith('bar'):
+</pre>
+<p>不要寫：</p>
+<pre>if foo[:3] == 'bar':
+</pre>
+<p>唯一例外是你的程式碼必須在 Python 1.5.2 運行（希望不要）。</p>
+<li>比較物件型別應該永遠用 isinstance() 而不要直接比較型別。</li>
+<p>這麼寫：</p>
+<pre>if isinstance(obj, int):
+</pre>
+<p>不要寫：</p>
+<pre>if type(obj) is type(1):
+</pre>
+<p>檢查物件是不是字串的時候，別忘了它也可能是 unicode 字串！Python 2.3 中，str 和 unicode 有共同的 base class －－ basestring，所以可以這樣寫：</p>
+<pre>if isinstance(obj, basestring):
+</pre>
+<p>Python 2.2 中，types module 裡為此用途定義了 StringTypes 型別：</p>
+<pre>from types import StringTypes
+if isinstance(obj, StringTypes):
+</pre>
+<p>Python 2.0 和 2.1 中，應該這麼寫：</p>
+<pre>from types import StringType, UnicodeType
+if isinstance(obj, StringType) or \
+   isinstance(obj, UnicodeType) :
+</pre>
+<li>對於序列（string, list, tuple），利用空序列代表 false 的特性</li>
+<p>這麼寫：</p>
+<pre>if not seq:
+if seq:
+</pre>
+<p>不要寫：</p>
+<pre>if len(seq)
+if not len(seq)
+</pre>
+<li>不要寫出尾端需要有大量空白的字串常量。這些尾端的空白視覺上不易辨別，而且有些編輯器（或者像是 reindent.py）會將它們刪除。</li>
+<li>不要將邏輯值用 == 去和 True 或 False 比較</li>
+<p>這麼寫：</p>
+<pre>if greeting:</pre>
+<p>不要寫：</p>
+<pre>if greeting == True:</pre>
+<p>更不要：</p>
+<pre>if greeting is True:</pre>
+</ul>
+<br />
+<h3>References</h3>
+<dl><dd>[1] <a target="_blank" href="https://www.python.org/dev/peps/pep-0007" class="external text" title="https://www.python.org/dev/peps/pep-0007">PEP 7</a>, Style Guide for C Code, van Rossum</dd></dl><dl><dd>[2] <a href="https://www.python.org/doc/essays/styleguide.html" class="external free" title="https://www.python.org/doc/essays/styleguide.html" rel="nofollow"></a><a target="_blank" href="https://www.python.org/doc/essays/styleguide.html">https://www.python.org/doc/essays/styleguide.html</a></dd></dl><dl><dd>[3] <a target="_blank" href="https://www.python.org/dev/peps/pep-0257" class="external text" title="https://www.python.org/dev/peps/pep-0257">PEP 257</a>, Docstring Conventions, Goodger, van Rossum</dd></dl><dl><dd>[4] <a href="https://www.wikipedia.com/wiki/CamelCase" class="external free" title="https://www.wikipedia.com/wiki/CamelCase" rel="nofollow"></a><a target="_blank" href="https://www.wikipedia.com/wiki/CamelCase">https://www.wikipedia.com/wiki/CamelCase</a></dd></dl><dl><dd>[5] Barry's GNU Mailman style guide <a href="https://barry.warsaw.us/software/STYLEGUIDE.txt" class="external free" title="https://barry.warsaw.us/software/STYLEGUIDE.txt" rel="nofollow"></a><a target="_blank" href="https://barry.warsaw.us/software/STYLEGUIDE.txt">https://barry.warsaw.us/software/STYLEGUIDE.txt</a></dd></dl><dl><dd>[6] <a target="_blank" href="https://www.python.org/dev/peps/pep-0020" class="external text" title="https://www.python.org/dev/peps/pep-0020">PEP 20</a>, The Zen of Python</dd></dl><dl><dd>[7] <a target="_blank" href="https://www.python.org/dev/peps/pep-0328" class="external text" title="https://www.python.org/dev/peps/pep-0328">PEP 328</a>, Imports: Multi-Line and Absolute/Relative</dd></dl>
+			<!-- Show relate article -->
+				<!-- end -->
+		<div class="article_note">
+		<!-- Add tags use metakey, and show OSSF Newsletter tag: OSSFNL+NUM-->
+		<br><br> <hr style='border: 1px dashed #D2DADB;'><b>自由軟體鑄造場電子報&nbsp;:</b>&nbsp;<a href='../../previous-issue%3Ftask=view&amp;id=846.html'>第 236 期 自由開源軟體不收取授權金之特性</a><br>				<!-- End -->
+					<br>
+					<b>分類: </b><a href="../tech-column.html">				技術專欄					</a>				</div>
+			 <!-- AddThis Button BEGIN ID 3001 is the front page article -->
+     			<br><br>
+       <div class="addthis_toolbox addthis_default_style addthis_32x32_style">
+       <a class="addthis_button_preferred_1"></a>
+       <a class="addthis_button_preferred_2"></a>
+       <a class="addthis_button_preferred_3"></a>
+       <a class="addthis_button_preferred_4"></a>
+       <a class="addthis_button_compact"></a>
+       <a class="addthis_counter addthis_bubble_style"></a>
+       </div>
+       <script type="text/javascript">var addthis_config = {"data_track_clickback":true};</script>
+       <script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js#pubid=openfoundry"></script>
+       <!-- AddThis Button END -->
+     <br>
+		<div class="totop" ><a class="rt-totop" href="9179-python-.html#" style="outline: medium none;">↑ Top</a></div>
+            <!-- AddThis Button END -->
+
+			</div>
+</div>
+
+		                            </div>
+									<div class="clear"></div>
+								</div>
+								<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+							</div>
+							</div>
+                                                    </div>
+                                            </div>
+                                <div class="rt-grid-3 rt-pull-9">
+                <div id="rt-sidebar-a">
+                                    <div class="square4">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<ul class="menu"><li class="item56"><a href="../previous-issue.html"><span>電子報總覽</span></a></li><li class="item55"><a href="../about-newsletter.html"><span>關於本報</span></a></li></ul>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<ul class="menu"><li class="item115"><a href="../foss-news.html"><span>源碼新聞</span></a></li><li class="item141"><a href="../case-job.html"><span>接案 / 工作</span></a></li></ul>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+        	                <div class="square1">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-title"><h2 class="title">專欄總覽</h2></div>
+						<div class="clear"></div>
+		                						<div class="module-content">
+		                	<ul class="menu"><li id="current" class="active item37"><a href="../tech-column.html"><span>技術專欄</span></a></li><li class="item40"><a href="../foss-programs.html"><span>源碼秘技</span></a></li><li class="item35"><a href="../legal-article-.html"><span>法律專欄</span></a></li><li class="item154"><a href="../foss-forum.html"><span>自由專欄</span></a></li><li class="item162"><a href="../enterprise-application.html"><span>企業應用</span></a></li><li class="item44"><a href="../foss-projects.html"><span>源碼專案</span></a></li></ul>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		                <div class="square1">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<p style="text-align: center;"><a href="../../news%3Fformat=feed&amp;type=rss" target="_black"><img src="../../images/M_images/news-rss-feed.png" border="0" /></a><br /><a href="https://www.openfoundry.org/rss-feed/Newsletter" target="_black"><img src="../../images/M_images/newsletter-rss-feed.png" border="0" /></a></p>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		
+                </div>
+            </div>
+
+                    <div class="clear"></div>
+                </div>
+            </div>
+																													</div>
+										<div id="rt-copyright">
+						<div class="rt-grid-12 rt-alpha rt-omega">
+                        <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<div id="desktop-mobile-version-switch"><span id="mobile-version" class="version-switch"><a href="9179-python-.html#">行動版</a></span></div>
+自由軟體鑄造場 製作 最佳瀏覽狀態：IE7或Firefox2.0以上 (建議使用Firefox) ‧ 解析度1024*768 <br /> <strong>E-Mail</strong>：<a href="mailto:contact@openfoundry.org">contact@openfoundry.org</a> <strong>Address</strong>：台北市南港區研究院路2段128號 中央研究院資訊科學研究所 . <a href="../../privacy-policy.html">隱私權條款</a>. <a href="../../terms-of-use.html">使用條款</a><span style="position: relative; top: 8px; margin-top: -8px;"> <a href="../../about/8101.html"><img src="../../images/M_images/rss-feed-all.png" border="0" /></a></span>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+        	
+</div>
+						<div class="clear"></div>
+					</div>
+					<div class="rt-footer-bottom-wrap"><div class="rt-footer-bottom"><div class="rt-footer-bottom2"><div class="rt-footer-bottom3"></div></div></div></div>
+									</div></div></div>
+				<div class="rt-surround-bottom"><div class="rt-surround-bottom2"><div class="rt-surround-bottom3"></div></div></div>
+							</div>
+		</div>
+		<!--
+		<script id="aptureScript">
+						(function (){var a=document.createElement("script");a.defer="true";a.src="http://www.apture.com/js/apture.js?siteToken=vsJttrn";document.getElementsByTagName("head")[0].appendChild(a);})();
+     </script>
+-->
+
+<!-- Piwik -->
+<!-- 			<script type="text/javascript">
+			  var _paq = _paq || [];
+		  _paq.push(["trackPageView"]);
+		  _paq.push(["enableLinkTracking"]);
+
+		    (function() {
+			        var u=(("https:" == document.location.protocol) ? "https" : "https") + "://www.openfoundry.org/piwik/";
+				    _paq.push(["setTrackerUrl", u+"piwik.php"]);
+				    _paq.push(["setSiteId", "1"]);
+				        var d=document, g=d.createElement("script"), s=d.getElementsByTagName("script")[0]; g.type="text/javascript";
+				        g.defer=true; g.async=true; g.src=u+"piwik.js"; s.parentNode.insertBefore(g,s);
+					  })();
+		  </script> -->
+<!-- End Piwik Code -->
+	</body>
+</html>

@@ -1,0 +1,595 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-gb" lang="en-gb" >
+<head>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<link rel="shortcut icon" href="../../images/favicon.ico" />
+	  <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+  <meta name="robots" content="index, follow" />
+  <meta name="keywords" content="Rails, Ruby, Introduction, OSSFNL753" />
+  <meta name="title" content="麥克阿忠的 Ruby on Rails 初探" />
+  <meta name="description" content="起源與命名 Ruby 原意為紅寶石，而在電腦程式碼界裡頭是一個簡單快速、物件導向的指令碼語言。Ruby 的起源可以追溯到 1995 年，由日本工程師「松本行弘」開發釋出，並遵循 GPL 協定和 Ruby License。之所以命名為 Ruby，是因為 Perl 的發音與 6 月的誕生石 pearl（珍珠）相同，因此 Ruby 以 7 月的誕生石 ruby（紅寶石）命名。 Ruby" />
+  <meta name="generator" content="" />
+  <title>麥克阿忠的 Ruby on Rails 初探 - OpenFoundry</title>
+  <link href="../../favicon.ico" rel="shortcut icon" type="image/x-icon" />
+  <link rel="stylesheet" href="../../components/com_jcomments/tpl/default/style.css%3Fv=10.css" type="text/css" />
+  <link rel="stylesheet" href="../../components/com_gantry/css/gantry.css" type="text/css" />
+  <link rel="stylesheet" href="../../components/com_gantry/css/grid-12.css" type="text/css" />
+  <link rel="stylesheet" href="../../components/com_gantry/css/joomla.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/joomla.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/style1.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/light-body.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/demo-styles.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/template.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/typography.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/fusionmenu.css" type="text/css" />
+  <style type="text/css">
+    <!--
+#rt-main-surround ul.menu li.active > a, #rt-main-surround ul.menu li.active > .separator, #rt-main-surround ul.menu li.active > .item, #rt-main-surround .square4 ul.menu li:hover > a, #rt-main-surround .square4 ul.menu li:hover > .item, #rt-main-surround .square4 ul.menu li:hover > .separator, .roktabs-links ul li.active span {color:#0088B5;}
+a, #rt-main-surround ul.menu a:hover, #rt-main-surround ul.menu .separator:hover, #rt-main-surround ul.menu .item:hover {color:#0088B5;}
+    -->
+  </style>
+  <script type="text/javascript" src="../../components/com_jcomments/js/jcomments-v2.1.js%3Fv=2"></script>
+  <script type="text/javascript" src="../../components/com_jcomments/libraries/joomlatune/ajax.js"></script>
+  <script type="text/javascript" src="../../media/system/js/mootools.js"></script>
+  <script type="text/javascript" src="../../media/system/js/caption.js"></script>
+  <script type="text/javascript" src="../../components/com_gantry/js/gantry-buildspans.js"></script>
+  <script type="text/javascript" src="../../components/com_gantry/js/gantry-inputs.js"></script>
+  <script type="text/javascript" src="../../templates/rt_quantive_j15/js/jquery.cookie.js"></script>
+  <script type="text/javascript" src="../../modules/mod_roknavmenu/themes/fusion/js/fusion.js"></script>
+  <script type="text/javascript" src="../../modules/mod_ofssologin/js/ofssologin.js"></script>
+  <script type="text/javascript">
+
+			window.addEvent('domready', function() {
+				var modules = ['rt-block'];
+				var header = ['h3','h2','h1'];
+				GantryBuildSpans(modules, header);
+			});
+		InputsExclusion.push('.content_vote','#rt-popup')
+		        window.addEvent('load', function() {
+					new Fusion('ul.menutop', {
+						pill: 0,
+						effect: 'slide and fade',
+						opacity: 1,
+						hideDelay: 500,
+						centered: 0,
+						tweakInitial: {'x': -2, 'y': 0},
+        				tweakSubsequent: {'x': 0, 'y': -14},
+						menuFx: {duration: 200, transition: Fx.Transitions.Sine.easeOut},
+						pillFx: {duration: 400, transition: Fx.Transitions.Back.easeOut}
+					});
+	            });
+  </script>
+<!-- <script type="text/javascript" src="/sso/javascripts/langsync.js"></script> -->
+<!-- <script src="/templates/rt_quantive_j15/js/ossf.js"></script> -->
+<script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-4136519-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
+</head>
+	<body  class="backgroundlevel-low backgroundstyle-style8 bodylevel-med bodystyle-light cssstyle-style1 logostyle-dark font-family-helvetica font-size-is-default menu-type-fusionmenu col12 ">
+		<div id="rt-main-background">
+			<div class="rt-container">
+																<div id="rt-header">
+					<div class="rt-grid-7 rt-alpha">
+    			<div class="rt-block">
+    	    	<a href="../../index.html" id="rt-logo"></a>
+    		</div>
+	    
+</div>
+<div class="rt-grid-5 rt-omega">
+                    <div class="square9">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<div class="ofssologin_square9"><a href="../../index.html">Login</a>&nbsp;&nbsp|&nbsp;&nbsp;<span><a href="https://www.openfoundry.org/tw/news/8407?task=view" ><span lang="tw" xml:lang="tw">繁體中文</span></a></li></ul></span><!--Joom!fish V2.0.4 (Lightning)-->
+<!-- &copy; 2003-2009 Think Network, released under the GPL. -->
+<!-- More information: at http://www.joomfish.net -->
+<div class="ofssologin_search_square9">
+  <form id="of_search" action="https://www.openfoundry.org/of/openfoundry/search" method="get" onsubmit="of_search(); return false;">
+    <select id="of_search_type">
+      <option value="Projects"> Projects </option>
+      <option value="Content"> Content </option>
+      <option value="People"> People </option>
+    </select>
+    <input id="query" name="query" id="mod_search_searchword" maxlength="50" alt="search" class="inputbox" type="text" size="28" value="search..."  onblur="if(this.value=='') this.value='search...';" onfocus="if(this.value=='search...') this.value='';" />
+    <input type="hidden" name="commit" value="search" />
+  </form>
+</div></div>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		
+</div>
+					<div class="clear"></div>
+				</div>
+																<div id="rt-navigation"><div id="rt-navigation2"><div id="rt-navigation3">
+					
+<div class="nopill">
+	<ul class="menutop level1 " >
+						<li class="item1 root" >
+					<a class="orphan item bullet" href="../../index.html"  >
+				<span>
+			    				Home				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item32 root" >
+					<a class="orphan item bullet" href="../../archived.html"  >
+				<span>
+			    				Projects				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item186 root" >
+					<a class="orphan item bullet" href="../community.html"  >
+				<span>
+			    				Who&#039;s Who				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item4 root" >
+					<a class="orphan item bullet" href="../news.html"  >
+				<span>
+			    				News				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item5 root" >
+					<a class="orphan item bullet" href="../law-and-licensing.html"  >
+				<span>
+			    				Law &amp; Licensing				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item3 root" >
+					<a class="orphan item bullet" href="../activities.html"  >
+				<span>
+			    				Activities				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item2 root" >
+					<a class="orphan item bullet" href="../resourcecatalog.html"  >
+				<span>
+			    				Resource Catalog				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item45 root" >
+					<a class="orphan item bullet" href="../about.html"  >
+				<span>
+			    				About				   
+				</span>
+			</a>
+			
+			
+	</li>	
+				</ul>
+</div>
+
+				    <div class="clear"></div>
+				</div></div></div>
+								<div class="rt-surround"><div class="rt-surround2"><div class="rt-surround3">
+										<div id="rt-showcase-section">
+												<div id="rt-showcase">
+							<div class="rt-grid-12 rt-alpha rt-omega">
+    		<div class="clear"></div>
+		
+		
+                <div class="close-note">
+                    <div class="rt-block">
+               					<div class="module-content">
+                	<div style="font-size:medium; background-image:linear-gradient(120deg,#159957,#4298b2);color:white;padding:20px;margin:-10px -18px;">感謝您對「自由軟體鑄造場」的支持與愛護，十多年來「自由軟體鑄造場」受中央研究院支持，並在資訊科學研究所以及資訊科技創新研究中心執行，現已完成階段性的任務。 本網站預計持續維運至 2021年底，網站內容基本上不會再更動。<br />也紀念我們永遠的朋友 李士傑先生（Shih-Chieh Ilya Li）。</div>				</div>
+            </div>
+                </div>
+		
+</div>
+							<div class="clear"></div>
+						</div>
+																	</div>
+															<div id="rt-main-surround">
+												<div id="rt-breadcrumbs">
+								<div class="rt-breadcrumb-surround">
+		<a href="../../index.html" id="breadcrumbs-home"></a>
+		<span class="breadcrumbs pathway">
+<span class="no-link">News</span></span>
+	</div>
+	
+							<div class="clear"></div>
+						</div>
+																							              <div id="rt-main" class="sa3-mb9">
+                <div class="rt-main-inner">
+                    <div class="rt-grid-9 rt-push-3">
+                                                <div class="rt-block">
+                            							<div class="square1">
+							<div class="rt-module-surround">
+								<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+								<div class="rt-module-inner">
+		                            <div id="rt-mainbody">
+		                                
+<div class="rt-joomla ">
+	<div class="rt-article">
+		
+				<div class="rt-headline"><h1 class="rt-article-title">麥克阿忠的 Ruby on Rails 初探</h1>		</div>
+		<div class="clear"></div>
+		
+		
+		
+				<div class="rt-articleinfo">
+						<div class="rt-article-icons">
+								<a href="https://www.openfoundry.org/en/news/8407-ruby-on-rails-?tmpl=component&amp;print=1&amp;page=" title="Print" onclick="window.open(this.href,'win2','status=no,toolbar=no,scrollbars=yes,titlebar=no,menubar=no,resizable=yes,width=640,height=480,directories=no,location=no'); return false;" rel="nofollow"><span class="icon print"></span></a>																</div>
+			
+			<span class="rt-date-posted">
+						 Created at			Wednesday, 03 August 2011 16:44						&nbsp;&nbsp;&nbsp;&nbsp;						Last Updated on Friday, 27 April 2012 16:57						</span>
+
+						<span class="rt-author">
+				Written by 麥克阿忠			</span>
+				
+					</div>
+		
+		
+		<h3>起源與命名</h3>
+<p style="margin-bottom: 0cm;">Ruby 原意為紅寶石，而在電腦程式碼界裡頭是一個簡單快速、物件導向的指令碼語言。Ruby 的起源可以追溯到 1995 年，由日本工程師「松本行弘」開發釋出，並遵循 GPL 協定和 Ruby License。之所以命名為 Ruby，是因為 Perl 的發音與 6 月的誕生石 pearl（珍珠）相同，因此 Ruby 以 7 月的誕生石 ruby（紅寶石）命名。</p>
+
+<h3 style="margin-bottom: 0cm;"><span class="Apple-style-span" style="font-size: 13px; font-weight: bold;">Ruby 的理念與語言特性</span></h3>
+<p style="margin-bottom: 0cm;"><br />Ruby 發明者松本行弘曾說：</p>
+<blockquote>
+<p style="margin-bottom: 0cm; margin-left: 30px;">「人們特別是電腦工程師們，常常從機器著想。他們認為：『這樣做，機器就能執行的更快；這樣做，機器執行效率更高；這樣做，機器就會怎樣怎樣怎樣。』實際上，我們需要從人的角度考慮問題，人們怎樣編寫程式或者怎樣使用機器上應用程式。我們是主人，他們是僕人。」</p>
+</blockquote>
+<p style="margin-bottom: 0cm;">減少瑣碎的時間來提升開發效率與直接溝通的人性化語法，是 Ruby 開發時所遵照的理念。所以發明者松本行弘認為 Ruby &gt; (Smalltalk + Perl )/2，可表示為能像 Smalltalk 一樣完全、完整的物件導向，指令碼執行又有 Perl 強大的文字處理功能的程式語言。</p>
+<p style="margin-bottom: 0cm;"><br />語法：</p>
+<p style="margin-bottom: 0cm;">#取絕對值<br />-199.abs<br />=&gt; 199<br /><br />#計算字串長度含空白<br />"ruby is cool".length<br />=&gt; 12<br /><br />#取含 c 字串的位置<br />"Rick Astley".index("c")<br />=&gt; 2</p>
+<p style="margin-bottom: 0cm;">Ruby 可以將任何的東西視為物件，不必再另外宣告基礎型別。</p>
+<h3 style="margin-bottom: 0cm;"><span class="Apple-style-span" style="font-size: 13px; font-weight: bold;">什麼是 Ruby on Rails</span></h3>
+<p style="margin-bottom: 0cm;"><br />Rails 意指為鐵道，所以 Ruby on Rails 可想像為遵行在已規劃好的鐵路上，以穩定、快速、便捷的運作整個 Web 專案。</p>
+<p style="margin-bottom: 0cm;">Rails 的創始人「大衛．海納梅爾．韓森」於 2004 年 7 月從 37signals 公司的管理工具 Basecamp 分離出 Ruby on Rails，然後再以開源方式發佈。Ruby on Rails 簡稱 RoR 或是 Rails，使用 Ruby 語言所開發編寫的開源 Web 應用框架，嚴格按照 MCV 架構開發。其架構採取 Model、View、Controller 分離的開發式，不但減少了開發者與美工之間的落差，也簡化許多繁雜的動作。</p>
+<h3 style="margin-bottom: 0cm;">建立所需的環境</h3>
+<p style="margin-bottom: 0cm;"><br />Ruby 可在包含 Linux、Mac OS X 與 Microsoft Windows 下運作，本篇將在這三個系統下介紹安裝 RoR 的環境。</p>
+<h3 style="margin-bottom: 0cm;">在 Ubuntu 11.04 下安裝 Ruby on Rails</h3>
+<h4 style="margin-bottom: 0cm;"><span class="Apple-style-span" style="font-weight: bold;"><br />進行系統更新與安裝 MySQL</span></h4>
+<div><br />$ sudo apt-get update</div>
+<p style="margin-bottom: 0cm;">$ sudo apt-get upgrade</p>
+<p style="margin-bottom: 0cm;">$ sudo apt-get install git</p>
+<p style="margin-bottom: 0cm;">$ sudo apt-get install mysql-server libmysqlclient15-dev</p>
+<p style="margin-bottom: 0cm;">$ sudo apt-get install curl</p>
+<p style="margin-bottom: 0cm;">$ sudo apt-get install build-essential zlib1g-dev libssl-dev libreadline5-dev</p>
+<h4 style="margin-bottom: 0cm;">安裝 RVM (Ruby Version Manager)</h4>
+<p style="margin-bottom: 0cm;"><br />$ bash &lt;</p>
+<p style="margin-bottom: 0cm;">$ echo "[[ -s $HOME/.rvm/scripts/rvm ]] &amp;&amp; source $HOME/.rvm/scripts/rvm" &gt;&gt; ~/.bash_profile &amp;&amp; . ~/.bash_profile</p>
+<p style="margin-bottom: 0cm;">$ source ~/.bash_profile</p>
+<p style="margin-bottom: 0cm;">再打開該檔案 .bashrc 於最後一行加上 source ~/.bash_profile</p>
+<h4 style="margin-bottom: 0cm;">安裝 REE (Ruby Enterprise Edition)</h4>
+<p style="margin-bottom: 0cm;"><br />$ rvm install ree</p>
+<p style="margin-bottom: 0cm;">$ rvm ree --default</p>
+<h4 style="margin-bottom: 0cm;">安裝 Rails</h4>
+<p style="margin-bottom: 0cm;"><br />$ sudo apt-get install libbuilder-ruby</p>
+<p style="margin-bottom: 0cm;">$ gem install rails -v=3.0.7</p>
+<p style="margin-bottom: 0cm;">$ gem install mysql</p>
+<p style="margin-bottom: 0cm;">以上即完成了 Ubuntu 11.04 下的開發環境了。</p>
+<h3 style="margin-bottom: 0cm;">在 Mac OS X 下安裝 Ruby on Rails</h3>
+<p style="margin-bottom: 0cm;"><br />在撰寫文章之際，新版 Mac 系統已經正式出版，名為 Mac OS X Lion，版本代號為 10.7，因尚未得知版本是否相容，本篇將以 10.6.8 的方式安裝。</p>
+<h4 style="margin-bottom: 0cm;">安裝 Xcode</h4>
+<p style="margin-bottom: 0cm;"><br />安裝 Xcode 的用意是要與 Homebrew 搭配使用。</p>
+<p style="margin-bottom: 0cm;">Mac OS X Install CD &gt;&gt; 選擇安裝，若無 CD 者到 <a href="https://developer.apple.com/xcode/" target="_blank">https://developer.apple.com/xcode/</a> 安裝最新版的 Xcode，升級至 Lion 版者可獲得免費升級，其餘版本有可能會需要付費，除非您是專職 Apple 軟體開發者或是有意願在 Mac 平台上開發者，可以付費購買。</p>
+<h4 style="margin-bottom: 0cm;">安裝 Homebrew</h4>
+<p style="margin-bottom: 0cm;"><br />&gt; ruby -e "$(curl -fsSL https://raw.github.com/gist/323731)"</p>
+<p style="margin-bottom: 0cm;">&gt; brew install git</p>
+<p style="margin-bottom: 0cm;">&gt; brew update</p>
+<h4 style="margin-bottom: 0cm;">安裝 MySQL</h4>
+<p style="margin-bottom: 0cm;"><br />&gt; brew install mysql</p>
+<p style="margin-bottom: 0cm;">&gt; unset TMPDIR</p>
+<p style="margin-bottom: 0cm;">&gt; mysql_install_db --verbose --user=`whoami` --basedir="$(brew --prefix mysql)"</p>
+<p style="margin-bottom: 0cm;">&gt; cp "$(brew --prefix mysql)"/com.mysql.mysqld.plist ~/Library/LaunchAgents</p>
+<p style="margin-bottom: 0cm;">&gt; launchctl load -w ~/Library/LaunchAgents/com.mysql.mysqld.plist</p>
+<p style="margin-bottom: 0cm;">&gt; "$(brew --prefix mysql)"/bin/mysql_secure_installation</p>
+<p style="margin-bottom: 0cm;">&nbsp;</p>
+<p style="margin-bottom: 0cm;">* Set root password? [Y/n] Y</p>
+<p style="margin-bottom: 0cm;">* New password: 123456</p>
+<p style="margin-bottom: 0cm;">* Re-enter new password: 123456</p>
+<p style="margin-bottom: 0cm;">* Remove anonymous users? [Y/n] Y</p>
+<p style="margin-bottom: 0cm;">* Disallow root login remotely? [Y/n] Y</p>
+<p style="margin-bottom: 0cm;">* Remove test database and access to it? [Y/n] Y</p>
+<p style="margin-bottom: 0cm;">* Reload privilege tables now? [Y/n] Y</p>
+<h4 style="margin-bottom: 0cm;">安裝 RVM (Ruby Version Manager)</h4>
+<p style="margin-bottom: 0cm;"><br />&gt; bash &lt;</p>
+<p style="margin-bottom: 0cm;">&gt; echo "[[ -s $HOME/.rvm/scripts/rvm ]] &amp;&amp; source $HOME/.rvm/scripts/rvm" &gt;&gt;</p>
+<p style="margin-bottom: 0cm;">~/.profile &amp;&amp; . ~/.profile</p>
+<p style="margin-bottom: 0cm;">&gt; source ~/.profile</p>
+<h4 style="margin-bottom: 0cm;">安裝 REE ( Ruby Enterprise Edition )</h4>
+<p style="margin-bottom: 0cm;"><br />&gt; rvm install ree</p>
+<p style="margin-bottom: 0cm;">&gt; rvm ree --default</p>
+<h4 style="margin-bottom: 0cm;">修正在使用 RVM 裝 REE 之後不能使用中文的問題</h4>
+<p style="margin-bottom: 0cm;"><br />&gt; brew install readline</p>
+<p style="margin-bottom: 0cm;">&gt; brew link readline</p>
+<p style="margin-bottom: 0cm;">&gt; rvm --reconfigure --force -C --with-readline-dir=/usr/local install ree</p>
+<h4 style="margin-bottom: 0cm;">安裝必要的 RubyGems</h4>
+<p style="margin-bottom: 0cm;"><br />&gt; gem install rails</p>
+<p style="margin-bottom: 0cm;">&gt; gem install rails -v=3.0.7</p>
+<p style="margin-bottom: 0cm;">&gt; gem install mysql2</p>
+<p style="margin-bottom: 0cm;">&gt; gem install passenger</p>
+<p style="margin-bottom: 0cm;">&gt; gem install nokogiri</p>
+<p style="margin-bottom: 0cm;">&gt; gem install capistrano</p>
+<p style="margin-bottom: 0cm;">&gt; gem install capistrano-ext</p>
+<p style="margin-bottom: 0cm;">&gt; gem install delayed_job</p>
+<p style="margin-bottom: 0cm;">&gt; gem install hoptoad_notifier</p>
+<p style="margin-bottom: 0cm;">&gt; gem install facebooker2</p>
+<p style="margin-bottom: 0cm;">&gt; gem install factory_girl</p>
+<p style="margin-bottom: 0cm;">&gt; gem install sphinx</p>
+<p style="margin-bottom: 0cm;">以上即完成了 Mac OS X 下的開發環境。</p>
+<h3 style="margin-bottom: 0cm;">在 Windows 下安裝 Ruby on Rails</h3>
+<p style="margin-bottom: 0cm;"><br />安裝非常簡單，此段將簡單說明需要的步驟。</p>
+<h4 style="margin-bottom: 0cm;">下載一鍵安裝的 rubyinstaller.exe</h4>
+<p style="margin-bottom: 0cm;"><br />到 RubyForge 網站 <a href="https://rubyforge.org/frs/?group_id=167" target="_blank">https://rubyforge.org/frs/?group_id=167</a> 下載最新版本的 Ruby 程式。</p>
+<h4 style="margin-bottom: 0cm;">安裝 Rails</h4>
+<p style="margin-bottom: 0cm;"><br />開啟「文字命令」模式輸入</p>
+<p style="margin-bottom: 0cm;">C:/&gt; gem install rails –include-dependencies</p>
+<p style="margin-bottom: 0cm;">請記得保持網路暢通，此動作將透過網路下載相關的檔案來安裝。</p>
+<h4 style="margin-bottom: 0cm;">安裝 MySQL</h4>
+<p style="margin-bottom: 0cm;"><br />到 MySQL 官方網站下載最新版本 <a href="https://dev.mysql.com/downloads/">https://dev.mysql.com/downloads/<br /> </a></p>
+<p style="margin-bottom: 0cm;">以上即完成了 Windows 下的安裝</p>
+<h4 style="margin-bottom: 0cm;">磨刀小試</h4>
+<p style="margin-bottom: 0cm;"><br />Ruby on Rails 開發所使用的編輯器有很多種，其中最簡便的就是用系統預設的文字編輯器 vi 或是 vim 即可開發。<br /><br /></p>
+<p style="margin-bottom: 0cm;">先下一些指令來檢視您的環境版本。</p>
+<p style="margin-bottom: 0cm;">檢視 Ruby 的版本：</p>
+<p style="margin-bottom: 0cm;">$ ruby -v</p>
+<p style="margin-bottom: 0cm;">ruby 1.8.7 (2011-02-18 patchlevel 334) [i686-linux], MBARI 0x8770, Ruby Enterprise Edition 2011.03</p>
+<p style="margin-bottom: 0cm;">檢視 Rails 的版本：</p>
+<p style="margin-bottom: 0cm;">$ rails -v</p>
+<p style="margin-bottom: 0cm;">Rails 3.0.7</p>
+<p style="margin-bottom: 0cm;">檢視 rake 版本：（此 V 為大寫）</p>
+<p style="margin-bottom: 0cm;">$ rake -V</p>
+<p style="margin-bottom: 0cm;">rake, version 0.8.7</p>
+<p style="margin-bottom: 0cm;">若以上的指令能顯示版本資訊，表示您可以用 Ruby on Rails 進行開發了。</p>
+<p style="margin-bottom: 0cm;">開一個新專案：</p>
+<p style="margin-bottom: 0cm;">建立一個新成立的網站，我們必須要當它為一個專案來進行開發，所以請在您欲指定的家目錄下新開一個專案，</p>
+<p style="margin-bottom: 0cm;">請下這個指令：</p>
+<p style="margin-bottom: 0cm;">$ rails new demo</p>
+<p style="margin-bottom: 0cm;">create</p>
+<p style="margin-bottom: 0cm;">create README</p>
+<p style="margin-bottom: 0cm;">create Rakefile</p>
+<p style="margin-bottom: 0cm;">create config.ru</p>
+<p style="margin-bottom: 0cm;">create .gitignore</p>
+<p style="margin-bottom: 0cm;">create Gemfile</p>
+<p style="margin-bottom: 0cm;">create app</p>
+<p style="margin-bottom: 0cm;">create app/controllers/application_controller.rb</p>
+<p style="margin-bottom: 0cm;">create app/helpers/application_helper.rb</p>
+<p style="margin-bottom: 0cm;">create app/mailers</p>
+<p style="margin-bottom: 0cm;">create app/models</p>
+<p style="margin-bottom: 0cm;">create app/views/layouts/application.html.erb</p>
+<p style="margin-bottom: 0cm;">create config</p>
+<p style="margin-bottom: 0cm;">create config/routes.rb</p>
+<p style="margin-bottom: 0cm;">......</p>
+<p style="margin-bottom: 0cm;">......</p>
+<p style="margin-bottom: 0cm;">rails 將會為您產生關於 MCV 架構的檔案目錄。然後進入您的 demo 目錄下輸入</p>
+<p style="margin-bottom: 0cm;">$ rails s</p>
+<p style="margin-bottom: 0cm;">=&gt; Booting WEBrick</p>
+<p style="margin-bottom: 0cm;">=&gt; Rails 3.0.7 application starting in development on https://0.0.0.0:3000</p>
+<p style="margin-bottom: 0cm;">=&gt; Call with -d to detach</p>
+<p style="margin-bottom: 0cm;">=&gt; Ctrl-C to shutdown server</p>
+<p style="margin-bottom: 0cm;">[2011-07-21 14:14:09] INFO WEBrick 1.3.1</p>
+<p style="margin-bottom: 0cm;">[2011-07-21 14:14:09] INFO ruby 1.8.7 (2011-02-18) [i686-linux]</p>
+<p style="margin-bottom: 0cm;">[2011-07-21 14:14:09] INFO WEBrick::HTTPServer#start: pid=2967 port=3000<br /><br />然後打開 Web browser 在網址輸入</p>
+<p style="margin-bottom: 0cm;">https://localhost:3000<a href="https://localhost:3000"><br /><br /><br /></a>看到以下的畫面，表示您完成初探 Ruby on Rails 的第一步了！</p>
+<p style="margin-bottom: 0cm;"><a href="../../images/110809/ruby_on_rails.png" target="_blank"><img src="../../images/110809/ruby_on_rails.png" alt="https://www.openfoundry.org/images/110809/ruby_on_rails.png" border="0" width="500" /></a></p>
+<p style="margin-bottom: 0cm;">&nbsp;</p>
+<p style="margin-bottom: 0cm;">▲ 圖1</p>
+<h3 style="margin-bottom: 0cm;">結語</h3>
+<p style="margin-bottom: 0cm;"><br />Ruby 相較於其它程式語言較為直覺、容易閱讀，也易於上手。一般來說，只要能在物件導向論點中精實的學習，可以加速一倍以上的開發時效。在 Web 開發中，大都是用 Rails 做為 FrameWork 來共同開發大型專案，因 MCV 為開發的出發點，大部分資深的程式設計師都會比較不習慣，相信了解它的架構之後，個人的學習曲線將能一躍直上。<br /><br />下一篇將進入如何用 Ruby on Rails 寫出一個網站，敬請期待。</p>
+<h3 style="margin-bottom: 0cm;">資源連結</h3>
+<p style="margin-bottom: 0cm;"><br />Ruby on Rails 實戰聖經 <a href="https://ihower.tw/rails3/" target="_blank">https://ihower.tw/rails3/</a></p>
+<p style="margin-bottom: 0cm;">Ruby on Rails 指南手冊 <a href="https://guides.ruby.tw/rails3/index.html" target="_blank">https://guides.ruby.tw/rails3/index.html</a></p>
+<p style="margin-bottom: 0cm;">二十分鐘 Ruby 體驗 <a href="https://www.ruby-lang.org/zh_TW/documentation/quickstart/" target="_blank">https://www.ruby-lang.org/zh_TW/documentation/quickstart/</a></p>
+<p style="margin-bottom: 0cm;">Ruby on Rails 教學影片 <a href="https://railscasts.com/" target="_blank">https://railscasts.com/ RailsCasts</a></p>
+<p style="margin-bottom: 0cm;">從 PHP 轉換 Ruby 的方法 <a href="https://railsforphp.com" target="_blank">https://railsforphp.com</a><br /><br /></p>
+<h3 style="margin-bottom: 0cm;">作者簡介</h3>
+<p style="margin-bottom: 0cm;"><br />麥克阿忠，資深網站程式開發者，興趣攝影。目前擔任 Ruby on Rails 網站開發員，主要使用 Ubuntu Server 進行 Web 應用程式開發。<br />作者部落格 <a href="https://about.me/MichaelChen520%20" target="_blank">https://about.me/MichaelChen520 </a><br />歡迎對 Ruby 有興趣的同好一同來交流指教。</p>
+			<!-- Show relate article -->
+		<br><br><h4>You may be interested in the following articles:</h4><ul><li><a href='../../tech-column/8530.html'>麥克阿忠的 Ruby on Rails 實務─熟悉 MVC</a> - <span class='date-posted'>2011-11-29</span></li><li><a href='../../tech-column/8478.html'>麥克阿忠的 Ruby on Rails 真功夫─手刻 CRUD</a> - <span class='date-posted'>2011-10-13</span></li><li><a href='../../tech-column/8440.html'>麥克阿忠的 Ruby on Rails 特快車－Scaffold 篇</a> - <span class='date-posted'>2011-09-05</span></li></ul>		<!-- end -->
+		<div class="article_note">
+		<!-- Add tags use metakey, and show OSSF Newsletter tag: OSSFNL+NUM-->
+		<br><br> <hr style='border: 1px dashed #D2DADB;'><b>OSSF Newsletter&nbsp;:</b>&nbsp;<a href='../../previous-issue%3Ftask=view&amp;id=753.html'>第 178 期 利用 FreeNAS 打造儲存設備(1)－歷史篇</a><br><b>Tags:</b>&nbsp;<a href='../../index.php%3Foption=com_search&amp;Itemid=58&amp;searchphrase=exact_meta&amp;ordering=newest&amp;searchword=Rails.html'>Rails</a>,&nbsp;&nbsp;<a href='../../index.php%3Foption=com_search&amp;Itemid=58&amp;searchphrase=exact_meta&amp;ordering=newest&amp;searchword=&#32;Ruby.html'> Ruby</a>,&nbsp;&nbsp;<a href='../../index.php%3Foption=com_search&amp;Itemid=58&amp;searchphrase=exact_meta&amp;ordering=newest&amp;searchword=&#32;Introduction.html'> Introduction</a>,&nbsp;&nbsp;				<!-- End -->
+					<br>
+					<b>Category: </b><a href="../tech-column.html">				Tech Column					</a>				</div>
+			 <!-- AddThis Button BEGIN ID 3001 is the front page article -->
+     			<br><br>
+       <div class="addthis_toolbox addthis_default_style addthis_32x32_style">
+       <a class="addthis_button_preferred_1"></a>
+       <a class="addthis_button_preferred_2"></a>
+       <a class="addthis_button_preferred_3"></a>
+       <a class="addthis_button_preferred_4"></a>
+       <a class="addthis_button_compact"></a>
+       <a class="addthis_counter addthis_bubble_style"></a>
+       </div>
+       <script type="text/javascript">var addthis_config = {"data_track_clickback":true};</script>
+       <script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js#pubid=openfoundry"></script>
+       <!-- AddThis Button END -->
+     <br>
+		<div class="totop" ><a class="rt-totop" href="8407%3Ftask=view.html#" style="outline: medium none;">↑ Top</a></div>
+            <!-- AddThis Button END -->
+
+		<script type="text/javascript">
+var jcomments=new JComments(8407, 'com_content','https://openfoundry.org/index.php?option=com_jcomments&amp;tmpl=component&amp;lang=');
+jcomments.setList('comments-list');
+</script>
+<div id="jc">
+<div id="comments"><h4>Comments<a class="refresh" href="8407%3Ftask=view.html#" title="Refresh comments list" onclick="jcomments.showPage(8407,'com_content',0);return false;">&nbsp;</a></h4>
+<div id="comments-list" class="comments-list">
+        <div class="even" id="comment-item-177"><div class="rbox"><div class="rbox_tr"><div class="rbox_tl"><div class="rbox_t">&nbsp;</div></div></div><div class="rbox_m">
+<div class="comment-avatar"><img src="http://www.gravatar.com/avatar.php?gravatar_id=cd029c57c18fe6a9a74ec338ffa1a8b0&amp;default=https%3A%2F%2Fwww.openfoundry.org%2Fcomponents%2Fcom_jcomments%2Fimages%2Fno_avatar.png" alt="" /></div>
+<div class="comment-box avatar-indent">
+<span class="comments-vote">
+	<span id="comment-vote-holder-177">
+<a href="8407%3Ftask=view.html#" class="vote-good" title="Good comment!" onclick="jcomments.voteComment(177, 1);return false;"></a><a href="8407%3Ftask=view.html#" class="vote-poor" title="Poor comment!" onclick="jcomments.voteComment(177, -1);return false;"></a>
+<span class="vote-none">0</span>
+	</span>
+</span>
+<a class="comment-anchor" href="../tech-column/8407-ruby-on-rails-.html#comment-177" id="comment-177">#1</a>
+<span class="comment-author">idarfan</span>
+<span class="comment-date">2011-09-11 00:36</span>
+<div class="comment-body" id="comment-body-177">可以跟您請教一下如何裝mysq<span style="font-size:0px;padding:0;margin:0;"> </span>l給rails of ruby嗎?</div>
+</div><div class="clear"></div>
+</div><div class="rbox_br"><div class="rbox_bl"><div class="rbox_b">&nbsp;</div></div></div></div>
+</div>
+        <div class="odd" id="comment-item-178"><div class="rbox"><div class="rbox_tr"><div class="rbox_tl"><div class="rbox_t">&nbsp;</div></div></div><div class="rbox_m">
+<div class="comment-avatar"><img src="http://www.gravatar.com/avatar.php?gravatar_id=f30c54f93057fa86e0383ad63abb09ee&amp;default=https%3A%2F%2Fwww.openfoundry.org%2Fcomponents%2Fcom_jcomments%2Fimages%2Fno_avatar.png" alt="" /></div>
+<div class="comment-box avatar-indent">
+<span class="comments-vote">
+	<span id="comment-vote-holder-178">
+<a href="8407%3Ftask=view.html#" class="vote-good" title="Good comment!" onclick="jcomments.voteComment(178, 1);return false;"></a><a href="8407%3Ftask=view.html#" class="vote-poor" title="Poor comment!" onclick="jcomments.voteComment(178, -1);return false;"></a>
+<span class="vote-none">0</span>
+	</span>
+</span>
+<a class="comment-anchor" href="../tech-column/8407-ruby-on-rails-.html#comment-178" id="comment-178">#2</a>
+<a class="author-homepage" href="https://about.me/MichaelChen520" rel="nofollow" title="michael52025">michael52025</a>
+<span class="comment-date">2011-09-13 10:33</span>
+<div class="comment-body" id="comment-body-178">您好<br />欲安裝mysql 請於ubuntu中下指令<br />sudo apt-get install mysql-server mysql-common mysql-client libmysqlclient16-dev<br /><br />然後再下gem指令<br />gem install mysql2<br /><br />並修改gem file 中加上 gem 'mysql2' <br />如果是rails 3 以上，則改為gem 'mysql', '~>0.2.7'<br /><br />最後將config/database.yml 中的資料庫設定為 mysql2 以及所需的帳密即可。</div>
+</div><div class="clear"></div>
+</div><div class="rbox_br"><div class="rbox_bl"><div class="rbox_b">&nbsp;</div></div></div></div>
+</div>
+</div>
+<div id="comments-list-footer"><a class="refresh" href="8407%3Ftask=view.html#" title="Refresh comments list" onclick="jcomments.showPage(8407,'com_content',0);return false;">Refresh comments list</a></div>
+</div>
+<div id="comments-footer" align="center"><a href="http://www.joomlatune.com" title="JComments" target="_blank">JComments</a></div>
+<script type="text/javascript">
+jcomments.setAntiCache(1,0,0);
+</script> 
+</div>	</div>
+</div>
+
+		                            </div>
+									<div class="clear"></div>
+								</div>
+								<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+							</div>
+							</div>
+                                                    </div>
+                                            </div>
+                                <div class="rt-grid-3 rt-pull-9">
+                <div id="rt-sidebar-a">
+                                    <div class="square4">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<ul class="menu"><li class="item56"><a href="../previous-issue.html"><span>Previous Issue</span></a></li><li class="item55"><a href="../about-newsletter.html"><span>About Newsletter</span></a></li></ul>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<ul class="menu"><li class="item115"><a href="../foss-news.html"><span>FOSS News</span></a></li><li class="item141"><a href="../case-job.html"><span>Case and Jobs</span></a></li></ul>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+        	                <div class="square1">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-title"><h2 class="title">Special</h2></div>
+						<div class="clear"></div>
+		                						<div class="module-content">
+		                	<ul class="menu"><li class="item37"><a href="../tech-column.html"><span>Tech Column</span></a></li><li class="item40"><a href="../foss-programs.html"><span>FOSS Programs</span></a></li><li class="item35"><a href="../legal-column.html"><span>Legal Column</span></a></li><li class="item154"><a href="../foss-forum.html"><span>FOSS Forum</span></a></li><li class="item162"><a href="../enterprise-application.html"><span>Enterprise Application</span></a></li><li class="item44"><a href="../foss-projects.html"><span>FOSS Projects</span></a></li></ul>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		                <div class="square1">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<p style="text-align: center;"><a href="../../news%3Fformat=feed&amp;type=rss" target="_black"><img src="../../images/M_images/news-rss-feed.png" border="0" /></a><br /><a href="https://www.openfoundry.org/rss-feed/Newsletter" target="_black"><img src="../../images/M_images/newsletter-rss-feed.png" border="0" /></a></p>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		
+                </div>
+            </div>
+
+                    <div class="clear"></div>
+                </div>
+            </div>
+																													</div>
+										<div id="rt-copyright">
+						<div class="rt-grid-12 rt-alpha rt-omega">
+                        <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<span class="nowrap">Open Source Software Foundry</span><span class="nowrap">‧</span><span class="nowrap"> </span><span class="nowrap">Best  Viewed with IE7.0 or Firefox2.0 above, 1024x768 Resolution. </span><strong>E-Mail</strong>：<a href="mailto:contact@openfoundry.org">contact@openfoundry.org</a> <br /><strong>Address</strong>：No.128, Sec.2, Academia Rd., Institute of Information Science, Academia Sinica, Nangang District, Taipei City 11529, Taiwan (R.O.C). <br /><a href="../privacy-policy.html">Privacy Policy</a>. <a href="../terms-of-use.html">Terms-of-use</a> <span style="position: relative; top: 8px; margin-top: -8px;"> <a href="../../about/8101.html"><img src="../../images/M_images/rss-feed-all.png" border="0" /></a></span>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+        	
+</div>
+						<div class="clear"></div>
+					</div>
+					<div class="rt-footer-bottom-wrap"><div class="rt-footer-bottom"><div class="rt-footer-bottom2"><div class="rt-footer-bottom3"></div></div></div></div>
+									</div></div></div>
+				<div class="rt-surround-bottom"><div class="rt-surround-bottom2"><div class="rt-surround-bottom3"></div></div></div>
+							</div>
+		</div>
+		<!--
+		<script id="aptureScript">
+						(function (){var a=document.createElement("script");a.defer="true";a.src="http://www.apture.com/js/apture.js?siteToken=vsJttrn";document.getElementsByTagName("head")[0].appendChild(a);})();
+     </script>
+-->
+
+<!-- Piwik -->
+<!-- 			<script type="text/javascript">
+			  var _paq = _paq || [];
+		  _paq.push(["trackPageView"]);
+		  _paq.push(["enableLinkTracking"]);
+
+		    (function() {
+			        var u=(("https:" == document.location.protocol) ? "https" : "https") + "://www.openfoundry.org/piwik/";
+				    _paq.push(["setTrackerUrl", u+"piwik.php"]);
+				    _paq.push(["setSiteId", "1"]);
+				        var d=document, g=d.createElement("script"), s=d.getElementsByTagName("script")[0]; g.type="text/javascript";
+				        g.defer=true; g.async=true; g.src=u+"piwik.js"; s.parentNode.insertBefore(g,s);
+					  })();
+		  </script> -->
+<!-- End Piwik Code -->
+	</body>
+</html>

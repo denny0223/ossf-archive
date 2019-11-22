@@ -1,0 +1,499 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="zh-tw" lang="zh-tw" >
+<head>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<link rel="shortcut icon" href="images/favicon.ico" />
+	  <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+  <meta name="robots" content="index, follow" />
+  <meta name="keywords" content="OSSFNL581" />
+  <meta name="title" content="一行命令啟動 VirtualBox 下的虛擬機器" />
+  <meta name="description" content="使用 Linux 也一段時間了，我想我使用電腦的習慣在不知不覺中就改變了，簡單的說應該是變懶惰了，可以打命令完成的事，就不用動到滑鼠。（其實這也是在避免手腕運動傷害） 在此前題之下，對於要執行 VirtualBox 下的虛擬機器，一定要動滑鼠先去執行 VirtualBox 應用程式，等待它的開啟，開啟之後，又要拉動滑鼠去點所要執行的虛擬機器。" />
+  <meta name="generator" content="" />
+  <title>一行命令啟動 VirtualBox 下的虛擬機器 - OpenFoundry</title>
+  <link href="favicon.ico" rel="shortcut icon" type="image/x-icon" />
+  <link rel="stylesheet" href="components/com_jcomments/tpl/default/style.css%3Fv=10.css" type="text/css" />
+  <link rel="stylesheet" href="components/com_gantry/css/gantry.css" type="text/css" />
+  <link rel="stylesheet" href="components/com_gantry/css/grid-12.css" type="text/css" />
+  <link rel="stylesheet" href="components/com_gantry/css/joomla.css" type="text/css" />
+  <link rel="stylesheet" href="templates/rt_quantive_j15/css/joomla.css" type="text/css" />
+  <link rel="stylesheet" href="templates/rt_quantive_j15/css/style1.css" type="text/css" />
+  <link rel="stylesheet" href="templates/rt_quantive_j15/css/light-body.css" type="text/css" />
+  <link rel="stylesheet" href="templates/rt_quantive_j15/css/demo-styles.css" type="text/css" />
+  <link rel="stylesheet" href="templates/rt_quantive_j15/css/template.css" type="text/css" />
+  <link rel="stylesheet" href="templates/rt_quantive_j15/css/typography.css" type="text/css" />
+  <link rel="stylesheet" href="templates/rt_quantive_j15/css/fusionmenu.css" type="text/css" />
+  <style type="text/css">
+    <!--
+#rt-main-surround ul.menu li.active > a, #rt-main-surround ul.menu li.active > .separator, #rt-main-surround ul.menu li.active > .item, #rt-main-surround .square4 ul.menu li:hover > a, #rt-main-surround .square4 ul.menu li:hover > .item, #rt-main-surround .square4 ul.menu li:hover > .separator, .roktabs-links ul li.active span {color:#0088B5;}
+a, #rt-main-surround ul.menu a:hover, #rt-main-surround ul.menu .separator:hover, #rt-main-surround ul.menu .item:hover {color:#0088B5;}
+    -->
+  </style>
+  <script type="text/javascript" src="components/com_jcomments/js/jcomments-v2.1.js%3Fv=2"></script>
+  <script type="text/javascript" src="components/com_jcomments/libraries/joomlatune/ajax.js"></script>
+  <script type="text/javascript" src="media/system/js/mootools.js"></script>
+  <script type="text/javascript" src="media/system/js/caption.js"></script>
+  <script type="text/javascript" src="components/com_gantry/js/gantry-buildspans.js"></script>
+  <script type="text/javascript" src="components/com_gantry/js/gantry-inputs.js"></script>
+  <script type="text/javascript" src="templates/rt_quantive_j15/js/jquery.cookie.js"></script>
+  <script type="text/javascript" src="modules/mod_roknavmenu/themes/fusion/js/fusion.js"></script>
+  <script type="text/javascript" src="modules/mod_ofssologin/js/ofssologin.js"></script>
+  <script type="text/javascript">
+
+			window.addEvent('domready', function() {
+				var modules = ['rt-block'];
+				var header = ['h3','h2','h1'];
+				GantryBuildSpans(modules, header);
+			});
+		InputsExclusion.push('.content_vote','#rt-popup')
+		        window.addEvent('load', function() {
+					new Fusion('ul.menutop', {
+						pill: 0,
+						effect: 'slide and fade',
+						opacity: 1,
+						hideDelay: 500,
+						centered: 0,
+						tweakInitial: {'x': -2, 'y': 0},
+        				tweakSubsequent: {'x': 0, 'y': -14},
+						menuFx: {duration: 200, transition: Fx.Transitions.Sine.easeOut},
+						pillFx: {duration: 400, transition: Fx.Transitions.Back.easeOut}
+					});
+	            });
+  </script>
+<!-- <script type="text/javascript" src="/sso/javascripts/langsync.js"></script> -->
+<!-- <script src="/templates/rt_quantive_j15/js/ossf.js"></script> -->
+<script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-4136519-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
+</head>
+	<body  class="backgroundlevel-low backgroundstyle-style8 bodylevel-med bodystyle-light cssstyle-style1 logostyle-dark font-family-helvetica font-size-is-default menu-type-fusionmenu col12 ">
+		<div id="rt-main-background">
+			<div class="rt-container">
+																<div id="rt-header">
+					<div class="rt-grid-7 rt-alpha">
+    			<div class="rt-block">
+    	    	<a href="index.html" id="rt-logo"></a>
+    		</div>
+	    
+</div>
+<div class="rt-grid-5 rt-omega">
+                    <div class="square9">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<div class="ofssologin_square9"><a href="index.html">登入</a>&nbsp;&nbsp|&nbsp;&nbsp;<span><a href="en/component/content/2276%3Ftask=view.html" ><span lang="en" xml:lang="en">English</span></a></li></ul></span><!--Joom!fish V2.0.4 (Lightning)-->
+<!-- &copy; 2003-2009 Think Network, released under the GPL. -->
+<!-- More information: at http://www.joomfish.net -->
+<div class="ofssologin_search_square9">
+  <form id="of_search" action="https://www.openfoundry.org/of/openfoundry/search" method="get" onsubmit="of_search(); return false;">
+    <select id="of_search_type">
+      <option value="Projects"> 專案 </option>
+      <option value="Content"> 文章 </option>
+      <option value="People"> 人才 </option>
+    </select>
+    <input id="query" name="query" id="mod_search_searchword" maxlength="50" alt="search" class="inputbox" type="text" size="28" value="search..."  onblur="if(this.value=='') this.value='search...';" onfocus="if(this.value=='search...') this.value='';" />
+    <input type="hidden" name="commit" value="search" />
+  </form>
+</div></div>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		
+</div>
+					<div class="clear"></div>
+				</div>
+																<div id="rt-navigation"><div id="rt-navigation2"><div id="rt-navigation3">
+					
+<div class="nopill">
+	<ul class="menutop level1 " >
+						<li class="item1 root" >
+					<a class="orphan item bullet" href="index.html"  >
+				<span>
+			    				首頁				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item32 root" >
+					<a class="orphan item bullet" href="archived.html"  >
+				<span>
+			    				專案				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item186 root" >
+					<a class="orphan item bullet" href="tw/community.html"  >
+				<span>
+			    				Who&#039;s Who				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item4 root" >
+					<a class="orphan item bullet" href="tw/news.html"  >
+				<span>
+			    				新聞				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item5 root" >
+					<a class="orphan item bullet" href="tw/law-and-licensing.html"  >
+				<span>
+			    				法律源地				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item3 root" >
+					<a class="orphan item bullet" href="tw/activities.html"  >
+				<span>
+			    				活動				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item2 root" >
+					<a class="orphan item bullet" href="tw/resourcecatalog%3FName=Value.html"  >
+				<span>
+			    				資源表列				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item45 root" >
+					<a class="orphan item bullet" href="tw/about.html"  >
+				<span>
+			    				關於				   
+				</span>
+			</a>
+			
+			
+	</li>	
+				</ul>
+</div>
+
+				    <div class="clear"></div>
+				</div></div></div>
+								<div class="rt-surround"><div class="rt-surround2"><div class="rt-surround3">
+										<div id="rt-showcase-section">
+												<div id="rt-showcase">
+							<div class="rt-grid-12 rt-alpha rt-omega">
+    		<div class="clear"></div>
+		
+		
+                <div class="close-note">
+                    <div class="rt-block">
+               					<div class="module-content">
+                	<div style="font-size:medium; background-image:linear-gradient(120deg,#159957,#4298b2);color:white;padding:20px;margin:-10px -18px;">感謝您對「自由軟體鑄造場」的支持與愛護，十多年來「自由軟體鑄造場」受中央研究院支持，並在資訊科學研究所以及資訊科技創新研究中心執行，現已完成階段性的任務。 本網站預計持續維運至 2021年底，網站內容基本上不會再更動。<br />也紀念我們永遠的朋友 李士傑先生（Shih-Chieh Ilya Li）。</div>				</div>
+            </div>
+                </div>
+		
+</div>
+							<div class="clear"></div>
+						</div>
+																	</div>
+															<div id="rt-main-surround">
+												<div id="rt-breadcrumbs">
+								<div class="rt-breadcrumb-surround">
+		<a href="index.html" id="breadcrumbs-home"></a>
+		<span class="breadcrumbs pathway">
+<span class="no-link">電子報總覽</span></span>
+	</div>
+	
+							<div class="clear"></div>
+						</div>
+																							              <div id="rt-main" class="sa3-mb9">
+                <div class="rt-main-inner">
+                    <div class="rt-grid-9 rt-push-3">
+                                                <div class="rt-block">
+                            							<div class="square1">
+							<div class="rt-module-surround">
+								<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+								<div class="rt-module-inner">
+		                            <div id="rt-mainbody">
+		                                
+<div class="rt-joomla ">
+	<div class="rt-article">
+		
+				<div class="rt-headline"><h1 class="rt-article-title">一行命令啟動 VirtualBox 下的虛擬機器</h1>		</div>
+		<div class="clear"></div>
+		
+		
+		
+				<div class="rt-articleinfo">
+						<div class="rt-article-icons">
+								<a href="https://www.openfoundry.org/tw/component/content/2276?tmpl=component&amp;print=1&amp;page=" title="列印" onclick="window.open(this.href,'win2','status=no,toolbar=no,scrollbars=yes,titlebar=no,menubar=no,resizable=yes,width=640,height=480,directories=no,location=no'); return false;" rel="nofollow"><span class="icon print"></span></a>																</div>
+			
+			<span class="rt-date-posted">
+						建立日期			2010-03-22 07:27						&nbsp;&nbsp;&nbsp;&nbsp;						最近更新在 2010-04-13 21:35						</span>
+
+						<span class="rt-author">
+				作者是 許仲佑			</span>
+				
+					</div>
+		
+		
+		<p>使用 Linux 也一段時間了，我想我使用電腦的習慣在不知不覺中就改變了，簡單的說應該是變懶惰了，可以打命令完成的事，就不用動到滑鼠。（其實這也是在避免手腕運動傷害）</p>
+<p>在此前題之下，對於要執行 VirtualBox 下的虛擬機器，一定要動滑鼠先去執行 VirtualBox 應用程式，等待它的開啟，開啟之後，又要拉動滑鼠去點所要執行的虛擬機器。</p>
+<p>對於這些拉來拉去，點來點去的過程，實在是很不能忍受，與覺得自己很呆，因為機器可以自動完成的事，為什麼我要一再重覆呢？</p>
+<p>於是，觀察與分析了一下 VirtualBox 的執行過程，發現其實也沒那麼複雜，不過是 VirtualBox 一執行，然後去執行虛擬機器。對 VirtualBox 而言，只要清楚告訴 VirtualBox 虛擬機器的代號以及所在位置就好了，前前後後，就是這麼簡單。<br /></p><p>好，知道過程之後，那要去哪裡找到所要資訊呢？<wbr></wbr>系統不可能憑空猜中，一定有地方來紀錄，那到底在哪裡呢？</p>
+<p>翻查一下檔案，因為是要查 VirtualBox 相關事情，所以直覺便是到家目錄底下的 .VirtualBox 目錄去查，嘿嘿~果然，有一些要的資訊是躲在 VirtualBox.xml 裡（只要用文字編輯器便可以開啟此檔案了）。</p>
+<p>呃~ 舉例來說，如果我裝了一部 WinXP 的虛擬機器，那我便會看到相關的註冊訊息：</p>
+<div style="border: 1px dotted ; padding: 10px 15px; background-color: rgb(244, 255, 196);">
+<p>&lt;MachineRegistry&gt;<br />&lt;MachineEntry uuid=&quot;{dc5d1064-d125-431e-<wbr></wbr>988c-95973a871a42}&quot; src=&quot;/media/win_c/mandriva_<wbr></wbr>data/Virtualbox/Machines/<wbr></wbr>WinXP/WinXP.xml&quot;/&gt;<br />&lt;/MachineRegistry&gt; </p>
+</div>
+<p><br />對我們來說，關鍵的訊息是：<span style="border: 1px dotted ; padding: 1px; background-color: rgb(244, 255, 196);">uuid=&quot;{dc5d1064-<wbr></wbr>d125-431e-988c-95973a871a42}&quot;</span> ，那是要告訴 VirtualBox 要去執行的目標。（特別注意，每部電腦系統所建的虛擬機器，<wbr></wbr>uuid 會不一樣，所以要自己查一下。）</p>
+<p>好，目標找到了，那命令該如何下呢？ 只要 ~~</p>
+<div style="border: 1px dotted ; padding: 10px 15px; background-color: rgb(244, 255, 196);">VirtualBox --comment WinXP --startvm dc5d1064-d125-431e-988c-<wbr></wbr>95973a871a42
+<p>&nbsp; --comment 註解，給人看的訊息，會出現在視窗標題。<br />&nbsp; --startvm 要執行哪部虛擬機器，只要告訴程式 uuid 便可以啦。</p>
+</div>
+<p>呃~ 這麼簡單？ 是的，就這麼簡單！</p>
+<p>那像我裝了好幾部虛擬機器怎麼辦呢？那就只好麻煩細心一次，<wbr></wbr>把所有機器的 uuid 找出來，全部寫在一個檔案中，例如：virtualbox.<wbr></wbr>txt（純文字檔喔）。</p>
+<div style="border: 1px dotted ; padding: 10px 15px; background-color: rgb(244, 255, 196);">
+<p>## Star ACFS<br />VirtualBox --comment ACFS --startvm b0e219c9-bcd6-43d2-a543-<wbr></wbr>78ad6657903c </p>
+<p>## Star EZGO7<br />VirtualBox --comment EZGO7 --startvm 779e2870-a910-4163-a2d2-<wbr></wbr>e658844ad9d9 </p>
+<p>## Star WinXP<br />VirtualBox --comment WinXP --startvm dc5d1064-d125-431e-988c-<wbr></wbr>95973a871a42 </p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+</div>
+<p>那如果我只要執行 WinXP 的話，只要開 終端機 輸入：</p>
+<div style="border: 1px dotted ; padding: 10px 15px; background-color: rgb(244, 255, 196);">grep WinXP virtualbox.txt | sh &amp;
+<p>&nbsp;&nbsp;&nbsp; 說明：<br />&nbsp;&nbsp;&nbsp; 用 grep 到 virtualbox.txt 去找有 XinXP 的這一行，找到了就丟給 sh 去執行，用 &amp; 的目的是把此程序放到背景<br />&nbsp;&nbsp;&nbsp; 執行</p>
+</div>
+<p>延伸思考，如果我要一登入便執行某虛擬機器呢？(例如： WinXP)</p>
+<p>我只要建個文字檔，例如：vm_winxp.txt， 然後，把內容</p>
+<p><span style="border: 1px dotted ; padding: 10px 15px; background-color: rgb(244, 255, 196);">VirtualBox --comment WinXP --startvm dc5d1064-d125-431e-988c-<wbr></wbr>95973a871a42 </span></p>
+<p>這一行放進去。</p>
+<p>記得更改檔案屬性， <span style="border: 1px dotted ; padding: 10px 15px; background-color: rgb(244, 255, 196);">chmod 755 vm_winxp.txt </span>（開 終端機 程式）</p>
+<p>然後在放到相關目錄區便可以，因 Gnome 與 <acronym title="K Desktop Environment">KDE</acronym> 登入後自動執行的目錄不同，不在這裡的討論範圍，所以就不寫了。</p>
+<p>---- 20100301 新增 ----- </p>
+<p>根據迴響(1) 強者小朱說，只要</p>
+<p><span style="border: 1px dotted ; padding: 5px 10px; background-color: rgb(244, 255, 196);">VirtualBox --comment WinXP --startvm （虛擬機器名稱，例：WinXP）</span></p>
+<p>就可以了，我試了一下，果然通耶，果然是強者！</p>
+<p>啊~ 還虧我前面寫了一大堆！！</p>
+<p># 請參考<a href="https://yowlab.shps.kh.edu.tw/wordpress/?p=890" target="_blank">許仲佑部落格</a> </p>
+<h2>◎作者簡介</h2>
+<p>許仲佑 (Chung-Yu Hsu)，國小專任教師，熱愛文史，更愛自由。<wbr></wbr>目前正致力於自由軟體的推動。</p>
+<p><a href="https://yowlab.shps.kh.edu.tw/wordpress/" target="_blank">作者Blog</a> </p>
+			<!-- Show relate article -->
+				<!-- end -->
+		<div class="article_note">
+		<!-- Add tags use metakey, and show OSSF Newsletter tag: OSSFNL+NUM-->
+		<br><br> <hr style='border: 1px dashed #D2DADB;'><b>自由軟體鑄造場電子報&nbsp;:</b>&nbsp;<a href='previous-issue%3Ftask=view&amp;id=581.html'>第 146 期 從 BusyBox 案談起：台灣業者侵權利用自由軟體所面對的法律風險</a><br>				<!-- End -->
+					<br>
+					<b>分類: </b><a href="tw/tech-column.html">				技術專欄					</a>				</div>
+			 <!-- AddThis Button BEGIN ID 3001 is the front page article -->
+     			<br><br>
+       <div class="addthis_toolbox addthis_default_style addthis_32x32_style">
+       <a class="addthis_button_preferred_1"></a>
+       <a class="addthis_button_preferred_2"></a>
+       <a class="addthis_button_preferred_3"></a>
+       <a class="addthis_button_preferred_4"></a>
+       <a class="addthis_button_compact"></a>
+       <a class="addthis_counter addthis_bubble_style"></a>
+       </div>
+       <script type="text/javascript">var addthis_config = {"data_track_clickback":true};</script>
+       <script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js#pubid=openfoundry"></script>
+       <!-- AddThis Button END -->
+     <br>
+		<div class="totop" ><a class="rt-totop" href="index.php%3Foption=com_content&amp;task=view&amp;id=2276&amp;Itemid=56%3Bisletter=1.html#" style="outline: medium none;">↑ Top</a></div>
+            <!-- AddThis Button END -->
+
+		<script type="text/javascript">
+var jcomments=new JComments(2276, 'com_content','https://openfoundry.org/index.php?option=com_jcomments&amp;tmpl=component&amp;lang=');
+jcomments.setList('comments-list');
+</script>
+<div id="jc">
+<div id="comments"><h4>評論<a class="refresh" href="index.php%3Foption=com_content&amp;task=view&amp;id=2276&amp;Itemid=56%3Bisletter=1.html#" title="重新整理評論列表" onclick="jcomments.showPage(2276,'com_content',0);return false;">&nbsp;</a></h4>
+<div id="comments-list" class="comments-list">
+        <div class="even" id="comment-item-39"><div class="rbox"><div class="rbox_tr"><div class="rbox_tl"><div class="rbox_t">&nbsp;</div></div></div><div class="rbox_m">
+<div class="comment-avatar"><img src="http://www.gravatar.com/avatar.php?gravatar_id=8651bf463d97a052678e5d547c085d53&amp;default=https%3A%2F%2Fwww.openfoundry.org%2Fcomponents%2Fcom_jcomments%2Fimages%2Fno_avatar.png" alt="" /></div>
+<div class="comment-box avatar-indent">
+<span class="comments-vote">
+	<span id="comment-vote-holder-39">
+<a href="index.php%3Foption=com_content&amp;task=view&amp;id=2276&amp;Itemid=56%3Bisletter=1.html#" class="vote-good" title="優質的評論" onclick="jcomments.voteComment(39, 1);return false;"></a><a href="index.php%3Foption=com_content&amp;task=view&amp;id=2276&amp;Itemid=56%3Bisletter=1.html#" class="vote-poor" title="差勁的評論" onclick="jcomments.voteComment(39, -1);return false;"></a>
+<span class="vote-good">+1</span>
+	</span>
+</span>
+<a class="comment-anchor" href="tw/tech-column/2276.html#comment-39" id="comment-39">#1</a>
+<span class="comment-author">藍永嵐</span>
+<span class="comment-date">2010-05-19 07:59</span>
+<div class="comment-body" id="comment-body-39">我也是virtualbox的愛<span style="font-size:0px;padding:0;margin:0;"> </span>用者<br />看見有人分享關於virtual<span style="font-size:0px;padding:0;margin:0;"> </span>box的資訊<br />真希望自己有一天也能分享給大家<span style="font-size:0px;padding:0;margin:0;"> </span><br />讓自由軟體為大家生活更便利</div>
+</div><div class="clear"></div>
+</div><div class="rbox_br"><div class="rbox_bl"><div class="rbox_b">&nbsp;</div></div></div></div>
+</div>
+        <div class="odd" id="comment-item-128"><div class="rbox"><div class="rbox_tr"><div class="rbox_tl"><div class="rbox_t">&nbsp;</div></div></div><div class="rbox_m">
+<div class="comment-avatar"><img src="http://www.gravatar.com/avatar.php?gravatar_id=2557e5c4cb38e7dc105aaf21fe681b77&amp;default=https%3A%2F%2Fwww.openfoundry.org%2Fcomponents%2Fcom_jcomments%2Fimages%2Fno_avatar.png" alt="" /></div>
+<div class="comment-box avatar-indent">
+<span class="comments-vote">
+	<span id="comment-vote-holder-128">
+<a href="index.php%3Foption=com_content&amp;task=view&amp;id=2276&amp;Itemid=56%3Bisletter=1.html#" class="vote-good" title="優質的評論" onclick="jcomments.voteComment(128, 1);return false;"></a><a href="index.php%3Foption=com_content&amp;task=view&amp;id=2276&amp;Itemid=56%3Bisletter=1.html#" class="vote-poor" title="差勁的評論" onclick="jcomments.voteComment(128, -1);return false;"></a>
+<span class="vote-good">+2</span>
+	</span>
+</span>
+<a class="comment-anchor" href="tw/tech-column/2276.html#comment-128" id="comment-128">#2</a>
+<a class="author-homepage" href="https://www.arkbsd.org" rel="nofollow" title="Anati Chang">Anati Chang</a>
+<span class="comment-date">2011-05-13 02:36</span>
+<div class="comment-body" id="comment-body-128">VBoxManage startvm winxp 這樣更快</div>
+</div><div class="clear"></div>
+</div><div class="rbox_br"><div class="rbox_bl"><div class="rbox_b">&nbsp;</div></div></div></div>
+</div>
+        <div class="even" id="comment-item-271"><div class="rbox"><div class="rbox_tr"><div class="rbox_tl"><div class="rbox_t">&nbsp;</div></div></div><div class="rbox_m">
+<div class="comment-avatar"><img src="http://www.gravatar.com/avatar.php?gravatar_id=439d7eb1280059164e88d80430e3d9a3&amp;default=https%3A%2F%2Fwww.openfoundry.org%2Fcomponents%2Fcom_jcomments%2Fimages%2Fno_avatar.png" alt="" /></div>
+<div class="comment-box avatar-indent">
+<span class="comments-vote">
+	<span id="comment-vote-holder-271">
+<a href="index.php%3Foption=com_content&amp;task=view&amp;id=2276&amp;Itemid=56%3Bisletter=1.html#" class="vote-good" title="優質的評論" onclick="jcomments.voteComment(271, 1);return false;"></a><a href="index.php%3Foption=com_content&amp;task=view&amp;id=2276&amp;Itemid=56%3Bisletter=1.html#" class="vote-poor" title="差勁的評論" onclick="jcomments.voteComment(271, -1);return false;"></a>
+<span class="vote-none">0</span>
+	</span>
+</span>
+<a class="comment-anchor" href="tw/tech-column/2276.html#comment-271" id="comment-271">#3</a>
+<span class="comment-author">黃釋寬</span>
+<span class="comment-date">2012-03-15 18:18</span>
+<div class="comment-body" id="comment-body-271">許老師您好<br /> 很高興能在網路上看到您的這篇"一行命令啟動virtualbo<span style="font-size:0px;padding:0;margin:0;"> </span>x"下的虛擬機器,但我按照文章裡所<span style="font-size:0px;padding:0;margin:0;"> </span>說的指令下，還是無法啟動虛擬機<span style="font-size:0px;padding:0;margin:0;"> </span>器耶，我的os 是:CentOS6.2,安裝的virtualbox<span style="font-size:0px;padding:0;margin:0;"> </span>是4.1.8的版本，在virtualbo<span style="font-size:0px;padding:0;margin:0;"> </span>x裡安裝了server2008 64位元的作業系統，我在終端機<span style="font-size:0px;padding:0;margin:0;"> </span>裡輸入了您所說的指令，還是無法<span style="font-size:0px;padding:0;margin:0;"> </span>啟動server2008耶，不<span style="font-size:0px;padding:0;margin:0;"> </span>知那裡做錯了呢</div>
+</div><div class="clear"></div>
+</div><div class="rbox_br"><div class="rbox_bl"><div class="rbox_b">&nbsp;</div></div></div></div>
+</div>
+</div>
+<div id="comments-list-footer"><a class="refresh" href="index.php%3Foption=com_content&amp;task=view&amp;id=2276&amp;Itemid=56%3Bisletter=1.html#" title="重新整理評論列表" onclick="jcomments.showPage(2276,'com_content',0);return false;">重新整理評論列表</a></div>
+</div>
+<div id="comments-footer" align="center"><a href="http://www.joomlatune.com" title="JComments" target="_blank">JComments</a></div>
+<script type="text/javascript">
+jcomments.setAntiCache(1,0,0);
+</script> 
+</div>	</div>
+</div>
+
+		                            </div>
+									<div class="clear"></div>
+								</div>
+								<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+							</div>
+							</div>
+                                                    </div>
+                                            </div>
+                                <div class="rt-grid-3 rt-pull-9">
+                <div id="rt-sidebar-a">
+                                    <div class="square4">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<ul class="menu"><li id="current" class="active item56"><a href="tw/previous-issue.html"><span>電子報總覽</span></a></li><li class="item55"><a href="tw/about-newsletter.html"><span>關於本報</span></a></li></ul>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<ul class="menu"><li class="item115"><a href="tw/foss-news.html"><span>源碼新聞</span></a></li><li class="item141"><a href="tw/case-job.html"><span>接案 / 工作</span></a></li></ul>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+        	                <div class="square1">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-title"><h2 class="title">專欄總覽</h2></div>
+						<div class="clear"></div>
+		                						<div class="module-content">
+		                	<ul class="menu"><li class="item37"><a href="tw/tech-column.html"><span>技術專欄</span></a></li><li class="item40"><a href="tw/foss-programs.html"><span>源碼秘技</span></a></li><li class="item35"><a href="tw/legal-article-.html"><span>法律專欄</span></a></li><li class="item154"><a href="tw/foss-forum.html"><span>自由專欄</span></a></li><li class="item162"><a href="tw/enterprise-application.html"><span>企業應用</span></a></li><li class="item44"><a href="tw/foss-projects.html"><span>源碼專案</span></a></li></ul>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		                <div class="square1">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<p style="text-align: center;"><a href="news%3Fformat=feed&amp;type=rss" target="_black"><img src="images/M_images/news-rss-feed.png" border="0" /></a><br /><a href="https://www.openfoundry.org/rss-feed/Newsletter" target="_black"><img src="images/M_images/newsletter-rss-feed.png" border="0" /></a></p>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		
+                </div>
+            </div>
+
+                    <div class="clear"></div>
+                </div>
+            </div>
+																													</div>
+										<div id="rt-copyright">
+						<div class="rt-grid-12 rt-alpha rt-omega">
+                        <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<div id="desktop-mobile-version-switch"><span id="mobile-version" class="version-switch"><a href="index.php%3Foption=com_content&amp;task=view&amp;id=2276&amp;Itemid=56%3Bisletter=1.html#">行動版</a></span></div>
+自由軟體鑄造場 製作 最佳瀏覽狀態：IE7或Firefox2.0以上 (建議使用Firefox) ‧ 解析度1024*768 <br /> <strong>E-Mail</strong>：<a href="mailto:contact@openfoundry.org">contact@openfoundry.org</a> <strong>Address</strong>：台北市南港區研究院路2段128號 中央研究院資訊科學研究所 . <a href="privacy-policy.html">隱私權條款</a>. <a href="terms-of-use.html">使用條款</a><span style="position: relative; top: 8px; margin-top: -8px;"> <a href="about/8101.html"><img src="images/M_images/rss-feed-all.png" border="0" /></a></span>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+        	
+</div>
+						<div class="clear"></div>
+					</div>
+					<div class="rt-footer-bottom-wrap"><div class="rt-footer-bottom"><div class="rt-footer-bottom2"><div class="rt-footer-bottom3"></div></div></div></div>
+									</div></div></div>
+				<div class="rt-surround-bottom"><div class="rt-surround-bottom2"><div class="rt-surround-bottom3"></div></div></div>
+							</div>
+		</div>
+		<!--
+		<script id="aptureScript">
+						(function (){var a=document.createElement("script");a.defer="true";a.src="http://www.apture.com/js/apture.js?siteToken=vsJttrn";document.getElementsByTagName("head")[0].appendChild(a);})();
+     </script>
+-->
+
+<!-- Piwik -->
+<!-- 			<script type="text/javascript">
+			  var _paq = _paq || [];
+		  _paq.push(["trackPageView"]);
+		  _paq.push(["enableLinkTracking"]);
+
+		    (function() {
+			        var u=(("https:" == document.location.protocol) ? "https" : "https") + "://www.openfoundry.org/piwik/";
+				    _paq.push(["setTrackerUrl", u+"piwik.php"]);
+				    _paq.push(["setSiteId", "1"]);
+				        var d=document, g=d.createElement("script"), s=d.getElementsByTagName("script")[0]; g.type="text/javascript";
+				        g.defer=true; g.async=true; g.src=u+"piwik.js"; s.parentNode.insertBefore(g,s);
+					  })();
+		  </script> -->
+<!-- End Piwik Code -->
+	</body>
+</html>

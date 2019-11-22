@@ -1,0 +1,628 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en" dir="ltr">
+  <head>
+<base href="" />
+
+    <meta charset="UTF-8" />
+    <title>UbuntuGIS in Launchpad</title>
+    <link rel="shortcut icon" href="https://launchpad.net/@@/launchpad.png" />
+    
+    
+      <link rel="alternate" type="application/atom+xml" href="http://feeds.launchpad.net/~ubuntugis/latest-bugs.atom" title="Latest Bugs for UbuntuGIS" />
+      <link rel="alternate" type="application/atom+xml" href="http://feeds.launchpad.net/~ubuntugis/branches.atom" title="Latest Branches for UbuntuGIS" />
+      <link rel="alternate" type="application/atom+xml" href="http://feeds.launchpad.net/~ubuntugis/revisions.atom" title="Latest Revisions by members of UbuntuGIS" />
+    
+
+    
+  
+  <link type="text/css" rel="stylesheet" media="screen, print" href="https://launchpad.net/+icing/revc597c3229eb023b1e626162d5947141bf7befb13/combo.css" />
+
+
+    
+
+    
+      <meta name="description" content="https://wiki.ubuntu.com/UbuntuGIS is the wiki page about Ubuntu and GIS.
+
+This page is where we coordinate the packaging of Geospatial Open Source Software for Ubuntu. Much of this work is done for us by the DebianGIS team, as packages from Debian are automatically copied into Ubuntu during the release cycle. If you want to package your GIS software for multiple releases, you might want to start with DebianGIS:
+
+ https://debian-gis-team.pages.debian.net/
+
+This team is dedicated to keeping Ubu..." />
+    
+
+    
+  
+
+  
+  
+  <script type="text/javascript">
+    var LP = {
+        cache: {},
+        links: {}
+    };
+  </script>
+
+  
+
+  <script type="text/javascript">var cookie_scope = '; Path=/; Secure; Domain=.launchpad.net';</script>
+
+   <script type="text/javascript" src="https://launchpad.net/+combo/revc597c3229eb023b1e626162d5947141bf7befb13/?yui/yui/yui-min.js&amp;lp/meta.js&amp;yui/loader/loader-min.js"></script>
+   <script type="text/javascript">
+        var raw = null;
+        if (LP.devmode) {
+           raw = 'raw';
+        }
+        YUI.GlobalConfig = {
+            combine: true,
+            comboBase: '/+combo/revc597c3229eb023b1e626162d5947141bf7befb13/?',
+            root: 'yui/',
+            filter: raw,
+            debug: false,
+            fetchCSS: false,
+            maxURLLength: 2000,
+            groups: {
+                lp: {
+                    combine: true,
+                    base: '/+combo/revc597c3229eb023b1e626162d5947141bf7befb13/?lp/',
+                    comboBase: '/+combo/revc597c3229eb023b1e626162d5947141bf7befb13/?',
+                    root: 'lp/',
+                    // comes from including lp/meta.js
+                    modules: LP_MODULES,
+                    fetchCSS: false
+                }
+            }
+        }</script>
+
+  <script type="text/javascript">
+      // we need this to create a single YUI instance all events and code
+      // talks across. All instances of YUI().use should be based off of
+      // LPJS instead.
+      var LPJS = new YUI();
+  </script>
+
+
+
+    <script id="base-layout-load-scripts" type="text/javascript">
+        //<![CDATA[
+        LPJS.use('base', 'node', 'console', 'event',
+            'oop', 'lp', 'lp.app.foldables','lp.app.sorttable',
+            'lp.app.inlinehelp', 'lp.app.links',
+            'lp.bugs.bugtask_index', 'lp.bugs.subscribers',
+            'lp.app.ellipsis', 'lp.code.branchmergeproposal.diff',
+            'lp.views.global',
+             function(Y) {
+
+            Y.on("domready", function () {
+                var global_view = new Y.lp.views.Global();
+                global_view.render();
+
+                Y.lp.app.sorttable.SortTable.init();
+                Y.lp.app.inlinehelp.init_help();
+                Y.lp.activate_collapsibles();
+                Y.lp.app.foldables.activate();
+                Y.lp.app.links.check_valid_lp_links();
+            });
+
+            Y.on('lp:context:web_link:changed', function(e) {
+                  window.location = e.new_value;
+            });
+        });
+        //]]>
+    </script>
+    <script id="base-helper-functions" type="text/javascript">
+         //<![CDATA[
+        // This code is pulled from lp.js that needs to be available on every
+        // request. Pulling here to get it outside the scope of the YUI block.
+        function setFocusByName(name) {
+            // Focus the first element matching the given name which can be focused.
+            var nodes = document.getElementsByName(name);
+            var i, node;
+            for (i = 0; i < nodes.length; i++) {
+                node = nodes[i];
+                if (node.focus) {
+                    try {
+                        // Trying to focus a hidden element throws an error in IE8.
+                        if (node.offsetHeight !== 0) {
+                            node.focus();
+                        }
+                    } catch (e) {
+                        LPJS.use('console', function(Y) {
+                            Y.log('In setFocusByName(<' +
+                                node.tagName + ' type=' + node.type + '>): ' + e);
+                        });
+                    }
+                    break;
+                }
+            }
+        }
+
+        function selectWidget(widget_name, event) {
+          if (event && (event.keyCode === 9 || event.keyCode === 13)) {
+              // Avoid firing if user is tabbing through or simply pressing
+              // enter to submit the form.
+              return;
+          }
+          document.getElementById(widget_name).checked = true;
+        }
+        //]]>
+    </script>
+
+    
+      
+    <link rel="meta" type="application/rdf+xml" title="FOAF" href="https://launchpad.net/%7Eubuntugis/+rdf" />
+  
+    
+  </head>
+
+  <body id="document" itemscope="" itemtype="http://schema.org/WebPage" class="tab-overview
+      main_side
+      public
+      yui3-skin-sam">
+          
+          
+    <div class="yui-d0">
+      <div id="locationbar" class="login-logout">
+        
+
+<div id="logincontrol"><a href="https://launchpad.net/~ubuntugis/+login">Log in / Register</a></div>
+
+
+
+      </div><!--id="locationbar"-->
+
+      <div id="watermark" class="watermark-apps-portlet">
+        <div>
+          <a href="visit.html"><img alt="" width="64" height="64" src="https://launchpad.net/@@/team-logo" /></a>
+        </div>
+        <div class="wide">
+          <h2 id="watermark-heading"><a href="visit.html">“UbuntuGIS” team</a></h2>
+        </div>
+        
+  <!-- Application Menu -->
+  <ul class="facetmenu">
+    
+      <li class="overview active"><span>Overview</span></li>
+      
+      
+    
+    
+      
+      <li class="branches"><a href="https://code.launchpad.net/~ubuntugis">Code</a></li>
+      
+    
+    
+      
+      <li class="bugs"><a href="https://bugs.launchpad.net/~ubuntugis">Bugs</a></li>
+      
+    
+    
+      
+      <li class="specifications"><a href="https://blueprints.launchpad.net/~ubuntugis">Blueprints</a></li>
+      
+    
+    
+      
+      <li class="translations"><a href="https://translations.launchpad.net/~ubuntugis">Translations</a></li>
+      
+    
+    
+      
+      <li class="answers"><a href="https://answers.launchpad.net/~ubuntugis">Answers</a></li>
+      
+    
+  </ul>
+
+      </div>
+
+      <div class="yui-t4">
+        <div id="maincontent" class="yui-main">
+          <div class="yui-b" dir="ltr">
+            <div class="context-publication">
+              
+              
+
+              <div id="registration" class="registering">
+                
+              </div>
+            </div>
+
+            
+            <div id="request-notifications">
+              
+            </div>
+
+            
+              <div>
+
+  <div class="description">
+      <div>
+  <div class="lazr-multiline-edit" id="edit-description">
+  <div class="clearfix">
+    
+
+    
+  </div>
+
+  <div class="yui3-editable_text-text"><p><a rel="nofollow" href="https://wiki.ubuntu.com/UbuntuGIS">https:/<wbr />/wiki.ubuntu.<wbr />com/UbuntuGIS</a> is the wiki page about Ubuntu and GIS.</p>
+<p>This page is where we coordinate the packaging of Geospatial Open Source Software for Ubuntu. Much of this work is done for us by the DebianGIS team, as packages from Debian are automatically copied into Ubuntu during the release cycle. If you want to package your GIS software for multiple releases, you might want to start with DebianGIS:</p>
+<p> <a rel="nofollow" href="https://debian-gis-team.pages.debian.net/">https:/<wbr />/debian-<wbr />gis-team.<wbr />pages.debian.<wbr />net/</a></p>
+<p>This team is dedicated to keeping Ubuntu up to date with a suite of the best Geospatial Open Source Software.</p>
+<p>As team members have full access to the packages, only people actively involved in the updating of packages are approved into this team.</p>
+<p>If you want to get involved, or monitor progress, please join our mailing list and introduce yourself. <a rel="nofollow" href="https://lists.osgeo.org/mailman/listinfo/ubuntu">https:/<wbr />/lists.<wbr />osgeo.org/<wbr />mailman/<wbr />listinfo/<wbr />ubuntu</a></p></div>
+  </div>
+
+  
+</div>
+
+  </div>
+
+  <ul class="horizontal">
+    
+    <li>
+      <a class="sprite info" href="https://launchpad.net/~ubuntugis/+related-packages">
+        Related packages
+      </a>
+    </li>
+      <li>
+        <a class="sprite info" href="https://launchpad.net/~ubuntugis/+related-projects">
+          Related projects
+        </a>
+      </li>
+    
+  </ul>
+
+  <div class="yui-g">
+    <div class="first yui-u">
+      
+  <div class="portlet" id="contact-details">
+    <h2>Team details</h2>
+
+    <dl id="contact-email">
+      <dt>Email:</dt>
+
+      <dd>
+        
+          <a href="https://launchpad.net/%7Eubuntugis/+login">Log in</a> for email information.
+        
+
+        
+
+        
+      </dd>
+    </dl>
+
+    <div class="two-column-list">
+      <dl id="team-owner">
+        <dt>Owner:</dt>
+        <dd>
+          <a href="https://launchpad.net/~aboudreault" class="sprite person">Alan Boudreault</a>
+        </dd>
+      </dl>
+
+      <dl id="team-datecreated">
+        <dt>Created on:</dt>
+        <dd>
+          <span id="created-date" title="2005-10-25 08:49:22 UTC">2005-10-25</span>
+        </dd>
+      </dl>
+
+      <dl id="contact-languages">
+        <dt>Languages:</dt>
+        <dd>
+          English
+          
+        </dd>
+      </dl>
+      <dl id="subscription-policy">
+        <dt>Membership policy:</dt>
+        <dd title="Membership is exclusive; team administrators can invite users and
+exclusive teams to join.
+">
+          Restricted Team
+          <a class="sprite maybe action-icon" href="https://launchpad.net/+help-registry/team-subscription-policy.html" target="help"></a>
+        </dd>
+      </dl>
+
+    </div>
+  </div>
+
+    </div>
+    <div class="yui-u">
+      <div>
+
+<div id="membership" class="portlet">
+  <h2>
+    <span class="see-all">
+      <a href="https://launchpad.net/~ubuntugis/+members">
+        All members
+      </a>
+    </span>
+  </h2>
+
+  <div id="membership-summary" style="margin-bottom: 1.5em;">
+    <div>
+      <div id="membership-counts">
+        <strong class="sprite team" id="approved-member-count">
+          13
+        </strong>
+        <a href="https://launchpad.net/~ubuntugis/+members#active">active
+          
+  
+  members</a>
+      </div>
+    </div>
+
+    <p id="your-involvement">
+      You must <a href="https://launchpad.net/%7Eubuntugis/+login">log in</a>
+      to join or leave this team.
+    </p>
+
+    
+  </div>
+  
+  <ul class="horizontal">
+      
+      <li>
+        <a class="menu-link-mugshots sprite team" href="https://launchpad.net/~ubuntugis/+mugshots">Show member photos</a>
+      </li>
+  </ul>
+  <table>
+    <tr>
+      <td id="recently-approved" style="padding-right: 1em" class="">
+        <h3>Latest members</h3>
+
+        <ul id="recently-approved-ul">
+          <li><a href="https://launchpad.net/~landa-martin" class="sprite person">MartinL</a></li>
+          <li><a href="https://launchpad.net/~hamish-b" class="sprite person">hamish</a></li>
+          <li><a href="https://launchpad.net/~rashadkm" class="sprite person">Rashad Kanavath</a></li>
+          <li><a href="https://launchpad.net/~manuel-grizonnet" class="sprite person">Manuel Grizonnet</a></li>
+          <li><a href="https://launchpad.net/~pi-deb" class="sprite person">Pirmin Kalberer</a></li>
+        </ul>
+      </td>
+      <td id="recently-proposed" class="hidden">
+        <h3>Pending approval</h3>
+
+        <ul id="recently-proposed-ul">
+        </ul>
+        
+      </td>
+    </tr>
+  </table>
+
+  <div id="recently-invited" class="hidden">
+    <h3>Latest invited</h3>
+
+    <ul id="recently-invited-ul">
+    </ul>
+  </div>
+  
+</div>
+
+</div>
+    </div>
+  </div>
+
+  <div class="yui-g">
+    <!-- First portlet column. -->
+    <div class="first yui-u">
+      <div>
+  <div id="ppas" class="portlet">
+    <h2>Personal package archives</h2>
+
+    
+      
+  
+
+  <div>
+    <table>
+      
+        <tr>
+          <td><a href="https://launchpad.net/~ubuntugis/+archive/ubuntu/ppa" class="sprite ppa-icon">ubuntugis-stable</a></td>
+        </tr>
+      
+      
+        <tr>
+          <td><a href="https://launchpad.net/~ubuntugis/+archive/ubuntu/ubuntugis-experimental" class="sprite ppa-icon">ubuntugis-experimental</a></td>
+        </tr>
+      
+      
+        <tr>
+          <td><a href="https://launchpad.net/~ubuntugis/+archive/ubuntu/ubuntugis-testing" class="sprite ppa-icon">ubuntugis-testing</a></td>
+        </tr>
+      
+      
+        <tr>
+          <td><a href="https://launchpad.net/~ubuntugis/+archive/ubuntu/ubuntugis-unstable" class="sprite ppa-icon">ubuntugis-unstable</a></td>
+        </tr>
+      
+    </table>
+  </div>
+
+    
+    <ul class="horizontal">
+      
+        
+      
+      
+
+      
+
+    </ul>
+  </div>
+  
+
+
+
+</div>
+      <div>
+
+<div id="mailing-lists" class="portlet">
+  <h2>Mailing list</h2>
+
+    <div>
+      <img src="https://launchpad.net/@@/mail" alt="mail" />
+      <a id="mailing-list-posting-address" href="mailto:ubuntugis@lists.launchpad.net">ubuntugis@lists.launchpad.net</a>
+      <br />
+      <strong>Policy:</strong>
+      You must be a team member to subscribe to the team mailing list.
+      <br />
+      
+      <img src="https://launchpad.net/@@/mail" alt="email" />
+      <a id="mailing-list-archive" href="https://lists.launchpad.net/ubuntugis">View public archive</a>
+      <br /><img src="https://launchpad.net/@@/team" alt="team" /> <a id="mailing-list-subscribers" href="https://launchpad.net/~ubuntugis/+mailing-list-subscribers">View subscribers</a>
+    </div>
+    
+    
+</div>
+
+</div>
+    </div>
+
+    <!-- Second portlet column. -->
+    <div class="yui-u">
+      <div>
+
+<div class="portlet" id="portlet-related-projects">
+
+  <h2>
+    <span class="see-all">
+      
+      <a href="https://launchpad.net/%7Eubuntugis/+projects">
+        Show related projects</a>
+    </span>
+    Related projects
+  </h2>
+
+
+  <table>
+    <tbody>
+    </tbody>
+  </table>
+</div>
+
+</div>
+      
+  
+
+    </div>
+  </div>
+</div>
+            
+            
+          </div><!-- yui-b -->
+        </div><!-- yui-main -->
+
+        
+          <div id="side-portlets" class="yui-b side">
+            <div>
+
+  <div id="privacy" class="portlet">
+    <span>Public team</span>
+  </div>
+
+  
+  
+
+
+  
+  
+
+  <div id="polls" class="portlet">
+    <h2>Polls</h2>
+    <p>
+      No current polls.
+    </p>
+
+    
+
+    <a class="menu-link-polls sprite info" href="https://launchpad.net/~ubuntugis/+polls">Show polls</a>
+    
+
+  </div>
+
+
+
+</div>
+          </div><!-- yui-b side -->
+        
+      </div><!-- yui-t4 -->
+
+      
+  <div id="footer" class="footer">
+    <div class="lp-arcana">
+        <div class="lp-branding">
+          <a href="https://launchpad.net/"><img src="https://launchpad.net/@@/launchpad-logo-and-name-hierarchy.png" alt="Launchpad" /></a>
+          &nbsp;&bull;&nbsp;
+          <a href="https://launchpad.net/+tour">Take the tour</a>
+          &nbsp;&bull;&nbsp;
+          <a href="https://help.launchpad.net/">Read the guide</a>
+          &nbsp;
+          <form id="globalsearch" method="get" accept-charset="UTF-8" action="https://launchpad.net/+search">
+            <input type="search" id="search-text" name="field.text" />
+            <input type="image" src="https://launchpad.net/@@/search" style="vertical-align:5%" alt="Search Launchpad" />
+          </form>
+        </div>
+        
+  
+
+    </div>
+
+    <div class="colophon">
+      &copy; 2004-2019
+      <a href="http://canonical.com/">Canonical&nbsp;Ltd.</a>
+      &nbsp;&bull;&nbsp;
+      <a href="https://launchpad.net/legal">Terms of use</a>
+      &nbsp;&bull;&nbsp;
+      <a href="https://www.ubuntu.com/legal/dataprivacy">Data privacy</a>
+      &nbsp;&bull;&nbsp;
+      <a href="https://launchpad.net/feedback">Contact Launchpad Support</a>
+      
+      &nbsp;&bull;&nbsp;
+      <a href="http://blog.launchpad.net/">Blog</a>
+      
+	&nbsp;&bull;&nbsp;
+	<a href="http://www.canonical.com/about-canonical/careers">Careers</a>
+      
+      &nbsp;&bull;&nbsp;
+      <a href="https://twitter.com/launchpadstatus">System status</a>
+      <span id="lp-version">
+      &nbsp;&bull;&nbsp;
+        rc597c32
+        
+        
+        (<a href="https://dev.launchpad.net/">Get the code!</a>)
+      </span>
+    </div>
+  </div>
+
+    </div><!-- yui-d0-->
+
+    
+  
+  
+  <script id="json-cache-script">LP.cache = {"related_features": {}, "context": {"languages_collection_link": "https://launchpad.net/api/devel/~ubuntugis/languages", "members_collection_link": "https://launchpad.net/api/devel/~ubuntugis/members", "sub_teams_collection_link": "https://launchpad.net/api/devel/~ubuntugis/sub_teams", "deactivated_members_collection_link": "https://launchpad.net/api/devel/~ubuntugis/deactivated_members", "ppas_collection_link": "https://launchpad.net/api/devel/~ubuntugis/ppas", "private": false, "time_zone": "UTC", "proposed_members_collection_link": "https://launchpad.net/api/devel/~ubuntugis/proposed_members", "renewal_policy": "invite them to apply for renewal", "memberships_details_collection_link": "https://launchpad.net/api/devel/~ubuntugis/memberships_details", "all_specifications_collection_link": "https://launchpad.net/api/devel/~ubuntugis/all_specifications", "account_status": "Unactivated", "is_probationary": false, "subscription_policy": "Restricted Team", "mugshot_link": "https://launchpad.net/api/devel/~ubuntugis/mugshot", "display_name": "UbuntuGIS", "gpg_keys_collection_link": "https://launchpad.net/api/devel/~ubuntugis/gpg_keys", "archive_link": "https://launchpad.net/api/devel/~ubuntugis/+archive/ubuntu/ppa", "open_membership_invitations_collection_link": "https://launchpad.net/api/devel/~ubuntugis/open_membership_invitations", "irc_nicknames_collection_link": "https://launchpad.net/api/devel/~ubuntugis/irc_nicknames", "http_etag": "\"60dbd081a8d88d5ef050a29e841e075feb79e924-fec93a5945676655b6226aee91793138e5e0b224\"", "is_valid": true, "membership_policy": "Restricted Team", "self_link": "https://launchpad.net/api/devel/~ubuntugis", "resource_type_link": "https://launchpad.net/api/devel/#team", "karma": 0, "mailing_list_auto_subscribe_policy": "Ask me when I join a team", "default_membership_period": 0, "description": "https://wiki.ubuntu.com/UbuntuGIS is the wiki page about Ubuntu and GIS.\n\nThis page is where we coordinate the packaging of Geospatial Open Source Software for Ubuntu. Much of this work is done for us by the DebianGIS team, as packages from Debian are automatically copied into Ubuntu during the release cycle. If you want to package your GIS software for multiple releases, you might want to start with DebianGIS:\n\n\u00a0https://debian-gis-team.pages.debian.net/\n\nThis team is dedicated to keeping Ubuntu up to date with a suite of the best Geospatial Open Source Software.\n\nAs team members have full access to the packages, only people actively involved in the updating of packages are approved into this team.\n\nIf you want to get involved, or monitor progress, please join our mailing list and introduce yourself. https://lists.osgeo.org/mailman/listinfo/ubuntu", "members_details_collection_link": "https://launchpad.net/api/devel/~ubuntugis/members_details", "hide_email_addresses": false, "admins_collection_link": "https://launchpad.net/api/devel/~ubuntugis/admins", "valid_specifications_collection_link": "https://launchpad.net/api/devel/~ubuntugis/valid_specifications", "visibility": "Public", "default_renewal_period": null, "preferred_email_address_link": null, "is_ubuntu_coc_signer": false, "invited_members_collection_link": "https://launchpad.net/api/devel/~ubuntugis/invited_members", "expired_members_collection_link": "https://launchpad.net/api/devel/~ubuntugis/expired_members", "team_description": null, "recipes_collection_link": "https://launchpad.net/api/devel/~ubuntugis/recipes", "sshkeys_collection_link": "https://launchpad.net/api/devel/~ubuntugis/sshkeys", "name": "ubuntugis", "confirmed_email_addresses_collection_link": "https://launchpad.net/api/devel/~ubuntugis/confirmed_email_addresses", "super_teams_collection_link": "https://launchpad.net/api/devel/~ubuntugis/super_teams", "participants_collection_link": "https://launchpad.net/api/devel/~ubuntugis/participants", "web_link": "https://launchpad.net/~ubuntugis", "team_owner_link": "https://launchpad.net/api/devel/~aboudreault", "hardware_submissions_collection_link": "https://launchpad.net/api/devel/~ubuntugis/hardware_submissions", "logo_link": "https://launchpad.net/api/devel/~ubuntugis/logo", "is_team": true, "account_status_history": "tag:launchpad.net:2008:redacted", "date_created": "2005-10-25T08:49:22.682136+00:00", "homepage_content": null, "wiki_names_collection_link": "https://launchpad.net/api/devel/~ubuntugis/wiki_names", "jabber_ids_collection_link": "https://launchpad.net/api/devel/~ubuntugis/jabber_ids"}};</script>
+
+    
+  
+
+    
+  </body>
+
+
+  <!--
+    Facet name: overview
+    Page type: main_side
+    Has global search: True
+    Has application tabs: True
+    Has side portlets: True
+
+    At least 60 queries/external actions issued in 0.48 seconds
+
+    Features: {'app.mainsite_only.canonical_url': None, 'baselayout.careers_link.disabled': None, 'hard_timeout': u'5000', 'registry.upcoming_work_view.enabled': None, 'profiling.enabled': None, 'js.yui_version': None, 'visible_render_time': None}
+
+    rc597c32
+
+    -->
+
+</html>
+

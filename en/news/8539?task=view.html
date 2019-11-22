@@ -1,0 +1,497 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-gb" lang="en-gb" >
+<head>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<link rel="shortcut icon" href="../../images/favicon.ico" />
+	  <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+  <meta name="robots" content="index, follow" />
+  <meta name="keywords" content="linux, kvm, libvirt, cluster, virtualization,OSSFNL765" />
+  <meta name="title" content="基於 KVM 與 libvirt 的虛擬化叢集系統－儲存空間的配置" />
+  <meta name="description" content="簡介 上次我們介紹了如何使用 KVM 與 libvirt 架設虛擬化叢集，其儲存方式是採用 NFS。但NFS 並非唯一的網路存取方案，本篇將會介紹另一種 iSCSI 的網路儲存方式。此外，也會針對 QEMU 特有的 qcow2 儲存格式進行介紹，希望協助讀者在實作時能更快上手。 iSCSI iSCSI 是在 TCP/IP 通訊協定下的 SCSI 實作，這意味著您可以透過區域網路使用 iSCSI" />
+  <meta name="generator" content="" />
+  <title>基於 KVM 與 libvirt 的虛擬化叢集系統－儲存空間的配置 - OpenFoundry</title>
+  <link href="../../favicon.ico" rel="shortcut icon" type="image/x-icon" />
+  <link rel="stylesheet" href="../../components/com_gantry/css/gantry.css" type="text/css" />
+  <link rel="stylesheet" href="../../components/com_gantry/css/grid-12.css" type="text/css" />
+  <link rel="stylesheet" href="../../components/com_gantry/css/joomla.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/joomla.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/style1.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/light-body.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/demo-styles.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/template.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/typography.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/fusionmenu.css" type="text/css" />
+  <style type="text/css">
+    <!--
+#rt-main-surround ul.menu li.active > a, #rt-main-surround ul.menu li.active > .separator, #rt-main-surround ul.menu li.active > .item, #rt-main-surround .square4 ul.menu li:hover > a, #rt-main-surround .square4 ul.menu li:hover > .item, #rt-main-surround .square4 ul.menu li:hover > .separator, .roktabs-links ul li.active span {color:#0088B5;}
+a, #rt-main-surround ul.menu a:hover, #rt-main-surround ul.menu .separator:hover, #rt-main-surround ul.menu .item:hover {color:#0088B5;}
+    -->
+  </style>
+  <script type="text/javascript" src="../../components/com_jcomments/js/jcomments-v2.1.js%3Fv=2"></script>
+  <script type="text/javascript" src="../../components/com_jcomments/libraries/joomlatune/ajax.js"></script>
+  <script type="text/javascript" src="../../media/system/js/mootools.js"></script>
+  <script type="text/javascript" src="../../media/system/js/caption.js"></script>
+  <script type="text/javascript" src="../../components/com_gantry/js/gantry-buildspans.js"></script>
+  <script type="text/javascript" src="../../components/com_gantry/js/gantry-inputs.js"></script>
+  <script type="text/javascript" src="../../templates/rt_quantive_j15/js/jquery.cookie.js"></script>
+  <script type="text/javascript" src="../../modules/mod_roknavmenu/themes/fusion/js/fusion.js"></script>
+  <script type="text/javascript" src="../../modules/mod_ofssologin/js/ofssologin.js"></script>
+  <script type="text/javascript">
+
+			window.addEvent('domready', function() {
+				var modules = ['rt-block'];
+				var header = ['h3','h2','h1'];
+				GantryBuildSpans(modules, header);
+			});
+		InputsExclusion.push('.content_vote','#rt-popup')
+		        window.addEvent('load', function() {
+					new Fusion('ul.menutop', {
+						pill: 0,
+						effect: 'slide and fade',
+						opacity: 1,
+						hideDelay: 500,
+						centered: 0,
+						tweakInitial: {'x': -2, 'y': 0},
+        				tweakSubsequent: {'x': 0, 'y': -14},
+						menuFx: {duration: 200, transition: Fx.Transitions.Sine.easeOut},
+						pillFx: {duration: 400, transition: Fx.Transitions.Back.easeOut}
+					});
+	            });
+  </script>
+<!-- <script type="text/javascript" src="/sso/javascripts/langsync.js"></script> -->
+<!-- <script src="/templates/rt_quantive_j15/js/ossf.js"></script> -->
+<script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-4136519-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
+</head>
+	<body  class="backgroundlevel-low backgroundstyle-style8 bodylevel-med bodystyle-light cssstyle-style1 logostyle-dark font-family-helvetica font-size-is-default menu-type-fusionmenu col12 ">
+		<div id="rt-main-background">
+			<div class="rt-container">
+																<div id="rt-header">
+					<div class="rt-grid-7 rt-alpha">
+    			<div class="rt-block">
+    	    	<a href="../../index.html" id="rt-logo"></a>
+    		</div>
+	    
+</div>
+<div class="rt-grid-5 rt-omega">
+                    <div class="square9">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<div class="ofssologin_square9"><a href="../../index.html">Login</a>&nbsp;&nbsp|&nbsp;&nbsp;<span><a href="https://www.openfoundry.org/tw/news/8539?task=view" ><span lang="tw" xml:lang="tw">繁體中文</span></a></li></ul></span><!--Joom!fish V2.0.4 (Lightning)-->
+<!-- &copy; 2003-2009 Think Network, released under the GPL. -->
+<!-- More information: at http://www.joomfish.net -->
+<div class="ofssologin_search_square9">
+  <form id="of_search" action="https://www.openfoundry.org/of/openfoundry/search" method="get" onsubmit="of_search(); return false;">
+    <select id="of_search_type">
+      <option value="Projects"> Projects </option>
+      <option value="Content"> Content </option>
+      <option value="People"> People </option>
+    </select>
+    <input id="query" name="query" id="mod_search_searchword" maxlength="50" alt="search" class="inputbox" type="text" size="28" value="search..."  onblur="if(this.value=='') this.value='search...';" onfocus="if(this.value=='search...') this.value='';" />
+    <input type="hidden" name="commit" value="search" />
+  </form>
+</div></div>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		
+</div>
+					<div class="clear"></div>
+				</div>
+																<div id="rt-navigation"><div id="rt-navigation2"><div id="rt-navigation3">
+					
+<div class="nopill">
+	<ul class="menutop level1 " >
+						<li class="item1 root" >
+					<a class="orphan item bullet" href="../../index.html"  >
+				<span>
+			    				Home				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item32 root" >
+					<a class="orphan item bullet" href="../../archived.html"  >
+				<span>
+			    				Projects				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item186 root" >
+					<a class="orphan item bullet" href="../community.html"  >
+				<span>
+			    				Who&#039;s Who				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item4 root" >
+					<a class="orphan item bullet" href="../news.html"  >
+				<span>
+			    				News				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item5 root" >
+					<a class="orphan item bullet" href="../law-and-licensing.html"  >
+				<span>
+			    				Law &amp; Licensing				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item3 root" >
+					<a class="orphan item bullet" href="../activities.html"  >
+				<span>
+			    				Activities				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item2 root" >
+					<a class="orphan item bullet" href="../resourcecatalog.html"  >
+				<span>
+			    				Resource Catalog				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item45 root" >
+					<a class="orphan item bullet" href="../about.html"  >
+				<span>
+			    				About				   
+				</span>
+			</a>
+			
+			
+	</li>	
+				</ul>
+</div>
+
+				    <div class="clear"></div>
+				</div></div></div>
+								<div class="rt-surround"><div class="rt-surround2"><div class="rt-surround3">
+										<div id="rt-showcase-section">
+												<div id="rt-showcase">
+							<div class="rt-grid-12 rt-alpha rt-omega">
+    		<div class="clear"></div>
+		
+		
+                <div class="close-note">
+                    <div class="rt-block">
+               					<div class="module-content">
+                	<div style="font-size:medium; background-image:linear-gradient(120deg,#159957,#4298b2);color:white;padding:20px;margin:-10px -18px;">感謝您對「自由軟體鑄造場」的支持與愛護，十多年來「自由軟體鑄造場」受中央研究院支持，並在資訊科學研究所以及資訊科技創新研究中心執行，現已完成階段性的任務。 本網站預計持續維運至 2021年底，網站內容基本上不會再更動。<br />也紀念我們永遠的朋友 李士傑先生（Shih-Chieh Ilya Li）。</div>				</div>
+            </div>
+                </div>
+		
+</div>
+							<div class="clear"></div>
+						</div>
+																	</div>
+															<div id="rt-main-surround">
+												<div id="rt-breadcrumbs">
+								<div class="rt-breadcrumb-surround">
+		<a href="../../index.html" id="breadcrumbs-home"></a>
+		<span class="breadcrumbs pathway">
+<span class="no-link">News</span></span>
+	</div>
+	
+							<div class="clear"></div>
+						</div>
+																							              <div id="rt-main" class="sa3-mb9">
+                <div class="rt-main-inner">
+                    <div class="rt-grid-9 rt-push-3">
+                                                <div class="rt-block">
+                            							<div class="square1">
+							<div class="rt-module-surround">
+								<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+								<div class="rt-module-inner">
+		                            <div id="rt-mainbody">
+		                                
+<div class="rt-joomla ">
+	<div class="rt-article">
+		
+				<div class="rt-headline"><h1 class="rt-article-title">基於 KVM 與 libvirt 的虛擬化叢集系統－儲存空間的配置</h1>		</div>
+		<div class="clear"></div>
+		
+		
+		
+				<div class="rt-articleinfo">
+						<div class="rt-article-icons">
+								<a href="https://www.openfoundry.org/en/news/8539-the-clustered-virtualization-system-based-on-kvm-and-libvirt-chapter-of-debian-storage-allocation?tmpl=component&amp;print=1&amp;page=" title="Print" onclick="window.open(this.href,'win2','status=no,toolbar=no,scrollbars=yes,titlebar=no,menubar=no,resizable=yes,width=640,height=480,directories=no,location=no'); return false;" rel="nofollow"><span class="icon print"></span></a>																</div>
+			
+			<span class="rt-date-posted">
+						 Created at			Thursday, 08 December 2011 13:58						&nbsp;&nbsp;&nbsp;&nbsp;						Last Updated on Wednesday, 14 December 2011 09:59						</span>
+
+						<span class="rt-author">
+				Written by 魏藥			</span>
+				
+					</div>
+		
+		
+		<h3>簡介</h3>
+<p>上次我們介紹了如何使用 KVM 與 libvirt 架設虛擬化叢集，其儲存方式是採用 NFS。但NFS 並非唯一的網路存取方案，本篇將會介紹另一種 iSCSI 的網路儲存方式。此外，也會針對 QEMU 特有的 qcow2 儲存格式進行介紹，希望協助讀者在實作時能更快上手。</p>
+
+<p> </p>
+<h3>iSCSI</h3>
+<p>iSCSI 是在 TCP/IP 通訊協定下的 SCSI 實作，這意味著您可以透過區域網路使用 iSCSI 連接其他電腦的硬碟設備，並直接與設備通訊。擔任過網管的朋友或許已經認識到 SCSI 以及 SAS 介面的儲存設備可提供良好的速度與穩定性。</p>
+<p>這裡要特別提醒讀者，使用 iSCSI 連接時，建議多架設一組獨立的區域網路來部署，而不建議與原本的網路混雜，以避免降低存取效能。</p>
+<h3>架設 iSCSI 儲存設備</h3>
+<p>一般而言，您可以採購一組 SAN (storage area network) 來使用，也有一些作業系統發行版專門針對儲存用途作設計，例如 Openfiler、FreeNAS 等。在此作者將介紹如何使用 Debian 安裝相關套件滿足此需求。</p>
+<h4>01. 安裝作業系統與套件</h4>
+<p>請安裝乾淨的 Debian，分割硬碟時需獨立出數塊未分割的磁區，以作為將來虛擬機器使用的硬碟，在此建議用 LVM 來設定，因為比起 MS-DOS 的磁區分割模式，LVM 所允許的分割區數目較多，也更具延展彈性。安裝完 Debian 系統之後請安裝 iSCSI Target（伺服器軟體）。</p>
+<p>安裝完作業系統以後，也請記得安裝 iscsitarget 以及 iscsitarget-dkms：</p>
+<pre><code># aptitude install iscsitarget iscsitarget-dkms
+</code></pre>
+<h4>設定 iSCSI Target 的 Logical Unit (LUN)</h4>
+<p>在此我們需要設定 iSCSI 參數，新增一個 Target 以及數個 LUN。</p>
+<p>您需要一個 Target 名稱，依照 RFC 3720，Target 的名稱必須使用以下格式：</p>
+<pre><code>iqn.[年]-[月].[倒著寫的單位網域名稱]:[自己定義的名稱]
+例如 iqn.2011-08.org.openfoundry:storage.vm1
+
+</code></pre>
+<p>您還需要磁碟分割區的裝置路徑，通常會在 /dev 裡面，如果您使用 LVM，在 /dev/[LVM 名稱] 裡面通常有不同的分割區。</p>
+<p>因此請修改 /etc/iet/ietd.conf 並加入以下項目。本內容為 OpenFoudry 之設定，請適當修改為適合自己的環境：</p>
+<pre><code>Target iqn.2011-08.org.openfoundry:storage.vm1
+Lun 0 Path=/dev/storage_vg/vol1,Type=blockio
+Lun 1 Path=/dev/storage_vg/vol2,Type=blockio
+</code></pre>
+<p>我們的規劃中，一個 LUN 就相當於虛擬機器所使用的一個硬碟，在本範例中只有兩個 LUN，但您可以依照個人需求增加 LUN 數目。</p>
+<h4>設定 iSCSI Target 存取權限</h4>
+<p>修改 /etc/iet/initators.allow，將原本允許所有連線的 ALL ALL 設定以註解掉的方式使其失效，並參考以下範例輸入（IP 請輸入 VM host 端的位置或是網段）。本內容為 OpenFoudry 之設定，請依照自己的需求修改為適合自己機器的環境：</p>
+<pre><code>iqn.2011-08.org.openfoundry:storage.vm1 192.168.1.0/24
+</code></pre>
+<p>或是</p>
+<pre><code>iqn.2011-08.org.openfoundry:storage.vm1 192.168.1.1, 192.168.1.2
+</code></pre>
+<h4>啟動 iSCSI Target</h4>
+<p>修改 /etc/default/iscsitarget，並將原本 ISCSITARGET_ENABLE 該行中的 false 改成 true，否則將無法啟動 iSCSI Target。</p>
+<p>最後啟動 iSCSI Target：</p>
+<pre><code># /etc/init.d/iscsitarget start
+</code></pre>
+<h3>新增 iSCSI Target 位置</h3>
+<p>跟上一篇新增 NFS storage pool 的步驟大致相同，在新增的選單稍微修改即可。</p>
+<p>如圖，請將 Target 改成 iscsi。然後除了輸入 Hostname 以外，在 Source Path 上輸入 Target 名稱，按 Finish 即可。</p>
+<a href="../../images/111213/KVMII/kvmiidebian01.png" target="_blank"><img src="../../images/111213/KVMII/kvmiidebian01.png" border="0" alt="新增 iSCSI Target 圖示 1" width="500" /></a>
+<p>▲ 圖1：新增 iSCSI Target 圖示 1</p>
+<a href="../../images/111213/KVMII/kvmiidebian02.png" target="_blank"><img src="../../images/111213/KVMII/kvmiidebian02.png" border="0" alt="新增 iSCSI Target 圖示 2" width="500" /></a>
+<p>▲ 圖2：新增 iSCSI Target 圖示 2</p>
+<h3>使用 iSCSI 新增虛擬機器</h3>
+<p>在設定 storage 的地方調整一下步驟，直接選取尚未被使用的 LUN 空間即可。</p>
+<a href="../../images/111213/KVMII/kvmiidebian03.png" target="_blank"><img src="../../images/111213/KVMII/kvmiidebian03.png" border="0" alt="新增 iSCSI 虛擬機器圖示" width="500" /></a>
+<p>▲ 圖3：新增 iSCSI 虛擬機器圖示</p>
+<h3>qcow 格式</h3>
+<p>qcow 是 QEMU 的 copy-on-write 映像檔格式。由於在使用到虛擬硬碟空間時才會增加大小，於硬碟空間有限的桌上型電腦環境下相當實用，比較新的 qcow2 還可利用一個映像檔為基礎建立新的映像檔。在此將會介紹如何從 VMWare 或是 VirtualBox 的硬碟格式轉換成 qcow2，以及如何建立 qcow2 的快照 (snapshot)。</p>
+<p>目前 QEMU 映像檔系列最新的 QED 效率已有提昇，不過由於本篇教學所使用的 Debian Squeeze 裡沒有可以支援 QED 的 QEMU，因此在本文將不介紹。</p>
+<h3>建立 qcow 映像檔</h3>
+<p>映像檔剛建立時，只會佔用很小的空間，但經過使用，空間會越佔越多。</p>
+<p>建立映像檔主要有兩種方式：</p>
+<h4>01. 從 virt-manager 建立</h4>
+<p>如果您是使用本機安裝，或是 NFS 格式的網路存取，virt-manager 在建立映像檔的時候就可以選擇以 qcow2 作為映像檔格式。</p>
+<h4>02. 使用命令列指令建立</h4>
+<p>您也可以使用以下指令：</p>
+<pre><code>$ qemu-img create -f qcow2 [映像檔名稱] [映像檔大小]
+
+</code></pre>
+<p>例如：</p>
+<pre><code>$ qemu-img create -f qcow2 debian-squeeze-test1.img 16G
+</code></pre>
+<p>來建立映像檔。</p>
+<h3>從基礎的映像檔建立映像檔</h3>
+<p>qcow2 可以從基礎的映像檔 (backing file) 建立一個映像檔。藉此，您可以以一個映像檔為基礎建立不同的映像檔，用在不同的虛擬機器上，就不需要再重新安裝作業系統。不過透過基礎的映像檔建立映像檔以後，請不要任意使用基礎的映像檔，以免造成不必要的麻煩。</p>
+<p>您可以使用以下指令來建立：</p>
+<pre><code>$ qemu-img create -f qcow2 -b [基礎映像檔的名稱] [映像檔名稱]
+</code></pre>
+<p>例如我剛安裝好一套 Ubuntu Server，為了方便我可以透過它來建立一個 snapshot：</p>
+<pre><code>$ qemu-img create -f qcow2 -b ubuntu-server-base.img whatever-server-i-want.img
+</code></pre>
+<p>您也可以查詢映像檔用到的是哪一個 backing file：</p>
+<pre><code>$ qemu-img info [映像檔名稱]
+</code></pre>
+<h3>在映像檔內進行快照</h3>
+<p>透過 qcow 格式，您可以在映像檔內進行快照 (snapshot)，這有助於系統管理。建立快照後，若您的虛擬機器出現問題，可以再從快照還原之前的狀態。</p>
+<p>指令如下：</p>
+<pre><code>$ qemu-img snapshot -c [快照名稱] [映像檔名稱] # 建立快照
+$ qemu-img snapshot -a [快照名稱] [映像檔名稱] # 套用快照
+$ qemu-img snapshot -d [快照名稱] [映像檔名稱] # 刪除快照
+$ qemu-img snapshot -l [映像檔名稱] # 列出所有快照
+</code></pre>
+<h3>轉換映像檔</h3>
+<p>如果您想將身邊其他格式的映像檔轉換成 qcow2 格式，可以使用以下指令轉換：</p>
+<pre><code>$ qemu-img convert -f [來源格式] -O qcow2 [原本的映像檔名稱] [轉換後的映像檔名稱]
+
+</code></pre>
+<p>支援的格式相當多，包含 VMWare 的 vmdk、VirtualBox 的 vdi 等。</p>
+<p>例如：</p>
+<pre><code>$ qemu-img convert -f vmdk -O qcow2 windows-8-preview.vmdk windows-8-preview.img
+</code></pre>
+<h3>使用該映像檔建立新的虛擬機器</h3>
+<p>若要使用剛建立好的映像檔，可以將映像檔放置在 storage pool 指定的目錄中（如果是單機使用，預設是 /var/lib/libvirt/images，必須使用 root 或是 sudo 權限才能放置），並在建立虛擬機器時直接從 storage pool 選取該映像檔即可。</p>
+<a href="../../images/111213/KVMII/kvmiidebian04.png" target="_blank"><img src="../../images/111213/KVMII/kvmiidebian04.png" border="0" alt="使用映像檔建立新的虛擬機器" width="500" /></a>
+<p>▲ 圖4：使用映像檔建立新的虛擬機器</p>
+<h3>結語</h3>
+<p>筆者介紹了如何使用 iSCSI 作為 libvirt 的儲存池，也介紹 qcow 磁碟儲存格式。雖然兩者在 libvirt 裡面無法同時使用，但是讀者可以依對效能的需求或是便利性自行決定要使用哪一種格式，以達到最佳的生產力。</p>
+<h3>作者簡介</h3>
+<p>魏藥，本名魏銘廷，目前是大學四年級學生。目前在自由軟體鑄造場擔任技術支援工讀生，也是一隻阿宅。最近在 Debian、Ubuntu 與 LXDE 等社群活動，做各式各樣的事情。</p>
+			<!-- Show relate article -->
+		<br><br><h4>You may be interested in the following articles:</h4><ul><li><a href='../../tech-column/8448.html'>基於 KVM 與 libvirt 的虛擬化叢集系統－Debian 篇</a> - <span class='date-posted'>2011-09-16</span></li></ul>		<!-- end -->
+		<div class="article_note">
+		<!-- Add tags use metakey, and show OSSF Newsletter tag: OSSFNL+NUM-->
+		<br><br> <hr style='border: 1px dashed #D2DADB;'><b>OSSF Newsletter&nbsp;:</b>&nbsp;<a href='../../previous-issue%3Ftask=view&amp;id=765.html'>第 186 期 程式語言延伸模組管理系統</a><br><b>Tags:</b>&nbsp;<a href='../../index.php%3Foption=com_search&amp;Itemid=58&amp;searchphrase=exact_meta&amp;ordering=newest&amp;searchword=linux.html'>linux</a>,&nbsp;&nbsp;<a href='../../index.php%3Foption=com_search&amp;Itemid=58&amp;searchphrase=exact_meta&amp;ordering=newest&amp;searchword=&#32;kvm.html'> kvm</a>,&nbsp;&nbsp;<a href='../../index.php%3Foption=com_search&amp;Itemid=58&amp;searchphrase=exact_meta&amp;ordering=newest&amp;searchword=&#32;libvirt.html'> libvirt</a>,&nbsp;&nbsp;<a href='../../index.php%3Foption=com_search&amp;Itemid=58&amp;searchphrase=exact_meta&amp;ordering=newest&amp;searchword=&#32;cluster.html'> cluster</a>,&nbsp;&nbsp;<a href='../../index.php%3Foption=com_search&amp;Itemid=58&amp;searchphrase=exact_meta&amp;ordering=newest&amp;searchword=&#32;virtualization.html'> virtualization</a>,&nbsp;&nbsp;				<!-- End -->
+					<br>
+					<b>Category: </b><a href="../tech-column.html">				Tech Column					</a>				</div>
+			 <!-- AddThis Button BEGIN ID 3001 is the front page article -->
+     			<br><br>
+       <div class="addthis_toolbox addthis_default_style addthis_32x32_style">
+       <a class="addthis_button_preferred_1"></a>
+       <a class="addthis_button_preferred_2"></a>
+       <a class="addthis_button_preferred_3"></a>
+       <a class="addthis_button_preferred_4"></a>
+       <a class="addthis_button_compact"></a>
+       <a class="addthis_counter addthis_bubble_style"></a>
+       </div>
+       <script type="text/javascript">var addthis_config = {"data_track_clickback":true};</script>
+       <script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js#pubid=openfoundry"></script>
+       <!-- AddThis Button END -->
+     <br>
+		<div class="totop" ><a class="rt-totop" href="8539%3Ftask=view.html#" style="outline: medium none;">↑ Top</a></div>
+            <!-- AddThis Button END -->
+
+			</div>
+</div>
+
+		                            </div>
+									<div class="clear"></div>
+								</div>
+								<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+							</div>
+							</div>
+                                                    </div>
+                                            </div>
+                                <div class="rt-grid-3 rt-pull-9">
+                <div id="rt-sidebar-a">
+                                    <div class="square4">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<ul class="menu"><li class="item56"><a href="../previous-issue.html"><span>Previous Issue</span></a></li><li class="item55"><a href="../about-newsletter.html"><span>About Newsletter</span></a></li></ul>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<ul class="menu"><li class="item115"><a href="../foss-news.html"><span>FOSS News</span></a></li><li class="item141"><a href="../case-job.html"><span>Case and Jobs</span></a></li></ul>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+        	                <div class="square1">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-title"><h2 class="title">Special</h2></div>
+						<div class="clear"></div>
+		                						<div class="module-content">
+		                	<ul class="menu"><li class="item37"><a href="../tech-column.html"><span>Tech Column</span></a></li><li class="item40"><a href="../foss-programs.html"><span>FOSS Programs</span></a></li><li class="item35"><a href="../legal-column.html"><span>Legal Column</span></a></li><li class="item154"><a href="../foss-forum.html"><span>FOSS Forum</span></a></li><li class="item162"><a href="../enterprise-application.html"><span>Enterprise Application</span></a></li><li class="item44"><a href="../foss-projects.html"><span>FOSS Projects</span></a></li></ul>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		                <div class="square1">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<p style="text-align: center;"><a href="../../news%3Fformat=feed&amp;type=rss" target="_black"><img src="../../images/M_images/news-rss-feed.png" border="0" /></a><br /><a href="https://www.openfoundry.org/rss-feed/Newsletter" target="_black"><img src="../../images/M_images/newsletter-rss-feed.png" border="0" /></a></p>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		
+                </div>
+            </div>
+
+                    <div class="clear"></div>
+                </div>
+            </div>
+																													</div>
+										<div id="rt-copyright">
+						<div class="rt-grid-12 rt-alpha rt-omega">
+                        <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<span class="nowrap">Open Source Software Foundry</span><span class="nowrap">‧</span><span class="nowrap"> </span><span class="nowrap">Best  Viewed with IE7.0 or Firefox2.0 above, 1024x768 Resolution. </span><strong>E-Mail</strong>：<a href="mailto:contact@openfoundry.org">contact@openfoundry.org</a> <br /><strong>Address</strong>：No.128, Sec.2, Academia Rd., Institute of Information Science, Academia Sinica, Nangang District, Taipei City 11529, Taiwan (R.O.C). <br /><a href="../privacy-policy.html">Privacy Policy</a>. <a href="../terms-of-use.html">Terms-of-use</a> <span style="position: relative; top: 8px; margin-top: -8px;"> <a href="../../about/8101.html"><img src="../../images/M_images/rss-feed-all.png" border="0" /></a></span>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+        	
+</div>
+						<div class="clear"></div>
+					</div>
+					<div class="rt-footer-bottom-wrap"><div class="rt-footer-bottom"><div class="rt-footer-bottom2"><div class="rt-footer-bottom3"></div></div></div></div>
+									</div></div></div>
+				<div class="rt-surround-bottom"><div class="rt-surround-bottom2"><div class="rt-surround-bottom3"></div></div></div>
+							</div>
+		</div>
+		<!--
+		<script id="aptureScript">
+						(function (){var a=document.createElement("script");a.defer="true";a.src="http://www.apture.com/js/apture.js?siteToken=vsJttrn";document.getElementsByTagName("head")[0].appendChild(a);})();
+     </script>
+-->
+
+<!-- Piwik -->
+<!-- 			<script type="text/javascript">
+			  var _paq = _paq || [];
+		  _paq.push(["trackPageView"]);
+		  _paq.push(["enableLinkTracking"]);
+
+		    (function() {
+			        var u=(("https:" == document.location.protocol) ? "https" : "https") + "://www.openfoundry.org/piwik/";
+				    _paq.push(["setTrackerUrl", u+"piwik.php"]);
+				    _paq.push(["setSiteId", "1"]);
+				        var d=document, g=d.createElement("script"), s=d.getElementsByTagName("script")[0]; g.type="text/javascript";
+				        g.defer=true; g.async=true; g.src=u+"piwik.js"; s.parentNode.insertBefore(g,s);
+					  })();
+		  </script> -->
+<!-- End Piwik Code -->
+	</body>
+</html>

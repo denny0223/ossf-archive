@@ -1,0 +1,512 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="zh-tw" lang="zh-tw" >
+<head>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<link rel="shortcut icon" href="../../images/favicon.ico" />
+	  <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+  <meta name="robots" content="index, follow" />
+  <meta name="keywords" content="Sigil, 電子書, OSSFNL796" />
+  <meta name="title" content="Sigil－自製電子書的開源利器" />
+  <meta name="description" content=" 軟體名稱：Sigil介紹版本：0.5.3官網：https://code.g o ogle.com/p/Sigil/授權：GP L-3.0 簡介  Sigil 是一款開源的 epub 電子書編輯軟體。 它以所見即所得介面為主體，提供了能夠產生常見格式的按鈕，而對於某些特別的需求，也具有原始碼編輯能力。另外還有自動產生目錄、檔案整體正確性驗證、自動修正原始碼錯誤、meta data" />
+  <meta name="generator" content="" />
+  <title>Sigil－自製電子書的開源利器 - OpenFoundry</title>
+  <link href="../../favicon.ico" rel="shortcut icon" type="image/x-icon" />
+  <link rel="stylesheet" href="../../components/com_jcomments/tpl/default/style.css%3Fv=10.css" type="text/css" />
+  <link rel="stylesheet" href="../../components/com_gantry/css/gantry.css" type="text/css" />
+  <link rel="stylesheet" href="../../components/com_gantry/css/grid-12.css" type="text/css" />
+  <link rel="stylesheet" href="../../components/com_gantry/css/joomla.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/joomla.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/style1.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/light-body.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/demo-styles.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/template.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/typography.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/fusionmenu.css" type="text/css" />
+  <style type="text/css">
+    <!--
+#rt-main-surround ul.menu li.active > a, #rt-main-surround ul.menu li.active > .separator, #rt-main-surround ul.menu li.active > .item, #rt-main-surround .square4 ul.menu li:hover > a, #rt-main-surround .square4 ul.menu li:hover > .item, #rt-main-surround .square4 ul.menu li:hover > .separator, .roktabs-links ul li.active span {color:#0088B5;}
+a, #rt-main-surround ul.menu a:hover, #rt-main-surround ul.menu .separator:hover, #rt-main-surround ul.menu .item:hover {color:#0088B5;}
+    -->
+  </style>
+  <script type="text/javascript" src="../../components/com_jcomments/js/jcomments-v2.1.js%3Fv=2"></script>
+  <script type="text/javascript" src="../../components/com_jcomments/libraries/joomlatune/ajax.js"></script>
+  <script type="text/javascript" src="../../media/system/js/mootools.js"></script>
+  <script type="text/javascript" src="../../media/system/js/caption.js"></script>
+  <script type="text/javascript" src="../../components/com_gantry/js/gantry-buildspans.js"></script>
+  <script type="text/javascript" src="../../components/com_gantry/js/gantry-inputs.js"></script>
+  <script type="text/javascript" src="../../templates/rt_quantive_j15/js/jquery.cookie.js"></script>
+  <script type="text/javascript" src="../../modules/mod_roknavmenu/themes/fusion/js/fusion.js"></script>
+  <script type="text/javascript" src="../../modules/mod_ofssologin/js/ofssologin.js"></script>
+  <script type="text/javascript">
+
+			window.addEvent('domready', function() {
+				var modules = ['rt-block'];
+				var header = ['h3','h2','h1'];
+				GantryBuildSpans(modules, header);
+			});
+		InputsExclusion.push('.content_vote','#rt-popup')
+		        window.addEvent('load', function() {
+					new Fusion('ul.menutop', {
+						pill: 0,
+						effect: 'slide and fade',
+						opacity: 1,
+						hideDelay: 500,
+						centered: 0,
+						tweakInitial: {'x': -2, 'y': 0},
+        				tweakSubsequent: {'x': 0, 'y': -14},
+						menuFx: {duration: 200, transition: Fx.Transitions.Sine.easeOut},
+						pillFx: {duration: 400, transition: Fx.Transitions.Back.easeOut}
+					});
+	            });
+  </script>
+<!-- <script type="text/javascript" src="/sso/javascripts/langsync.js"></script> -->
+<!-- <script src="/templates/rt_quantive_j15/js/ossf.js"></script> -->
+<script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-4136519-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
+</head>
+	<body  class="backgroundlevel-low backgroundstyle-style8 bodylevel-med bodystyle-light cssstyle-style1 logostyle-dark font-family-helvetica font-size-is-default menu-type-fusionmenu col12 ">
+		<div id="rt-main-background">
+			<div class="rt-container">
+																<div id="rt-header">
+					<div class="rt-grid-7 rt-alpha">
+    			<div class="rt-block">
+    	    	<a href="../../index.html" id="rt-logo"></a>
+    		</div>
+	    
+</div>
+<div class="rt-grid-5 rt-omega">
+                    <div class="square9">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<div class="ofssologin_square9"><a href="../../index.html">登入</a>&nbsp;&nbsp|&nbsp;&nbsp;<span><a href="../../en/foss-programs/8732-sigil-epub-editor.html" ><span lang="en" xml:lang="en">English</span></a></li></ul></span><!--Joom!fish V2.0.4 (Lightning)-->
+<!-- &copy; 2003-2009 Think Network, released under the GPL. -->
+<!-- More information: at http://www.joomfish.net -->
+<div class="ofssologin_search_square9">
+  <form id="of_search" action="https://www.openfoundry.org/of/openfoundry/search" method="get" onsubmit="of_search(); return false;">
+    <select id="of_search_type">
+      <option value="Projects"> 專案 </option>
+      <option value="Content"> 文章 </option>
+      <option value="People"> 人才 </option>
+    </select>
+    <input id="query" name="query" id="mod_search_searchword" maxlength="50" alt="search" class="inputbox" type="text" size="28" value="search..."  onblur="if(this.value=='') this.value='search...';" onfocus="if(this.value=='search...') this.value='';" />
+    <input type="hidden" name="commit" value="search" />
+  </form>
+</div></div>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		
+</div>
+					<div class="clear"></div>
+				</div>
+																<div id="rt-navigation"><div id="rt-navigation2"><div id="rt-navigation3">
+					
+<div class="nopill">
+	<ul class="menutop level1 " >
+						<li class="item1 root" >
+					<a class="orphan item bullet" href="../../index.html"  >
+				<span>
+			    				首頁				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item32 root" >
+					<a class="orphan item bullet" href="../../archived.html"  >
+				<span>
+			    				專案				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item186 root" >
+					<a class="orphan item bullet" href="../community.html"  >
+				<span>
+			    				Who&#039;s Who				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item4 root" >
+					<a class="orphan item bullet" href="../news.html"  >
+				<span>
+			    				新聞				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item5 root" >
+					<a class="orphan item bullet" href="../law-and-licensing.html"  >
+				<span>
+			    				法律源地				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item3 root" >
+					<a class="orphan item bullet" href="../activities.html"  >
+				<span>
+			    				活動				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item2 root" >
+					<a class="orphan item bullet" href="../resourcecatalog%3FName=Value.html"  >
+				<span>
+			    				資源表列				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item45 root" >
+					<a class="orphan item bullet" href="../about.html"  >
+				<span>
+			    				關於				   
+				</span>
+			</a>
+			
+			
+	</li>	
+				</ul>
+</div>
+
+				    <div class="clear"></div>
+				</div></div></div>
+								<div class="rt-surround"><div class="rt-surround2"><div class="rt-surround3">
+										<div id="rt-showcase-section">
+												<div id="rt-showcase">
+							<div class="rt-grid-12 rt-alpha rt-omega">
+    		<div class="clear"></div>
+		
+		
+                <div class="close-note">
+                    <div class="rt-block">
+               					<div class="module-content">
+                	<div style="font-size:medium; background-image:linear-gradient(120deg,#159957,#4298b2);color:white;padding:20px;margin:-10px -18px;">感謝您對「自由軟體鑄造場」的支持與愛護，十多年來「自由軟體鑄造場」受中央研究院支持，並在資訊科學研究所以及資訊科技創新研究中心執行，現已完成階段性的任務。 本網站預計持續維運至 2021年底，網站內容基本上不會再更動。<br />也紀念我們永遠的朋友 李士傑先生（Shih-Chieh Ilya Li）。</div>				</div>
+            </div>
+                </div>
+		
+</div>
+							<div class="clear"></div>
+						</div>
+																	</div>
+															<div id="rt-main-surround">
+												<div id="rt-breadcrumbs">
+								<div class="rt-breadcrumb-surround">
+		<a href="../../index.html" id="breadcrumbs-home"></a>
+		<span class="breadcrumbs pathway">
+<a href="../foss-programs.html" class="pathway">源碼秘技</a> <img src="../../templates/rt_quantive_j15/images/arrow.png" alt=""  /> <span class="no-link">Sigil－自製電子書的開源利器</span></span>
+	</div>
+	
+							<div class="clear"></div>
+						</div>
+																							              <div id="rt-main" class="sa3-mb9">
+                <div class="rt-main-inner">
+                    <div class="rt-grid-9 rt-push-3">
+                                                <div class="rt-block">
+                            							<div class="square1">
+							<div class="rt-module-surround">
+								<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+								<div class="rt-module-inner">
+		                            <div id="rt-mainbody">
+		                                
+<div class="rt-joomla ">
+	<div class="rt-article">
+		
+				<div class="rt-headline"><h1 class="rt-article-title">Sigil－自製電子書的開源利器</h1>		</div>
+		<div class="clear"></div>
+		
+		
+		
+				<div class="rt-articleinfo">
+						<div class="rt-article-icons">
+								<a href="8732-sigil-epub-editor%3Ftmpl=component&amp;print=1&amp;layout=default&amp;page=.html" title="列印" onclick="window.open(this.href,'win2','status=no,toolbar=no,scrollbars=yes,titlebar=no,menubar=no,resizable=yes,width=640,height=480,directories=no,location=no'); return false;" rel="nofollow"><span class="icon print"></span></a>																</div>
+			
+			<span class="rt-date-posted">
+						建立日期			2012-06-25 14:06						&nbsp;&nbsp;&nbsp;&nbsp;						最近更新在 2012-08-16 12:03						</span>
+
+						<span class="rt-author">
+				作者是 林雪凡			</span>
+				
+					</div>
+		
+		
+		<div class="quote">
+<div class="quote-l">
+<div class="quote-r"><img src="../../images/120626/sigil/sigil00.png" alt="sigil00" style="float: right;" height="55" width="153" /><strong>軟體名稱</strong>：Sigil<br /><strong>介紹版本</strong>：0.5.3<br /><strong>官網</strong>：<a href="https://code.google.com/p/Sigil/">https://code.google.com/p/Sigil/</a><br /><strong>授權</strong>：GPL-3.0</div>
+</div>
+</div>
+<h2>簡介</h2>
+Sigil 是一款開源的 epub 電子書編輯軟體。它以所見即所得介面為主體，提供了能夠產生常見格式的按鈕，而對於某些特別的需求，也具有原始碼編輯能力。另外還有自動產生目錄、檔案整體正確性驗證、自動修正原始碼錯誤、meta data 編輯、拼寫檢查、調整頁面樣式表等特色，功能相當完全。可以在 Windows、Mac 和 linux 平台下運行，是一個跨平台、全方位的電子書編輯製作軟體。<br /><br />
+<h2>安裝指引</h2>
+<ol>
+<li>如果您是 Linux 使用者，您可以參照本頁 (<a href="https://code.google.com/p/sigil/wiki/LinuxDistroPackages">https://code.google.com/p/sigil/wiki/LinuxDistroPackages</a>) ，看 Sigil 有沒有針對您所使用的發行版進行打包。</li>
+<li>如果您是 Mac 或 Windows 使用者，您可以直接到官網下載頁 (<a href="https://code.google.com/p/sigil/downloads/list">https://code.google.com/p/sigil/downloads/list</a>) 下載最新版本。</li>
+</ol>
+<p> </p>
+<h2>介面與操作</h2>
+打開 Sigil 後，首先出現在眼前的就是這樣一個畫面。<br /><br /><img src="../../images/120626/sigil/sigil01.png" alt="sigil01" height="294" width="500" /><br />▲ 圖1：Sigil 剛啟動時的畫面<br /><br /><ol>
+<li><strong>選單列</strong></li>
+<li><strong>按鈕列</strong>。提供各種常用功能。使用者可以任意拖動按鈕以變更位置，也可以透過【View】→【Toolbars】來將不需要的按鈕關掉，空出空間。</li>
+<li><strong>Book Browser</strong>。epub 的本質是一種被律定好格式的壓縮檔，而透過這個資料夾，您可以看到當前壓縮檔內的實際結構（雖然嚴格說來有被精減過）。</li>
+<li><strong>編輯區</strong>。您可以在這裡編輯 Book Browser 中選擇的文字檔。</li>
+<li><strong>目錄</strong>。顯示電子書中的目錄結構。</li>
+<li><strong>目錄產生按鈕</strong>。可透過這個按鈕重新產生目錄。</li>
+<li><strong>檢查訊息</strong>。Sigil 可以幫您檢查您製作的電子書是否有問題。當您要求檢查時，檢查訊息就會出現在這裡。</li>
+<li><strong>編輯區內容縮放控制</strong>。</li>
+<li>您可以透過這兩個按鈕，將面板關掉或拆分成獨立的視窗。</li>
+</ol><br />以下我們分別介紹！<br /><br />
+<h3>Book Browser</h3>
+如前所述，Book Browser 體現了 epub 的內部結構；為了讓後續的介紹更容易，姑且讓我們先看看這邊。<br /><br /><img src="../../images/120626/sigil/sigil02.png" alt="sigil02" height="312" width="282" /><br />▲ 圖2：Book Browser 視窗<br /><br />Book Browser 中顯示了 epub 中有幾個資料夾，其中：<br /><br /><ol>
+<li>Text 資料夾：xhtml 或 html 格式的文字檔案一律會放在這裡。一本書可以有許多文字檔。當檔案不只一個時，這裡的順序也代表著閱讀器實際顯示的順序。</li>
+<li>Styles 資料夾：可以放置 CSS 樣式表檔案，供文字檔引用。</li>
+<li>Images 資料夾：圖檔會放在這邊，供文字檔引用。</li>
+<li>Fonts 資料夾：字型放在這邊，供文字檔引用。</li>
+<li>Misc 資料夾：收藏其他由您加入，但 Sigil 不知道該如何歸類的附加檔案。</li>
+<li>toc.ncx 與 content.opf：這兩個檔案 Sigil 會在內部自動維護。除非您是 epub 專家，否則請當它們不存在就好。</li>
+</ol><br />理論上，您可以用拖曳的方式改變檔案的順序（即章節的順序）然而在 0.5.3 版的 Sigil 中，變更檔案排序常常導致當機。建議一開始就預留下封面，以儘量避免重新排序的問題。<br /><br />您可以在 Book Browser 內的項目上按右鍵，就可以召喚選單。<br /><br /><img src="../../images/120626/sigil/sigil03.png" alt="sigil03" height="218" width="236" /><br />▲ 圖3：Book Browser 右鍵選單<br /><br />在不同項目上按右鍵，跳出的選單內容也會略有不同。這邊以在文字檔上按右鍵為例子。<br /><br />您可以選擇【Add Existing files...】插入現有的檔案。您插入的檔案將會被 Sigil 自動歸放到正確的資料夾中。【Add Blank Section】則可以讓您加入空白的 xhtml 文字檔案，這讓您可以快速地建立空白章節。<br /><br />關於這部份的細部說明，請看這裡：<a href="https://web.sigil.googlecode.com/git/files/OEBPS/Text/book_browser.xhtml">https://web.sigil.googlecode.com/git/files/OEBPS/Text/book_browser.xhtml<br /></a><br />
+<h3>書本目錄</h3>
+<h3><img src="../../images/120626/sigil/sigil04.png" alt="sigil04" height="322" width="500" /></h3>
+▲ 圖4：讓 Sigil 產生目錄<br /><br />目錄面板中最初是空白的。如要產生目錄，您必須按目錄面板上的【Generate TOC from headings】按鈕，接著選擇要用哪些等級的標題來建立目錄，最後再按下確認按鈕，則目錄就會被產生出來。<br /><br />如果您接著又更動了檔案與標題，則必須要重新進行這個動作。<br /><br />
+<h3>File 選單</h3>
+<img src="../../images/120626/sigil/sigil05.png" alt="sigil05" height="262" width="500" /><br />▲ 圖5：File 選單<br /><br />您可以從這裡新增、儲存、讀取並驗證電子書檔案。Sigil 並沒有自訂的內部編輯格式；他讀取的是 epub，儲存時也總是將資料回存成 epub 檔案。<br /><br />【Validate Epub】按鈕可以檢查當前的 epub 有沒有內含任何潛在問題。從 Meta Data 沒被正確填入、epub 內含未使用到的多餘檔案、引用了不正確的檔案等等，偵測的範圍相當廣，將 epub 正式發佈之前強烈建議用這功能檢查一下。<br /><br />另外，雖然選單中有提供列印功能，不過該功能只能提供給單個 Section 檔案使用。想用 Sigil 印出整本書的話，恐怕還有些難度。<br /><br />
+<h3>Edit 選單</h3>
+<img src="../../images/120626/sigil/sigil06.png" alt="sigil06" height="324" width="500" /><br />▲ 圖6：Edit 選單<br /><br />提供雜項編輯功能，以下分別介紹。<br /><br />
+<h4>插入圖片</h4>
+【Insert Image...】可以在游標位置插入圖片。<br /><br />需要注意的是：能透過【Insert Image...】插入的圖片，只限於「已經放入 epub 中的圖檔」。換句話說，必須先令該圖檔存於 Book Browser 的 Images 資料夾下，然後您才可以將它們編輯到電子書的頁面上。<br /><br />您可以透過【File】→【New】→【Add Existing File(s)...】將圖檔導入 epub 之中。<br /><br />
+<h4>分章</h4>
+【Edit】→【Split Chapter】會替您的章節進行硬分章：具體說來，會將當前游標所在的行「視為本頁最後一行」，並將後面多出來的內容轉移到新檔案中，然後將此新檔案插入到當前檔案的正後方。至於【Insert Chapter Marker】則會在當前游標位置處插入一個分章符號（快捷鍵 Crtl + Shift + Enter）；一旦閱讀器遇到這個符號，就會將符號後方內容視為新的章節……這被稱為軟分章。<br /><br />不管軟分章或硬分章，以上兩種做法對讀者來說都完全相同。然而基於硬體限制，單一檔案內容如果過長，可能會使閱讀器出現異常，因此以硬分章切割章節通常是好主意。<br /><br />【Split at Chapter Marker】可以一次性地幫您將所有軟分章轉成硬分章。<br /><br />
+<h4>搜尋與取代</h4>
+Sigil 的搜尋取代功能相當強大。支援一般模式、regex 模式、一次處理全部檔案等功能，可以幫書籍製作者減少很多工作。比方說高亮特定字串，格式化超連結，替換括號等等……值得使用者稍微研究一下。<br /><br /><img src="../../images/120626/sigil/sigil07.png" alt="sigil07" height="294" width="500" /><br />▲ 圖7：搜尋取代介面<br /><br />
+<h4>Meta Editor</h4>
+您可以從【Edit】→【Meta Editor】召喚中繼資料編輯器。<br /><br /><img src="../../images/120626/sigil/sigil08.png" alt="sigil08" height="134" width="454" /><br />▲ 圖8：Meta Editor<br /><br />中繼資料編輯器可以讓使用者指定電子書的書名、作者名以及使用語系。如果您還需要更多欄位的話，請按【More】按鈕。<br /><br />
+<h3>View 選單</h3>
+<img src="../../images/120626/sigil/sigil09.png" alt="sigil09" height="279" width="359" /><br />▲ 圖9：View 選單<br /><br />您可以在此調整 Sigil 的顯示方式。<br /><br />【Toolbars】子選單可以將某些不常用的按鈕列關掉。<br /><br />【Book View】、【Split View】與【Code View】這三項可以變更主編輯區的顯示方式。【Book View】表示正常模式；【Code View】表示原始碼模式；【Split View】代表同時使用兩種模式。您還可以前往設定視窗（於【Edit】→【Preferences】）調整 Split View 的分割方式。<br /><br />最下面的【Book Browser】、【Validation Result】與【Table of Content】3 個選項，代表主畫面中那 3 個額外視窗的顯示與否。若您嫌主編輯區被旁邊的視窗擠壓得過小，您可以把這邊的勾去掉。<br /><br />
+<h3>Format 選單</h3>
+<img src="../../images/120626/sigil/sigil10.png" alt="sigil10" height="366" width="411" /><br />▲ 圖10：Format 選單<br /><br />內建了常用格式供使用者直接調整。<br /><br />別的不說，在製作電子書時，強烈建議使用 Heading 功能來標識各段落的標題（而非使用黑體與加大字）；因為只有依據 heading 標籤，Sigil 才能自動產生出電子書的目錄來。如果您不滿 Heading 的預設外觀，您應該透過層疊樣式表 (CSS) 來變更顯示方式。<br /><br />
+<h3>Quick Setting 選單</h3>
+<img src="../../images/120626/sigil/sigil11.png" alt="sigil11" height="58" width="273" /><br />▲ 圖11：Quick Settings 選單<br /><br />這兩個選項都是用來處理 HTML 原始碼的。若您從不編輯原始碼，則您大可略過。<br /><br />【Cleaning With HTML Tidy】打勾表示 Sigil 會自動正規化 HTML 原始碼。這包括自動替原始碼分行、加入縮進等等。而不打勾則不會進行正規化。<br /><br />……雖然說明是這樣寫的，不過根據測試，本選項在 0.5.3 內沒有作用。無論勾不勾，Sigil 都會強制正規化原始碼。<br /><br />【Check For Well-Formed Errors】打勾表示：當 Sigil 發現您輸入了不正確的 HTML 原始碼時，Sigil 跳出詢問視窗，問您要讓 Sigil 自己修正或是由您手動修正。本項如果不打勾，則 Sigil 會不經提示就自動修正原始碼－其結果有時並非是您想要的。<br /><br />
+<h2>建一本書的基本流程</h2>
+如果您想用 Sigil 建立一本全新的書，您可以參考以下的做法。<br /><br /><ol>
+<li>使用【File】→【New】→【New Book】來建立一本全新的空白書。</li>
+<li>接著透過【Edit】→【Meta Editor】設定作品名、作者名與語系。</li>
+<li>依需要將文字剪下貼上、調整格式、增加頁面、放入插圖等等等……</li>
+<li>按下【Generate TOC from heading】按鈕來產生目錄。</li>
+<li>按下【Validate Epub】來確認格式正確。</li>
+<li>儲存。</li>
+</ol>
+<p> </p>
+<h2>其他補充技巧</h2>
+<h3>連結 CSS 樣式表</h3>
+從 0.5.901 版開始，Sigil 可以透過右鍵選單來方便地連結頁面內容與 CSS 樣式表。不過很遺憾的，在大部份 linux 發行版的套件庫中版本號還追不上。如果您想要在 0.5.901 之前的 Sigil 中指定某頁連結到某樣式表，您必須要直接編輯內部頁面的原始碼。比方說……<br /><br />在原始碼編輯模式中找到 區段，並在區段中插入：<br />
+<pre>    ＜link href="/../Styles/style.css" rel="stylesheet" type="text/css" /＞
+</pre>
+<br />就可以在 Sigil 中使用檔名為 style.css 的樣式表。<br /><br /><img src="../../images/120626/sigil/sigil12.png" alt="sigil12" height="284" width="445" /><br />▲ 圖12：將 style.css 樣式表指定給當前頁面<br /><br />
+<h3>使用內嵌字型</h3>
+您可以在 CSS 檔案中插入以下原始碼，就可以讓文字套用內嵌字型。<br /><br />
+<pre>    @font-face {
+            font-family: Custom; /* 這邊名字可以亂取 */
+            src: url("../Fonts/font.ttf");
+    }
+    body { /* 讓全頁都套用指定字型 */
+    font-family: Custom; /* 對應到之前的名字 */
+    }
+</pre>
+<p> </p>
+<h2>參考資料</h2>
+<ol>
+<li>Sigil 手冊：<a href="https://web.Sigil.googlecode.com/git/index.html">https://web.Sigil.googlecode.com/git/index.html<br /></a>手冊是針對最新版本的 Sigil 編寫的，細節可能和您所用的版本略有不同。參考時請稍微注意。</li>
+<li>Sigil 基礎指引：<a href="https://code.google.com/p/Sigil/wiki/BasicTutorial">https://code.google.com/p/Sigil/wiki/BasicTutorial<br /></a>開發者對使用者的簡單建議。</li>
+</ol>
+			<!-- Show relate article -->
+				<!-- end -->
+		<div class="article_note">
+		<!-- Add tags use metakey, and show OSSF Newsletter tag: OSSFNL+NUM-->
+		<br><br> <hr style='border: 1px dashed #D2DADB;'><b>自由軟體鑄造場電子報&nbsp;:</b>&nbsp;<a href='../../previous-issue%3Ftask=view&amp;id=796.html'>第 198 期 利用 GitHub 建立自己的 PEAR 頻道</a><br><b>標籤:</b>&nbsp;<a href='../../index.php%3Foption=com_search&amp;Itemid=58&amp;searchphrase=exact_meta&amp;ordering=newest&amp;searchword=Sigil.html'>Sigil</a>,&nbsp;&nbsp;<a href='../../index.php%3Foption=com_search&amp;Itemid=58&amp;searchphrase=exact_meta&amp;ordering=newest&amp;searchword=&#32;電子書.html'> 電子書</a>,&nbsp;&nbsp;				<!-- End -->
+					<br>
+					<b>分類: </b><a href="../foss-programs.html">				源碼秘技					</a>				</div>
+			 <!-- AddThis Button BEGIN ID 3001 is the front page article -->
+     			<br><br>
+       <div class="addthis_toolbox addthis_default_style addthis_32x32_style">
+       <a class="addthis_button_preferred_1"></a>
+       <a class="addthis_button_preferred_2"></a>
+       <a class="addthis_button_preferred_3"></a>
+       <a class="addthis_button_preferred_4"></a>
+       <a class="addthis_button_compact"></a>
+       <a class="addthis_counter addthis_bubble_style"></a>
+       </div>
+       <script type="text/javascript">var addthis_config = {"data_track_clickback":true};</script>
+       <script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js#pubid=openfoundry"></script>
+       <!-- AddThis Button END -->
+     <br>
+		<div class="totop" ><a class="rt-totop" href="8732-sigil-epub-editor.html#" style="outline: medium none;">↑ Top</a></div>
+            <!-- AddThis Button END -->
+
+		<script type="text/javascript">
+var jcomments=new JComments(8732, 'com_content','https://openfoundry.org/index.php?option=com_jcomments&amp;tmpl=component&amp;lang=');
+jcomments.setList('comments-list');
+</script>
+<div id="jc">
+<div id="comments"><h4>評論<a class="refresh" href="8732-sigil-epub-editor.html#" title="重新整理評論列表" onclick="jcomments.showPage(8732,'com_content',0);return false;">&nbsp;</a></h4>
+<div id="comments-list" class="comments-list">
+        <div class="even" id="comment-item-293"><div class="rbox"><div class="rbox_tr"><div class="rbox_tl"><div class="rbox_t">&nbsp;</div></div></div><div class="rbox_m">
+<div class="comment-avatar"><img src="http://www.gravatar.com/avatar.php?gravatar_id=c3e427c31cdbf1631bae8e7de6b0e1ee&amp;default=https%3A%2F%2Fwww.openfoundry.org%2Fcomponents%2Fcom_jcomments%2Fimages%2Fno_avatar.png" alt="" /></div>
+<div class="comment-box avatar-indent">
+<span class="comments-vote">
+	<span id="comment-vote-holder-293">
+<a href="8732-sigil-epub-editor.html#" class="vote-good" title="優質的評論" onclick="jcomments.voteComment(293, 1);return false;"></a><a href="8732-sigil-epub-editor.html#" class="vote-poor" title="差勁的評論" onclick="jcomments.voteComment(293, -1);return false;"></a>
+<span class="vote-good">+1</span>
+	</span>
+</span>
+<a class="comment-anchor" href="8732-sigil-epub-editor.html#comment-293" id="comment-293">#1</a>
+<a class="author-homepage" href="https://hans-web.99k.org/" rel="nofollow" title="Hans">Hans</a>
+<span class="comment-date">2012-06-26 20:07</span>
+<div class="comment-body" id="comment-body-293">原來這是採用製作網頁的方式製作<span style="font-size:0px;padding:0;margin:0;"> </span>電子書<br />通用性大增呢 =)</div>
+</div><div class="clear"></div>
+</div><div class="rbox_br"><div class="rbox_bl"><div class="rbox_b">&nbsp;</div></div></div></div>
+</div>
+</div>
+<div id="comments-list-footer"><a class="refresh" href="8732-sigil-epub-editor.html#" title="重新整理評論列表" onclick="jcomments.showPage(8732,'com_content',0);return false;">重新整理評論列表</a></div>
+</div>
+<div id="comments-footer" align="center"><a href="http://www.joomlatune.com" title="JComments" target="_blank">JComments</a></div>
+<script type="text/javascript">
+jcomments.setAntiCache(1,0,0);
+</script> 
+</div>	</div>
+</div>
+
+		                            </div>
+									<div class="clear"></div>
+								</div>
+								<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+							</div>
+							</div>
+                                                    </div>
+                                            </div>
+                                <div class="rt-grid-3 rt-pull-9">
+                <div id="rt-sidebar-a">
+                                    <div class="square4">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<ul class="menu"><li class="item56"><a href="../previous-issue.html"><span>電子報總覽</span></a></li><li class="item55"><a href="../about-newsletter.html"><span>關於本報</span></a></li></ul>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<ul class="menu"><li class="item115"><a href="../foss-news.html"><span>源碼新聞</span></a></li><li class="item141"><a href="../case-job.html"><span>接案 / 工作</span></a></li></ul>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+        	                <div class="square1">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-title"><h2 class="title">專欄總覽</h2></div>
+						<div class="clear"></div>
+		                						<div class="module-content">
+		                	<ul class="menu"><li class="item37"><a href="../tech-column.html"><span>技術專欄</span></a></li><li id="current" class="active item40"><a href="../foss-programs.html"><span>源碼秘技</span></a></li><li class="item35"><a href="../legal-article-.html"><span>法律專欄</span></a></li><li class="item154"><a href="../foss-forum.html"><span>自由專欄</span></a></li><li class="item162"><a href="../enterprise-application.html"><span>企業應用</span></a></li><li class="item44"><a href="../foss-projects.html"><span>源碼專案</span></a></li></ul>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		                <div class="square1">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<p style="text-align: center;"><a href="../../news%3Fformat=feed&amp;type=rss" target="_black"><img src="../../images/M_images/news-rss-feed.png" border="0" /></a><br /><a href="https://www.openfoundry.org/rss-feed/Newsletter" target="_black"><img src="../../images/M_images/newsletter-rss-feed.png" border="0" /></a></p>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		
+                </div>
+            </div>
+
+                    <div class="clear"></div>
+                </div>
+            </div>
+																													</div>
+										<div id="rt-copyright">
+						<div class="rt-grid-12 rt-alpha rt-omega">
+                        <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<div id="desktop-mobile-version-switch"><span id="mobile-version" class="version-switch"><a href="8732-sigil-epub-editor.html#">行動版</a></span></div>
+自由軟體鑄造場 製作 最佳瀏覽狀態：IE7或Firefox2.0以上 (建議使用Firefox) ‧ 解析度1024*768 <br /> <strong>E-Mail</strong>：<a href="mailto:contact@openfoundry.org">contact@openfoundry.org</a> <strong>Address</strong>：台北市南港區研究院路2段128號 中央研究院資訊科學研究所 . <a href="../../privacy-policy.html">隱私權條款</a>. <a href="../../terms-of-use.html">使用條款</a><span style="position: relative; top: 8px; margin-top: -8px;"> <a href="../../about/8101.html"><img src="../../images/M_images/rss-feed-all.png" border="0" /></a></span>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+        	
+</div>
+						<div class="clear"></div>
+					</div>
+					<div class="rt-footer-bottom-wrap"><div class="rt-footer-bottom"><div class="rt-footer-bottom2"><div class="rt-footer-bottom3"></div></div></div></div>
+									</div></div></div>
+				<div class="rt-surround-bottom"><div class="rt-surround-bottom2"><div class="rt-surround-bottom3"></div></div></div>
+							</div>
+		</div>
+		<!--
+		<script id="aptureScript">
+						(function (){var a=document.createElement("script");a.defer="true";a.src="http://www.apture.com/js/apture.js?siteToken=vsJttrn";document.getElementsByTagName("head")[0].appendChild(a);})();
+     </script>
+-->
+
+<!-- Piwik -->
+<!-- 			<script type="text/javascript">
+			  var _paq = _paq || [];
+		  _paq.push(["trackPageView"]);
+		  _paq.push(["enableLinkTracking"]);
+
+		    (function() {
+			        var u=(("https:" == document.location.protocol) ? "https" : "https") + "://www.openfoundry.org/piwik/";
+				    _paq.push(["setTrackerUrl", u+"piwik.php"]);
+				    _paq.push(["setSiteId", "1"]);
+				        var d=document, g=d.createElement("script"), s=d.getElementsByTagName("script")[0]; g.type="text/javascript";
+				        g.defer=true; g.async=true; g.src=u+"piwik.js"; s.parentNode.insertBefore(g,s);
+					  })();
+		  </script> -->
+<!-- End Piwik Code -->
+	</body>
+</html>

@@ -1,0 +1,240 @@
+	<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+	<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="zh-tw" lang="zh-tw" >
+		<head>
+			  <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+  <meta name="robots" content="noindex, nofollow" />
+  <meta name="keywords" content="Ruby, Rails, ROR, programming, web, mvc, crud, OSSFNL765" />
+  <meta name="title" content="麥克阿忠的 Ruby on Rails 實務─熟悉 MVC" />
+  <meta name="description" content="前言 相信讀者在前篇文章依照內容操作一遍後，對於 CRUD 的應用邏輯與設計，以及 RoR 的架構都有了些許認識。只要多加實做，將會覺得 Rails 開發的作業時間短得不可思議。 Ruby on Rails 是一套架構很完善的 MVC" />
+  <meta name="generator" content="" />
+  <title>麥克阿忠的 Ruby on Rails 實務─熟悉 MVC</title>
+  <link href="../../favicon.ico" rel="shortcut icon" type="image/x-icon" />
+  <link rel="stylesheet" href="../../components/com_gantry/css/gantry.css" type="text/css" />
+  <link rel="stylesheet" href="../../components/com_gantry/css/grid-12.css" type="text/css" />
+  <link rel="stylesheet" href="../../components/com_gantry/css/joomla.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/joomla.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/style1.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/light-body.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/demo-styles.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/template.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/typography.css" type="text/css" />
+  <style type="text/css">
+    <!--
+#rt-main-surround ul.menu li.active > a, #rt-main-surround ul.menu li.active > .separator, #rt-main-surround ul.menu li.active > .item, #rt-main-surround .square4 ul.menu li:hover > a, #rt-main-surround .square4 ul.menu li:hover > .item, #rt-main-surround .square4 ul.menu li:hover > .separator, .roktabs-links ul li.active span {color:#0088B5;}
+a, #rt-main-surround ul.menu a:hover, #rt-main-surround ul.menu .separator:hover, #rt-main-surround ul.menu .item:hover {color:#0088B5;}
+    -->
+  </style>
+  <script type="text/javascript" src="../../components/com_jcomments/js/jcomments-v2.1.js%3Fv=2"></script>
+  <script type="text/javascript" src="../../components/com_jcomments/libraries/joomlatune/ajax.js"></script>
+  <script type="text/javascript" src="../../media/system/js/mootools.js"></script>
+  <script type="text/javascript" src="../../media/system/js/caption.js"></script>
+  <script type="text/javascript" src="../../components/com_gantry/js/gantry-buildspans.js"></script>
+  <script type="text/javascript" src="../../components/com_gantry/js/gantry-inputs.js"></script>
+  <script type="text/javascript">
+
+			window.addEvent('domready', function() {
+				var modules = ['rt-block'];
+				var header = ['h3','h2','h1'];
+				GantryBuildSpans(modules, header);
+			});
+		InputsExclusion.push('.content_vote','#rt-popup')
+  </script>
+		</head>
+		<body  class="backgroundlevel-low backgroundstyle-style8 bodylevel-med bodystyle-light cssstyle-style1 logostyle-dark font-family-helvetica font-size-is-default menu-type-fusionmenu col12 ">
+			<div id="rt-main-surround">
+				<div class="rt-container">
+					<div class="rt-block">
+						<div id="rt-mainbody">
+					    	
+<div class="rt-joomla ">
+	<div class="rt-article">
+		
+				<div class="rt-headline"><h1 class="rt-article-title">麥克阿忠的 Ruby on Rails 實務─熟悉 MVC</h1>		</div>
+		<div class="clear"></div>
+		
+		
+		
+				<div class="rt-articleinfo">
+						<div class="rt-article-icons">
+				<a href="8530-ruby-on-rails-get-familiar-with-mvc%3Ftmpl=component&amp;print=1&amp;page=.html#" onclick="window.print();return false;"><span class="icon print"></span></a>									<span class="icon printscreen">
+						<a href="8530-ruby-on-rails-get-familiar-with-mvc%3Ftmpl=component&amp;print=1&amp;page=.html#" onclick="window.print();return false;"><img src="../../images/M_images/printButton.png" alt="列印"  /></a>					</span>
+							</div>
+			
+			<span class="rt-date-posted">
+						建立日期			2011-11-29 09:24						&nbsp;&nbsp;&nbsp;&nbsp;						最近更新在 2012-04-27 16:57						</span>
+
+						<span class="rt-author">
+				作者是 麥克阿忠			</span>
+				
+					</div>
+		
+		
+		<h3>前言</h3>
+<p>相信讀者在前篇文章依照內容操作一遍後，對於 CRUD 的應用邏輯與設計，以及 RoR 的架構都有了些許認識。只要多加實做，將會覺得 Rails 開發的作業時間短得不可思議。</p>
+<p>Ruby on Rails 是一套架構很完善的 MVC Framework，這樣的開發架構可有效分隔出程式模組之間共同的資料傳遞方式，以及階層的物件概念，讓開發專案能以共同的標準鑄造程式碼，未來也讓開發員在進行維護與修正程式時容易閱讀。</p>
+
+<p>&nbsp;</p>
+<h3>什麼是 MVC</h3>
+<p>MVC 是一個軟體工程概念，意指 Model（模型）、View（檢視）、Controller（控制器）三個基本區塊。</p>
+<a href="../../images/111213/RailsIV/rails01.png" target="_blank"><img src="../../images/111213/RailsIV/rails01.png" alt="MVC 架構的概觀" border="0" /></a>
+<p>▲ 圖1：MVC 架構的概觀（圖片來源：<a href="https://upload.wikimedia.org/wikipedia/commons/f/f0/ModelViewControllerDiagramZh.png" target="_blank">https://upload.wikimedia.org/wikipedia/commons/f/f0/ModelViewControllerDiagramZh.png</a>）</p>
+<h4><ol style="list-style-type: decimal;">
+<li>Model</li>
+</ol></h4>
+<p>資料模型，針對資料傳遞的邏輯方法與接受資料的操作處理方式。簡單說來是對於資料庫中的資料進行初始化，並等待接受其它區塊的指派再進行資料的處分。</p>
+<h4><ol style="list-style-type: decimal;">
+<li>View</li>
+</ol></h4>
+<p>檢視，與使用者介面互動的區塊，有些框架會將程式碼與 HTML 混雜，一方面需要靠迴圈列印出資料，一方面需要依功能、操作性產生表單等等的界面。</p>
+<h4><ol style="list-style-type: decimal;">
+<li>Controller</li>
+</ol></h4>
+<p>控制器，控制某段程式碼的流程運作。控制器會針對各種要求進行事件的傳遞或是處理方法，去向Model連結資料，再將結果傳遞至View。</p>
+<h3>為什麼要用 MVC</h3>
+<p>MVC 架構可運用於大型的多人開發專案，讓開發中人員能專精某個區塊，例如不需要顯示畫面的程式碼，只要在 Model 中撰寫即可。專精網頁 UI 的開發者可在 View 修改頁面，適合安全性內部的相關處理即可在 Controller 定義相關的程式碼。區塊的分隔讓開發員彼此間不會受到檔案被編修的干擾。</p>
+<h3>Rails MVC 的架構原理</h3>
+<p>第一篇文章中筆者提過 Rails 的 MVC 實際架構，在這裡重述一次加深讀者對此架構的印象。</p>
+<a href="../../images/111213/RailsIV/rails02.png" target="_blank"><img src="../../images/111213/RailsIV/rails02.png" alt="Ruby on Rails MVC 架構與運作流程" border="0" width="500" /></a>
+<p>▲ 圖2：Ruby on Rails MVC 架構與運作流程</p>
+<h4><ol style="list-style-type: decimal;">
+<li>Route.rb 的應用方法詳解</li>
+</ol></h4>
+<p>圖 2 為流程示意圖。當使用者發出 Request 時，程式開始處理事件觸發的運作，從網址列的 Request 發送至 Routing 關卡，再由 Route.rb 的查表方式指定至某個 Action Controller。</p>
+<p>例如在上篇的範例中網址為 https://localhost:3001/phone/index，則在 route.rb 裡頭就會有一行 get "phone/index" 的路由設定。</p>
+<p>因此 RoR 就會到 app/controller/phone_controller.rb 程式碼中定義的 index 程式碼區塊執行指令。</p>
+<p>如下圖 3 與圖 4 的範例：</p>
+<a href="../../images/111213/RailsIV/rails03.png" target="_blank"> <img src="../../images/111213/RailsIV/rails03.png" alt="route.rb 的設定" border="0" /></a>
+<p>▲ 圖3：route.rb 的設定</p>
+<a href="../../images/111213/RailsIV/rails04.png" target="_blank"><img src="../../images/111213/RailsIV/rails04.png" alt="action controller所定義的actions" border="0" /></a>
+<p>▲ 圖4：action controller 所定義的 actions</p>
+<p>由於現階段 Web 應用的 app 已被廣泛使用，再加上 Window form 的桌面程式設計入門困難，且有系統平台相容性的問題，因此許多 web 應用框架會在網址列加入 route 的功能應用，一方面為求 SEO，另一方面也是避免安全性的問題。未來傳統的網址參數傳遞方式將會式微。</p>
+<h5>該如何有效的運用 Route 功能？</h5>
+<p>RoR 在 Route 操作上實踐了 RESTful 的理論，因此在 CRUD 流程中可以依照慣例自動定義 URI 發出 Request 的動詞。這些動詞出自於將 POST、GET、PUT、DELETE 對應到資料的新增、讀取、更新、刪除四項操作。將 HTTP 動詞納入考慮後，我們再參考圖 3 所定義的 route 如下：</p>
+<pre><code>POST /phones 對應到 Controller 中的 create action
+GET /phones/1 對應到 Controller 中的 show action
+PUT /phones/1 對應到 Controller 中的 update action
+DELETE /phones/1 對應到 Controller 中的 destroy action
+</code></pre>
+<p>按照慣例，你的 coltroller 名稱本來是單數的 phone，要轉化成 RESTful，最好的方式是變成複數 phones 來命名。若讀者已經按照前篇的範例實作，請砍掉重練。</p>
+<p>在 route.rb 加上這一行程式碼：</p>
+<pre><code>resources :phones
+</code></pre>
+<p>這個 route 就會定義出以下七個 Action：</p>
+<pre><code>get    '/phones'  =&gt; "phones#index",   :as =&gt; "phones"
+post   '/phones' =&gt; "phones#create",  :as =&gt; "phones"
+get    '/phones/:id' =&gt; "phones#show",    :as =&gt; "phone"
+put    '/phones/:id'      =&gt; "phones#update",  :as =&gt; "phone"
+delete '/phones/:id'      =&gt; "phones#destroy", :as =&gt; "phone"
+get    '/phones/new'      =&gt; "phones#new",     :as =&gt; "new_phone"
+get    '/phones/:id/edit' =&gt; "phones#edit",    :as =&gt; "edit_phone"
+
+</code></pre>
+<p>這七個路由可以先移除，只留下 resources:phone，就會發現這些定義非常方便實用。這七個 Action 方法的方法名稱，是 Rails 本身定義好的，無法修改，你可以這樣記：</p>
+<pre><code>show、new、edit、update、destroy 是單數，對單一筆資料操作
+index、create 是複數，對群體資料操作
+event_path(@phone) 需要參數，根據 HTTP 動作判定 show、update、destroy
+events_path 不需參數，依照 HTTP 動作判定 index、create
+</code></pre>
+<p>而用了 RESTful 之後，其影響是表單所使用的 form_for、link_to 與 redirect_to 會修改成如下：</p>
+<pre><code> phone_path(@phone), :method =&gt; :put do |f| %&gt;
+
+
+</code></pre>
+<p>並且只需記得 resources 就能寫出 URL Helper，</p>
+<pre><code>[custom route]_phone[s]_path( phone ), :method =&gt; GET | POST | PUT | DELETE
+
+</code></pre>
+<p>可以不必再寫成如下的手動路由指定方式，</p>
+<pre><code>link_to phone.name, :controller =&gt; 'phones', :action =&gt; :show , :id =&gt;phone.id
+</code></pre>
+<p>實際上 Routing 不是 MVC 一定會用到的技術，但 RoR 是個 Web framework，所以路由在此就會變得比較重要，本篇的重點是在 RoR 的 MVC 架構下說明，因此 Routing 就必須納入說明。</p>
+<h4>Model 模組</h4>
+<p>在撰寫程式的過程中，有經驗的工程師會將重複利用的程式碼另外封裝成模組，好讓程式在運作時直接以一行流的方式跑完十行的程式碼。</p>
+<p>而在 RoR 中的 Model 大都是連結資料庫，並且在服務開始之後就會初始化資料表，將每個欄位載入成物件操作或是方法，因此在 phone 的範例中，可以在 app/model/pbook.rb 看到這個檔案，若沒有任何相關的特別設定，它通常會保留空白，然後就可以用 Phone.find(id) 的操作以 puts Phone.name 的方法把姓名印出。</p>
+<p>通常在 RoR 中的 ActiveRecord 區塊就是 Model 的應用類別。</p>
+<a href="../../images/111213/RailsIV/rails05.png" target="_blank"><img src="../../images/111213/RailsIV/rails05.png" alt="如果沒有特別的資料表關聯設定一般說來都保持這兩行的狀態" border="0" width="500" /></a>
+<p>▲ 圖5：如果沒有特別的資料表關聯設定一般說來都保持這兩行的狀態</p>
+<a href="../../images/111213/RailsIV/rails06.png" target="_blank"><img src="../../images/111213/RailsIV/rails06.png" alt="若在資料表之間有關聯的狀況或是需要轉換常數與變數的的程序，大多會在這裡設定" border="0" width="500" /></a>
+<p>▲ 圖6：若在資料表之間有關聯的狀況，或是需要轉換常數與變數的的程序，大多會在這裡設定</p>
+<p>所以如圖 5 與圖 6 的慣例，程式設計師若對於資料庫的關聯很專精，就會在這個區塊撰寫與資料表處理、關聯相關的程式碼。</p>
+<h4><ol style="list-style-type: decimal;">
+<li>View 檢視</li>
+</ol></h4>
+<p>大部分的 web 應用程式一定會有一套完整的 UI 以供使用者操作，包含能控制鍵盤、滑鼠、螢幕繪製的項目。在 RoR 中，View 的區塊相當常見，而控制 View 相關畫面呈現的是靠 Action Controller 接受 Route 參數再繪製出 View。</p>
+<p>另外，在其它篇被忽略的 Layout 是 RoR 中利用 View 的方式，以 ActionName.html.erb 帶入至 app/views/layouts/application.html.erb，並以 繪製出完整的畫面。</p>
+<a href="../../images/111213/RailsIV/rails07.png" target="_blank"><img src="../../images/111213/RailsIV/rails07.png" alt="RoR輸出頁面的關係" border="0" width="500" /></a>
+<p>▲ 圖7：RoR 輸出頁面的關係</p>
+<p>在 app/views/layouts/application.html.erb 之中即有完整的 標籤，所以重視美工外觀的 HTML 設計人員就可以從這裡編修網頁美工，而圖片的路徑一律放在 /public/images，再使用 images_tag() 的內建函數產生連結圖片的標籤。</p>
+<p>一般說來，這樣的關係是利用 Partial（局部樣板）的觀念拼湊出一張網頁，所以如果是一系列統一的網頁版型，通常只要修改 application.html.erb 檔案即可。</p>
+<p>下圖範例中，資料都在 "body" 與 "/body" 之間變化，只要用 yield 這個內建的函數即可讓程式共用這一型的版面。</p>
+<a href="../../images/111213/RailsIV/rails08.png" target="_blank"><img src="../../images/111213/RailsIV/rails08.png" alt="完整的 HTML 範例" border="0" height="352" width="499" /></a>
+<p>▲ 圖8：application.html.erb 完整的 HTML 範例</p>
+<p>如果還想在每一頁網頁的版頭放置登入狀態的功能，你可以在 application.html.erb 使用 "common/PartName" %&gt;，那麼所建立的檔案名稱路目錄就在 app/views/common/_partName.html.erb，若有很多局部樣板需要共用的話，那麼未來這個 application.html.erb 大概就會長成下圖。</p>
+<a href="../../images/111213/RailsIV/rails09.png" target="_blank"><img src="../../images/111213/RailsIV/rails09.png" alt="整個樣板 application.html.erb 套入多個局部樣板的程式碼" border="0" height="442" width="499" /></a>
+<p>▲ 圖9：整個樣板 application.html.erb 套入多個局部樣板的程式碼</p>
+<h4><ol style="list-style-type: decimal;">
+<li>Controller 控制器</li>
+</ol></h4>
+<p>RoR 的 Controller 扮演最重要的角色。它一方面接受由 Route 分析出來的路由，以決定哪個控制器該被執行，讓控制器執行某個動作，也就是在 app/controller 中 AppName_controller.rb 被定義的 Method。另一方面 Controller 也要和 Model 傳遞資料，以及跟 Views 處理輸出，看起來它相當忙啊。</p>
+<p>有時一個專案在 app/controller/ 不一定只有一個控制器，所以就要在路由個別為它設定導引的描述。如下圖，</p>
+<a href="../../images/111213/RailsIV/rails10.png" target="_blank"> <img src="../../images/111213/RailsIV/rails10.png" alt="多個控制器的 RoR 專案" border="0" height="376" width="500" /></a>
+<p>▲ 圖10：多個控制器的 RoR 專案</p>
+<a href="../../images/111213/RailsIV/rails04.png" target="_blank"><img src="../../images/111213/RailsIV/rails04.png" alt="RoR 定義的 Actions" border="0" /></a>
+<p>▲ 圖11：RoR 定義的 Actions</p>
+<p>不過這個 Controller 的運作方式還是必須搭配 Route 一起說明，因此在這一段還是拿 Route 來補充。</p>
+<p>如何知道該執行哪個控制器跟動作？如果網址如下：</p>
+<pre><code>https://localhost/shopping/computer/info/12333
+</code></pre>
+<p>那麼在 RoR 裡程式流程如下：</p>
+<ol style="list-style-type: decimal;">
+<li>選擇 app/controller/Shopping_controller.rb 的控制器。</li>
+<li>執行 Shopping_controller.rb 裡已定義 info 的動作。</li>
+<li>由 info 所設計的程式碼，並將 id:12333，向 app/model/computers.rb 取出資料庫名為 computers 資料表中的資料。</li>
+<li>將資料初始化之後由 Shopping_controller.rb 中的 info 動作，把 12333 的資料傳遞至 app/views/shopping/info.html.erb。</li>
+<li>最後該控制器會把 info.html.erb 產生的結果整入至樣板 app/views/layouts/applications.html.erb 以完成整個網頁的輸出。</li>
+</ol>
+<p>若要做出「將商品放入購物車」，網址大致如下：</p>
+<pre><code>https://localhost/shopping/cart/12333
+</code></pre>
+<p>結帳之後會是：</p>
+<pre><code>https://localhost/shopping/checkout
+
+</code></pre>
+<p>所以在 shopping_controller.rb 裡就會定義 cart 跟 checkout 的動作。而在 views 裡就會有 cart.html.erb 跟 checkout.html.erb 的局部頁面。</p>
+<p>以上 RoR 的 MVC 就介紹到此，相信經過這樣有條理的說明，讀者們可以更加明暸它們之間的運作關係，也更容易導入設計專案時所相關連的檔案路徑，讓開發RoR的歷程不再困難重重。</p>
+<h3>作者簡介</h3>
+<p>麥克阿忠，資深網站程式開發者，興趣是攝影。目前擔任 Ruby on Rails 網站開發員，主要使用 Ubuntu Server 進行 Web 應用程式開發。</p>
+<p>作者部落格 <a href="https://about.me/MichaelChen520" target="_blank">https://about.me/MichaelChen520</a> <br />歡迎對 Ruby 有興趣的同好前來交流指教。</p>
+			<!-- Show relate article -->
+		<br><br><h4>您也許有興趣閱讀以下文章:</h4><ul><li><a href='../../tech-column/8478.html'>麥克阿忠的 Ruby on Rails 真功夫─手刻 CRUD</a> - <span class='date-posted'>2011-10-13</span></li><li><a href='../../tech-column/8440.html'>麥克阿忠的 Ruby on Rails 特快車－Scaffold 篇</a> - <span class='date-posted'>2011-09-05</span></li><li><a href='../../tech-column/8407.html'>麥克阿忠的 Ruby on Rails 初探</a> - <span class='date-posted'>2011-08-03</span></li></ul>		<!-- end -->
+		<div class="article_note">
+		<!-- Add tags use metakey, and show OSSF Newsletter tag: OSSFNL+NUM-->
+		<br><br> <hr style='border: 1px dashed #D2DADB;'><b>自由軟體鑄造場電子報&nbsp;:</b>&nbsp;<a href='../../previous-issue%3Ftask=view&amp;id=765.html'>第 186 期 程式語言延伸模組管理系統</a><br><b>標籤:</b>&nbsp;<a href='../../index.php%3Foption=com_search&amp;Itemid=58&amp;searchphrase=exact_meta&amp;ordering=newest&amp;searchword=Ruby.html'>Ruby</a>,&nbsp;&nbsp;<a href='../../index.php%3Foption=com_search&amp;Itemid=58&amp;searchphrase=exact_meta&amp;ordering=newest&amp;searchword=&#32;Rails.html'> Rails</a>,&nbsp;&nbsp;<a href='../../index.php%3Foption=com_search&amp;Itemid=58&amp;searchphrase=exact_meta&amp;ordering=newest&amp;searchword=&#32;ROR.html'> ROR</a>,&nbsp;&nbsp;<a href='../../index.php%3Foption=com_search&amp;Itemid=58&amp;searchphrase=exact_meta&amp;ordering=newest&amp;searchword=&#32;programming.html'> programming</a>,&nbsp;&nbsp;<a href='../../index.php%3Foption=com_search&amp;Itemid=58&amp;searchphrase=exact_meta&amp;ordering=newest&amp;searchword=&#32;web.html'> web</a>,&nbsp;&nbsp;<a href='../../index.php%3Foption=com_search&amp;Itemid=58&amp;searchphrase=exact_meta&amp;ordering=newest&amp;searchword=&#32;mvc.html'> mvc</a>,&nbsp;&nbsp;<a href='../../index.php%3Foption=com_search&amp;Itemid=58&amp;searchphrase=exact_meta&amp;ordering=newest&amp;searchword=&#32;crud.html'> crud</a>,&nbsp;&nbsp;				<!-- End -->
+					<br>
+					<b>分類: </b><a href="../tech-column.html">				技術專欄					</a>				</div>
+			 <!-- AddThis Button BEGIN ID 3001 is the front page article -->
+     			<br><br>
+       <div class="addthis_toolbox addthis_default_style addthis_32x32_style">
+       <a class="addthis_button_preferred_1"></a>
+       <a class="addthis_button_preferred_2"></a>
+       <a class="addthis_button_preferred_3"></a>
+       <a class="addthis_button_preferred_4"></a>
+       <a class="addthis_button_compact"></a>
+       <a class="addthis_counter addthis_bubble_style"></a>
+       </div>
+       <script type="text/javascript">var addthis_config = {"data_track_clickback":true};</script>
+       <script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js#pubid=openfoundry"></script>
+       <!-- AddThis Button END -->
+     <br>
+		<div class="totop" ><a class="rt-totop" href="8530-ruby-on-rails-get-familiar-with-mvc%3Ftmpl=component&amp;print=1&amp;page=.html#" style="outline: medium none;">↑ Top</a></div>
+            <!-- AddThis Button END -->
+
+			</div>
+</div>
+
+						</div>
+					</div>
+				</div>
+			</div>
+		</body>
+	</html>

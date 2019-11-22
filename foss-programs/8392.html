@@ -1,0 +1,415 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="zh-tw" lang="zh-tw" >
+<head>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<link rel="shortcut icon" href="../images/favicon.ico" />
+	  <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+  <meta name="robots" content="index, follow" />
+  <meta name="keywords" content="OSSFNL749" />
+  <meta name="title" content="用自由軟體 Plone 來架設網站(8)－內容查詢" />
+  <meta name="description" content="把內容資料儲存在系統之後，接下來的主要工作，就是依照顯示需求把它們找出來。常見的查詢條件範例，包括依照欄位屬性值查詢關鍵字詞、依照工作流程狀態篩選、依照日期屬性值排序、如果資料量龐大的話，還要考慮非同步索引，結合 AJAX 技巧，設計動態回應資料的方式，以改善系統的反應效能和操作性。 Plone 使用 ZODB 物件資料庫，屬於 NoSQL 世界的一份子，它的運作方式和傳統 SQL" />
+  <meta name="generator" content="" />
+  <title>用自由軟體 Plone 來架設網站(8)－內容查詢 - OpenFoundry</title>
+  <link href="../favicon.ico" rel="shortcut icon" type="image/x-icon" />
+  <link rel="stylesheet" href="../components/com_gantry/css/gantry.css" type="text/css" />
+  <link rel="stylesheet" href="../components/com_gantry/css/grid-12.css" type="text/css" />
+  <link rel="stylesheet" href="../components/com_gantry/css/joomla.css" type="text/css" />
+  <link rel="stylesheet" href="../templates/rt_quantive_j15/css/joomla.css" type="text/css" />
+  <link rel="stylesheet" href="../templates/rt_quantive_j15/css/style1.css" type="text/css" />
+  <link rel="stylesheet" href="../templates/rt_quantive_j15/css/light-body.css" type="text/css" />
+  <link rel="stylesheet" href="../templates/rt_quantive_j15/css/demo-styles.css" type="text/css" />
+  <link rel="stylesheet" href="../templates/rt_quantive_j15/css/template.css" type="text/css" />
+  <link rel="stylesheet" href="../templates/rt_quantive_j15/css/typography.css" type="text/css" />
+  <link rel="stylesheet" href="../templates/rt_quantive_j15/css/fusionmenu.css" type="text/css" />
+  <style type="text/css">
+    <!--
+#rt-main-surround ul.menu li.active > a, #rt-main-surround ul.menu li.active > .separator, #rt-main-surround ul.menu li.active > .item, #rt-main-surround .square4 ul.menu li:hover > a, #rt-main-surround .square4 ul.menu li:hover > .item, #rt-main-surround .square4 ul.menu li:hover > .separator, .roktabs-links ul li.active span {color:#0088B5;}
+a, #rt-main-surround ul.menu a:hover, #rt-main-surround ul.menu .separator:hover, #rt-main-surround ul.menu .item:hover {color:#0088B5;}
+    -->
+  </style>
+  <script type="text/javascript" src="../components/com_jcomments/js/jcomments-v2.1.js%3Fv=2"></script>
+  <script type="text/javascript" src="../components/com_jcomments/libraries/joomlatune/ajax.js"></script>
+  <script type="text/javascript" src="../media/system/js/mootools.js"></script>
+  <script type="text/javascript" src="../media/system/js/caption.js"></script>
+  <script type="text/javascript" src="../components/com_gantry/js/gantry-buildspans.js"></script>
+  <script type="text/javascript" src="../components/com_gantry/js/gantry-inputs.js"></script>
+  <script type="text/javascript" src="../templates/rt_quantive_j15/js/jquery.cookie.js"></script>
+  <script type="text/javascript" src="../modules/mod_roknavmenu/themes/fusion/js/fusion.js"></script>
+  <script type="text/javascript" src="../modules/mod_ofssologin/js/ofssologin.js"></script>
+  <script type="text/javascript">
+
+			window.addEvent('domready', function() {
+				var modules = ['rt-block'];
+				var header = ['h3','h2','h1'];
+				GantryBuildSpans(modules, header);
+			});
+		InputsExclusion.push('.content_vote','#rt-popup')
+		        window.addEvent('load', function() {
+					new Fusion('ul.menutop', {
+						pill: 0,
+						effect: 'slide and fade',
+						opacity: 1,
+						hideDelay: 500,
+						centered: 0,
+						tweakInitial: {'x': -2, 'y': 0},
+        				tweakSubsequent: {'x': 0, 'y': -14},
+						menuFx: {duration: 200, transition: Fx.Transitions.Sine.easeOut},
+						pillFx: {duration: 400, transition: Fx.Transitions.Back.easeOut}
+					});
+	            });
+  </script>
+<!-- <script type="text/javascript" src="/sso/javascripts/langsync.js"></script> -->
+<!-- <script src="/templates/rt_quantive_j15/js/ossf.js"></script> -->
+<script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-4136519-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
+</head>
+	<body  class="backgroundlevel-low backgroundstyle-style8 bodylevel-med bodystyle-light cssstyle-style1 logostyle-dark font-family-helvetica font-size-is-default menu-type-fusionmenu col12 ">
+		<div id="rt-main-background">
+			<div class="rt-container">
+																<div id="rt-header">
+					<div class="rt-grid-7 rt-alpha">
+    			<div class="rt-block">
+    	    	<a href="../index.html" id="rt-logo"></a>
+    		</div>
+	    
+</div>
+<div class="rt-grid-5 rt-omega">
+                    <div class="square9">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<div class="ofssologin_square9"><a href="../index.html">登入</a>&nbsp;&nbsp|&nbsp;&nbsp;<span><a href="https://www.openfoundry.org/en/foss-programs/8392" ><span lang="en" xml:lang="en">English</span></a></li></ul></span><!--Joom!fish V2.0.4 (Lightning)-->
+<!-- &copy; 2003-2009 Think Network, released under the GPL. -->
+<!-- More information: at http://www.joomfish.net -->
+<div class="ofssologin_search_square9">
+  <form id="of_search" action="https://www.openfoundry.org/of/openfoundry/search" method="get" onsubmit="of_search(); return false;">
+    <select id="of_search_type">
+      <option value="Projects"> 專案 </option>
+      <option value="Content"> 文章 </option>
+      <option value="People"> 人才 </option>
+    </select>
+    <input id="query" name="query" id="mod_search_searchword" maxlength="50" alt="search" class="inputbox" type="text" size="28" value="search..."  onblur="if(this.value=='') this.value='search...';" onfocus="if(this.value=='search...') this.value='';" />
+    <input type="hidden" name="commit" value="search" />
+  </form>
+</div></div>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		
+</div>
+					<div class="clear"></div>
+				</div>
+																<div id="rt-navigation"><div id="rt-navigation2"><div id="rt-navigation3">
+					
+<div class="nopill">
+	<ul class="menutop level1 " >
+						<li class="item1 root" >
+					<a class="orphan item bullet" href="../index.html"  >
+				<span>
+			    				首頁				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item32 root" >
+					<a class="orphan item bullet" href="../archived.html"  >
+				<span>
+			    				專案				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item186 root" >
+					<a class="orphan item bullet" href="../tw/community.html"  >
+				<span>
+			    				Who&#039;s Who				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item4 root" >
+					<a class="orphan item bullet" href="../tw/news.html"  >
+				<span>
+			    				新聞				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item5 root" >
+					<a class="orphan item bullet" href="../tw/law-and-licensing.html"  >
+				<span>
+			    				法律源地				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item3 root" >
+					<a class="orphan item bullet" href="../tw/activities.html"  >
+				<span>
+			    				活動				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item2 root" >
+					<a class="orphan item bullet" href="../tw/resourcecatalog%3FName=Value.html"  >
+				<span>
+			    				資源表列				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item45 root" >
+					<a class="orphan item bullet" href="../tw/about.html"  >
+				<span>
+			    				關於				   
+				</span>
+			</a>
+			
+			
+	</li>	
+				</ul>
+</div>
+
+				    <div class="clear"></div>
+				</div></div></div>
+								<div class="rt-surround"><div class="rt-surround2"><div class="rt-surround3">
+										<div id="rt-showcase-section">
+												<div id="rt-showcase">
+							<div class="rt-grid-12 rt-alpha rt-omega">
+    		<div class="clear"></div>
+		
+		
+                <div class="close-note">
+                    <div class="rt-block">
+               					<div class="module-content">
+                	<div style="font-size:medium; background-image:linear-gradient(120deg,#159957,#4298b2);color:white;padding:20px;margin:-10px -18px;">感謝您對「自由軟體鑄造場」的支持與愛護，十多年來「自由軟體鑄造場」受中央研究院支持，並在資訊科學研究所以及資訊科技創新研究中心執行，現已完成階段性的任務。 本網站預計持續維運至 2021年底，網站內容基本上不會再更動。<br />也紀念我們永遠的朋友 李士傑先生（Shih-Chieh Ilya Li）。</div>				</div>
+            </div>
+                </div>
+		
+</div>
+							<div class="clear"></div>
+						</div>
+																	</div>
+															<div id="rt-main-surround">
+												<div id="rt-breadcrumbs">
+								<div class="rt-breadcrumb-surround">
+		<a href="../index.html" id="breadcrumbs-home"></a>
+		<span class="breadcrumbs pathway">
+<a href="../tw/foss-programs.html" class="pathway">源碼秘技</a> <img src="../templates/rt_quantive_j15/images/arrow.png" alt=""  /> <span class="no-link">用自由軟體 Plone 來架設網站(8)－內容查詢</span></span>
+	</div>
+	
+							<div class="clear"></div>
+						</div>
+																							              <div id="rt-main" class="sa3-mb9">
+                <div class="rt-main-inner">
+                    <div class="rt-grid-9 rt-push-3">
+                                                <div class="rt-block">
+                            							<div class="square1">
+							<div class="rt-module-surround">
+								<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+								<div class="rt-module-inner">
+		                            <div id="rt-mainbody">
+		                                
+<div class="rt-joomla ">
+	<div class="rt-article">
+		
+				<div class="rt-headline"><h1 class="rt-article-title">用自由軟體 Plone 來架設網站(8)－內容查詢</h1>		</div>
+		<div class="clear"></div>
+		
+		
+		
+				<div class="rt-articleinfo">
+						<div class="rt-article-icons">
+								<a href="../tw/foss-programs/8392--plone-8%3Ftmpl=component&amp;print=1&amp;layout=default&amp;page=.html" title="列印" onclick="window.open(this.href,'win2','status=no,toolbar=no,scrollbars=yes,titlebar=no,menubar=no,resizable=yes,width=640,height=480,directories=no,location=no'); return false;" rel="nofollow"><span class="icon print"></span></a>																</div>
+			
+			<span class="rt-date-posted">
+						建立日期			2011-07-12 10:32						&nbsp;&nbsp;&nbsp;&nbsp;						最近更新在 2011-10-12 11:35						</span>
+
+						<span class="rt-author">
+				作者是 marr			</span>
+				
+					</div>
+		
+		
+		<p>把內容資料儲存在系統之後，接下來的主要工作，就是依照顯示需求把它們找出來。常見的查詢條件範例，包括依照欄位屬性值查詢關鍵字詞、依照工作流程狀態篩選、依照日期屬性值排序、如果資料量龐大的話，還要考慮非同步索引，結合 AJAX 技巧，設計動態回應資料的方式，以改善系統的反應效能和操作性。 <br /> <br />Plone 使用 ZODB 物件資料庫，屬於 NoSQL 世界的一份子，它的運作方式和傳統 SQL 資料庫不同，但透過 ZCatalog 的索引工具，ZODB 的搜尋結果可以視同 SQL 世界的表格資料，方便我們進行存取或排序的操作。本文將利用之前的 mysite.eventfolder 模組，還有新的 EEA Faceted Navigation 模組作為示範，介紹 Plone 內容查詢與顯示的技巧。</p>
+
+<p><br /><br /></p>
+<h3>選項式欄位</h3>
+<p><br />之前練習建置 mysite.eventfolder 模組時，曾見過 StringField 和 DateTimeField 兩種欄位類型，而 DateTimeField 搭配的 CalendarWidget 就是一種選項式欄位，專門用來選擇日期時間的資料內容。如果要在 Archetypes 表單裡自訂選項，該完成哪些步驟呢? <br /> <br />首先，要決定欄位屬於單值或多值，也就是「單選」或「複選」。單值的情況比較單純，通常使用 StringField 加上 SelectionWidget 就行。以新增一個 Event Type 欄位為例，其程式碼範例如圖1 所示。 <br /> <br /><a href="../images/110712/plone/01.png" target="_blank"><img src="../images/110712/plone/01.png" border="0" /></a><br />▲ 圖1 單選欄位的程式碼範例 <br /> <br />比較特別的是 vocabulary_factory 設定項，我們指定 'event.type' 作為選項的參照名稱。慣例上，vocabulary 的參照內容定義在 content/vocabularies.zcml 和 content/vocabularies.py 兩個檔案裡，因此，我們在 content/configure.zcml 引入 vocabularies.zcml 檔案，如圖2 所示。 <br /><br /><a href="../images/110712/plone/02.png" target="_blank"><img src="../images/110712/plone/02.png" border="0" /></a> <br />▲ 圖2 引入 vocabularies.zcml 的設定範例 <br /> <br /><br /></p>
+<h3>建立詞彙表</h3>
+<p><br />上述 vocabulary 指的是詞彙表，也就是選項式欄位的候選內容。接著，我們要建立 vocabularies.zcml 的內容，目的是註冊詞彙表元件，如圖3 所示。 <br /><br /><a href="../images/110712/plone/03.png" target="_blank"><img src="../images/110712/plone/03.png" border="0" /></a> <br />▲ 圖3 vocabularies.zcml 的範例內容 <br /> <br />在 ZCA 元件架構裡，vocabulary 是一種 utiltiy 元件，我們日後再介紹這些進階元件的原理。不過，明顯地，範例裡註冊了一個名稱為 event.type 的元件，它的程式碼則要到同目錄裡的 vocabularies.py 檔案尋找，內容如圖4 所示。 <br /><br /><a href="../images/110712/plone/04.png" target="_blank"><img src="../images/110712/plone/04.png" border="0" width="500" style="border: 0;" /></a> <br />▲ 圖4 vocabularies.py 內容範例 <br /> <br />EventType 類別 implement 介面 IVocabularyFactory，並主動回傳 items 詞彙表內容，例如：Conference、Meeting、Training 的選項值。 <br /> <br /><br /></p>
+<h3>測試選項欄位及詞彙表</h3>
+<p><br />之前介紹過 buildout.cfg 檔案裡，指定 develop = src/mysite.eventfolder 的方式，除此之外，我們也可以在 develop.cfg 檔案指定開發中的程式碼。如圖5 所示。 <br /><br /><a href="../images/110712/plone/05.png" target="_blank"><img src="../images/110712/plone/05.png" border="0" /></a> <br />▲ 圖5 develop.cfg 設定範例 <br /> <br />在 [sources] 裡指定的程式碼，等同於 develop = src/mysite.eventfolder 的結果，其中的 fs 設定值，代表在檔案系統的 src 目錄尋找原始碼，它也支援 svn 格式，用來直接存取放在 Subversion 的程式碼。 <br /> <br />接著，執行 bin/buildout -c develop.cfg 讓設定值生效，它會安裝 plone.reload 之類的開發工具。觀察執行過程的訊息，也可以確認 mysite.eventfolder 順利被載入，如圖6 所示。 <br /><br /><a href="../images/110712/plone/06.png" target="_blank"><img src="../images/110712/plone/06.png" border="0" width="500" style="border: 0;" /></a> <br />▲ 圖6 執行 buildout -c develop.cfg 訊息範例 <br /> <br />一切順利的話，新的 Event Folder 表單的編輯內容如圖7 所示。 <br /><br /><a href="../images/110712/plone/07.png" target="_blank"><img src="../images/110712/plone/07.png" border="0" /></a> <br />▲ 圖7 內含 Event Type 欄位的範例畫面 <br /> <br />假設我們已經建立許多 Event Folder 內容，這時候就需要 EEA Faceted Navigation 模組上場了。 <br /> <br /><br /></p>
+<h3>安裝導覽查詢模組</h3>
+<p><br />Plone 內建 Collection 工具，提供基本的查詢服務，原則上它是靜態的查詢結果，條件由管理員事先設定，因此，侷限使用者主動決定查詢條件的機會。 <br /> <br />EEA Faceted Navigation 模組則提供更便利的導覽查詢功能，詳盡的設定介面，不但能讓管理員指定內容的搜尋條件，透過 AJAX 工具，還能即時反應查詢的結果，或是動態篩選查詢結果。它能完全取代 Collection 的功能，並可以整合其他多媒體模組的顯示功能。 <br /> <br />安裝 EEA Faceted Navigation 方式很簡單，仿照上述步驟，繼續編輯 develop.cfg 內容，如圖8 所示。 <br /><br /><a href="../images/110712/plone/08.png" target="_blank"><img src="../images/110712/plone/08.png" border="0" width="500" style="border: 0;" /></a> <br />▲ 圖8 安裝 eea.facetednavigation 範例 <br /> <br />和一般模組不同之處在於，eea.facetednavigation 要填寫三個 zcml 設定值。從執行 bin/buildout -c develop.cfg 的訊息，同樣能確認模組順利被載入，如圖9 所示。 <br /><br /><a href="../images/110712/plone/09.png" target="_blank"><img src="../images/110712/plone/09.png" border="0" width="500" style="border: 0;" /></a> <br />▲ 圖9 eea.facetednavigation 成功被 buildout 載入 <br /> <br />EEA Faceted Navigation 模組需要搭配 jQuery 一併啟用，如圖10 所示。 <br /><br /><a href="../images/110712/plone/10.png" target="_blank"><img src="../images/110712/plone/10.png" border="0" /></a> <br />▲ 圖10 EEA Faceted Navigation 相關模組 <br /> <br /><br /></p>
+<h3>啟用導覽查詢選項</h3>
+<p><br />想要啟用導覽查詢功能，必須先選擇一個用來顯示結果的目錄，以 /events 目錄為例，在 Actions 頁籤的下拉選單，可以看到新增一個 Enable faceted navigation 選項，點選它的話，就代表要啟用，同時也讓選項值變成 Disable faceted navigation。如圖11 所示。 <br /><br /><a href="../images/110712/plone/11.png" target="_blank"><img src="../images/110712/plone/11.png" border="0" /></a> <br />▲ 圖11 啟用 Faceted Navigation 的選項 <br /> <br />順利啟用後，顯示類似圖12 所示的預設畫面。 <br /><br /><a href="../images/110712/plone/12.png" target="_blank"><img src="../images/110712/plone/12.png" border="0" /></a> <br />▲ 圖12 啟用 Faceted navigation 的預設畫面 <br /> <br />點選 Faceted criteria 頁籤，會出現 Faceted Navigation 的設定畫面，分成 Basic 和 Extended 兩個顯示區域，每個顯示區域都以九宮格形式來區隔，每個方格區塊，都能新增數個 widget 項目。如圖13 所示。 <br /><br /><a href="../images/110712/plone/13.png" target="_blank"><img src="../images/110712/plone/13.png" border="0" width="600" /></a> <br />▲ 圖13 Faceted Navigation 設定畫面 <br /> <br />所謂的 widget 是指管理搜尋條件或顯示結果的單位，慣例上，中間的方格區塊用來顯示搜尋結果，四周圍的方格區塊用來顯示搜尋條件。 <br /> <br />右上方有 Export 和 Import 按鈕，可以匯出和匯入設定檔，它們以 XML 格式儲存。 <br /> <br /><br /></p>
+<h3>設定導覽查詢選項</h3>
+<p><br />每個 widget 右上方，都有三個圖示，垃圾桶代表刪除，筆代表編輯，眼睛代表顯示或隱藏，如圖14 所示。 <br /><br /><a href="../images/110712/plone/14.png" target="_blank"><img src="../images/110712/plone/14.png" border="0" /></a> <br />▲ 圖14 widget 的基本管理圖示 <br /> <br />基本的設定項目，可以點選 widget 的筆按鈕，直接進入設定的管理介面，但是，想要存取詳盡設定項目的話，則必須點選左上方的 Disable AJAX 功能，進入表格式的管理介面，如圖15 所示。 <br /><br /><a href="../images/110712/plone/15.png" target="_blank"><img src="../images/110712/plone/15.png" border="0" /></a> <br />▲ 圖15<br /><br />舉例來說，想要進入 /events 目錄後，顯示站內有哪些 Event 和 Event Folder 項目，方法是編輯 Portal Type 的預設值。不過，必須取消 AJAX 功能，進入表格式管理介面後，才能找到預設值欄位，如圖16 所示。 <br /><br /><a href="../images/110712/plone/16.png" target="_blank"><img src="../images/110712/plone/16.png" border="0" /></a> <br />▲ 圖16 Portal Type 的預設值畫面 <br /> <br />儲存按鈕位於管理介面的最下方，存檔後，回到目錄畫面，可以看到 Faceted Navigation 顯示效果，它只篩選 Event 和 Event Folder 兩種型別的內容，如圖17 所示。 <br /><br /><a href="../images/110712/plone/17.png" target="_blank"><img src="../images/110712/plone/17.png" border="0" width="600" /></a> <br />▲ 圖17 指定 Portal Type 的篩選結果 <br /> <br /><br /></p>
+<h3>新增 ZCatalog 索引</h3>
+<p><br />假設系統已經新增數個 Event Folder 項目，分別屬於 Conference、Meeting、Training 不同類別，我們可以到 ZMI 先新增 ZCatalog 的索引，請到 /mysite/portal_catalog 點選 Indexes 頁籤，如圖18 所示。 <br /><br /><a href="../images/110712/plone/18.png" target="_blank"><img src="../images/110712/plone/18.png" border="0" /></a> <br />▲ 圖18 portal_catalog 的 Indexes 頁籤畫面 <br /> <br />從新增索引的下拉選單，點選 FieldIndex，進入 FieldIndex 的設定畫面，如圖19 所示。 <br /><br /><a href="../images/110712/plone/19.png" target="_blank"><img src="../images/110712/plone/19.png" border="0" /></a> <br />▲ 圖19 FieldIndex 設定畫面 <br /> <br />我們要為 eventType 欄位進行索引，這個欄位預設有個 accessor 讀取工具，名稱就是 getEventType，因此，我們可以指定 FieldIndex 的識別碼為 getEventType。第一次新增索引後，要記得執行 Reindex 動作，勾選 getEventType 項目後，再點選 Reindex 按鈕，如圖20 所示。 <br /><br /><a href="../images/110712/plone/20.png" target="_blank"><img src="../images/110712/plone/20.png" border="0" /></a> <br />▲ 圖20 執行 getEventType 的 Reindex <br /> <br />完成索引動作後，進入 getEventType 項目，再點選 Browse 頁籤，可以看到索引的結果，如圖21 所示。 <br /><br /><a href="../images/110712/plone/21.png" target="_blank"><img src="../images/110712/plone/21.png" border="0" /></a> <br />▲ 圖21 getEventType 的索引結果 <br /> <br /><br /></p>
+<h3>新增導覽查詢選項</h3>
+<p><br />以新增一個 Checkbox widget 的查詢為例，新增畫面如圖22 所示。 <br /><br /><a href="../images/110712/plone/22.png" target="_blank"><img src="../images/110712/plone/22.png" border="0" /></a> <br />▲ 圖22 新增 Checkbox widget 的畫面 <br /> <br />新增 widget 後，進入設定值的編輯畫面，Catalog index 欄位，要選擇在 portal_catalog 裡新增的 getEventType 項目，Vocabulary 欄位要選擇 event.type 項目，這是我們在 mysite.eventfolder/content/vocabularies.zcml 註冊的詞彙表名稱，如圖23 所示。 <br /><br /><a href="../images/110712/plone/23.png" target="_blank"><img src="../images/110712/plone/23.png" border="0" /></a> <br />▲ 圖23 設定 Checkbox widget 的畫面 <br /> <br />完成 widget 新增，回到目錄畫面，可以看到 Faceted Navigation 新的顯示結果，各別勾選 Event Type 選項的話，可以篩選各別的內容項目，如圖24 所示。 <br /><br /><a href="../images/110712/plone/24.png" target="_blank"><img src="../images/110712/plone/24.png" border="0" /></a> <br />▲ 圖24 Event Type 的 Faceted Navigation 畫面 <br /> <br /><br /></p>
+<h3>結論</h3>
+<p><br />ZCatalog 不僅可以索引內容，也可以設定排序方式，顯示資料時，它配合 metadata 工具提供預先儲存的內容，不會造成系統資料庫的負擔。不過，一旦索引發生錯誤，系統不但運作不正常，大量資料進行重新索引時，免不了要花費許多力氣。通常，進行系統資料移植或升級時，必須執行重新索引，以確保系統資料正常無誤。 <br /> <br />另一方面，我們也練習 EEA Faceted Navigation 模組的操作，許多設定細節，暫時留給讀者自行嘗試，雖然只是牛刀一試，相信足夠觸發許多面向的應用可能，例如 EEA 網站就搭配多媒體顯示模組，將多媒體內容的搜尋結果，直接結合 AJAX 和 FLASH 加以顯示，提昇操作便利性。更多新功能，期待下回繼續探索囉。</p>
+			<!-- Show relate article -->
+		<br><br><h4>您也許有興趣閱讀以下文章:</h4><ul><li><a href='8411.html'>用自由軟體 Plone 來架設網站(10)－連接資料庫</a> - <span class='date-posted'>2011-08-05</span></li><li><a href='8402.html'>用自由軟體 Plone 來架設網站(9)－多媒體結合</a> - <span class='date-posted'>2011-07-25</span></li><li><a href='8380.html'>用自由軟體 Plone 來架設網站(7)－版型調整</a> - <span class='date-posted'>2011-06-28</span></li><li><a href='8353.html'>用自由軟體 Plone 來架設網站 (6)－動態網頁</a> - <span class='date-posted'>2011-06-09</span></li><li><a href='8346.html'>用自由軟體 Plone 來架設網站 (5)－元件架構</a> - <span class='date-posted'>2011-05-20</span></li><li><a href='8320.html'>用自由軟體 Plone 來架設網站 (4)－建立專案</a> - <span class='date-posted'>2011-05-04</span></li><li><a href='8318.html'>用自由軟體 Plone 來架設網站 (3)— 內部設定</a> - <span class='date-posted'>2011-04-25</span></li><li><a href='8294.html'>用自由軟體 Plone 來架設網站 (2)— 內容管理</a> - <span class='date-posted'>2011-04-11</span></li><li><a href='8288.html'>用自由軟體 Plone 來架設網站 (1)— 基礎安裝</a> - <span class='date-posted'>2011-03-21</span></li></ul>		<!-- end -->
+		<div class="article_note">
+		<!-- Add tags use metakey, and show OSSF Newsletter tag: OSSFNL+NUM-->
+		<br><br> <hr style='border: 1px dashed #D2DADB;'><b>自由軟體鑄造場電子報&nbsp;:</b>&nbsp;<a href='../previous-issue%3Ftask=view&amp;id=749.html'>第 176 期 以 Paros 掃描 Web 程式漏洞</a><br>				<!-- End -->
+					<br>
+					<b>分類: </b><a href="../tw/foss-programs.html">				源碼秘技					</a>				</div>
+			 <!-- AddThis Button BEGIN ID 3001 is the front page article -->
+     			<br><br>
+       <div class="addthis_toolbox addthis_default_style addthis_32x32_style">
+       <a class="addthis_button_preferred_1"></a>
+       <a class="addthis_button_preferred_2"></a>
+       <a class="addthis_button_preferred_3"></a>
+       <a class="addthis_button_preferred_4"></a>
+       <a class="addthis_button_compact"></a>
+       <a class="addthis_counter addthis_bubble_style"></a>
+       </div>
+       <script type="text/javascript">var addthis_config = {"data_track_clickback":true};</script>
+       <script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js#pubid=openfoundry"></script>
+       <!-- AddThis Button END -->
+     <br>
+		<div class="totop" ><a class="rt-totop" href="8392.html#" style="outline: medium none;">↑ Top</a></div>
+            <!-- AddThis Button END -->
+
+			</div>
+</div>
+
+		                            </div>
+									<div class="clear"></div>
+								</div>
+								<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+							</div>
+							</div>
+                                                    </div>
+                                            </div>
+                                <div class="rt-grid-3 rt-pull-9">
+                <div id="rt-sidebar-a">
+                                    <div class="square4">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<ul class="menu"><li class="item56"><a href="../tw/previous-issue.html"><span>電子報總覽</span></a></li><li class="item55"><a href="../tw/about-newsletter.html"><span>關於本報</span></a></li></ul>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<ul class="menu"><li class="item115"><a href="../tw/foss-news.html"><span>源碼新聞</span></a></li><li class="item141"><a href="../tw/case-job.html"><span>接案 / 工作</span></a></li></ul>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+        	                <div class="square1">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-title"><h2 class="title">專欄總覽</h2></div>
+						<div class="clear"></div>
+		                						<div class="module-content">
+		                	<ul class="menu"><li class="item37"><a href="../tw/tech-column.html"><span>技術專欄</span></a></li><li id="current" class="active item40"><a href="../tw/foss-programs.html"><span>源碼秘技</span></a></li><li class="item35"><a href="../tw/legal-article-.html"><span>法律專欄</span></a></li><li class="item154"><a href="../tw/foss-forum.html"><span>自由專欄</span></a></li><li class="item162"><a href="../tw/enterprise-application.html"><span>企業應用</span></a></li><li class="item44"><a href="../tw/foss-projects.html"><span>源碼專案</span></a></li></ul>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		                <div class="square1">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<p style="text-align: center;"><a href="../news%3Fformat=feed&amp;type=rss" target="_black"><img src="../images/M_images/news-rss-feed.png" border="0" /></a><br /><a href="https://www.openfoundry.org/rss-feed/Newsletter" target="_black"><img src="../images/M_images/newsletter-rss-feed.png" border="0" /></a></p>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		
+                </div>
+            </div>
+
+                    <div class="clear"></div>
+                </div>
+            </div>
+																													</div>
+										<div id="rt-copyright">
+						<div class="rt-grid-12 rt-alpha rt-omega">
+                        <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<div id="desktop-mobile-version-switch"><span id="mobile-version" class="version-switch"><a href="8392.html#">行動版</a></span></div>
+自由軟體鑄造場 製作 最佳瀏覽狀態：IE7或Firefox2.0以上 (建議使用Firefox) ‧ 解析度1024*768 <br /> <strong>E-Mail</strong>：<a href="mailto:contact@openfoundry.org">contact@openfoundry.org</a> <strong>Address</strong>：台北市南港區研究院路2段128號 中央研究院資訊科學研究所 . <a href="../privacy-policy.html">隱私權條款</a>. <a href="../terms-of-use.html">使用條款</a><span style="position: relative; top: 8px; margin-top: -8px;"> <a href="../about/8101.html"><img src="../images/M_images/rss-feed-all.png" border="0" /></a></span>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+        	
+</div>
+						<div class="clear"></div>
+					</div>
+					<div class="rt-footer-bottom-wrap"><div class="rt-footer-bottom"><div class="rt-footer-bottom2"><div class="rt-footer-bottom3"></div></div></div></div>
+									</div></div></div>
+				<div class="rt-surround-bottom"><div class="rt-surround-bottom2"><div class="rt-surround-bottom3"></div></div></div>
+							</div>
+		</div>
+		<!--
+		<script id="aptureScript">
+						(function (){var a=document.createElement("script");a.defer="true";a.src="http://www.apture.com/js/apture.js?siteToken=vsJttrn";document.getElementsByTagName("head")[0].appendChild(a);})();
+     </script>
+-->
+
+<!-- Piwik -->
+<!-- 			<script type="text/javascript">
+			  var _paq = _paq || [];
+		  _paq.push(["trackPageView"]);
+		  _paq.push(["enableLinkTracking"]);
+
+		    (function() {
+			        var u=(("https:" == document.location.protocol) ? "https" : "https") + "://www.openfoundry.org/piwik/";
+				    _paq.push(["setTrackerUrl", u+"piwik.php"]);
+				    _paq.push(["setSiteId", "1"]);
+				        var d=document, g=d.createElement("script"), s=d.getElementsByTagName("script")[0]; g.type="text/javascript";
+				        g.defer=true; g.async=true; g.src=u+"piwik.js"; s.parentNode.insertBefore(g,s);
+					  })();
+		  </script> -->
+<!-- End Piwik Code -->
+	</body>
+</html>

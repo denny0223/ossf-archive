@@ -1,0 +1,397 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="zh-tw" lang="zh-tw" >
+<head>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<link rel="shortcut icon" href="images/favicon.ico" />
+	  <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+  <meta name="robots" content="index, follow" />
+  <meta name="keywords" content="OSSFNL754" />
+  <meta name="title" content="自由軟體授權資訊的標示說明與 SPDX" />
+  <meta name="description" content="自由軟體是一種人人都可以協力開發、修改與散布的軟體，不過並非所有的參與者，都清楚了解應該如何適當地標示授權相關資訊，這造成了許多自由軟體專案，在釋出時授權資訊標示不清，讓拿到軟體的後手不知道有哪些權利可以主張，也不知道有哪些義務必須遵守。而在後者的情況，更可能會讓後手在沒有被充份告知的情況下，以違反授權條款的方式來散布軟體，引發侵權糾紛。這樣的自由軟體侵權糾紛，近年在商業應用上層出不窮，同時也讓部" />
+  <meta name="generator" content="" />
+  <title>自由軟體授權資訊的標示說明與 SPDX - OpenFoundry</title>
+  <link href="favicon.ico" rel="shortcut icon" type="image/x-icon" />
+  <link rel="stylesheet" href="components/com_gantry/css/gantry.css" type="text/css" />
+  <link rel="stylesheet" href="components/com_gantry/css/grid-12.css" type="text/css" />
+  <link rel="stylesheet" href="components/com_gantry/css/joomla.css" type="text/css" />
+  <link rel="stylesheet" href="templates/rt_quantive_j15/css/joomla.css" type="text/css" />
+  <link rel="stylesheet" href="templates/rt_quantive_j15/css/style1.css" type="text/css" />
+  <link rel="stylesheet" href="templates/rt_quantive_j15/css/light-body.css" type="text/css" />
+  <link rel="stylesheet" href="templates/rt_quantive_j15/css/demo-styles.css" type="text/css" />
+  <link rel="stylesheet" href="templates/rt_quantive_j15/css/template.css" type="text/css" />
+  <link rel="stylesheet" href="templates/rt_quantive_j15/css/typography.css" type="text/css" />
+  <link rel="stylesheet" href="templates/rt_quantive_j15/css/fusionmenu.css" type="text/css" />
+  <style type="text/css">
+    <!--
+#rt-main-surround ul.menu li.active > a, #rt-main-surround ul.menu li.active > .separator, #rt-main-surround ul.menu li.active > .item, #rt-main-surround .square4 ul.menu li:hover > a, #rt-main-surround .square4 ul.menu li:hover > .item, #rt-main-surround .square4 ul.menu li:hover > .separator, .roktabs-links ul li.active span {color:#0088B5;}
+a, #rt-main-surround ul.menu a:hover, #rt-main-surround ul.menu .separator:hover, #rt-main-surround ul.menu .item:hover {color:#0088B5;}
+    -->
+  </style>
+  <script type="text/javascript" src="components/com_jcomments/js/jcomments-v2.1.js%3Fv=2"></script>
+  <script type="text/javascript" src="components/com_jcomments/libraries/joomlatune/ajax.js"></script>
+  <script type="text/javascript" src="media/system/js/mootools.js"></script>
+  <script type="text/javascript" src="media/system/js/caption.js"></script>
+  <script type="text/javascript" src="components/com_gantry/js/gantry-buildspans.js"></script>
+  <script type="text/javascript" src="components/com_gantry/js/gantry-inputs.js"></script>
+  <script type="text/javascript" src="templates/rt_quantive_j15/js/jquery.cookie.js"></script>
+  <script type="text/javascript" src="modules/mod_roknavmenu/themes/fusion/js/fusion.js"></script>
+  <script type="text/javascript" src="modules/mod_ofssologin/js/ofssologin.js"></script>
+  <script type="text/javascript">
+
+			window.addEvent('domready', function() {
+				var modules = ['rt-block'];
+				var header = ['h3','h2','h1'];
+				GantryBuildSpans(modules, header);
+			});
+		InputsExclusion.push('.content_vote','#rt-popup')
+		        window.addEvent('load', function() {
+					new Fusion('ul.menutop', {
+						pill: 0,
+						effect: 'slide and fade',
+						opacity: 1,
+						hideDelay: 500,
+						centered: 0,
+						tweakInitial: {'x': -2, 'y': 0},
+        				tweakSubsequent: {'x': 0, 'y': -14},
+						menuFx: {duration: 200, transition: Fx.Transitions.Sine.easeOut},
+						pillFx: {duration: 400, transition: Fx.Transitions.Back.easeOut}
+					});
+	            });
+  </script>
+<!-- <script type="text/javascript" src="/sso/javascripts/langsync.js"></script> -->
+<!-- <script src="/templates/rt_quantive_j15/js/ossf.js"></script> -->
+<script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-4136519-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
+</head>
+	<body  class="backgroundlevel-low backgroundstyle-style8 bodylevel-med bodystyle-light cssstyle-style1 logostyle-dark font-family-helvetica font-size-is-default menu-type-fusionmenu col12 ">
+		<div id="rt-main-background">
+			<div class="rt-container">
+																<div id="rt-header">
+					<div class="rt-grid-7 rt-alpha">
+    			<div class="rt-block">
+    	    	<a href="index.html" id="rt-logo"></a>
+    		</div>
+	    
+</div>
+<div class="rt-grid-5 rt-omega">
+                    <div class="square9">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<div class="ofssologin_square9"><a href="index.html">登入</a>&nbsp;&nbsp|&nbsp;&nbsp;<span><a href="en/news/8420%3Ftask=view.html" ><span lang="en" xml:lang="en">English</span></a></li></ul></span><!--Joom!fish V2.0.4 (Lightning)-->
+<!-- &copy; 2003-2009 Think Network, released under the GPL. -->
+<!-- More information: at http://www.joomfish.net -->
+<div class="ofssologin_search_square9">
+  <form id="of_search" action="https://www.openfoundry.org/of/openfoundry/search" method="get" onsubmit="of_search(); return false;">
+    <select id="of_search_type">
+      <option value="Projects"> 專案 </option>
+      <option value="Content"> 文章 </option>
+      <option value="People"> 人才 </option>
+    </select>
+    <input id="query" name="query" id="mod_search_searchword" maxlength="50" alt="search" class="inputbox" type="text" size="28" value="search..."  onblur="if(this.value=='') this.value='search...';" onfocus="if(this.value=='search...') this.value='';" />
+    <input type="hidden" name="commit" value="search" />
+  </form>
+</div></div>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		
+</div>
+					<div class="clear"></div>
+				</div>
+																<div id="rt-navigation"><div id="rt-navigation2"><div id="rt-navigation3">
+					
+<div class="nopill">
+	<ul class="menutop level1 " >
+						<li class="item1 root" >
+					<a class="orphan item bullet" href="index.html"  >
+				<span>
+			    				首頁				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item32 root" >
+					<a class="orphan item bullet" href="archived.html"  >
+				<span>
+			    				專案				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item186 root" >
+					<a class="orphan item bullet" href="tw/community.html"  >
+				<span>
+			    				Who&#039;s Who				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item4 active root" >
+					<a class="orphan item bullet" href="tw/news.html"  >
+				<span>
+			    				新聞				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item5 root" >
+					<a class="orphan item bullet" href="tw/law-and-licensing.html"  >
+				<span>
+			    				法律源地				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item3 root" >
+					<a class="orphan item bullet" href="tw/activities.html"  >
+				<span>
+			    				活動				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item2 root" >
+					<a class="orphan item bullet" href="tw/resourcecatalog%3FName=Value.html"  >
+				<span>
+			    				資源表列				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item45 root" >
+					<a class="orphan item bullet" href="tw/about.html"  >
+				<span>
+			    				關於				   
+				</span>
+			</a>
+			
+			
+	</li>	
+				</ul>
+</div>
+
+				    <div class="clear"></div>
+				</div></div></div>
+								<div class="rt-surround"><div class="rt-surround2"><div class="rt-surround3">
+										<div id="rt-showcase-section">
+												<div id="rt-showcase">
+							<div class="rt-grid-12 rt-alpha rt-omega">
+    		<div class="clear"></div>
+		
+		
+                <div class="close-note">
+                    <div class="rt-block">
+               					<div class="module-content">
+                	<div style="font-size:medium; background-image:linear-gradient(120deg,#159957,#4298b2);color:white;padding:20px;margin:-10px -18px;">感謝您對「自由軟體鑄造場」的支持與愛護，十多年來「自由軟體鑄造場」受中央研究院支持，並在資訊科學研究所以及資訊科技創新研究中心執行，現已完成階段性的任務。 本網站預計持續維運至 2021年底，網站內容基本上不會再更動。<br />也紀念我們永遠的朋友 李士傑先生（Shih-Chieh Ilya Li）。</div>				</div>
+            </div>
+                </div>
+		
+</div>
+							<div class="clear"></div>
+						</div>
+																	</div>
+															<div id="rt-main-surround">
+												<div id="rt-breadcrumbs">
+								<div class="rt-breadcrumb-surround">
+		<a href="index.html" id="breadcrumbs-home"></a>
+		<span class="breadcrumbs pathway">
+<span class="no-link">新聞</span></span>
+	</div>
+	
+							<div class="clear"></div>
+						</div>
+																							              <div id="rt-main" class="sa3-mb9">
+                <div class="rt-main-inner">
+                    <div class="rt-grid-9 rt-push-3">
+                                                <div class="rt-block">
+                            							<div class="square1">
+							<div class="rt-module-surround">
+								<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+								<div class="rt-module-inner">
+		                            <div id="rt-mainbody">
+		                                
+<div class="rt-joomla ">
+	<div class="rt-article">
+		
+				<div class="rt-headline"><h1 class="rt-article-title">自由軟體授權資訊的標示說明與 SPDX</h1>		</div>
+		<div class="clear"></div>
+		
+		
+		
+				<div class="rt-articleinfo">
+						<div class="rt-article-icons">
+								<a href="tw/news/8420-license-info-of-floss-and-spdx%3Ftmpl=component&amp;print=1&amp;page=.html" title="列印" onclick="window.open(this.href,'win2','status=no,toolbar=no,scrollbars=yes,titlebar=no,menubar=no,resizable=yes,width=640,height=480,directories=no,location=no'); return false;" rel="nofollow"><span class="icon print"></span></a>																</div>
+			
+			<span class="rt-date-posted">
+						建立日期			2011-08-17 18:02						&nbsp;&nbsp;&nbsp;&nbsp;						最近更新在 2011-08-23 14:22						</span>
+
+						<span class="rt-author">
+				作者是 葛冬梅、林誠夏			</span>
+				
+					</div>
+		
+		
+		<p>自由軟體是一種人人都可以協力開發、修改與散布的軟體，不過並非所有的參與者，都清楚了解應該如何適當地標示授權相關資訊，這造成了許多自由軟體專案，在釋出時授權資訊標示不清，讓拿到軟體的後手不知道有哪些權利可以主張，也不知道有哪些義務必須遵守。而在後者的情況，更可能會讓後手在沒有被充份告知的情況下，以違反授權條款的方式來散布軟體，引發侵權糾紛。這樣的自由軟體侵權糾紛，近年在商業應用上層出不窮，同時也讓部份熱心釋出成果的自由軟體開發社群感到沮喪。所以本文將會分析一般常見授權資訊不清的型態、提出建議的標示方法，以及說明近期 Linux Foundation 針對這樣的問題，所發布的 SPDX 規格書架構，以期望能協助讀者釐清問題根源，並促成國內的自由軟體專案開發者與使用者，都能夠以更適當的方式來標示所使用自由軟體的授權資訊！</p>
+
+<p><br /><br /><strong>【常見的自由軟體授權資訊標示問題】</strong><br /><br />大家都知道軟體程式是受到著作權保護的，而自由軟體雖可以被自由散布，但並非無權利保留的公眾領域 (Public Domain)，所以自然也不例外，因此多數的開發者與使用者都知道，散布自由軟體時應該要為其標示該有的著作權聲明與授權資訊，不過卻鮮少有開發者或使用者熟稔適當標示的相關資訊，此外，許多人誤以為授權資訊的標示僅是著作權人該做的事情，卻不知道身為修改者或散布者，有時也必須要擔負適時更新授權資訊的協力義務，並且將這些資訊完整地傳遞給後手，否則可能就會讓其他人在不知悉授權內容的狀況下侵權利用到這個軟體。實務上授權資訊標示不清的狀況通常有下列三種：<br /><br />1. 開發者甲為專案 A 採用 GPL-2.0 授權，但是將授權資訊放在開發網站不顯眼的角落頁面上，使用者非常不容易尋找到；<br /><br />2. 專案 A 的授權資訊，經網友提醒後，雖然有清楚的改標示在網站上，但是它的程式檔案裡，並沒有任何文字說明該程式是採用 GPL-2.0 來授權，使用者乙從網站下載 A 專案的程式碼之後，再散布給後手丙，此時若乙沒有善盡授權資訊的告知義務，則丙往往便無由知悉 A 專案究竟是用哪一種授權方式進行散布；<br /><br />3. 雖然專案 A 的授權資訊在網站上面已有清楚標示，後來開發者也在程式檔案裡添加一個文字檔說明該專案整體的授權屬性，但是開發者甲並沒有在個別檔案的檔頭 (header file) 標示簡要的授權資訊，而後丁擷取了 A 專案其中的一個元件 X 加入專案 B 裡使用，後手戊得到 B 專案之後，覺得其中的元件 X 很好用，因此特別就 X 元件的程式碼再行改作寫成衍生的元件 Y，並與其他程式一同打包成為專案 C，後續再將專案 C 整包散布出去，此時因為 GPL-2.0 所特有的授權拘束性，專案 B 與專案 C 裡的其他元件有可能也必須一併採用 GPL-2.0 授權才能繼續散布，並且在散布時也必須提供整體專案的程式原始碼給後手，但是可能丁與戊沒有清楚意識到這樣的授權規定，也沒有在軟體專案 B、C 中加上任何相關的說明，此時丁與戊便一同違反了 GPL-2.0 預設的授權規範。<br /><br />無論是以上的哪一種狀況，都很容易造成後續使用者侵權利用專案 A 的事實，在筆者所接觸的案例中，尤其以第三種狀況引發的侵權效應最為嚴重，因為現在有許多軟體的上游承包公司，都採用自由軟體元件來開發客戶所委託的產品，如對自由軟體授權資訊的標示與審核欠缺嚴謹的作業流程，便常常會在利用到 GPL 類授權元件時還不知情，或者是知情卻沒有告知客戶這樣的資訊，甚至也沒有提供該元件的程式原始碼給客戶，等到下游客戶將產品出貨到市場上進行販售時，A 專案的開發者甲才發現自己的軟體被侵權利用，此時相應的侵權訴訟就可能會接續產生了！<br /><br /><strong>【妥善登錄軟體的授權資訊能降低未來的侵權風險】</strong><br /><br />以上侵權糾紛發生的原因可以有很多，其中當事人輕忽的態度是主觀因素，而自由軟體授權資訊的標示缺乏慣用的規範或統一的格式，則是客觀的因素。其實授權資訊的標示可以很簡單，只要所標示的資訊正確、明顯與清楚，就已經達到最基本的要求了。筆者根據這幾年的工作經驗，歸納出下面幾項重要的授權標示原則，提供給本文的讀者做參考（註一），而無論是自由軟體的原始開發者、中間的散布者或後續的修改者，若是可以照著下列的原則善盡軟體授權資訊的標示義務，便可以達到正確、明顯與清楚標示的基本要求，也將可以免除許多日後因為授權資訊標示不清所可能產生的法律糾紛。<br /><br />1. 請在軟體專案的網站首頁，加上授權說明相關資訊的文字。這樣的說明文字可以非常簡短，讓使用者清楚明瞭地知道這個專案是採用什麼條款授權，若還有其他更進一步授權資訊說明內容的話，可以另外加上連結，將使用者引導到詳細的專案授權說明頁面。<br /><br />2. 編寫檔案時，請將授權簡要資訊加到該檔案的檔頭裡，此一敘述毋需過於累贅，原則上僅需述明專案名稱、著作權利人姓名、創作年份、專案網址，與該檔案所使用授權條款的名稱。<br /><br />3. 釋出軟體時，請將授權相關資訊集中放在一個文字檔中，並將其放在檔案層級第一層的目錄中，此文字檔名稱建議可以是 "README" 或 "LEGAL"。這樣的作法，讓使用者可以很清楚地在第一層目錄就看到有授權或法律相關資訊的檔案，不容易忽略這些資訊。<br /><br />4. 釋出軟體時，請將授權條款全文內容放在一個文字檔中，亦將其放在檔案層級第一層的目錄中，此文字檔名稱建議可以是 "COPYING" 或 "LICENSE"。<br /><br />5. 釋出軟體時，若是軟體中有利用到第三方授權的元件，請將所有第三方元件的名稱、採用的授權條款與條款全文內容都列在一個統一的文字檔中，並放在檔案層級第一層的目錄中。這個文字檔案名稱建議可以是 "THIRDPARTYLICENSE"。<br /><br />6. 單純過手散布他人撰寫的自由軟體元件時，軟體中原來的授權標示與資訊檔案建議全部保留，如此可以避免引發誤刪重要授權資訊的風險。<br /><br />7. 改作他人自由軟體元件時，若是修改出來的衍生元件要改採不同的授權條款，也請一併更新檔頭與檔案目錄裡相關的授權資訊，讓後手拿到衍生元件的同時，也同時接收到正確且完整的授權資訊。<br /><br />8. 改作他人自由軟體元件時，若修改的過程有增刪原專案既存的第三方元件的話，亦請同時更新第三方元件的授權相關資訊。<br /><br /><strong>【SPDX 計畫建立的授權資訊標示流程可能成為未來業界共通的統一標準】</strong><br /><br />以上筆者所提出的標示方式，是基礎、根本，且必須實踐的最低標準，也就是花最低的時間成本，但亦可以讓自由軟體專案在後續傳散的流程裡，完善地將授權資訊傳遞給取得程式的後手，不過這樣的方式並不統一，查詢與分析也仍然必須依靠人工來進行，無法完全進行自動化分析，所以並不是非常有效率的標示機制，因此許多業界公司與 Linux Foundation，為了改善自由軟體這個授權資訊嚴謹性常不盡理想的問題，便聯合發動了 Software Package Data Exchange (SPDX) 這個改善授權資訊標示性的相關計畫（註二），此一計畫是由 Linux Foundation 統合參與會員意見並負責研議與執行，目前參與這個計畫的會員有 Blackduck、Canonical、HP、Motorola、nexB、OpenLogic 與 Source Auditor 等公司。<br /><br />SPDX 計畫的建立目的，在於制定與推廣一套標示自由軟體授權資訊的標準格式，以便利日後大家都可以透過程式對這些授權資訊進行自動化分析，以讓自由軟體授權規則在商業化的過程中一樣可以簡單、清楚地被呈現出來，因此 SPDX 規格書的重要內容，便在於統一軟體釋出時，散布者須為專案標註的授權資訊與標示規格，幾點綱要的大項列舉如下（註三）：<br /><br />1. 軟體套件資訊 (package info) 與個別檔案資訊 (per file info)：這個部份的資訊包括了專案套件與個別檔案中的著作權聲明、授權條款列表與相關評論等等與授權直接相關的資訊，此外還有軟體套件名稱、檔案名稱、下載位置、版本對照檢驗方式 (checksum) 以及與技術描述等等間接相關的資訊。<br /><br />2. 授權資訊：SPDX 提供了一套授權條款縮寫表，原則上是以條款最為人熟知的簡名為首，再以半形符號「-」連接授權條款的版本別以及額外的重要描述資訊，例如「GNU General Public License v2.0 以其後版本」會被標示為 "GPL-2.0+"，而「GNU General Public License v3.0 加上 GCC 編譯器例外條款」，則標示為 "GPL-3.0-with-GCC-exception"，此類新式的縮寫名稱特別彰顯出授權條款的版本別，以避免使用者混淆誤認元件的授權版本。除了一般最常見的自由軟體授權條款之外，這個新式列表也將創用CC、GFDL 等開放內容的授權條款納入清單。而不在表列的授權條款，SPDX 也另外提供一套使用者可以自行定義的程序，可以讓人按步就班將該被記錄的授權資訊填註到軟體專案裡，並隨著程式碼一併散布出去。<br /><br />3. 分析資訊：SPDX 規格書提供了兩套後設資料 (metadata) 的標示標準：一般的標籤記號 (tag) 與資源描述框架 (Resource Description Framework, RDF) 的標示方法，使用者可以依照自身的需求選擇適合的來利用。<br /><br />由於 SPDX 主要是由業界發起、其目標是為了改善業界協同使用自由軟體進行產品開發的順暢性，並降低軟體授權標示不清所可能引發侵權風險的比例，正式的第一版規格書已於本年度八月中旬的 LinuxCon North America 中進行發布（註四），未來如獲得業界參與會員的共同支持並推行得當的話，預計將會被強力推廣到全球自由軟體商業應用的合作體系裡，目前影響所及、開放源碼促進會 (Open Source Initiative, OSI) 網站上面的授權條款，其縮寫名稱已經全盤依照 SPDX 的規格更新置換（註五），因此合理的評估，未來 SPDX 規格對於利用自由軟體進行商業應用的業者，及有意跨足商業模式的自由軟體社群專案來說，將會是一項不可不知的重要標準。<br /><br /><strong>【完善標示授權資訊將促進自由軟體的散布與再利用】</strong><br /><br />清楚的授權資訊是彰顯軟體著作權利人法定資格的方式，同時也可以讓專案開發所蘊含自由修改與散布的精神，可以不間斷地被傳散出去，對於自由軟體社群的顯名風潮，也具有非常正面的鼓勵效果。不過現實狀態卻是，大部分自由軟體的開發者與使用者並不清楚正確標示授權資訊的重要性，也不熟悉這些標示的實踐方法。要解決這個問題，最佳的方式就是持續地針對開發者與各階層的使用者進行推廣教育，不過推廣教育是一項耗時費工的龐大工程，若僅是透過單一機構或組織的力量，實行起來並非易事。如今、商業公司為了提升使用自由軟體元件進行產品開發的穩定性與降低侵權風險性，主動與 Linux Foundation 共同發起 SPDX 計畫，就其已公開的規劃方案來觀察，未來 Linux Foundation 亦將持續進行 SPDX 規格的推廣教育工作，因此筆者對於 SPDX 計畫是否能夠擴大自由軟體元件的散布性與再利用性，有著相當的期待。不過從目前所發布的規格書內容看來，SPDX 規定的標註內容非常詳細，涵蓋資訊亦十分完整，所以也可能因此讓商業公司或軟體社群，需要花費更多額外的建置成本來導入 SPDX，從而產生阻力，針對這一個問題，筆者目前還沒有發現簡單的解決方案，但期待未來可以看到 SPDX 計畫的參與成員，能妥善發揮其在業界個自的影響力，帶動完善標示自由軟體授權資訊的風氣，這樣方能真正啟動 SPDX 計畫的建置效果，並對全球自由軟體商業利用與社群發展產生良性循環的助益。<br /><br /><br />註一：關於標示軟體著作權與授權資訊的詳細說明，請見：葛冬梅，如何宣告自己的程式是自由軟體？，<a href="tw/legal-column-list/1673-2010-07-15-10-27-07.html" target="_blank">https://www.openfoundry.org/tw/legal-column-list/1673-2010-07-15-10-27-07</a>。關於散布軟體的注意事項，請見：散布的注意事項，<a href="tw/for-users/1881-2010-07-13-09-38-14.html" target="_blank">https://www.openfoundry.org/tw/for-users/1881-2010-07-13-09-38-14</a>。關於修改或取用自由軟體程式碼的注意事項，請見：修改或取用的注意事項，<a href="tw/for-developers/1882-2010-07-13-09-53-10.html" target="_blank">https://www.openfoundry.org/tw/for-developers/1882-2010-07-13-09-53-10</a>。<br /><br />註二：SPDX 計畫網站：<a href="https://spdx.org/" target="_blank">https://spdx.org/</a>。<br /><br />註三：除了本文所介紹的規格書內容之外，SPDX 計畫目前也提供四套基本的指令列工具程式，使用者可以據此來轉換 RDF 規格的後設資料。工具下載網址：<a href="https://www.spdx.org/tools" target="_blank">https://www.spdx.org/tools</a>。<br /><br />註四：SPDX 第一版規格書的下載節點：<a href="https://spdx.org/spec/current" target="_blank">https://spdx.org/spec/current</a>。第一版規格書發布的新聞稿請見：<a href="https://www.linuxfoundation.org/news-media/announcements/2011/08/spdx-workgroup-releases-software-package-data-exchange-standard-wid" target="_blank">https://www.linuxfoundation.org/news-media/announcements/2011/08/spdx-workgroup-releases-software-package-data-exchange-standard-wid</a>。<br /><br />註五：請參見 OSI 授權條款網頁列表：<a href="https://www.opensource.org/licenses/alphabetical" target="_blank">https://www.opensource.org/licenses/alphabetical</a>。</p>
+			<!-- Show relate article -->
+				<!-- end -->
+		<div class="article_note">
+		<!-- Add tags use metakey, and show OSSF Newsletter tag: OSSFNL+NUM-->
+		<br><br> <hr style='border: 1px dashed #D2DADB;'><b>自由軟體鑄造場電子報&nbsp;:</b>&nbsp;<a href='previous-issue%3Ftask=view&amp;id=754.html'>第 179 期 「臺灣博碩士論文知識加值系統」強力徵求論文全文的網路下載與公示授權！</a><br>				<!-- End -->
+					<br>
+					<b>分類: </b><a href="tw/legal-column-list.html">				法律專欄					</a>				</div>
+			 <!-- AddThis Button BEGIN ID 3001 is the front page article -->
+     			<br><br>
+       <div class="addthis_toolbox addthis_default_style addthis_32x32_style">
+       <a class="addthis_button_preferred_1"></a>
+       <a class="addthis_button_preferred_2"></a>
+       <a class="addthis_button_preferred_3"></a>
+       <a class="addthis_button_preferred_4"></a>
+       <a class="addthis_button_compact"></a>
+       <a class="addthis_counter addthis_bubble_style"></a>
+       </div>
+       <script type="text/javascript">var addthis_config = {"data_track_clickback":true};</script>
+       <script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js#pubid=openfoundry"></script>
+       <!-- AddThis Button END -->
+     <br>
+		<div class="totop" ><a class="rt-totop" href="index.php%3Foption=com_content&amp;task=view&amp;id=8420&amp;Itemid=4%3Bisletter=1.html#" style="outline: medium none;">↑ Top</a></div>
+            <!-- AddThis Button END -->
+
+			</div>
+</div>
+
+		                            </div>
+									<div class="clear"></div>
+								</div>
+								<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+							</div>
+							</div>
+                                                    </div>
+                                            </div>
+                                <div class="rt-grid-3 rt-pull-9">
+                <div id="rt-sidebar-a">
+                                    <div class="square4">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<ul class="menu"><li class="item56"><a href="tw/previous-issue.html"><span>電子報總覽</span></a></li><li class="item55"><a href="tw/about-newsletter.html"><span>關於本報</span></a></li></ul>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<ul class="menu"><li class="item115"><a href="tw/foss-news.html"><span>源碼新聞</span></a></li><li class="item141"><a href="tw/case-job.html"><span>接案 / 工作</span></a></li></ul>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+        	                <div class="square1">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-title"><h2 class="title">專欄總覽</h2></div>
+						<div class="clear"></div>
+		                						<div class="module-content">
+		                	<ul class="menu"><li class="item37"><a href="tw/tech-column.html"><span>技術專欄</span></a></li><li class="item40"><a href="tw/foss-programs.html"><span>源碼秘技</span></a></li><li class="item35"><a href="tw/legal-article-.html"><span>法律專欄</span></a></li><li class="item154"><a href="tw/foss-forum.html"><span>自由專欄</span></a></li><li class="item162"><a href="tw/enterprise-application.html"><span>企業應用</span></a></li><li class="item44"><a href="tw/foss-projects.html"><span>源碼專案</span></a></li></ul>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		                <div class="square1">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<p style="text-align: center;"><a href="news%3Fformat=feed&amp;type=rss" target="_black"><img src="images/M_images/news-rss-feed.png" border="0" /></a><br /><a href="https://www.openfoundry.org/rss-feed/Newsletter" target="_black"><img src="images/M_images/newsletter-rss-feed.png" border="0" /></a></p>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		
+                </div>
+            </div>
+
+                    <div class="clear"></div>
+                </div>
+            </div>
+																													</div>
+										<div id="rt-copyright">
+						<div class="rt-grid-12 rt-alpha rt-omega">
+                        <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<div id="desktop-mobile-version-switch"><span id="mobile-version" class="version-switch"><a href="index.php%3Foption=com_content&amp;task=view&amp;id=8420&amp;Itemid=4%3Bisletter=1.html#">行動版</a></span></div>
+自由軟體鑄造場 製作 最佳瀏覽狀態：IE7或Firefox2.0以上 (建議使用Firefox) ‧ 解析度1024*768 <br /> <strong>E-Mail</strong>：<a href="mailto:contact@openfoundry.org">contact@openfoundry.org</a> <strong>Address</strong>：台北市南港區研究院路2段128號 中央研究院資訊科學研究所 . <a href="privacy-policy.html">隱私權條款</a>. <a href="terms-of-use.html">使用條款</a><span style="position: relative; top: 8px; margin-top: -8px;"> <a href="about/8101.html"><img src="images/M_images/rss-feed-all.png" border="0" /></a></span>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+        	
+</div>
+						<div class="clear"></div>
+					</div>
+					<div class="rt-footer-bottom-wrap"><div class="rt-footer-bottom"><div class="rt-footer-bottom2"><div class="rt-footer-bottom3"></div></div></div></div>
+									</div></div></div>
+				<div class="rt-surround-bottom"><div class="rt-surround-bottom2"><div class="rt-surround-bottom3"></div></div></div>
+							</div>
+		</div>
+		<!--
+		<script id="aptureScript">
+						(function (){var a=document.createElement("script");a.defer="true";a.src="http://www.apture.com/js/apture.js?siteToken=vsJttrn";document.getElementsByTagName("head")[0].appendChild(a);})();
+     </script>
+-->
+
+<!-- Piwik -->
+<!-- 			<script type="text/javascript">
+			  var _paq = _paq || [];
+		  _paq.push(["trackPageView"]);
+		  _paq.push(["enableLinkTracking"]);
+
+		    (function() {
+			        var u=(("https:" == document.location.protocol) ? "https" : "https") + "://www.openfoundry.org/piwik/";
+				    _paq.push(["setTrackerUrl", u+"piwik.php"]);
+				    _paq.push(["setSiteId", "1"]);
+				        var d=document, g=d.createElement("script"), s=d.getElementsByTagName("script")[0]; g.type="text/javascript";
+				        g.defer=true; g.async=true; g.src=u+"piwik.js"; s.parentNode.insertBefore(g,s);
+					  })();
+		  </script> -->
+<!-- End Piwik Code -->
+	</body>
+</html>

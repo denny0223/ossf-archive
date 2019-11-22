@@ -1,0 +1,128 @@
+	<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+	<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="zh-tw" lang="zh-tw" >
+		<head>
+			  <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+  <meta name="robots" content="noindex, nofollow" />
+  <meta name="keywords" content="FreeNAS, nas, network-attached storage, history,OSSFNL753" />
+  <meta name="title" content="利用 FreeNAS 打造儲存設備(1)－歷史篇" />
+  <meta name="description" content="前言 目前企業運作環境中對於共用儲存設備的存取方式，大約可以區分為三種類別，分別是：直接連接儲存 (Direct Attached Storage, DAS)、網路連接儲存 (Network Attached Storage, NAS)、儲存區域網路 (Storage Area Network，SAN)。其中儲存區域網路 SAN" />
+  <meta name="generator" content="" />
+  <title>利用 FreeNAS 打造儲存設備(1)－歷史篇</title>
+  <link href="../../favicon.ico" rel="shortcut icon" type="image/x-icon" />
+  <link rel="stylesheet" href="../../components/com_gantry/css/gantry.css" type="text/css" />
+  <link rel="stylesheet" href="../../components/com_gantry/css/grid-12.css" type="text/css" />
+  <link rel="stylesheet" href="../../components/com_gantry/css/joomla.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/joomla.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/style1.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/light-body.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/demo-styles.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/template.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/typography.css" type="text/css" />
+  <style type="text/css">
+    <!--
+#rt-main-surround ul.menu li.active > a, #rt-main-surround ul.menu li.active > .separator, #rt-main-surround ul.menu li.active > .item, #rt-main-surround .square4 ul.menu li:hover > a, #rt-main-surround .square4 ul.menu li:hover > .item, #rt-main-surround .square4 ul.menu li:hover > .separator, .roktabs-links ul li.active span {color:#0088B5;}
+a, #rt-main-surround ul.menu a:hover, #rt-main-surround ul.menu .separator:hover, #rt-main-surround ul.menu .item:hover {color:#0088B5;}
+    -->
+  </style>
+  <script type="text/javascript" src="../../components/com_jcomments/js/jcomments-v2.1.js%3Fv=2"></script>
+  <script type="text/javascript" src="../../components/com_jcomments/libraries/joomlatune/ajax.js"></script>
+  <script type="text/javascript" src="../../media/system/js/mootools.js"></script>
+  <script type="text/javascript" src="../../media/system/js/caption.js"></script>
+  <script type="text/javascript" src="../../components/com_gantry/js/gantry-buildspans.js"></script>
+  <script type="text/javascript" src="../../components/com_gantry/js/gantry-inputs.js"></script>
+  <script type="text/javascript">
+
+			window.addEvent('domready', function() {
+				var modules = ['rt-block'];
+				var header = ['h3','h2','h1'];
+				GantryBuildSpans(modules, header);
+			});
+		InputsExclusion.push('.content_vote','#rt-popup')
+  </script>
+		</head>
+		<body  class="backgroundlevel-low backgroundstyle-style8 bodylevel-med bodystyle-light cssstyle-style1 logostyle-dark font-family-helvetica font-size-is-default menu-type-fusionmenu col12 ">
+			<div id="rt-main-surround">
+				<div class="rt-container">
+					<div class="rt-block">
+						<div id="rt-mainbody">
+					    	
+<div class="rt-joomla ">
+	<div class="rt-article">
+		
+				<div class="rt-headline"><h1 class="rt-article-title">利用 FreeNAS 打造儲存設備(1)－歷史篇</h1>		</div>
+		<div class="clear"></div>
+		
+		
+		
+				<div class="rt-articleinfo">
+						<div class="rt-article-icons">
+				<a href="8408--freenas-1%3Ftmpl=component&amp;print=1&amp;layout=default&amp;page=.html#" onclick="window.print();return false;"><span class="icon print"></span></a>									<span class="icon printscreen">
+						<a href="8408--freenas-1%3Ftmpl=component&amp;print=1&amp;layout=default&amp;page=.html#" onclick="window.print();return false;"><img src="../../images/M_images/printButton.png" alt="列印"  /></a>					</span>
+							</div>
+			
+			<span class="rt-date-posted">
+						建立日期			2011-08-03 17:10						&nbsp;&nbsp;&nbsp;&nbsp;						最近更新在 2012-02-03 14:50						</span>
+
+						<span class="rt-author">
+				作者是 Weithenn (https://www.weithenn.org/)			</span>
+				
+					</div>
+		
+		
+		<h3>前言</h3>
+<p><br />目前企業運作環境中對於共用儲存設備的存取方式，大約可以區分為三種類別，分別是：直接連接儲存 (Direct Attached Storage, DAS)、網路連接儲存 (Network Attached Storage, NAS)、儲存區域網路 (Storage Area Network，SAN)。其中儲存區域網路 SAN 又因為其所使用的傳輸媒體介質的不同，又可以細分為使用光纖作為傳輸媒介的 (Fiber Channel SAN, FC-SAN)，以及使用一般乙太網路線材的 (iSCSI SAN, IP-SAN)。</p>
+
+<p><br />不過目前商用市場及自由軟體專案中，許多的 NAS 設備除了既有的網路服務之外，同時具備了 iSCSI Target 的功能，因此可以提供 IP-SAN 的儲存環境也搖身一變，成為 SAN 設備。目前市場上 NAS 與 SAN 在界線劃分上已經日趨模糊，讀者可以從圖1、圖2 了解到 DAS、NAS、SAN 此三種共用儲存設備，對於應用程式 (Application)、檔案系統 (File System)、硬碟 (SATA、SAS、FC)、線材 (Fiber Channel、Ethernet) 等，在存取方式上的差異性，圖3 則為 NAS 與 SAN 的混合應用。在本次 FreeNAS 系列文章中所使用的 FreeNAS 雖然定位為 NAS，但它也可以提供 iSCSI Target 功能，來給予使用者更具彈性的應用。 <br /><br /><a href="https://upload.wikimedia.org/wikipedia/commons/c/ce/Compingles.GIF" target="_blank"><img src="../../images/110726/freeNAS/freenas_01_001.jpg" border="0" width="500" style="border: 0;" /></a><br />▲ 圖1 DAS、NAS、SAN 存取方式比較一。Lore uni  分享，採用 CC-BY-SA 3.0 Unported 與 GFDL 雙重授權<br /><br /></p>
+<div><a href="https://upload.wikimedia.org/wikipedia/commons/e/ee/Compingles2.GIF" target="_blank"><img src="../../images/110726/freeNAS/freenas_01_002.jpg" border="0" width="500" style="border: 0;" /></a><br />▲ 圖2 DAS、NAS、SAN 存取方式比較二。Lore uni  分享，採用 CC-BY-SA 3.0 Unported 與 GFDL 雙重授權<br /><br /></div>
+<div><a href="https://upload.wikimedia.org/wikipedia/commons/4/48/Compingles3.GIF" target="_blank"><img src="../../images/110726/freeNAS/freenas_01_003.jpg" border="0" width="500" style="border: 0;" /></a><br />▲ 圖3 SAN-NAS 混合應用。Lore uni 分享，採用 CC-BY-SA 3.0 Unported 與 GFDL 雙重授權<br /><br /><br />
+<h3>什麼是 FreeNAS？</h3>
+<br /><a href="https://www.freenas.org" target="_blank">FreeNAS</a> 為基於 <a href="https://www.freebsd.org" target="_blank">FreeBSD</a> 作業系統所開發的嵌入式 (Embedded) 開放原始碼<a href="https://zh.wikipedia.org/wiki/%E7%B6%B2%E8%B7%AF%E5%84%B2%E5%AD%98%E8%A8%AD%E5%82%99" target="_blank">網路連接儲存設備 (Network Attached Storage,NAS)</a>，由 Olivier Cochard-Labbe 及 Volker Theile 於 2005 年時所發起。二人發起該專案計畫後也同時身兼 FreeNAS 計畫的核心開發成員。FreeNAS 的開發設計框架採用 Olivier Cochard-Labbe 參與的另一套知名嵌入式開放原始碼計畫專案，也就是一 PHP 語言所開發的嵌入式防火牆解決方案 m0n0wall。FreeNAS 以 BSD 授權方式釋出。 <br /><br />但是於 2009 年 12 月時 FreeNAS 主要開發成員 Olivier Cochard-Labbe 發表聲明，聲明內容為從 FreeNAS 0.7 版開始該計畫將停止開發任何新功能，也就是除了修正重大臭蟲之外，其餘開發計畫皆停止。Olivier Cochard-Labbe 表示他實在無法抽出足夠的時間繼續為 FreeNAS 開發新功能。 <br /><br />此時另一位 FreeNAS 專案計畫的核心開發成員 Volker Theile，則是將 FreeNAS 計畫的相關功能轉換到他習慣的日常工作環境 Debian Linux 上重新改寫，並且開啟了另一個開放原始碼專案計劃－<a href="https://blog.openmediavault.org" target="_blank">OpenMediaVault</a>，並且預計採用 GPLv3 授權方式釋出。 <br /><br /><a href="https://www.ixsystems.com" target="_blank">iXsystems</a> 為提供 Unix-Like (Linux、BSD) 作業系統的硬體解決方案供應商，在 2009 年初時收購當時也是基於 FreeBSD 作業系統所開發，目標專注於桌面 (Desktop) 環境的作業系統 <a href="https://www.pcbsd.org" target="_blank">PC-BSD</a>。該公司在 2009 年底時因為獲悉了 Olivier Cochard-Labbe 放棄繼續開發 FreeNAS 的聲明後，立即表示要接手 FreeNAS 計畫。雖然 iXsystems 公司加入，但是授權方式仍然維持原來的 BSD 授權方式釋出。 <br /><br />iXsystems 接手後發現 FreeNAS 雖然有很多非常棒的特色以及網路功能，但是由於在開發設計上的理念有所不同，造成原本的 FreeNAS 原始碼難以維護，因此 iXsystems 便決定將 FreeNAS 重新改寫，並且導入模組化設計 (Plug-ins) 概念。模組化設計理念除了提升日後在功能上擴充的便利性之外，對於有心幫助 FreeNAS 擴充新功能的熱心貢獻人士也有相當的助益。 <br /><br />因此重新改寫 FreeNAS 的工作便從 2010 年初緊鑼密鼓的展開，在嵌入式環境中改採用 <a href="https://www.freebsd.org/doc/en_US.ISO8859-1/articles/nanobsd/article.html" target="_blank">NanoBSD</a> 作為建立嵌入式環境的應用程式，同時在網頁框架 (Web Framework) 部份，也由原本使用 PHP 語言撰寫的 <a href="https://m0n0.ch/wall" target="_blank">m0n0wall</a>，改為採用 Python 語言撰寫的 <a href="https://www.djangoproject.com" target="_blank">Django</a> 作為圖形化使用者操作介面。最後則是在版本命名方面則採用依 FreeBSD 作業系統版本命名方式，為 FreeNAS 進行命名，以便使用者在選擇 FreeNAS 版本時可以立即了解其所採用的 FreeBSD 作業系統版本。 <br /><br />整個 FreeNAS 改寫作業於 2011 年初大致完成，並且於同年 5 月 2 日正式發行 FreeNAS 8.0。由於是整個系統及架構進行重新改寫，因此在舊版本 FreeNAS 0.7 版中存在的功能在 FreeNAS 8.0 中不見得一定存在，例如：Bittorrent、WebServer 等，因為 FreeNAS 8.0 發行版本的首要任務為提供完整的 NAS 功能。對於非 NAS 原生功能，將預計於下一個發行版本也就是 FreeNAS 8.1，將會開始提供模組化擴充功能，屆時使用者便可以輕易的擴充他們想要的功能。 <br /><br /><br />
+<h3>FreeNAS 0.7 vs FreeNAS 8</h3>
+<br />由上述我們可知 FreeNAS 8 承襲之前的精神，但實則為全新設計的嵌入式 NAS。同時由於 iXsystems 公司的加入，在各項改變中首先我們可以發現到 FreeNAS 0.7 與 FreeBSD 8 的標誌 (Logo) 有明顯不同（由 FreeBSD 紅色惡魔改為鯊魚）。初次使用 FreeNAS 的使用者首先會想問：這二個版本中該選那一個？在新版 FreeNAS 官網中 FreeNAS 版本比較頁面 <a href="https://www.freenas.org/item/freenas-comparison-chart-2" target="_blank">FreeNAS™ Comparison Chart</a>，有將舊版 FreeNAS 0.7 與新版 FreeNAS 8 在功能特性上做比較，讀者可以依自身所需要的網路服務需求選擇合適的版本。不過請注意由於新版 FreeNAS 8 是整個架構重新改寫，因此目前還不支援將舊有版本 FreeNAS 0.7 直接升級為新版 FreeNAS 8。 <br /><br /></div>
+<div><a href="https://wiki.freenas.org/_media/freenas.png" target="_blank"><img src="../../images/110726/freeNAS/freenas_01_004.jpg" border="0" /></a><br />▲ 圖4 FreeNAS 0.7 標誌。此圖採 BSD 授權 <br /><br /></div>
+<div><a href="https://www.freenas.org/images/logos/freenasbanner240.png" target="_blank"><img src="../../images/110726/freeNAS/freenas_01_005.jpg" border="0" /></a><br />▲ 圖5 FreeNAS 8 標誌。採用 CC-BY 3.0 Unported 授權 <br /><br />在新舊版本功能比較表上，我們可以看到在新版 FreeNAS 8 中將非 NAS 原生功能，例如：Bittorrent、UPnP Server、iTuness/DAAP、WebServer 等功能取消，FreeNAS 官方將預計於下一版 FreeNAS 8.1 版中，以模組化擴充的方式來擴充相關功能，並且將 ZFS 檔案系統版本由原本舊版本的 v13 提升為 v15，若您選擇採用舊版也就是 FreeNAS 0.7 的話，您可以至<a href="https://wiki.freenas.org" target="_blank">舊版首頁</a>查看相關資訊。 <br /><br /></div>
+<div><a href="https://www.freenas.org/item/freenas-comparison-chart-2" target="_blank"><img src="../../images/110726/freeNAS/freenas_01_006.jpg" border="0" /></a><br />▲ 圖6 FreeNAS 7 及 FreeNAS 8 網路功能比較表。 採用 CC-BY 3.0 Unported 授權 <br /><br /></div>
+<div><a href="https://www.freenas.org/item/freenas-comparison-chart-2" target="_blank"><img src="../../images/110726/freeNAS/freenas_01_007.jpg" border="0" /></a><br />▲ 圖7 FreeNAS 7 及 FreeNAS 8 網路服務比較表。採用 CC-BY 3.0 Unported 授權 <br /><br /></div>
+<div><a href="https://www.freenas.org/item/freenas-comparison-chart-2" target="_blank"><img src="../../images/110726/freeNAS/freenas_01_008.jpg" border="0" /></a><br />▲ 圖8 FreeNAS 7 及 FreeNAS 8 檔案系統比較表。 採用 CC-BY 3.0 Unported 授權<br /><br /></div>
+<div><a href="https://www.freenas.org/item/freenas-comparison-chart-2" target="_blank"><img src="../../images/110726/freeNAS/freenas_01_009.jpg" border="0" /></a><br />▲ 圖9 FreeNAS 7 及 FreeNAS 8 監控功能比較表。 採用 CC-BY 3.0 Unported 授權<br /><br /><br />
+<h3>FreeNAS 8 支援功能</h3>
+<br />明瞭全新改寫、設計及開發的 FreeNAS 8 歷史由來後，我們簡單的總結一下 FreeNAS 8 版本所支援的網路功能及相關特色： <br /><br />* 文件共享機制：支援 NFS / CIFS / AFP / FTP / TFTP 等網路服務 <br /><br />* 儲存區域網路：支援 iSCSI Target / Initiator 的 IP-SAN 儲存環境 <br /><br />* 使用者驗證：支援 Local / Active Directory / LDAP 等使用者驗證方式 <br /> <br />* 檔案系統： <br /><br />** 支援 UFS2 檔案系統（包括 Gmirror / Gstripe / Graid3） <br /><br />** 支援 ZFS 檔案系統（包括 配額 Quotas / 快照 Snapshots / 壓縮 Compression / 同步複製 Replication / Zpool v15） <br /><br />* 版本升級：升級過程為透過 NanoBSD Inactive 機制，因此即使升級失敗屆時也能輕易回復。 <br /><br />* 告警機制：支援 LSI 磁碟陣列控制器事件自動通知機制（需搭配 E-Mail 服務進行設定）。 <br /><br />* 開發框架：採用 Python 語言開發的網頁框架 <a href="https://www.djangoproject.com" target="_blank">Django</a> 作為圖形化使用者操作介面。 <br /><br /><br />
+<h3>FreeNAS 硬體需求</h3>
+<br />在整體硬體支援度方面，由於 FreeNAS 8.x 版本皆是基於 FreeBSD 8.2 環境進行開發，因此在系統架構上支援 amd64、i386、ia64、pc98、powerpc、sparc64，其它硬體支援度方面，例如：Disk Controllers、Ethernet、USB 等硬體支援程度上均非常全面。比較令人驚喜的地方為支援大部份 10Gbps 網路卡，如此一來屆時採用 ZFS 檔案系統並且配合 iSCSI Target 提供 IP-SAN 儲存環境，來作為企業營運也是非常適合的儲存解決方案，一點也不遜色於商用設備解決方案。簡言之，原則上只要您的硬體設備符合 FreeBSD 8.2 的硬體相容清單 <a href="https://www.freebsd.org/releases/8.2R/hardware.html" target="_blank">HCL (Hardware Compatability List)</a> 中所條列，即可順利安裝 FreeNAS 並且不用擔心硬體驅動的問題。 <br /><br />在系統架構方面，FreeNAS 目前支援主流的 32 位元 (i386) 及 64 位元 (amd64) 架構，若您希望 FreeNAS 具備較高的傳輸速度及系統效能，則建議您採用 64 位元版本。若是您決定採用的是 32 位元版本，由於 32 位元系統架構會有記憶體 4GB 的定址限制（雖然有方法可以突破此限制，但不建議如此），強烈建議您應該要採用 UFS 檔案系統較為恰當（也就是不建議使用 ZFS 檔案系統）。 <br /><br />若決定採用 ZFS 檔案系統則表示您的硬體設備至少應該具備 6GB 以上閒置的記憶體空間，也就是說您的硬體設備至少需要 8GB 的記憶體，如此一來在運作 ZFS 檔案系統時，才能得到令人滿意的效能及傳輸速度。當然屆時 FreeNAS 運作的整體效能跟您的硬體設備實體記憶體將成正比（當然是實體記憶體愈多愈好！）。當 ZFS 檔案系統所負責處理的硬碟空間超過 6TB 容量時，就經驗法則來說，建議每多 1TB 硬碟空間就應增加 1GB 的實體記憶體。最後則應避免 ZFS RAIDZ 與硬體磁碟陣列卡 (RAID Controller) 二者互相混用的情況發生。您應該要將實體磁碟陣列設定在 JBOD 模式，而讓 ZFS 檔案系統來專心處理 RAID 部份。 <br /><br />在安裝空間方面，FreeNAS 為嵌入式的設計理念，因此您可以將 FreeNAS 安裝在 2GB 空間的 CF / USB 儲存裝置上，當然您也可以把 FreeNAS 安裝在硬碟上（但官方並不建議如此）。FreeNAS 在安裝時會將作業系統切割為二個 1GB 的分割區，其中一個分割區負責存放運作中的 FreeNAS 作業系統，而另一個分割區則是升級版本時會使用到。這樣的分割存放設計概念，可以確保您能順利升級至新的 FreeNAS 版本作業系統，或者當遇到升級問題時，也能輕鬆回復到先前穩定運作的版本，因此若您將 FreeNAS 安裝於硬碟上，將造成無法使用其它的剩餘空間。 <br /><br />為何官方不建議將 FreeNAS 8 安裝於硬碟中？ 舉例來說若您將 FreeNAS 8 安裝於 1TB 容量的硬碟中，雖然實際使用不到 2GB 的空間，但您仍無法使用剩餘的空間 (Inaccessible) 來做為分享資料用，這也正是 FreeNAS 官方不建議將 FreeNAS 安裝於硬碟上的主要原因。而這也是舊版 FreeNAS 0.7 使用者一開始便會碰到的問題，因為同樣的情況在舊版 FreeNAS 0.7 的設計中，若使用 1TB 容量的硬碟來安裝 FreeNAS 後仍可使用剩餘的所有空間（也就是 900 多 GB 的剩餘空間），並且可以使用該空間來進行檔案分享的作業。 <br /><br /><br />
+<h3>下載 FreeNAS 8</h3>
+<br />您可以在 Sourceforge <a href="https://sourceforge.net/projects/freenas/files/FreeNAS-8" target="_blank">FreeNAS-8 專案</a>頁面中下載最新版本的 FreeNAS，在下載頁面中您可以看到 32 位元 (i386) 及 64 位元 (amd64) 系統架構的下載檔案。若您要使用舊版的 FreeNAS 0.7（現改名為 FreeNAS 7）也可在此頁面中找到。 <br /><br />新版的 FreeNAS 8 的每種系統架構中都各有三個檔案可供下載，分別是 .iso、GUI_upgrade.xz、Full_Install.xz，這三個檔案其所代表的意義說明如下： <br /><br />* .iso：ISO 映像檔，下載 ISO 映像檔後您可以將它燒錄至 CD / DVD 光碟片中，並且將硬體設備 BIOS 設定開機順序為光碟開機後即可進行安裝。 <br /><br />* GUI_upgrade.xz：升級用韌體檔案 (Firmware)，此一韌體檔案適合使用於登入 FreeNAS 圖形化操作介面後，不需要進行檔案解壓縮的動作，即可升級 FreeNAS 版本。 <br /><br />* Full_Install.xz：完整安裝映像檔案，使用此一檔案安裝，通常是沒有光碟機的情形，或者想預先將此安裝映像檔案寫入至 CF / USB 儲存裝置後，將硬體設備 BIOS 設定開機順序為 CF / USB 儲存裝置進行開機。 <br /><br /><br />
+<h3>待續</h3>
+<br />本文至此，相信讀者們已大致了解新版 FreeNAS 8 的歷史由來、硬體需求、特色功能以及選擇合適的安裝檔案，同時也與舊版的 FreeNAS 0.7 進行功能特色的分析比較，再來則是由於新版 FreeNAS 在設計架構上與舊版不同。因此若是想要將新版 FreeNAS 8 安裝於伺服器的硬碟之中，雖然您仍然可以正常操作 FreeNAS，但是您將無法儲存任何資料在 FreeNAS 系統中，這是舊版 FreeNAS 使用者對於新版 FreeNAS 最不適應的地方。 <br /><br />在下一篇文章中，筆者將會帶領讀者實作 FreeNAS 8 各種不同的安裝方式，例如：從光碟片安裝、從 USB 安裝等方式。而安裝 FreeNAS 8 之後首先會進行相關的初始化設定，例如：指定使用的網路卡、設定 IP 位址及相關資訊、主機名稱 (Hostname) 等，以及實作版本升級，將目前僅能使用單一英文語系操作介面的 FreeNAS 8.0 版本升級至支援多國語系操作介面的 FreeNAS 8.0.1 版本。</div>
+			<!-- Show relate article -->
+		<br><br><h4>您也許有興趣閱讀以下文章:</h4><ul><li><a href='../../tech-column/8580.html'>利用 FreeNAS 打造儲存設備 (8)──網路設定篇之頻寬合併</a> - <span class='date-posted'>2012-01-13</span></li><li><a href='../../tech-column/8529.html'>利用 FreeNAS 打造儲存設備 (7)─Failover（故障轉移）</a> - <span class='date-posted'>2011-11-28</span></li><li><a href='../../tech-column/8480.html'>利用 FreeNAS 打造儲存設備 (6) 網路設定篇─基礎設定</a> - <span class='date-posted'>2011-10-14</span></li><li><a href='../../tech-column/8473.html'>利用 FreeNAS 打造儲存設備(5)安裝篇（嵌入式 USB）</a> - <span class='date-posted'>2011-10-04</span></li><li><a href='../../tech-column/8444.html'>利用 FreeNAS 打造儲存設備(4)─安裝篇（由 GUI 升級）</a> - <span class='date-posted'>2011-09-13</span></li><li><a href='../../tech-column/8431.html'>利用 FreeNAS 打造儲存設備(3)─安裝篇（由光碟升級）</a> - <span class='date-posted'>2011-09-01</span></li><li><a href='../../tech-column/8423.html'>利用 FreeNAS 打造儲存設備(2)－安裝篇</a> - <span class='date-posted'>2011-08-18</span></li></ul>		<!-- end -->
+		<div class="article_note">
+		<!-- Add tags use metakey, and show OSSF Newsletter tag: OSSFNL+NUM-->
+		<br><br> <hr style='border: 1px dashed #D2DADB;'><b>自由軟體鑄造場電子報&nbsp;:</b>&nbsp;<a href='../../previous-issue%3Ftask=view&amp;id=753.html'>第 178 期 利用 FreeNAS 打造儲存設備(1)－歷史篇</a><br><b>標籤:</b>&nbsp;<a href='../../index.php%3Foption=com_search&amp;Itemid=58&amp;searchphrase=exact_meta&amp;ordering=newest&amp;searchword=FreeNAS.html'>FreeNAS</a>,&nbsp;&nbsp;<a href='../../index.php%3Foption=com_search&amp;Itemid=58&amp;searchphrase=exact_meta&amp;ordering=newest&amp;searchword=&#32;nas.html'> nas</a>,&nbsp;&nbsp;<a href='../../index.php%3Foption=com_search&amp;Itemid=58&amp;searchphrase=exact_meta&amp;ordering=newest&amp;searchword=&#32;network-attached&#32;storage.html'> network-attached storage</a>,&nbsp;&nbsp;<a href='../../index.php%3Foption=com_search&amp;Itemid=58&amp;searchphrase=exact_meta&amp;ordering=newest&amp;searchword=&#32;history.html'> history</a>,&nbsp;&nbsp;				<!-- End -->
+					<br>
+					<b>分類: </b><a href="../tech-column.html">				技術專欄					</a>				</div>
+			 <!-- AddThis Button BEGIN ID 3001 is the front page article -->
+     			<br><br>
+       <div class="addthis_toolbox addthis_default_style addthis_32x32_style">
+       <a class="addthis_button_preferred_1"></a>
+       <a class="addthis_button_preferred_2"></a>
+       <a class="addthis_button_preferred_3"></a>
+       <a class="addthis_button_preferred_4"></a>
+       <a class="addthis_button_compact"></a>
+       <a class="addthis_counter addthis_bubble_style"></a>
+       </div>
+       <script type="text/javascript">var addthis_config = {"data_track_clickback":true};</script>
+       <script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js#pubid=openfoundry"></script>
+       <!-- AddThis Button END -->
+     <br>
+		<div class="totop" ><a class="rt-totop" href="8408--freenas-1%3Ftmpl=component&amp;print=1&amp;layout=default&amp;page=.html#" style="outline: medium none;">↑ Top</a></div>
+            <!-- AddThis Button END -->
+
+			</div>
+</div>
+
+						</div>
+					</div>
+				</div>
+			</div>
+		</body>
+	</html>

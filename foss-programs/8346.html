@@ -1,0 +1,413 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="zh-tw" lang="zh-tw" >
+<head>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<link rel="shortcut icon" href="../images/favicon.ico" />
+	  <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+  <meta name="robots" content="index, follow" />
+  <meta name="keywords" content="OSSFNL724" />
+  <meta name="title" content="用自由軟體 Plone 來架設網站 (5)－元件架構" />
+  <meta name="description" content="在前篇文章裡，我們模擬一個小型專案的需求，利用 Paste 的 paster 工具，在 src 目錄裡建立骨架程式碼，新增一個 mysite.eventfolder 的 Archetypes 模組專案，執行 paster addcontent contenttype 之類的指令後，則可以新增型別裡的欄位資訊，熟練" />
+  <meta name="generator" content="" />
+  <title>用自由軟體 Plone 來架設網站 (5)－元件架構 - OpenFoundry</title>
+  <link href="../favicon.ico" rel="shortcut icon" type="image/x-icon" />
+  <link rel="stylesheet" href="../components/com_gantry/css/gantry.css" type="text/css" />
+  <link rel="stylesheet" href="../components/com_gantry/css/grid-12.css" type="text/css" />
+  <link rel="stylesheet" href="../components/com_gantry/css/joomla.css" type="text/css" />
+  <link rel="stylesheet" href="../templates/rt_quantive_j15/css/joomla.css" type="text/css" />
+  <link rel="stylesheet" href="../templates/rt_quantive_j15/css/style1.css" type="text/css" />
+  <link rel="stylesheet" href="../templates/rt_quantive_j15/css/light-body.css" type="text/css" />
+  <link rel="stylesheet" href="../templates/rt_quantive_j15/css/demo-styles.css" type="text/css" />
+  <link rel="stylesheet" href="../templates/rt_quantive_j15/css/template.css" type="text/css" />
+  <link rel="stylesheet" href="../templates/rt_quantive_j15/css/typography.css" type="text/css" />
+  <link rel="stylesheet" href="../templates/rt_quantive_j15/css/fusionmenu.css" type="text/css" />
+  <style type="text/css">
+    <!--
+#rt-main-surround ul.menu li.active > a, #rt-main-surround ul.menu li.active > .separator, #rt-main-surround ul.menu li.active > .item, #rt-main-surround .square4 ul.menu li:hover > a, #rt-main-surround .square4 ul.menu li:hover > .item, #rt-main-surround .square4 ul.menu li:hover > .separator, .roktabs-links ul li.active span {color:#0088B5;}
+a, #rt-main-surround ul.menu a:hover, #rt-main-surround ul.menu .separator:hover, #rt-main-surround ul.menu .item:hover {color:#0088B5;}
+    -->
+  </style>
+  <script type="text/javascript" src="../components/com_jcomments/js/jcomments-v2.1.js%3Fv=2"></script>
+  <script type="text/javascript" src="../components/com_jcomments/libraries/joomlatune/ajax.js"></script>
+  <script type="text/javascript" src="../media/system/js/mootools.js"></script>
+  <script type="text/javascript" src="../media/system/js/caption.js"></script>
+  <script type="text/javascript" src="../components/com_gantry/js/gantry-buildspans.js"></script>
+  <script type="text/javascript" src="../components/com_gantry/js/gantry-inputs.js"></script>
+  <script type="text/javascript" src="../templates/rt_quantive_j15/js/jquery.cookie.js"></script>
+  <script type="text/javascript" src="../modules/mod_roknavmenu/themes/fusion/js/fusion.js"></script>
+  <script type="text/javascript" src="../modules/mod_ofssologin/js/ofssologin.js"></script>
+  <script type="text/javascript">
+
+			window.addEvent('domready', function() {
+				var modules = ['rt-block'];
+				var header = ['h3','h2','h1'];
+				GantryBuildSpans(modules, header);
+			});
+		InputsExclusion.push('.content_vote','#rt-popup')
+		        window.addEvent('load', function() {
+					new Fusion('ul.menutop', {
+						pill: 0,
+						effect: 'slide and fade',
+						opacity: 1,
+						hideDelay: 500,
+						centered: 0,
+						tweakInitial: {'x': -2, 'y': 0},
+        				tweakSubsequent: {'x': 0, 'y': -14},
+						menuFx: {duration: 200, transition: Fx.Transitions.Sine.easeOut},
+						pillFx: {duration: 400, transition: Fx.Transitions.Back.easeOut}
+					});
+	            });
+  </script>
+<!-- <script type="text/javascript" src="/sso/javascripts/langsync.js"></script> -->
+<!-- <script src="/templates/rt_quantive_j15/js/ossf.js"></script> -->
+<script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-4136519-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
+</head>
+	<body  class="backgroundlevel-low backgroundstyle-style8 bodylevel-med bodystyle-light cssstyle-style1 logostyle-dark font-family-helvetica font-size-is-default menu-type-fusionmenu col12 ">
+		<div id="rt-main-background">
+			<div class="rt-container">
+																<div id="rt-header">
+					<div class="rt-grid-7 rt-alpha">
+    			<div class="rt-block">
+    	    	<a href="../index.html" id="rt-logo"></a>
+    		</div>
+	    
+</div>
+<div class="rt-grid-5 rt-omega">
+                    <div class="square9">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<div class="ofssologin_square9"><a href="../index.html">登入</a>&nbsp;&nbsp|&nbsp;&nbsp;<span><a href="https://www.openfoundry.org/en/foss-programs/8346" ><span lang="en" xml:lang="en">English</span></a></li></ul></span><!--Joom!fish V2.0.4 (Lightning)-->
+<!-- &copy; 2003-2009 Think Network, released under the GPL. -->
+<!-- More information: at http://www.joomfish.net -->
+<div class="ofssologin_search_square9">
+  <form id="of_search" action="https://www.openfoundry.org/of/openfoundry/search" method="get" onsubmit="of_search(); return false;">
+    <select id="of_search_type">
+      <option value="Projects"> 專案 </option>
+      <option value="Content"> 文章 </option>
+      <option value="People"> 人才 </option>
+    </select>
+    <input id="query" name="query" id="mod_search_searchword" maxlength="50" alt="search" class="inputbox" type="text" size="28" value="search..."  onblur="if(this.value=='') this.value='search...';" onfocus="if(this.value=='search...') this.value='';" />
+    <input type="hidden" name="commit" value="search" />
+  </form>
+</div></div>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		
+</div>
+					<div class="clear"></div>
+				</div>
+																<div id="rt-navigation"><div id="rt-navigation2"><div id="rt-navigation3">
+					
+<div class="nopill">
+	<ul class="menutop level1 " >
+						<li class="item1 root" >
+					<a class="orphan item bullet" href="../index.html"  >
+				<span>
+			    				首頁				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item32 root" >
+					<a class="orphan item bullet" href="../archived.html"  >
+				<span>
+			    				專案				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item186 root" >
+					<a class="orphan item bullet" href="../tw/community.html"  >
+				<span>
+			    				Who&#039;s Who				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item4 root" >
+					<a class="orphan item bullet" href="../tw/news.html"  >
+				<span>
+			    				新聞				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item5 root" >
+					<a class="orphan item bullet" href="../tw/law-and-licensing.html"  >
+				<span>
+			    				法律源地				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item3 root" >
+					<a class="orphan item bullet" href="../tw/activities.html"  >
+				<span>
+			    				活動				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item2 root" >
+					<a class="orphan item bullet" href="../tw/resourcecatalog%3FName=Value.html"  >
+				<span>
+			    				資源表列				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item45 root" >
+					<a class="orphan item bullet" href="../tw/about.html"  >
+				<span>
+			    				關於				   
+				</span>
+			</a>
+			
+			
+	</li>	
+				</ul>
+</div>
+
+				    <div class="clear"></div>
+				</div></div></div>
+								<div class="rt-surround"><div class="rt-surround2"><div class="rt-surround3">
+										<div id="rt-showcase-section">
+												<div id="rt-showcase">
+							<div class="rt-grid-12 rt-alpha rt-omega">
+    		<div class="clear"></div>
+		
+		
+                <div class="close-note">
+                    <div class="rt-block">
+               					<div class="module-content">
+                	<div style="font-size:medium; background-image:linear-gradient(120deg,#159957,#4298b2);color:white;padding:20px;margin:-10px -18px;">感謝您對「自由軟體鑄造場」的支持與愛護，十多年來「自由軟體鑄造場」受中央研究院支持，並在資訊科學研究所以及資訊科技創新研究中心執行，現已完成階段性的任務。 本網站預計持續維運至 2021年底，網站內容基本上不會再更動。<br />也紀念我們永遠的朋友 李士傑先生（Shih-Chieh Ilya Li）。</div>				</div>
+            </div>
+                </div>
+		
+</div>
+							<div class="clear"></div>
+						</div>
+																	</div>
+															<div id="rt-main-surround">
+												<div id="rt-breadcrumbs">
+								<div class="rt-breadcrumb-surround">
+		<a href="../index.html" id="breadcrumbs-home"></a>
+		<span class="breadcrumbs pathway">
+<a href="../tw/foss-programs.html" class="pathway">源碼秘技</a> <img src="../templates/rt_quantive_j15/images/arrow.png" alt=""  /> <span class="no-link">用自由軟體 Plone 來架設網站 (5)－元件架構</span></span>
+	</div>
+	
+							<div class="clear"></div>
+						</div>
+																							              <div id="rt-main" class="sa3-mb9">
+                <div class="rt-main-inner">
+                    <div class="rt-grid-9 rt-push-3">
+                                                <div class="rt-block">
+                            							<div class="square1">
+							<div class="rt-module-surround">
+								<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+								<div class="rt-module-inner">
+		                            <div id="rt-mainbody">
+		                                
+<div class="rt-joomla ">
+	<div class="rt-article">
+		
+				<div class="rt-headline"><h1 class="rt-article-title">用自由軟體 Plone 來架設網站 (5)－元件架構</h1>		</div>
+		<div class="clear"></div>
+		
+		
+		
+				<div class="rt-articleinfo">
+						<div class="rt-article-icons">
+								<a href="../tw/foss-programs/8346--plone-5%3Ftmpl=component&amp;print=1&amp;layout=default&amp;page=.html" title="列印" onclick="window.open(this.href,'win2','status=no,toolbar=no,scrollbars=yes,titlebar=no,menubar=no,resizable=yes,width=640,height=480,directories=no,location=no'); return false;" rel="nofollow"><span class="icon print"></span></a>																</div>
+			
+			<span class="rt-date-posted">
+						建立日期			2011-05-20 10:07						&nbsp;&nbsp;&nbsp;&nbsp;						最近更新在 2011-10-12 11:34						</span>
+
+						<span class="rt-author">
+				作者是 marr			</span>
+				
+					</div>
+		
+		
+		<p>在前篇文章裡，我們模擬一個小型專案的需求，利用 Paste 的 paster 工具，在 src 目錄裡建立骨架程式碼，新增一個 mysite.eventfolder 的 Archetypes 模組專案，執行 paster addcontent contenttype 之類的指令後，則可以新增型別裡的欄位資訊，熟練的話，數分鐘之內就可以搞定內容型別的雛型。為了知行合一，我們將逐步探究程式碼的細節，了解它們的原理跟修改方法。<br /><br />Plone 系統為了納入這個新模組，會在 src/mysite.eventfolder 檔案系統裡，依序存取數個檔案。首先，GenericSetup 會讀取 mysite/eventfolder/configure.zcml 的內容，註冊 extension profile，接著讀取 interface 和 content 目錄裡的資訊，做為建立型別的依據。究竟，什麼是 interface 呢？它又扮演怎樣的角色呢？</p>
+
+<p> </p>
+<h3><br />元件架構</h3>
+<p><br />如何讓系統具備擴充彈性，同時保持高的安全性，還有低的升級門檻，一直是件挑戰。為了更接近這個聖杯，當年的開發人員，將 Zope2 學到的經驗，轉化成 Zope3 的設計理念，具體的方法論稱為 Zope Component Architecture (ZCA)，實作 ZCA 的模組被稱為 Zope Toolkit (ZTK)，這些方法跟核心模組，也成為目前 Plone 的技術基礎。<br /><br />Component Architecture 通常被譯為「元件架構」，主要概念是將軟體依其架構與功能，分為多個獨立元件，諸如：Java、.Net、Mozilla XPCOM 都是廣為人知的元件架構。就元件架構而言，ZCA 既不是首創，也不是獨創，它是 Python 軟體的開發架構，適合用來開發大型系統，加上它不限於網頁應用程式的領域，稱之是 Python Component Architecture 並不為過。<br /><br />Python 的軟體世界是一堆物件，ZCA 則是一套架構方法，讓這些物件有效組建和再利用，ZCA 引入一個稱為「元件」(component) 的概念，元件本質仍是 Python 物件，它額外加了「介面」(interface) 物件，用來描述元件的特性和行為，像是抽象的 API。不過，想要知道元件如何做到這些特性及行為的話，必須另外查看實作的程式碼。<br /><br /><br /></p>
+<h3>元件介面</h3>
+<p><br />以 Event Folder 為例，它的介面檔案是 interfaces.py 或位於 interfaces 目錄裡，以 class IEventFolder(Interface) 形式來定義。介面的定義方式跟傳統的 Python 物件定義方式很像，不過，ZCA 只是借用（有人會視為誤用）class 語法，介面的定義細節仍然有其獨特之處，留意不要跟 Python 物件的定義方式混淆，如圖1 所示。<br /><br /><a href="../images/110524/plone5/plone05_01.png" target="_blank"><img src="../images/110524/plone5/plone05_01.png" border="0" width="500" style="border: 1px solid black;" /></a><br />▲ 圖1 Event Folder 的介面內容範例<br /><br />IEventFolder 是介面的名稱，最前面的 I 代表 interface 之意，在最前面使用 I 符號是種慣例。IEventFolder() 裡接的 Interface，來自於 zope.interface 的定義，zope.interface 是 ZCA 的核心實作之一，也就是 Zope Toolkit 的模組產品。<br /><br />在 IEventFolder(Interface) 之下，我們看到 startDate 和 venue 兩個欄位屬性值範例，載入 zope.schema 後，它們分別使用 schema.Date() 和 schema.TextLine() 的形式來定義，而且提供 title 和 description 之類的設定值。<br /><br />不過，一般的介面內容，包括屬性值和方法兩種定義，同時也不需要載入 zope.schema。接著，我們先利用獨立的篇幅，說明介面的定義與實作宣告方式。<br /><br /><br /></p>
+<h3>介面的定義與操作</h3>
+<p><br />利用 bin/zopepy 工具，可以練習建立介面定義，如圖2 所示。範例裡的介面定義了 startDate 屬性值，還有 countSignup 方法，特別注意到 startDate 不需要宣告型別或起始值，countSignup 也不需要 self 參數，這些正是和 Python 物件定義不同的地方。<br /><br /><a href="../images/110524/plone5/plone05_02.png" target="_blank"><img src="../images/110524/plone5/plone05_02.png" border="0" width="500" style="border: 1px solid black;" /></a><br />▲ 圖2 屬性值和方法的定義範例<br /><br />介面仿照一般物件的行為，因此可以沿用許多操作方法，包括 __doc__ 查詢文件字串等，如圖3 所示。<br /><br /><a href="../images/110524/plone5/plone05_03.png" target="_blank"><img src="../images/110524/plone5/plone05_03.png" border="0" width="500" style="border: 1px solid black;" /></a><br />▲ 圖3 介面物件的操作範例<br /><br />但是，想要存取介面的屬性值，不能直接使用 IEventFolder.startDate 的形式，會造成 AttributeError 的錯誤，這也是和 Python 物件不同的地方，如圖4 所示。<br /><br /><a href="../images/110524/plone5/plone05_04.png" target="_blank"><img src="../images/110524/plone5/plone05_04.png" border="0" width="500" style="border: 1px solid black;" /></a><br />▲ 圖4 介面屬性值的存取範例<br /><br />有了介面之後，ZCA 讓 interface-class-object 三者之間產生新的關係，也就是說，object 是 class 的 instance，class 實作 interface 的細節，ZCA 並利用 provide 和 implement 這兩個技術動詞，來描述它們的相互關係，例如：object 有 provide 某個 interface，class 有 implement 某個 interface，而且一個 object 能 provide 數個 interface，一個 class 能 implement 數個 interface，甚至 class 沒有 implement 的 interface，它的 object 也可以直接 provide 這個 interface。<br /><br /><br /></p>
+<h3>宣告介面的實作</h3>
+<p><br />請留意，介面的定義值並不是 class 實作的內容，而是 class 實作的契約內容，同時，它也侷限屬性值的範圍，並搭配預設的驗證方法。當介面完成定義後，如果有 class 宣告要實作這個介面，測試階段的程式碼已經可以執行，而不需要等到 class 真的把實作細節完成。<br /><br />那麼，class 該如何宣告要實作一個介面呢？它必須從 zope.interface 載入 implements 函式，在 class 裡執行 implements(IEventFolder) 之類的指令，如圖5 所示。<br /><br /><a href="../images/110524/plone5/plone05_05.png" target="_blank"><img src="../images/110524/plone5/plone05_05.png" border="0" width="463" height="210" style="border: 1px solid black;" /></a><br />▲ 圖5 宣告介面實作的範例<br /><br />由於 EventFolder 類別有 implement 介面 IEventFolder，EventFolder 類別的 instance 就會 provide 介面 IEventFolder，而且在類別定義裡看得到相關的實作細節。以上是實作一個介面的例子，實作多個介面時，可使用 implements(IEventFolder, IOtherInterface) 之類的語法，也就是用逗號隔開即可。<br /><br />值得一提的是，宣告介面實作的動作，也可以在類別定義之外指定，也就是事後使用圖6 所示的語法範例來動態指定。<br /><br /><a href="../images/110524/plone5/plone05_06.png" target="_blank"><img src="../images/110524/plone5/plone05_06.png" border="0" width="500" style="border: 1px solid black;" /></a><br />▲ 圖6 動態宣告介面實作的範例<br /><br /><br /></p>
+<h3>Archetypes 的實作</h3>
+<p><br />以 Archetypes 的實作為例，它的具體內容同樣是一段 class 程式碼，位於 content 目錄裡，比對 content/eventfolder.py 和圖1 裡的 interfaces/eventfolder.py 內容，你會發現兩者有對應關係，如圖7 所示。<br /><br /><a href="../images/110524/plone5/plone05_07.png" target="_blank"><img src="../images/110524/plone5/plone05_07.png" border="0" width="500" style="border: 1px solid black;" /></a><br />▲ 圖7 Event Folder 的欄位實作範例<br /><br />不過 Archetypes 實作的程式碼，並不會參照介面的定義。也就是說，即使 class IEventFolder(Interface) 底下是空空如也，並不會影響 Archetypes 的實作。另外，完全沒有屬性值的介面檔案，是最簡化的形式，又被稱為 marker interface，如圖8 所示。<br /><br /><a href="../images/110524/plone5/plone05_08.png" target="_blank"><img src="../images/110524/plone5/plone05_08.png" border="0" width="440" height="105" style="border: 1px solid black;" /></a><br />▲ 圖8 marker interface 的範例內容<br /><br />另外，也可以使用 providedBy() 來查詢某個物件是否 provide 某個介面，或是用 implementedBy() 來查詢某個類別 implement 哪些介面，如圖9 所示。<br /><br /><a href="../images/110524/plone5/plone05_09.png" target="_blank"><img src="../images/110524/plone5/plone05_09.png" border="0" width="500" style="border: 1px solid black;" /></a><br />▲ 圖9 查詢物件類別介面三者的關係<br /><br /><br /></p>
+<h3>型別的編輯與顯示</h3>
+<p><br />存取介面資訊後，Archetypes 會讀取 content 目錄裡的資訊，首先是 content/configure.zcml 檔案，內容包括型別的 class 定義檔位置，介面檔位置，還有權限資訊，如圖10 所示。<br /><br /><a href="../images/110524/plone5/plone05_10.png" target="_blank"><img src="../images/110524/plone5/plone05_10.png" border="0" width="500" style="border: 1px solid black;" /></a><br />▲ 圖10 content 目錄的 configure.zcml 範例<br /><br />在 content/eventfolder.py 檔案裡，除了 field 和 widget 的 EventFolderSchema 定義細節外，關鍵內容就是 class EventFolder(folder.ATFolder) 的定義，還有 implements(IEventFolder) 的宣告，如圖11 所示。<br /><br /><a href="../images/110524/plone5/plone05_11.png" target="_blank"><img src="../images/110524/plone5/plone05_11.png" border="0" width="500" style="border: 1px solid black;" /></a><br />▲ 圖11 content 目錄的 eventfolder.py 範例<br /><br />使用預設的顯示方式，畫面如圖12 所示。<br /><br /><a href="../images/110524/plone5/plone05_12.png" target="_blank"><img src="../images/110524/plone5/plone05_12.png" border="0" width="436" height="317" style="border: 1px solid black;" /></a><br />▲ 圖12 型別的顯示範例<br /><br />接著，利用 paster 建立 Signup 型別，我們將 global_allow 選項設定為 False，如圖13 所示。<br /><br /><a href="../images/110524/plone5/plone05_13.png" target="_blank"><img src="../images/110524/plone5/plone05_13.png" border="0" width="500" style="border: 1px solid black;" /></a><br />▲ 圖13 建立 Signup 型別<br /><br />再用 paster addcontent atschema 分別建立 name 和 email 兩個欄位，用來記錄活動報名者的基本資料。Signup 型別的程式內容會儲存在 content/signup.py 檔案，部份的程式碼範例如圖14 所示。<br /><br /><a href="../images/110524/plone5/plone05_14.png" target="_blank"><img src="../images/110524/plone5/plone05_14.png" border="0" width="500" style="border: 1px solid black;" /></a><br />▲ 圖14 Signup 的 Schema 範例<br /><br />為了讓 Signup 型別能夠在 EventFolder 裡被新增，我們要確認 mysite/eventfolder/profiles/default/types/Event_Folder.xml 檔案裡，將 allowed_content_types 的屬性值，加入 Signup 的設定值，如圖15 所示。<br /><br /><a href="../images/110524/plone5/plone05_15.png" target="_blank"><img src="../images/110524/plone5/plone05_15.png" border="0" width="500" style="border: 1px solid black;" /></a><br />▲ 圖15 Event_Folder.xml 的 allowed_content_types 設定範例<br /><br />順利的話，從 Event Folder 的項目，在新增項目的下拉選單裡，會看到 Signup 的型別，如圖16 所示。如果沒有看到 Signup 的話，需要重新啟動 Plone，再到 Site Setup 的 Add-on 重新啟用，也就是先停用再啟用 Event Folder 模組。<br /><br /><a href="../images/110524/plone5/plone05_16.png" target="_blank"><img src="../images/110524/plone5/plone05_16.png" border="0" width="435" height="314" style="border: 1px solid black;" /></a><br />▲ 圖16 Event Folder 裡新增 Signup 的畫面<br /><br /><br /></p>
+<h3>修改標題欄位</h3>
+<p><br />Archetypes 預設繼承的型別，通常都會有 title 和 description 兩個欄位，如圖17 所示。但這兩個欄位對 Signup 型別而言，並沒有用處，我們需要進行欄位的調整。<br /><br /><a href="../images/110524/plone5/plone05_17.png" target="_blank"><img src="../images/110524/plone5/plone05_17.png" border="0" width="435" height="488" style="border: 1px solid black;" /></a><br />▲ 圖17 Signup 型別的欄位顯示範例<br /><br />最簡單的修改方式，是將 title 改用 name 的名稱文字，再將 description 隱藏，調整後的結果，如圖18 所示。<br /><br /><a href="../images/110524/plone5/plone05_18.png" target="_blank"><img src="../images/110524/plone5/plone05_18.png" border="0" width="430" height="286" style="border: 1px solid black;" /></a><br />▲ 圖18 Signup 型別欄位調整後的範例<br /><br />主要的程式碼修改結果，如圖19 所示。由於 name 和 title 都是使用 StringField 和 StringWidget，直接修改 title 的 widget label 屬性值，就可以滿足我們的需求，另外 description 的 widget，有個 visible 屬性值，設定為 {"edit": "invisible", "view": "invisible"} 之後，編輯或顯示型別內容時，就看不到 description 欄位了。<br /><br /><a href="../images/110524/plone5/plone05_19.png" target="_blank"><img src="../images/110524/plone5/plone05_19.png" border="0" width="500" style="border: 1px solid black;" /></a><br />▲ 圖19 Signup 型別的 Schema 修改範例<br /><br /><br /></p>
+<h3>結論</h3>
+<p><br />廣義地看，ZCA 只是個方法論，它不必然優於 Model-View-Controller (MVC) 架構方式，它們都試圖向開發人員推銷一套解題邏輯，有著各自的成本門檻，或是專擅與不足之處，開發人員可以依照自己的需要，使用合適的架構方式或工具。<br /><br />目前 ZCA 逐漸開枝散葉，成為幾個新興網站開發架構的基礎，例如 Grok 和 Pyramid 都採用 ZCA 的實作工具，並致力降低上手的門檻，讓開發人員更容易地發揮元件架構帶來的優勢。<br /><br />藉由深究 Archetypes 自製型別的過程，我們認識了 ZCA 的基本原理，它是 Plone 系統維持擴展彈性的重要基石，舉例來說，interface 不僅用於型別的定義，也用於動態網頁的顯示技巧上。舊式的 Plone 動態網頁顯示方式，是搭配 portal_skins 工具，很容易造成不同 Plone Site 或模組之間的相互干擾。在後續的內容裡，我們將介紹動態網頁的相關技巧。</p>
+			<!-- Show relate article -->
+		<br><br><h4>您也許有興趣閱讀以下文章:</h4><ul><li><a href='8411.html'>用自由軟體 Plone 來架設網站(10)－連接資料庫</a> - <span class='date-posted'>2011-08-05</span></li><li><a href='8402.html'>用自由軟體 Plone 來架設網站(9)－多媒體結合</a> - <span class='date-posted'>2011-07-25</span></li><li><a href='8392.html'>用自由軟體 Plone 來架設網站(8)－內容查詢</a> - <span class='date-posted'>2011-07-12</span></li><li><a href='8380.html'>用自由軟體 Plone 來架設網站(7)－版型調整</a> - <span class='date-posted'>2011-06-28</span></li><li><a href='8353.html'>用自由軟體 Plone 來架設網站 (6)－動態網頁</a> - <span class='date-posted'>2011-06-09</span></li><li><a href='8320.html'>用自由軟體 Plone 來架設網站 (4)－建立專案</a> - <span class='date-posted'>2011-05-04</span></li><li><a href='8318.html'>用自由軟體 Plone 來架設網站 (3)— 內部設定</a> - <span class='date-posted'>2011-04-25</span></li><li><a href='8294.html'>用自由軟體 Plone 來架設網站 (2)— 內容管理</a> - <span class='date-posted'>2011-04-11</span></li><li><a href='8288.html'>用自由軟體 Plone 來架設網站 (1)— 基礎安裝</a> - <span class='date-posted'>2011-03-21</span></li></ul>		<!-- end -->
+		<div class="article_note">
+		<!-- Add tags use metakey, and show OSSF Newsletter tag: OSSFNL+NUM-->
+		<br><br> <hr style='border: 1px dashed #D2DADB;'><b>自由軟體鑄造場電子報&nbsp;:</b>&nbsp;<a href='../previous-issue%3Ftask=view&amp;id=724.html'>第 173 期 使用 Open Web 技術實作 HTML5 中文文字雲</a><br>				<!-- End -->
+					<br>
+					<b>分類: </b><a href="../tw/foss-programs.html">				源碼秘技					</a>				</div>
+			 <!-- AddThis Button BEGIN ID 3001 is the front page article -->
+     			<br><br>
+       <div class="addthis_toolbox addthis_default_style addthis_32x32_style">
+       <a class="addthis_button_preferred_1"></a>
+       <a class="addthis_button_preferred_2"></a>
+       <a class="addthis_button_preferred_3"></a>
+       <a class="addthis_button_preferred_4"></a>
+       <a class="addthis_button_compact"></a>
+       <a class="addthis_counter addthis_bubble_style"></a>
+       </div>
+       <script type="text/javascript">var addthis_config = {"data_track_clickback":true};</script>
+       <script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js#pubid=openfoundry"></script>
+       <!-- AddThis Button END -->
+     <br>
+		<div class="totop" ><a class="rt-totop" href="8346.html#" style="outline: medium none;">↑ Top</a></div>
+            <!-- AddThis Button END -->
+
+			</div>
+</div>
+
+		                            </div>
+									<div class="clear"></div>
+								</div>
+								<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+							</div>
+							</div>
+                                                    </div>
+                                            </div>
+                                <div class="rt-grid-3 rt-pull-9">
+                <div id="rt-sidebar-a">
+                                    <div class="square4">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<ul class="menu"><li class="item56"><a href="../tw/previous-issue.html"><span>電子報總覽</span></a></li><li class="item55"><a href="../tw/about-newsletter.html"><span>關於本報</span></a></li></ul>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<ul class="menu"><li class="item115"><a href="../tw/foss-news.html"><span>源碼新聞</span></a></li><li class="item141"><a href="../tw/case-job.html"><span>接案 / 工作</span></a></li></ul>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+        	                <div class="square1">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-title"><h2 class="title">專欄總覽</h2></div>
+						<div class="clear"></div>
+		                						<div class="module-content">
+		                	<ul class="menu"><li class="item37"><a href="../tw/tech-column.html"><span>技術專欄</span></a></li><li id="current" class="active item40"><a href="../tw/foss-programs.html"><span>源碼秘技</span></a></li><li class="item35"><a href="../tw/legal-article-.html"><span>法律專欄</span></a></li><li class="item154"><a href="../tw/foss-forum.html"><span>自由專欄</span></a></li><li class="item162"><a href="../tw/enterprise-application.html"><span>企業應用</span></a></li><li class="item44"><a href="../tw/foss-projects.html"><span>源碼專案</span></a></li></ul>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		                <div class="square1">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<p style="text-align: center;"><a href="../news%3Fformat=feed&amp;type=rss" target="_black"><img src="../images/M_images/news-rss-feed.png" border="0" /></a><br /><a href="https://www.openfoundry.org/rss-feed/Newsletter" target="_black"><img src="../images/M_images/newsletter-rss-feed.png" border="0" /></a></p>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		
+                </div>
+            </div>
+
+                    <div class="clear"></div>
+                </div>
+            </div>
+																													</div>
+										<div id="rt-copyright">
+						<div class="rt-grid-12 rt-alpha rt-omega">
+                        <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<div id="desktop-mobile-version-switch"><span id="mobile-version" class="version-switch"><a href="8346.html#">行動版</a></span></div>
+自由軟體鑄造場 製作 最佳瀏覽狀態：IE7或Firefox2.0以上 (建議使用Firefox) ‧ 解析度1024*768 <br /> <strong>E-Mail</strong>：<a href="mailto:contact@openfoundry.org">contact@openfoundry.org</a> <strong>Address</strong>：台北市南港區研究院路2段128號 中央研究院資訊科學研究所 . <a href="../privacy-policy.html">隱私權條款</a>. <a href="../terms-of-use.html">使用條款</a><span style="position: relative; top: 8px; margin-top: -8px;"> <a href="../about/8101.html"><img src="../images/M_images/rss-feed-all.png" border="0" /></a></span>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+        	
+</div>
+						<div class="clear"></div>
+					</div>
+					<div class="rt-footer-bottom-wrap"><div class="rt-footer-bottom"><div class="rt-footer-bottom2"><div class="rt-footer-bottom3"></div></div></div></div>
+									</div></div></div>
+				<div class="rt-surround-bottom"><div class="rt-surround-bottom2"><div class="rt-surround-bottom3"></div></div></div>
+							</div>
+		</div>
+		<!--
+		<script id="aptureScript">
+						(function (){var a=document.createElement("script");a.defer="true";a.src="http://www.apture.com/js/apture.js?siteToken=vsJttrn";document.getElementsByTagName("head")[0].appendChild(a);})();
+     </script>
+-->
+
+<!-- Piwik -->
+<!-- 			<script type="text/javascript">
+			  var _paq = _paq || [];
+		  _paq.push(["trackPageView"]);
+		  _paq.push(["enableLinkTracking"]);
+
+		    (function() {
+			        var u=(("https:" == document.location.protocol) ? "https" : "https") + "://www.openfoundry.org/piwik/";
+				    _paq.push(["setTrackerUrl", u+"piwik.php"]);
+				    _paq.push(["setSiteId", "1"]);
+				        var d=document, g=d.createElement("script"), s=d.getElementsByTagName("script")[0]; g.type="text/javascript";
+				        g.defer=true; g.async=true; g.src=u+"piwik.js"; s.parentNode.insertBefore(g,s);
+					  })();
+		  </script> -->
+<!-- End Piwik Code -->
+	</body>
+</html>

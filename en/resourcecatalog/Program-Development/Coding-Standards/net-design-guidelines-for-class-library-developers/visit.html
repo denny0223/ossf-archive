@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<html class="hasSidebar hasPageActions hasBreadcrumb conceptual has-default-focus theme-light" lang="en-us" dir="ltr" data-css-variable-support="true" data-authenticated="false" data-auth-status-determined="false" data-target="docs" x-ms-format-detection="none">
+
+<head>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<meta property="og:title" content="Design Guidelines for Class Library Developers" />
+	<meta property="og:type" content="website" />
+	<meta property="og:url" content="https://docs.microsoft.com/en-us/previous-versions/dotnet/netframework-1.1/czefa0ke(v%3dvs.71)" />
+
+	<meta name="twitter:card" content="summary" />
+	<meta name="twitter:site" content="@docsmsft" />
+
+		<meta name="is_archived" content="true" />
+<meta name="ROBOTS" content="NOINDEX,NOFOLLOW" />
+<meta name="author" content="Archiveddocs" />
+<meta name="ms.author" content="Archiveddocs" />
+<meta name="breadcrumb_path" content="/previous-versions/dotnet/netframework-1.1/breadcrumb/toc.json" />
+<meta name="ms.topic" content="archived" />
+<meta name="ms.technology" content="netframework-1.1" />
+<meta name="ms.prod" content="dotnet-archive" />
+<meta name="uhfHeaderId" content="MSDocsHeader-Archive" />
+<meta name="ms:contentKeyID" content="5299320" />
+<meta name="TOCTitle" content="Design Guidelines for Class Library Developers" />
+<meta name="ms:assetid" content="418b3cb8-c26a-44f8-85da-acc5b8135edd" />
+<meta name="ms:mtpsurl" content="https://msdn.microsoft.com/en-us/library/czefa0ke(v=VS.71)" />
+<meta name="ms.date" content="11/17/2006" />
+<meta name="mtps_version" content="v=VS.71" />
+<meta name="search.ms_sitename" content="Docs" />
+<meta name="search.ms_docsetname" content="netframework-1-1-archive" />
+<meta name="locale" content="en-us" />
+<meta name="site_name" content="Docs" />
+<meta name="search.ms_product" content="MSDN" />
+<meta name="depot_name" content="MSDN.netframework-1-1-archive" />
+<meta name="updated_at" content="2018-06-07 06:40 PM" />
+<meta name="gitcommit" content="https://docs-archive.visualstudio.com/DefaultCollection/docs-archive-project/_git/netframework-1.1-docs-archive-pr/commit/5eaee6c95e246ce4431b8cfca22e5fcde21425e8?path=%2fnetframework-1-1%2fczefa0ke(v%3dvs.71).md&amp;_a=contents" />
+<meta name="original_content_git_url" content="https://docs-archive.visualstudio.com/DefaultCollection/docs-archive-project/_git/netframework-1.1-docs-archive-pr?path=%2fnetframework-1-1%2fczefa0ke(v%3dvs.71).md&amp;version=GBlive&amp;_a=contents" />
+<meta name="document_id" content="da0a4403-391b-e3c2-a5c6-de4ea701b09c" />
+<meta name="document_version_independent_id" content="80c17b47-c860-66a1-638b-99bae789a1ec" />
+<meta name="page_type" content="conceptual" />
+<meta name="toc_rel" content="toc.json" />
+<meta name="word_count" content="451" />
+
+<link href="https://docs.microsoft.com/en-us/previous-versions/dotnet/netframework-1.1/czefa0ke(v%3dvs.71)" rel="canonical">
+	<title>Design Guidelines for Class Library Developers | Microsoft Docs</title>
+
+		<link rel="stylesheet" href="https://docs.microsoft.com/_themes/docs.theme/master/en-us/_themes/styles/a195393c.site-ltr.css">
+
+	<link rel="stylesheet" href="https://docs.microsoft.com/_themes/docs.theme/master/en-us/_themes/styles/b8d322.conceptual.css">
+
+
+	<script>
+	var msDocs = {
+		data: {
+			timeOrigin: Date.now(),
+			azureHeaderLocale: 'en-us',
+			contentLocale: 'en-us',
+			contentDir: 'ltr',
+			userLocale: 'en-us',
+			userDir: 'ltr',
+			pageTemplate: 'Conceptual',
+			brand: '',
+			context: {
+
+			},
+			hasComments: false,
+			showFeedbackReport: false,
+			enableTutorialFeedback: false,
+			feedbackSystem: 'None',
+			feedbackGitHubRepo: '',
+			feedbackProductUrl: '',
+			contentGitUrl: 'https://docs-archive.visualstudio.com/DefaultCollection/docs-archive-project/_git/netframework-1.1-docs-archive-pr?path=%2fnetframework-1-1%2fczefa0ke(v%3dvs.71).md&version=GBlive&_a=contents',
+			extendBreadcrumb: true,
+		},
+		functions:{}
+	};
+	if (!('Promise' in window && 'resolve' in window.Promise && 'reject' in window.Promise && 'all' in window.Promise && 'race' in window.Promise)) {
+		document.write('<script src="https://static.docs.com/ui/third-party/bluebird/3.5.0/bluebird.min.js" integrity="sha384-aD4BDeDGeLXLpPK4yKeqtZQa9dv4a/7mQ+4L5vwshIYH1Mc2BrXvHd32iHzYCQy5" crossorigin="anonymous"><\/script>');
+	}
+	if (typeof fetch !== 'function') {
+		document.write('<script src="https://static.docs.com/ui/third-party/fetch/2.0.3/fetch.min.js" integrity="sha384-H3LQq82b6Mm80GYRHtRSlTwO9DoXctmYCVEYk9M8mp97lRzs6DuSrHVUg3SBP9w0" crossorigin="anonymous"><\/script>');
+	}
+	if (typeof HTMLTemplateElement === 'undefined') {
+		document.write('<script src="https://static.docs.com/ui/third-party/template/1.4.0/template.min.js" integrity="sha384-1zKzI6ldTVHMU7n0W2HpE/lhHI+UG4D9IIaxbj3kT2UhCWicdTuJkTtnKuu0CQzN" crossorigin="anonymous"><\/script>');
+	}
+	if (typeof URL !== 'function') {
+		document.write('<script src="https://static.docs.com/ui/third-party/url/0.5.7/url.min.js" integrity="sha384-vn7xBMtpSTfzaTRWxj0kVq0UcsbBrTOgZ/M1ISHqe1V358elYva+lfiEC+T8jLPc" crossorigin="anonymous"><\/script>');
+	}
+	</script>
+
+	<script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.3.1.min.js" integrity="sha384-tsQFqpEReu7ZLhBV2VZlAu7zcOV+rXbYlF2cqB8txI/8aZajjp4Bqd+V6D5IgvKT" crossorigin="anonymous"></script>
+		<script src="https://docs.microsoft.com/_themes/docs.theme/master/en-us/_themes/scripts/6cc65617.index-docs.js"></script>
+
+</head>
+
+<body lang="en-us" dir="ltr">
+<div class="header-holder has-default-focus">
+	<a href="visit.html#main" class="skip-to-main-link visually-hidden-until-focused is-fixed has-inner-focus focus-visible has-top-zero has-left-zero has-right-zero has-padding-medium has-text-centered has-body-background-medium" tabindex="1">Skip to main content</a>
+		<div id="headerAreaHolder" data-bi-name="header">
+<header class="nav-bar" role="banner" itemscope="itemscope" itemtype="http://schema.org/Organization">
+	<button class="nav-bar-burger" aria-label="Global navigation" aria-controls="nav-bar-mobile-nav" aria-expanded="false">
+		<span></span>
+		<span></span>
+		<span></span>
+	</button>
+	<nav class="nav-bar-mobile-nav" role="navigation" id="nav-bar-mobile-nav" aria-label="Global" hidden="">
+	</nav>
+	<a class="nav-bar-button" itemprop="url" href="https://www.microsoft.com" aria-label="Microsoft">
+		<div class="nav-bar-logo has-background-image theme-display is-light" role="presentation" aria-hidden="true" itemprop="logo" itemscope="itemscope"></div>
+		<div class="nav-bar-logo has-background-image theme-display is-dark is-high-contrast" role="presentation" aria-hidden="true" itemprop="logo" itemscope="itemscope"></div>
+	</a>
+	<nav class="nav-bar-nav" role="navigation" aria-label="Global">
+	</nav>
+	<span class="nav-bar-spacer"></span>
+	<div class="nav-bar-item is-invisible"> <!-- For Forums mobile layout rendering -->
+		<button id="form-expander" class="nav-bar-button has-hover-underline has-margin-left-extra-small"></button>
+	</div>
+</header>		</div>
+		<div class="content-header uhf-container has-padding has-default-focus" data-bi-name="content-header">
+		<nav class="has-padding-none-mobile" data-bi-name="breadcrumb" itemscope itemtype="http://schema.org/BreadcrumbList" role="navigation" aria-label="Breadcrumb">
+			<ul id="page-breadcrumbs" class="breadcrumbs">
+			</ul>
+		</nav>
+		<div class="content-header-controls">
+			<button type="button" class="contents-button button" data-bi-name="contents-expand" aria-haspopup="true">
+				<span class="icon"><span class="docon docon-menu" aria-hidden="true"></span></span>
+				<span>Contents</span>
+			</button>
+		</div>
+		<div class="content-header-controls exit-focus">
+			<button type="button" class="ap-collapse-behavior ap-expanded button" data-bi-name="ap-collapse" aria-controls="action-panel">
+				<span class="icon"><span class="docon docon-exit-mode" aria-hidden="true"></span></span>
+				<span>Exit focus mode</span>
+			</button>
+		</div>
+		<div id="page-actions" class="is-flex-touch has-flex-justify-content-space-between-touch has-padding-none has-padding-none-mobile">
+			<ul class="action-list has-flex-justify-content-start-mobile is-flex is-flex-row has-flex-wrap">
+				<li>
+					<button type="button" class="bookmark button is-text has-inner-focus is-small is-icon-only-touch" data-list-type="bookmarks" data-bi-name="bookmark">
+						<span class="icon" aria-hidden="true">
+							<span class="docon docon-single-bookmark"></span>
+						</span>
+						<span class="bookmark-status is-visually-hidden-touch is-hidden-portrait">Bookmark</span>
+					</button>
+				</li>
+				<li>
+<div class="sharing dropdown has-caret">
+	<button class="dropdown-trigger button is-text is-fullwidth has-flex-justify-content-start has-inner-focus is-small is-icon-only-touch" aria-controls="sharing-menu" aria-expanded="false" title="Share This Document" data-bi-name="share">
+		<span class="icon" aria-hidden="true">
+			<span class="docon docon-sharing"></span>
+		</span>
+		<span class="is-visually-hidden-touch is-hidden-portrait">Share</span>
+	</button>
+	<div class="dropdown-menu has-padding-small" id="sharing-menu">
+		<ul data-bi-name="share-links">
+			<li>
+				<a class="button is-text is-fullwidth has-flex-justify-content-start has-inner-focus is-small share-twitter" data-bi-name="twitter">
+					<span class="icon">
+						<span class="docon docon-brand-twitter has-text-primary" aria-hidden="true"></span>
+					</span>
+					<span>Twitter</span>
+				</a>
+			</li>
+			<li>
+				<a class="button is-text is-fullwidth has-flex-justify-content-start has-inner-focus is-small share-linkedin" data-bi-name="linkedin">
+					<span class="icon">
+						<span class="docon docon-brand-linkedin has-text-primary" aria-hidden="true"></span>
+					</span>
+					<span>LinkedIn</span>
+				</a>
+			</li>
+			<li>
+				<a class="button is-text is-fullwidth has-flex-justify-content-start has-inner-focus is-small share-facebook" data-bi-name="facebook">
+					<span class="icon">
+						<span class="docon docon-brand-facebook has-text-primary" aria-hidden="true"></span>
+					</span>
+					<span>Facebook</span>
+				</a>
+			</li>
+			<li>
+				<a class="button is-text is-fullwidth has-flex-justify-content-start has-inner-focus is-small share-email" data-bi-name="email">
+					<span class="icon">
+						<span class="docon docon-mail-message-fill has-text-primary" aria-hidden="true"></span>
+					</span>
+					<span>Email</span>
+				</a>
+			</li>
+		</ul>
+	</div>
+</div>				</li>
+				<li>
+<div class="dropdown has-caret">
+	<button class="dropdown-trigger button is-text is-small is-icon-only-touch has-inner-focus"
+		aria-controls="theme-menu" aria-expanded="false" title="Theme" data-bi-name="theme">
+		<span class="icon">
+			<span class="docon docon-sun" aria-hidden="true"></span>
+		</span>
+		<span class="is-visually-hidden-touch is-hidden-portrait">Theme</span>
+	</button>
+	<div class="dropdown-menu" id="theme-menu" role="menu">
+		<div class="theme-selector has-padding-small">
+			<div class="theme is-block">
+				<button class="button is-text is-small theme-control is-fullwidth has-flex-justify-content-start"
+					data-theme-to="light" role="menuitem">
+					<span class="theme-light has-margin-right-small">
+						<span
+							class="theme-selector-icon css-variable-support has-border is-inline-block has-body-background"
+							aria-hidden="true">
+							<svg class="svg" xmlns="http://www.w3.org/2000/svg"
+								viewBox="0 0 22 14">
+								<rect width="22" height="14" class="has-fill-body-background" />
+								<rect x="5" y="5" width="12" height="4" class="has-fill-secondary" />
+								<rect x="5" y="2" width="2" height="1" class="has-fill-secondary" />
+								<rect x="8" y="2" width="2" height="1" class="has-fill-secondary" />
+								<rect x="11" y="2" width="3" height="1" class="has-fill-secondary" />
+								<rect x="1" y="1" width="2" height="2" class="has-fill-secondary" />
+								<rect x="5" y="10" width="7" height="2" rx="0.3" class="has-fill-primary" />
+								<rect x="19" y="1" width="2" height="2" rx="1" class="has-fill-secondary" />
+							</svg>
+						</span>
+					</span>
+					<span>
+Light					</span>
+				</button>
+			</div>
+			<div class="theme is-block">
+				<button class="button is-text is-small theme-control is-fullwidth has-flex-justify-content-start"
+					data-theme-to="dark" role="menuitem">
+					<span class="theme-dark has-margin-right-small">
+						<span
+							class="has-border theme-selector-icon css-variable-support is-inline-block has-body-background"
+							aria-hidden="true">
+							<svg class="svg" xmlns="http://www.w3.org/2000/svg"
+								viewBox="0 0 22 14">
+								<rect width="22" height="14" class="has-fill-body-background" />
+								<rect x="5" y="5" width="12" height="4" class="has-fill-secondary" />
+								<rect x="5" y="2" width="2" height="1" class="has-fill-secondary" />
+								<rect x="8" y="2" width="2" height="1" class="has-fill-secondary" />
+								<rect x="11" y="2" width="3" height="1" class="has-fill-secondary" />
+								<rect x="1" y="1" width="2" height="2" class="has-fill-secondary" />
+								<rect x="5" y="10" width="7" height="2" rx="0.3" class="has-fill-primary" />
+								<rect x="19" y="1" width="2" height="2" rx="1" class="has-fill-secondary" />
+							</svg>
+						</span>
+					</span>
+					<span>
+Dark					</span>
+				</button>
+			</div>
+			<div class="theme is-block">
+				<button class="button is-text is-small theme-control is-fullwidth has-flex-justify-content-start"
+					data-theme-to="high-contrast" role="menuitem">
+					<span class="theme-high-contrast has-margin-right-small">
+						<span
+							class="has-border theme-selector-icon css-variable-support is-inline-block has-body-background"
+							aria-hidden="true">
+							<svg class="svg" xmlns="http://www.w3.org/2000/svg"
+								viewBox="0 0 22 14">
+								<rect width="22" height="14" class="has-fill-body-background" />
+								<rect x="5" y="5" width="12" height="4" class="has-fill-secondary" />
+								<rect x="5" y="2" width="2" height="1" class="has-fill-secondary" />
+								<rect x="8" y="2" width="2" height="1" class="has-fill-secondary" />
+								<rect x="11" y="2" width="3" height="1" class="has-fill-secondary" />
+								<rect x="1" y="1" width="2" height="2" class="has-fill-secondary" />
+								<rect x="5" y="10" width="7" height="2" rx="0.3" class="has-fill-primary" />
+								<rect x="19" y="1" width="2" height="2" rx="1" class="has-fill-secondary" />
+							</svg>
+						</span>
+					</span>
+					<span>
+High contrast					</span>
+				</button>
+			</div>
+		</div>
+	</div>
+</div>				</li>
+				<li>
+					<a class="docs-sign-in auth-status-determined not-authenticated button is-text has-inner-focus has-text-primary is-small" href="visit.html#">Sign in</a>
+					<div class="dropdown has-caret auth-status-determined authenticated">
+						<button class="dropdown-trigger button is-text has-inner-focus is-small is-icon-only-touch has-inner-focus" aria-label="Your Account" aria-controls="user-menu" aria-expanded="false">
+							<span class="icon" aria-hidden="true">
+								<span class="image">
+									<img class="has-body-background-medium is-rounded" data-profile-property="avatarUrl">
+								</span>
+							</span>
+							<span class="is-inline-truncated has-margin-left-small" data-profile-property="userName"></span>
+						</button>
+						<div class="dropdown-menu box" id="user-menu" role="menu">
+							<div class="media is-user-dir">
+								<div class="media-left">
+									<span class="image is-64x64" aria-hidden="true">
+										<img class="has-body-background-medium is-rounded" data-profile-property="avatarUrl">
+									</span>
+								</div>
+								<div class="media-content">
+									<p class="title">
+										<span class="is-inline-truncated has-max-width-200" data-profile-property="userName"></span>
+									</p>
+									<p class="subtitle has-margin-bottom-none">
+										<span class="is-inline-truncated has-max-width-200" data-profile-property="upn"></span>
+									</p>
+									<ul class="is-unstyled has-margin-none has-margin-top-small">
+										<li><a href="https://docs.microsoft.com/profile" data-profile-property="profileUrl">Profile</a></li>
+										<li><a href="https://docs.microsoft.com/profile" data-profile-property="bookmarksUrl">Bookmarks</a></li>
+										<li><a href="https://docs.microsoft.com/profile" data-profile-property="collectionsUrl">Collections</a></li>
+										<li><a class="docs-sign-out" href="visit.html#">Sign out</a></li>
+									</ul>
+								</div>
+							</div>
+						</div>
+					</div>
+				</li>
+			</ul>
+			<button type="button" class="contents-button button is-small is-text is-hidden-tablet has-inner-focus is-hidden-tablet" aria-label="Contents" data-bi-name="contents-expand-">
+				<span class="icon">
+					<span class="docon docon-editor-list-bullet" aria-hidden="true"></span>
+				</span>
+				<span>Contents</span>
+			</button>
+		</div>
+	</div>
+
+		<div id="banner-holder" class="has-default-focus has-overflow-hidden">
+		</div>
+
+	<div id="disclaimer-holder" class="has-overflow-hidden has-default-focus"></div>
+	</div>
+
+	<div class="mainContainer  uhf-container has-top-padding  has-default-focus" data-bi-name="body">
+
+		<div class="columns has-large-gaps is-gapless-mobile ">
+
+			<div id="left-container" class="left-container is-hidden-mobile column is-one-third-tablet is-one-quarter-desktop">
+				<nav id="affixed-left-container" class="is-fixed is-flex is-flex-column" role="navigation" aria-label="Primary"></nav>
+			</div>
+
+			<section class="primary-holder column is-two-thirds-tablet is-three-quarters-desktop">
+				<div class="columns is-gapless-mobile has-large-gaps ">
+
+
+				<div id="main-column" class="column  is-full is-four-fifths-desktop ">
+
+					<main id="main" role="main" class="content " data-bi-name="content" lang="en-us" dir="ltr">
+
+
+
+						<h1 id="design-guidelines-for-class-library-developers" sourcefile="czefa0ke(v=vs.71).md" sourcestartlinenumber="11">Design Guidelines for Class Library Developers</h1>
+
+						<ul class="metadata page-metadata" data-bi-name="page info" lang="en-us" dir="ltr">
+							<li class="displayDate loading">
+								<time role="presentation" datetime="2006-11-17T00:00:00.000Z" data-article-date-source="ms.date">11/17/2006</time>
+							</li>
+								<li class="readingTime">2 minutes to read</li>
+
+						</ul>
+
+						<nav id="center-doc-outline" class="doc-outline is-hidden-desktop" data-bi-name="intopic toc" role="navigation" aria-label="Article Outline">
+							<h3>In this article</h3>
+						</nav>
+
+
+						<!-- <content> -->
+							
+<p>The .NET Framework's managed environment allows developers to improve their programming model to support a wide range of functionality. The goal of the .NET Framework design guidelines is to encourage consistency and predictability in public APIs while enabling Web and cross-language integration. It is strongly recommended that you follow these design guidelines when developing classes and components that extend the .NET Framework. Inconsistent design adversely affects developer productivity. Development tools and add-ins can turn some of these guidelines into de facto prescriptive rules, and reduce the value of nonconforming components. Nonconforming components will function, but not to their full potential.</p>
+<p>These guidelines are intended to help class library designers understand the trade-offs between different solutions. There might be situations where good library design requires that you violate these design guidelines. Such cases should be rare, and it is important that you provide a solid justification for your decision. The section provides naming and usage guidelines for types in the .NET Framework as well as guidelines for implementing common design patterns.</p>
+<h4 id="in-this-section">In This Section</h4>
+<ul>
+<li><a href="https://docs.microsoft.com/en-us/previous-versions/dotnet/netframework-1.1/9k3bbf3b%28v%3dvs.71%29" data-linktype="relative-path">Relationship to the Common Type System and the Common Language Specification</a><br>
+Describes the role of the common type system and the Common Language Specification in class library development.</li>
+<li><a href="https://docs.microsoft.com/en-us/previous-versions/dotnet/netframework-1.1/xzf533w0%28v%3dvs.71%29" data-linktype="relative-path">Naming Guidelines</a><br>
+Describes the guidelines for naming types in class libraries.</li>
+<li><a href="https://docs.microsoft.com/en-us/previous-versions/dotnet/netframework-1.1/426s83c3%28v%3dvs.71%29" data-linktype="relative-path">Class Member Usage Guidelines</a><br>
+Describes the guidelines for using properties, events, methods, constructors, fields, and parameters in class libraries.</li>
+<li><a href="https://docs.microsoft.com/en-us/previous-versions/dotnet/netframework-1.1/9cws5bzd%28v%3dvs.71%29" data-linktype="relative-path">Type Usage Guidelines</a><br>
+Describes the guidelines for using classes, value types, delegates, attributes, and nested types in class libraries.</li>
+<li><a href="https://docs.microsoft.com/en-us/previous-versions/dotnet/netframework-1.1/w38dhkc5%28v%3dvs.71%29" data-linktype="relative-path">Guidelines for Exposing Functionality to COM</a><br>
+Describes the guidelines for exposing class library types to COM.</li>
+<li><a href="https://docs.microsoft.com/en-us/previous-versions/dotnet/netframework-1.1/8ey5ey87%28v%3dvs.71%29" data-linktype="relative-path">Error Raising and Handling Guidelines</a><br>
+Describes the guidelines for raising and handling errors in class libraries.</li>
+<li><a href="https://docs.microsoft.com/en-us/previous-versions/dotnet/netframework-1.1/k2604h5s%28v%3dvs.71%29" data-linktype="relative-path">Array Usage Guidelines</a><br>
+Describes the guidelines for using arrays in class libraries and how to decide whether to use an array vs. a collection.</li>
+<li><a href="https://docs.microsoft.com/en-us/previous-versions/dotnet/netframework-1.1/2sk3x8a7%28v%3dvs.71%29" data-linktype="relative-path">Operator Overloading Usage Guidelines</a><br>
+Describes the guidelines for implementing operator overloading in base class libraries.</li>
+<li><a href="https://docs.microsoft.com/en-us/previous-versions/dotnet/netframework-1.1/7h9bszxx%28v%3dvs.71%29" data-linktype="relative-path">Guidelines for Implementing Equals and the Equality Operator (==)</a><br>
+Describes the guidelines for implementing the <strong>Equals</strong> method and the equality operator (==) in class libraries.</li>
+<li><a href="https://docs.microsoft.com/en-us/previous-versions/dotnet/netframework-1.1/5b63aadf%28v%3dvs.71%29" data-linktype="relative-path">Guidelines for Casting Types</a><br>
+Describes the guidelines for casting types in class libraries.</li>
+<li><a href="https://docs.microsoft.com/en-us/previous-versions/dotnet/netframework-1.1/fe66wkf2%28v%3dvs.71%29" data-linktype="relative-path">Common Design Patterns</a><br>
+Describes how to implement design patterns for <strong>Finalize</strong> and <strong>Dispose</strong> methods, the <strong>Equals</strong> method, callback functions, and time-outs.</li>
+<li><a href="https://docs.microsoft.com/en-us/previous-versions/dotnet/netframework-1.1/zxt8akbe%28v%3dvs.71%29" data-linktype="relative-path">Security in Class Libraries</a><br>
+Describes the precautions to take when writing highly trusted class library code, and how to help protect resources with permissions.</li>
+<li><a href="https://docs.microsoft.com/en-us/previous-versions/dotnet/netframework-1.1/f857xew0%28v%3dvs.71%29" data-linktype="relative-path">Threading Design Guidelines</a><br>
+Describes the guidelines for implementing threading in class libraries.</li>
+<li><a href="https://docs.microsoft.com/en-us/previous-versions/dotnet/netframework-1.1/w9fyc75f%28v%3dvs.71%29" data-linktype="relative-path">Guidelines for Asynchronous Programming</a><br>
+Describes the guidelines for implementing asynchronous programming in class libraries and provides an asynchronous design pattern.</li>
+</ul>
+<h4 id="related-sections">Related Sections</h4>
+<ul>
+<li><a href="https://msdn.microsoft.com/en-us/library/d11h6832(v=vs.71)" data-linktype="external">Class Library</a><br>
+Documents each of the public classes that constitute the .NET Framework.</li>
+</ul>
+
+						<!-- </content> -->
+
+						</main>
+
+						<!-- rating mobile section -->
+						<!-- end rating mobile section -->
+
+						<!-- feedback section -->
+
+
+
+
+						<!-- end feedback section -->
+
+						<!-- feedback report section -->
+						<!-- end feedback report section -->
+
+						<div class="footerContainer is-visible-interactive has-default-focus ">
+<footer id="footer-interactive" data-bi-name="footer" class="footer-layout">
+
+    <a data-mscc-ic="false" class="locale-selector-link" href="visit.html#" data-bi-name="select-locale"><span class="icon docon docon-world is-size-4 has-margin-right-small" aria-hidden="true"></span><span class="local-selector-link-text has-inner-focus"></span></a>
+
+    <ul class="links" data-bi-name="footerlinks">
+		<li><a data-mscc-ic="false" href="https://docs.microsoft.com/previous-versions/" data-bi-name="archivelink">Previous Version Docs</a></li>
+		<li><a data-mscc-ic="false" href="https://docs.microsoft.com/teamblog" data-bi-name="bloglink">Blog</a></li>
+		<li><a data-mscc-ic="false" href="https://docs.microsoft.com/contribute" data-bi-name="contributorGuide">Contribute</a></li>
+			<li><a data-mscc-ic="false" href="https://go.microsoft.com/fwlink/?LinkId=521839" data-bi-name="privacy">Privacy &amp; Cookies</a></li>
+		<li><a data-mscc-ic="false" href="https://docs.microsoft.com/en-us/legal/termsofuse" data-bi-name="termsofuse">Terms of Use</a></li>
+		<li><a data-mscc-ic="false" href="https://aka.ms/sitefeedback" data-bi-name="feedback">Site Feedback</a></li>
+		<li><a data-mscc-ic="false" href="https://www.microsoft.com/en-us/legal/intellectualproperty/Trademarks/EN-US.aspx" data-bi-name="trademarks">Trademarks</a></li>
+    </ul>
+</footer>
+						</div>
+					</div>
+
+					<div id="page-actions" class="right-container column is-one-quarter is-one-fifth-desktop is-hidden-mobile is-hidden-tablet-only" data-bi-name="pageactions" role="complementary" aria-label="Page Actions">
+						<div id="affixed-right-container" class="doc-outline is-fixed is-vertically-scrollable">
+							<nav id="side-doc-outline" data-bi-name="intopic toc" role="navigation" aria-label="Article Outline">
+								<h3>In this article</h3>
+							</nav>
+						</div>
+					</div>
+
+					<!--end of div.columns -->
+				</div>
+
+			<!--end of .primary-holder -->
+			</section>
+
+			<aside id="interactive-container" class="interactive-container is-visible-interactive column has-body-background-dark ">
+			</aside>
+		</div>
+
+		<!--end of .mainContainer -->
+	</div>
+
+	<div id="openFeedbackContainer" class="openfeedback-container"></div>
+
+	<div class="footerContainer has-default-focus is-hidden-interactive ">
+<footer id="footer" data-bi-name="footer" class="footer-layout uhf-container has-padding" role="contentinfo">
+
+    <a data-mscc-ic="false" class="locale-selector-link" href="visit.html#" data-bi-name="select-locale"><span class="icon docon docon-world is-size-4 has-margin-right-small" aria-hidden="true"></span><span class="local-selector-link-text"></span></a>
+
+    <ul class="links" data-bi-name="footerlinks">
+		<li><a data-mscc-ic="false" href="https://docs.microsoft.com/previous-versions/" data-bi-name="archivelink">Previous Version Docs</a></li>
+		<li><a data-mscc-ic="false" href="https://docs.microsoft.com/teamblog" data-bi-name="bloglink">Blog</a></li>
+		<li><a data-mscc-ic="false" href="https://docs.microsoft.com/contribute" data-bi-name="contributorGuide">Contribute</a></li>
+			<li><a data-mscc-ic="false" href="https://go.microsoft.com/fwlink/?LinkId=521839" data-bi-name="privacy">Privacy &amp; Cookies</a></li>
+		<li><a data-mscc-ic="false" href="https://docs.microsoft.com/en-us/legal/termsofuse" data-bi-name="termsofuse">Terms of Use</a></li>
+		<li><a data-mscc-ic="false" href="https://aka.ms/sitefeedback" data-bi-name="feedback">Site Feedback</a></li>
+		<li><a data-mscc-ic="false" href="https://www.microsoft.com/en-us/legal/intellectualproperty/Trademarks/EN-US.aspx" data-bi-name="trademarks">Trademarks</a></li>
+    </ul>
+</footer>
+	</div>
+
+	<div id="action-panel" role="region" aria-label="Action Panel" class="action-panel has-default-focus" tabindex="-1"></div>
+</body>
+</html>

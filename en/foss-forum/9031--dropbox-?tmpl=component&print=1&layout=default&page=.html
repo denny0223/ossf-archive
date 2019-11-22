@@ -1,0 +1,113 @@
+	<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+	<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-gb" lang="en-gb" >
+		<head>
+			  <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+  <meta name="robots" content="noindex, nofollow" />
+  <meta name="keywords" content="OSSFNL832" />
+  <meta name="title" content="過來人談 Dropbox 的技術心得" />
+  <meta name="description" content="◎本文原載 Linux Pilot，原文章連結按此。 Dropbox 現在在全球有超過 1 億 7500 萬用戶，成為一個幾乎無人不識的雲端企業。但最初 Dropbox 只是一個小型的 Startup，究竟它在技術上所作的部署如何令它成功？曾經是核心開發者之一 Rajiv Eranki，介紹他在 Dropbox 所學到的實戰經驗。 Rajiv Eranki 於 2008 年加入" />
+  <meta name="generator" content="" />
+  <title>過來人談 Dropbox 的技術心得</title>
+  <link href="../../favicon.ico" rel="shortcut icon" type="image/x-icon" />
+  <link rel="stylesheet" href="../../components/com_gantry/css/gantry.css" type="text/css" />
+  <link rel="stylesheet" href="../../components/com_gantry/css/grid-12.css" type="text/css" />
+  <link rel="stylesheet" href="../../components/com_gantry/css/joomla.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/joomla.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/style1.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/light-body.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/demo-styles.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/template.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/typography.css" type="text/css" />
+  <style type="text/css">
+    <!--
+#rt-main-surround ul.menu li.active > a, #rt-main-surround ul.menu li.active > .separator, #rt-main-surround ul.menu li.active > .item, #rt-main-surround .square4 ul.menu li:hover > a, #rt-main-surround .square4 ul.menu li:hover > .item, #rt-main-surround .square4 ul.menu li:hover > .separator, .roktabs-links ul li.active span {color:#0088B5;}
+a, #rt-main-surround ul.menu a:hover, #rt-main-surround ul.menu .separator:hover, #rt-main-surround ul.menu .item:hover {color:#0088B5;}
+    -->
+  </style>
+  <script type="text/javascript" src="../../components/com_jcomments/js/jcomments-v2.1.js%3Fv=2"></script>
+  <script type="text/javascript" src="../../components/com_jcomments/libraries/joomlatune/ajax.js"></script>
+  <script type="text/javascript" src="../../media/system/js/mootools.js"></script>
+  <script type="text/javascript" src="../../media/system/js/caption.js"></script>
+  <script type="text/javascript" src="../../components/com_gantry/js/gantry-buildspans.js"></script>
+  <script type="text/javascript" src="../../components/com_gantry/js/gantry-inputs.js"></script>
+  <script type="text/javascript">
+
+			window.addEvent('domready', function() {
+				var modules = ['rt-block'];
+				var header = ['h3','h2','h1'];
+				GantryBuildSpans(modules, header);
+			});
+		InputsExclusion.push('.content_vote','#rt-popup')
+  </script>
+		</head>
+		<body  class="backgroundlevel-low backgroundstyle-style8 bodylevel-med bodystyle-light cssstyle-style1 logostyle-dark font-family-helvetica font-size-is-default menu-type-fusionmenu col12 ">
+			<div id="rt-main-surround">
+				<div class="rt-container">
+					<div class="rt-block">
+						<div id="rt-mainbody">
+					    	
+<div class="rt-joomla ">
+	<div class="rt-article">
+		
+				<div class="rt-headline"><h1 class="rt-article-title">過來人談 Dropbox 的技術心得</h1>		</div>
+		<div class="clear"></div>
+		
+		
+		
+				<div class="rt-articleinfo">
+						<div class="rt-article-icons">
+				<a href="9031--dropbox-%3Ftmpl=component&amp;print=1&amp;layout=default&amp;page=.html#" onclick="window.print();return false;"><span class="icon print"></span></a>									<span class="icon printscreen">
+						<a href="9031--dropbox-%3Ftmpl=component&amp;print=1&amp;layout=default&amp;page=.html#" onclick="window.print();return false;"><img src="../../images/M_images/printButton.png" alt="Print"  /></a>					</span>
+							</div>
+			
+			<span class="rt-date-posted">
+						 Created at			Tuesday, 30 July 2013 09:49						&nbsp;&nbsp;&nbsp;&nbsp;						Last Updated on Tuesday, 30 July 2013 10:10						</span>
+
+						<span class="rt-author">
+				Written by Kenneth Mak			</span>
+				
+					</div>
+		
+		
+		<p>◎本文原載 Linux Pilot，原文章<a target="_blank" href="https://www.linuxpilot.com/industry/news/201307230101Dropbox-Linux">連結按此</a>。</p>
+<p>Dropbox 現在在全球有超過 1 億 7500 萬用戶，成為一個幾乎無人不識的雲端企業。但最初 Dropbox 只是一個小型的 Startup，究竟它在技術上所作的部署如何令它成功？曾經是核心開發者之一 Rajiv Eranki，介紹他在 Dropbox 所學到的實戰經驗。</p>
+
+<p><img alt="201307230101" src="../../images/130730/201307230101.jpg" height="375" width="500" /></p>
+<p>Rajiv Eranki 於 2008 年加入 Dropbox，在 2011 年離職，原因是「是時候去做一些更特別的事」。他在 2013 年 7 月 11 日舉辦的 RAMP 會議上，介紹在 Dropbox 時擔任伺服器技術人員的經歷。當年 Eranki 在大學畢業後加入了當時只有 2000 名用的 Dropbox，他和另外一人負責伺服器擴充部分。其時 Dropbox 的整個基建中只有兩台 Linux 伺服器，其中一台是資料庫專用機，另一是前端伺服器。</p>
+<p>Eranki 表示 Dropbox 是一個具可塑性和擴充性的系統，縱使是擁有多個共享目錄的用戶，資料庫存取要求也只要陬出一次，在前端伺服器要查看的記錄檔也只有一個。由於資料庫並沒有分割，得以避開一些麻煩的作業。開發語言方面，Dropbox 選擇是了開源的 Python，好處是簡單但功能強大，當用戶數量達到 100 萬時，整個系統也只是用了数百行的程式碼。他表示如果要用 C 來編寫出同等功能，大概需要數千行的程式碼。此架設直到用戶達到 4000 萬人時仍然沒有改變，客戶端的 Dropbox 程式也是用 Python 編寫的。</p>
+<p>Eranki 又表示，他們重視的是開發、管理和易於維護的平台，以及構造簡單的設計。他們亦放棄了能夠生成大量圖表的管理工具，改為製作一個簡單的控制界面，因為「大部分的圖表都沒有什麼用」。控制台會以直接顯示項目和其值。多出來的存取要求由 memcache 處理，延遲 SQL 要求的最佳化。隨著 Dropbox 的用戶越來越多，出現了一些將 Dropbox 用在其他非正規用途上的用戶，例如將 Dropbox 當作 CDN 使用等等。Eranki 表示開發團隊不應該被此等用戶所迷惑，要以一般正常用戶的需要進行改良，因為這些用戶才是 Dropbox 的根本。</p>
+<p>他在 Dropbox 學到的另一個教訓，是「時刻追隨最新技術的人必敗」。靜觀其變再加以改良才是成功之道。他表示 Murphy's law 中「只要是有可能發生的問題，就一定會發生」，因此縱使使用的是比 Windows 更加可靠的 Linux 伺服器，也需要定期自行重新啟動，當然重啟次數會比 Windows 伺服器來得少。保存日誌檔非常重要，特別是對服務停止和性能劣化的記錄。對於沒有必要刪除的舊程式碼，就必須要保留。</p>
+<p>最後他表示，對 Startup 來說要聘用新人越早越好。臨危受命的員工絕對不會有好表現，Startup 始終和一般的企業不同，員工需要多一點時間理解公司和系統。另外沒有人能在 Startup 建立初期正確的估計出架構的規模，因此使用成本較低而可塑性高的開源技術非常重要。</p>
+			<!-- Show relate article -->
+				<!-- end -->
+		<div class="article_note">
+		<!-- Add tags use metakey, and show OSSF Newsletter tag: OSSFNL+NUM-->
+		<br><br> <hr style='border: 1px dashed #D2DADB;'><b>OSSF Newsletter&nbsp;:</b>&nbsp;<a href='../../previous-issue%3Ftask=view&amp;id=832.html'>第 223 期 利用自由開源軟體元件開發雲端應用專案</a><br>				<!-- End -->
+					<br>
+					<b>Category: </b><a href="../foss-forum.html">				FOSS Forum					</a>				</div>
+			 <!-- AddThis Button BEGIN ID 3001 is the front page article -->
+     			<br><br>
+       <div class="addthis_toolbox addthis_default_style addthis_32x32_style">
+       <a class="addthis_button_preferred_1"></a>
+       <a class="addthis_button_preferred_2"></a>
+       <a class="addthis_button_preferred_3"></a>
+       <a class="addthis_button_preferred_4"></a>
+       <a class="addthis_button_compact"></a>
+       <a class="addthis_counter addthis_bubble_style"></a>
+       </div>
+       <script type="text/javascript">var addthis_config = {"data_track_clickback":true};</script>
+       <script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js#pubid=openfoundry"></script>
+       <!-- AddThis Button END -->
+     <br>
+		<div class="totop" ><a class="rt-totop" href="9031--dropbox-%3Ftmpl=component&amp;print=1&amp;layout=default&amp;page=.html#" style="outline: medium none;">↑ Top</a></div>
+            <!-- AddThis Button END -->
+
+			</div>
+</div>
+
+						</div>
+					</div>
+				</div>
+			</div>
+		</body>
+	</html>

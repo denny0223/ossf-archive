@@ -1,0 +1,513 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="zh-tw" lang="zh-tw" >
+<head>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<link rel="shortcut icon" href="../../images/favicon.ico" />
+	  <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+  <meta name="robots" content="index, follow" />
+  <meta name="keywords" content="OSSFNL819" />
+  <meta name="title" content="行事曆 (Calendar) on Drupal 7" />
+  <meta name="description" content="先前在建置某網站時曾提過要有行事曆，也想過直接嵌入 Google Calendar 的方案，但對某些使用者而言並不友善，所幸該網站凍仁是建置在 Drupal 上的，只需將 Calendar 模組設定好即可，毋需再重新造輪子了。 套用 Corolla 主題的迷你行事曆 (min-calendar)。 # 若要使用 Calendar 模組記得要連相依的 Date 及 Views 兩模組也一同補上。" />
+  <meta name="generator" content="" />
+  <title>行事曆 (Calendar) on Drupal 7 - OpenFoundry</title>
+  <link href="../../favicon.ico" rel="shortcut icon" type="image/x-icon" />
+  <link rel="stylesheet" href="../../components/com_gantry/css/gantry.css" type="text/css" />
+  <link rel="stylesheet" href="../../components/com_gantry/css/grid-12.css" type="text/css" />
+  <link rel="stylesheet" href="../../components/com_gantry/css/joomla.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/joomla.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/style1.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/light-body.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/demo-styles.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/template.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/typography.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/fusionmenu.css" type="text/css" />
+  <style type="text/css">
+    <!--
+#rt-main-surround ul.menu li.active > a, #rt-main-surround ul.menu li.active > .separator, #rt-main-surround ul.menu li.active > .item, #rt-main-surround .square4 ul.menu li:hover > a, #rt-main-surround .square4 ul.menu li:hover > .item, #rt-main-surround .square4 ul.menu li:hover > .separator, .roktabs-links ul li.active span {color:#0088B5;}
+a, #rt-main-surround ul.menu a:hover, #rt-main-surround ul.menu .separator:hover, #rt-main-surround ul.menu .item:hover {color:#0088B5;}
+    -->
+  </style>
+  <script type="text/javascript" src="../../components/com_jcomments/js/jcomments-v2.1.js%3Fv=2"></script>
+  <script type="text/javascript" src="../../components/com_jcomments/libraries/joomlatune/ajax.js"></script>
+  <script type="text/javascript" src="../../media/system/js/mootools.js"></script>
+  <script type="text/javascript" src="../../media/system/js/caption.js"></script>
+  <script type="text/javascript" src="../../components/com_gantry/js/gantry-buildspans.js"></script>
+  <script type="text/javascript" src="../../components/com_gantry/js/gantry-inputs.js"></script>
+  <script type="text/javascript" src="../../templates/rt_quantive_j15/js/jquery.cookie.js"></script>
+  <script type="text/javascript" src="../../modules/mod_roknavmenu/themes/fusion/js/fusion.js"></script>
+  <script type="text/javascript" src="../../modules/mod_ofssologin/js/ofssologin.js"></script>
+  <script type="text/javascript">
+
+			window.addEvent('domready', function() {
+				var modules = ['rt-block'];
+				var header = ['h3','h2','h1'];
+				GantryBuildSpans(modules, header);
+			});
+		InputsExclusion.push('.content_vote','#rt-popup')
+		        window.addEvent('load', function() {
+					new Fusion('ul.menutop', {
+						pill: 0,
+						effect: 'slide and fade',
+						opacity: 1,
+						hideDelay: 500,
+						centered: 0,
+						tweakInitial: {'x': -2, 'y': 0},
+        				tweakSubsequent: {'x': 0, 'y': -14},
+						menuFx: {duration: 200, transition: Fx.Transitions.Sine.easeOut},
+						pillFx: {duration: 400, transition: Fx.Transitions.Back.easeOut}
+					});
+	            });
+  </script>
+<!-- <script type="text/javascript" src="/sso/javascripts/langsync.js"></script> -->
+<!-- <script src="/templates/rt_quantive_j15/js/ossf.js"></script> -->
+<script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-4136519-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
+</head>
+	<body  class="backgroundlevel-low backgroundstyle-style8 bodylevel-med bodystyle-light cssstyle-style1 logostyle-dark font-family-helvetica font-size-is-default menu-type-fusionmenu col12 ">
+		<div id="rt-main-background">
+			<div class="rt-container">
+																<div id="rt-header">
+					<div class="rt-grid-7 rt-alpha">
+    			<div class="rt-block">
+    	    	<a href="../../index.html" id="rt-logo"></a>
+    		</div>
+	    
+</div>
+<div class="rt-grid-5 rt-omega">
+                    <div class="square9">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<div class="ofssologin_square9"><a href="../../index.html">登入</a>&nbsp;&nbsp|&nbsp;&nbsp;<span><a href="../../en/foss-programs/8906--calendar-on-drupal-7-.html" ><span lang="en" xml:lang="en">English</span></a></li></ul></span><!--Joom!fish V2.0.4 (Lightning)-->
+<!-- &copy; 2003-2009 Think Network, released under the GPL. -->
+<!-- More information: at http://www.joomfish.net -->
+<div class="ofssologin_search_square9">
+  <form id="of_search" action="https://www.openfoundry.org/of/openfoundry/search" method="get" onsubmit="of_search(); return false;">
+    <select id="of_search_type">
+      <option value="Projects"> 專案 </option>
+      <option value="Content"> 文章 </option>
+      <option value="People"> 人才 </option>
+    </select>
+    <input id="query" name="query" id="mod_search_searchword" maxlength="50" alt="search" class="inputbox" type="text" size="28" value="search..."  onblur="if(this.value=='') this.value='search...';" onfocus="if(this.value=='search...') this.value='';" />
+    <input type="hidden" name="commit" value="search" />
+  </form>
+</div></div>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		
+</div>
+					<div class="clear"></div>
+				</div>
+																<div id="rt-navigation"><div id="rt-navigation2"><div id="rt-navigation3">
+					
+<div class="nopill">
+	<ul class="menutop level1 " >
+						<li class="item1 root" >
+					<a class="orphan item bullet" href="../../index.html"  >
+				<span>
+			    				首頁				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item32 root" >
+					<a class="orphan item bullet" href="../../archived.html"  >
+				<span>
+			    				專案				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item186 root" >
+					<a class="orphan item bullet" href="../community.html"  >
+				<span>
+			    				Who&#039;s Who				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item4 root" >
+					<a class="orphan item bullet" href="../news.html"  >
+				<span>
+			    				新聞				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item5 root" >
+					<a class="orphan item bullet" href="../law-and-licensing.html"  >
+				<span>
+			    				法律源地				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item3 root" >
+					<a class="orphan item bullet" href="../activities.html"  >
+				<span>
+			    				活動				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item2 root" >
+					<a class="orphan item bullet" href="../resourcecatalog%3FName=Value.html"  >
+				<span>
+			    				資源表列				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item45 root" >
+					<a class="orphan item bullet" href="../about.html"  >
+				<span>
+			    				關於				   
+				</span>
+			</a>
+			
+			
+	</li>	
+				</ul>
+</div>
+
+				    <div class="clear"></div>
+				</div></div></div>
+								<div class="rt-surround"><div class="rt-surround2"><div class="rt-surround3">
+										<div id="rt-showcase-section">
+												<div id="rt-showcase">
+							<div class="rt-grid-12 rt-alpha rt-omega">
+    		<div class="clear"></div>
+		
+		
+                <div class="close-note">
+                    <div class="rt-block">
+               					<div class="module-content">
+                	<div style="font-size:medium; background-image:linear-gradient(120deg,#159957,#4298b2);color:white;padding:20px;margin:-10px -18px;">感謝您對「自由軟體鑄造場」的支持與愛護，十多年來「自由軟體鑄造場」受中央研究院支持，並在資訊科學研究所以及資訊科技創新研究中心執行，現已完成階段性的任務。 本網站預計持續維運至 2021年底，網站內容基本上不會再更動。<br />也紀念我們永遠的朋友 李士傑先生（Shih-Chieh Ilya Li）。</div>				</div>
+            </div>
+                </div>
+		
+</div>
+							<div class="clear"></div>
+						</div>
+																	</div>
+															<div id="rt-main-surround">
+												<div id="rt-breadcrumbs">
+								<div class="rt-breadcrumb-surround">
+		<a href="../../index.html" id="breadcrumbs-home"></a>
+		<span class="breadcrumbs pathway">
+<a href="../foss-programs.html" class="pathway">源碼秘技</a> <img src="../../templates/rt_quantive_j15/images/arrow.png" alt=""  /> <span class="no-link">行事曆 (Calendar) on Drupal 7</span></span>
+	</div>
+	
+							<div class="clear"></div>
+						</div>
+																							              <div id="rt-main" class="sa3-mb9">
+                <div class="rt-main-inner">
+                    <div class="rt-grid-9 rt-push-3">
+                                                <div class="rt-block">
+                            							<div class="square1">
+							<div class="rt-module-surround">
+								<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+								<div class="rt-module-inner">
+		                            <div id="rt-mainbody">
+		                                
+<div class="rt-joomla ">
+	<div class="rt-article">
+		
+				<div class="rt-headline"><h1 class="rt-article-title">行事曆 (Calendar) on Drupal 7</h1>		</div>
+		<div class="clear"></div>
+		
+		
+		
+				<div class="rt-articleinfo">
+						<div class="rt-article-icons">
+								<a href="8906--calendar-on-drupal-7-%3Ftmpl=component&amp;print=1&amp;layout=default&amp;page=.html" title="列印" onclick="window.open(this.href,'win2','status=no,toolbar=no,scrollbars=yes,titlebar=no,menubar=no,resizable=yes,width=640,height=480,directories=no,location=no'); return false;" rel="nofollow"><span class="icon print"></span></a>																</div>
+			
+			<span class="rt-date-posted">
+						建立日期			2013-01-24 15:47						&nbsp;&nbsp;&nbsp;&nbsp;						最近更新在 2013-05-15 13:08						</span>
+
+						<span class="rt-author">
+				作者是 凍仁翔 			</span>
+				
+					</div>
+		
+		
+		<p>先前在建置某網站時曾提過要有行事曆，也想過直接嵌入 <a href="https://www.google.com/calendar/" target="_blank">Google Calendar</a> 的方案，但對某些使用者而言並不友善，所幸該網站凍仁是建置在 Drupal 上的，只需將 <a href="https://drupal.org/project/calendar" target="_blank">Calendar</a> 模組設定好即可，毋需再重新造輪子了。</p>
+
+<p><img src="../../images/130129/drupal7/min-calendar_with_corolla.jpg" alt="min-calendar with corolla" height="400" width="280" /></p>
+<p>套用 Corolla 主題的迷你行事曆 (min-calendar)。</p>
+<p># 若要使用 Calendar 模組記得要連相依的 <a href="https://drupal.org/project/date" target="_blank">Date</a> 及 <a href="https://drupal.org/project/views" target="_blank">Views</a> 兩模組也一同補上。</p>
+<br />
+<h3 style="color: #800000;"><span>1. 安裝相關模組</span></h3>
+<p>1. 安裝 Calendar 模組。</p>
+<pre>[ <span style="color: #ffdb00;">jonny</span><span style="color: red;">@squeeze</span> <span style="color: #ad7fa8;">~</span> ] 
+$ sudo drush dl calendar [Enter] 
+Project calendar (7.x-3.4) downloaded to /var/www/drupal/sites/all/modules/calendar.
+</pre>
+<p>2. 安裝 Date 模組。</p>
+<pre>[ <span style="color: #ffdb00;">jonny</span><span style="color: red;">@squeeze</span> <span style="color: #ad7fa8;">~</span> ] 
+$ sudo drush dl date [Enter]
+Project date (7.x-2.6) downloaded to /var/www/drupal/sites/all/modules/date. [success]
+Project date contains 11 modules: date_migrate_example, date_migrate, date_views, date_repeat_field, date_repeat, date_popup, date_api,
+date_tools, date_context, date_all_day, date.
+</pre>
+<p>3. 安裝 Date Popup Authored 模組。</p>
+<pre>[ <span style="color: #ffdb00;">jonny</span><span style="color: red;">@squeeze</span> <span style="color: #ad7fa8;">~</span> ] $ sudo drush dl date_popup_authored [Enter]
+Project date_popup_authored (7.x-1.1) downloaded to /var/www/drupal/sites/all/modules/date_popup_authored.</pre>
+<p>4. 啟用 Calendar 模組。</p>
+<pre>[ <span style="color: #ffdb00;">jonny</span><span style="color: red;">@squeeze</span> <span style="color: #ad7fa8;">~</span> ] $ sudo drush en calendar [Enter]</pre>
+<p>5. 啟用 Date Popup Authored 模組。</p>
+<pre>[ <span style="color: #ffdb00;">jonny</span><span style="color: red;">@squeeze</span> <span style="color: #ad7fa8;">~</span> ] $ sudo drush en date_popup_authored [Enter]
+The following extensions will be enabled: date_popup_authored, date_popup
+Do you really want to continue? (y/n): y
+date_popup was enabled successfully.
+date_popup_authored was enabled successfully.</pre>
+<br />
+<h3 style="color: #800000;"><span>2. Calendar 應用</span></h3>
+<h4><span style="color: #ff6600;">2.1. 新增「以建立日期為基準」的 Calendar View</span></h4>
+<p>若今天是想讓所有的文章 (node) 依造建立的時間點顯示在行事曆上，可以使用「A calendar view of the 'created' field in the 'node' base table.」，完成後會如 2.1.6 一般，此方案適合只需紀錄單一時間點的網站，例如：部落格、新聞、雜誌... 等等。</p>
+<br />
+<h5><span style="color: #666699;">2.1.1. 新增 Calendar</span></h5>
+<p style="text-align: center;">1. 進入 <strong>Views</strong> 介面：首頁 » 管理 » 架構 » Views (https://example.tw/admin/structure/views)。</p>
+<p style="text-align: center;"><img src="../../images/130129/drupal7/2012-12-07-Calendar-01_view.jpg" alt="2012-12-07-Calendar-01 view" height="389" width="500" /></p>
+<p style="text-align: center;">2. 點選 Add view from template (https://example.tw/admin/structure/views/add-template) 。</p>
+<p style="text-align: center;"><img src="../../images/130129/drupal7/2012-12-07-Calendar-02_add_view_from_template.jpg" alt="2012-12-07-Calendar-02 add view from template" height="347" width="500" /></p>
+<p style="text-align: center;">3. 點選「A calendar view of the 'created' field in the 'node' base table.」一項的 <span class="Ctrl">add</span>。</p>
+<p style="text-align: center;"><img src="../../images/130129/drupal7/2012-12-07-Calendar-03_view_name.jpg" alt="2012-12-07-Calendar-03 view name" height="358" width="500" /></p>
+<p style="text-align: center;">4. 設定 Calendar 名稱。</p>
+<p style="text-align: center;"><img src="../../images/130129/drupal7/2012-12-07-Calendar-04_need_save.jpg" alt="2012-12-07-Calendar-04 need save" height="317" width="500" /></p>
+<p style="text-align: center;">5. 點選 儲存 寫入後，再點選 view month 檢視成果。</p>
+<p style="text-align: center;"><img src="../../images/130129/drupal7/2012-12-04_Calendar_origin_01.jpg" alt="2012-12-04 Calendar origin 01" height="342" width="500" /></p>
+<p style="text-align: center;">6. <strong>View: Calendar</strong> 新增完成。</p>
+<br />
+<h5><span style="color: #666699;">2.1.2. 新增迷你行事曆 (mini-Calendar) 區塊 (block)</span></h5>
+<p style="text-align: center;">1. 進入<strong>區塊</strong>介面：首頁 » 管理 » 架構 (https://example.tw/admin/structure/block)。</p>
+<p style="text-align: center;"><img src="../../images/130129/drupal7/2012-12-07-Calendar-05_block.jpg" alt="2012-12-07-Calendar-05 block" height="303" width="500" /></p>
+<p style="text-align: center;">2. 將「View Calendar: Block」設定至首側欄。</p>
+<p style="text-align: center;"><img src="../../images/130129/drupal7/2012-12-04_Calendar_origin_02_block.jpg" alt="2012-12-04 Calendar origin 02 block" height="283" width="208" /></p>
+<p style="text-align: center;">3. <strong>View: Calendar: Block</strong> 設定完成。</p>
+<br />
+<h5><span style="color: #666699;">2.1.3. 修改星期翻譯</span></h5>
+<p>相信不少伙伴都發現上方的範例都有些小缺陷，那就是週日、一、五及六的日期怪怪的，這時只需自行改翻譯就可解決此問題。</p>
+<ul>
+<li>週曰 <span style="color: #ff0000;">→</span> 日</li>
+<li>週一 <span style="color: #ff0000;">→</span> 一</li>
+<li>週五 <span style="color: #ff0000;">→</span> 五</li>
+<li>週六 <span style="color: #ff0000;">→</span> 六</li>
+</ul>
+<br />
+<p style="text-align: center;">1. 進入<strong>翻譯</strong>介面：首頁 » 管理 » 設定 » 地區與語言 » 介面翻譯 (https://example.tw/admin/config/regional/translate/translate)。</p>
+<p style="text-align: center;"><img src="../../images/130129/drupal7/2012-12-07-Calendar-06_translate.jpg" alt="2012-12-07-Calendar-06 translate" height="303" width="500" /></p>
+<p style="text-align: center;">2. 搜尋<strong>週五</strong>並編輯 Fri。</p>
+<p style="text-align: center;"><img src="../../images/130129/drupal7/2012-12-04_Calendar_origin_03_translate.jpg" alt="2012-12-04 Calendar origin 03 translate" height="349" width="465" /></p>
+<p style="text-align: center;">3. 手動更換為<strong>五</strong>。</p>
+<p style="text-align: center;"><img src="../../images/130129/drupal7/2012-12-04_Calendar_modified_01.jpg" alt="2012-12-04 Calendar modified 01" height="350" width="500" /></p>
+<p style="text-align: center;">4. 修改後的 <strong>View: Calendar</strong>。</p>
+<p style="text-align: center;"><img src="../../images/130129/drupal7/2012-12-04_Calendar_modified_02_block.jpg" alt="2012-12-04 Calendar modified 02 block" height="387" width="212" /></p>
+<p style="text-align: center;">5. 修改後的 <strong>View: Calendar: Block</strong>。</p>
+<br />
+<h4><span style="color: #ff6600;">2.2. 新增「有事件起迄為基準」的 Calendar View</span></h4>
+<p>若今天是想表示某個事件 (Event) 且擁有某範圍的時間點，則可以使用「A calendar view of the 'field_event_date' field in the 'node' base table.」 ...</p>
+<br />
+<h5><span style="color: #666699;">2.2.1. 新增內容類型 Event</span></h5>
+<p style="text-align: center;">1. 進入<strong>內容類型</strong>介面：首頁 » 管理 » 架構 » 內容類型 (https://example.tw/admin/structure/types)。</p>
+<p style="text-align: center;"><img src="../../images/130129/drupal7/2012-12-07-Calendar-07_add_types.jpg" alt="2012-12-07-Calendar-07 add types" height="333" width="500" /></p>
+<p style="text-align: center;">2. 點選 新增內容類型。</p>
+<p style="text-align: center;"><img src="../../images/130129/drupal7/2012-12-07-Calendar-08_add_types_title.jpg" alt="2012-12-07-Calendar-08 add types title" height="334" width="500" /></p>
+<p style="text-align: center;">3. 設定 Event 內容類型的名稱 (Title)。</p>
+<p style="text-align: center;"><img src="../../images/130129/drupal7/2012-12-07-Calendar-09_event_types_field.jpg" alt="2012-12-07-Calendar-09 event types field" height="335" width="500" /></p>
+<p style="text-align: center;">4. 管理 Event 欄位。</p>
+<p style="text-align: center;"><img src="../../images/130129/drupal7/2012-12-07-Calendar-10_event_types_add_field.jpg" alt="2012-12-07-Calendar-10 event types add field" height="333" width="500" /></p>
+<p style="text-align: center;">5. 新增 Event Date 欄位，切忌 <strong>機器可讀名稱 (Machine Name)</strong> 不可重復。</p>
+<p style="text-align: center;"><img src="../../images/130129/drupal7/2012-12-07-Calendar-11_event_types_collect_end_date.jpg" alt="2012-12-07-Calendar-11 event types collect end date" height="335" width="500" /></p>
+<p style="text-align: center;">6. 進入 Event Date 欄位設定，並將「Collect an end date」一項打勾 。</p>
+<p style="text-align: center;"><img src="../../images/130129/drupal7/2012-12-07-Calendar-11_field_sort.jpg" alt="2012-12-07-Calendar-11 field sort" height="333" width="500" /></p>
+<p style="text-align: center;">7. 更改欄位順序並點選 儲存。</p>
+<br />
+<h5><span style="color: #666699;">2.2.2. 新增 Event 內容類型</span></h5>
+<p style="text-align: center;">1. 進入<strong>內容</strong>介面：首頁 » 管理 (https://example.tw/admin/content)。</p>
+<p style="text-align: center;"><img src="../../images/130129/drupal7/2012-12-07-Calendar-18_types.jpg" alt="2012-12-07-Calendar-18 types" height="136" width="500" /></p>
+<p style="text-align: center;">2. 新增內容。</p>
+<p style="text-align: center;"><img src="../../images/130129/drupal7/2012-12-07-Calendar-15_add_event.jpg" alt="2012-12-07-Calendar-15 add event" height="334" width="500" /></p>
+<p style="text-align: center;">3. 內容類型選擇 Event。</p>
+<p style="text-align: center;"><img src="../../images/130129/drupal7/2012-12-07-Calendar-16_testing_rang.jpg" alt="2012-12-07-Calendar-16 testing rang" height="334" width="500" /></p>
+<p style="text-align: center;">4. 新增有範圍的 Event。</p>
+<p style="text-align: center;"> </p>
+<br />
+<h5><span style="color: #666699;">2.2.3. 新增 Calendar Event</span></h5>
+<p style="text-align: center;">1. 進入 Views 介面：首頁 » 管理 » 架構 » Views (https://example.tw/admin/structure/views)。</p>
+<p style="text-align: center;"><img src="../../images/130129/drupal7/2012-12-07-Calendar-01_view.jpg" alt="2012-12-07-Calendar-01 view" height="389" width="500" /></p>
+<p style="text-align: center;">2. 點選<span class="Ctrl"> Add view from</span> template (https://example.tw/admin/structure/views/add-template)。</p>
+<p style="text-align: center;"><img src="../../images/130129/drupal7/2012-12-07-Calendar-12_field_event_date.jpg" alt="2012-12-07-Calendar-12 field event date" height="332" width="500" /></p>
+<p style="text-align: center;">3. 點選「A calendar view of the 'field_event_date_test' field in the 'node' base table.」一項的 add 。</p>
+<p style="text-align: center;"><img src="../../images/130129/drupal7/2012-12-07-Calendar-13_view_call_name.jpg" alt="2012-12-07-Calendar-13 view call name" height="332" width="500" /></p>
+<p style="text-align: center;">4. 設定 Calendar Event 名稱。</p>
+<p style="text-align: center;"><img src="../../images/130129/drupal7/2012-12-07-Calendar-14_need_save.jpg" alt="2012-12-07-Calendar-14 need save" height="331" width="500" /></p>
+<p style="text-align: center;">5. 點選 儲存 寫入後，再點選 view month 檢視成果。</p>
+<p style="text-align: center;"><img src="../../images/130129/drupal7/2012-12-07-Calendar-17_calendar_rang.jpg" alt="2012-12-07-Calendar-17 calendar rang" height="368" width="500" /></p>
+<p style="text-align: center;">6. <strong>View: Calendar Event</strong> 新增完成。</p>
+<br />
+<h3 style="visibility: visible;">相關連結：</h3>
+<ul><span style="color: #000000;">★</span><a href="https://drupal.org/project/calendar_block" target="_blank">Calendar Block | drupal.org</a><br /><span style="color: #000000;">★</span><a href="https://drupal.org/project/pretty_calendar" target="_blank">Pretty Calendar | drupal.org</a><br /><span style="color: #000000;">★</span><a href="https://vimeo.com/6544779" target="_blank">Drupal Calendar Setup on Vimeo</a><br /><span style="color: #000000;">★</span><a href="https://www.ehow.com/how_8677207_create-mini-calendar-drupal.html" target="_blank">How to Create a Mini Calendar in Drupal | eHow.com</a><br /><br /></ul>
+<h3 style="visibility: visible;">資料來源：</h3>
+<ul><span style="color: #000000;">★</span><a href="https://blog.lyhdev.com/2011/11/drupal-calendar.html" target="_blank">Drupal + Calendar 讓網站擁有行事曆功能 - 玩物尚誌 by lyhcode</a><br /><span style="color: #000000;">★</span><a href="https://www.slideshare.net/AcquiaInc/build-an-event-calendar-in-drupal" target="_blank">Build an Event Calendar in Drupal - slideshare</a></ul>
+			<!-- Show relate article -->
+				<!-- end -->
+		<div class="article_note">
+		<!-- Add tags use metakey, and show OSSF Newsletter tag: OSSFNL+NUM-->
+		<br><br> <hr style='border: 1px dashed #D2DADB;'><b>自由軟體鑄造場電子報&nbsp;:</b>&nbsp;<a href='../../previous-issue%3Ftask=view&amp;id=819.html'>第 212 期 條文解析自由開源軟體的專利授權條款</a><br>				<!-- End -->
+					<br>
+					<b>分類: </b><a href="../foss-programs.html">				源碼秘技					</a>				</div>
+			 <!-- AddThis Button BEGIN ID 3001 is the front page article -->
+     			<br><br>
+       <div class="addthis_toolbox addthis_default_style addthis_32x32_style">
+       <a class="addthis_button_preferred_1"></a>
+       <a class="addthis_button_preferred_2"></a>
+       <a class="addthis_button_preferred_3"></a>
+       <a class="addthis_button_preferred_4"></a>
+       <a class="addthis_button_compact"></a>
+       <a class="addthis_counter addthis_bubble_style"></a>
+       </div>
+       <script type="text/javascript">var addthis_config = {"data_track_clickback":true};</script>
+       <script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js#pubid=openfoundry"></script>
+       <!-- AddThis Button END -->
+     <br>
+		<div class="totop" ><a class="rt-totop" href="8906--calendar-on-drupal-7-.html#" style="outline: medium none;">↑ Top</a></div>
+            <!-- AddThis Button END -->
+
+			</div>
+</div>
+
+		                            </div>
+									<div class="clear"></div>
+								</div>
+								<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+							</div>
+							</div>
+                                                    </div>
+                                            </div>
+                                <div class="rt-grid-3 rt-pull-9">
+                <div id="rt-sidebar-a">
+                                    <div class="square4">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<ul class="menu"><li class="item56"><a href="../previous-issue.html"><span>電子報總覽</span></a></li><li class="item55"><a href="../about-newsletter.html"><span>關於本報</span></a></li></ul>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<ul class="menu"><li class="item115"><a href="../foss-news.html"><span>源碼新聞</span></a></li><li class="item141"><a href="../case-job.html"><span>接案 / 工作</span></a></li></ul>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+        	                <div class="square1">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-title"><h2 class="title">專欄總覽</h2></div>
+						<div class="clear"></div>
+		                						<div class="module-content">
+		                	<ul class="menu"><li class="item37"><a href="../tech-column.html"><span>技術專欄</span></a></li><li id="current" class="active item40"><a href="../foss-programs.html"><span>源碼秘技</span></a></li><li class="item35"><a href="../legal-article-.html"><span>法律專欄</span></a></li><li class="item154"><a href="../foss-forum.html"><span>自由專欄</span></a></li><li class="item162"><a href="../enterprise-application.html"><span>企業應用</span></a></li><li class="item44"><a href="../foss-projects.html"><span>源碼專案</span></a></li></ul>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		                <div class="square1">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<p style="text-align: center;"><a href="../../news%3Fformat=feed&amp;type=rss" target="_black"><img src="../../images/M_images/news-rss-feed.png" border="0" /></a><br /><a href="https://www.openfoundry.org/rss-feed/Newsletter" target="_black"><img src="../../images/M_images/newsletter-rss-feed.png" border="0" /></a></p>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		
+                </div>
+            </div>
+
+                    <div class="clear"></div>
+                </div>
+            </div>
+																													</div>
+										<div id="rt-copyright">
+						<div class="rt-grid-12 rt-alpha rt-omega">
+                        <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<div id="desktop-mobile-version-switch"><span id="mobile-version" class="version-switch"><a href="8906--calendar-on-drupal-7-.html#">行動版</a></span></div>
+自由軟體鑄造場 製作 最佳瀏覽狀態：IE7或Firefox2.0以上 (建議使用Firefox) ‧ 解析度1024*768 <br /> <strong>E-Mail</strong>：<a href="mailto:contact@openfoundry.org">contact@openfoundry.org</a> <strong>Address</strong>：台北市南港區研究院路2段128號 中央研究院資訊科學研究所 . <a href="../../privacy-policy.html">隱私權條款</a>. <a href="../../terms-of-use.html">使用條款</a><span style="position: relative; top: 8px; margin-top: -8px;"> <a href="../../about/8101.html"><img src="../../images/M_images/rss-feed-all.png" border="0" /></a></span>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+        	
+</div>
+						<div class="clear"></div>
+					</div>
+					<div class="rt-footer-bottom-wrap"><div class="rt-footer-bottom"><div class="rt-footer-bottom2"><div class="rt-footer-bottom3"></div></div></div></div>
+									</div></div></div>
+				<div class="rt-surround-bottom"><div class="rt-surround-bottom2"><div class="rt-surround-bottom3"></div></div></div>
+							</div>
+		</div>
+		<!--
+		<script id="aptureScript">
+						(function (){var a=document.createElement("script");a.defer="true";a.src="http://www.apture.com/js/apture.js?siteToken=vsJttrn";document.getElementsByTagName("head")[0].appendChild(a);})();
+     </script>
+-->
+
+<!-- Piwik -->
+<!-- 			<script type="text/javascript">
+			  var _paq = _paq || [];
+		  _paq.push(["trackPageView"]);
+		  _paq.push(["enableLinkTracking"]);
+
+		    (function() {
+			        var u=(("https:" == document.location.protocol) ? "https" : "https") + "://www.openfoundry.org/piwik/";
+				    _paq.push(["setTrackerUrl", u+"piwik.php"]);
+				    _paq.push(["setSiteId", "1"]);
+				        var d=document, g=d.createElement("script"), s=d.getElementsByTagName("script")[0]; g.type="text/javascript";
+				        g.defer=true; g.async=true; g.src=u+"piwik.js"; s.parentNode.insertBefore(g,s);
+					  })();
+		  </script> -->
+<!-- End Piwik Code -->
+	</body>
+</html>

@@ -1,0 +1,668 @@
+<!doctype html>
+<html lang="en" dir="ltr">
+<!--
+Backtrack v1.0 FINAL 	 2006-05-26	https://www.backtrack-linux.org/	https://web.archive.org/web/20080626100030/http://www.remote-exploit.org/backtrack_download_veryold.html		https://secmaniac.blogspot.com/2006/05/backtrack-security-final-release.html	
+Backtrack v2.0 BETA #1	 2006-10-13		https://web.archive.org/web/20080626100030/http://www.remote-exploit.org/backtrack_download_veryold.html	https://web.archive.org/web/20061027172529/http://www.offensive-security.com/downloads.html	https://secmaniac.blogspot.com/2006/10/backtrack-v20-public-beta-has-been.html	
+Backtrack v2.0 BETA #2	 2006-11-19		https://web.archive.org/web/20070202024932/http://www.remote-exploit.org/backtrack_download.html			
+Backtrack v2.0 FINAL 	 2007-03-06 	https://www.backtrack-linux.org/	https://web.archive.org/web/20090529075045/http://www.remote-exploit.org:80/backtrack_devlog.html		https://secmaniac.blogspot.com/2007/02/backtrack-20-final-due-end-of-febuary.html	
+Backtrack v3.0 BETA 	 2007-12-14		https://web.archive.org/web/20090529075045/http://www.remote-exploit.org:80/backtrack_devlog.html	https://web.archive.org/web/20080501210105/http://www.remote-exploit.org:80/news.html	https://secmaniac.blogspot.com/2007/12/backtrack-3-beta-out.html	
+Backtrack v3.0 FINAL 	 2008-06-19 	https://www.backtrack-linux.org/	https://web.archive.org/web/20090529075045/http://www.remote-exploit.org:80/backtrack_devlog.html			
+Backtrack v4.0 BETA 	 2009-02-11 		https://web.archive.org/web/20090523080314/http://www.remote-exploit.org/backtrack_download.html			
+Backtrack v4.0 FINAL 	 2010-01-09 	https://www.backtrack-linux.org/	 https://web.archive.org/web/20100114220541/http://www.backtrack-linux.org/backtrack/backtrack4-release/	https://www.offensive-security.com/backtrack/backtrack-4-final-release/		
+Backtrack v4.0 R1    	 2010-08-04 		 https://web.archive.org/web/20101130093002/http://www.backtrack-linux.org/backtrack/backtrack-4-r1-public-release/			
+Backtrack v4.0 R2    	 2010-11-19 		 https://web.archive.org/web/20110128024129/http://www.backtrack-linux.org/backtrack/backtrack-4-r2-download/			
+Backtrack v5.0 FINAL 	 2011-05-10 	https://www.backtrack-linux.org/	https://web.archive.org/web/20120226060247/http://www.backtrack-linux.org/backtrack/backtrack-5-release/			
+Backtrack v5.0 R1    	 2011-08-18 		https://web.archive.org/web/20120223221229/http://www.backtrack-linux.org/backtrack/backtrack-5-r1-released			
+Backtrack v5.0 R2    	 2012-03-01 		https://web.archive.org/web/20120303005136/http://www.backtrack-linux.org/backtrack/backtrack-5-r2-released/			
+Backtrack v5.0 R3    	 2012-08-13 		https://web.archive.org/web/20130314031147/http://www.backtrack-linux.org/backtrack/backtrack-5-r3-released/			
+-->
+<head>
+<meta charset="utf-8">
+<meta http-equiv="x-ua-compatible" content="ie=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BackTrack Linux - Penetration Testing Distribution</title>
+<style>
+html {
+
+}
+@import url('https://fonts.googleapis.com/css?family=Open+Sans');
+*{
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+}
+h1 {
+font-weight: 400;
+min-width:300px !important;
+}
+h2 {
+color: #aaa;
+font-weight:400;
+}
+
+a {
+color: #d03540;
+color: #fff;
+text-decoration:none;
+font-weight:400;
+}
+a:hover {
+color: #fff;
+
+}
+
+body {
+background-color: #000;
+background-image:url(https://www.backtrack-linux.org/back.png);
+background-size:cover; 
+/*background-size: 1920px 1165px;*/
+background-repeat: no-repeat;
+background-position: top; 
+background-attachment:fixed;
+color: #222;
+font-family: 'Open Sans', sans-serif;
+line-height:1.4em;
+overflow:auto;
+font-size: 1.3em;
+margin:0px;
+padding:0px;
+}
+
+body:before {
+  content: "";
+  position: relative;
+  top: 0px;
+  left: 50%;
+  bottom: 0px;
+  transform: translateX(-50%);
+  width: 4px;
+}
+
+canvas {
+width:99%;
+height:99%;
+background-color: transparent;
+position: fixed;
+clear:both;
+z-index: 10;
+}
+
+
+.centered {
+/*
+position: fixed;
+top: 50%;
+left: 50%;
+transform: translate(-50%, -50%);
+*/
+margin:100px auto;
+z-index: 9999;
+width:100%;
+max-width:1485px;
+height:auto;
+}
+
+img a {
+border:none;
+}
+
+.logo {
+width:100%;
+max-width:1485px;
+margin:0 auto;
+border:none;
+}
+
+.button {
+position:relative;
+border: 1px solid #000;
+background: #00111c;
+background: #3b3b3b;
+padding: 12.5px 25px;
+color: #ccc;
+font-size:25px;
+
+text-decoration: none;
+vertical-align: middle;
+z-index:9999;
+min-width:300px;
+}
+.button:hover {
+background: #001f33;
+color: #fff;
+}
+.button:active {
+background: #000000;
+}
+
+@media only screen and (max-width: 600px) {
+	.button {
+	font-size:15px;
+	}
+}
+
+
+
+/******** TIMELINE CSS - CodePen port https://codepen.io/z-/pen/bwPBjY ************/
+/*
+body {
+  background-color: #1d1d1d;
+  min-height: 100vh;
+  margin: 0;
+  font-family: "Droid Sans", sans-serif;
+}
+body:before {
+  content: "";
+  position: fixed;
+  top: 0px;
+  left: 50%;
+  bottom: 0px;
+  transform: translateX(-50%);
+  width: 4px;
+  background-color: #fff;
+}*/
+
+body .entries {
+position:relative;
+top:10px;
+width: calc(100% - 80px);
+max-width: 1000px;
+margin: auto;
+left: -5px;
+
+}
+body .entries .entry {
+  width: calc(50% - 70px);
+  float: left;
+  padding: 20px;
+  clear: both;
+  text-align: right;
+}
+body .entries .entry:not(:first-child) {
+  margin-top: -60px;
+}
+body .entries .entry .title {
+  font-size: 1.4em;
+  margin-bottom: 12px;
+  position: relative;
+  color: #fff;
+}
+body .entries .entry .title:before {
+  content: "";
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  border: 4px solid #fff;
+  background-color: #1d1d1d;
+  border-radius: 100%;
+  top: 50%;
+  transform: translateY(-50%);
+  right: -73px;
+  z-index: 1000;
+}
+body .entries .entry .title.big:before {
+  width: 24px;
+  height: 24px;
+  transform: translate(8px, -50%);
+}
+body .entries .entry .body {
+  color: #aaa;
+}
+body .entries .entry .body p {
+  line-height: 1.4em;
+}
+body .entries .entry:nth-child(2n) {
+  text-align: left;
+  float: right;
+}
+body .entries .entry:nth-child(2n) .title:before {
+  left: -63px;
+}
+body .entries .entry:nth-child(2n) .title.big:before {
+  transform: translate(-8px, -50%);
+}
+
+.grid {
+width:100%;
+display: -webkit-flex; /* Safari */
+display: flex;
+padding:10px 60px;
+flex-wrap: wrap;
+}
+
+.col-quarter {
+-webkit-flex: 1;  /* Safari 6.1+ */
+-ms-flex: 1;  /* IE 10 */    
+flex: 1;
+margin:10px 80px;
+flex-wrap: wrap;
+}
+
+.responsive-img {
+max-width: 100%; 
+display:block; 
+height: auto;
+min-width:200px;
+}
+
+#footer {
+display:block;
+position:relative;
+z-index:9999;
+background: #111;
+text-align:center;
+margin:0px;
+
+color: #aaa;
+font-size:16px;
+
+background: -moz-linear-gradient(top, rgba(0,0,0,1) 0%, rgba(0,0,0,0) 100%); /* FF3.6-15 */
+background: -webkit-linear-gradient(top, rgba(0,0,0,1) 0%,rgba(0,0,0,0) 100%); /* Chrome10-25,Safari5.1-6 */
+background: linear-gradient(to bottom, rgba(0,0,0,1) 0%,rgba(0,0,0,0) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#000000', endColorstr='#00000000',GradientType=0 ); /* IE6-9
+
+}
+</style>
+
+<script type="application/ld+json" async>
+{
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  "name" : "BackTrack Linux",
+  "url": "http://www.backtrack-linux.org/",
+  "logo": "http://www.backtrack-linux.org/bt-logo-darker.png"
+}
+</script>
+
+
+</head>
+<body>
+
+<canvas id="nokey">
+    Your Browser Doesn't Support Canvas, Please Download Chrome or compatible browser.
+</canvas>
+
+<div class="centered">
+<a href="https://www.kali.org/"><img class="logo" src="https://www.backtrack-linux.org/bt-logo.png" alt="BackTrack is now Kali Linux" /></a><br />
+<center><h1><a class="button" href="https://www.kali.org/">BackTrack is now Kali Linux. (Since 2013)</a></h1></center>
+<br />
+</div>
+
+
+<div class="entries">
+  <div class="entry">
+    <div class="title">May 26th 2006</div>
+    <div class="body">
+		<p>Auditor Security Collection and Whax merge to create BackTrack</p>
+		<p>Live CD and live USB capability</p>
+    </div>
+  </div>
+  <div class="entry">
+    <div class="title">March 6th 2007</div>
+    <div class="body">
+		<p>BackTrack 2</p>
+		<p>Kernel 2.6.20</p>
+		<p>Metasploit2 and Metsploit3 support</p>
+		<p>Redesigned menu structure</p>
+    </div>
+  </div>
+  <div class="entry">
+    <div class="title big">June 19th 2008</div>
+    <div class="body">
+		<p>BackTrack 3</p>
+		<p>Kernel 2.6.21.5</p>
+		<p>Saint and Maltego added</p>
+    </div>
+  </div>
+  <div class="entry">
+    <div class="title">January 9th 2010</div>
+    <div class="body">
+		<p>BackTrack 4</p>
+		<p>Kernel 2.6.34</p>
+		<p>Massively improved hardware support</p>
+		<p>Official FluxBox support</p>
+    </div>
+  </div>
+  <div class="entry">
+    <div class="title">May 10th 2011</div>
+    <div class="body">
+		<p>BackTrack 5</p>
+		<p>Based on Ubuntu Lucid LTS</p>
+		<p>Kernel 2.6.38</p>
+    </div>
+  </div>
+  <div class="entry">
+    <div class="title big">March 13th 2013</div>
+    <div class="body">
+		<p>BackTrack Linux becomes <a href="http://kali.org" style="color: white; z-index: 99; position: relative;">Kali Linux</a></p>
+		<p>Support for BackTrack Linux ends</p>
+		<p>Complete platform rebuild</p>
+		<p>Based on Debian</p>
+		<p>Streamlined package updates synced with Debian</p>
+    </div>
+  </div>
+ 
+</div><!-- end content -->
+
+
+<div style="display:block; text-align:center; margin:100px auto; clear:both; top:100px; position:relative; z-index:9999;">
+
+<iframe src="https://player.vimeo.com/video/132329259" width="640" height="360" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen sandbox="allow-scripts"></iframe>
+<br /><br /><br /><br /><br />
+</div>
+
+<div id="footer">
+<br />
+<br />
+
+<h2 style="display:none;">Visit some of our other projects</h2>
+<div class="grid">
+
+
+
+
+<div class="col-quarter">
+<a href="https://www.offensive-security.com/" title="" target="" rel=""><img width="600" height="342" src="https://www.backtrack-linux.org/images/offsec-logo-gray-trans.png" class="responsive-img" alt="Offensive Security, we Try Harder!"></a>
+
+</div>
+
+<div class="col-quarter">
+<a href="https://www.kali.org/" title="" target="_blank" rel=""><img width="600" height="342" src="https://www.backtrack-linux.org/images/kali-logo-gray-trans.png" class="responsive-img" alt="Kali Linux by Offensive Security"></a>
+
+</div>
+
+<div class="col-quarter">
+<a href="https://www.exploit-db.com/" title="" target="_blank" rel=""><img width="600" height="342" src="https://www.backtrack-linux.org/images/edb-logo-gray-trans.png" class="responsive-img" alt="Exploit Database by Offensive Security"></a>
+
+</div>
+
+<div class="col-quarter">
+<a href="https://www.kali.org/kali-linux-nethunter/" title="" target="_blank" rel=""><img width="600" height="342" src="https://www.backtrack-linux.org/images/nethunter-logo-gray-trans.png" class="responsive-img" alt="Kali Net Hunter by Offensive Security"></a>
+
+</div>
+
+</div><!-- end grid -->
+
+<br /><br />
+<p style="color: #aaa; font-weight: 300;">A project by <a href="https://www.offensive-security.com">Offensive Security</a>  &copy;<script>function myYear() { var d = new Date(); var n = d.getFullYear(); document.write(n); }myYear(); </script></p>
+
+<br />
+</div>
+
+
+
+<script>
+var canvas = document.getElementById('nokey'),
+   can_w = parseInt(canvas.getAttribute('width')),
+   can_h = parseInt(canvas.getAttribute('height')),
+   ctx = canvas.getContext('2d');
+
+// console.log(typeof can_w);
+
+var ball = {
+      x: 0,
+      y: 0,
+      vx: 0,
+      vy: 0,
+      r: 0,
+      alpha: 1,
+      phase: 0
+   },
+   ball_color = {
+       r: 207,
+       g: 255,
+       b: 4
+   },
+   R = 2,
+   balls = [],
+   alpha_f = 0.03,
+   alpha_phase = 0,
+    
+// Line
+   link_line_width = 0.8,
+   dis_limit = 260,
+   add_mouse_point = true,
+   mouse_in = false,
+   mouse_ball = {
+      x: 0,
+      y: 0,
+      vx: 0,
+      vy: 0,
+      r: 0,
+      type: 'mouse'
+   };
+
+// Random speed
+function getRandomSpeed(pos){
+    var  min = -1,
+       max = 1;
+    switch(pos){
+        case 'top':
+            return [randomNumFrom(min, max), randomNumFrom(0.1, max)];
+            break;
+        case 'right':
+            return [randomNumFrom(min, -0.1), randomNumFrom(min, max)];
+            break;
+        case 'bottom':
+            return [randomNumFrom(min, max), randomNumFrom(min, -0.1)];
+            break;
+        case 'left':
+            return [randomNumFrom(0.1, max), randomNumFrom(min, max)];
+            break;
+        default:
+            return;
+            break;
+    }
+}
+function randomArrayItem(arr){
+    return arr[Math.floor(Math.random() * arr.length)];
+}
+function randomNumFrom(min, max){
+    return Math.random()*(max - min) + min;
+}
+console.log(randomNumFrom(0, 10));
+// Random Ball
+function getRandomBall(){
+    var pos = randomArrayItem(['top', 'right', 'bottom', 'left']);
+    switch(pos){
+        case 'top':
+            return {
+                x: randomSidePos(can_w),
+                y: -R,
+                vx: getRandomSpeed('top')[0],
+                vy: getRandomSpeed('top')[1],
+                r: R,
+                alpha: 1,
+                phase: randomNumFrom(0, 10)
+            }
+            break;
+        case 'right':
+            return {
+                x: can_w + R,
+                y: randomSidePos(can_h),
+                vx: getRandomSpeed('right')[0],
+                vy: getRandomSpeed('right')[1],
+                r: R,
+                alpha: 1,
+                phase: randomNumFrom(0, 10)
+            }
+            break;
+        case 'bottom':
+            return {
+                x: randomSidePos(can_w),
+                y: can_h + R,
+                vx: getRandomSpeed('bottom')[0],
+                vy: getRandomSpeed('bottom')[1],
+                r: R,
+                alpha: 1,
+                phase: randomNumFrom(0, 10)
+            }
+            break;
+        case 'left':
+            return {
+                x: -R,
+                y: randomSidePos(can_h),
+                vx: getRandomSpeed('left')[0],
+                vy: getRandomSpeed('left')[1],
+                r: R,
+                alpha: 1,
+                phase: randomNumFrom(0, 10)
+            }
+            break;
+    }
+}
+function randomSidePos(length){
+    return Math.ceil(Math.random() * length);
+}
+
+// Draw Ball
+function renderBalls(){
+    Array.prototype.forEach.call(balls, function(b){
+       if(!b.hasOwnProperty('type')){
+           ctx.fillStyle = 'rgba('+ball_color.r+','+ball_color.g+','+ball_color.b+','+b.alpha+')';
+           ctx.beginPath();
+           ctx.arc(b.x, b.y, R, 0, Math.PI*2, true);
+           ctx.closePath();
+           ctx.fill();
+       }
+    });
+}
+
+// Update balls
+function updateBalls(){
+    var new_balls = [];
+    Array.prototype.forEach.call(balls, function(b){
+        b.x += b.vx;
+        b.y += b.vy;
+        
+        if(b.x > -(50) && b.x < (can_w+50) && b.y > -(50) && b.y < (can_h+50)){
+           new_balls.push(b);
+        }
+        
+        // alpha change
+        b.phase += alpha_f;
+        b.alpha = Math.abs(Math.cos(b.phase));
+        // console.log(b.alpha);
+    });
+    
+    balls = new_balls.slice(0);
+}
+
+// loop alpha
+function loopAlphaInf(){
+    
+}
+
+// Draw lines
+function renderLines(){
+    var fraction, alpha;
+    for (var i = 0; i < balls.length; i++) {
+        for (var j = i + 1; j < balls.length; j++) {
+           
+           fraction = getDisOf(balls[i], balls[j]) / dis_limit;
+            
+           if(fraction < 1){
+               alpha = (1 - fraction).toString();
+
+               ctx.strokeStyle = 'rgba(150,150,150,'+alpha+')';
+               ctx.lineWidth = link_line_width;
+               
+               ctx.beginPath();
+               ctx.moveTo(balls[i].x, balls[i].y);
+               ctx.lineTo(balls[j].x, balls[j].y);
+               ctx.stroke();
+               ctx.closePath();
+           }
+        }
+    }
+}
+
+// calculate distance between two points
+function getDisOf(b1, b2){
+    var  delta_x = Math.abs(b1.x - b2.x),
+       delta_y = Math.abs(b1.y - b2.y);
+    
+    return Math.sqrt(delta_x*delta_x + delta_y*delta_y);
+}
+
+// add balls if there a little balls
+function addBallIfy(){
+    if(balls.length < 20){
+        balls.push(getRandomBall());
+    }
+}
+
+// Render
+function render(){
+    ctx.clearRect(0, 0, can_w, can_h);
+    
+    renderBalls();
+    
+    renderLines();
+    
+    updateBalls();
+    
+    addBallIfy();
+    
+    window.requestAnimationFrame(render);
+}
+
+// Init Balls
+function initBalls(num){
+    for(var i = 1; i <= num; i++){
+        balls.push({
+            x: randomSidePos(can_w),
+            y: randomSidePos(can_h),
+            vx: getRandomSpeed('top')[0],
+            vy: getRandomSpeed('top')[1],
+            r: R,
+            alpha: 1,
+            phase: randomNumFrom(0, 10)
+        });
+    }
+}
+// Init Canvas
+function initCanvas(){
+    canvas.setAttribute('width', window.innerWidth);
+    canvas.setAttribute('height', window.innerHeight);
+    
+    can_w = parseInt(canvas.getAttribute('width'));
+    can_h = parseInt(canvas.getAttribute('height'));
+}
+window.addEventListener('resize', function(e){
+    console.log('Window Resize...');
+    initCanvas();
+});
+
+function goMovie(){
+    initCanvas();
+    initBalls(20);
+    window.requestAnimationFrame(render);
+}
+goMovie();
+
+// Mouse effect
+canvas.addEventListener('mouseenter', function(){
+    console.log('mouseenter');
+    mouse_in = true;
+    balls.push(mouse_ball);
+});
+canvas.addEventListener('mouseleave', function(){
+    console.log('mouseleave');
+    mouse_in = false;
+    var new_balls = [];
+    Array.prototype.forEach.call(balls, function(b){
+        if(!b.hasOwnProperty('type')){
+            new_balls.push(b);
+        }
+    });
+    balls = new_balls.slice(0);
+});
+canvas.addEventListener('mousemove', function(e){
+    var e = e || window.event;
+    mouse_ball.x = e.pageX;
+    mouse_ball.y = e.pageY;
+    // console.log(mouse_ball);
+});
+</script>
+</body>
+</html>

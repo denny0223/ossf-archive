@@ -1,0 +1,494 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="zh-tw" lang="zh-tw" >
+<head>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<link rel="shortcut icon" href="../../images/favicon.ico" />
+	  <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+  <meta name="robots" content="index, follow" />
+  <meta name="keywords" content="OSSFNL240" />
+  <meta name="title" content="CMS 優質新秀－Joomla!（下）" />
+  <meta name="description" content="二、模組 (modules)－ 至於模組的建置過程則更容易了。所有的模組皆放置於 modules/ 這個目錄下，以檔案的格式呈現，至於其命名原則如下表： “mod_”+ 模組名稱.php 如: mod_hello.php “mod_”+ 模組名稱.xml 如: mod_hello.xml 主程式撰寫於 .php 這個檔案內，而 XML 檔則是建置管理區頁面呈現的相關設定內容。" />
+  <meta name="generator" content="" />
+  <title>CMS 優質新秀－Joomla!（下） - OpenFoundry</title>
+  <link href="../../favicon.ico" rel="shortcut icon" type="image/x-icon" />
+  <link rel="stylesheet" href="../../components/com_gantry/css/gantry.css" type="text/css" />
+  <link rel="stylesheet" href="../../components/com_gantry/css/grid-12.css" type="text/css" />
+  <link rel="stylesheet" href="../../components/com_gantry/css/joomla.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/joomla.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/style1.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/light-body.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/demo-styles.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/template.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/typography.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/fusionmenu.css" type="text/css" />
+  <style type="text/css">
+    <!--
+#rt-main-surround ul.menu li.active > a, #rt-main-surround ul.menu li.active > .separator, #rt-main-surround ul.menu li.active > .item, #rt-main-surround .square4 ul.menu li:hover > a, #rt-main-surround .square4 ul.menu li:hover > .item, #rt-main-surround .square4 ul.menu li:hover > .separator, .roktabs-links ul li.active span {color:#0088B5;}
+a, #rt-main-surround ul.menu a:hover, #rt-main-surround ul.menu .separator:hover, #rt-main-surround ul.menu .item:hover {color:#0088B5;}
+    -->
+  </style>
+  <script type="text/javascript" src="../../components/com_jcomments/js/jcomments-v2.1.js%3Fv=2"></script>
+  <script type="text/javascript" src="../../components/com_jcomments/libraries/joomlatune/ajax.js"></script>
+  <script type="text/javascript" src="../../media/system/js/mootools.js"></script>
+  <script type="text/javascript" src="../../media/system/js/caption.js"></script>
+  <script type="text/javascript" src="../../components/com_gantry/js/gantry-buildspans.js"></script>
+  <script type="text/javascript" src="../../components/com_gantry/js/gantry-inputs.js"></script>
+  <script type="text/javascript" src="../../templates/rt_quantive_j15/js/jquery.cookie.js"></script>
+  <script type="text/javascript" src="../../modules/mod_roknavmenu/themes/fusion/js/fusion.js"></script>
+  <script type="text/javascript" src="../../modules/mod_ofssologin/js/ofssologin.js"></script>
+  <script type="text/javascript">
+
+			window.addEvent('domready', function() {
+				var modules = ['rt-block'];
+				var header = ['h3','h2','h1'];
+				GantryBuildSpans(modules, header);
+			});
+		InputsExclusion.push('.content_vote','#rt-popup')
+		        window.addEvent('load', function() {
+					new Fusion('ul.menutop', {
+						pill: 0,
+						effect: 'slide and fade',
+						opacity: 1,
+						hideDelay: 500,
+						centered: 0,
+						tweakInitial: {'x': -2, 'y': 0},
+        				tweakSubsequent: {'x': 0, 'y': -14},
+						menuFx: {duration: 200, transition: Fx.Transitions.Sine.easeOut},
+						pillFx: {duration: 400, transition: Fx.Transitions.Back.easeOut}
+					});
+	            });
+  </script>
+<!-- <script type="text/javascript" src="/sso/javascripts/langsync.js"></script> -->
+<!-- <script src="/templates/rt_quantive_j15/js/ossf.js"></script> -->
+<script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-4136519-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
+</head>
+	<body  class="backgroundlevel-low backgroundstyle-style8 bodylevel-med bodystyle-light cssstyle-style1 logostyle-dark font-family-helvetica font-size-is-default menu-type-fusionmenu col12 ">
+		<div id="rt-main-background">
+			<div class="rt-container">
+																<div id="rt-header">
+					<div class="rt-grid-7 rt-alpha">
+    			<div class="rt-block">
+    	    	<a href="../../index.html" id="rt-logo"></a>
+    		</div>
+	    
+</div>
+<div class="rt-grid-5 rt-omega">
+                    <div class="square9">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<div class="ofssologin_square9"><a href="../../index.html">登入</a>&nbsp;&nbsp|&nbsp;&nbsp;<span><a href="../../en/tech-column/811-cms-joomla.html" ><span lang="en" xml:lang="en">English</span></a></li></ul></span><!--Joom!fish V2.0.4 (Lightning)-->
+<!-- &copy; 2003-2009 Think Network, released under the GPL. -->
+<!-- More information: at http://www.joomfish.net -->
+<div class="ofssologin_search_square9">
+  <form id="of_search" action="https://www.openfoundry.org/of/openfoundry/search" method="get" onsubmit="of_search(); return false;">
+    <select id="of_search_type">
+      <option value="Projects"> 專案 </option>
+      <option value="Content"> 文章 </option>
+      <option value="People"> 人才 </option>
+    </select>
+    <input id="query" name="query" id="mod_search_searchword" maxlength="50" alt="search" class="inputbox" type="text" size="28" value="search..."  onblur="if(this.value=='') this.value='search...';" onfocus="if(this.value=='search...') this.value='';" />
+    <input type="hidden" name="commit" value="search" />
+  </form>
+</div></div>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		
+</div>
+					<div class="clear"></div>
+				</div>
+																<div id="rt-navigation"><div id="rt-navigation2"><div id="rt-navigation3">
+					
+<div class="nopill">
+	<ul class="menutop level1 " >
+						<li class="item1 root" >
+					<a class="orphan item bullet" href="../../index.html"  >
+				<span>
+			    				首頁				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item32 root" >
+					<a class="orphan item bullet" href="../../archived.html"  >
+				<span>
+			    				專案				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item186 root" >
+					<a class="orphan item bullet" href="../community.html"  >
+				<span>
+			    				Who&#039;s Who				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item4 root" >
+					<a class="orphan item bullet" href="../news.html"  >
+				<span>
+			    				新聞				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item5 root" >
+					<a class="orphan item bullet" href="../law-and-licensing.html"  >
+				<span>
+			    				法律源地				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item3 root" >
+					<a class="orphan item bullet" href="../activities.html"  >
+				<span>
+			    				活動				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item2 root" >
+					<a class="orphan item bullet" href="../resourcecatalog%3FName=Value.html"  >
+				<span>
+			    				資源表列				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item45 root" >
+					<a class="orphan item bullet" href="../about.html"  >
+				<span>
+			    				關於				   
+				</span>
+			</a>
+			
+			
+	</li>	
+				</ul>
+</div>
+
+				    <div class="clear"></div>
+				</div></div></div>
+								<div class="rt-surround"><div class="rt-surround2"><div class="rt-surround3">
+										<div id="rt-showcase-section">
+												<div id="rt-showcase">
+							<div class="rt-grid-12 rt-alpha rt-omega">
+    		<div class="clear"></div>
+		
+		
+                <div class="close-note">
+                    <div class="rt-block">
+               					<div class="module-content">
+                	<div style="font-size:medium; background-image:linear-gradient(120deg,#159957,#4298b2);color:white;padding:20px;margin:-10px -18px;">感謝您對「自由軟體鑄造場」的支持與愛護，十多年來「自由軟體鑄造場」受中央研究院支持，並在資訊科學研究所以及資訊科技創新研究中心執行，現已完成階段性的任務。 本網站預計持續維運至 2021年底，網站內容基本上不會再更動。<br />也紀念我們永遠的朋友 李士傑先生（Shih-Chieh Ilya Li）。</div>				</div>
+            </div>
+                </div>
+		
+</div>
+							<div class="clear"></div>
+						</div>
+																	</div>
+															<div id="rt-main-surround">
+												<div id="rt-breadcrumbs">
+								<div class="rt-breadcrumb-surround">
+		<a href="../../index.html" id="breadcrumbs-home"></a>
+		<span class="breadcrumbs pathway">
+<a href="../tech-column.html" class="pathway">技術專欄</a> <img src="../../templates/rt_quantive_j15/images/arrow.png" alt=""  /> <span class="no-link">CMS 優質新秀－Joomla!（下）</span></span>
+	</div>
+	
+							<div class="clear"></div>
+						</div>
+																							              <div id="rt-main" class="sa3-mb9">
+                <div class="rt-main-inner">
+                    <div class="rt-grid-9 rt-push-3">
+                                                <div class="rt-block">
+                            							<div class="square1">
+							<div class="rt-module-surround">
+								<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+								<div class="rt-module-inner">
+		                            <div id="rt-mainbody">
+		                                
+<div class="rt-joomla ">
+	<div class="rt-article">
+		
+				<div class="rt-headline"><h1 class="rt-article-title">CMS 優質新秀－Joomla!（下）</h1>		</div>
+		<div class="clear"></div>
+		
+		
+		
+				<div class="rt-articleinfo">
+						<div class="rt-article-icons">
+								<a href="811-cms-joomla%3Ftmpl=component&amp;print=1&amp;layout=default&amp;page=.html" title="列印" onclick="window.open(this.href,'win2','status=no,toolbar=no,scrollbars=yes,titlebar=no,menubar=no,resizable=yes,width=640,height=480,directories=no,location=no'); return false;" rel="nofollow"><span class="icon print"></span></a>																</div>
+			
+			<span class="rt-date-posted">
+						建立日期			2007-02-15 00:10						&nbsp;&nbsp;&nbsp;&nbsp;						最近更新在 2011-10-12 10:03						</span>
+
+						<span class="rt-author">
+				作者是 王家薰（OSSF技術組)			</span>
+				
+					</div>
+		
+		
+		<p>二、模組 (modules)－</p>
+<p>至於模組的建置過程則更容易了。所有的模組皆放置於 modules/ 這個目錄下，以檔案的格式呈現，至於其命名原則如下表：</p>
+
+<table style="text-align: left; width: 294px;" border="1" cellspacing="0" cellpadding="0">
+<tbody>
+<tr>
+<td style="width: 161px;">“mod_”+ 模組名稱.php</td>
+<td style="width: 127px;">如: mod_hello.php</td>
+</tr>
+<tr>
+<td style="width: 161px;">“mod_”+ 模組名稱.xml</td>
+<td style="width: 127px;">如: mod_hello.xml</td>
+</tr>
+</tbody>
+</table>
+<p>主程式撰寫於 .php 這個檔案內，而 XML 檔則是建置管理區頁面呈現的相關設定內容。</p>
+<p>建置完成後，新的模組需至資料庫中，modules 這個 table 內註冊後，方才可使用。{mosimage}</p>
+<p>簡單的說明元件及模組開發的基本程序後，您會發現，在 Joomla! 開發一個專屬的功能元件相當的方便，甚至您可將任何其他 php 程式，轉成 Joomla! 的元件或模組。（<a href="../../article.pl%3Fsid=07%252F01%252F28%252F177258&amp;mode=thread&amp;issue=74&amp;extra_header=第&#32;74&#32;期&#32;自由軟體人才資料庫推廣活動.html#6">註六</a>）</p>
+<p><strong>◎ 開始建置</strong></p>
+<p>介紹完 Joomla! 的背景及基礎架構後，接下來筆者將一步步帶領讀者，建置一個 Joomla! 的系統，其建置時最低的環境需求如下表：</p>
+<table style="text-align: left; width: 477px;" border="1" cellspacing="0" cellpadding="0">
+<tbody>
+<tr>
+<td style="width: 104px;">作業系統</td>
+<td style="width: 369px;">Linux、Free BSD、Mac OS X and WindowsNT/2000/XP</td>
+</tr>
+<tr>
+<td style="width: 104px;">PHP程式語言</td>
+<td style="width: 369px;">必需使用4.2.X或更新版本：<a href="https://www.php.net/">https://www.php.net</a></td>
+</tr>
+<tr>
+<td style="width: 104px;">Apache伺服器</td>
+<td style="width: 369px;">Apache 1.13.19或更新版本：<a href="https://www.mysql.com/">https://www.mysql.com</a></td>
+</tr>
+<tr>
+<td style="width: 104px;">資料庫</td>
+<td style="width: 369px;">MySQL 3.23.X或更新版本：<a href="../../en/resourcecatalog/Enterprise/General-Info/apache-software-foundation/visit.html">https://www.apache.org</a></td>
+</tr>
+</tbody>
+</table>
+<p>注意：除安裝的環境需求外，針對 PHP 的函式庫，需支援 XML、Zlib、MySQL，如架設中文版的系統需支援 mbstring、iconv。</p>
+<p>在開始建置前，請讀者確定系統環境已有建置 Joomla! 所需要的基本要求。筆者的建置環境如下表：</p>
+<table style="text-align: left; width: 197px;" border="1" cellspacing="0" cellpadding="0">
+<tbody>
+<tr>
+<td style="width: 89px;">作業系統</td>
+<td style="width: 105px;">FreeBSD 6.0</td>
+</tr>
+<tr>
+<td style="width: 89px;">網頁伺服器</td>
+<td style="width: 105px;">Apache 1.3.37</td>
+</tr>
+<tr>
+<td style="width: 89px;">程式語言</td>
+<td style="width: 105px;">PHP 4.4.3</td>
+</tr>
+<tr>
+<td style="width: 89px;">資料庫</td>
+<td style="width: 105px;">MySQL 4.1.21</td>
+</tr>
+<tr>
+<td style="width: 89px;">CMS</td>
+<td style="width: 105px;">Joomla! 1.0.11</td>
+</tr>
+</tbody>
+</table>
+<p>雖然最新釋出的版本為 Joomla!1.5，但由於目前中文版處於 Beta 測試階段，尚有一些待處理及回報的問題，筆者建議若想以穩定為主，下載 Joomla!1.0.11 較佳，欲使用 1.5 版，則待升級檔釋出，再更新即可。</p>
+<p>Step1：取得Joomla! 1.0.11安裝檔</p>
+<p>取得安裝壓縮檔後，解開至 Apache 網頁內容設定的目錄下（<a href="../../article.pl%3Fsid=07%252F01%252F28%252F177258&amp;mode=thread&amp;issue=74&amp;extra_header=第&#32;74&#32;期&#32;自由軟體人才資料庫推廣活動.html#7">註七</a>），GNU/Linux 常見的目錄是 /var/www/html，FreeBSD 則是 /usr/local/www/data。建置一個新的目錄名稱，筆者取名為 joomla，並解開安裝檔於此目錄下。</p>
+<p>筆者直接從專案開發網站 OpenFoundry (https://rt.openfoundry.org)中的「joomla 中文版」專案下載安裝檔，此外，讀者也可至台灣 Joomla! 官方網站或使用 BSD 下的 Ports 安裝。（<a href="../../article.pl%3Fsid=07%252F01%252F28%252F177258&amp;mode=thread&amp;issue=74&amp;extra_header=第&#32;74&#32;期&#32;自由軟體人才資料庫推廣活動.html#8">註八</a>）</p>
+<p>（指令）</p>
+<pre>cd /usr/local/www/data/<br />mkdir joomla<br />cd joomla/<br />fetch 'https://rt.openfoundry.org/Foundry/Project/Download/<br />Attachment/71698/50493/Joomla_1.0.11-Stable-Full_Package(Chinese).tar.gz'<br />tar zxvf Joomla_1.0.11-Stable-Full_Package\(Chinese\).tar.gz<br /></pre>
+Step2：開始安裝
+<p>安裝檔解壓完成後，請使用慣用的瀏覽器開啟剛所建置的目錄位置。如 https://127.0.0.1/joomla，系統將會自動幫您導入安裝程序的目錄 /installation/index.php 進行安裝。Joomla! 安裝過程相當平易近人，所有的安裝程序透過 web 設定。請選擇繁體語系，按下一步進行「安裝前檢查」。</p>
+<p>{mosimage}</p>
+<p>進入此步驟時，請確認系統的建議設定值與目前是否吻合，及指定的目錄檔案權是否為「可寫入」，若未達到標準該項目將會以紅色標註。在 BSD 下，若前先使用 root 這個權限安裝，此時請使用下列指令將整個目錄變更使用者及群組設為 www。</p>
+<p>（指令）</p>
+<pre>cd ..<br />chown -R www:www joomla/<br /></pre>
+變更完成後，可點選畫面右上角「重新檢查」，再次確認。
+<p>檢查完成後，請依照安裝步驟，設定您的MySQL資料庫、網站名稱及站台路徑、管理者帳號及檔案目錄存取權限等資料。（<a href="../../article.pl%3Fsid=07%252F01%252F28%252F177258&amp;mode=thread&amp;issue=74&amp;extra_header=第&#32;74&#32;期&#32;自由軟體人才資料庫推廣活動.html#9">註九</a>）</p>
+<p>{mosimage}</p>
+<p>安裝完成後，顯示畫面如下圖，請記住您所設定的管理者帳號及密碼</p>
+<p>{mosimage}</p>
+<p>完成所有安裝程序後，請依照畫面指示，將安裝目錄移除。</p>
+<p>（指令）</p>
+<pre>rm –R installation/<br /></pre>
+移除安裝目錄後，開啟瀏覽器，輸入網站位置，即可看到建置好的 Joomla! 站台畫面，如下圖。
+<p>{mosimage}</p>
+<p>如欲進入後端管理介面，則在網址上輸入 https://127.0.0.1/joomla/administrator/index2.php 即可。</p>
+<p>{mosimage}</p>
+<p>到此步驟時，Joomla! 已經架設完成，預設的站台已有基本的功能項目及RSS新聞提供稿，基本上已經是相當完整的站台了，對於只需內容呈現等，一般運用的網站已足夠。</p>
+<p>如讀者想要再進行客製化的調整及修正，可參考 <a href="https://help.joomla.org/">Joomla! 官方的線上手冊</a>或至 TaiwanJoomla! 下載內容管理手冊，內有詳細的教學步驟。</p>
+<p><strong>◎ 結語</strong></p>
+<p>在眾多優秀 CMS 中，要選擇一套適合個人或企業運用的版本，相當不易。就維護及開發者來說，每個人都有不同的使用習慣及看法，筆者認為以網站維護者來說，選擇一套最適合的 CMS，以安全性、維護性及發展性，三元素較為重要，而相當年輕的新秀 Joomla! 在開放源碼的助力下，各個方面已經有相當的成熟度。至於對於開發者而言，具備便捷的開發彈性，提供更多的發展空間.。結合以上諸多的優點，造就 Joomla! 擁有眾多支持者熱烈參與討論及開發，未來發展也指日可待。如果您還在為了選那一套 CMS 煩惱，建議可以嘗試新的 Joomla!，誠摯邀請您，一同加入 Joomla! 的美麗境界。</p>
+<p>（如讀者針對本文有任何的想法及意見，可來信至 allywang at iis.sinica.edu.tw）</p>
+<p><a name="6"></a>註六：請參考 <a href="https://www.joomla.org.tw/">TaiwanJoomla 中文支援社群</a>的教學/程式設計 開發教學文件。<br /> <a name="7"></a>註七：目錄位置請參考 apache 設定檔 httpd.conf 的 DocumentRoot  的路徑位置。<br /> <a name="8"></a>註八：使用 ports 安裝，進入 FreeBSD 的 ports 目錄下鍵入指令:</p>
+<p>(指令)</p>
+<pre>cd /usr/ports/www/joomla/ <br />make install<br /></pre>
+<a name="9"></a>註九：安裝過程中的所有設定，讀者可於目錄下的設定檔  configuration.php 中找到，因此安裝完成後，有任何想要修改的部 分，可直接開啟此檔進行調整。
+<p> </p>
+			<!-- Show relate article -->
+		<br><br><h4>您也許有興趣閱讀以下文章:</h4><ul><li><a href='../../tech-column/792.html'>CMS 優質新秀－Joomla!（上）</a> - <span class='date-posted'>2007-01-12</span></li></ul>		<!-- end -->
+		<div class="article_note">
+		<!-- Add tags use metakey, and show OSSF Newsletter tag: OSSFNL+NUM-->
+		<br><br> <hr style='border: 1px dashed #D2DADB;'><b>自由軟體鑄造場電子報&nbsp;:</b>&nbsp;<a href='../../previous-issue%3Ftask=view&amp;id=240.html'>第 74 期 自由軟體人才資料庫推廣活動</a><br>				<!-- End -->
+					<br>
+					<b>分類: </b><a href="../tech-column.html">				技術專欄					</a>				</div>
+			 <!-- AddThis Button BEGIN ID 3001 is the front page article -->
+     			<br><br>
+       <div class="addthis_toolbox addthis_default_style addthis_32x32_style">
+       <a class="addthis_button_preferred_1"></a>
+       <a class="addthis_button_preferred_2"></a>
+       <a class="addthis_button_preferred_3"></a>
+       <a class="addthis_button_preferred_4"></a>
+       <a class="addthis_button_compact"></a>
+       <a class="addthis_counter addthis_bubble_style"></a>
+       </div>
+       <script type="text/javascript">var addthis_config = {"data_track_clickback":true};</script>
+       <script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js#pubid=openfoundry"></script>
+       <!-- AddThis Button END -->
+     <br>
+		<div class="totop" ><a class="rt-totop" href="811-cms-joomla.html#" style="outline: medium none;">↑ Top</a></div>
+            <!-- AddThis Button END -->
+
+			</div>
+</div>
+
+		                            </div>
+									<div class="clear"></div>
+								</div>
+								<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+							</div>
+							</div>
+                                                    </div>
+                                            </div>
+                                <div class="rt-grid-3 rt-pull-9">
+                <div id="rt-sidebar-a">
+                                    <div class="square4">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<ul class="menu"><li class="item56"><a href="../previous-issue.html"><span>電子報總覽</span></a></li><li class="item55"><a href="../about-newsletter.html"><span>關於本報</span></a></li></ul>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<ul class="menu"><li class="item115"><a href="../foss-news.html"><span>源碼新聞</span></a></li><li class="item141"><a href="../case-job.html"><span>接案 / 工作</span></a></li></ul>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+        	                <div class="square1">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-title"><h2 class="title">專欄總覽</h2></div>
+						<div class="clear"></div>
+		                						<div class="module-content">
+		                	<ul class="menu"><li id="current" class="active item37"><a href="../tech-column.html"><span>技術專欄</span></a></li><li class="item40"><a href="../foss-programs.html"><span>源碼秘技</span></a></li><li class="item35"><a href="../legal-article-.html"><span>法律專欄</span></a></li><li class="item154"><a href="../foss-forum.html"><span>自由專欄</span></a></li><li class="item162"><a href="../enterprise-application.html"><span>企業應用</span></a></li><li class="item44"><a href="../foss-projects.html"><span>源碼專案</span></a></li></ul>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		                <div class="square1">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<p style="text-align: center;"><a href="../../news%3Fformat=feed&amp;type=rss" target="_black"><img src="../../images/M_images/news-rss-feed.png" border="0" /></a><br /><a href="https://www.openfoundry.org/rss-feed/Newsletter" target="_black"><img src="../../images/M_images/newsletter-rss-feed.png" border="0" /></a></p>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		
+                </div>
+            </div>
+
+                    <div class="clear"></div>
+                </div>
+            </div>
+																													</div>
+										<div id="rt-copyright">
+						<div class="rt-grid-12 rt-alpha rt-omega">
+                        <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<div id="desktop-mobile-version-switch"><span id="mobile-version" class="version-switch"><a href="811-cms-joomla.html#">行動版</a></span></div>
+自由軟體鑄造場 製作 最佳瀏覽狀態：IE7或Firefox2.0以上 (建議使用Firefox) ‧ 解析度1024*768 <br /> <strong>E-Mail</strong>：<a href="mailto:contact@openfoundry.org">contact@openfoundry.org</a> <strong>Address</strong>：台北市南港區研究院路2段128號 中央研究院資訊科學研究所 . <a href="../../privacy-policy.html">隱私權條款</a>. <a href="../../terms-of-use.html">使用條款</a><span style="position: relative; top: 8px; margin-top: -8px;"> <a href="../../about/8101.html"><img src="../../images/M_images/rss-feed-all.png" border="0" /></a></span>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+        	
+</div>
+						<div class="clear"></div>
+					</div>
+					<div class="rt-footer-bottom-wrap"><div class="rt-footer-bottom"><div class="rt-footer-bottom2"><div class="rt-footer-bottom3"></div></div></div></div>
+									</div></div></div>
+				<div class="rt-surround-bottom"><div class="rt-surround-bottom2"><div class="rt-surround-bottom3"></div></div></div>
+							</div>
+		</div>
+		<!--
+		<script id="aptureScript">
+						(function (){var a=document.createElement("script");a.defer="true";a.src="http://www.apture.com/js/apture.js?siteToken=vsJttrn";document.getElementsByTagName("head")[0].appendChild(a);})();
+     </script>
+-->
+
+<!-- Piwik -->
+<!-- 			<script type="text/javascript">
+			  var _paq = _paq || [];
+		  _paq.push(["trackPageView"]);
+		  _paq.push(["enableLinkTracking"]);
+
+		    (function() {
+			        var u=(("https:" == document.location.protocol) ? "https" : "https") + "://www.openfoundry.org/piwik/";
+				    _paq.push(["setTrackerUrl", u+"piwik.php"]);
+				    _paq.push(["setSiteId", "1"]);
+				        var d=document, g=d.createElement("script"), s=d.getElementsByTagName("script")[0]; g.type="text/javascript";
+				        g.defer=true; g.async=true; g.src=u+"piwik.js"; s.parentNode.insertBefore(g,s);
+					  })();
+		  </script> -->
+<!-- End Piwik Code -->
+	</body>
+</html>

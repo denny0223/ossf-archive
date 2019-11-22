@@ -1,0 +1,982 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="zh-tw" lang="zh-tw" >
+<head>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<link rel="shortcut icon" href="../../images/favicon.ico" />
+	  <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+  <meta name="robots" content="index, follow" />
+  <meta name="keywords" content="OSSFNL858" />
+  <meta name="title" content="為什麼比 GIT 更好－－理解 Mercurial 版本管理系統" />
+  <meta name="description" content="（本文寫作於 2014 年 7 月，所有相關論述均以此時間點為準） Mercurial 是一款分散式的版本管理軟體。 所謂版本管理軟體，是一種可在程式開發過程中，有規律地保留程式碼的歷史訊息、讓人能放心地做各種開發實驗，並在開發不幸走進死胡同時，將程式碼回復到舊有版本的系統…… 細節很複雜，一言以蔽之，就是一種程式碼管理器。詳細說明網路上可以找到很多，我就不在此囉唆贅述了。 Mercurial" />
+  <meta name="generator" content="" />
+  <title>為什麼比 GIT 更好－－理解 Mercurial 版本管理系統 - OpenFoundry</title>
+  <link href="../../favicon.ico" rel="shortcut icon" type="image/x-icon" />
+  <link rel="stylesheet" href="../../components/com_jcomments/tpl/default/style.css%3Fv=10.css" type="text/css" />
+  <link rel="stylesheet" href="../../components/com_gantry/css/gantry.css" type="text/css" />
+  <link rel="stylesheet" href="../../components/com_gantry/css/grid-12.css" type="text/css" />
+  <link rel="stylesheet" href="../../components/com_gantry/css/joomla.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/joomla.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/style1.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/light-body.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/demo-styles.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/template.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/typography.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/fusionmenu.css" type="text/css" />
+  <style type="text/css">
+    <!--
+#rt-main-surround ul.menu li.active > a, #rt-main-surround ul.menu li.active > .separator, #rt-main-surround ul.menu li.active > .item, #rt-main-surround .square4 ul.menu li:hover > a, #rt-main-surround .square4 ul.menu li:hover > .item, #rt-main-surround .square4 ul.menu li:hover > .separator, .roktabs-links ul li.active span {color:#0088B5;}
+a, #rt-main-surround ul.menu a:hover, #rt-main-surround ul.menu .separator:hover, #rt-main-surround ul.menu .item:hover {color:#0088B5;}
+    -->
+  </style>
+  <script type="text/javascript" src="../../components/com_jcomments/js/jcomments-v2.1.js%3Fv=2"></script>
+  <script type="text/javascript" src="../../components/com_jcomments/libraries/joomlatune/ajax.js"></script>
+  <script type="text/javascript" src="../../media/system/js/mootools.js"></script>
+  <script type="text/javascript" src="../../media/system/js/caption.js"></script>
+  <script type="text/javascript" src="../../components/com_gantry/js/gantry-buildspans.js"></script>
+  <script type="text/javascript" src="../../components/com_gantry/js/gantry-inputs.js"></script>
+  <script type="text/javascript" src="../../templates/rt_quantive_j15/js/jquery.cookie.js"></script>
+  <script type="text/javascript" src="../../modules/mod_roknavmenu/themes/fusion/js/fusion.js"></script>
+  <script type="text/javascript" src="../../modules/mod_ofssologin/js/ofssologin.js"></script>
+  <script type="text/javascript">
+
+			window.addEvent('domready', function() {
+				var modules = ['rt-block'];
+				var header = ['h3','h2','h1'];
+				GantryBuildSpans(modules, header);
+			});
+		InputsExclusion.push('.content_vote','#rt-popup')
+		        window.addEvent('load', function() {
+					new Fusion('ul.menutop', {
+						pill: 0,
+						effect: 'slide and fade',
+						opacity: 1,
+						hideDelay: 500,
+						centered: 0,
+						tweakInitial: {'x': -2, 'y': 0},
+        				tweakSubsequent: {'x': 0, 'y': -14},
+						menuFx: {duration: 200, transition: Fx.Transitions.Sine.easeOut},
+						pillFx: {duration: 400, transition: Fx.Transitions.Back.easeOut}
+					});
+	            });
+  </script>
+<!-- <script type="text/javascript" src="/sso/javascripts/langsync.js"></script> -->
+<!-- <script src="/templates/rt_quantive_j15/js/ossf.js"></script> -->
+<script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-4136519-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
+</head>
+	<body  class="backgroundlevel-low backgroundstyle-style8 bodylevel-med bodystyle-light cssstyle-style1 logostyle-dark font-family-helvetica font-size-is-default menu-type-fusionmenu col12 ">
+		<div id="rt-main-background">
+			<div class="rt-container">
+																<div id="rt-header">
+					<div class="rt-grid-7 rt-alpha">
+    			<div class="rt-block">
+    	    	<a href="../../index.html" id="rt-logo"></a>
+    		</div>
+	    
+</div>
+<div class="rt-grid-5 rt-omega">
+                    <div class="square9">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<div class="ofssologin_square9"><a href="../../index.html">登入</a>&nbsp;&nbsp|&nbsp;&nbsp;<span><a href="../../en/foss-forum/9266-why-git-better.html" ><span lang="en" xml:lang="en">English</span></a></li></ul></span><!--Joom!fish V2.0.4 (Lightning)-->
+<!-- &copy; 2003-2009 Think Network, released under the GPL. -->
+<!-- More information: at http://www.joomfish.net -->
+<div class="ofssologin_search_square9">
+  <form id="of_search" action="https://www.openfoundry.org/of/openfoundry/search" method="get" onsubmit="of_search(); return false;">
+    <select id="of_search_type">
+      <option value="Projects"> 專案 </option>
+      <option value="Content"> 文章 </option>
+      <option value="People"> 人才 </option>
+    </select>
+    <input id="query" name="query" id="mod_search_searchword" maxlength="50" alt="search" class="inputbox" type="text" size="28" value="search..."  onblur="if(this.value=='') this.value='search...';" onfocus="if(this.value=='search...') this.value='';" />
+    <input type="hidden" name="commit" value="search" />
+  </form>
+</div></div>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		
+</div>
+					<div class="clear"></div>
+				</div>
+																<div id="rt-navigation"><div id="rt-navigation2"><div id="rt-navigation3">
+					
+<div class="nopill">
+	<ul class="menutop level1 " >
+						<li class="item1 root" >
+					<a class="orphan item bullet" href="../../index.html"  >
+				<span>
+			    				首頁				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item32 root" >
+					<a class="orphan item bullet" href="../../archived.html"  >
+				<span>
+			    				專案				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item186 root" >
+					<a class="orphan item bullet" href="../community.html"  >
+				<span>
+			    				Who&#039;s Who				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item4 root" >
+					<a class="orphan item bullet" href="../news.html"  >
+				<span>
+			    				新聞				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item5 root" >
+					<a class="orphan item bullet" href="../law-and-licensing.html"  >
+				<span>
+			    				法律源地				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item3 root" >
+					<a class="orphan item bullet" href="../activities.html"  >
+				<span>
+			    				活動				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item2 root" >
+					<a class="orphan item bullet" href="../resourcecatalog%3FName=Value.html"  >
+				<span>
+			    				資源表列				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item45 root" >
+					<a class="orphan item bullet" href="../about.html"  >
+				<span>
+			    				關於				   
+				</span>
+			</a>
+			
+			
+	</li>	
+				</ul>
+</div>
+
+				    <div class="clear"></div>
+				</div></div></div>
+								<div class="rt-surround"><div class="rt-surround2"><div class="rt-surround3">
+										<div id="rt-showcase-section">
+												<div id="rt-showcase">
+							<div class="rt-grid-12 rt-alpha rt-omega">
+    		<div class="clear"></div>
+		
+		
+                <div class="close-note">
+                    <div class="rt-block">
+               					<div class="module-content">
+                	<div style="font-size:medium; background-image:linear-gradient(120deg,#159957,#4298b2);color:white;padding:20px;margin:-10px -18px;">感謝您對「自由軟體鑄造場」的支持與愛護，十多年來「自由軟體鑄造場」受中央研究院支持，並在資訊科學研究所以及資訊科技創新研究中心執行，現已完成階段性的任務。 本網站預計持續維運至 2021年底，網站內容基本上不會再更動。<br />也紀念我們永遠的朋友 李士傑先生（Shih-Chieh Ilya Li）。</div>				</div>
+            </div>
+                </div>
+		
+</div>
+							<div class="clear"></div>
+						</div>
+																	</div>
+															<div id="rt-main-surround">
+												<div id="rt-breadcrumbs">
+								<div class="rt-breadcrumb-surround">
+		<a href="../../index.html" id="breadcrumbs-home"></a>
+		<span class="breadcrumbs pathway">
+<a href="../foss-forum.html" class="pathway">自由專欄</a> <img src="../../templates/rt_quantive_j15/images/arrow.png" alt=""  /> <span class="no-link">為什麼比 GIT 更好－－理解 Mercurial 版本管理系統</span></span>
+	</div>
+	
+							<div class="clear"></div>
+						</div>
+																							              <div id="rt-main" class="sa3-mb9">
+                <div class="rt-main-inner">
+                    <div class="rt-grid-9 rt-push-3">
+                                                <div class="rt-block">
+                            							<div class="square1">
+							<div class="rt-module-surround">
+								<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+								<div class="rt-module-inner">
+		                            <div id="rt-mainbody">
+		                                
+<div class="rt-joomla ">
+	<div class="rt-article">
+		
+				<div class="rt-headline"><h1 class="rt-article-title">為什麼比 GIT 更好－－理解 Mercurial 版本管理系統</h1>		</div>
+		<div class="clear"></div>
+		
+		
+		
+				<div class="rt-articleinfo">
+						<div class="rt-article-icons">
+								<a href="9266-why-git-better%3Ftmpl=component&amp;print=1&amp;layout=default&amp;page=.html" title="列印" onclick="window.open(this.href,'win2','status=no,toolbar=no,scrollbars=yes,titlebar=no,menubar=no,resizable=yes,width=640,height=480,directories=no,location=no'); return false;" rel="nofollow"><span class="icon print"></span></a>																</div>
+			
+			<span class="rt-date-posted">
+						建立日期			2014-07-25 14:43						&nbsp;&nbsp;&nbsp;&nbsp;						最近更新在 2014-07-29 14:06						</span>
+
+						<span class="rt-author">
+				作者是 林雪凡			</span>
+				
+					</div>
+		
+		
+		<p>（本文寫作於 2014 年 7 月，所有相關論述均以此時間點為準）</p>
+<p><a href="https://mercurial.selenic.com/">Mercurial</a> 是一款分散式的<a href="https://zh.wikipedia.org/wiki/%E7%89%88%E6%9C%AC%E6%8E%A7%E5%88%B6">版本管理</a>軟體。</p>
+<p>所謂版本管理軟體，是一種可在程式開發過程中，有規律地保留程式碼的歷史訊息、讓人能放心地做各種開發實驗，並在開發不幸走進死胡同時，將程式碼回復到舊有版本的系統……</p>
+<p>細節很複雜，一言以蔽之，就是一種程式碼管理器。詳細說明網路上可以找到很多，我就不在此囉唆贅述了。</p>
+<p>Mercurial 經常被拿來和另一款同類軟體 Git 比較，然而不知是故意貶低或缺乏了解，大部份能在網路上讀到的中文文章，都傾向於認為 Mercurial 比 Git 弱小、彈性差、功能低落，甚至只是個「教學用軟體」。但隨著我同時跨足使用這兩套系統後，我發現實況卻非如此－－甚至大部份時候都是反過來的。</p>
+
+<p>Mercurial 沒能得到它該有的評價，這十分可惜。是故我決定撰文將輿論平衡一下，以餉讀者。</p>
+<p>原則上，凡本文提到的特性，無論是 Git 或 Mercurial ，咱都有親自實驗過，各位大致上能夠安心閱讀。</p>
+<p>一如題目所言，這篇文章是兩者的比較文，本文將以版本管理使用者的角度來說明，為什麼 Mercurial 比 Git 更好？</p>
+<h3>先從相對 Git 的弱點開始說起……</h3>
+<p>做人要實在，優點等會兒再說，先從 Mercurial 的弱點開始說起好了。</p>
+<h4><strong>跨平台時的檔名編碼</strong></h4>
+<p>Mercurial 現在主要的弱項在於跨平台時，處理非英文檔名可能會有編碼問題。</p>
+<p>稍微強調一下：</p>
+<ul>
+<li>如果只在同一種平台上進行開發則不會有任何問題；</li>
+<li>如果檔名只用英文也不會有問題；</li>
+<li>並非用了非英文檔名就不能跨平台，而是要看平台支援性。</li>
+</ul>
+<p>總地來說，即使您在源碼庫中用了中文檔名，只要您的開發平台都是 utf8 的，就不需要擔心這件事。</p>
+<p>相關說明請見：<a href="https://mercurial.selenic.com/wiki/EncodingStrategy#Overview">https://mercurial.selenic.com/wiki/EncodingStrategy#Overview</a></p>
+<h4><strong>Git 的用戶較多</strong></h4>
+<p>如今用 Git 的人比較多（特別是在中文圈中），對於開發者來說，和他人合作時碰到 Git 的機會比較大。</p>
+<p>不過話說回來，Mercurial 的社群也絕不算小。您可以在網路上找到大批用 Mercurial 維護的專案，從 OpenJDK、Python、Go、Nginx、Vim 等多不勝數。其中 Nginx 是全球市佔率超過 20% 的網站後端，平均您每看五個網站就有一個是用 Nginx 跑起來的，而如果只算前 10000 個受歡迎的網站，這個比例甚至可以上升到 40 %；而 Vim 就更不用提了，他甚至永久影響了全世界程式設計師的文化體系。</p>
+<p>在 <a href="https://stackoverflow.com">https://stackoverflow.com</a> 中，我們能查到幾乎所有能想像得到的，關於 Mercurial 的討論與情報。總之社群支持度無需擔心。</p>
+<h4><strong>檔案重命名的處理方式很愚蠢</strong></h4>
+<p>受限於 Mercurial 早期的資料結構限制，如果您將檔案重命名，或僅僅只是變更檔案放在原碼庫中的路徑，則原碼庫中會產生一份額外的副本，消耗兩倍的硬碟空間。</p>
+<p>這蠢死了。聽說 Git 就沒有這種問題（儘管我沒試）。</p>
+<p>這個缺陷讓人心情不爽，不過話又說回來，如果您沒在倉庫中堆滿一堆巨大的二進位檔案，又三天兩頭搬動它，也不會造成什麼很嚴重的問題。</p>
+<hr />
+<h3>為什麼要選 Mercurial？</h3>
+<p>儘管有以上這些瑕疵，Mercurial 仍然是一款棒呆了的版本管理系統，因為 Mercurial 有著足以抵消上述一切缺陷的眾多性感特徵。我馬上就會和各位說明。</p>
+<p>本文主要的比較對象是 Git，這篇文章才剛開始呢。</p>
+<h4><strong>Point1 - Mercurial 擁有更優秀的分支模型</strong></h4>
+<p><strong>1.1. 分支分離</strong></p>
+<p>請看以下分支圖：</p>
+<p><img alt="1.1. 分支分離.jpg" src="../../images/140729/1.1.&#32;分支分離.jpg.png" height="151" width="500" /></p>
+<p>用戶下命令「請分別列出 Branch 1 與 Branch 2 中含有的提交」時……</p>
+<p>Mercurial 的回答是……</p>
+<ul>
+<li>Branch 1 -> A, E</li>
+<li>Branch 2 -> B, C, D</li>
+</ul>
+<p>Git 的回答是……</p>
+<ul>
+<li>Branch 1 -> A, B, C, D, E</li>
+<li>Branch 2 -> A, B, C, D</li>
+</ul>
+<p>毫無疑問 Mercurial 的答案才是您想要的。</p>
+<p>（請想像一下 branch 1 是穩定分支，而 Branch 2 是某功能分支的狀況）</p>
+<p>這不是 Git 用戶下錯指令，事實上，Git 從資料結構層面就沒辦法紀錄 Mercurial 在上述問題中所能提供的訊息。GIT 就是做不到。（註一）</p>
+<p><strong>1.2. 保留但隱藏分支</strong></p>
+<p>Mercurial 可以「關閉分支」，但 Git 則否。</p>
+<p>在 Mercurial 中，被關閉的分支預設不會出現在分支列表裡，因此 Mercurial 可以在<strong>不砍任何分支的前提下</strong>，確保分支列表清爽好管理。此外，因為分支資料依然存在，所有分支都能在必要時刻被完整召回。</p>
+<p>反之，Git 不能將分支封存起來。要嘛砍掉，要嘛任由分支曝露在外。想讓兩者並行，它就是做不到。</p>
+<p>換個方式問，如果不去刪分支呢－－用戶能處理一個擁有一千個分支項目的列表嗎？嗯，<a href="https://zh.wikipedia.org/wiki/%E8%AF%BA%E4%BC%8A%E6%9B%BC">馮紐曼</a>大概可以吧，反正我不行就是了。當 Git 用戶得意地說他們的分支很廉價可以隨創隨刪時，他們同時也是在說，<strong>Git 絕大部分的分支無法被保存下去</strong>。</p>
+<p>不管用哪種分支模型進行開發，我們總有些時候想保留不再使用的分支－－有時甚至想保留住大部分的分支資訊，然而 Git 並沒有給我們這種選擇權。為了管理，我們非砍它不可。（註二）</p>
+<p><strong>1.3. 毫不遜於 Git 的輕量性分支</strong></p>
+<p>有些用戶誤以為 Mercurial 的分支比較笨重遲鈍，而 Git 的分支比較輕，但事實上絕非如此。</p>
+<p>Mercurial 的分支 (branch)，與 Git 中的 branch 不同，不是將標籤紀錄在頭部，而是在「每個提交」中紀錄一個「這個提交屬於哪個 branch」的訊息標籤，每次提交時因此額外消耗的容量充其量就幾十 bytes 而已，這顯然不會對速度與硬碟容量造成任何負面影響。</p>
+<p>反過來說，這種作法帶來的直接好處，您可以在前文「分支分離」段落中看到。</p>
+<p>此外，Mercurial 也支援 Git 式的分支模型－－也就是將標籤記在單一變更集上，並隨提交而自動往前推進的方式。<strong>這種類似 Git 運作方式的分支，在 Mercurial 中被稱為 bookmark</strong>。</p>
+<p>如果用戶希望，Mercurial 也可以以 Git 用戶慣用的方式，單獨運用 bookmark 分支，甚至混用 branch 與 bookmark 兩種分支方式－－比方說，branch 產生的分支可用在大家共享的大工程上，而 bookmark 類型的分支標記則留在本機供自己使用（bookmark 同樣可以推送給其他人，但預設不推送，這和 Git 一樣）。同時使用這兩者不會產生絲毫衝突，而不甩其中一方，單用其中一種分支方法也毫無問題，這僅僅只是不同專案的分支習慣不同而已。</p>
+<p>反過來看， Git 則無法以 Mercurial 的方式進行分支，它從根本上就沒辦法。</p>
+<p><strong>1.4. Mercurial 的分支不能刪</strong></p>
+<p>有人宣稱 Mercurial 的分支 (branch) 不能刪除，這是它用起來得小心翼翼，感覺很「重」的原因。</p>
+<p>嗯，這點倒是沒錯，Mercurial 的 branch 確實是不能刪的。但這有什麼不好嗎？對於 Mercurial 而言，分支 (branch) 就和變更集本身一樣，是版本庫中不可分割的重要訊息。Mercurial 的分支訊息是版本庫的一部份，而不是像 Git 那樣僅僅把它當成某種「外加」的東西－－Git 的分支訊息與歷史無關，隨時想插就插想拔就拔，刪掉找不回來也無所謂。</p>
+<p>認真對待 branch 歷史是 Mercurial 的核心設計邏輯，這和 Git 完全不同。</p>
+<p>有時候，這種設計邏輯無法滿足用戶對臨時分支的要求，但別擔心，Mercurial 也允許例外。</p>
+<p>如果您想在 Mercurial 中隨手建立一些幾天後就不再需要的暫時性分支，或您就是不想永久錄下分支資訊，您應該要用的是 Bookmark，若用分支 (branch) 就是用錯了工具。因為很重要所以再重複一次：<strong>如果您覺得某些分支訊息不重要（或僅僅在某些時候覺得不重要），沒那個意思將分支訊息永久保存下來的話，您應該要用 bookmark，而不是 branch</strong>。</p>
+<p>只是，我建議您再多考慮一下用 branch 永久保有分支資訊的好處。雖然您不能刪它，但就算您搞出了 10000 個分支那又怎樣？它又不會咬你。</p>
+<p><strong>1.5. 匿名的超輕量分支</strong></p>
+<p>受益於強大的變更集定位能力（見後），Mercurial 中還有比 bookmark 分支更輕量的分支方式存在－－也就是<strong>「匿名分支」</strong>。</p>
+<p><img alt="1.5. 匿名的超輕量分支.jpg" src="../../images/140729/1.5.&#32;匿名的超輕量分支.jpg.png" height="124" width="500" /></p>
+<p>▲當 A, B, C, D 提交路線已經完成後，退回 B，再進行一次提交，就會自動產生一個 E 分支。</p>
+<p>如果用 Mercurial 進行以上操作，技術上來說 ABCDE 都會處於同一個 branch（指 Mercurial 中的 branch，見前文說明）中，換句話說一個 branch 中可能有兩個以上的「頭部 （此例中為 D 與 E）」。其中變更集 E 是最後加入倉庫的，所以切換到這個 Mercurial branch 時，預設會切到 E 版上。這時另一邊的 D 就被視為一個沒有標記的「匿名分支」。</p>
+<p>您可以把 E 重新合併回 D，或是乾脆就這樣把 CD 變更集放棄繞過去，改為沿著 E 路徑繼續開發。這不需要額外處理，只要修改想修改的地方後直接提交就行，非常輕鬆。</p>
+<p>與 Git 相比，Git 也能如上這樣僅靠提交產生新的頭部，但用戶幾乎無法追蹤它（除非記住 hash 值），一旦沒取名又跳離了它，很難再把它找回來，不但沒有實用性反而更像是一種操作錯誤的結果，如果將 Git 切到這種沒取名的變更集上工作還會給您跳警告。但在 Mercurial 中，因為 revset（見後）的強大定位能力，不取名也無妨，使用起來非常容易。儘管因為匿名分支沒有語義標記而不適合推到遠端與他人共享，但在本地臨時修些小 bug 時依然相當好用。（註三）</p>
+<blockquote>
+<p>註：有些 Git 用戶認為 Mercurial 的匿名分支是個危險的蠢主意，因為在 Git 用戶的觀念中這種無名分支難以追蹤的緣故。不過對 Mercurial 來說，追蹤匿名分支易如反掌，完全不是問題。</p>
+</blockquote>
+<hr />
+<h4><strong>Point2 - Mercurial 更易於操作</strong></h4>
+<p><strong>2.1. 定位變更集</strong></p>
+<p>Mercurial 中有一系列定位變更集的作法。</p>
+<p><em>2.1.1. 數字序列</em></p>
+<p>Mercurial 可以用序列數字，如 1、3、15 來指定某個特定的提交，而不用非打 hash code 不可。</p>
+<p>舉例來說……</p>
+<pre><code>Mercurial:
+    hg update 133
+Git:
+    git checkout 4a9cb402d55357b534ef28f74b85ca7bb16c87ed
+</code></pre>
+<p>前者遠比後者簡單，也容易識別得多，至少<strong>用戶光看數字就能認知到不同變更集之間的先後關係，以及兩個變更集的距離大致有多遠</strong>，這在實際操作時直覺又實用。</p>
+<p>另一方面，因為在實際使用中 hash code 實在很難處理，這也意味了 <strong>Git 用戶通常是以分支為粒度進行各種操作，而 Mercurial 用戶則可以以每次提交為粒度進行操作</strong>－－就和喝水吃飯一樣容易。</p>
+<p><em>2.1.2. Revset</em></p>
+<p>Mercurial 可以用一種稱為 revset 的語句，來幫助使用者定位<strong>「一個或一系列」</strong>的變更集。這種語句可以清晰地對大量變更集進行操作。</p>
+<p>以下是些官網提供的例子……</p>
+<pre><code>hg log -r "branch(default)"
+列出 default 分支中的所有變更集。
+
+hg log -r "branch(default) and 1.5:: and not merge()"
+列出 default 分支中，繼承 1.5 版變更集的後續所有變更集，但 merge 除外。
+
+hg log -r "head() and not closed()"
+列出所有未被關閉的分支末端。
+
+hg log -r "1.3::1.5 and keyword(bug) and file('hgext/*')"
+列出 1.3 到 1.5 兩個變更集之間，（在註解或用戶名等處）含有關鍵字 “bug”，且有更動過 “hgext” 資料夾下內容的變更集。
+
+hg log -r "sort(date('May 2008'), user)"
+列出 2008 年 5 月提交的所有變更集。列出時，以提交者排序。
+
+hg log -r "(keyword(bug) or keyword(issue)) and not ancestors(tag())"
+列出涉及關鍵字 “bug” 或 “issue” 的提交，且這些版本必須尚未被包含在任一個被 tag 標記過的版本中。
+</code></pre>
+<p>感到振奮嗎？這是當然的！從這些例子中您可看出它的無窮威力。這是 Git 難以望其項背的，Git 根本沒法做到這些，更別說如此清晰且語義化地去達成它。<strong>正因為缺乏這種優雅的版本定位能力，Git 雖然能將資料存在版本倉庫中，但卻無法輕易拿出使用</strong>。這是 Mercurial 的巨大優勢。</p>
+<p>順便一提，revset 還可以設定 alias，您可以將複雜的長串運算整理成一個簡單的－－甚至可以加入變數的函式版本，然後隨意運用之。</p>
+<p>revset 詳細語法說明請見：</p>
+<ul>
+<li><a href="https://www.selenic.com/hg/help/revsets">https://www.selenic.com/hg/help/revsets</a></li>
+<li>hg help revset</li>
+</ul>
+<p><strong>2.2. 清晰的指令介面</strong></p>
+<p>Mercurial 的指令介面遠比 Git 更容易使用。</p>
+<p><em>2.2.1. 功能切割</em></p>
+<p>Mercurial 與 Git 的指令設計邏輯不同。</p>
+<p>Mercurial 每個指令專注於較少的事情，並提供更多指令供我們使用，而 Git 則更傾向於用一個大指令，將一堆種類完全不同的操作框在一起，然後透過一長串參數來操控它。</p>
+<p><a href="https://stevelosh.com/blog/2010/01/the-real-difference-between-mercurial-and-git/">網路上有人</a>這樣形容：<strong>「Git 提供一柄瑞士刀，而 Mercurial 提供一間裝備齊全的廚房。」</strong></p>
+<p>可以想見，Git 的指令設計理念，使得它每個指令文件都非常地難讀難查找，更別說因為功能混在一起，很多時候就連要查哪個指令文件都不知道。初學者哪能知道 git checkout 既可以切換分支，又能創建分支，還能復原工作目錄中檔案的舊版本……許多全然不同的操作全混在一起了。</p>
+<p>請務必觀察看看 git help checkout (接近 400 行) 與 hg help update + hg help revert + hg help branch (合計 110 行) 的壓倒性差異。缺乏容易理解的介面與文件，讓用戶在使用 Git 時很容易被咬－－甚至也更容易因此讓資料在操作錯誤下意外損失掉！</p>
+<p><em>2.2.2. 預設提供簡打</em></p>
+<p>Mercurial 所有指令都有預設提供簡打，如：</p>
+<ul>
+<li>hg update -> hg up</li>
+<li>hg commit -> hg ci</li>
+</ul>
+<p>Git 也能由用戶自行設定簡打。但它就是沒有內建。換個角度看，Mercurial 也能由用戶自行設定自己專屬的簡打，簡打擴展性方面並不輸給 Git。</p>
+<p>雖然簡打稱不上多重要。但每天都要與之打交道的工具，一點方便就會讓人舒服許多。Mercurial 毫不吝嗇地提供了這種方便－－而且沒有因此降低任何指令的可識別性。更別說您甚至可以在別人的機器上使用這些簡打指令，用簡打和他人溝通也沒問題。</p>
+<p><strong>2.3. Mercurial 有防呆</strong></p>
+<p>Mercurial 預設不允許使用者變更歷史紀錄。這意味著 Mercurial 的初學者，使用 Mercurial 時幾乎不可能失手摧毀自己或他人的倉庫。</p>
+<p>（但如果您是進階使用者，想要取得更多的控制能力，只需要打開某些擴充套件就能這麼作。見後。）</p>
+<p>初學者不用擔心摧毀版本庫，使本來就很好上手的 Mercurial 變得更友善。一旦我們能放膽去玩去嘗試它，自然也能更快熟悉這整套系統－－就算某個指令不懂，直接試用也不怕。反過來看，Git 某個指令不懂，直接試用看看通常表示妳要惹上大麻煩了。使用 Git 時，因為 reset 或 rebase 把東西玩壞的經驗，差不多每個人都會遇上個那麼幾次。</p>
+<p><strong>2.4. Mercurial 便於共享</strong></p>
+<p>與 Git 相比，Mercurial 的設計哲學使它更適合與他人協同工作，分享工作成果。</p>
+<p>比方說 push 的預設處理範圍就不同……</p>
+<ul>
+<li>Mercurial：預設推送本地所有提交。</li>
+<li>Git：預設推送那些「有和遠端設定關聯 (track) 的本地分支中的提交」。</li>
+</ul>
+<p>這意味著即使是 Mercurial 初學者，也能自然而然地使本地端與遠端資料正確同步，而不會因為分支未同步或沒有正確設定關聯，而搞出現些莫名其妙的蠢問題。</p>
+<p>本地端的所有分支資料會很自然地備份到遠端，這讓使用者不容易因本地問題而遺失資料之餘，也方便和其他開發者共享開發狀況。</p>
+<p>此外，Mercurial 分支避免引入命名空間的概念，故從根本上就減少了誤解；也沒有像 Git 那樣引入「遠端分支名稱可能與本地分支名稱不同」等不知何時才能派上用場的無謂複雜度，無需擔心推拉時打錯字等問題，這都是 Mercurial 比 Git 更便於共享的優點。（註四）</p>
+<blockquote>
+<p>注意，push 的處理範圍只是預設。無論 Mercurial 與 Git，進階用戶都可以變更這些預設行為。</p>
+<p>另外，雖然 Mercurial 預設讓用戶共享所有變更集，但如果用戶有進行某些本地實驗的需要，Mercurial 也可以簡單將某變更集（以及由他長出的後續變更集）設為不會被推送出去的「秘密開發路徑」，這些秘密的開發路徑不但不會被推送，也不會被其他人拉取或 clone 走，私下實驗時相當方便。這方面請參閱 Mercurial 的 Phases 概念。</p>
+</blockquote>
+<hr />
+<h4><strong>Point3 - 關於 Mercurial 的常見誤解</strong></h4>
+<p>以下是一些常常能在國內外討論中看到的，關於 Mercurial 的誤解。我將其整理了一下。</p>
+<p><strong>3.1. Mercurial 並未缺少功能</strong></p>
+<p>有人認為 Mercurial 相比 Git 的功能較少，對版本庫的控制能力較低，這是誤解。Mercurial 只是沒有將所有功能都整合進程式核心而已。</p>
+<p>Mercurial 的設計邏輯，在於提供一個簡單強固的核心，與優秀的擴充介面。在 Mercurial 中，更多更強更危險的功能，以及某些正在開發的實驗性功能，都是由擴充套件來提供的。</p>
+<p>請將官方發佈的擴充套件視為 Mercurial 的一部份，您就不會覺得 Mercurial 功能不足了－－不管是 rebase、strip、stage、合併多個變更集等等－－沒啥是 Git 能做而 Mercurial 做不到的。</p>
+<p>比方說 Git 經常提及的 Stage 概念，在 Mercurial 中就是由 mq 擴充套件提供的。在 mq 的支持下，您不只像 Git 那樣可以暫存一個未完成的變更集，只要您想，您甚至可以暫存整串變更序列；更進一步地說，您不只可以 stage 一整串變更序列，您還可以分頭建立「好幾串」不同的序列，並行開發。再更進一步，如果您想，您甚至可以替您的暫存區做版本管理，甚至將暫存區版本庫推送到遠端……反過來說，如果您不需要 stage 的概念（我相信大部份的人都不需要），您也不會像 Git 那樣在提交時，三天兩頭因為忘記 stage (-a) 而得到「您啥也沒提交」的惱人訊息。</p>
+<p>啟用擴充套件也非常輕鬆，畢竟<strong>重要的擴充套件都是由官方製作並直接合併在 Release 中發佈的</strong>。雖說名字叫作「擴充套件」，卻無需大費周章抓取安裝，取而代之，只要在設定檔中多加一行就能立刻啟用。</p>
+<p>與 Mercurial 核心一併發佈的擴充套件，其品質都有著徹底的保證，其功能變更甚至會一併寫入 Mercurial 的 Release Changelog 中，強固性、相容性與被官方重視的程度，都是絲毫不遜於核心功能的。</p>
+<p><strong>3.2. Mercurial 一點也不慢</strong></p>
+<p>許多人認為 Mercurial 相比 Git 的問題在於它速度很慢，這是誤解。</p>
+<p>雖然 Git 是用 C 寫的，Mercurial 是用 Python 寫的，看似會有速度差異，但事實上版本管理系統的速度瓶頸在於網路與 I/O，而 CPU 運算速度則影響不大。實際運用時我也從沒感覺 Mercurial 速度慢過 Git，更別說<a href="https://en.wikipedia.org/wiki/Mercurial#Projects_using_Mercurial">許多世界上最大型的專案</a>都用他。 <a href="https://mozilla.com.tw/firefox/new/">Firefox</a> 與 <a href="https://www.facebook.com/">Facebook</a> 這些專案都是用 Mercurial 在管理他們的程式碼，我們的程式會比他們更龐大複雜嗎？</p>
+<p>至少絕大多數狀況下，速度實在不是值得擔心的重點來著。</p>
+<blockquote>
+<p>註：本節假設 Git 確實比 Mercurial 快，但事實上<a href="https://www.infoq.com/news/2014/01/facebook-scaling-hg">在 Facebook 近期的幫助下</a>，如今的 Mercurial 在某些條件下甚至有 Git 的數倍快，雙方的速度差距正在縮小甚至逆轉。</p>
+<p>另外還有一部份操作，原本就是 Mercurial 壓倒性的快。比方說在整個版本庫中搜尋特定字串時，hg grep --all “TEXT” 遠比 git grep “TEXT” $(git rev-list --all) 快，有時速度可差到 100 倍以上。（在一個約 1600 次提交，大小 300 M 的倉庫中，以上指令 Mercurial 需時 40 秒，Git 需時 45 分鐘）</p>
+</blockquote>
+<p><strong>3.3. 進行危險操作時的安全性</strong></p>
+<p>有人提到，Git 在進行如 rebase 這種破壞性操作時，其實是在版本庫中新增一個新的節點，並保留未來可用來回退這次破壞性操作的訊息；這些訊息會成為版本庫的一部份，因此用戶可以美妙地回退危險行為。</p>
+<p>而另一方面， Mercurial 在處理破壞性操作時，只會自動匯出一個單獨的 bundle 檔案作為備份，而不是加在版本庫中，這使得回退很難被管理。</p>
+<p>技術上來說，他們說得沒錯：Git 確實是把破壞性操作的復原訊息保留在版本庫的 reflog 中，而 Mercurial 則是將被刪除的資料匯出到版本庫之外。不過事實上，對那些東西進行操作的難度，卻完全顛倒了過來。</p>
+<p>就從 Mercurial 開始吧。在 Mercurial 中，您要恢復一些被破壞性操作（如 rebase）毀滅的紀錄，只需要下這樣的指令：</p>
+<pre><code>hg strip rebase_result_changeset # 先刪掉現有的 rebase 成果
+hg unbundle bundle.hg            # 將原本的分支取回來
+</code></pre>
+<p>就行了。</p>
+<p>在實際取回分支前，您甚至可以先看看您究竟會匯入些什麼：</p>
+<pre><code>hg incoming --graph bunble.hg    # 加上 --graph 後可用線圖顯示
+</code></pre>
+<p>另一方面，Git 要怎麼做？<a href="https://blog.extracheese.org/2010/12/rebase-is-safe.html">這邊有一篇教學</a>可以參考……總而言之您需要施展一點 shell 魔法。</p>
+<p>雖然原作者堅持這很簡單，事實上也確實不算太難（好吧，我是說對一個有能力編寫 shell 腳本的程式設計師而言，另外這個程式設計師還得對 Git 檔案系統與維護方式有著一定程度的理解，再者他還要有寫 unittest）……但是，和 Mercurial 的版本相比那又如何？</p>
+<p>另外，基於容量與效率考量，Git 的復原紀錄會被 Git 不定時刪除（！）。至於 Mercurial 的復原記錄則只是一個普通的檔案，用戶想留就留，想扔就扔，想改名存到別的地方那就儘管去做，一切都看自己，不會有意外狀況發生。</p>
+<p>Git 不會比 Mercurial 更安全。</p>
+<hr />
+<h3>順便一提</h3>
+<h4><strong>Point1 - Mercurial 的未來</strong></h4>
+<p>Mercurial 的開發十分穩定有節奏。</p>
+<p>它每月一號都會推出一個 bugfix 版本，每隔三個月會推出一個包含新特徵的版本，除了 hotfix 以外，兩年下來累計的誤差連十天都沒有。</p>
+<p>除了穩定地修 bug、將操作介面改得更好用以外，它也持續在發展各種各樣新特徵。</p>
+<ul>
+<li>【1.3 版】子版本庫：讓一個 Mercurial 倉庫中能納入其他倉庫。</li>
+<li>【1.8 版】bookmark：讓 Mercurial 也能使用類似 Git 的臨時性分支。</li>
+<li>
+<p>【1.9 版】fileset：讓 Mercurial 用戶能輕鬆地指定檔案。</p>
+<pre><code>例→
+hg locate "set: binary() and modified() and not **.png"
+列出所有 png 以外，於目前工作目錄中被變更過的二進位檔案
+</code></pre>
+</li>
+<li>
+<p>【2.1 版】phase：使 rebase 這種重寫歷史紀錄的行為能夠被管理。</p>
+</li>
+</ul>
+<p>……當然還有更多！</p>
+<p>我有提到 Mercurial 最近正在搞 <a href="https://mercurial.selenic.com/wiki/BidMerge">Bid Merge</a> 嗎？這將讓 Mercurial 能自動處理極為複雜的合併問題。（已經實驗性引入 3.0 版中）</p>
+<p>此外還有將「更動歷史」這件事也視為歷史之一部份－－讓 rebase 與 strip 事件能正確被 push pull 的 <a href="https://mercurial.selenic.com/wiki/EvolveExtension">Evolve 組件</a>。本組件目前仍以擴充套件型式單獨存在，但幾乎所有 Mercurial 核心指令與外掛都在提供它所需要的資料了。這個專案持續發展了超過兩年，在本文撰寫的這個時間點，版本號已到達了 4.0.1 版，且依然在高速前進中。</p>
+<p>Mercurial 的開發團隊也持續從 Git 最棒的特徵中汲取養份來改善自己。Bookmark 是如此， 用 XXX~1 這種優美語法來定位變更集相對位置也是。Mercurial 甚至還引入了 Git 的 diff 格式，只因為它真的更優秀。</p>
+<p>總而言之，Mercurial 的進步鮮明，態度積極，其未來的發展與維護，是可靠而值得我們期待的。</p>
+<h4><strong>Point2 - 您一定要試試 BitBucket</strong></h4>
+<p>Mercurial 倉庫不能 Hosting 在 GitHub 上？沒有關係！我們有 <a href="https://bitbucket.org/">BitBucket</a>！</p>
+<p>BitBucket 可以幫用戶代管／發佈任意數量的 Mercurial 專案到網路上，無論是私密或開源專案都沒有問題，其網站介面與功能都有持續維護翻新，穩定度、流量、運行速度均有第一線水平。截至本文撰寫為止，最近一次大的介面改進發生在 2014 年 5 月底，在本來就很優秀的架構上，它正不停地變得更先進。Mercurial 用戶不好好利用實在是太可惜了。</p>
+<p>對了，BitBucket 也能代管 Git 倉庫。就算您不喜歡 Mercurial 也大可試試。</p>
+<h4><strong>Point3 - 好用的本地伺服器</strong></h4>
+<p>Mercurial 內建零配置的網路伺服器，用戶只要在倉庫根目錄處打上：</p>
+<pre><code>hg serve
+</code></pre>
+<p>就可以立刻把本地伺服器建立起來。</p>
+<p>這個伺服器除了可供他人 push pull 以外，還能讓我們非常方便地透過瀏覽器查找各種資料。舉例如下：</p>
+<p><img alt="Point3 - 好用的本地伺服器-某檔案的更動是由哪幾次提交造成的" src="../../images/140729/Point3&#32;-&#32;好用的本地伺服器-某檔案的更動是由哪幾次提交造成的.jpg" height="180" width="289" /></p>
+<p>▴ 某檔案的更動是由哪幾次提交造成的</p>
+<p><img alt="Point3 - 好用的本地伺服器-提交產生的樹狀圖版本庫結構一目了然" src="../../images/140729/Point3&#32;-&#32;好用的本地伺服器-提交產生的樹狀圖版本庫結構一目了然.jpg" height="180" width="309" /></p>
+<p>▴ 提交產生的樹狀圖，版本庫結構一目了然。</p>
+<p><img alt="Point3 - 好用的本地伺服器-顯示誰修改了哪個檔案中的哪一行追打他人時輕而易舉" src="../../images/140729/Point3&#32;-&#32;好用的本地伺服器-顯示誰修改了哪個檔案中的哪一行追打他人時輕而易舉.jpg" height="180" width="290" /></p>
+<p>▴ 顯示誰修改了哪個檔案中的哪一行，追打他人時輕而易舉。</p>
+<p><img alt="Point3 - 好用的本地伺服器-水平比較檔案的兩個版本比傳統的 diff 更容易讀" src="../../images/140729/Point3&#32;-&#32;好用的本地伺服器-水平比較檔案的兩個版本比傳統的&#32;diff&#32;更容易讀.jpg" height="180" width="290" /></p>
+<p>▴ 水平比較檔案的兩個版本，比傳統的 diff 更容易讀。</p>
+<p><img alt="Point3 - 好用的本地伺服器-branch 列表灰掉的是被關閉的分支" src="../../images/140729/Point3&#32;-&#32;好用的本地伺服器-branch&#32;列表灰掉的是被關閉的分支.jpg" height="180" width="309" /></p>
+<p>▴ branch 列表，灰掉的是被關閉的分支。</p>
+<p>如此方便的工具不好好利用實在太可惜了。Mercurial 的本地伺服器還支援模版，內建甚至有和 git 網頁介面完全一樣的模版，如果您比較喜歡 Git 的網頁介面也可以選用。</p>
+<h4><strong>Point4 - 圖形化工具 TortoiseHG</strong></h4>
+<p>Mercurial 具有圖形化且完全開源的工具 TortoiseHG，在網路上一直有著不錯的評價。Mercurial 官網甚至將自身的更新日期與 TortoiseHG 的更新日期並列在一起，可見其地位。</p>
+<p>不過我個人倒是沒有使用 TortoiseHG 的日常習慣，這方面就不便多做說明，就請有興趣的朋友自行試玩囉。</p>
+<p><img alt="Point4 - 圖形化工具 TortoiseHG" src="../../images/140729/Point4&#32;-&#32;圖形化工具&#32;TortoiseHG.jpg" height="180" width="260" /></p>
+<p>▲TortoiseHG 的截圖，左側與上方標籤頁可同時追蹤好幾個倉庫，至於右側有著完善的線圖與提交資料。程式是用 PyQt4 寫的，相當具有現代感，而且全中文翻譯也需要讚一下。就算不用來提交更動，只用來檢視版本庫結構也不錯。</p>
+<h3>附：延伸閱讀</h3>
+<ul>
+<li><a href="https://mercurial.selenic.com/wiki/GitConcepts">https://mercurial.selenic.com/wiki/GitConcepts</a> Git 用戶轉移到 Mercurial 時可參考的觀念與指令對應文件</li>
+<li><a href="https://steveko.wordpress.com/2012/02/24/10-things-i-hate-about-git/">https://steveko.wordpress.com/2012/02/24/10-things-i-hate-about-git/</a> 這是一篇對 Git 的深入抱怨，其中提到 Git 「沒有抽象性」以及「打破承諾」的問題特別值得我們注意，相當有看點。不過這篇文章和 Mercurial 沒有直接關係。</li>
+</ul>
+<h3>註解</h3>
+<p>前面的話題中有部份瑣碎的細節不好講，故補充在此。各位可斟酌跳過。</p>
+<h4><strong>註一：想保留 Git 的分支路線訊息？</strong></h4>
+<p>如果您願意加上一堆但書，Git 也不是完全做不到，前題是您得紮實地用 --no-ff 與 rebase 小心整理線圖、保留 Git 分支不把它刪除、並想辦法計算 merge 與 branch 的分岔點合併點……又或是固定在提交紀錄中寫入當時的分支名稱，而且透過人工保證這名稱不會和其他用過的名稱重複。而且－－這是最難的－－您還得確保您的所有協作伙伴都有確實這麼做。</p>
+<p>但無論如何，這是人的苦勞，而不是工具的功勞。要說 Git 能辦到這個實在相當勉強。</p>
+<p>另外補充一下，git 的 reflog 也可以在某種程度上保留分支資訊，不過有以下問題：</p>
+<ol>
+<li>reflog 是本地的。無法被 clone 走，也無法被推到遠端。</li>
+<li>當分支內容有部份是被 pull 下來時，本地的 reflog 會跳過這些提交。</li>
+<li>老舊的 reflog 會被自動回收掉（此為預設值，但可以修改這個行為）</li>
+<li>reflog 畢竟是 refs 的移動紀錄，而不是提交紀錄。如果您曾手動移動過 Git 分支標籤，reflog 顯示的資訊就不再是依序排列的了，而且還會有各種交叉、重複、跳過……</li>
+</ol>
+<p>總之，Git 就是沒有一個簡單的方法讓人找回「約 250 次提交前，為了開發 X 功能而在某分支中進行的 N 個提交」。Git 用戶只能靠自己的腦子與嚴謹的紀律－－而非工具－－來處理這些問題。</p>
+<h4><strong>註二：Git 用戶怎麼解決隱藏分支的問題？</strong></h4>
+<ul>
+<li>有些 Git 用戶<a href="https://www.aaronwest.net/blog/index.cfm/2011/6/7/Git-Workflows-Archiving-Old-Branches">將分支轉成 Tag</a>，藉此封存想要保留的舊分支。</li>
+<li>另外還有 Git 用戶建議<a href="https://git.661346.n2.nabble.com/how-to-hide-some-branches-td1594799.html">使用 update-ref 將分支的 ref rename 到 heads 以外的地方</a>。</li>
+</ul>
+<p>然而上述兩種方法大量依賴人工，光看就讓人想哭了，實際上難以正式投入使用。</p>
+<p>最值得推荐的作法或許是利用指令……</p>
+<pre><code>git branch --no-merged
+</code></pre>
+<p>……藉此來列出所有「未合併進當前分支的分支」，換句話說，已被合併到工作目錄的分支就不會顯示出來。</p>
+<p>不過這個意義與「封存特定分支」其實有差，只能在特定的開發方式或較小的協作規模中才能被有效使用。實際上依然無法達成封存分支的效果。</p>
+<h4><strong>註三：如何有效運用含有多個 heads 的分支？</strong></h4>
+<p>「Branch 中能有多個 Head」這是 Mercurial 中一項相當有彈性的特徵，然而隨便將它推送到遠端反而可能搞混您的開發伙伴。Mercurial 用戶通常會用以下方法控制 heads：</p>
+<p><strong>不推送匿名 head 到遠端</strong></p>
+<p>Mercurial 允許同一個 branch 中有很多 Head，但他不希望您將一堆匿名 head 推送給他人共享（本地使用則無所謂），因為這會讓您的合作伙伴在 pull 後感到困惑：</p>
+<blockquote>
+<p>「奇怪，原本的 branch 怎麼突然多出了 N 個頭（而且都沒特殊標記），我現在要用哪個頭進行開發？」</p>
+</blockquote>
+<p>－－像是如此這般。</p>
+<p>對此 Mercurial 的建議是：如果您在嘗試 push 時得到了「這麼做 head 會增加」的警告，先不要勉強下 --force 硬推，取而代之，在絕大多數情況下，您應該先將遠端現有的變更拉下來看看多了什麼，然後在本地和您現有的變更合併（或 rebase），完成後再 push 到中央倉庫去，這可確保頭部數目不會增加。</p>
+<p>當然，有時您推送的目的就是想要增加一個額外的頭部，那麼您可以在這些頭部加上 bookmark 後，再用 --force 進行推送，以利用戶識別。</p>
+<p><strong>察看當前分支中的 head 們</strong></p>
+<p>使用如下指令：</p>
+<pre><code>hg heads .
+</code></pre>
+<p>這可以讓您列出當前的 branch 中的所有頭部（預設不含已經被關閉的頭部），然後您就能一目了然地，任意在他們之間切來換去了。</p>
+<p><strong>關閉無用的頭部</strong></p>
+<p>您可以用 hg commit --close-branch 來關閉那些無用的頭部，而不需要將其合併到任何地方。這可以用來處理一些您不想繼續使用的變更路徑。</p>
+<p>被關閉的頭部預設不會被列入 hg update BRANCH_NAME 的切換候選之中，所以除非刻意指定那個變更集，否則 update 時不會切到它頭上去。</p>
+<h4><strong>註四：為什麼 Mercurial 不需要引入分支命名空間？</strong></h4>
+<p>Mercurial 的 Branch 沒有命名空間的概念，所有 Branch 名稱都共用同一個命名空間－－這點常常被 Git 用戶指出，並視為缺點。</p>
+<p>不過真相是：Mercurial branch 與 Git branch 的實現邏輯並不相同－－Mercurial Branch 是標記一群變更集，而 Git Branch 則是標記頭部－－故 Mercurial 的 branch 不會因為名稱相同而無法工作，也因此不需要有命名空間的概念。</p>
+<p>Mercurial 的 branch 名稱總是唯一，且相同名字的 branch 總是會指向「同一群」提交－－這不允許混淆也不會混淆。（但在 branch 擁有多個頭部的情況下，如果用 branch 來指定頭部，不見得會指向同一個頭部，請參考註三）</p>
+<p>另一方面，與 Git branch 運作邏輯相似的 Mercurial bookmark，則與 Git 同樣有著「遠端與本地 bookmark 同名，但其實是指不同變更集」的問題存在。</p>
+<p>然而，與其像 Git 那樣引入命名空間的概念，Mercurial Bookmark 寧願選擇「儘可能讓遠端與本地的 bookmark 在推拉時自然同步」這種策略－－Mercurial 會自動讓同名 bookmark 在推拉時依照開發樹的方向自然同步推進。唯有因為路徑分岔而無法自然同步時，才會臨時產生一個命名空間，如「bookmark@default」這樣以資區別。</p>
+<p>這同樣也是利於共享的設計。</p>
+<h3>尾聲</h3>
+<p>這篇文章，到此也算告一段落了。在本文中，我描述了大量我注意到的，關於 Mercurial 與 Git 相比較時的優點。</p>
+<p>然而，我也完全明白，您可能根本不在乎我所說的那些優點。</p>
+<p>比方說，您可能根本不在乎能否保留分支、對輕鬆檢索變更集的能力嗤之以鼻、覺得簡單易學的命令行操作算不上什麼好處。您可能不認為自己需要一個零設定就能運行的網頁伺服器、覺得嚴肅對待版本與分支歷史的設計理念沒啥用處、不在乎版本管理器需不需要一個易寫易用的插件系統、對更多可能的分支模型聳聳肩、覺得用 shell script 來復原 rebase 只是小事一樁……</p>
+<p>沒問題的，您當然可以有您自己的選擇。就像我一開始所說的那樣，我只是出來辟謠的。</p>
+			<!-- Show relate article -->
+				<!-- end -->
+		<div class="article_note">
+		<!-- Add tags use metakey, and show OSSF Newsletter tag: OSSFNL+NUM-->
+		<br><br> <hr style='border: 1px dashed #D2DADB;'><b>自由軟體鑄造場電子報&nbsp;:</b>&nbsp;<a href='../../previous-issue%3Ftask=view&amp;id=858.html'>第 246 期 專訪中央大學「支援行動裝置使用者與虛擬實驗平台之雲端技術研究」整合型計畫</a><br>				<!-- End -->
+					<br>
+					<b>分類: </b><a href="../foss-forum.html">				自由專欄					</a>				</div>
+			 <!-- AddThis Button BEGIN ID 3001 is the front page article -->
+     			<br><br>
+       <div class="addthis_toolbox addthis_default_style addthis_32x32_style">
+       <a class="addthis_button_preferred_1"></a>
+       <a class="addthis_button_preferred_2"></a>
+       <a class="addthis_button_preferred_3"></a>
+       <a class="addthis_button_preferred_4"></a>
+       <a class="addthis_button_compact"></a>
+       <a class="addthis_counter addthis_bubble_style"></a>
+       </div>
+       <script type="text/javascript">var addthis_config = {"data_track_clickback":true};</script>
+       <script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js#pubid=openfoundry"></script>
+       <!-- AddThis Button END -->
+     <br>
+		<div class="totop" ><a class="rt-totop" href="9266-why-git-better.html#" style="outline: medium none;">↑ Top</a></div>
+            <!-- AddThis Button END -->
+
+		<script type="text/javascript">
+var jcomments=new JComments(9266, 'com_content','https://openfoundry.org/index.php?option=com_jcomments&amp;tmpl=component&amp;lang=');
+jcomments.setList('comments-list');
+</script>
+<div id="jc">
+<div id="comments"><h4>評論<a class="refresh" href="9266-why-git-better.html#" title="重新整理評論列表" onclick="jcomments.showPage(9266,'com_content',0);return false;">&nbsp;</a></h4>
+<div id="comments-list" class="comments-list">
+        <div class="even" id="comment-item-488"><div class="rbox"><div class="rbox_tr"><div class="rbox_tl"><div class="rbox_t">&nbsp;</div></div></div><div class="rbox_m">
+<div class="comment-avatar"><img src="http://www.gravatar.com/avatar.php?gravatar_id=86187a52f1e2f64890194d0451748ce5&amp;default=https%3A%2F%2Fwww.openfoundry.org%2Fcomponents%2Fcom_jcomments%2Fimages%2Fno_avatar.png" alt="" /></div>
+<div class="comment-box avatar-indent">
+<span class="comments-vote">
+	<span id="comment-vote-holder-488">
+<a href="9266-why-git-better.html#" class="vote-good" title="優質的評論" onclick="jcomments.voteComment(488, 1);return false;"></a><a href="9266-why-git-better.html#" class="vote-poor" title="差勁的評論" onclick="jcomments.voteComment(488, -1);return false;"></a>
+<span class="vote-none">0</span>
+	</span>
+</span>
+<a class="comment-anchor" href="9266-why-git-better.html#comment-488" id="comment-488">#1</a>
+<span class="comment-author">dlintw</span>
+<span class="comment-date">2014-07-31 14:02</span>
+<div class="comment-body" id="comment-body-488">Have you tried 'fossil'? I think its model is better then git/hg.</div>
+</div><div class="clear"></div>
+</div><div class="rbox_br"><div class="rbox_bl"><div class="rbox_b">&nbsp;</div></div></div></div>
+</div>
+        <div class="odd" id="comment-item-489"><div class="rbox"><div class="rbox_tr"><div class="rbox_tl"><div class="rbox_t">&nbsp;</div></div></div><div class="rbox_m">
+<div class="comment-avatar"><img src="http://www.gravatar.com/avatar.php?gravatar_id=49a872f505cf4d3d0435f4f96c8dcd64&amp;default=https%3A%2F%2Fwww.openfoundry.org%2Fcomponents%2Fcom_jcomments%2Fimages%2Fno_avatar.png" alt="" /></div>
+<div class="comment-box avatar-indent">
+<span class="comments-vote">
+	<span id="comment-vote-holder-489">
+<a href="9266-why-git-better.html#" class="vote-good" title="優質的評論" onclick="jcomments.voteComment(489, 1);return false;"></a><a href="9266-why-git-better.html#" class="vote-poor" title="差勁的評論" onclick="jcomments.voteComment(489, -1);return false;"></a>
+<span class="vote-good">+1</span>
+	</span>
+</span>
+<a class="comment-anchor" href="9266-why-git-better.html#comment-489" id="comment-489">#2</a>
+<span class="comment-author">chchwy chchwy</span>
+<span class="comment-date">2014-07-31 15:53</span>
+<div class="comment-body" id="comment-body-489">我當初就是因為編碼問題放棄 hg 的。Win/Mac 沒辦法互通中文檔名真的很令人不<span style="font-size:0px;padding:0;margin:0;"> </span>爽。<br /><br />另外一點是 git-svn 很穩定且速度非常快，相對來說 HgSubversion 則是問題多多。<br /><br />hg 很可愛，希望能早日改善編碼問題<span style="font-size:0px;padding:0;margin:0;"> </span>。</div>
+</div><div class="clear"></div>
+</div><div class="rbox_br"><div class="rbox_bl"><div class="rbox_b">&nbsp;</div></div></div></div>
+</div>
+        <div class="even" id="comment-item-492"><div class="rbox"><div class="rbox_tr"><div class="rbox_tl"><div class="rbox_t">&nbsp;</div></div></div><div class="rbox_m">
+<div class="comment-avatar"><img src="http://www.gravatar.com/avatar.php?gravatar_id=67a39c25a236a77aa62b8221d7d4976c&amp;default=https%3A%2F%2Fwww.openfoundry.org%2Fcomponents%2Fcom_jcomments%2Fimages%2Fno_avatar.png" alt="" /></div>
+<div class="comment-box avatar-indent">
+<span class="comments-vote">
+	<span id="comment-vote-holder-492">
+<a href="9266-why-git-better.html#" class="vote-good" title="優質的評論" onclick="jcomments.voteComment(492, 1);return false;"></a><a href="9266-why-git-better.html#" class="vote-poor" title="差勁的評論" onclick="jcomments.voteComment(492, -1);return false;"></a>
+<span class="vote-poor">-1</span>
+	</span>
+</span>
+<a class="comment-anchor" href="9266-why-git-better.html#comment-492" id="comment-492">#3</a>
+<a class="author-homepage" href="https://yegle.net" rel="nofollow" title="yegle">yegle</a>
+<span class="comment-date">2014-08-01 13:50</span>
+<div class="comment-body" id="comment-body-492">分支合并前rebase是常识吧<span style="font-size:0px;padding:0;margin:0;"> </span>？<br /><br />hg的分支管理很强大我知道，我<span style="font-size:0px;padding:0;margin:0;"> </span>就想知道如果hg有1000多分支，怎么给新分支取名<span style="font-size:0px;padding:0;margin:0;"> </span>而又不冲突？<br /><br />hg的commit number只能在本地使用而不<span style="font-size:0px;padding:0;margin:0;"> </span>能跨repo保证唯一。同样gi<span style="font-size:0px;padding:0;margin:0;"> </span>t也能支持HEAD^ 这样的相对版本号指定<br /><br />槽点太多就不继续读了</div>
+</div><div class="clear"></div>
+</div><div class="rbox_br"><div class="rbox_bl"><div class="rbox_b">&nbsp;</div></div></div></div>
+</div>
+        <div class="odd" id="comment-item-493"><div class="rbox"><div class="rbox_tr"><div class="rbox_tl"><div class="rbox_t">&nbsp;</div></div></div><div class="rbox_m">
+<div class="comment-avatar"><img src="http://www.gravatar.com/avatar.php?gravatar_id=c652220314b814a2e99d9a6eef45003f&amp;default=https%3A%2F%2Fwww.openfoundry.org%2Fcomponents%2Fcom_jcomments%2Fimages%2Fno_avatar.png" alt="" /></div>
+<div class="comment-box avatar-indent">
+<span class="comments-vote">
+	<span id="comment-vote-holder-493">
+<a href="9266-why-git-better.html#" class="vote-good" title="優質的評論" onclick="jcomments.voteComment(493, 1);return false;"></a><a href="9266-why-git-better.html#" class="vote-poor" title="差勁的評論" onclick="jcomments.voteComment(493, -1);return false;"></a>
+<span class="vote-good">+1</span>
+	</span>
+</span>
+<a class="comment-anchor" href="9266-why-git-better.html#comment-493" id="comment-493">#4</a>
+<span class="comment-author">williamwu</span>
+<span class="comment-date">2014-08-04 10:10</span>
+<div class="comment-body" id="comment-body-493">回 yegle<br /><br />分支合并前 rebase 這不一定是對的常識，原因是若你<span style="font-size:0px;padding:0;margin:0;"> </span>在合併前就 rebase，代表你寫的 tests 會基於不同的 code base，本來可以通過的測試 rebase 後可以過不一定是邏輯上的正確。<span style="font-size:0px;padding:0;margin:0;"> </span><br /><br />再來 hg 的 commit number 我個人通常是在 command line 觀看 log 進行 code review 時邊看邊 update 至該 changeset，這時有 commit number 就方便很多，我不用特別去記住 sha1 值就可以很直觀的進行 code review。嚴格來說這是 hg 提供的一種方便機制，用不用的到<span style="font-size:0px;padding:0;margin:0;"> </span>看個人，我是覺得比 git HEAD^ 這類的語法好用</div>
+</div><div class="clear"></div>
+</div><div class="rbox_br"><div class="rbox_bl"><div class="rbox_b">&nbsp;</div></div></div></div>
+</div>
+        <div class="even" id="comment-item-494"><div class="rbox"><div class="rbox_tr"><div class="rbox_tl"><div class="rbox_t">&nbsp;</div></div></div><div class="rbox_m">
+<div class="comment-avatar"><img src="http://www.gravatar.com/avatar.php?gravatar_id=c652220314b814a2e99d9a6eef45003f&amp;default=https%3A%2F%2Fwww.openfoundry.org%2Fcomponents%2Fcom_jcomments%2Fimages%2Fno_avatar.png" alt="" /></div>
+<div class="comment-box avatar-indent">
+<span class="comments-vote">
+	<span id="comment-vote-holder-494">
+<a href="9266-why-git-better.html#" class="vote-good" title="優質的評論" onclick="jcomments.voteComment(494, 1);return false;"></a><a href="9266-why-git-better.html#" class="vote-poor" title="差勁的評論" onclick="jcomments.voteComment(494, -1);return false;"></a>
+<span class="vote-none">0</span>
+	</span>
+</span>
+<a class="comment-anchor" href="9266-why-git-better.html#comment-494" id="comment-494">#5</a>
+<span class="comment-author">williamwu</span>
+<span class="comment-date">2014-08-04 10:14</span>
+<div class="comment-body" id="comment-body-494">續回yegle<br /><br />至於 branch 我倒是沒有管過超過上千個 branch... 不過這如果搭配 issue tracking system 的 issue number 應該不會有太大的問題？<br /><br />而且本文講的 branch 管理和你提的問題我個人的感覺是<span style="font-size:0px;padding:0;margin:0;"> </span>不同層面的事情... 不知你是否有實際上用過 hg 的 branch / bookmark / 匿名 branch ？要用過才會知道本文講的重點...</div>
+</div><div class="clear"></div>
+</div><div class="rbox_br"><div class="rbox_bl"><div class="rbox_b">&nbsp;</div></div></div></div>
+</div>
+        <div class="odd" id="comment-item-495"><div class="rbox"><div class="rbox_tr"><div class="rbox_tl"><div class="rbox_t">&nbsp;</div></div></div><div class="rbox_m">
+<div class="comment-avatar"><img src="http://www.gravatar.com/avatar.php?gravatar_id=1a9434856852a991a585fbb993174c81&amp;default=https%3A%2F%2Fwww.openfoundry.org%2Fcomponents%2Fcom_jcomments%2Fimages%2Fno_avatar.png" alt="" /></div>
+<div class="comment-box avatar-indent">
+<span class="comments-vote">
+	<span id="comment-vote-holder-495">
+<a href="9266-why-git-better.html#" class="vote-good" title="優質的評論" onclick="jcomments.voteComment(495, 1);return false;"></a><a href="9266-why-git-better.html#" class="vote-poor" title="差勁的評論" onclick="jcomments.voteComment(495, -1);return false;"></a>
+<span class="vote-good">+3</span>
+	</span>
+</span>
+<a class="comment-anchor" href="9266-why-git-better.html#comment-495" id="comment-495">#6</a>
+<span class="comment-author">Dennis dennis</span>
+<span class="comment-date">2014-08-05 14:09</span>
+<div class="comment-body" id="comment-body-495">讀到一半發現, 原來你不太會用 git。<br /><br />或這樣說, 拿 git 當 cvs/svn/hg 來用, 當然是不好用吧。<br /><br />git 基礎想法(特別是和 svn 最大分野)是 powerful-branch, cheap-branch, local-branch, rebase-first，而 merge 反而是次要的功能，因為 git 基本上是一個 file-system <br /><br />>匿名的超輕量分支 == git 所有 branch 都是吧！<br /><br />而 hg 相對比較著重在 merge 和多版本(edition/not version) branch同時開發上，<br />才有 "NamedBranches/long lived branches" 的應用<br /><br /><br />很多功能是為了在 rebase/cherry-pick/merge 的時候, 能簡單完成, 也留給最後做 commit 的人知道/決定如何做<br /><br />也對 "human mistake" 比較靈活, 也就是 "100%所有錯都可以改". branch/rebase/commit 錯了，花一點時間就一定可改正。<span style="font-size:0px;padding:0;margin:0;"> </span>沒有破壞性操作，改變和log 是同一組 harddisk operation。<br /><br /><br />但hg同時要求更少的 human mistake<br />> bundle.hg, 忘了，就沒有了...<br />> 沒有 git add / git add -p<br /><br />multiple heads 在我看來還比 git branch 的問題嚴重, 初入門的人比較難理解<br /><br /><a href="https://mercurial.selenic.com/wiki/GitConcepts" target="_blank" rel="external nofollow">mercurial.selenic.com/.../...</a><br />讀到 Tag model, 我想也會是一個地雷</div>
+</div><div class="clear"></div>
+</div><div class="rbox_br"><div class="rbox_bl"><div class="rbox_b">&nbsp;</div></div></div></div>
+</div>
+        <div class="even" id="comment-item-496"><div class="rbox"><div class="rbox_tr"><div class="rbox_tl"><div class="rbox_t">&nbsp;</div></div></div><div class="rbox_m">
+<div class="comment-avatar"><img src="http://www.gravatar.com/avatar.php?gravatar_id=1a9434856852a991a585fbb993174c81&amp;default=https%3A%2F%2Fwww.openfoundry.org%2Fcomponents%2Fcom_jcomments%2Fimages%2Fno_avatar.png" alt="" /></div>
+<div class="comment-box avatar-indent">
+<span class="comments-vote">
+	<span id="comment-vote-holder-496">
+<a href="9266-why-git-better.html#" class="vote-good" title="優質的評論" onclick="jcomments.voteComment(496, 1);return false;"></a><a href="9266-why-git-better.html#" class="vote-poor" title="差勁的評論" onclick="jcomments.voteComment(496, -1);return false;"></a>
+<span class="vote-none">0</span>
+	</span>
+</span>
+<a class="comment-anchor" href="9266-why-git-better.html#comment-496" id="comment-496">#7</a>
+<span class="comment-author">Dennis dennis</span>
+<span class="comment-date">2014-08-05 14:09</span>
+<div class="comment-body" id="comment-body-496">PS.<br /> X > git grep 'TEXT' $(git rev-list --all)<br /> O > git log -S'TEXT'<br /><br />PS2.<br /> git 最初是用 "bash" 寫的, 後來才慢慢用 C 把慢的部份重寫<br /><br />PS3.<br />> 而 Git 則更傾向於用一個大指令<br />不是， 事實上 git 有很多很多小指令, 但大多都放到後方被數個大指令引<span style="font-size:0px;padding:0;margin:0;"> </span>用去簡法應用方式</div>
+</div><div class="clear"></div>
+</div><div class="rbox_br"><div class="rbox_bl"><div class="rbox_b">&nbsp;</div></div></div></div>
+</div>
+        <div class="odd" id="comment-item-497"><div class="rbox"><div class="rbox_tr"><div class="rbox_tl"><div class="rbox_t">&nbsp;</div></div></div><div class="rbox_m">
+<div class="comment-avatar"><img src="http://www.gravatar.com/avatar.php?gravatar_id=1a9434856852a991a585fbb993174c81&amp;default=https%3A%2F%2Fwww.openfoundry.org%2Fcomponents%2Fcom_jcomments%2Fimages%2Fno_avatar.png" alt="" /></div>
+<div class="comment-box avatar-indent">
+<span class="comments-vote">
+	<span id="comment-vote-holder-497">
+<a href="9266-why-git-better.html#" class="vote-good" title="優質的評論" onclick="jcomments.voteComment(497, 1);return false;"></a><a href="9266-why-git-better.html#" class="vote-poor" title="差勁的評論" onclick="jcomments.voteComment(497, -1);return false;"></a>
+<span class="vote-none">0</span>
+	</span>
+</span>
+<a class="comment-anchor" href="9266-why-git-better.html#comment-497" id="comment-497">#8</a>
+<span class="comment-author">Dennis dennis</span>
+<span class="comment-date">2014-08-05 14:18</span>
+<div class="comment-body" id="comment-body-497">>>原因是若你 在合併前就 rebase，代表你寫的 tests 會基於不同的 code base，本來可以通過的測試 rebase 後可以過不一定是邏輯上的正確。 <br /><br />就是最後交出去的 code 在合併前正確就好？？後來壞掉誰<span style="font-size:0px;padding:0;margin:0;"> </span>去管？<br /><br />只有寫的人才最清楚知道如何改,<span style="font-size:0px;padding:0;margin:0;"> </span>因為是他剛寫好的。<br />他寫的慢就有責任去改正，別人的 push 都publish了，難道要其他<span style="font-size:0px;padding:0;margin:0;"> </span>人 undo 還是由第三者去修他的 bug?。<br /><br />合併前 rebase 不一定永遠是對，但總算是個常識<span style="font-size:0px;padding:0;margin:0;"> </span>。<br />就算時老舊 CVS/SVN 年代, HEAD 更新了也要自己修好才去 commit 吧...要不然很多 merge conflict 的</div>
+</div><div class="clear"></div>
+</div><div class="rbox_br"><div class="rbox_bl"><div class="rbox_b">&nbsp;</div></div></div></div>
+</div>
+        <div class="even" id="comment-item-498"><div class="rbox"><div class="rbox_tr"><div class="rbox_tl"><div class="rbox_t">&nbsp;</div></div></div><div class="rbox_m">
+<div class="comment-avatar"><img src="http://www.gravatar.com/avatar.php?gravatar_id=c652220314b814a2e99d9a6eef45003f&amp;default=https%3A%2F%2Fwww.openfoundry.org%2Fcomponents%2Fcom_jcomments%2Fimages%2Fno_avatar.png" alt="" /></div>
+<div class="comment-box avatar-indent">
+<span class="comments-vote">
+	<span id="comment-vote-holder-498">
+<a href="9266-why-git-better.html#" class="vote-good" title="優質的評論" onclick="jcomments.voteComment(498, 1);return false;"></a><a href="9266-why-git-better.html#" class="vote-poor" title="差勁的評論" onclick="jcomments.voteComment(498, -1);return false;"></a>
+<span class="vote-none">0</span>
+	</span>
+</span>
+<a class="comment-anchor" href="9266-why-git-better.html#comment-498" id="comment-498">#9</a>
+<span class="comment-author">williamwu</span>
+<span class="comment-date">2014-08-05 15:49</span>
+<div class="comment-body" id="comment-body-498">回 Dennis dennis<br /><br />"合併前 rebase 不一定永遠是對" 這句我認同，後面的就不回應了，<span style="font-size:0px;padding:0;margin:0;"> </span>關於這部份的看法，每個開發者心<span style="font-size:0px;padding:0;margin:0;"> </span>中都有一把尺，只能說大家的尺規<span style="font-size:0px;padding:0;margin:0;"> </span>單位不一定一樣...<br /><br />就連 Linus 自己也說過 rebase 不一定是 correct commit log，它只是讓 commit log 看起來比較簡單 (抱歉原文一時找不到，是在 kernel mailling list 看到的)，所以我想大家就擇自己<span style="font-size:0px;padding:0;margin:0;"> </span>所愛的工具吧...</div>
+</div><div class="clear"></div>
+</div><div class="rbox_br"><div class="rbox_bl"><div class="rbox_b">&nbsp;</div></div></div></div>
+</div>
+        <div class="odd" id="comment-item-499"><div class="rbox"><div class="rbox_tr"><div class="rbox_tl"><div class="rbox_t">&nbsp;</div></div></div><div class="rbox_m">
+<div class="comment-avatar"><img src="http://www.gravatar.com/avatar.php?gravatar_id=e38aaa83f399130ee8ef30dea4c5ff99&amp;default=https%3A%2F%2Fwww.openfoundry.org%2Fcomponents%2Fcom_jcomments%2Fimages%2Fno_avatar.png" alt="" /></div>
+<div class="comment-box avatar-indent">
+<span class="comments-vote">
+	<span id="comment-vote-holder-499">
+<a href="9266-why-git-better.html#" class="vote-good" title="優質的評論" onclick="jcomments.voteComment(499, 1);return false;"></a><a href="9266-why-git-better.html#" class="vote-poor" title="差勁的評論" onclick="jcomments.voteComment(499, -1);return false;"></a>
+<span class="vote-good">+3</span>
+	</span>
+</span>
+<a class="comment-anchor" href="9266-why-git-better.html#comment-499" id="comment-499">#10</a>
+<span class="comment-author">Homer</span>
+<span class="comment-date">2014-08-05 23:46</span>
+<div class="comment-body" id="comment-body-499">作者提到:<br />用戶下命令「請分別列出 Branch 1 與 Branch 2 中含有的提交」時……<br /><br />GIT的回答是也可以與Merc<span style="font-size:0px;padding:0;margin:0;"> </span>urial相同, 只要加 --first-parent 就可以</div>
+</div><div class="clear"></div>
+</div><div class="rbox_br"><div class="rbox_bl"><div class="rbox_b">&nbsp;</div></div></div></div>
+</div>
+        <div class="even" id="comment-item-500"><div class="rbox"><div class="rbox_tr"><div class="rbox_tl"><div class="rbox_t">&nbsp;</div></div></div><div class="rbox_m">
+<div class="comment-avatar"><img src="http://www.gravatar.com/avatar.php?gravatar_id=f4c05b4f2542c4153b85472f8dc00f99&amp;default=https%3A%2F%2Fwww.openfoundry.org%2Fcomponents%2Fcom_jcomments%2Fimages%2Fno_avatar.png" alt="" /></div>
+<div class="comment-box avatar-indent">
+<span class="comments-vote">
+	<span id="comment-vote-holder-500">
+<a href="9266-why-git-better.html#" class="vote-good" title="優質的評論" onclick="jcomments.voteComment(500, 1);return false;"></a><a href="9266-why-git-better.html#" class="vote-poor" title="差勁的評論" onclick="jcomments.voteComment(500, -1);return false;"></a>
+<span class="vote-none">0</span>
+	</span>
+</span>
+<a class="comment-anchor" href="9266-why-git-better.html#comment-500" id="comment-500">#11</a>
+<a class="author-homepage" href="https://blog.civa.me" rel="nofollow" title="林雪凡">林雪凡</a>
+<span class="comment-date">2014-08-06 09:06</span>
+<div class="comment-body" id="comment-body-500">我想 Rebase 的引入解決了一些問題，但也帶來<span style="font-size:0px;padding:0;margin:0;"> </span>了另外一些問題，在兩者間進行選<span style="font-size:0px;padding:0;margin:0;"> </span>擇是有些取捨的，並非理所當然必<span style="font-size:0px;padding:0;margin:0;"> </span>做不可的事情。另一方面，mer<span style="font-size:0px;padding:0;margin:0;"> </span>ge 工作在團隊中，有時是由一個一統<span style="font-size:0px;padding:0;margin:0;"> </span>全局的技術長來進行，或是雙方交<span style="font-size:0px;padding:0;margin:0;"> </span>叉進行過 code review 後才進行，合作之間存在著不適用 Rebase 的狀況。不過無論用戶對 Rebase 的態度是激進或保守，對本文的論<span style="font-size:0px;padding:0;margin:0;"> </span>述其實都影響不大。<br /><br /><br />git log -S'TEXT' 真是個好指令！這下運行速度像話<span style="font-size:0px;padding:0;margin:0;"> </span>多了，感謝補充，將其記入筆記中<span style="font-size:0px;padding:0;margin:0;"> </span>！雖然他和 hg grep 輸出的資料精度不同，不過這點差<span style="font-size:0px;padding:0;margin:0;"> </span>異我想可以忽視。<br /><br />但另一方面，這也正是一個說明了 git 的文件究竟有多難查找的範例，這<span style="font-size:0px;padding:0;margin:0;"> </span>個用法說明位在 git help log 的第 1345~1350 行（全文共 1757 行），請理解我為何會漏過它，甚<span style="font-size:0px;padding:0;margin:0;"> </span>至查錯指令查到 git help grep 那邊去了。作為對照 hg help log 共 75 行，這可讀性的落差相當大。正文<span style="font-size:0px;padding:0;margin:0;"> </span>中「指令巨大」的說法指的正是這<span style="font-size:0px;padding:0;margin:0;"> </span>個。並非 Dennis 說的「下一次指令做很多事情」的<span style="font-size:0px;padding:0;margin:0;"> </span>意思，而是「每個指令有著大量截<span style="font-size:0px;padding:0;margin:0;"> </span>然不同的用法與處理領域」之意。<span style="font-size:0px;padding:0;margin:0;"> </span>這裡提出的困難在於「相同指令的<span style="font-size:0px;padding:0;margin:0;"> </span>意義缺乏一致性」、「故指令難記<span style="font-size:0px;padding:0;margin:0;"> </span>」、「文件難查找」、「用戶不知<span style="font-size:0px;padding:0;margin:0;"> </span>道該去找哪一個指令來處理眼前的<span style="font-size:0px;padding:0;margin:0;"> </span>問題」等等。這種指令在完成工作<span style="font-size:0px;padding:0;margin:0;"> </span>方面沒有問題，一樣能把工作做好<span style="font-size:0px;padding:0;margin:0;"> </span>，問題是人不容易去使用它，只是<span style="font-size:0px;padding:0;margin:0;"> </span>如此而已。當然我相信有人並不在<span style="font-size:0px;padding:0;margin:0;"> </span>乎這個，這些文章中都提過了。</div>
+</div><div class="clear"></div>
+</div><div class="rbox_br"><div class="rbox_bl"><div class="rbox_b">&nbsp;</div></div></div></div>
+</div>
+        <div class="odd" id="comment-item-501"><div class="rbox"><div class="rbox_tr"><div class="rbox_tl"><div class="rbox_t">&nbsp;</div></div></div><div class="rbox_m">
+<div class="comment-avatar"><img src="http://www.gravatar.com/avatar.php?gravatar_id=f4c05b4f2542c4153b85472f8dc00f99&amp;default=https%3A%2F%2Fwww.openfoundry.org%2Fcomponents%2Fcom_jcomments%2Fimages%2Fno_avatar.png" alt="" /></div>
+<div class="comment-box avatar-indent">
+<span class="comments-vote">
+	<span id="comment-vote-holder-501">
+<a href="9266-why-git-better.html#" class="vote-good" title="優質的評論" onclick="jcomments.voteComment(501, 1);return false;"></a><a href="9266-why-git-better.html#" class="vote-poor" title="差勁的評論" onclick="jcomments.voteComment(501, -1);return false;"></a>
+<span class="vote-good">+1</span>
+	</span>
+</span>
+<a class="comment-anchor" href="9266-why-git-better.html#comment-501" id="comment-501">#12</a>
+<a class="author-homepage" href="https://blog.civa.me" rel="nofollow" title="林雪凡">林雪凡</a>
+<span class="comment-date">2014-08-06 09:07</span>
+<div class="comment-body" id="comment-body-501">git log --first-parent 可以隔離出主幹分支，感謝補充這<span style="font-size:0px;padding:0;margin:0;"> </span>個指令！然而它無法隔離出其他的<span style="font-size:0px;padding:0;margin:0;"> </span>特徵分支。此外，他也必須要依賴 rebase、--no-ff、保留分支標記等許多附加條<span style="font-size:0px;padding:0;margin:0;"> </span>件才能正確工作（請參考正文註一<span style="font-size:0px;padding:0;margin:0;"> </span>）。比方說，如果任何一個用戶在<span style="font-size:0px;padding:0;margin:0;"> </span>開發中忘記用 --no-ff 進行合併（畢竟一起寫 code 的合作伙伴大部份都不是版本管理<span style="font-size:0px;padding:0;margin:0;"> </span>迷，再者失誤也是有的），那麼事<span style="font-size:0px;padding:0;margin:0;"> </span>後用 --first-parent 找出來的答案就會讓人相當頭疼了<span style="font-size:0px;padding:0;margin:0;"> </span>。<br /><br />multi head 的概念我也覺得是 hg 中比較複雜的部份，特別是對慣用 git 的用戶來說，不過關於「為什麼需<span style="font-size:0px;padding:0;margin:0;"> </span>要 multi head」、「multi head 解決與引入的問題為何」，以及具<span style="font-size:0px;padding:0;margin:0;"> </span>體面的「面對 multi head 要如何處理」這一系列困惑，在本<span style="font-size:0px;padding:0;margin:0;"> </span>文中就已經被全數說明完了。其概<span style="font-size:0px;padding:0;margin:0;"> </span>念確實蠻特別的，但其難度也就是<span style="font-size:0px;padding:0;margin:0;"> </span>這種能被順便說明掉的程度而已。<span style="font-size:0px;padding:0;margin:0;"> </span><br /><br />Mercurial 的 tag 實作手法我個人也覺得是蠻奇怪的<span style="font-size:0px;padding:0;margin:0;"> </span>（至少它不合我的潔癖……幹嘛用<span style="font-size:0px;padding:0;margin:0;"> </span>那種怪方式實作啊！）。但另一方<span style="font-size:0px;padding:0;margin:0;"> </span>面，我在許多 Mercurial 專案中都有用到大量 tag 標記（上百個），也不曾惹來麻煩<span style="font-size:0px;padding:0;margin:0;"> </span>。除去潔癖不提，在實用中也沒什<span style="font-size:0px;padding:0;margin:0;"> </span>麼差別就是。當然如果您想試著看<span style="font-size:0px;padding:0;margin:0;"> </span>看遇到怎樣的狀況能把它搞爛，前<span style="font-size:0px;padding:0;margin:0;"> </span>文的聯結中有提供好方法。<br /><br />我也覺得 Git 是一套相當靈活的檔案系統，不過<span style="font-size:0px;padding:0;margin:0;"> </span>本文前言中就開宗明義提到是以「<span style="font-size:0px;padding:0;margin:0;"> </span>版本管理使用者」的角度來討論，<span style="font-size:0px;padding:0;margin:0;"> </span>而實務上眾人也幾乎總是把 Git 當版本管理器來用來期待著，所以<span style="font-size:0px;padding:0;margin:0;"> </span>檔案系統的角度就不多加說明了。<span style="font-size:0px;padding:0;margin:0;"> </span>如果用戶需要的是一個具有版本管<span style="font-size:0px;padding:0;margin:0;"> </span>理功能的檔案系統，那麼我也覺得 Git 確實是一個可以推荐的選擇。</div>
+</div><div class="clear"></div>
+</div><div class="rbox_br"><div class="rbox_bl"><div class="rbox_b">&nbsp;</div></div></div></div>
+</div>
+        <div class="even" id="comment-item-504"><div class="rbox"><div class="rbox_tr"><div class="rbox_tl"><div class="rbox_t">&nbsp;</div></div></div><div class="rbox_m">
+<div class="comment-avatar"><img src="http://www.gravatar.com/avatar.php?gravatar_id=11a8510159167f160cfea4b2d3689cbe&amp;default=https%3A%2F%2Fwww.openfoundry.org%2Fcomponents%2Fcom_jcomments%2Fimages%2Fno_avatar.png" alt="" /></div>
+<div class="comment-box avatar-indent">
+<span class="comments-vote">
+	<span id="comment-vote-holder-504">
+<a href="9266-why-git-better.html#" class="vote-good" title="優質的評論" onclick="jcomments.voteComment(504, 1);return false;"></a><a href="9266-why-git-better.html#" class="vote-poor" title="差勁的評論" onclick="jcomments.voteComment(504, -1);return false;"></a>
+<span class="vote-good">+1</span>
+	</span>
+</span>
+<a class="comment-anchor" href="9266-why-git-better.html#comment-504" id="comment-504">#13</a>
+<a class="author-homepage" href="https://heartmurs.blogspot.com/" rel="nofollow" title="林丹尼">林丹尼</a>
+<span class="comment-date">2014-09-20 16:08</span>
+<div class="comment-body" id="comment-body-504">本人曾分享過選擇 Git 而非 Hg 的四大理由： <a href="https://heartmurs.blogspot.com/2013/10/git-over-mercurial.html" target="_blank" rel="external nofollow">heartmurs.blogspot.com/.../...</a><br /><br />本文提了 Hg 三大缺點幾乎都涵蓋在上文之中，<span style="font-size:0px;padding:0;margin:0;"> </span>唯兩相比較，本文略去了很多議題<span style="font-size:0px;padding:0;margin:0;"> </span>：<br /><br />1. 跨平台編碼：我們是活在現實世界<span style="font-size:0px;padding:0;margin:0;"> </span>，而現實是 Linux 用 UTF-8 編碼，Windows 用 Big5 、 GB2312 等編碼， Mac 看來也別有一套策略。<br /><br />本人要的很簡單：是否有個簡單易<span style="font-size:0px;padding:0;margin:0;"> </span>行的 solution 可以在 Windows 和 Linux 共用含中文檔名檔案的版本庫？<br /><br />如果有，那確實不是大問題；但只<span style="font-size:0px;padding:0;margin:0;"> </span>要沒有 solution，「開發平台都<span style="font-size:0px;padding:0;margin:0;"> </span>是 utf8」現實上就不過是「只在<span style="font-size:0px;padding:0;margin:0;"> </span>單一作業系統上開發」的換句話說<span style="font-size:0px;padding:0;margin:0;"> </span>，後者恐怕是非常多開發者不能接<span style="font-size:0px;padding:0;margin:0;"> </span>受的重要考量之一，本人也會繼續<span style="font-size:0px;padding:0;margin:0;"> </span>基於這考量放棄 Hg。<br /><br />很不幸的，就本人所知，目前似乎<span style="font-size:0px;padding:0;margin:0;"> </span>沒有這樣的 solution。<br /><br /><br />2. 檔案重命名愚蠢：本人提過 Git 檔案儲存結構優於 Hg 之處包括總體積小、總檔案數少、<span style="font-size:0px;padding:0;margin:0;"> </span>檔名相對精簡好看、可用 hard link 做輕量 local clone 等等。作者事先讀過拙作，應知這<span style="font-size:0px;padding:0;margin:0;"> </span>些議題被提出及關注過，何以只提<span style="font-size:0px;padding:0;margin:0;"> </span>如此微小的子議題？是認為其他問<span style="font-size:0px;padding:0;margin:0;"> </span>題客觀上不存在？或是主觀認為它<span style="font-size:0px;padding:0;margin:0;"> </span>們不成問題？希望作者能好好說明<span style="font-size:0px;padding:0;margin:0;"> </span>。</div>
+</div><div class="clear"></div>
+</div><div class="rbox_br"><div class="rbox_bl"><div class="rbox_b">&nbsp;</div></div></div></div>
+</div>
+        <div class="odd" id="comment-item-505"><div class="rbox"><div class="rbox_tr"><div class="rbox_tl"><div class="rbox_t">&nbsp;</div></div></div><div class="rbox_m">
+<div class="comment-avatar"><img src="http://www.gravatar.com/avatar.php?gravatar_id=11a8510159167f160cfea4b2d3689cbe&amp;default=https%3A%2F%2Fwww.openfoundry.org%2Fcomponents%2Fcom_jcomments%2Fimages%2Fno_avatar.png" alt="" /></div>
+<div class="comment-box avatar-indent">
+<span class="comments-vote">
+	<span id="comment-vote-holder-505">
+<a href="9266-why-git-better.html#" class="vote-good" title="優質的評論" onclick="jcomments.voteComment(505, 1);return false;"></a><a href="9266-why-git-better.html#" class="vote-poor" title="差勁的評論" onclick="jcomments.voteComment(505, -1);return false;"></a>
+<span class="vote-good">+2</span>
+	</span>
+</span>
+<a class="comment-anchor" href="9266-why-git-better.html#comment-505" id="comment-505">#14</a>
+<a class="author-homepage" href="https://heartmurs.blogspot.com/" rel="nofollow" title="林丹尼">林丹尼</a>
+<span class="comment-date">2014-09-20 16:08</span>
+<div class="comment-body" id="comment-body-505">3. Git 社群較大但 Hg 也不小：一個受歡迎、使用者眾多<span style="font-size:0px;padding:0;margin:0;"> </span>的軟體可能只是非常親民或有好的<span style="font-size:0px;padding:0;margin:0;"> </span>商業手法支持，未必有很多人參與<span style="font-size:0px;padding:0;margin:0;"> </span>開發；反之，相對小眾的軟體，可<span style="font-size:0px;padding:0;margin:0;"> </span>能是一大群活躍的 geek 在使用、在貢獻原始碼。<br /><br />舉例來說，前者好比市場率超大的 Windows OS，後者是某個 Linux dist，我們能否說 Windows 核心專案採用的版本控制系統（也<span style="font-size:0px;padding:0;margin:0;"> </span>許是 perforce 或某套付費軟體？）比 Linux 核心專案使用的版本控制系統 Git 的社群更大？<br /><br />個人以為，用軟體市佔率推論版本<span style="font-size:0px;padding:0;margin:0;"> </span>控制系統的社群活躍程度，似是而<span style="font-size:0px;padding:0;margin:0;"> </span>非，如要比較使用某版本控制系統<span style="font-size:0px;padding:0;margin:0;"> </span>的開發者總數、總開發時間、程式<span style="font-size:0px;padding:0;margin:0;"> </span>碼提交量或修改量等，Git 社群比 Hg 大的程度恐怕不能這樣輕描淡寫。<span style="font-size:0px;padding:0;margin:0;"> </span></div>
+</div><div class="clear"></div>
+</div><div class="rbox_br"><div class="rbox_bl"><div class="rbox_b">&nbsp;</div></div></div></div>
+</div>
+        <div class="even" id="comment-item-506"><div class="rbox"><div class="rbox_tr"><div class="rbox_tl"><div class="rbox_t">&nbsp;</div></div></div><div class="rbox_m">
+<div class="comment-avatar"><img src="http://www.gravatar.com/avatar.php?gravatar_id=11a8510159167f160cfea4b2d3689cbe&amp;default=https%3A%2F%2Fwww.openfoundry.org%2Fcomponents%2Fcom_jcomments%2Fimages%2Fno_avatar.png" alt="" /></div>
+<div class="comment-box avatar-indent">
+<span class="comments-vote">
+	<span id="comment-vote-holder-506">
+<a href="9266-why-git-better.html#" class="vote-good" title="優質的評論" onclick="jcomments.voteComment(506, 1);return false;"></a><a href="9266-why-git-better.html#" class="vote-poor" title="差勁的評論" onclick="jcomments.voteComment(506, -1);return false;"></a>
+<span class="vote-good">+1</span>
+	</span>
+</span>
+<a class="comment-anchor" href="9266-why-git-better.html#comment-506" id="comment-506">#15</a>
+<a class="author-homepage" href="https://heartmurs.blogspot.com/" rel="nofollow" title="林丹尼">林丹尼</a>
+<span class="comment-date">2014-09-20 16:09</span>
+<div class="comment-body" id="comment-body-506">4. Git 有許多強過 Hg 的功能：先承認這議題較為主觀，<span style="font-size:0px;padding:0;margin:0;"> </span>本人亦未未細談此點，未被重視是<span style="font-size:0px;padding:0;margin:0;"> </span>可理解的。個人有此印象大概包括<span style="font-size:0px;padding:0;margin:0;"> </span>了幾個經驗：<br />(1) 本人於整理版本庫時就用過多次 git filter-branch，是便態級的強大。<span style="font-size:0px;padding:0;margin:0;"> </span><br />(2) Git 的 stash 很好用，可做多 head 、多分支的暫存，相較之下 Hg 的 MQ 只能保存單線，操作上也較為繁複<span style="font-size:0px;padding:0;margin:0;"> </span>（記得還要設定 guard 等等）。 Hg 似乎也無其他 extension 能提供更接近 stash 的功能。<br />(3) Git 可開裸版本庫，可將工作區和儲存<span style="font-size:0px;padding:0;margin:0;"> </span>區分開（如版本庫放 /myproject.git，工作檔案放 /myproject），有多層次 ignore 設定（如每層資料夾都能放 .gitignore，.git/info/exclude 可設定本地端的忽略規則），有 --assume-unchanged 和 --skip-worktree 設定等等。<br />(4) Git 有 Note 功能，可在版本記錄上添加注釋內<span style="font-size:0px;padding:0;margin:0;"> </span>容，且注釋可被版本控制。<br />(5) Git 在 rebase、amend 或重組版本時會分開記錄 author date 和 commit date，這對後續追蹤有時很重<span style="font-size:0px;padding:0;margin:0;"> </span>要。相較之下， Hg 只記錄了一個 date。<br /><br />就本人所知， Hg 並無簡單指令或 extension 可達成以上 Git 功能。同樣地，以上描述是否有誤<span style="font-size:0px;padding:0;margin:0;"> </span>？這些問題是不存在或是不重要？<span style="font-size:0px;padding:0;margin:0;"> </span>希望能得到作者正面回應。</div>
+</div><div class="clear"></div>
+</div><div class="rbox_br"><div class="rbox_bl"><div class="rbox_b">&nbsp;</div></div></div></div>
+</div>
+        <div class="odd" id="comment-item-507"><div class="rbox"><div class="rbox_tr"><div class="rbox_tl"><div class="rbox_t">&nbsp;</div></div></div><div class="rbox_m">
+<div class="comment-avatar"><img src="http://www.gravatar.com/avatar.php?gravatar_id=11a8510159167f160cfea4b2d3689cbe&amp;default=https%3A%2F%2Fwww.openfoundry.org%2Fcomponents%2Fcom_jcomments%2Fimages%2Fno_avatar.png" alt="" /></div>
+<div class="comment-box avatar-indent">
+<span class="comments-vote">
+	<span id="comment-vote-holder-507">
+<a href="9266-why-git-better.html#" class="vote-good" title="優質的評論" onclick="jcomments.voteComment(507, 1);return false;"></a><a href="9266-why-git-better.html#" class="vote-poor" title="差勁的評論" onclick="jcomments.voteComment(507, -1);return false;"></a>
+<span class="vote-good">+2</span>
+	</span>
+</span>
+<a class="comment-anchor" href="9266-why-git-better.html#comment-507" id="comment-507">#16</a>
+<a class="author-homepage" href="https://heartmurs.blogspot.com/" rel="nofollow" title="林丹尼">林丹尼</a>
+<span class="comment-date">2014-09-20 16:16</span>
+<div class="comment-body" id="comment-body-507">本文談及其他 Hg 優點，比如操作親民、文件好讀、<span style="font-size:0px;padding:0;margin:0;"> </span>容易上手等等，個人並無太大意見<span style="font-size:0px;padding:0;margin:0;"> </span>（或是已有前人吐過），坦白說，<span style="font-size:0px;padding:0;margin:0;"> </span>個人也非常希望 git 能有 Hg 的友善方便。然而本文對選擇 Git 之最重大考量著墨過少、輕描淡寫<span style="font-size:0px;padding:0;margin:0;"> </span>，辟謠尚可，若要據此主張 Hg 優於 Git，如此處理恐難讓人信服。<span style="font-size:0px;padding:0;margin:0;"> </span></div>
+</div><div class="clear"></div>
+</div><div class="rbox_br"><div class="rbox_bl"><div class="rbox_b">&nbsp;</div></div></div></div>
+</div>
+        <div class="even" id="comment-item-508"><div class="rbox"><div class="rbox_tr"><div class="rbox_tl"><div class="rbox_t">&nbsp;</div></div></div><div class="rbox_m">
+<div class="comment-avatar"><img src="http://www.gravatar.com/avatar.php?gravatar_id=11a8510159167f160cfea4b2d3689cbe&amp;default=https%3A%2F%2Fwww.openfoundry.org%2Fcomponents%2Fcom_jcomments%2Fimages%2Fno_avatar.png" alt="" /></div>
+<div class="comment-box avatar-indent">
+<span class="comments-vote">
+	<span id="comment-vote-holder-508">
+<a href="9266-why-git-better.html#" class="vote-good" title="優質的評論" onclick="jcomments.voteComment(508, 1);return false;"></a><a href="9266-why-git-better.html#" class="vote-poor" title="差勁的評論" onclick="jcomments.voteComment(508, -1);return false;"></a>
+<span class="vote-good">+2</span>
+	</span>
+</span>
+<a class="comment-anchor" href="9266-why-git-better.html#comment-508" id="comment-508">#17</a>
+<a class="author-homepage" href="https://heartmurs.blogspot.com/" rel="nofollow" title="林丹尼">林丹尼</a>
+<span class="comment-date">2014-09-20 23:11</span>
+<div class="comment-body" id="comment-body-508">糟糕，本文吐點比想像得多，留言<span style="font-size:0px;padding:0;margin:0;"> </span>實在寫不完，另立一文處理: <a href="https://heartmurs.blogspot.com/2014/09/mercurial-over-git-not.html" target="_blank" rel="external nofollow">heartmurs.blogspot.com/.../...</a> :)</div>
+</div><div class="clear"></div>
+</div><div class="rbox_br"><div class="rbox_bl"><div class="rbox_b">&nbsp;</div></div></div></div>
+</div>
+</div>
+<div id="comments-list-footer"><a class="refresh" href="9266-why-git-better.html#" title="重新整理評論列表" onclick="jcomments.showPage(9266,'com_content',0);return false;">重新整理評論列表</a></div>
+</div>
+<div id="comments-footer" align="center"><a href="http://www.joomlatune.com" title="JComments" target="_blank">JComments</a></div>
+<script type="text/javascript">
+jcomments.setAntiCache(1,0,0);
+</script> 
+</div>	</div>
+</div>
+
+		                            </div>
+									<div class="clear"></div>
+								</div>
+								<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+							</div>
+							</div>
+                                                    </div>
+                                            </div>
+                                <div class="rt-grid-3 rt-pull-9">
+                <div id="rt-sidebar-a">
+                                    <div class="square4">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<ul class="menu"><li class="item56"><a href="../previous-issue.html"><span>電子報總覽</span></a></li><li class="item55"><a href="../about-newsletter.html"><span>關於本報</span></a></li></ul>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<ul class="menu"><li class="item115"><a href="../foss-news.html"><span>源碼新聞</span></a></li><li class="item141"><a href="../case-job.html"><span>接案 / 工作</span></a></li></ul>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+        	                <div class="square1">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-title"><h2 class="title">專欄總覽</h2></div>
+						<div class="clear"></div>
+		                						<div class="module-content">
+		                	<ul class="menu"><li class="item37"><a href="../tech-column.html"><span>技術專欄</span></a></li><li class="item40"><a href="../foss-programs.html"><span>源碼秘技</span></a></li><li class="item35"><a href="../legal-article-.html"><span>法律專欄</span></a></li><li id="current" class="active item154"><a href="../foss-forum.html"><span>自由專欄</span></a></li><li class="item162"><a href="../enterprise-application.html"><span>企業應用</span></a></li><li class="item44"><a href="../foss-projects.html"><span>源碼專案</span></a></li></ul>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		                <div class="square1">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<p style="text-align: center;"><a href="../../news%3Fformat=feed&amp;type=rss" target="_black"><img src="../../images/M_images/news-rss-feed.png" border="0" /></a><br /><a href="https://www.openfoundry.org/rss-feed/Newsletter" target="_black"><img src="../../images/M_images/newsletter-rss-feed.png" border="0" /></a></p>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		
+                </div>
+            </div>
+
+                    <div class="clear"></div>
+                </div>
+            </div>
+																													</div>
+										<div id="rt-copyright">
+						<div class="rt-grid-12 rt-alpha rt-omega">
+                        <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<div id="desktop-mobile-version-switch"><span id="mobile-version" class="version-switch"><a href="9266-why-git-better.html#">行動版</a></span></div>
+自由軟體鑄造場 製作 最佳瀏覽狀態：IE7或Firefox2.0以上 (建議使用Firefox) ‧ 解析度1024*768 <br /> <strong>E-Mail</strong>：<a href="mailto:contact@openfoundry.org">contact@openfoundry.org</a> <strong>Address</strong>：台北市南港區研究院路2段128號 中央研究院資訊科學研究所 . <a href="../../privacy-policy.html">隱私權條款</a>. <a href="../../terms-of-use.html">使用條款</a><span style="position: relative; top: 8px; margin-top: -8px;"> <a href="../../about/8101.html"><img src="../../images/M_images/rss-feed-all.png" border="0" /></a></span>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+        	
+</div>
+						<div class="clear"></div>
+					</div>
+					<div class="rt-footer-bottom-wrap"><div class="rt-footer-bottom"><div class="rt-footer-bottom2"><div class="rt-footer-bottom3"></div></div></div></div>
+									</div></div></div>
+				<div class="rt-surround-bottom"><div class="rt-surround-bottom2"><div class="rt-surround-bottom3"></div></div></div>
+							</div>
+		</div>
+		<!--
+		<script id="aptureScript">
+						(function (){var a=document.createElement("script");a.defer="true";a.src="http://www.apture.com/js/apture.js?siteToken=vsJttrn";document.getElementsByTagName("head")[0].appendChild(a);})();
+     </script>
+-->
+
+<!-- Piwik -->
+<!-- 			<script type="text/javascript">
+			  var _paq = _paq || [];
+		  _paq.push(["trackPageView"]);
+		  _paq.push(["enableLinkTracking"]);
+
+		    (function() {
+			        var u=(("https:" == document.location.protocol) ? "https" : "https") + "://www.openfoundry.org/piwik/";
+				    _paq.push(["setTrackerUrl", u+"piwik.php"]);
+				    _paq.push(["setSiteId", "1"]);
+				        var d=document, g=d.createElement("script"), s=d.getElementsByTagName("script")[0]; g.type="text/javascript";
+				        g.defer=true; g.async=true; g.src=u+"piwik.js"; s.parentNode.insertBefore(g,s);
+					  })();
+		  </script> -->
+<!-- End Piwik Code -->
+	</body>
+</html>

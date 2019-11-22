@@ -1,0 +1,451 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="zh-tw" lang="zh-tw" >
+<head>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<link rel="shortcut icon" href="../../images/favicon.ico" />
+	  <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+  <meta name="robots" content="index, follow" />
+  <meta name="keywords" content="OSSFNL849" />
+  <meta name="title" content="三種協助你最佳化 PhoneGap 應用程式效能的工具－為跨平台行動裝置 App 建立一個更好的使用者經驗" />
+  <meta name="description" content=" ◎本文翻譯自 Float Mobile Learning，原作者為 Daniel Pfeiffer︰https://floatlearning.com/2013/10/3-tools-to-h elp-you-optimize-your-phonegap-apps-performance/ 當你的 PhoneGap app（註）因為你不知道的原因越跑越慢時，你該怎麼辦？" />
+  <meta name="generator" content="" />
+  <title>三種協助你最佳化 PhoneGap 應用程式效能的工具－為跨平台行動裝置 App 建立一個更好的使用者經驗 - OpenFoundry</title>
+  <link href="../../favicon.ico" rel="shortcut icon" type="image/x-icon" />
+  <link rel="stylesheet" href="../../components/com_gantry/css/gantry.css" type="text/css" />
+  <link rel="stylesheet" href="../../components/com_gantry/css/grid-12.css" type="text/css" />
+  <link rel="stylesheet" href="../../components/com_gantry/css/joomla.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/joomla.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/style1.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/light-body.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/demo-styles.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/template.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/typography.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/fusionmenu.css" type="text/css" />
+  <style type="text/css">
+    <!--
+#rt-main-surround ul.menu li.active > a, #rt-main-surround ul.menu li.active > .separator, #rt-main-surround ul.menu li.active > .item, #rt-main-surround .square4 ul.menu li:hover > a, #rt-main-surround .square4 ul.menu li:hover > .item, #rt-main-surround .square4 ul.menu li:hover > .separator, .roktabs-links ul li.active span {color:#0088B5;}
+a, #rt-main-surround ul.menu a:hover, #rt-main-surround ul.menu .separator:hover, #rt-main-surround ul.menu .item:hover {color:#0088B5;}
+    -->
+  </style>
+  <script type="text/javascript" src="../../components/com_jcomments/js/jcomments-v2.1.js%3Fv=2"></script>
+  <script type="text/javascript" src="../../components/com_jcomments/libraries/joomlatune/ajax.js"></script>
+  <script type="text/javascript" src="../../media/system/js/mootools.js"></script>
+  <script type="text/javascript" src="../../media/system/js/caption.js"></script>
+  <script type="text/javascript" src="../../components/com_gantry/js/gantry-buildspans.js"></script>
+  <script type="text/javascript" src="../../components/com_gantry/js/gantry-inputs.js"></script>
+  <script type="text/javascript" src="../../templates/rt_quantive_j15/js/jquery.cookie.js"></script>
+  <script type="text/javascript" src="../../modules/mod_roknavmenu/themes/fusion/js/fusion.js"></script>
+  <script type="text/javascript" src="../../modules/mod_ofssologin/js/ofssologin.js"></script>
+  <script type="text/javascript">
+
+			window.addEvent('domready', function() {
+				var modules = ['rt-block'];
+				var header = ['h3','h2','h1'];
+				GantryBuildSpans(modules, header);
+			});
+		InputsExclusion.push('.content_vote','#rt-popup')
+		        window.addEvent('load', function() {
+					new Fusion('ul.menutop', {
+						pill: 0,
+						effect: 'slide and fade',
+						opacity: 1,
+						hideDelay: 500,
+						centered: 0,
+						tweakInitial: {'x': -2, 'y': 0},
+        				tweakSubsequent: {'x': 0, 'y': -14},
+						menuFx: {duration: 200, transition: Fx.Transitions.Sine.easeOut},
+						pillFx: {duration: 400, transition: Fx.Transitions.Back.easeOut}
+					});
+	            });
+  </script>
+<!-- <script type="text/javascript" src="/sso/javascripts/langsync.js"></script> -->
+<!-- <script src="/templates/rt_quantive_j15/js/ossf.js"></script> -->
+<script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-4136519-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
+</head>
+	<body  class="backgroundlevel-low backgroundstyle-style8 bodylevel-med bodystyle-light cssstyle-style1 logostyle-dark font-family-helvetica font-size-is-default menu-type-fusionmenu col12 ">
+		<div id="rt-main-background">
+			<div class="rt-container">
+																<div id="rt-header">
+					<div class="rt-grid-7 rt-alpha">
+    			<div class="rt-block">
+    	    	<a href="../../index.html" id="rt-logo"></a>
+    		</div>
+	    
+</div>
+<div class="rt-grid-5 rt-omega">
+                    <div class="square9">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<div class="ofssologin_square9"><a href="../../index.html">登入</a>&nbsp;&nbsp|&nbsp;&nbsp;<span><a href="https://www.openfoundry.org/en/news/9196?task=view" ><span lang="en" xml:lang="en">English</span></a></li></ul></span><!--Joom!fish V2.0.4 (Lightning)-->
+<!-- &copy; 2003-2009 Think Network, released under the GPL. -->
+<!-- More information: at http://www.joomfish.net -->
+<div class="ofssologin_search_square9">
+  <form id="of_search" action="https://www.openfoundry.org/of/openfoundry/search" method="get" onsubmit="of_search(); return false;">
+    <select id="of_search_type">
+      <option value="Projects"> 專案 </option>
+      <option value="Content"> 文章 </option>
+      <option value="People"> 人才 </option>
+    </select>
+    <input id="query" name="query" id="mod_search_searchword" maxlength="50" alt="search" class="inputbox" type="text" size="28" value="search..."  onblur="if(this.value=='') this.value='search...';" onfocus="if(this.value=='search...') this.value='';" />
+    <input type="hidden" name="commit" value="search" />
+  </form>
+</div></div>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		
+</div>
+					<div class="clear"></div>
+				</div>
+																<div id="rt-navigation"><div id="rt-navigation2"><div id="rt-navigation3">
+					
+<div class="nopill">
+	<ul class="menutop level1 " >
+						<li class="item1 root" >
+					<a class="orphan item bullet" href="../../index.html"  >
+				<span>
+			    				首頁				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item32 root" >
+					<a class="orphan item bullet" href="../../archived.html"  >
+				<span>
+			    				專案				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item186 root" >
+					<a class="orphan item bullet" href="../community.html"  >
+				<span>
+			    				Who&#039;s Who				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item4 root" >
+					<a class="orphan item bullet" href="../news.html"  >
+				<span>
+			    				新聞				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item5 root" >
+					<a class="orphan item bullet" href="../law-and-licensing.html"  >
+				<span>
+			    				法律源地				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item3 root" >
+					<a class="orphan item bullet" href="../activities.html"  >
+				<span>
+			    				活動				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item2 root" >
+					<a class="orphan item bullet" href="../resourcecatalog%3FName=Value.html"  >
+				<span>
+			    				資源表列				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item45 root" >
+					<a class="orphan item bullet" href="../about.html"  >
+				<span>
+			    				關於				   
+				</span>
+			</a>
+			
+			
+	</li>	
+				</ul>
+</div>
+
+				    <div class="clear"></div>
+				</div></div></div>
+								<div class="rt-surround"><div class="rt-surround2"><div class="rt-surround3">
+										<div id="rt-showcase-section">
+												<div id="rt-showcase">
+							<div class="rt-grid-12 rt-alpha rt-omega">
+    		<div class="clear"></div>
+		
+		
+                <div class="close-note">
+                    <div class="rt-block">
+               					<div class="module-content">
+                	<div style="font-size:medium; background-image:linear-gradient(120deg,#159957,#4298b2);color:white;padding:20px;margin:-10px -18px;">感謝您對「自由軟體鑄造場」的支持與愛護，十多年來「自由軟體鑄造場」受中央研究院支持，並在資訊科學研究所以及資訊科技創新研究中心執行，現已完成階段性的任務。 本網站預計持續維運至 2021年底，網站內容基本上不會再更動。<br />也紀念我們永遠的朋友 李士傑先生（Shih-Chieh Ilya Li）。</div>				</div>
+            </div>
+                </div>
+		
+</div>
+							<div class="clear"></div>
+						</div>
+																	</div>
+															<div id="rt-main-surround">
+												<div id="rt-breadcrumbs">
+								<div class="rt-breadcrumb-surround">
+		<a href="../../index.html" id="breadcrumbs-home"></a>
+		<span class="breadcrumbs pathway">
+<span class="no-link">新聞</span></span>
+	</div>
+	
+							<div class="clear"></div>
+						</div>
+																							              <div id="rt-main" class="sa3-mb9">
+                <div class="rt-main-inner">
+                    <div class="rt-grid-9 rt-push-3">
+                                                <div class="rt-block">
+                            							<div class="square1">
+							<div class="rt-module-surround">
+								<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+								<div class="rt-module-inner">
+		                            <div id="rt-mainbody">
+		                                
+<div class="rt-joomla ">
+	<div class="rt-article">
+		
+				<div class="rt-headline"><h1 class="rt-article-title">三種協助你最佳化 PhoneGap 應用程式效能的工具－為跨平台行動裝置 App 建立一個更好的使用者經驗</h1>		</div>
+		<div class="clear"></div>
+		
+		
+		
+				<div class="rt-articleinfo">
+						<div class="rt-article-icons">
+								<a href="https://www.openfoundry.org/tw/news/9196-3toolsofphonegap?tmpl=component&amp;print=1&amp;page=" title="列印" onclick="window.open(this.href,'win2','status=no,toolbar=no,scrollbars=yes,titlebar=no,menubar=no,resizable=yes,width=640,height=480,directories=no,location=no'); return false;" rel="nofollow"><span class="icon print"></span></a>																</div>
+			
+			<span class="rt-date-posted">
+						建立日期			2014-03-25 12:01						&nbsp;&nbsp;&nbsp;&nbsp;						最近更新在 2014-03-26 10:55						</span>
+
+						<span class="rt-author">
+				作者是 張准榕／翻譯			</span>
+				
+					</div>
+		
+		
+		<h2></h2>
+<p>◎本文翻譯自 Float Mobile Learning，原作者為 Daniel Pfeiffer︰<a href="https://floatlearning.com/2013/10/3-tools-to-help-you-optimize-your-phonegap-apps-performance/">https://floatlearning.com/2013/10/3-tools-to-help-you-optimize-your-phonegap-apps-performance/</a></p>
+<p>當你的 PhoneGap app（註）因為你不知道的原因越跑越慢時，你該怎麼辦？</p>
+<p>這是每一個行動裝置開發者所需要面對的問題──你的應用程式運行速度降低，並終將一蹶不振。</p>
+<p>但到底是為什麼呢？你牢記著所有讓 PhoneGap App 更好的基本準則，但仍未得到你所希望的使用者體驗。你自認為你的應用程式並沒有那麼複雜。如果像 Infinity Blade III 那樣的遊戲都可以執行得相當順暢，你的動畫只是簡單滑動，應該要很順暢才對。所以，你會如何做呢？開始對它進行一連串仔細又煩人的檢查、然後猜測、再驗證？也許吧。</p>
+<p>但在你開始這麼做之前，讓我們使用一些工具評估我們的應用程式。</p>
+
+<p>測量 (Measuring) 是一個重要的原則──我也會在即將到來的 DevLearn 演說「如何開發更好的 PhoneGap 應用程式」中提到這個部份。</p>
+<p>建立成功的應用程式很大一部份與你測量的指標有關。使用率分析得到的數字當然是個明顯的分析指標，但是使用者體驗的測量也一樣重要。</p>
+<p>有一些工具能協助衡量我們的應用程序和突顯問題。</p>
+<p>*<em>註： PhoneGap 為一套 Nitobi 公司開發、被 Adobe Systems 收購的開放源碼的行動裝置開發框架。</em></p>
+<br />
+<h3>測量CPU使用率</h3>
+<p>CPU 花了多少時間在管理應用程式上，就表示它有多少 的 時間沒辦法回應使用者的需求。</p>
+<p>預設的情況下，JavaScript 在你的應用程式中和處理使用者互動的程序共用一個執行緒 (thread) 。我們可以嘗試用插件在背景讓執行緒／佇列來分擔這項工作，但在正式開始之前，我們可以先進行風險評估確保 CPU 的負擔沒有比我們預期的多。</p>
+<p>至於 Xcode 5 的部份，Apple 已經提供一套相當有用的除蟲工具，能提供我們當前系統資源分配的概要，其中也包含了 CPU 使用率。既然在裝置上可以隨時存取這些工具，可以練習養成一個良好習慣，每次在裝置上除蟲時就頻繁地去監測這些數據。</p>
+<p><img src="../../images/140328/3tools/image001.gif" alt="image001" height="271" width="323" /></p>
+<p>這只是個運行結果的概要檢視。它們的目的是為了開發過程中可能增加的新問題提供快速指引。你可以注意到，實裝一個新功能之後圖形呈現如下：</p>
+<p><img src="../../images/140328/3tools/image002.gif" alt="image002" height="249" width="500" /></p>
+<p>隨著時間的推移，應用程序的 CPU 使用率繼續上升，即便應用程序只是在等待與使用者互動，但還是持續的消耗。除了我們預期 CPU 閒置但它其實正在忙碌這件事情之外，這個結果並沒有告訴我們更多資訊，但我們隨即知道 CPU 的高負載可能是因為以下事件： 1. 也許有一些 JavaScript 程式碼卡在一個執行中的迴圈。 2. 也許渲染引擎 (Rendering Engine) 一直在進行它並不需要做的大量運算、佈局（遇到 reflow）或者繪製圖形。</p>
+<br />
+<h3>使用Safari的遠端網頁檢查器</h3>
+<p>Safari 瀏覽器的遠端網頁檢查器，可以與運行在一台已連接的 iOS 上設備的 Webkit 程序接合，並且可以讓我們取得一些檯面下的有用資訊。在我們開始之前，我們需要做一些設定。</p>
+<p>注意：如果你在開發者目錄中找不到你的裝置，試著離開並重新啟動 Safari。</p>
+<p>你可以在網頁檢查器 (inspector) 由左數來第三個頁籤開啟時間軸工具去檢查網路需求、佈局、渲染或是執行 JavaScript 所花費的時間。</p>
+<p><img src="../../images/140328/3tools/image003.gif" alt="image003" height="340" width="487" /></p>
+<p>一般來說，你應該看到類似於下列圖片的呈現：</p>
+<p><img src="../../images/140328/3tools/image004.jpg" alt="image004" height="332" width="480" /></p>
+<p>當使用者與你的應用程式互動時（以黃色表示之事件），它可能會要求介面以某種方式去回應，觸發 (triggering) 新佈局和渲染事件（以紫色呈現）。時間軸下方的表格顯示了實際在瀏覽器運作的佈局工作。大塊的白色區域則表示了網頁等待使用者回應的閒置時間。</p>
+<p>但是，如果說你看到類似像下圖這樣的呈現：</p>
+<p><img src="../../images/140328/3tools/image005.jpg" alt="image005" height="329" width="471" /></p>
+<p>在進行一些使用者互動後，甚至在使用者與應用程式已經完成互動後的十秒鐘，你的應用程式還持續大量地佈局和渲染。</p>
+<p>依據應用程式不同，這可能是可以預期的，也許你的應用程式透過一個動畫序列運作。</p>
+<p>這結果可能會讓你驚訝。如果你正因為你的應用程式焦躁不安，因為你預期它應保持閒置，那麼現在當你看到這樣的圖示，你就知道它出了什麼事情。可能你對它的問題已經有了一點靈感。如果是這樣，恭喜！現在你已經分離出那些不需要的佈局和渲染工作之問題，可以開始進行修改你的程式，重新計量測試你的假設。</p>
+<p>你可能還是不確定那些部分的程式碼是不好的。所以讓我們來看下一個工具。</p>
+<br />
+<h3>使用 JavaScript 數據量表 (JavaScript Profiler)</h3>
+<p>不幸地，JavaScript 探查並無法在裝置使用遠端檢查時執行（至少現在還不行）。 但是，你仍然可以在電腦上運行的 Safari 瀏覽器得到非常實用的資訊。（用最樂觀的態度來看待你的電腦──如果有一個問題在那裡顯示出來，那麼它肯定會在設備上顯示出來）。</p>
+<p>在時間軸工具的正下方，你可以啟動 JavaScript 分析器。(它也包含了一個CSS選擇器的配置文件，但我們不會討論這部分)</p>
+<p><img src="../../images/140328/3tools/image006.gif" alt="image006" height="317" width="454" /></p>
+<p>注意：在進行分析之前請確定關閉所有的頁籤，因為他似乎會從所有已開啟的視窗及頁籤中捕捉 JavaScript （例如：Gmail 或 Facebook）。</p>
+<p>你應該一個時間僅專注於一個問題。同時執行多個動作將會導致些問題。</p>
+<p>一旦你停止分析器，它將讓你一窺究竟是哪個 JavaScript 的功能和行列那些花費最多時間才完成。</p>
+<p><img src="../../images/140328/3tools/image007.jpg" alt="image007" height="299" width="424" /></p>
+<p>你要開始專注於花費最多時間的項目，特別是要密切防止你自己的程式出現這樣的情況。</p>
+<p>如果你有使用 JS 函式庫（例如 jQuery 或 Zepto ），你可能會看到它出現數次，並通常靠近於頂部。這（通常）不是因為它執行得相當緩慢，而是因為你的程式可能多次呼叫這些函式庫。現在，專注於你的程式碼上。</p>
+<p>那個「 Self 」欄位指出每個函數實際花費的時間量。而總合時間評估出完整函數所需要花費的時間量，包含從其他函數所呼叫的部分。</p>
+<p>當你往下探索，你將會開始發現你有許多行程式碼佔用了大量的總合時間——你沒有預期到這些函數需要花費如此多時間。</p>
+<p><img src="../../images/140328/3tools/image008.gif" alt="image008" height="302" width="431" /></p>
+<p>而這裡就是我們要替程式除錯的地方。如果我們忽略這函數的所有呼叫將會有什麼改變嗎？函數哪個部份消耗掉最多時間，並且我們該如何減輕它？</p>
+<p>你可以設置中斷點來停止一個函數內的執行動作，以便在執行路徑上獲得更深入的觀察。事實上，中斷點甚至可以在一個真實的裝置上遠端除蟲。</p>
+<p><img src="../../images/140328/3tools/image009.jpg" alt="image009" height="301" width="430" /></p>
+<br />
+<h3>全面觀</h3>
+<p>所有的這一切，都是為了爭取最好的用戶體驗。我們在這裡所做的事情與在本地應用程序的開發和除錯過程沒有什麼不同（它並不需要不同！）。我們測量的目標是節省花費在猜測和檢查的時間，以便在這些問題真的存在時，能夠更精確地找出問題。</p>
+<p>再一次提醒，「測量」是開發更好的 PhoneGap 應用程式時的許多重要步驟之一。</p>
+<p>如果你有興趣取得更多別人的摘要，你可以檢閱在 DeyLearn中 我的章節部分，星期五早上8:30。期待你的參與！</p>
+			<!-- Show relate article -->
+				<!-- end -->
+		<div class="article_note">
+		<!-- Add tags use metakey, and show OSSF Newsletter tag: OSSFNL+NUM-->
+		<br><br> <hr style='border: 1px dashed #D2DADB;'><b>自由軟體鑄造場電子報&nbsp;:</b>&nbsp;<a href='../../previous-issue%3Ftask=view&amp;id=849.html'>第 238 期 從自由開源軟體授權看庶民式法律時代的開展契機</a><br>				<!-- End -->
+					<br>
+					<b>分類: </b><a href="../foss-news.html">				源碼新聞					</a>				</div>
+			 <!-- AddThis Button BEGIN ID 3001 is the front page article -->
+     			<br><br>
+       <div class="addthis_toolbox addthis_default_style addthis_32x32_style">
+       <a class="addthis_button_preferred_1"></a>
+       <a class="addthis_button_preferred_2"></a>
+       <a class="addthis_button_preferred_3"></a>
+       <a class="addthis_button_preferred_4"></a>
+       <a class="addthis_button_compact"></a>
+       <a class="addthis_counter addthis_bubble_style"></a>
+       </div>
+       <script type="text/javascript">var addthis_config = {"data_track_clickback":true};</script>
+       <script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js#pubid=openfoundry"></script>
+       <!-- AddThis Button END -->
+     <br>
+		<div class="totop" ><a class="rt-totop" href="9196%3Ftask=view.html#" style="outline: medium none;">↑ Top</a></div>
+            <!-- AddThis Button END -->
+
+			</div>
+</div>
+
+		                            </div>
+									<div class="clear"></div>
+								</div>
+								<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+							</div>
+							</div>
+                                                    </div>
+                                            </div>
+                                <div class="rt-grid-3 rt-pull-9">
+                <div id="rt-sidebar-a">
+                                    <div class="square4">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<ul class="menu"><li class="item56"><a href="../previous-issue.html"><span>電子報總覽</span></a></li><li class="item55"><a href="../about-newsletter.html"><span>關於本報</span></a></li></ul>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<ul class="menu"><li class="item115"><a href="../foss-news.html"><span>源碼新聞</span></a></li><li class="item141"><a href="../case-job.html"><span>接案 / 工作</span></a></li></ul>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+        	                <div class="square1">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-title"><h2 class="title">專欄總覽</h2></div>
+						<div class="clear"></div>
+		                						<div class="module-content">
+		                	<ul class="menu"><li class="item37"><a href="../tech-column.html"><span>技術專欄</span></a></li><li class="item40"><a href="../foss-programs.html"><span>源碼秘技</span></a></li><li class="item35"><a href="../legal-article-.html"><span>法律專欄</span></a></li><li class="item154"><a href="../foss-forum.html"><span>自由專欄</span></a></li><li class="item162"><a href="../enterprise-application.html"><span>企業應用</span></a></li><li class="item44"><a href="../foss-projects.html"><span>源碼專案</span></a></li></ul>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		                <div class="square1">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<p style="text-align: center;"><a href="../../news%3Fformat=feed&amp;type=rss" target="_black"><img src="../../images/M_images/news-rss-feed.png" border="0" /></a><br /><a href="https://www.openfoundry.org/rss-feed/Newsletter" target="_black"><img src="../../images/M_images/newsletter-rss-feed.png" border="0" /></a></p>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		
+                </div>
+            </div>
+
+                    <div class="clear"></div>
+                </div>
+            </div>
+																													</div>
+										<div id="rt-copyright">
+						<div class="rt-grid-12 rt-alpha rt-omega">
+                        <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<div id="desktop-mobile-version-switch"><span id="mobile-version" class="version-switch"><a href="9196%3Ftask=view.html#">行動版</a></span></div>
+自由軟體鑄造場 製作 最佳瀏覽狀態：IE7或Firefox2.0以上 (建議使用Firefox) ‧ 解析度1024*768 <br /> <strong>E-Mail</strong>：<a href="mailto:contact@openfoundry.org">contact@openfoundry.org</a> <strong>Address</strong>：台北市南港區研究院路2段128號 中央研究院資訊科學研究所 . <a href="../../privacy-policy.html">隱私權條款</a>. <a href="../../terms-of-use.html">使用條款</a><span style="position: relative; top: 8px; margin-top: -8px;"> <a href="../../about/8101.html"><img src="../../images/M_images/rss-feed-all.png" border="0" /></a></span>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+        	
+</div>
+						<div class="clear"></div>
+					</div>
+					<div class="rt-footer-bottom-wrap"><div class="rt-footer-bottom"><div class="rt-footer-bottom2"><div class="rt-footer-bottom3"></div></div></div></div>
+									</div></div></div>
+				<div class="rt-surround-bottom"><div class="rt-surround-bottom2"><div class="rt-surround-bottom3"></div></div></div>
+							</div>
+		</div>
+		<!--
+		<script id="aptureScript">
+						(function (){var a=document.createElement("script");a.defer="true";a.src="http://www.apture.com/js/apture.js?siteToken=vsJttrn";document.getElementsByTagName("head")[0].appendChild(a);})();
+     </script>
+-->
+
+<!-- Piwik -->
+<!-- 			<script type="text/javascript">
+			  var _paq = _paq || [];
+		  _paq.push(["trackPageView"]);
+		  _paq.push(["enableLinkTracking"]);
+
+		    (function() {
+			        var u=(("https:" == document.location.protocol) ? "https" : "https") + "://www.openfoundry.org/piwik/";
+				    _paq.push(["setTrackerUrl", u+"piwik.php"]);
+				    _paq.push(["setSiteId", "1"]);
+				        var d=document, g=d.createElement("script"), s=d.getElementsByTagName("script")[0]; g.type="text/javascript";
+				        g.defer=true; g.async=true; g.src=u+"piwik.js"; s.parentNode.insertBefore(g,s);
+					  })();
+		  </script> -->
+<!-- End Piwik Code -->
+	</body>
+</html>

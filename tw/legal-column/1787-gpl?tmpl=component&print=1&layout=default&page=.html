@@ -1,0 +1,117 @@
+	<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+	<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="zh-tw" lang="zh-tw" >
+		<head>
+			  <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+  <meta name="robots" content="noindex, nofollow" />
+  <meta name="keywords" content="Embedded System, 授權拘束性, 侵權, GPL, OSSFNL442" />
+  <meta name="title" content="「GPL檢驗工程指南」提供侵權檢驗的基礎指南" />
+  <meta name="description" content="荷蘭籍軟體工程師 Armijn Hemel 近日發佈一份「GPL 檢驗工程指南 (The GPL Compliance Engineering Guide)[1]」，提供了一套檢測嵌入式產品是否侵害 GPL 程式的基礎指南。 這份基礎指南就像是一套標準作業流程，說明如何檢驗一個沒有提供原始碼的嵌入式裝置是否有利用到 GPL 程式碼。指南一開始分析 GPL" />
+  <meta name="generator" content="" />
+  <title>「GPL檢驗工程指南」提供侵權檢驗的基礎指南</title>
+  <link href="../../favicon.ico" rel="shortcut icon" type="image/x-icon" />
+  <link rel="stylesheet" href="../../components/com_gantry/css/gantry.css" type="text/css" />
+  <link rel="stylesheet" href="../../components/com_gantry/css/grid-12.css" type="text/css" />
+  <link rel="stylesheet" href="../../components/com_gantry/css/joomla.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/joomla.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/style1.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/light-body.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/demo-styles.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/template.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/typography.css" type="text/css" />
+  <style type="text/css">
+    <!--
+#rt-main-surround ul.menu li.active > a, #rt-main-surround ul.menu li.active > .separator, #rt-main-surround ul.menu li.active > .item, #rt-main-surround .square4 ul.menu li:hover > a, #rt-main-surround .square4 ul.menu li:hover > .item, #rt-main-surround .square4 ul.menu li:hover > .separator, .roktabs-links ul li.active span {color:#0088B5;}
+a, #rt-main-surround ul.menu a:hover, #rt-main-surround ul.menu .separator:hover, #rt-main-surround ul.menu .item:hover {color:#0088B5;}
+    -->
+  </style>
+  <script type="text/javascript" src="../../components/com_jcomments/js/jcomments-v2.1.js%3Fv=2"></script>
+  <script type="text/javascript" src="../../components/com_jcomments/libraries/joomlatune/ajax.js"></script>
+  <script type="text/javascript" src="../../media/system/js/mootools.js"></script>
+  <script type="text/javascript" src="../../media/system/js/caption.js"></script>
+  <script type="text/javascript" src="../../components/com_gantry/js/gantry-buildspans.js"></script>
+  <script type="text/javascript" src="../../components/com_gantry/js/gantry-inputs.js"></script>
+  <script type="text/javascript">
+
+			window.addEvent('domready', function() {
+				var modules = ['rt-block'];
+				var header = ['h3','h2','h1'];
+				GantryBuildSpans(modules, header);
+			});
+		InputsExclusion.push('.content_vote','#rt-popup')
+  </script>
+		</head>
+		<body  class="backgroundlevel-low backgroundstyle-style8 bodylevel-med bodystyle-light cssstyle-style1 logostyle-dark font-family-helvetica font-size-is-default menu-type-fusionmenu col12 ">
+			<div id="rt-main-surround">
+				<div class="rt-container">
+					<div class="rt-block">
+						<div id="rt-mainbody">
+					    	
+<div class="rt-joomla ">
+	<div class="rt-article">
+		
+				<div class="rt-headline"><h1 class="rt-article-title">「GPL檢驗工程指南」提供侵權檢驗的基礎指南</h1>		</div>
+		<div class="clear"></div>
+		
+		
+		
+				<div class="rt-articleinfo">
+						<div class="rt-article-icons">
+				<a href="1787-gpl%3Ftmpl=component&amp;print=1&amp;layout=default&amp;page=.html#" onclick="window.print();return false;"><span class="icon print"></span></a>									<span class="icon printscreen">
+						<a href="1787-gpl%3Ftmpl=component&amp;print=1&amp;layout=default&amp;page=.html#" onclick="window.print();return false;"><img src="../../images/M_images/printButton.png" alt="列印"  /></a>					</span>
+							</div>
+			
+			<span class="rt-date-posted">
+						建立日期			2008-10-24 08:00						&nbsp;&nbsp;&nbsp;&nbsp;						最近更新在 2012-05-30 10:18						</span>
+
+						<span class="rt-author">
+				作者是 葛冬梅			</span>
+				
+					</div>
+		
+		
+		<p>荷蘭籍軟體工程師 Armijn Hemel 近日發佈一份「GPL 檢驗工程指南 (The GPL Compliance Engineering Guide)[1]」，提供了一套檢測嵌入式產品是否侵害 GPL 程式的基礎指南。</p>
+<p>這份基礎指南就像是一套標準作業流程，說明如何檢驗一個沒有提供原始碼的嵌入式裝置是否有利用到 GPL 程式碼。指南一開始分析 GPL 程式如何應用在嵌入式裝置中，以及如何檢查開機管理程式、開機順序、檔案系統、壓縮方式與執行檔，也羅列用來進行檢查的各項工具，例如：binutils、hexdump、file、strings、tar與 gunzip/zcat 等。此外，Hemel 也說明了哪些是常被利用到嵌入式裝置的 GPL 自由軟體，以及 Windows 平台上所產生的侵權狀況。指南最後提供一份檢查表，說明面對侵權案例時所可以採取的處理程序，讓那些實際面對 GPL 侵權事件並且想採取行動的人，知道該如何應對。</p>
+
+<p>這份指南對於較為深入的檢驗技術，並未多加說明。</p>
+<p>指南的作者 Armijn Hemel 目前是 Harald Welte 的重要助手，參與許多 gpl-violations.org[2] 的侵權案例的檢測工作，同時也任職於荷蘭公司 Loohuis Consulting，該公司提供有 GPL 相容性的分析服務。gpl-violations.org 是由 Harald Welte 所發起的一個計畫，旨在推行以合於遊戲規則的方式來利用 GPL 程式碼，目前所採取的主要手段是針對侵權者採取各式法律措施，包括寄發警告信、申請假處份或者是直接提出法院訴訟。</p>
+<p>GPL 是最被廣泛利用的自由軟體授權條款，特點在於具有授權感染性，也就是利用到 GPL 程式碼所開發出來的新程式，仍然必須採用 GPL 來授權，因而必須提供管道，讓拿到產品者可以取得新程式的原始碼提。許多台灣廠商的產品利用到 GPL 程式碼，卻沒有依照規定提供取得原始碼的管道，因而違反 GPL 侵權利用他人的程式。去年 Welte 就向慕尼黑地方法院，對 Skype 提出正式訴訟，因 Skype 在其網站上明知地散布違反 GPL 規定的 VoIP-Telephon，Welte 於今年中獲得勝訴[3]。</p>
+<p>身為資訊硬體大國的台灣，許多台灣廠商的嵌入式產品或裝置都利用 GPL 程式碼，但是因為不諳其中的授權規則，沒有以合於 GPL 規定的方式來利用程式碼，而頻遭國外自由軟體社群批評與寄發正式警告信函，這份指南在一開始說明嵌入式產品的整套商業機制時，也明白地點出了台灣是許多侵權產品的源頭，2006 年台灣友訊 (D-Link) 在德國子公司因為違反 GPL 規定，而被告敗訴，就是一個例證[4]。因此不可諱言地，這份指南中所描述的方法，將有很大的機會將應用在台灣廠商所生產的產品上。</p>
+<p> </p>
+<p>新聞原文連結：<a href="https://www.heise.de/newsticker/Lizenzverstoessen-auf-der-Spur-mit-dem-GPL-Compliance-Engineering-Guide--/meldung/117673">德文新聞在這裡</a>；<a href="https://www.heise-online.co.uk/news/Tracking-down-license-infringements-with-the-GPL-Compliance-Engineering-Guide--/111761">英文新聞在這裡</a>。</p>
+<p><br /><hr />[1] 目前兩個網路下載頁面：<br /> <a href="https://www.piana.eu/en/engineering_guide" target="_blank">https://www.piana.eu/en/engineering_guide</a>，或<br /><a href="https://www.loohuis-consulting.nl/news.php?group=3&show=9" target="_blank">https://www.loohuis-consulting.nl/news.php?group=3&show=9</a>，或者 <br /> 網路直接下載點：<br /> <a href="https://www.loohuis-consulting.nl/downloads/compliance-manual.pdf" target="_blank">https://www.loohuis-consulting.nl/downloads/compliance-manual.pdf</a></p>
+<p>[2] <a href="https://www.gpl-violations.org/" target="_blank">gpl-violations.org 的網頁連結</a></p>
+<p>[3] Welte vs Skype 相關資訊：<br /><a href="../../case-study/1279.html" target="_blank">https://www.openfoundry.org/tw/case-study/1279</a>；<br /><a href="https://laforge.gnumonks.org/weblog/2008/05/08/" target="_blank">https://laforge.gnumonks.org/weblog/2008/05/08/</a>。</p>
+<p>[4] D-Link 案相關資訊：<a href="../../Law-and-Policy/Case-Study/Germany-2006-Welte-vs-D-Link.html" target="_blank">德國：2006年，Welte vs. D-Link</a>。</p>
+			<!-- Show relate article -->
+				<!-- end -->
+		<div class="article_note">
+		<!-- Add tags use metakey, and show OSSF Newsletter tag: OSSFNL+NUM-->
+		<br><br> <hr style='border: 1px dashed #D2DADB;'><b>自由軟體鑄造場電子報&nbsp;:</b>&nbsp;<a href='../../previous-issue%3Ftask=view&amp;id=442.html'>第 114 期 「GPL 檢驗工程指南」提供侵權檢驗的基礎指南</a><br><b>標籤:</b>&nbsp;<a href='../../index.php%3Foption=com_search&amp;Itemid=58&amp;searchphrase=exact_meta&amp;ordering=newest&amp;searchword=Embedded&#32;System.html'>Embedded System</a>,&nbsp;&nbsp;<a href='../../index.php%3Foption=com_search&amp;Itemid=58&amp;searchphrase=exact_meta&amp;ordering=newest&amp;searchword=&#32;授權拘束性.html'> 授權拘束性</a>,&nbsp;&nbsp;<a href='../../index.php%3Foption=com_search&amp;Itemid=58&amp;searchphrase=exact_meta&amp;ordering=newest&amp;searchword=&#32;侵權.html'> 侵權</a>,&nbsp;&nbsp;<a href='../../index.php%3Foption=com_search&amp;Itemid=58&amp;searchphrase=exact_meta&amp;ordering=newest&amp;searchword=&#32;GPL.html'> GPL</a>,&nbsp;&nbsp;				<!-- End -->
+					<br>
+					<b>分類: </b><a href="../legal-column-list.html">				法律專欄					</a>				</div>
+			 <!-- AddThis Button BEGIN ID 3001 is the front page article -->
+     			<br><br>
+       <div class="addthis_toolbox addthis_default_style addthis_32x32_style">
+       <a class="addthis_button_preferred_1"></a>
+       <a class="addthis_button_preferred_2"></a>
+       <a class="addthis_button_preferred_3"></a>
+       <a class="addthis_button_preferred_4"></a>
+       <a class="addthis_button_compact"></a>
+       <a class="addthis_counter addthis_bubble_style"></a>
+       </div>
+       <script type="text/javascript">var addthis_config = {"data_track_clickback":true};</script>
+       <script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js#pubid=openfoundry"></script>
+       <!-- AddThis Button END -->
+     <br>
+		<div class="totop" ><a class="rt-totop" href="1787-gpl%3Ftmpl=component&amp;print=1&amp;layout=default&amp;page=.html#" style="outline: medium none;">↑ Top</a></div>
+            <!-- AddThis Button END -->
+
+			</div>
+</div>
+
+						</div>
+					</div>
+				</div>
+			</div>
+		</body>
+	</html>

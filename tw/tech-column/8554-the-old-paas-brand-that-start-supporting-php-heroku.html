@@ -1,0 +1,714 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="zh-tw" lang="zh-tw" >
+<head>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<link rel="shortcut icon" href="../../images/favicon.ico" />
+	  <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+  <meta name="robots" content="index, follow" />
+  <meta name="keywords" content="PaaS, Heroku, PHP, Ronny, 雲端, Platform as a service,OSSFNL766" />
+  <meta name="title" content="開始支援 PHP 的 PaaS 老品牌－Heroku" />
+  <meta name="description" content="01. 前言 隨著雲端服務的興起，許多 PaaS 平台 (Platform as a service) 相繼問世，PHP 最近也出現了一些選擇，最早公開的應該是 PHPFog 以及在歐洲的 cloudControl；再來是從 Ruby 起家，與 Facebook 合作後公告提供 PHP 的 Heroku，以及 Zend 尚未推出正式版的 PHPCloud。 由於筆者最嫻熟" />
+  <meta name="generator" content="" />
+  <title>開始支援 PHP 的 PaaS 老品牌－Heroku - OpenFoundry</title>
+  <link href="../../favicon.ico" rel="shortcut icon" type="image/x-icon" />
+  <link rel="stylesheet" href="../../components/com_gantry/css/gantry.css" type="text/css" />
+  <link rel="stylesheet" href="../../components/com_gantry/css/grid-12.css" type="text/css" />
+  <link rel="stylesheet" href="../../components/com_gantry/css/joomla.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/joomla.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/style1.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/light-body.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/demo-styles.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/template.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/typography.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/fusionmenu.css" type="text/css" />
+  <style type="text/css">
+    <!--
+#rt-main-surround ul.menu li.active > a, #rt-main-surround ul.menu li.active > .separator, #rt-main-surround ul.menu li.active > .item, #rt-main-surround .square4 ul.menu li:hover > a, #rt-main-surround .square4 ul.menu li:hover > .item, #rt-main-surround .square4 ul.menu li:hover > .separator, .roktabs-links ul li.active span {color:#0088B5;}
+a, #rt-main-surround ul.menu a:hover, #rt-main-surround ul.menu .separator:hover, #rt-main-surround ul.menu .item:hover {color:#0088B5;}
+    -->
+  </style>
+  <script type="text/javascript" src="../../components/com_jcomments/js/jcomments-v2.1.js%3Fv=2"></script>
+  <script type="text/javascript" src="../../components/com_jcomments/libraries/joomlatune/ajax.js"></script>
+  <script type="text/javascript" src="../../media/system/js/mootools.js"></script>
+  <script type="text/javascript" src="../../media/system/js/caption.js"></script>
+  <script type="text/javascript" src="../../components/com_gantry/js/gantry-buildspans.js"></script>
+  <script type="text/javascript" src="../../components/com_gantry/js/gantry-inputs.js"></script>
+  <script type="text/javascript" src="../../templates/rt_quantive_j15/js/jquery.cookie.js"></script>
+  <script type="text/javascript" src="../../modules/mod_roknavmenu/themes/fusion/js/fusion.js"></script>
+  <script type="text/javascript" src="../../modules/mod_ofssologin/js/ofssologin.js"></script>
+  <script type="text/javascript">
+
+			window.addEvent('domready', function() {
+				var modules = ['rt-block'];
+				var header = ['h3','h2','h1'];
+				GantryBuildSpans(modules, header);
+			});
+		InputsExclusion.push('.content_vote','#rt-popup')
+		        window.addEvent('load', function() {
+					new Fusion('ul.menutop', {
+						pill: 0,
+						effect: 'slide and fade',
+						opacity: 1,
+						hideDelay: 500,
+						centered: 0,
+						tweakInitial: {'x': -2, 'y': 0},
+        				tweakSubsequent: {'x': 0, 'y': -14},
+						menuFx: {duration: 200, transition: Fx.Transitions.Sine.easeOut},
+						pillFx: {duration: 400, transition: Fx.Transitions.Back.easeOut}
+					});
+	            });
+  </script>
+<!-- <script type="text/javascript" src="/sso/javascripts/langsync.js"></script> -->
+<!-- <script src="/templates/rt_quantive_j15/js/ossf.js"></script> -->
+<script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-4136519-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
+</head>
+	<body  class="backgroundlevel-low backgroundstyle-style8 bodylevel-med bodystyle-light cssstyle-style1 logostyle-dark font-family-helvetica font-size-is-default menu-type-fusionmenu col12 ">
+		<div id="rt-main-background">
+			<div class="rt-container">
+																<div id="rt-header">
+					<div class="rt-grid-7 rt-alpha">
+    			<div class="rt-block">
+    	    	<a href="../../index.html" id="rt-logo"></a>
+    		</div>
+	    
+</div>
+<div class="rt-grid-5 rt-omega">
+                    <div class="square9">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<div class="ofssologin_square9"><a href="../../index.html">登入</a>&nbsp;&nbsp|&nbsp;&nbsp;<span><a href="../../en/tech-column/8554-the-old-paas-brand-that-start-supporting-php-heroku.html" ><span lang="en" xml:lang="en">English</span></a></li></ul></span><!--Joom!fish V2.0.4 (Lightning)-->
+<!-- &copy; 2003-2009 Think Network, released under the GPL. -->
+<!-- More information: at http://www.joomfish.net -->
+<div class="ofssologin_search_square9">
+  <form id="of_search" action="https://www.openfoundry.org/of/openfoundry/search" method="get" onsubmit="of_search(); return false;">
+    <select id="of_search_type">
+      <option value="Projects"> 專案 </option>
+      <option value="Content"> 文章 </option>
+      <option value="People"> 人才 </option>
+    </select>
+    <input id="query" name="query" id="mod_search_searchword" maxlength="50" alt="search" class="inputbox" type="text" size="28" value="search..."  onblur="if(this.value=='') this.value='search...';" onfocus="if(this.value=='search...') this.value='';" />
+    <input type="hidden" name="commit" value="search" />
+  </form>
+</div></div>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		
+</div>
+					<div class="clear"></div>
+				</div>
+																<div id="rt-navigation"><div id="rt-navigation2"><div id="rt-navigation3">
+					
+<div class="nopill">
+	<ul class="menutop level1 " >
+						<li class="item1 root" >
+					<a class="orphan item bullet" href="../../index.html"  >
+				<span>
+			    				首頁				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item32 root" >
+					<a class="orphan item bullet" href="../../archived.html"  >
+				<span>
+			    				專案				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item186 root" >
+					<a class="orphan item bullet" href="../community.html"  >
+				<span>
+			    				Who&#039;s Who				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item4 root" >
+					<a class="orphan item bullet" href="../news.html"  >
+				<span>
+			    				新聞				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item5 root" >
+					<a class="orphan item bullet" href="../law-and-licensing.html"  >
+				<span>
+			    				法律源地				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item3 root" >
+					<a class="orphan item bullet" href="../activities.html"  >
+				<span>
+			    				活動				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item2 root" >
+					<a class="orphan item bullet" href="../resourcecatalog%3FName=Value.html"  >
+				<span>
+			    				資源表列				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item45 root" >
+					<a class="orphan item bullet" href="../about.html"  >
+				<span>
+			    				關於				   
+				</span>
+			</a>
+			
+			
+	</li>	
+				</ul>
+</div>
+
+				    <div class="clear"></div>
+				</div></div></div>
+								<div class="rt-surround"><div class="rt-surround2"><div class="rt-surround3">
+										<div id="rt-showcase-section">
+												<div id="rt-showcase">
+							<div class="rt-grid-12 rt-alpha rt-omega">
+    		<div class="clear"></div>
+		
+		
+                <div class="close-note">
+                    <div class="rt-block">
+               					<div class="module-content">
+                	<div style="font-size:medium; background-image:linear-gradient(120deg,#159957,#4298b2);color:white;padding:20px;margin:-10px -18px;">感謝您對「自由軟體鑄造場」的支持與愛護，十多年來「自由軟體鑄造場」受中央研究院支持，並在資訊科學研究所以及資訊科技創新研究中心執行，現已完成階段性的任務。 本網站預計持續維運至 2021年底，網站內容基本上不會再更動。<br />也紀念我們永遠的朋友 李士傑先生（Shih-Chieh Ilya Li）。</div>				</div>
+            </div>
+                </div>
+		
+</div>
+							<div class="clear"></div>
+						</div>
+																	</div>
+															<div id="rt-main-surround">
+												<div id="rt-breadcrumbs">
+								<div class="rt-breadcrumb-surround">
+		<a href="../../index.html" id="breadcrumbs-home"></a>
+		<span class="breadcrumbs pathway">
+<a href="../tech-column.html" class="pathway">技術專欄</a> <img src="../../templates/rt_quantive_j15/images/arrow.png" alt=""  /> <span class="no-link">開始支援 PHP 的 PaaS 老品牌－Heroku</span></span>
+	</div>
+	
+							<div class="clear"></div>
+						</div>
+																							              <div id="rt-main" class="sa3-mb9">
+                <div class="rt-main-inner">
+                    <div class="rt-grid-9 rt-push-3">
+                                                <div class="rt-block">
+                            							<div class="square1">
+							<div class="rt-module-surround">
+								<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+								<div class="rt-module-inner">
+		                            <div id="rt-mainbody">
+		                                
+<div class="rt-joomla ">
+	<div class="rt-article">
+		
+				<div class="rt-headline"><h1 class="rt-article-title">開始支援 PHP 的 PaaS 老品牌－Heroku</h1>		</div>
+		<div class="clear"></div>
+		
+		
+		
+				<div class="rt-articleinfo">
+						<div class="rt-article-icons">
+								<a href="8554-the-old-paas-brand-that-start-supporting-php-heroku%3Ftmpl=component&amp;print=1&amp;layout=default&amp;page=.html" title="列印" onclick="window.open(this.href,'win2','status=no,toolbar=no,scrollbars=yes,titlebar=no,menubar=no,resizable=yes,width=640,height=480,directories=no,location=no'); return false;" rel="nofollow"><span class="icon print"></span></a>																</div>
+			
+			<span class="rt-date-posted">
+						建立日期			2011-12-20 16:08						&nbsp;&nbsp;&nbsp;&nbsp;						最近更新在 2011-12-27 09:55						</span>
+
+						<span class="rt-author">
+				作者是 Ronny			</span>
+				
+					</div>
+		
+		
+		<h3>01. 前言</h3>
+<p>隨著雲端服務的興起，許多 PaaS 平台 (Platform as a service) 相繼問世，PHP 最近也出現了一些選擇，最早公開的應該是 <a href="https://phpfog.com" target="_blank">PHPFog</a> 以及在歐洲的 <a href="https://cloudcontrol.com/" target="_blank">cloudControl</a>；再來是從 Ruby 起家，與 Facebook 合作後公告提供 PHP 的 <a href="https://heroku.com" target="_blank">Heroku</a>，以及 Zend 尚未推出正式版的 <a href="https://www.phpcloud.com" target="_blank">PHPCloud</a>。</p>
+<p>由於筆者最嫻熟 PHP，而且在痞客邦擔任技術研發部產品組組長，所以想接觸 PHP 相關的 PaaS，於公一來是希望能上傳痞客邦的一些小功能，減少痞客邦的維運成本，二來痞客邦已有公開的 <a href="https://dev.pixnet.pro" target="_blank">API</a>，可以開放外部功能的 open source，讓更多人了解痞客邦的 API；於私則是平常心血來潮寫些小東西，總算有個不需要花錢的地方可以嘗試了，於是先開始著手研究 Heroku。</p>
+<p>Heroku 最早公布支援 PHP 的消息，可追溯至 9 月 15 日發表的<a href="https://blog.heroku.com/archives/2011/9/15/facebook/" target="_blank">公告 </a>，但這份公告只提到如何透過 Facebook Developer 頁面建立 PHP App，並聲明 PHP app 只能透過 Facebook Developer 建立。然而 <a href="https://wp.xdite.net/?p=3109" target="_blank">xdite 的部落格</a>卻指出實際上另有辦法，可不透過 Facebook Developer 的途徑來建立。關於這點目前 Heroku 的官方文件並沒有任何說明，算是密技吧。</p>
+<h3>02. 申請 Heroku 的步驟</h3>
+<p>接下來介紹如何建立簡單的 App。在進行以下步驟之前，要先俱備簡單的 git 和工作站使用的簡易基礎。關於 git 可參考 Tsung's Blog 上的<a href="https://blog.longwin.com.tw/2009/05/git-learn-initial-command-2009/" target="_blank">教學</a>。</p>
+<h4>I. 註冊帳號</h4>
+<p>首先至 <a href="https://api.heroku.com/signup" target="_blank">https://api.heroku.com/signup</a> 註冊一個帳號。</p>
+<a href="../../images/111227/Heroku/01_heroku_signup.png" target="_blank"><img src="../../images/111227/Heroku/01_heroku_signup.png" border="0" alt="Heroku 的註冊頁面" /></a>
+<p>▲ 圖1：Heroku 的註冊頁面</p>
+<p>接下來會顯示認證信已經寄出，準備去收信吧。</p>
+<a href="../../images/111227/Heroku/02_heroku_signup_mail_sent.png" target="_blank"><img src="../../images/111227/Heroku/02_heroku_signup_mail_sent.png" border="0" alt="認證信寄出的通知頁面" /></a>
+<p>▲ 圖2：認證信寄出的通知頁面</p>
+<h4>II. 於註冊的電子信箱中收取註冊認證信</h4>
+<p>收到認證信後，點擊裡面的確認連結。</p>
+<a href="../../images/111227/Heroku/03_heroku_signup_confirm_mail.png" target="_blank"><img src="../../images/111227/Heroku/03_heroku_signup_confirm_mail.png" border="0" alt="認證信" /></a>
+<p>▲ 圖3：認證信</p>
+<p>點擊認證信提供的連結後，會進入 Heroku 輸入密碼的頁面，請填入您欲註冊的密碼兩次。</p>
+<a href="../../images/111227/Heroku/04_heroku_signup_password.png" target="_blank"><img src="../../images/111227/Heroku/04_heroku_signup_password.png" border="0" alt="密碼頁面" /></a>
+<p>▲ 圖4：密碼頁面</p>
+<p>隨後會轉到 My Apps 頁面，表示註冊成功了！</p>
+<a href="../../images/111227/Heroku/05_heroku_myapps.png" target="_blank"><img src="../../images/111227/Heroku/05_heroku_myapps.png" border="0" alt="My Apps 頁面" /></a>
+<p>▲ 圖5：My Apps 頁面</p>
+<h3>03. 建立第一個 App</h3>
+<p>再來需要在工作站上安裝 <code>gem</code>，只要主機有安裝過 Ruby 應該都可以使用這個指令，接著只需要輸入 <code>sudo gem install heroku</code>，就可以安裝好 Heroku 管理工具。</p>
+<p>請於命令列模式下輸入下列指令：</p>
+<pre><code>> sudo gem install heroku
+Successfully installed heroku-2.15.1
+1 gem installed
+Installing ri documentation for heroku-2.15.1...
+Installing RDoc documentation for heroku-2.15.1...
+
+</code></pre>
+<p>然後可以用 <code>heroku keys:add</code> 上傳您的 ssh public key。</p>
+<pre><code>> heroku keys:add
+Enter your Heroku credentials.
+Email: ************************
+Password: ****
+Found existing public key: /home/users/srwang/.ssh/id_rsa.pub
+Uploading ssh public key /home/users/srwang/.ssh/id_rsa.pub
+</code></pre>
+<p>產生 public key 的方式可以參考 Tsung's Blog 寫的 <a href="https://blog.longwin.com.tw/2005/12/ssh_keygen_no_passwd/" target="_blank">ssh keygen 免輸入密碼</a>。</p>
+<p>至此，基本的設定就完成了，接下來就是產生新的 App。只要按照以下步驟就可以產生一個 Hello World 頁面！</p>
+<pre><code>> heroku create --stack cedar # 建立 cedar stack 的 app ，只有 cedar stack 有支援 PHP
+Creating evening-earth-7959... done, stack is cedar
+https://evening-earth-7959.herokuapp.com/ | 
+ <script language='JavaScript' type='text/javascript'>
+ <!--
+ var prefix = 'm&#97;&#105;lt&#111;:';
+ var suffix = '';
+ var attribs = '';
+ var path = 'hr' + 'ef' + '=';
+ var addy64808 = 'g&#105;t' + '&#64;';
+ addy64808 = addy64808 + 'h&#101;r&#111;k&#117;' + '&#46;' + 'c&#111;m';
+ document.write( '<a ' + path + '\'' + prefix + addy64808 + suffix + '\'' + attribs + '>' );
+ document.write( addy64808 );
+ document.write( '<\/a>' );
+ //-->
+ </script> <script language='JavaScript' type='text/javascript'>
+ <!--
+ document.write( '<span style=\'display: none;\'>' );
+ //-->
+ </script>這個 E-mail 地址已經被防止灌水惡意程式保護，您需要啟用 Java Script 才能觀看
+ <script language='JavaScript' type='text/javascript'>
+ <!--
+ document.write( '</' );
+ document.write( 'span>' );
+ //-->
+ </script>:evening-earth-7959.git
+</code></pre>
+<p>上述指令的畫面中，最後顯示的名稱是隨機產生的，這個就是 App 的代號。按照該 App 代號進行以下操作，即可建立一個簡單的頁面。</p>
+<pre><code>> git clone 
+ <script language='JavaScript' type='text/javascript'>
+ <!--
+ var prefix = 'm&#97;&#105;lt&#111;:';
+ var suffix = '';
+ var attribs = '';
+ var path = 'hr' + 'ef' + '=';
+ var addy69826 = 'g&#105;t' + '&#64;';
+ addy69826 = addy69826 + 'h&#101;r&#111;k&#117;' + '&#46;' + 'c&#111;m';
+ document.write( '<a ' + path + '\'' + prefix + addy69826 + suffix + '\'' + attribs + '>' );
+ document.write( addy69826 );
+ document.write( '<\/a>' );
+ //-->
+ </script> <script language='JavaScript' type='text/javascript'>
+ <!--
+ document.write( '<span style=\'display: none;\'>' );
+ //-->
+ </script>這個 E-mail 地址已經被防止灌水惡意程式保護，您需要啟用 Java Script 才能觀看
+ <script language='JavaScript' type='text/javascript'>
+ <!--
+ document.write( '</' );
+ document.write( 'span>' );
+ //-->
+ </script>:evening-earth-7959.git # 將剛剛建立的 App clone 下來
+Cloning into evening-earth-7959...
+warning: You appear to have cloned an empty repository
+
+> cd evening-earth-7959 # 進入你產生的 App
+
+> echo ' index.php # 產生 Hello World 的 index.php
+> git add index.php # 加進 git 的追蹤列表中
+> git commit index.php -m 'add Hello World index.php' # commit 進去
+[master (root-commit) 1d41b07] add Hello World index.php
+ 1 files changed, 1 insertions(+), 0 deletions(-)
+ create mode 100644 index.php
+> git push origin master # 推上線，只有第一次需要用 git push origin master ，之後用 git push 就好了
+Counting objects: 3, done.
+Writing objects: 100% (3/3), 250bytes, done.
+Total 3 (delta 0), reused 0(delta 0)
+-----> Heroku receiving push
+-----> PHP app detected
+-----> Bundling Apache v2.2.19
+-----> Bundling PHP v5.3.6
+-----> Discovering process types
+        Procfile declares types -> (none)
+       Default types for PHP   -> web
+-----> Compiled slug size in 21.5MB
+-----> Launching... done, v3
+      https://evening-earth-7959.herokuapp.com deployed to Heroku
+
+To 
+ <script language='JavaScript' type='text/javascript'>
+ <!--
+ var prefix = 'm&#97;&#105;lt&#111;:';
+ var suffix = '';
+ var attribs = '';
+ var path = 'hr' + 'ef' + '=';
+ var addy30216 = 'g&#105;t' + '&#64;';
+ addy30216 = addy30216 + 'h&#101;r&#111;k&#117;' + '&#46;' + 'c&#111;m';
+ document.write( '<a ' + path + '\'' + prefix + addy30216 + suffix + '\'' + attribs + '>' );
+ document.write( addy30216 );
+ document.write( '<\/a>' );
+ //-->
+ </script> <script language='JavaScript' type='text/javascript'>
+ <!--
+ document.write( '<span style=\'display: none;\'>' );
+ //-->
+ </script>這個 E-mail 地址已經被防止灌水惡意程式保護，您需要啟用 Java Script 才能觀看
+ <script language='JavaScript' type='text/javascript'>
+ <!--
+ document.write( '</' );
+ document.write( 'span>' );
+ //-->
+ </script>:evening-earth-7959.git
+ * [new branch]     master -> master
+
+</code></pre>
+<p>最後，使用瀏覽器開啟 App 代號的網址，即可以看到本範例的簡易成品。</p>
+<a href="../../images/111227/Heroku/06_heroku_hello_world.png" target="_blank"><img src="../../images/111227/Heroku/06_heroku_hello_world.png" border="0" alt="瀏覽器的畫面" /></a>
+<p>▲ 圖6：瀏覽器的畫面</p>
+<h3>04. 將已存在之網頁上傳至 Heroku</h3>
+<p>如果有已存在的 <code>git repository</code>，可以直接上傳至 Heroku，方法如下：</p>
+<pre><code>exists_repo > cat index.php # 這個 repository 已經存在一個 index.php
+ heroku create --stack cedar # 在這個已存在的 repository 建一個 Heroku app
+Creating quiet-waterfall-5380... done, stack is cedar
+https://quiet-waterfall-5380.herokuapp.com/ | 
+ <script language='JavaScript' type='text/javascript'>
+ <!--
+ var prefix = 'm&#97;&#105;lt&#111;:';
+ var suffix = '';
+ var attribs = '';
+ var path = 'hr' + 'ef' + '=';
+ var addy20115 = 'g&#105;t' + '&#64;';
+ addy20115 = addy20115 + 'h&#101;r&#111;k&#117;' + '&#46;' + 'c&#111;m';
+ document.write( '<a ' + path + '\'' + prefix + addy20115 + suffix + '\'' + attribs + '>' );
+ document.write( addy20115 );
+ document.write( '<\/a>' );
+ //-->
+ </script> <script language='JavaScript' type='text/javascript'>
+ <!--
+ document.write( '<span style=\'display: none;\'>' );
+ //-->
+ </script>這個 E-mail 地址已經被防止灌水惡意程式保護，您需要啟用 Java Script 才能觀看
+ <script language='JavaScript' type='text/javascript'>
+ <!--
+ document.write( '</' );
+ document.write( 'span>' );
+ //-->
+ </script>:quiet-waterfall-5380.git
+Git remote heroku added
+# 你可能會發現多了一行 Git remote heroku added，表示 Heroku 已經將你這個已經存在的 repository 跟 Heroku 連結起來了
+exists_repo >git push heroku master # 將現在的 repository 推到 Heroku
+Counting objects: 3, done.
+Writing objects: 100% (3/3), 250bytes, done.
+Total 3 (delta 0), reused 0(delta 0)
+-----> Heroku receiving push
+-----> PHP app detected
+-----> Bundling Apache v2.2.19
+-----> Bundling PHP v5.3.6
+-----> Discovering process types
+        Procfile declares types -> (none)
+       Default types for PHP   -> web
+-----> Compiled slug size in 21.5MB
+-----> Launching... done, v3
+      https://quiet-waterfall-5380.herokuapp.com deployed to Heroku
+
+To 
+ <script language='JavaScript' type='text/javascript'>
+ <!--
+ var prefix = 'm&#97;&#105;lt&#111;:';
+ var suffix = '';
+ var attribs = '';
+ var path = 'hr' + 'ef' + '=';
+ var addy84463 = 'g&#105;t' + '&#64;';
+ addy84463 = addy84463 + 'h&#101;r&#111;k&#117;' + '&#46;' + 'c&#111;m';
+ document.write( '<a ' + path + '\'' + prefix + addy84463 + suffix + '\'' + attribs + '>' );
+ document.write( addy84463 );
+ document.write( '<\/a>' );
+ //-->
+ </script> <script language='JavaScript' type='text/javascript'>
+ <!--
+ document.write( '<span style=\'display: none;\'>' );
+ //-->
+ </script>這個 E-mail 地址已經被防止灌水惡意程式保護，您需要啟用 Java Script 才能觀看
+ <script language='JavaScript' type='text/javascript'>
+ <!--
+ document.write( '</' );
+ document.write( 'span>' );
+ //-->
+ </script>:quiet-waterfall-5380.git
+ * [new branch]     master -> master
+
+</code></pre>
+<p>接下來打開瀏覽器就可以看到你成功上傳的 App 了。</p>
+<a href="../../images/111227/Heroku/07_heroku_phpinfo.png" target="_blank"><img src="../../images/111227/Heroku/07_heroku_phpinfo.png" border="0" alt="heroku phpinfo 的顯示結果" /></a>
+<p>▲ 圖7：heroku phpinfo 的顯示結果</p>
+<p>從 phpinfo 的畫面中，我們可以看到 cedar stack 裡面的 PHP，已經裝好 curl、dom、fileinfo、gd、iconv、json、libxml、mysql、openssl、pgsql、sqlite 等 extension。其實有點少，像 memcache、imagick、zlib、gettext 之類的就無法使用了。</p>
+<h3>05. Heroku 的 Add-on</h3>
+<p>再來介紹 Heroku 強大的 Add-on 功能，只要到 https://addons.heroku.com/ 就有琳瑯滿目的 addons 可供使用。這邊介紹幾個常用的 addons。</p>
+<h4>I. 第一個是 Custom domains</h4>
+<a href="../../images/111227/Heroku/08_heroku_customdomains.png" target="_blank"><img src="../../images/111227/Heroku/08_heroku_customdomains.png" border="0" alt="heroku custom domain addon 介紹" /></a>
+<p>▲ 圖8：heroku custom domain addon 介紹</p>
+<p>這個 addons 可以讓你的 heroku app 有自己的專屬網址，而且是免費的！如果要用 wildcard domains，也就是讓 *.yourdomain 都會到這個 app（就像 PIXNET 會讓 [username].pixnet.net 都連到使用者前台一樣），就需要每個月 5 美金的費用，其實也不算太貴，來點選 LEARN MORE 看看怎麼用吧。</p>
+<a href="../../images/111227/Heroku/09_heroku_customdomains_learnmore.png" target="_blank"><img src="../../images/111227/Heroku/09_heroku_customdomains_learnmore.png" border="0" alt="custom domain learn more" /></a>
+<p>▲ 圖9：custom domain learn more</p>
+<p>從框起來的地方可以看到，只要下 <code>heroku addons:add custom_domain basic</code> 這個指令，就可以免費幫你的 app 增加 custom_domain 的功能了!</p>
+<pre><code>> heroku addons:add custom_domains:basic # 增加 custom_domains addons
+-----> Adding custom_domains:basic to quiet-waterfall-5380... done, v5 (free)
+
+> heroku domains:add testapp.ronny.tw # 幫這個 App 增加 testapp.ronny.tw 的 domain
+Added testapp.ronny.tw as a custom domain name for quiet-waterfall-5380
+>
+</code></pre>
+<p>接下來，只要將你指定的 domain CNAME 到 [quiet-waterfall-5380.herokuapp.com]，之後就可以用 https://testapp.ronny.tw/ 看到這個 App 了，這比 https://quiet-waterfall-5380.herokuapp.com/ 這樣的名字好看多了吧！</p>
+<h4>II. 接著介紹 Heroku 提供的 memcache addons</h4>
+<a href="../../images/111227/Heroku/10_heroku_memcache.png" target="_blank"><img src="../../images/111227/Heroku/10_heroku_memcache.png" border="0" alt="memcache addons" /></a>
+<p>▲ 圖10：memcache addons</p>
+<p>點進 LEARN MORE，可以看到增加這個 addons 的指令是 <code>heroku addons:add memcache:5mb</code>，既然免費就放膽得打下去吧。</p>
+<pre><code>> heroku addons:add memcache:5mb
+-----> Adding memcache:5mb to quiet-waterfall-5380... done, v6 (free)
+>
+# 稍等一分鐘左右
+> heroku config
+MEMCACHE_PASSWORD => *********
+MEMCACHE_SERVERS  => mc6.ec2.northscale.net
+MEMCACHE_USERNAME => app******%40heroku.com
+
+</code></pre>
+<p>你可以看到你的 Heroku memcache 相關設定。Heroku 使用的是 memcache 加上 sasl 認證功能，這在 PHP 內建的 memcache 是不支援的，就算是 pecl-memcached 支援的版本也還未推出正式版。我自己有寫一個 PHPMemcacheSASL 放在 <a href="https://github.com/ronnywang/PHPMemcacheSASL" target="_blank">github</a>，如此一來只要用下面的程式就可以做出一個用 Memcache 的 counter app。</p>
+<pre><code> 1  addServer(getenv('MEMCACHE_SERVERS'), '11211');
+ 7  $m->setSaslAuthData(getenv('MEMCACHE_USERNAME'),getenv('MEMCACHE_PASSWORD'));
+ 8  $count = $m->get('count');
+ 9  echo $count;
+10  $m->increment('count');
+</code></pre>
+<p>您可以在 PHP 中直接利用 getenv 取得 Heroku config 裡的資訊。</p>
+<p>有了 memcache，您的 App 就可以運用一些 cache 加速，或將 session 放在這邊（可惜 Heroku 沒有裝 zlib extension，memcache 裡的東西不能壓縮，免費的 5MB 很快就用完了）。</p>
+<h4>III. Heroku 提供的 postgresql 資料庫</h4>
+<p>再來是 Heroku 提供的 postgresql。Heroku 提供的 shared db 免費版有 5MB，如果要升級的話費用為 20GB 每個月 15 美元。這邊先示範免費版。</p>
+<pre><code>> heroku addons:add shared-database:5mb
+-----> Adding shared-database:5mb to quiet-waterfall-5380... done, v9 (free)
+# 等個約一分鐘
+
+> heroku config
+DATABASE_URL        => postgres://*username*:*password*@*hostname*/*dbname*
+SHARED_DATABASE_URL => postgres://*username*:*password*@*hostname*/*dbname*
+</code></pre>
+<p>上面是 Heroku 提供的 postgresql 主機相關設定。關於 postgresql 的語法在這邊就不多談，它跟 MySQL 還是有些差別。在 PIXNET 我們已研發出自己的 ORM，可以用 mysql、pgsql、sqlite 或者 cassandra 為底層資料庫，而用法都不變。這套 ORM 之後可能會 open source 出來，到時候會另外介紹，並說明如何在 Heroku 上面使用。</p>
+<p>再來介紹如何看 Heroku 的記錄。只要用 Heroku logs 這個指令，就可以看到每分鐘最多 500 行的記錄，包括 access log、PHP error_log、Heroku 相關操作記錄。您也可以持續運作 <code>heroku logs --tail</code>，它會顯示新記錄，藉此觀察目前上線情況是否有任何問題。這點對於 debug 或者確認線上是否有狀況是相當方便的。如果每分鐘 500 行無法滿足你的需求，就可以考慮到 <a href="https://addons.heroku.com/logging" target="_blank">https://addons.heroku.com/logging</a> 花錢升級至更好的 logging。</p>
+<h4>IV. 其它 Add-on</h4>
+<p>最後為大家介紹一些可能很有用的 Addons：</p>
+<ol style="list-style-type: decimal;">
+<li><a href="https://addons.heroku.com/cron" target="_blank">https://addons.heroku.com/cron</a>：可以指定在固定間隔時間所執行的動作，分為 daily（免費）或者 hourly（收費為每個月 3 美元）</li>
+<li><a href="https://addons.heroku.com/deployhooks" target="_blank">https://addons.heroku.com/deployhooks</a>：當有人部署程式到線上時，可以指定要透過 mail、RC、HTTP POST 或是其他方式通知，完全免費。</li>
+<li><a href="https://addons.heroku.com/mailgun" target="_blank">https://addons.heroku.com/mailgun</a>：可以讓你的 App 透過 mailgun 寄出信件，一天寄 300 封信以內都免費。</li>
+<li><a href="https://addons.heroku.com/cloudmailin" target="_blank">https://addons.heroku.com/cloudmailin</a>：讓你的 App 可以收信，一天收 200 封以內都免費。</li>
+</ol>
+<p>Heroku 有很多免費的 App，可以盡情嘗試。</p>
+<h3>06. 更多 Heroku 的功能</h3>
+<p>利用 <code>heroku help</code> 查看可用的 Heroku 指令。</p>
+<pre><code>> heroku help
+Usage: heroku COMMAND [--app APP] [command-specific-options]
+
+Primary help topics, type "heroku help TOPIC" for more details:
+
+</code></pre>
+<p>auth # authentication (login, logout) apps # manage apps (create, destroy) ps # manage processes (dynos, workers) run # run one-off commands (console, rake) addons # manage addon resources config # manage app config vars releases # view release history of an app domains # manage custom domains logs # display logs for an app sharing # manage collaborators on an app</p>
+<pre><code>Additional topics:
+
+  account      # manage heroku account options
+  db           # manage the database for an app
+  drains       # display syslog drains for an app
+  help         # list commands and display help
+  keys         # manage authentication keys
+  maintenance  # toggle maintenance mode
+  pg           # manage heroku postgresql databases
+  pgbackups    # manage backups of heroku postgresql databases
+  plugins      # manage plugins to the heroku gem
+  ssl          # manage ssl certificates for an app
+  stack        # manage the stack for an app
+  update       # update the heroku client
+  version      # display version
+>
+</code></pre>
+<p>大家可以自行研究如何使用各項指令囉。</p>
+<h3>07. 結論</h3>
+<p>Heroku 算是 addons 功能很強大的 Paas 平台，有許多 addons 可供選擇來加強您所做的 App，多多嘗試的話，您可以更加了解現在流行的「雲端服務」。不過因為 Heroku 架設於美東的 Amazon Web Service 上，到台灣至少會延遲約 200 ms，因此如果您在上面設網站，台灣的使用者也將感受到您的網站略有延遲。但是如果拿來當作手機 App 背後的 API server，或者是 javascript、iframe 外掛的話，這 200 ms 的延遲就沒什麼感覺了，很適合用 Heroku 來實作。至於架設網站給台灣人用的話，還是選擇東京的 Amazon Web Service 或是 Linode，比較便宜而且速度更快。</p>
+<p>另外，因為 Heroku 的 PHP 支援還不算是官方正式公開的功能，因此目前在文件以及功能方面仍不夠完整，例如前面提到 extension 數量稀少的問題，也不知道何時才會解決，如果短期之內對一些 extension 有需求，就要審慎考慮 Heroku 目前的情況。</p>
+<p>分享一下我們用 PIXNET API 放在 Heroku 上面的 <a href="https://gallery.pixplug.in/list.php?type=2&user=ronnywang&size=600&list=set&data=14523040" target="_blank">iframe 相簿外嵌幻燈片功能吧</a>，日後 PIXNET 應該會上傳更多類似的小工具到 Heroku。</p>
+			<!-- Show relate article -->
+				<!-- end -->
+		<div class="article_note">
+		<!-- Add tags use metakey, and show OSSF Newsletter tag: OSSFNL+NUM-->
+		<br><br> <hr style='border: 1px dashed #D2DADB;'><b>自由軟體鑄造場電子報&nbsp;:</b>&nbsp;<a href='../../previous-issue%3Ftask=view&amp;id=766.html'>第 187 期 PaaS：程式語言開發在雲端「Programming in Paas」（上）</a><br><b>標籤:</b>&nbsp;<a href='../../index.php%3Foption=com_search&amp;Itemid=58&amp;searchphrase=exact_meta&amp;ordering=newest&amp;searchword=PaaS.html'>PaaS</a>,&nbsp;&nbsp;<a href='../../index.php%3Foption=com_search&amp;Itemid=58&amp;searchphrase=exact_meta&amp;ordering=newest&amp;searchword=&#32;Heroku.html'> Heroku</a>,&nbsp;&nbsp;<a href='../../index.php%3Foption=com_search&amp;Itemid=58&amp;searchphrase=exact_meta&amp;ordering=newest&amp;searchword=&#32;PHP.html'> PHP</a>,&nbsp;&nbsp;<a href='../../index.php%3Foption=com_search&amp;Itemid=58&amp;searchphrase=exact_meta&amp;ordering=newest&amp;searchword=&#32;Ronny.html'> Ronny</a>,&nbsp;&nbsp;<a href='../../index.php%3Foption=com_search&amp;Itemid=58&amp;searchphrase=exact_meta&amp;ordering=newest&amp;searchword=&#32;雲端.html'> 雲端</a>,&nbsp;&nbsp;<a href='../../index.php%3Foption=com_search&amp;Itemid=58&amp;searchphrase=exact_meta&amp;ordering=newest&amp;searchword=&#32;Platform&#32;as&#32;a&#32;service.html'> Platform as a service</a>,&nbsp;&nbsp;				<!-- End -->
+					<br>
+					<b>分類: </b><a href="../tech-column.html">				技術專欄					</a>				</div>
+			 <!-- AddThis Button BEGIN ID 3001 is the front page article -->
+     			<br><br>
+       <div class="addthis_toolbox addthis_default_style addthis_32x32_style">
+       <a class="addthis_button_preferred_1"></a>
+       <a class="addthis_button_preferred_2"></a>
+       <a class="addthis_button_preferred_3"></a>
+       <a class="addthis_button_preferred_4"></a>
+       <a class="addthis_button_compact"></a>
+       <a class="addthis_counter addthis_bubble_style"></a>
+       </div>
+       <script type="text/javascript">var addthis_config = {"data_track_clickback":true};</script>
+       <script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js#pubid=openfoundry"></script>
+       <!-- AddThis Button END -->
+     <br>
+		<div class="totop" ><a class="rt-totop" href="8554-the-old-paas-brand-that-start-supporting-php-heroku.html#" style="outline: medium none;">↑ Top</a></div>
+            <!-- AddThis Button END -->
+
+			</div>
+</div>
+
+		                            </div>
+									<div class="clear"></div>
+								</div>
+								<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+							</div>
+							</div>
+                                                    </div>
+                                            </div>
+                                <div class="rt-grid-3 rt-pull-9">
+                <div id="rt-sidebar-a">
+                                    <div class="square4">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<ul class="menu"><li class="item56"><a href="../previous-issue.html"><span>電子報總覽</span></a></li><li class="item55"><a href="../about-newsletter.html"><span>關於本報</span></a></li></ul>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<ul class="menu"><li class="item115"><a href="../foss-news.html"><span>源碼新聞</span></a></li><li class="item141"><a href="../case-job.html"><span>接案 / 工作</span></a></li></ul>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+        	                <div class="square1">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-title"><h2 class="title">專欄總覽</h2></div>
+						<div class="clear"></div>
+		                						<div class="module-content">
+		                	<ul class="menu"><li id="current" class="active item37"><a href="../tech-column.html"><span>技術專欄</span></a></li><li class="item40"><a href="../foss-programs.html"><span>源碼秘技</span></a></li><li class="item35"><a href="../legal-article-.html"><span>法律專欄</span></a></li><li class="item154"><a href="../foss-forum.html"><span>自由專欄</span></a></li><li class="item162"><a href="../enterprise-application.html"><span>企業應用</span></a></li><li class="item44"><a href="../foss-projects.html"><span>源碼專案</span></a></li></ul>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		                <div class="square1">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<p style="text-align: center;"><a href="../../news%3Fformat=feed&amp;type=rss" target="_black"><img src="../../images/M_images/news-rss-feed.png" border="0" /></a><br /><a href="https://www.openfoundry.org/rss-feed/Newsletter" target="_black"><img src="../../images/M_images/newsletter-rss-feed.png" border="0" /></a></p>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		
+                </div>
+            </div>
+
+                    <div class="clear"></div>
+                </div>
+            </div>
+																													</div>
+										<div id="rt-copyright">
+						<div class="rt-grid-12 rt-alpha rt-omega">
+                        <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<div id="desktop-mobile-version-switch"><span id="mobile-version" class="version-switch"><a href="8554-the-old-paas-brand-that-start-supporting-php-heroku.html#">行動版</a></span></div>
+自由軟體鑄造場 製作 最佳瀏覽狀態：IE7或Firefox2.0以上 (建議使用Firefox) ‧ 解析度1024*768 <br /> <strong>E-Mail</strong>：<a href="mailto:contact@openfoundry.org">contact@openfoundry.org</a> <strong>Address</strong>：台北市南港區研究院路2段128號 中央研究院資訊科學研究所 . <a href="../../privacy-policy.html">隱私權條款</a>. <a href="../../terms-of-use.html">使用條款</a><span style="position: relative; top: 8px; margin-top: -8px;"> <a href="../../about/8101.html"><img src="../../images/M_images/rss-feed-all.png" border="0" /></a></span>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+        	
+</div>
+						<div class="clear"></div>
+					</div>
+					<div class="rt-footer-bottom-wrap"><div class="rt-footer-bottom"><div class="rt-footer-bottom2"><div class="rt-footer-bottom3"></div></div></div></div>
+									</div></div></div>
+				<div class="rt-surround-bottom"><div class="rt-surround-bottom2"><div class="rt-surround-bottom3"></div></div></div>
+							</div>
+		</div>
+		<!--
+		<script id="aptureScript">
+						(function (){var a=document.createElement("script");a.defer="true";a.src="http://www.apture.com/js/apture.js?siteToken=vsJttrn";document.getElementsByTagName("head")[0].appendChild(a);})();
+     </script>
+-->
+
+<!-- Piwik -->
+<!-- 			<script type="text/javascript">
+			  var _paq = _paq || [];
+		  _paq.push(["trackPageView"]);
+		  _paq.push(["enableLinkTracking"]);
+
+		    (function() {
+			        var u=(("https:" == document.location.protocol) ? "https" : "https") + "://www.openfoundry.org/piwik/";
+				    _paq.push(["setTrackerUrl", u+"piwik.php"]);
+				    _paq.push(["setSiteId", "1"]);
+				        var d=document, g=d.createElement("script"), s=d.getElementsByTagName("script")[0]; g.type="text/javascript";
+				        g.defer=true; g.async=true; g.src=u+"piwik.js"; s.parentNode.insertBefore(g,s);
+					  })();
+		  </script> -->
+<!-- End Piwik Code -->
+	</body>
+</html>

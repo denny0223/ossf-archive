@@ -1,0 +1,691 @@
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+  <HEAD>
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-15923865-6"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'UA-15923865-6');
+    </script>
+
+    <TITLE>DNSSEC - The DNS Security Extensions - Protocol Home Page</TITLE>
+    <meta name="keywords" content="dnssec,dns security,dns spoofing,dns hijacking,dnssec howto,dnssec appliance,securing dns,ietf,icann,tsig,tkey,secure zone,secure dns delegation">
+    <META NAME="description" CONTENT="Offers information about DNSSEC, the DNS Security Extensions. Includes DNSSEC howtos, tutorials, projects, news, developments, presentations, and RFCs.">
+    <meta name="robots" content="noodp">
+    <meta name="google-site-verification" content="0DrYruuLOPY8JzyeImnJCTKtP6OEt6TFpIax-XogBHU" />
+    <meta name="msvalidate.01" content="1FC473C9505878EB3DE9987435C372A6" />
+    <META name="y_key" content="763e159207113bb6">
+    <style type="text/css">
+  a:link        { font-family:verdana,arial,helvetica,sans-serif; color:blue; text-decoration:none; font-size:8pt }
+  a:visited     { font-family:verdana,arial,helvetica,sans-serif; color:blue; text-decoration:none; font-size:8pt }
+  a:hover       { font-family:verdana,arial,helvetica,sans-serif; color:#0000cc; text-decoration:underline; font-size:8pt }
+  .table-cell   { background-color:#eeeeee; vertical-align:top; }
+  .table-cell2  { background-color:#FFFFFF; vertical-align:top; }
+  .small        { font-family:arial,helvetica,sans-serif; font-size:8pt; color:#000066; }
+  .small2       { font-family:verdana,arial,helvetica,sans-serif; color:navy; font-size:7pt; }
+  .small3       { font-family:arial,helvetica,sans-serif; font-size:10pt; color:navy; }
+  .body         { font-family:arial,helvetica,sans-serif; font-size:10pt; }
+  .rfc1         { background-color:#FFFFFF; text-align:right; vertical-align:top; }
+  .rfc2         { background-color:#FFFFFF; text-align:left; vertical-align:top; border-top: 1px solid #999999; }
+  .rfc3         { background-color:#FFFFFF; font-family:arial,verdana,helvetica,sans-serif; font-size:10pt; color:#000000; text-align:left; vertical-align:top; }
+  .searchBox    { margin-top:0px; }
+  a.related:link       { font-family:arial,helvetica,verdana,sans-serif; font-size:7pt; color:#000066; border-bottom: 1px dotted #000066; }
+  a.related:visited    { font-family:arial,helvetica,verdana,sans-serif; font-size:7pt; color:#000066; border-bottom: 1px dotted #000066; }
+  a.rfclink:link       { font-family:verdana,arial,helvetica,sans-serif; color:#000000; text-decoration:none; font-size:10pt; border-bottom: 1px dashed #000000; }
+  a.rfclink:visited    { font-family:verdana,arial,helvetica,sans-serif; color:#000000; text-decoration:none; font-size:10pt; border-bottom: 1px dashed #000000; }
+  a.rfclink2:link      { font-family:verdana,arial,helvetica,sans-serif; color:#000000; text-decoration:none; font-size:8pt; border-bottom: 1px dotted #000000; }
+  a.rfclink2:visited   { font-family:verdana,arial,helvetica,sans-serif; color:#000000; text-decoration:none; font-size:8pt; border-bottom: 1px dotted #000000; }
+  a.booklink:link      { font-family:arial,helvetica,sans-serif; color:#000099; text-decoration:none; font-size:11pt; border-bottom: 1px dotted #000099; }
+  a.booklink:visited   { font-family:arial,helvetica,sans-serif; color:#000099; text-decoration:none; font-size:11pt; border-bottom: 1px dotted #000099; }
+  a.booklink2:link     { font-family:arial,verdana,helvetica,sans-serif; color:#000000; text-decoration:none; font-size:9pt; background-color:#eeeeee; padding-left: 4px; padding-right: 4px; padding-bottom: 1px; padding-top: 1px; }
+  a.booklink2:visited  { font-family:arial,verdana,helvetica,sans-serif; color:#000000; text-decoration:none; font-size:9pt; background-color:#eeeeee; padding-left: 4px; padding-right: 4px; padding-bottom: 1px; padding-top: 1px; }
+  .posting               { font-family:arial,helvetica,sans-serif; color:navy; font-size:10pt; }
+  a.posting:link         { font-family:arial,helvetica,sans-serif; color:#000099; text-decoration:none; font-size:12pt; border-bottom: 1px dotted #000099; }
+  a.posting:visited      { font-family:arial,helvetica,sans-serif; color:#000099; text-decoration:none; font-size:12pt; border-bottom: 1px dotted #000099; }
+  a.postingclose:link         { font-family:arial,helvetica,sans-serif; color:#009900; text-decoration:none; font-size:12pt; border-bottom: 1px dotted #000099; }
+  a.postingclose:visited      { font-family:arial,helvetica,sans-serif; color:#009900; text-decoration:none; font-size:12pt; border-bottom: 1px dotted #000099; }
+  a.postinglink:link     { font-family:arial,helvetica,sans-serif; color:#0000ff; text-decoration:none; font-size:10pt; border-bottom: 1px dotted #0000ff; }
+  a.postinglink:visited  { font-family:arial,helvetica,sans-serif; color:#0000ff; text-decoration:none; font-size:10pt; border-bottom: 1px dotted #0000ff; }
+
+  .cc-window{opacity:1;transition:opacity 1s ease}.cc-window.cc-invisible{opacity:0}.cc-animate.cc-revoke{transition:transform 1s ease}.cc-animate.cc-revoke.cc-top{transform:translateY(-2em)}.cc-animate.cc-revoke.cc-bottom{transform:translateY(2em)}.cc-animate.cc-revoke.cc-active.cc-bottom,.cc-animate.cc-revoke.cc-active.cc-top,.cc-revoke:hover{transform:translateY(0)}.cc-grower{max-height:0;overflow:hidden;transition:max-height 1s}
+  .cc-link,.cc-revoke:hover{text-decoration:underline}.cc-revoke,.cc-window{position:fixed;overflow:hidden;box-sizing:border-box;font-family:Helvetica,Calibri,Arial,sans-serif;font-size:16px;line-height:1.5em;display:-ms-flexbox;display:flex;-ms-flex-wrap:nowrap;flex-wrap:nowrap;z-index:9999}.cc-window.cc-static{position:static}.cc-window.cc-floating{padding:2em;max-width:24em;-ms-flex-direction:column;flex-direction:column}.cc-window.cc-banner{padding:1em 1.8em;width:100%;-ms-flex-direction:row;flex-direction:row}.cc-revoke{padding:.5em}.cc-header{font-size:18px;font-weight:700}.cc-btn,.cc-close,.cc-link,.cc-revoke{cursor:pointer}.cc-link{opacity:.8;display:inline-block;padding:.2em}.cc-link:hover{opacity:1}.cc-link:active,.cc-link:visited{color:initial}.cc-btn{display:block;padding:.4em .8em;font-size:.9em;font-weight:700;border-width:2px;border-style:solid;text-align:center;white-space:nowrap}.cc-highlight .cc-btn:first-child{background-color:transparent;border-color:transparent}.cc-highlight .cc-btn:first-child:focus,.cc-highlight .cc-btn:first-child:hover{background-color:transparent;text-decoration:underline}.cc-close{display:block;position:absolute;top:.5em;right:.5em;font-size:1.6em;opacity:.9;line-height:.75}.cc-close:focus,.cc-close:hover{opacity:1}
+  .cc-revoke.cc-top{top:0;left:3em;border-bottom-left-radius:.5em;border-bottom-right-radius:.5em}.cc-revoke.cc-bottom{bottom:0;left:3em;border-top-left-radius:.5em;border-top-right-radius:.5em}.cc-revoke.cc-left{left:3em;right:unset}.cc-revoke.cc-right{right:3em;left:unset}.cc-top{top:1em}.cc-left{left:1em}.cc-right{right:1em}.cc-bottom{bottom:1em}.cc-floating>.cc-link{margin-bottom:1em}.cc-floating .cc-message{display:block;margin-bottom:1em}.cc-window.cc-floating .cc-compliance{-ms-flex:1 0 auto;flex:1 0 auto}.cc-window.cc-banner{-ms-flex-align:center;align-items:center}.cc-banner.cc-top{left:0;right:0;top:0}.cc-banner.cc-bottom{left:0;right:0;bottom:0}.cc-banner .cc-message{display:block;-ms-flex:1 1 auto;flex:1 1 auto;max-width:100%;margin-right:1em}.cc-compliance{display:-ms-flexbox;display:flex;-ms-flex-align:center;align-items:center;-ms-flex-line-pack:justify;align-content:space-between}.cc-floating .cc-compliance>.cc-btn{-ms-flex:1;flex:1}.cc-btn+.cc-btn{margin-left:.5em}
+  @media print{.cc-revoke,.cc-window{display:none}}@media screen and (max-width:900px){.cc-btn{white-space:normal}}@media screen and (max-width:414px) and (orientation:portrait),screen and (max-width:736px) and (orientation:landscape){.cc-window.cc-top{top:0}.cc-window.cc-bottom{bottom:0}.cc-window.cc-banner,.cc-window.cc-floating,.cc-window.cc-left,.cc-window.cc-right{left:0;right:0}.cc-window.cc-banner{-ms-flex-direction:column;flex-direction:column}.cc-window.cc-banner .cc-compliance{-ms-flex:1 1 auto;flex:1 1 auto}.cc-window.cc-floating{max-width:none}.cc-window .cc-message{margin-bottom:1em}.cc-window.cc-banner{-ms-flex-align:unset;align-items:unset}.cc-window.cc-banner .cc-message{margin-right:0}}
+  .cc-floating.cc-theme-classic{padding:1.2em;border-radius:5px}.cc-floating.cc-type-info.cc-theme-classic .cc-compliance{text-align:center;display:inline;-ms-flex:none;flex:none}.cc-theme-classic .cc-btn{border-radius:5px}.cc-theme-classic .cc-btn:last-child{min-width:140px}.cc-floating.cc-type-info.cc-theme-classic .cc-btn{display:inline-block}
+  .cc-theme-edgeless.cc-window{padding:0}.cc-floating.cc-theme-edgeless .cc-message{margin:2em 2em 1.5em}.cc-banner.cc-theme-edgeless .cc-btn{margin:0;padding:.8em 1.8em;height:100%}.cc-banner.cc-theme-edgeless .cc-message{margin-left:1em}.cc-floating.cc-theme-edgeless .cc-btn+.cc-btn{margin-left:0}
+
+</style>
+
+<script language="JavaScript" type="text/javascript">
+<!--
+  if (parent.frames.length != 0) {
+  parent.location.href = self.document.location
+  }
+//-->
+</script>
+
+<script language="JavaScript" type="text/javascript"> 
+<!--
+  function popup(mylink, windowname)
+  {
+  if (! window.focus)return true;
+  var href;
+  if (typeof(mylink) == 'string')
+     href=mylink;
+  else
+     href=mylink.href;
+  window.open(href, windowname, 'left=350,top=50,width=420,height=550,scrollbars=no,resizable=yes');
+  return false;
+  }
+//-->
+</script> 
+
+<script language="JavaScript" type="text/javascript">
+<!--
+  function toggle(id) {
+  obj = document.getElementById(id);
+  if (obj.style.display == 'none') {
+    obj.style.display = 'block';
+  } else {
+    obj.style.display = 'none';
+  }
+}
+//-->
+</script>
+
+    
+
+<!-- Begin Cookie Consent plugin -->
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.1.0/cookieconsent.min.js" async="async"></script>
+
+<script>
+window.addEventListener("load", function(){
+window.cookieconsent.initialise({
+  "palette": {
+    "popup": {
+      "background": "#000"
+    },
+    "button": {
+      "background": "#f1d600"
+    }
+  },
+  "theme": "classic",
+})});
+</script>
+
+<!-- End Cookie Consent plugin -->
+
+
+  </HEAD>
+
+
+<BODY MARGINHEIGHT="0" MARGINWIDTH="0" LEFTMARGIN="8" TOPMARGIN="4"> 
+
+<center>
+
+<TABLE bgcolor="#ffffff" width="100%" cellpadding="4" cellspacing="1">
+  <TR>
+    <TD colspan="8">
+      <TABLE bgcolor="#ffffff" cellpadding="0" cellspacing="0" width="100%"> 
+        <TR>            
+          <TD width="12.5%" bgcolor="#ffffff" align="left" valign="bottom">
+            <A HREF="visit.html"><IMG SRC="https://images.secdns.com/owl.gif" width="69" height="54" alt="" border="0"></A><BR>
+          </TD>
+          <TD bgcolor="#ffffff" align="left" valign="bottom">
+            <font color="#000000" face="arial,helvetica,sans-serif" size="3">
+            <b>DNSSEC: DNS Security Extensions<BR>Securing the Domain Name System</b><BR>
+          </TD>
+          <TD bgcolor="#ffffff" align="right" valign="middle">
+                      </TD>
+          <TD bgcolor="#ffffff" align="right" valign="bottom">
+            <font color="#000000" face="arial,helvetica,sans-serif" size="3">
+            <b>Dnssec.net</b></font><BR>
+            <font color="#000000" face="arial,helvetica,sans-serif" size="2">
+                        </font>
+          </TD>
+        </TR>
+      </TABLE>
+    </TD>
+  </TR>
+  <TR bgcolor="navy">
+    <TD bgcolor="#006600" width="12.5%" valign="top" align="center"><font color="white" face="verdana,arial,helvetica,sans-serif" size="1">DNSSEC.NET</TD>
+    <TD width="12.5%" valign="top" align="center"><font color="white" face="verdana,arial,helvetica,sans-serif" size="1">BIND9.NET</TD>
+    <TD width="12.5%" valign="top" align="center"><font color="white" face="verdana,arial,helvetica,sans-serif" size="1">BGP4.AS</TD>
+    <TD width="12.5%" valign="top" align="center"><font color="white" face="verdana,arial,helvetica,sans-serif" size="1">HONEYPOTS.NET</TD>
+    <TD width="12.5%" valign="top" align="center"><font color="white" face="verdana,arial,helvetica,sans-serif" size="1">WARDRIVE.NET</TD>
+    <TD width="12.5%" valign="top" align="center"><font color="white" face="verdana,arial,helvetica,sans-serif" size="1">FORENSICS.NL</TD>
+    <TD width="12.5%" valign="top" align="center"><font color="white" face="verdana,arial,helvetica,sans-serif" size="1">SECURITYBOOKS</TD>
+    <TD width="12.5%" valign="top" align="center"><font color="white" face="verdana,arial,helvetica,sans-serif" size="1">NETWORKINGBOOKS</TD>
+  </TR>
+  <TR>
+    <TD bgcolor="#009900" width="12.5%" valign="top" align="center">
+      <A HREF="visit.html"><font color="white" face="verdana,arial,helvetica,sans-serif" size="1">Securing the Domain Name System with DNSSEC</A>
+    </TD>
+    <TD bgcolor="#0033bb" width="12.5%" valign="top" align="center">
+      <A HREF="https://www.bind9.net/"><font color="white" face="verdana,arial,helvetica,sans-serif" size="1">DNS, BIND, DHCP, LDAP Resource Directory</A>
+    </TD>
+    <TD bgcolor="#0033bb" width="12.5%" valign="top" align="center">
+      <A HREF="https://www.bgp4.as/"><font color="white" face="verdana,arial,helvetica,sans-serif" size="1">Border Gateway Protocol and Advanced Routing</A>
+    </TD>
+    <TD bgcolor="#0033bb" width="12.5%" valign="top" align="center">
+      <A HREF="http://www.honeypots.net/"><font color="white" face="verdana,arial,helvetica,sans-serif" size="1">Intrusion Detection, Honeypots & Incident Response</A>
+    </TD>
+    <TD bgcolor="#0033bb" width="12.5%" valign="top" align="center">
+      <A HREF="http://www.wardrive.net/"><font color="white" face="verdana,arial,helvetica,sans-serif" size="1">Wireless LAN (802.11) Security and Wardriving</A>
+    </TD>
+    <TD bgcolor="#0033bb" width="12.5%" valign="top" align="center">
+      <A HREF="http://www.forensics.nl/"><font color="white" face="verdana,arial,helvetica,sans-serif" size="1">Computer Forensics and Cybercrime Resources</A>
+    </TD>
+    <TD bgcolor="#0033bb" width="12.5%" valign="top" align="center">
+      <A HREF="http://www.securitybooks.org/"><font color="white" face="verdana,arial,helvetica,sans-serif" size="1">The Computer Security Bookstore</A>
+    </TD>
+    <TD bgcolor="#0033bb" width="12.5%" valign="top" align="center">
+      <A HREF="http://www.networkingbooks.org/"><font color="white" face="verdana,arial,helvetica,sans-serif" size="1">The Networking & Sysadmin Bookstore</A>
+    </TD>
+  </TR>
+  <TR bgcolor="#ffffff" height="1">
+    <TD colspan="8" align="center" valign="top">
+      
+      <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+      <!-- DNSSEC.NET - Large Leaderboard -->
+      <ins class="adsbygoogle"
+      style="display:inline-block;width:970px;height:90px"
+      data-ad-client="ca-pub-6966772747915039"
+      data-ad-slot="6115040169"></ins>
+      <script>
+      (adsbygoogle = window.adsbygoogle || []).push({});
+      </script>
+
+      <BR><BR>
+    </TD>
+  </TR>
+</TABLE>
+
+</center>
+
+<TABLE bgcolor="white" width="100%" cellspacing="0" cellpadding="4" border="0">  
+<TR>
+
+<TD bgcolor="#ffffff" width="25%" valign="top" align="left">
+<font face="Arial, Helvetica, sans-serif">
+
+  <TABLE bgcolor="#ffffff" width="100%" cellspacing="0" cellpadding="3" border="0">              
+  <TR>
+  <TD bgcolor="#ffffff" width="100%" valign="top" align="left">
+  <font color="navy" face="verdana,Arial, Helvetica, sans-serif" size="1">
+
+  <TABLE bgcolor="#000099" cellpadding="1" cellspacing="0" width="100%" border="0">  <TR>    <TD bgcolor="#000099" width="100%" valign="middle" align="left">      <font color="#FFFFFF" face="verdana,arial,Helvetica,sans-serif" size="1">      &nbsp;<b>All about DNSSEC<BR></b></font>    </TD>  </TR></TABLE><TABLE bgcolor="white" cellpadding="0" cellspacing="0" width="100%" border="0">  <TR height="4"><TD bgcolor="#ffffff"></TD></TR></TABLE>  <A HREF="https://www.dnssec.net/why-deploy-dnssec">Why Deploy DNSSEC</A><BR>
+  <A HREF="https://www.dnssec.net/links">DNSSEC Papers, Articles</A><BR>
+  <A HREF="https://www.dnssec.net/presentations">DNSSEC Presentations</A><BR>
+  <A HREF="https://www.dnssec.net/research">DNSSEC Research</A><BR>
+  <A HREF="https://www.dnssec.net/dns-threats">DNS Threats & Weaknesses</A><BR>
+  <A HREF="https://www.dnssec.net/news">DNSSEC News & Announcements</A><BR>
+
+  <BR>
+
+  <TABLE bgcolor="#000099" cellpadding="1" cellspacing="0" width="100%" border="0">  <TR>    <TD bgcolor="#000099" width="100%" valign="middle" align="left">      <font color="#FFFFFF" face="verdana,arial,Helvetica,sans-serif" size="1">      &nbsp;<b>DNSSEC Software & Practical<BR></b></font>    </TD>  </TR></TABLE><TABLE bgcolor="white" cellpadding="0" cellspacing="0" width="100%" border="0">  <TR height="4"><TD bgcolor="#ffffff"></TD></TR></TABLE>  <A HREF="https://www.dnssec.net/software">DNSSEC Software & Tools</A><BR>
+  <A HREF="https://www.dnssec.net/projects">DNSSEC Projects, Testbeds</A><BR>
+  <A HREF="https://www.dnssec.net/practical-documents">DNSSEC Setup & Implementation</A><BR>
+  <A HREF="https://www.dnssec.net/training">DNSSEC Training, Workshops</A><BR>
+
+  <BR>
+
+  <TABLE bgcolor="#000099" cellpadding="1" cellspacing="0" width="100%" border="0">  <TR>    <TD bgcolor="#000099" width="100%" valign="middle" align="left">      <font color="#FFFFFF" face="verdana,arial,Helvetica,sans-serif" size="1">      &nbsp;<b>IETF Protocol Reference (RFC)<BR></b></font>    </TD>  </TR></TABLE><TABLE bgcolor="white" cellpadding="0" cellspacing="0" width="100%" border="0">  <TR height="4"><TD bgcolor="#ffffff"></TD></TR></TABLE>  <A HREF="https://www.dnssec.net/rfc">DNSSEC related RFCs (IETF)</A><BR>
+
+  <hr size="1" color="lightgrey">
+
+  <A HREF="visit.html">Home</A> - <A HREF="https://www.dnssec.net/about">About</A> - <A HREF="https://www.dnssec.net/contact">Contact</A><BR>
+
+<BR>
+
+<font color="navy" face="verdana,Arial, Helvetica, sans-serif" size="1">                         
+<b>Always handy:</b><BR>
+
+
+<A HREF="https://www.rfc-archive.org/getrfc?rfc=4033" target="rfc4033">DNSSEC Intro RFC</A> (RFC 4033)<BR>
+<A HREF="https://www.rfc-archive.org/getrfc?rfc=4034" target="rfc4034">DNSSEC Records RFC</A> (RFC 4034)<BR>
+<A HREF="https://www.rfc-archive.org/getrfc?rfc=4035" target="rfc4035">DNSSEC Protocol RFC</A> (RFC 4035)<BR>
+<A HREF="https://www.rfc-archive.org/getrfc?rfc=5155" target="rfc5155">DNSSEC NSEC3 RFC</A> (RFC 5155)<BR>
+<A HREF="https://www.rfc-archive.org/getrfc?rfc=5910" target="rfc5910">DNSSEC + EPP RFC</A> (RFC 5910)<BR>
+<A HREF="https://www.rfc-archive.org/getrfc?rfc=4641" target="rfc4641">DNSSEC Operational Practices</A><BR>
+<A HREF="https://www.rfc-archive.org/" target="rfcarchive">The RFC Archive</A><BR>
+
+<BR>
+
+
+<BR><BR><BR>
+
+
+<BR><BR>
+
+
+
+
+  <TABLE width="200" bgcolor="#dddddd" cellspacing="0" cellpadding="4" border="0">
+    <TR>
+      <TD bgcolor="#dddddd" width="100%" valign="middle" align="center">
+        <IMG SRC="https://www.dnssec.net/isc_logo.jpg" width="280" alt="">
+      </TD>
+    </TR>
+    <TR>
+      <TD bgcolor="#dddddd" width="100%" valign="top" align="left">
+
+        <font color="#000000" face="verdana,arial,helvetica,sans-serif" size="1">
+
+        <center>
+        <b>** BIND & DNSSEC Training **<BR>from the Experts!</b>
+        <HR size="1" color="#000000">
+        </center>
+
+        Internet Systems Consortium (ISC) is excited to announce a new
+        DNSSEC Training.<BR><BR>
+
+        The ISC DNSSEC Technical Workshop covers DNSSEC Implementation and
+        Deployment.<BR><BR>
+
+        Complete international training schedule is available <A
+        HREF="https://www.isc.org/training/"
+        target="isc_training"><u>here</u></A>. On-site trainings are also
+        possible.<BR>
+
+        </font>
+      </TD>
+    </TR>
+  </TABLE>
+
+
+
+
+
+
+  </TD>
+  </TR>
+  </TABLE>
+
+</TD>
+<TD bgcolor="#ffffff" width="75%" valign="top" align="left">
+<span class="small2">
+
+
+      <TABLE WIDTH="99%" CELLPADDING="4" CELLSPACING="0" BORDER="0">
+        <TR>
+          <TD valign="top" class="table-cell2" width="40%">
+            <span class="small">
+            <TABLE bgcolor="#000099" width="100%" cellspacing="0" cellpadding="3">  <TR>    <TD bgcolor="#000099" width="100%" valign="middle" align="left">      <font color="white" face="verdana,arial,Helvetica,sans-serif" size="3">      &nbsp;What is DNSSEC?<BR></font>    </TD>  </TR></TABLE><BR>
+            <font color="#666666" face="Arial, Helvetica, sans-serif" size="2">
+
+The Root DNSSEC Design Team is pleased to report that the first fully
+validatable production signed root zone, with SOA serial number 2010071501,
+was published and began rolling out to the root servers at 2050 UTC.<BR><BR>
+
+The Root Trust Anchor can be found at the <A
+HREF="https://www.iana.org/dnssec/" target="ianadnssec">IANA DNSSEC
+website</A>.<BR><BR>
+
+Here is a first press release from <A
+HREF="http://www.marketwire.com/press-release/ISC-Praises-Momentous-Step-Forward-in-Securing-the-Domain-Name-System-1291200.htm"
+target="iscpressrelease">ISC</A>, which operates the F-Root DNS
+Servers.<BR><BR>
+
+Press release from <A
+HREF="http://www.prweb.com/releases/DNSSEC/Cyber_Crime/prweb4321774.htm"
+target="icanndnssec">ICANN</A>, which has a 'coordination' role of the
+Internet's naming system.<BR><BR>
+
+Press release from <A
+HREF="http://www.marketwire.com/press-release/VeriSign-Announces-Deployment-of-DNS-Security-Extensions-at-the-Internets-Root-NASDAQ-VRSN-1291668.htm"
+target="verisigndnssec">VeriSign</A>, which operates two of the DNS Root
+Servers (A+J).<BR><BR>
+
+Press release from <A
+HREF="http://www.commerce.gov/news/press-releases/2010/07/16/commerce-department-icann-and-verisign-deploy-new-technology-enhance-"
+target="docdnssec">US Department of Commerce</A>, which is principally
+responsible for advising the US President on communications and information
+policies.<BR><BR>
+
+The Whitehouse, <A
+HREF="http://www.whitehouse.gov/blog/2010/07/22/a-major-milestone-internet-security"
+target="whitehousednssec">Office of Science and Technology Policy</A>, also
+writes about the DNSSEC Signed Root Zone.<BR><BR>
+
+            </font>
+
+<HR size="1">
+
+            <font color="navy" face="Arial, Helvetica, sans-serif" size="2">
+
+    <b>DNSSEC</b> (short for <b>DNS Security Extensions</b>) adds security
+    to the Domain Name System.<BR><BR>
+
+    <b>DNSSEC</b> was designed to protect the Internet
+    from certain attacks, such as DNS cache poisoning&nbsp;<font
+    color="#0000ff">[0]</font>. It is a set of extensions to DNS, which
+    provide: a) origin authentication of DNS data, b) data integrity, and c)
+    authenticated denial of existence.<BR><BR>
+
+    These mechanisms require changes to the <A
+    HREF="http://www.bind9.net/rfc">DNS&nbsp;protocol</A>. DNSSEC adds four
+    new resource record types: Resource Record Signature (RRSIG), DNS Public
+    Key (DNSKEY), Delegation Signer (DS), and Next Secure (NSEC). These new
+    RRs are described in detail in <A
+    HREF="http://www.rfc-archive.org/getrfc.php?rfc=4034"
+    target="rfc4034">RFC 4034</A>.<BR><BR>
+
+    It also adds two new <A HREF="http://www.bind9.net/dns-header-flags">DNS
+    header flags</A>: Checking Disabled (CD) and Authenticated Data (AD). In
+    order to support the larger DNS message sizes that result from adding
+    the DNSSEC RRs, DNSSEC also requires <A
+    HREF="http://www.rfc-archive.org/getrfc.php?rfc=2671"
+    target="rfc2671">EDNS0</A> support (<A
+    HREF="http://www.rfc-archive.org/getrfc.php?rfc=2671"
+    target="rfc2671">RFC 2671</A>).<BR><BR>
+
+    Finally, DNSSEC requires support for the DNSSEC OK (DO) EDNS header bit
+    (<A HREF="http://www.rfc-archive.org/getrfc.php?rfc=3225"
+    target="rfc3225">RFC 3225</A>) so that a security-aware resolver can
+    indicate in its queries that it wishes to receive DNSSEC RRs in response
+    messages. By checking the signature, a DNS resolver is able to check if
+    the information is identical (correct and complete) to the info on the
+    authoritative DNS server.<BR><BR>
+
+    DNSSEC services protect against most of the threats to the Domain Name
+    System. There are several distinct classes of <A
+    HREF="https://www.dnssec.net/dns-threats">threats</A> to the <A
+    HREF="http://www.bind9.net/dns-links">Domain&nbsp;Name&nbsp;System</A>,
+    most of which are DNS-related instances of more general problems, but a
+    few of which are specific to peculiarities of the <A
+    HREF="http://www.bind9.net/rfc">DNS&nbsp;protocol</A>.<BR><BR>
+
+    Note that <b>DNSSEC</b> <u>does not</u> provide confidentiality of data. 
+    Also, <b>DNSSEC</b> <u>does not</u> protect against
+    DDoS&nbsp;Attacks.<BR><BR>
+
+    ------<BR>
+
+    <font color="#0000ff">[0]</font> A comprehensive <i>Threat Analysis</i> of
+    the Domain Name System can be found in <A
+    HREF="http://www.rfc-archive.org/getrfc.php?rfc=3833"
+    target="rfc3833">RFC 3833</A>. This RFC attempts to describe some of the
+    known threats to the DNS, and --in doing so-- attempts to measure to
+    what extent <b>DNSSEC</b> is a useful tool in defending against these
+    threats.<BR><BR>
+
+    More information (research, publications, links) about DNS Weaknesses
+    can be found in the <A
+    HREF="https://www.dnssec.net/dns-threats">DNS&nbsp;Threats</A> section.
+
+
+
+          </TD>
+
+          <TD valign="top" class="table-cell2" width="40%">
+            <span class="small">
+            <TABLE bgcolor="#000099" width="100%" cellspacing="0" cellpadding="3">  <TR>    <TD bgcolor="#000099" width="100%" valign="middle" align="left">      <font color="white" face="verdana,arial,Helvetica,sans-serif" size="3">      &nbsp;DNS Security Extensions<BR></font>    </TD>  </TR></TABLE><BR>            <font color="navy" face="Arial, Helvetica, sans-serif" size="2">
+
+    This website is your independent starting point for all <b>DNSSEC</b>
+    and <b>Secure DNS</b> related information. You will find all major <A
+    HREF="https://www.dnssec.net/presentations">DNSSEC presentations</A>, <A
+    HREF="https://www.dnssec.net/links">DNSSEC publications</A> and <A
+    HREF="https://www.dnssec.net/research">DNSSEC research
+    documents</A>.<BR><BR>
+
+    The core of the DNSSEC specification is described in the following 3
+    RFCs, published March 2005:<BR><BR>
+
+    <font size="1">
+
+    <li><b>RFC 4033 - </b> <A HREF="http://www.rfc-archive.org/getrfc.php?rfc=4033" target="rfc4033">DNS Security Introduction and Requirements</A></li>
+    <li><b>RFC 4034 - </b> <A HREF="http://www.rfc-archive.org/getrfc.php?rfc=4034" target="rfc4034">Resource Records for the DNS Security Extensions</A></li>
+    <li><b>RFC 4035 - </b> <A HREF="http://www.rfc-archive.org/getrfc.php?rfc=4035" target="rfc4035">Protocol Modifications for the DNS Security Extensions</A></li>
+
+    </font>
+
+    <BR><BR>
+
+
+    RFC 5155 (March 2008) introduces an alternative resource record, NSEC3, which provides additional measures against zone enumeration and permits gradual expansion of delegation-centric zones.<BR><BR>
+
+    <font size="1">
+    <li><b>RFC 5155 - </b> <A HREF="http://www.rfc-archive.org/getrfc.php?rfc=5155" target="rfc5155">DNS Security (DNSSEC) Hashed Authenticated Denial of Existence</A></li>
+    </font>
+
+    <BR><BR>
+
+    Related RFCs, such as RFC 5910, describe how to map DNSSEC for the
+    Extensible Provisioning Protocol (<A
+    HREF="http://www.rfc-archive.org/getrfc.php?rfc=5730"
+    target="rfc5730">EPP</A>). RFC 4641 describes DNSSEC Operational
+    Practices.<BR><BR>
+
+    <font size="1">
+
+    <li><b>RFC 5910 - </b> <A HREF="http://www.rfc-archive.org/getrfc.php?rfc=5910" target="rfc5910">Domain Name System (DNS) Security Extensions Mapping for the Extensible Provisioning Protocol (EPP)</A></li>
+    <li><b>RFC 4641 - </b> <A HREF="http://www.rfc-archive.org/getrfc.php?rfc=4641" target="rfc4641">DNSSEC Operational Practices</A></li>
+
+    </font>
+
+    <BR><BR>
+
+    DNSSEC Key Management, including Key Rollover, is done using specialized
+    DNSSEC software, which can be standalone tools or add-ons to your
+    existing DNS software. All major DNS software will have full or partial
+    DNSSEC functionality built-in within the next years.<BR><BR>
+
+    To make deployment of DNSSEC easier, one can also buy a dedicated
+    "DNSSEC Appliance", which acts as an automated DNS signer for DNS zones. 
+    Several vendors are already offering commercial and non-commercial
+    solutions for signing DNS in real time, some of them using external
+    cryptographic hardware such as HSM (Hardware Security Modules),
+    including USB tokens and smart cards.<BR><BR>
+
+    General background info on the <b>Domain Name System</b> <b>(DNS)</b> and its
+    workings is available on our companion website <A
+    HREF="http://www.bind9.net/">Bind9.net</A> - in the <A
+    HREF="http://www.bind9.net/dns-links">DNS Links</A> and <A
+    HREF="http://www.bind9.net/rfc">DNS RFCs</A> sections in
+    particular.<BR><BR>
+
+<IMG SRC="https://images.secdns.com/tab_blue.gif" width="9" height="10" alt=""> <font color="#000066" face="arial,verdana,helvetica,sans-serif" size="2"><b>Related Reading</b></font><BR><IMG SRC="https://images.secdns.com/arrow5.gif" width="9" height="9" border="0" alt=""> <A class="related" HREF="https://www.dnssec.net/links">DNSSEC Papers, Articles</A><BR><IMG SRC="https://images.secdns.com/arrow5.gif" width="9" height="9" border="0" alt=""> <A class="related" HREF="https://www.dnssec.net/presentations">DNSSEC Presentations</A><BR><IMG SRC="https://images.secdns.com/arrow5.gif" width="9" height="9" border="0" alt=""> <A class="related" HREF="https://www.dnssec.net/software">DNSSEC Tools</A><BR><IMG SRC="https://images.secdns.com/arrow5.gif" width="9" height="9" border="0" alt=""> <A class="related" HREF="https://www.dnssec.net/dns-threats">DNSSEC Threats and Weaknesses</A><BR><IMG SRC="https://images.secdns.com/arrow5.gif" width="9" height="9" border="0" alt=""> <A class="related" HREF="http://www.bind9.net/dns-links">DNS Links & Whitepapers</A><BR><IMG SRC="https://images.secdns.com/arrow5.gif" width="9" height="9" border="0" alt=""> <A class="related" HREF="http://www.bind9.net/links">BIND Howtos and Articles</A><BR><IMG SRC="https://images.secdns.com/arrow5.gif" width="9" height="9" border="0" alt=""> <A class="related" HREF="http://www.bind9.net/domain-registration">Domain Registration & EPP Resources</A><BR><BR>
+          </TD>
+
+    <TD bgcolor="#ffffff" align="left" valign="top" width="20%">
+
+
+  <font color="black" face="Verdana,Arial,Helvetica,sans-serif" size="1">
+
+  <IMG SRC="https://www.dnssec.net/checkbox.png" width="49" height="48" alt="DNSSEC Basics" border="0"><BR>
+  <font color="#006600" face="Arial,Verdana,Helvetica,sans-serif" size="2"><b>Essential Reading</b></font><BR>
+  <HR size="1" color="#000000">
+
+  <IMG SRC="https://www.dnssec.net/icann.jpg" width="50" height="50" alt="" border="0"><BR><BR>
+
+  <A HREF="http://www.root-dnssec.org/" target="icann_root"><font color="#0000cc"><u><b>DNSSEC Deployment at the DNS Root Zone: Requirements, Policies, and Status Updates</b></u></font></A><BR>
+  ICANN & Verisign, Dec&nbsp;2009<BR>
+
+  <hr size="1" color="#cccccc">
+
+  <IMG SRC="https://www.dnssec.net/nist.jpg" width="75" height="23" alt="" border="0"><BR><BR>
+
+  <A HREF="http://csrc.nist.gov/publications/nistpubs/800-81r1/sp-800-81r1.pdf" target="nist80081"><font color="#0000cc"><u><b>Secure Domain Name System (DNS) Deployment Guide</b></u></font></A><BR>
+  NIST Special Publication 800-81, Apr&nbsp;2010 <IMG SRC="https://images.secdns.com/pdf4.gif" border="0" width="11" height="13"> <BR>
+
+  <hr size="1" color="#cccccc">
+
+  <IMG SRC="https://www.dnssec.net/surfnet.jpg" width="76" height="37" alt="" border="0"><BR><BR>
+
+  <A HREF="http://www.surfnet.nl/Documents/DNSSSEC-web.pdf" target="surfnet_dnssec"><font color="#0000cc"><u><b>Hardening the Internet: The Impact and Importance of DNSSEC</b></u></font></A><BR>
+  SURFnet, Paul&nbsp;Brand, Rick&nbsp;van&nbsp;Rein, Roland&nbsp;van&nbsp;Rijswijk, David&nbsp;Yoshikawa, 2009 <IMG SRC="https://images.secdns.com/pdf4.gif" border="0" width="11" height="13"> <BR>
+
+  <hr size="1" color="#cccccc">
+
+  <IMG SRC="https://www.dnssec.net/EDUCAUSE.jpg" width="100" height="22" alt="" border="0"><BR><BR>
+
+  <A HREF="http://www.educause.edu/ir/library/pdf/EST1001.pdf" target="educause_dnssec_intro"><font color="#0000cc"><u><b>7 Things You Should Know About DNSSEC</b></u></font></A><BR>
+  EDUCAUSE, Jan&nbsp;2010 <IMG SRC="https://images.secdns.com/pdf4.gif" border="0" width="11" height="13"> <BR>
+
+  <hr size="1" color="#cccccc">
+
+  <IMG SRC="https://www.dnssec.net/isc_logo.jpg" width="98" height="31" alt="" border="0"><BR><BR>
+
+  <A HREF="http://alan.clegg.com/files/DNSSEC_in_6_minutes.pdf" target="dnssec6min"><font color="#0000cc"><u><b>DNSSEC in 6 Minutes</b></u></font></A><BR>
+  Alan Clegg, Internet<BR>Systems Consortium,<BR>Jun&nbsp;2008 <IMG SRC="https://images.secdns.com/pdf4.gif" border="0" width="11" height="13"> <BR><BR>
+
+  <A HREF="http://www.isc.org/community/blog/201002/signed-root-coming-and-what-means-you" target="iscrootsigning"><font color="#0000cc"><u><b>The Signed Root Is Coming! (And what this means for you)</b></u></font></A><BR>
+  Peter Loscher, Internet<BR>Systems Consortium,<BR>Jan&nbsp;2010<BR><BR>
+
+  <A HREF="http://www.isc.org/community/blog/201005/dnssec-readiness" target="iscdnssecreadyness"><font color="#0000cc"><u><b>Are you ready for DNSSEC? And what to ask your vendors</b></u></font></A><BR>
+  Michael Graff, Internet<BR>Systems Consortium,<BR>May&nbsp;2010<BR>
+
+  <hr size="1" color="#cccccc">
+
+  <IMG SRC="https://www.dnssec.net/ripe.gif" width="50" height="33" alt="" border="0"><BR><BR>
+
+  <A HREF="http://www.nlnetlabs.nl/dnssec_howto/" target="dnssechowto"><font color="#0000cc"><u><b>DNSSEC Howto 2009</b></u></font></A><BR>
+  Olaf Kolkman,<BR>NLnet Labs / RIPE NCC, Jun&nbsp;2009<BR>
+
+  <BR>
+
+  <A HREF="http://www.ripe.net/training/dnssec/material/dnssec.pdf" target="trainingcourse"><font color="#0000cc"><u><b>DNSSEC Training Course</b></u></font></A><BR>
+  Olaf Kolkman, RIPE NCC,<BR>Q3/2004 <IMG SRC="https://images.secdns.com/pdf4.gif" border="0" width="11" height="13"> <BR>
+
+  <BR>
+
+  <A HREF="http://www.ripe.net/rs/reverse/dnssec/" target="ripersdnssecdp"><font color="#0000cc"><u><b>DNSSEC Deployment at the RIPE NCC</b></u></font></A><BR>
+  (part of the reverse DNS restructuring project)<BR>RIPE NCC, Jul&nbsp;2005<BR>
+
+  <BR>
+
+  <A HREF="http://www.ripe.net/disi/dnssec_maint_tool/" target="disikmt"><font color="#0000cc"><u><b>DNSSEC Key Management Tools released</b></u></font></A><BR>
+  Olaf Kolkman,<BR>RIPE NCC, Apr&nbsp;2005<BR>
+
+  <hr size="1" color="#cccccc">
+
+  <IMG SRC="https://www.dnssec.net/enisa.jpg" width="101" height="63" border="0" alt=""><BR><BR>
+
+  <A HREF="http://www.enisa.europa.eu/act/res/technologies/tech/gpgdnssec" target="enisa_good_practices"><font color="#0000cc"><u><b>Good Practices Guide for Deploying DNSSEC</b></u></font></A><BR>
+  ENISA, Mar&nbsp;2010 <IMG SRC="https://images.secdns.com/pdf4.gif" border="0" width="11" height="13"> <BR>
+
+  <BR>
+
+  <A HREF="http://www.enisa.europa.eu/act/res/technologies/tech/dnsseccosts" target="enisa_dnssec_costs"><font color="#0000cc"><u><b>Study on the Costs of DNSSEC Deployment</b></u></font></A><BR>
+  ENISA, Nov&nbsp;2009 <IMG SRC="https://images.secdns.com/pdf4.gif" border="0" width="11" height="13"> <BR>
+
+  <BR>
+
+  <A HREF="http://www.enisa.europa.eu/act/it/library/deliverables/res-feat" target="enisa_resilience"><font color="#0000cc"><u><b>Resilience Features in Communication Networks: IPv6, DNSSEC and MPLS</b></u></font></A><BR>
+  ENISA, Jan&nbsp;2009 <IMG SRC="https://images.secdns.com/pdf4.gif" border="0" width="11" height="13"> <BR>
+
+  <BR>
+
+  <A HREF="http://www.enisa.europa.eu/act/it/library/deliverables/stock-tech-res" target="enisa_res_tech"><font color="#0000cc"><u><b>Stock Taking Report on the Technologies Enhancing Resilience of Public Communication Networks in the EU Member States</b></u></font></A><BR>
+  ENISA, May&nbsp;2009 <IMG SRC="https://images.secdns.com/pdf4.gif" border="0" width="11" height="13"> <BR>
+
+  <hr size="1" color="#cccccc">
+
+  <IMG SRC="https://www.dnssec.net/isoc.gif" width="96" height="39" alt="" border="0"><BR><BR>
+
+  <A HREF="http://www.internetsociety.org/deploy360/dnssec/" target="isocdeploy360dnssec"><font color="#0000cc"><u><b>DNSSEC Deployment<BR>Programme Website</b></u></font></A><BR>
+  ISOC Deploy360<BR><BR>
+
+  <A HREF="http://ispcolumn.isoc.org/2006-08/dnssec.html" target="isocdnssec1"><font color="#0000cc"><u><b>DNSSEC Part 1<BR>The Theory</b></u></font></A><BR>
+  Geoff Huston, ISOC, Aug&nbsp;2006<BR><BR>
+
+  <A HREF="http://ispcolumn.isoc.org/2006-09/dnssec2.html" target="isocdnssec2"><font color="#0000cc"><u><b>DNSSEC Part 2<BR>The Practice</b></u></font></A><BR>
+  Geoff Huston, ISOC, Sep&nbsp;2006<BR><BR>
+
+  <A HREF="http://ispcolumn.isoc.org/2006-10/dnssec3.html" target="isocdnssec3"><font color="#0000cc"><u><b>DNSSEC Part 3<BR>The Opinion</b></u></font></A><BR>
+  Geoff Huston, ISOC, Oct&nbsp;2006<BR>
+
+  <hr size="1" color="#cccccc">
+
+  <IMG SRC="https://www.dnssec.net/nlnetlabs.jpg" width="82" height="57" alt="" border="0"><BR><BR>
+
+  <A HREF="http://training.nlnetlabs.nl/Slides/index.html" target="nlnetlabs_training"><font color="#0000cc"><u><b>DNSSEC Training Material</b></u></font></A><BR>
+  NLnet Labs, Oct&nbsp;2008<BR>
+
+  <hr size="1" color="#cccccc">
+
+  <IMG SRC="https://www.dnssec.net/nlnetlabs.jpg" width="82" height="57" alt="" border="0"><BR><BR>
+
+  <A HREF="http://www.cisco.com/en/US/about/ac123/ac147/archived_issues/ipj_7-2/dnssec.html" target="ac147ipj"><font color="#0000cc"><u><b>DNSSEC: The Protocol, Deployment, and a Bit of Development</b></u></font></A><BR>
+  Miek Gieben in Cisco IPJ Magazine, Jun&nbsp;2004<BR>
+
+
+
+
+          </TD>
+
+        </TR>
+      </TABLE>
+
+
+</TD>
+</TR>
+</TABLE>
+
+<BR>
+
+<center>
+
+<TABLE bgcolor="#ffffff" width="100%" cellpadding="4" cellspacing="1">
+  <TR>
+    <TD bgcolor="#009900" width="12.5%" valign="top" align="center">
+      <A HREF="visit.html"><font color="white" face="verdana,arial,helvetica,sans-serif" size="1">DNSSEC.NET</A>
+    </TD>
+    <TD bgcolor="navy" width="12.5%" valign="top" align="center">
+      <A HREF="https://www.bind9.net/"><font color="white" face="verdana,arial,helvetica,sans-serif" size="1">BIND9.NET</A>
+    </TD>
+    <TD bgcolor="navy" width="12.5%" valign="top" align="center">
+      <A HREF="https://www.bgp4.as/"><font color="white" face="verdana,arial,helvetica,sans-serif" size="1">BGP4.AS</A>
+    </TD>
+    <TD bgcolor="navy" width="12.5%" valign="top" align="center">
+      <A HREF="http://www.honeypots.net/"><font color="white" face="verdana,arial,helvetica,sans-serif" size="1">HONEYPOTS.NET</A>
+    </TD>
+    <TD bgcolor="navy" width="12.5%" valign="top" align="center">
+      <A HREF="http://www.wardrive.net/"><font color="white" face="verdana,arial,helvetica,sans-serif" size="1">WARDRIVE.NET</A>
+    </TD>
+    <TD bgcolor="navy" width="12.5%" valign="top" align="center">
+      <A HREF="http://www.forensics.nl/"><font color="white" face="verdana,arial,helvetica,sans-serif" size="1">FORENSICS.NL</A>
+    </TD>
+    <TD bgcolor="navy" width="12.5%" valign="top" align="center">
+      <A HREF="http://www.securitybooks.org/"><font color="white" face="verdana,arial,helvetica,sans-serif" size="1">SECURITYBOOKS</A>
+    </TD>
+    <TD bgcolor="navy" width="12.5%" valign="top" align="center">
+      <A HREF="http://www.networkingbooks.org/"><font color="white" face="verdana,arial,helvetica,sans-serif" size="1">NETWORKINGBOOKS</A>
+    </TD>
+  </TR>
+</TABLE>
+
+<BR>
+
+<font color="navy" face="arial,helvetica,sans-serif" size="1">
+&copy; 2002-2019 <A HREF="visit.html"><font size="1">DNSSEC.NET</font></A>. All rights reserved.<BR>
+
+Page last modified on Wed 26 September 2018 06:35:06 CET
+<BR>
+
+<font color="navy" face="verdana,arial,helvetica,sans-serif" size="1">        
+DNS SECURITY
+
+<BR><A HREF="https://www.dnssec.net/pp" target="pp"><IMG SRC="https://images.secdns.com/pp.gif" border="0" width="69" height="6" alt="Privacy Statement"></A>
+</CENTER>
+
+<BR><BR>
+
+    <font color="#FFFFFF" face="verdana,arial,helvetica,sans-serif" size="1">
+    af183d41d32b8d2060360fbf713dd70a
+    </font>
+
+
+<script type="text/javascript" src="https://s7.addthis.com/js/300/addthis_widget.js#pubid=secdns" async="async"></script>
+
+</BODY>
+</HTML>
+
+

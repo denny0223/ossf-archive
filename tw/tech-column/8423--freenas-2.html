@@ -1,0 +1,517 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="zh-tw" lang="zh-tw" >
+<head>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<link rel="shortcut icon" href="../../images/favicon.ico" />
+	  <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+  <meta name="robots" content="index, follow" />
+  <meta name="keywords" content="FreeNAS, nas, network-attached storage, install,OSSFNL754" />
+  <meta name="title" content="利用 FreeNAS 打造儲存設備(2)－安裝篇" />
+  <meta name="description" content="前言 在上一篇文章利用 FreeNAS 打造儲存設備 (1)－歷史篇中，我們已經了解到整個 FreeNAS 自由軟體專案的歷史由來，並下載了這次會用到的安裝與升級檔案。本次我們將安裝最新版本的 FreeNAS 8.0，開始使用圖形操作介面，並介紹 FreeNAS 的臭蟲回報系統。 實作環境 * 虛擬化技術平台：VMware vSphere ESXi 4.1 **" />
+  <meta name="generator" content="" />
+  <title>利用 FreeNAS 打造儲存設備(2)－安裝篇 - OpenFoundry</title>
+  <link href="../../favicon.ico" rel="shortcut icon" type="image/x-icon" />
+  <link rel="stylesheet" href="../../components/com_gantry/css/gantry.css" type="text/css" />
+  <link rel="stylesheet" href="../../components/com_gantry/css/grid-12.css" type="text/css" />
+  <link rel="stylesheet" href="../../components/com_gantry/css/joomla.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/joomla.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/style1.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/light-body.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/demo-styles.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/template.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/typography.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/fusionmenu.css" type="text/css" />
+  <style type="text/css">
+    <!--
+#rt-main-surround ul.menu li.active > a, #rt-main-surround ul.menu li.active > .separator, #rt-main-surround ul.menu li.active > .item, #rt-main-surround .square4 ul.menu li:hover > a, #rt-main-surround .square4 ul.menu li:hover > .item, #rt-main-surround .square4 ul.menu li:hover > .separator, .roktabs-links ul li.active span {color:#0088B5;}
+a, #rt-main-surround ul.menu a:hover, #rt-main-surround ul.menu .separator:hover, #rt-main-surround ul.menu .item:hover {color:#0088B5;}
+    -->
+  </style>
+  <script type="text/javascript" src="../../components/com_jcomments/js/jcomments-v2.1.js%3Fv=2"></script>
+  <script type="text/javascript" src="../../components/com_jcomments/libraries/joomlatune/ajax.js"></script>
+  <script type="text/javascript" src="../../media/system/js/mootools.js"></script>
+  <script type="text/javascript" src="../../media/system/js/caption.js"></script>
+  <script type="text/javascript" src="../../components/com_gantry/js/gantry-buildspans.js"></script>
+  <script type="text/javascript" src="../../components/com_gantry/js/gantry-inputs.js"></script>
+  <script type="text/javascript" src="../../templates/rt_quantive_j15/js/jquery.cookie.js"></script>
+  <script type="text/javascript" src="../../modules/mod_roknavmenu/themes/fusion/js/fusion.js"></script>
+  <script type="text/javascript" src="../../modules/mod_ofssologin/js/ofssologin.js"></script>
+  <script type="text/javascript">
+
+			window.addEvent('domready', function() {
+				var modules = ['rt-block'];
+				var header = ['h3','h2','h1'];
+				GantryBuildSpans(modules, header);
+			});
+		InputsExclusion.push('.content_vote','#rt-popup')
+		        window.addEvent('load', function() {
+					new Fusion('ul.menutop', {
+						pill: 0,
+						effect: 'slide and fade',
+						opacity: 1,
+						hideDelay: 500,
+						centered: 0,
+						tweakInitial: {'x': -2, 'y': 0},
+        				tweakSubsequent: {'x': 0, 'y': -14},
+						menuFx: {duration: 200, transition: Fx.Transitions.Sine.easeOut},
+						pillFx: {duration: 400, transition: Fx.Transitions.Back.easeOut}
+					});
+	            });
+  </script>
+<!-- <script type="text/javascript" src="/sso/javascripts/langsync.js"></script> -->
+<!-- <script src="/templates/rt_quantive_j15/js/ossf.js"></script> -->
+<script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-4136519-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
+</head>
+	<body  class="backgroundlevel-low backgroundstyle-style8 bodylevel-med bodystyle-light cssstyle-style1 logostyle-dark font-family-helvetica font-size-is-default menu-type-fusionmenu col12 ">
+		<div id="rt-main-background">
+			<div class="rt-container">
+																<div id="rt-header">
+					<div class="rt-grid-7 rt-alpha">
+    			<div class="rt-block">
+    	    	<a href="../../index.html" id="rt-logo"></a>
+    		</div>
+	    
+</div>
+<div class="rt-grid-5 rt-omega">
+                    <div class="square9">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<div class="ofssologin_square9"><a href="../../index.html">登入</a>&nbsp;&nbsp|&nbsp;&nbsp;<span><a href="../../en/tech-column/8423--freenas-2.html" ><span lang="en" xml:lang="en">English</span></a></li></ul></span><!--Joom!fish V2.0.4 (Lightning)-->
+<!-- &copy; 2003-2009 Think Network, released under the GPL. -->
+<!-- More information: at http://www.joomfish.net -->
+<div class="ofssologin_search_square9">
+  <form id="of_search" action="https://www.openfoundry.org/of/openfoundry/search" method="get" onsubmit="of_search(); return false;">
+    <select id="of_search_type">
+      <option value="Projects"> 專案 </option>
+      <option value="Content"> 文章 </option>
+      <option value="People"> 人才 </option>
+    </select>
+    <input id="query" name="query" id="mod_search_searchword" maxlength="50" alt="search" class="inputbox" type="text" size="28" value="search..."  onblur="if(this.value=='') this.value='search...';" onfocus="if(this.value=='search...') this.value='';" />
+    <input type="hidden" name="commit" value="search" />
+  </form>
+</div></div>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		
+</div>
+					<div class="clear"></div>
+				</div>
+																<div id="rt-navigation"><div id="rt-navigation2"><div id="rt-navigation3">
+					
+<div class="nopill">
+	<ul class="menutop level1 " >
+						<li class="item1 root" >
+					<a class="orphan item bullet" href="../../index.html"  >
+				<span>
+			    				首頁				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item32 root" >
+					<a class="orphan item bullet" href="../../archived.html"  >
+				<span>
+			    				專案				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item186 root" >
+					<a class="orphan item bullet" href="../community.html"  >
+				<span>
+			    				Who&#039;s Who				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item4 root" >
+					<a class="orphan item bullet" href="../news.html"  >
+				<span>
+			    				新聞				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item5 root" >
+					<a class="orphan item bullet" href="../law-and-licensing.html"  >
+				<span>
+			    				法律源地				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item3 root" >
+					<a class="orphan item bullet" href="../activities.html"  >
+				<span>
+			    				活動				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item2 root" >
+					<a class="orphan item bullet" href="../resourcecatalog%3FName=Value.html"  >
+				<span>
+			    				資源表列				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item45 root" >
+					<a class="orphan item bullet" href="../about.html"  >
+				<span>
+			    				關於				   
+				</span>
+			</a>
+			
+			
+	</li>	
+				</ul>
+</div>
+
+				    <div class="clear"></div>
+				</div></div></div>
+								<div class="rt-surround"><div class="rt-surround2"><div class="rt-surround3">
+										<div id="rt-showcase-section">
+												<div id="rt-showcase">
+							<div class="rt-grid-12 rt-alpha rt-omega">
+    		<div class="clear"></div>
+		
+		
+                <div class="close-note">
+                    <div class="rt-block">
+               					<div class="module-content">
+                	<div style="font-size:medium; background-image:linear-gradient(120deg,#159957,#4298b2);color:white;padding:20px;margin:-10px -18px;">感謝您對「自由軟體鑄造場」的支持與愛護，十多年來「自由軟體鑄造場」受中央研究院支持，並在資訊科學研究所以及資訊科技創新研究中心執行，現已完成階段性的任務。 本網站預計持續維運至 2021年底，網站內容基本上不會再更動。<br />也紀念我們永遠的朋友 李士傑先生（Shih-Chieh Ilya Li）。</div>				</div>
+            </div>
+                </div>
+		
+</div>
+							<div class="clear"></div>
+						</div>
+																	</div>
+															<div id="rt-main-surround">
+												<div id="rt-breadcrumbs">
+								<div class="rt-breadcrumb-surround">
+		<a href="../../index.html" id="breadcrumbs-home"></a>
+		<span class="breadcrumbs pathway">
+<a href="../tech-column.html" class="pathway">技術專欄</a> <img src="../../templates/rt_quantive_j15/images/arrow.png" alt=""  /> <span class="no-link">利用 FreeNAS 打造儲存設備(2)－安裝篇</span></span>
+	</div>
+	
+							<div class="clear"></div>
+						</div>
+																							              <div id="rt-main" class="sa3-mb9">
+                <div class="rt-main-inner">
+                    <div class="rt-grid-9 rt-push-3">
+                                                <div class="rt-block">
+                            							<div class="square1">
+							<div class="rt-module-surround">
+								<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+								<div class="rt-module-inner">
+		                            <div id="rt-mainbody">
+		                                
+<div class="rt-joomla ">
+	<div class="rt-article">
+		
+				<div class="rt-headline"><h1 class="rt-article-title">利用 FreeNAS 打造儲存設備(2)－安裝篇</h1>		</div>
+		<div class="clear"></div>
+		
+		
+		
+				<div class="rt-articleinfo">
+						<div class="rt-article-icons">
+								<a href="8423--freenas-2%3Ftmpl=component&amp;print=1&amp;layout=default&amp;page=.html" title="列印" onclick="window.open(this.href,'win2','status=no,toolbar=no,scrollbars=yes,titlebar=no,menubar=no,resizable=yes,width=640,height=480,directories=no,location=no'); return false;" rel="nofollow"><span class="icon print"></span></a>																</div>
+			
+			<span class="rt-date-posted">
+						建立日期			2011-08-18 15:35						&nbsp;&nbsp;&nbsp;&nbsp;						最近更新在 2012-02-03 14:50						</span>
+
+						<span class="rt-author">
+				作者是 Weithenn (https://www.weithenn.org/)			</span>
+				
+					</div>
+		
+		
+		<h3>前言</h3>
+<p> </p>
+<p>在上一篇文章<a href="8408--freenas-1.html" target="_blank">利用 FreeNAS 打造儲存設備 (1)－歷史篇</a>中，我們已經了解到整個 FreeNAS 自由軟體專案的歷史由來，並下載了這次會用到的安裝與升級檔案。本次我們將安裝最新版本的 FreeNAS 8.0，開始使用圖形操作介面，並介紹 FreeNAS 的臭蟲回報系統。</p>
+
+<p> </p>
+<h3>實作環境</h3>
+<p><br />* 虛擬化技術平台：VMware vSphere ESXi 4.1</p>
+<p>** 虛擬主機硬體清單：(Virtual Machine Hardware)</p>
+<p>** 硬碟 (HDD)：2GB、20GB</p>
+<p>** 記憶體 (Memory)：2GB</p>
+<p>** 網路卡 (NIC)：VMXNET2 (Enhanced)</p>
+<p>* 映像檔：FreeNAS-8.0-RELEASE-i386.iso</p>
+<p> </p>
+<h3>由光碟機安裝 FreeNAS 8.0</h3>
+<p><br />在本文中我們將進行實際操作，採用 FreeNAS 官網上所下載的 <a href="https://sourceforge.net/projects/freenas/files/FreeNAS-8" target="_blank">FreeNAS-8.0-RELEASE-i386.iso</a> 映像檔，將該映像檔案透過燒錄機將映像檔燒錄成光碟片，並將實體主機的 BIOS 設定為光碟機開機後，將 FreeNAS 8.0 安裝於主機上；若如本文採用虛擬化平台，則必須掛載該映像檔。</p>
+<p>在前一篇文章中，我們比較 FreeNAS 新舊版本比較表中的<a href="https://www.freenas.org/item/freenas-comparison-chart-2" target="_blank">網路服務比較表</a>時，讀者應該有看到其中一個名為 VMware Guest Tools 的項目，該項目表示若安裝 FreeNAS 於 <a href="https://www.vmware.com" target="_blank">VMware</a> 公司虛擬化技術產品內成為虛擬主機時，將支援該公司的 VMware Guest Tools。這意味著運作於虛擬環境的 FreeNAS 虛擬主機，不只在自身運作方面可以得到良好的運作效率，也可以在虛擬環境的主控台上順利進行監控、應用。</p>
+<p>在此次安裝示範環境中，我們將在虛擬化平台 <a href="https://downloads.vmware.com/d/info/datacenter_downloads/vmware_vsphere_hypervisor_esxi/4_0" target="_blank">VMware vSphere ESXi 4.1</a> 中新增一台虛擬主機（Virtual Machine 或稱 Guest OS），並在該虛擬主機上安裝 FreeNAS。該虛擬主機配置了二顆分別為 2GB 及 20GB 的硬碟，2GB 的記憶體，一片 VMware 第二代加強型虛擬網路卡 <a href="https://kb.vmware.com/selfservice/microsites/search.do?language=en_US&amp;cmd=displayKC&amp;externalId=1001805" target="_blank">VMXNET2 (Enhanced) </a>。配置此網路卡的目的為驗證 FreeNAS 官網中支援 VMware Guest Tools 的項目是否真的作用。眾所週知，若是安裝於虛擬化平台中的虛擬主機未支援 VMware Guest Tools 時，該虛擬主機安裝作業系統完畢後，系統將會顯示沒有抓到任何網路卡。因此我們選擇配置此網路卡，以確認 FreeNAS 是否真如官網所述進行驗證，並將此虛擬主機的網路卡置於具有 <a href="https://zh.wikipedia.org/wiki/DHCP" target="_blank">DHCP</a> 伺服器的環境中，以便屆時 FreeNAS 安裝完畢後自動抓取 DHCP 伺服器為其配置的 IP 位址資訊。至於固定 IP 位址的設定方式，將於後續文章中進行解說。</p>
+<p> </p>
+<h4>主機設定由光碟機開機</h4>
+<p><br />請將從 FreeNAS 官網上所下載的 FreeNAS-8.0-RELEASE-i386.iso 映像檔燒錄成光碟片後，將欲安裝 FreeNAS 的實體或虛擬主機 BIOS 進行設定，設定為由光碟機開機，接著將 FreeNAS 8.0 光碟片放入並開機。此次實作的虛擬主機，是設定抓取該 FreeNAS-8.0-RELEASE-i386.iso 映像檔即可（這也是虛擬化平台用於測試上方便的地方之一）。</p>
+<p> </p>
+<p>由於虛擬主機開機時間很短，常常來不及按下「F2」鍵進入虛擬主機的 BIOS 設定畫面。若您想要虛擬主機在開機時直接進入 BIOS 設定畫面，則可以設定虛擬主機開機時強制進入 BIOS 設定模式，設定方式為在 vSphere Client 中選擇該虛擬主機，接著點選滑鼠右鍵後選擇 「Edit Settings」，切換至「Options」頁籤後，點選「Boot Options」項目，接著在「Force BIOS Setup」區塊中，勾選「The next time the virtual machine boots, force entry into the BIOS setup screen.」並按下「OK」即可。設定完成後，當虛擬主機開機後會直接進入 BIOS 設定畫面，請將光碟機 (CD-ROM Driver) 設定為首要開機項目後，按下「F10 (Save and Exit)」存檔離開即可。</p>
+<p> </p>
+<p><a href="../../images/110823/FreeNAS_02/freenas_02_001.jpg" target="_blank"><img src="../../images/110823/FreeNAS_02/freenas_02_001.jpg" border="0" width="600" /></a></p>
+<p>▲ 圖1 虛擬主機設定開機時強制進入 BIOS 設定畫面</p>
+<p> </p>
+<p><a href="../../images/110823/FreeNAS_02/freenas_02_002.jpg" target="_blank"><img src="../../images/110823/FreeNAS_02/freenas_02_002.jpg" border="0" width="600" /></a></p>
+<p>▲ 圖2 虛擬主機 BIOS 設定畫面，設定採用光碟機內容進行開機</p>
+<p> </p>
+<h4>進入 FreeNAS 開機選單</h4>
+<p><br />當虛擬主機 BIOS 設定完成並存檔離開後，虛擬主機開機後，便會採用掛載的 FreeNAS-8.0-RELEASE-i386.iso 映像檔進行開機。開機後映入眼簾的第一個畫面，應為 FreeNAS 開機選單畫面，若有玩過 <a href="https://www.freebsd.org" target="_blank">FreeBSD</a> 的朋友，應該會覺得此開機選單畫面很熟悉。當讀秒倒數完畢，預設會進入 FreeNAS 安裝程序的初始化動作。</p>
+<p> </p>
+<p><a href="../../images/110823/FreeNAS_02/freenas_02_003.jpg" target="_blank"><img src="../../images/110823/FreeNAS_02/freenas_02_003.jpg" border="0" width="600" /></a></p>
+<p>▲ 圖3 FreeNAS 開機選單</p>
+<p> </p>
+<h4>安裝或升級 FreeNAS</h4>
+<p><br />FreeNAS 開機選單倒數完成後，接著出現的相關訊息為 FreeNAS 進行安裝前的主機硬體相容性檢查，當該台主機硬體通過硬體檢查後則進入安裝畫面。由於目前虛擬主機的硬碟中並沒有舊的 FreeNAS 版本，因此畫面中請選擇「1. Install/Upgrade to hard drive/flash device, etc.」項目後按下「OK」，以準備進入 FreeNAS 8.0 安裝程序。後續文章中會提到若硬碟中已經存在了舊版的 FreeNAS 版本，該如何進行升級以及相關步驟。</p>
+<p> </p>
+<p><a href="../../images/110823/FreeNAS_02/freenas_02_004.jpg" target="_blank"><img src="../../images/110823/FreeNAS_02/freenas_02_004.jpg" border="0" width="600" /></a></p>
+<p>▲ 圖4 FreeNAS 安裝選單，選擇項目 1</p>
+<p> </p>
+<h4>選擇安裝 FreeNAS 的硬碟機</h4>
+<p><br />接著畫面將顯示 FreeNAS 於硬體相容性檢查程序時，所偵測到安裝於主機上的硬碟。此次我們為主機配置二顆硬碟，如圖5 所示，硬碟機清單顯示為 2GB (da0)、20GB (da1)。因為本文安裝的 FreeNAS 其硬體為虛擬化平台所虛擬出來的虛擬硬碟機，因此在硬碟資訊方面顯示為 VMware Virtual disk；若為實體伺服器，則會顯示該硬碟機的品牌資訊。由於此安裝程序為選擇 FreeNAS 作業系統所要安裝的目的地硬碟，因此請選擇「da0  VMware Virtual disk 1.0 --2.0 GiB」項目後按下「OK」，以進入下個安裝程序。</p>
+<p> </p>
+<p><a href="../../images/110823/FreeNAS_02/freenas_02_005.jpg" target="_blank"><img src="../../images/110823/FreeNAS_02/freenas_02_005.jpg" border="0" width="600" /></a></p>
+<p>▲ 圖5 選擇安裝 FreeNAS 作業系統的目的地硬碟 2.0GB (da0)</p>
+<p> </p>
+<h4>準備開始 FreeNAS 安裝程序</h4>
+<p><br />選擇完安裝 FreeNAS 作業系統的目的地硬碟後，接著畫面將會顯示警告訊息，內容為 FreeNAS 提醒您剛才選擇安裝 FreeNAS 的目的地硬碟資料將被清空（警告訊息 1），以及該硬碟其它未使用到的空間，也無法拿來進行分享資料的設定（警告訊息 2），因此，FreeNAS 強烈建議您將 FreeNAS 安裝於 USB 隨身碟，而 IDE、SATA、SCSI 硬碟則拿來儲存、分享資料用。</p>
+<p>了解上述的警告訊息後按下「Yes」，則系統將開始進行安裝程序，將光碟片內的 FreeNAS 資料寫入至剛才選擇的 2GB 目的地硬碟內。如圖6 所示，您可以看到安裝進度百分比、寫入資料的速度、已花費安裝時間、預估剩餘安裝時間…等資訊，基本上 1 分鐘以內即可將 FreeNAS 8.0 安裝完畢。</p>
+<p> </p>
+<p><a href="../../images/110823/FreeNAS_02/freenas_02_006.jpg" target="_blank"><img src="../../images/110823/FreeNAS_02/freenas_02_006.jpg" border="0" width="600" /></a></p>
+<p>▲ 圖6 FreeNAS 警告訊息及開始安裝 FreeNAS 進度資訊</p>
+<p> </p>
+<h4>FreeNAS 安裝程序完畢</h4>
+<p><br />當 FreeNAS 安裝程序，將光碟片內相關資料寫入至所選擇的 2GB 目的地硬碟後，安裝程序會顯示已將相關資料寫入 2GB (da0) 完成，並提醒您將安裝光碟片退出光碟機後，將主機重新啟動。按下「OK」後，回到一開始的初始安裝畫面，接著選擇「3. Reboot System」後按下「OK」將主機重新啟動。同一時間，請記得退出光碟片以利主機順利進入 FreeNAS 開機程序，而非再次進入 FreeNAS 安裝程序。</p>
+<p> </p>
+<p><a href="../../images/110823/FreeNAS_02/freenas_02_007.jpg" target="_blank"><img src="../../images/110823/FreeNAS_02/freenas_02_007.jpg" border="0" width="600" /></a></p>
+<p>▲ 圖7 安裝程序完畢，系統提示應該重新啟動主機</p>
+<p><a href="../../images/110823/FreeNAS_02/freenas_02_008.jpg" target="_blank"><img src="../../images/110823/FreeNAS_02/freenas_02_008.jpg" border="0" width="600" /></a></p>
+<p>▲ 圖8 選擇重新啟動項目後確定將 FreeNAS 主機重新啟動</p>
+<p> </p>
+<h4>FreeNAS 控制台畫面 (Console)</h4>
+<p><br />在預設的情況下，FreeNAS 主機開機後會自動啟用 DHCP Client 服務，也就是發出 DHCPDISCOVER <a href="https://zh.wikipedia.org/wiki/DHCP#DHCP_.E5.8F.91.E7.8E.B0_.28DISCOVER.29" target="_blank">廣播封包</a>尋找區域網路中是否有 DHCP 伺服器試圖取得自動配置的 IP 資訊。由於我們已經將此台 FreeNAS 虛擬主機置於具有 DHCP 伺服器的網路環境中，因此，FreeNAS 主機啟動 DHCP Client 服務時，便會順利找到 DHCP 伺服器以取得 IP 位址 (IP Address)、預設閘道 (Default Gateway)、名稱解析伺服器 (DNS Server)…等 IP 資訊。如圖9 所示，我們可以看到 FreeNAS 主機順利取得 DHCP 伺服器所配發的區網 IP 位址（此例取得 IP 位址為 10.10.25.78），並且系統提示您可以將 https://10.10.25.78 網址 (URLs) 貼至您的瀏覽器中，以登入 FreeNAS 圖形化管理操作介面。</p>
+<p> </p>
+<p><a href="../../images/110823/FreeNAS_02/freenas_02_009.jpg" target="_blank"><img src="../../images/110823/FreeNAS_02/freenas_02_009.jpg" border="0" width="600" /></a></p>
+<p>▲ 圖9 FreeNAS 控制台畫面 (Console)</p>
+<p> </p>
+<p>FreeNAS 主機可以順利取得 DHCP 伺服器所配發的 IP 位址及相關網路資訊後，我們可以確定 FreeNAS 確實如官網所述支援 VMware Guest Tools 功能，因此網路功能運作正常。不過若您也採用 VMware vSphere ESX/ESXi 虛擬化平台來測試，應該會眼尖地發現該虛擬主機在 vSphere Client 中，VMware Tools 項目狀態並非為全功能運作正常的「OK」，而是部份功能運作正常的「Unmanaged」狀態。造成此問題的原因，可能是 FreeNAS 團隊目前所採用的 <a href="https://open-vm-tools.sourceforge.net" target="_blank">Open Virtual Machine Tools</a> 版本所導致，相信之後更新的版本會完全解決此一問題。</p>
+<p> </p>
+<p><a href="../../images/110823/FreeNAS_02/freenas_02_010.jpg" target="_blank"><img src="../../images/110823/FreeNAS_02/freenas_02_010.jpg" border="0" width="600" /></a></p>
+<p>▲ 圖10 虛擬主機上 VMware Tools 所回報的狀態為 Unmanaged</p>
+<p> </p>
+<h4>測試 FreeNAS 主機網路連接狀態</h4>
+<p><br />在進入圖形操作介面以前，筆者建議您先進入指令模式，利用 ping 指令測試一下目前 FreeNAS 主機的網路連通狀態。請於 FreeNAS 控制台畫面 (Console) 輸入數字「7」後按下「Enter」鍵進入 Shell 指令模式，首先使用「ping –c2 10.10.25.254」指令執行 2 次 ping 指令，測試 FreeNAS 主機與區域網路中的預設閘道 (Default Gateway) 是否相通，接著使用「ping –c2 168.95.1.1」指令測試 FreeNAS 主機與網際網路上的名稱解析伺服器 IP 位址是否相通，最後使用「ping –c2 tw.yahoo.com」指令測試 FreeNAS 主機的名稱解析是否能正確運作。</p>
+<p> </p>
+<p><a href="../../images/110823/FreeNAS_02/freenas_02_011.jpg" target="_blank"><img src="../../images/110823/FreeNAS_02/freenas_02_011.jpg" border="0" width="600" /></a></p>
+<p>▲ 圖11 測試 FreeNAS 主機與預設閘道、名稱解析伺服器及名稱解析服務是否正確運作</p>
+<p> </p>
+<p>連通測試完成後，請接著輸入「df -h」指令來查看目前 FreeNAS 主機的檔案系統掛載情況，由目前掛載情況可以看到檔案系統為 512MB 分割區運作。至此讀者應該會感到疑惑，在上一篇中不是才說明 FreeNAS 安裝時會建立二個 1GB 的分割區，為何目前看到的是 512MB 分割區？那是因為 FreeNAS 版本從 8.0 至 8.0.1 BETA2 採用二個 512MB 分割區運作架構，為了日後功能發展性及擴充性，FreeNAS 開發團隊從 8.0.1 BETA3 版本開始，改為採用二個 1GB 分割區運作架構。因為目前所安裝的版本為 FreeNAS 8.0，因此所看到的分割區為 512MB 是合理的。進行完網路連通測試及觀察檔案系統掛載情況後，輸入「exit」指令，並回到 FreeNAS 控制台畫面。</p>
+<p> </p>
+<p><a href="../../images/110823/FreeNAS_02/freenas_02_012.jpg" target="_blank"><img src="../../images/110823/FreeNAS_02/freenas_02_012.jpg" border="0" width="600" /></a></p>
+<p>▲ 圖12 查看 FreeNAS 檔案系統掛載情況及回到控制台畫面</p>
+<p> </p>
+<h3>登入 FreeNAS 圖形操作介面</h3>
+<p><br />測試及確認 FreeNAS 主機在區域網路中的網路連接狀態運作無誤後，請於跟 FreeNAS 主機同一網段的任一主機上開啟瀏覽器，在網址列上輸入 FreeNAS 主機的 IP 位址（此例為 https://10.10.25.78）來登入圖形化操作介面。正確連接 FreeNAS 主機後，瀏覽器會跳出管理者帳號及密碼的驗證視窗，預設情況下 FreeNAS 的圖形化管理者帳號為「admin」，而管理密碼為「freenas」（此圖形化管理者帳號與系統管理者帳號 root 不同，後續文章中會進行解說），在驗證視窗輸入管理者帳號及密碼後按下「Log In」鍵即可登入。</p>
+<p> </p>
+<p><a href="../../images/110823/FreeNAS_02/freenas_02_013.jpg" target="_blank"><img src="../../images/110823/FreeNAS_02/freenas_02_013.jpg" border="0" width="600" /></a></p>
+<p>▲ 圖13 登入 FreeNAS 圖形化管理介面及管理者驗證視窗</p>
+<p> </p>
+<p>登入 FreeNAS 圖形化管理介面後，您可以在「System Information」項目內看到 FreeNAS 主機的相關資訊，例如在 FreeNAS 8.0 版本採用的 FreeBSD 作業系統版本為 8.2 Release Patch 1、系統的主機名稱 (Hostname)、開機時間「Uptime」及系統負載狀況「Load Average」...等資訊，若想看到流量圖表可切換到「Reporting」項目。FreeNAS 採用了 <a href="https://www.mrtg.org/rrdtool" target="_blank">RRDTool</a> 來顯示相關硬體資訊如中央處理器 (CPU)、記憶體 (Memory)、系統負載 (System Load)、Swap 使用量、執行序 (Processes)、網路卡 (NIC) ...等的流量使用狀況。</p>
+<p> </p>
+<p><a href="../../images/110823/FreeNAS_02/freenas_02_014.jpg" target="_blank"><img src="../../images/110823/FreeNAS_02/freenas_02_014.jpg" border="0" width="600" /></a></p>
+<p>▲ 圖14 FreeNAS 系統資訊</p>
+<p><a href="../../images/110823/FreeNAS_02/freenas_02_015.jpg" target="_blank"><img src="../../images/110823/FreeNAS_02/freenas_02_015.jpg" border="0" width="600" /></a></p>
+<p>▲ 圖15 FreeNAS 流量統計圖表 (CPU、Memory、System Load、Swap、Processes、NIC)</p>
+<p> </p>
+<p>由於在 FreeNAS 8.0 此一版本中，圖形化操作介面僅支援單一語系，也就是英文 (English)，從 FreeNAS 8.0.1 BETA1 版本之後，才開始加入圖形操作介面多國語系的支援。您可以切換至項目「System」接著點選「Settings」，在「Language」語系項目的下拉選單中發現，此一版本中確實只有 English 語系，並無其它國家語系可供選擇。</p>
+<p> </p>
+<p><a href="../../images/110823/FreeNAS_02/freenas_02_016.jpg" target="_blank"><img src="../../images/110823/FreeNAS_02/freenas_02_016.jpg" border="0" width="600" /></a></p>
+<p>▲ 圖16 FreeNAS 圖形操作介面，語系切換</p>
+<p> </p>
+<h3>FreeNAS 官網教學短片</h3>
+<p><br />FreeNAS <a href="https://www.youtube.com/user/FreeNASTeam" target="_blank">官網</a>有陸續將相關操作步驟製作成為教學短片，放至 <a href="https://www.youtube.com" target="_blank">youtube</a> 上。在目前的教學短片清單中，與本文有關的項目為 <a href="https://www.youtube.com/watch?v=geD3mf_kAaY" target="_blank">How To Install FreeNAS™ 8</a> ，內容為在 <a href="https://zh.wikipedia.org/wiki/Mac_OS_X" target="_blank">Apple MAC</a> 主機上使用 <a href="https://www.vmware.com/tw/products/desktop_virtualization/fusion/overview" target="_blank">VMware Fusion</a> 建立虛擬主機並安裝 FreeNAS 8.0 Release，在後續文章中，筆者也會適時的將 FreeNAS 官網所發行的教學短片，與筆者所撰寫內容進行搭配。</p>
+<p> </p>
+<p> </p>
+<h3>FreeNAS 臭蟲回報系統</h3>
+<p><br />只要是軟體開發，就一定會有臭蟲 (Bug)。FreeNAS 自由軟體專案也不例外，為了使 FreeNAS 更好，您可以將使用上遇到的問題提交到 FreeNAS 臭蟲回報系統。</p>
+<p>FreeNAS 使用 <a href="https://trac.edgewall.org" target="_blank">Trac</a> 這個優秀的開放原始碼錯誤回報系統，來管理 FreeNAS 使用者所提交的問題，以及進行臭蟲追蹤的動作。基本上，FreeNAS 會建議您先使用目前最新釋出的版本來進行測試，因為舊版的問題很可能在新版本中已經得到修復。在提交問題前，您可以先搜尋一下回報系統，避免提交重複問題進而節省開發人員的時間，也可得知此問題 FreeNAS 開發團隊預計會在哪個版本中進行修復。。</p>
+<p>搜尋問題不需要註冊，如果您要提交臭蟲，則需要在 Trac 中註冊一個帳戶。在提交問題前，為使開發人員清楚了解您所要表達的問題，應注意相關發問禮節。例如在描述問題時應該清楚說明您採用的版本環境、操作步驟以及出現的錯誤訊息，若能配合操作步驟及錯誤訊息的抓圖則更洽當。</p>
+<p>以筆者在測試此次的安裝版本 FreeNAS 8.0 Release 為例，當筆者欲嘗試以 <a href="https://windows.microsoft.com/zh-TW/internet-explorer/products/ie/home" target="_blank">Microsoft IE 9 瀏覽器</a>來登入 FreeNAS 圖形管理介面時，雖然可以在輸入圖形管理者帳號及密碼後順利登入，但卻發現在登入後瀏覽器無法顯示相關系統狀態，如圖17 所示。</p>
+<p> </p>
+<p><a href="../../images/110823/FreeNAS_02/freenas_02_017.jpg" target="_blank"><img src="../../images/110823/FreeNAS_02/freenas_02_017.jpg" border="0" width="600" /></a></p>
+<p>▲ 圖17 使用 Microsoft IE 9 瀏覽器登入後無法正常操作</p>
+<p> </p>
+<p> </p>
+<p>此時筆者便開啟 FreeNAS <a href="https://support.freenas.org" target="_blank">臭蟲回報系統</a>的網頁，在搜尋列上輸入「IE 9」後按下搜尋鍵，便發現已經有人回報此一問題給 FreeNAS 開發團隊了。此問題項目為 <a href="https://support.freenas.org/ticket/277" target="_blank">GUI not working with IE9</a>，由提交的討論串中您可以清楚看到 FreeNAS 開發人員已經回覆提交問題的使用者，說明FreeNAS 8.0 Release 版本使用的 Dojo 1.6.1 版本還不支援 Microsoft IE 9 瀏覽器，並且預計在 FreeNAS 8.1 Release 版本修復此一問題。</p>
+<p> </p>
+<p><a href="../../images/110823/FreeNAS_02/freenas_02_018.jpg" target="_blank"><img src="../../images/110823/FreeNAS_02/freenas_02_018.jpg" border="0" width="600" /></a></p>
+<p>▲ 圖18 FreeNAS 臭蟲回報系統 GUI not working with IE9</p>
+<p> </p>
+<p> </p>
+<p>透過上述簡要的說明，建議讀者在遇到相關問題時也可至 FreeNAS 臭蟲回報系統查詢，當您發現的問題尚無人回報時，您也可以提交臭蟲給 FreeNAS 開發團隊，以幫助開發人員了解及修正此一問題，使得 FreeNAS 作業系統能更穩定及完美。</p>
+			<!-- Show relate article -->
+		<br><br><h4>您也許有興趣閱讀以下文章:</h4><ul><li><a href='../../tech-column/8580.html'>利用 FreeNAS 打造儲存設備 (8)──網路設定篇之頻寬合併</a> - <span class='date-posted'>2012-01-13</span></li><li><a href='../../tech-column/8529.html'>利用 FreeNAS 打造儲存設備 (7)─Failover（故障轉移）</a> - <span class='date-posted'>2011-11-28</span></li><li><a href='../../tech-column/8480.html'>利用 FreeNAS 打造儲存設備 (6) 網路設定篇─基礎設定</a> - <span class='date-posted'>2011-10-14</span></li><li><a href='../../tech-column/8473.html'>利用 FreeNAS 打造儲存設備(5)安裝篇（嵌入式 USB）</a> - <span class='date-posted'>2011-10-04</span></li><li><a href='../../tech-column/8444.html'>利用 FreeNAS 打造儲存設備(4)─安裝篇（由 GUI 升級）</a> - <span class='date-posted'>2011-09-13</span></li><li><a href='../../tech-column/8431.html'>利用 FreeNAS 打造儲存設備(3)─安裝篇（由光碟升級）</a> - <span class='date-posted'>2011-09-01</span></li><li><a href='../../tech-column/8408.html'>利用 FreeNAS 打造儲存設備(1)－歷史篇</a> - <span class='date-posted'>2011-08-03</span></li></ul>		<!-- end -->
+		<div class="article_note">
+		<!-- Add tags use metakey, and show OSSF Newsletter tag: OSSFNL+NUM-->
+		<br><br> <hr style='border: 1px dashed #D2DADB;'><b>自由軟體鑄造場電子報&nbsp;:</b>&nbsp;<a href='../../previous-issue%3Ftask=view&amp;id=754.html'>第 179 期 「臺灣博碩士論文知識加值系統」強力徵求論文全文的網路下載與公示授權！</a><br><b>標籤:</b>&nbsp;<a href='../../index.php%3Foption=com_search&amp;Itemid=58&amp;searchphrase=exact_meta&amp;ordering=newest&amp;searchword=FreeNAS.html'>FreeNAS</a>,&nbsp;&nbsp;<a href='../../index.php%3Foption=com_search&amp;Itemid=58&amp;searchphrase=exact_meta&amp;ordering=newest&amp;searchword=&#32;nas.html'> nas</a>,&nbsp;&nbsp;<a href='../../index.php%3Foption=com_search&amp;Itemid=58&amp;searchphrase=exact_meta&amp;ordering=newest&amp;searchword=&#32;network-attached&#32;storage.html'> network-attached storage</a>,&nbsp;&nbsp;<a href='../../index.php%3Foption=com_search&amp;Itemid=58&amp;searchphrase=exact_meta&amp;ordering=newest&amp;searchword=&#32;install.html'> install</a>,&nbsp;&nbsp;				<!-- End -->
+					<br>
+					<b>分類: </b><a href="../tech-column.html">				技術專欄					</a>				</div>
+			 <!-- AddThis Button BEGIN ID 3001 is the front page article -->
+     			<br><br>
+       <div class="addthis_toolbox addthis_default_style addthis_32x32_style">
+       <a class="addthis_button_preferred_1"></a>
+       <a class="addthis_button_preferred_2"></a>
+       <a class="addthis_button_preferred_3"></a>
+       <a class="addthis_button_preferred_4"></a>
+       <a class="addthis_button_compact"></a>
+       <a class="addthis_counter addthis_bubble_style"></a>
+       </div>
+       <script type="text/javascript">var addthis_config = {"data_track_clickback":true};</script>
+       <script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js#pubid=openfoundry"></script>
+       <!-- AddThis Button END -->
+     <br>
+		<div class="totop" ><a class="rt-totop" href="8423--freenas-2.html#" style="outline: medium none;">↑ Top</a></div>
+            <!-- AddThis Button END -->
+
+			</div>
+</div>
+
+		                            </div>
+									<div class="clear"></div>
+								</div>
+								<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+							</div>
+							</div>
+                                                    </div>
+                                            </div>
+                                <div class="rt-grid-3 rt-pull-9">
+                <div id="rt-sidebar-a">
+                                    <div class="square4">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<ul class="menu"><li class="item56"><a href="../previous-issue.html"><span>電子報總覽</span></a></li><li class="item55"><a href="../about-newsletter.html"><span>關於本報</span></a></li></ul>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<ul class="menu"><li class="item115"><a href="../foss-news.html"><span>源碼新聞</span></a></li><li class="item141"><a href="../case-job.html"><span>接案 / 工作</span></a></li></ul>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+        	                <div class="square1">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-title"><h2 class="title">專欄總覽</h2></div>
+						<div class="clear"></div>
+		                						<div class="module-content">
+		                	<ul class="menu"><li id="current" class="active item37"><a href="../tech-column.html"><span>技術專欄</span></a></li><li class="item40"><a href="../foss-programs.html"><span>源碼秘技</span></a></li><li class="item35"><a href="../legal-article-.html"><span>法律專欄</span></a></li><li class="item154"><a href="../foss-forum.html"><span>自由專欄</span></a></li><li class="item162"><a href="../enterprise-application.html"><span>企業應用</span></a></li><li class="item44"><a href="../foss-projects.html"><span>源碼專案</span></a></li></ul>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		                <div class="square1">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<p style="text-align: center;"><a href="../../news%3Fformat=feed&amp;type=rss" target="_black"><img src="../../images/M_images/news-rss-feed.png" border="0" /></a><br /><a href="https://www.openfoundry.org/rss-feed/Newsletter" target="_black"><img src="../../images/M_images/newsletter-rss-feed.png" border="0" /></a></p>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		
+                </div>
+            </div>
+
+                    <div class="clear"></div>
+                </div>
+            </div>
+																													</div>
+										<div id="rt-copyright">
+						<div class="rt-grid-12 rt-alpha rt-omega">
+                        <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<div id="desktop-mobile-version-switch"><span id="mobile-version" class="version-switch"><a href="8423--freenas-2.html#">行動版</a></span></div>
+自由軟體鑄造場 製作 最佳瀏覽狀態：IE7或Firefox2.0以上 (建議使用Firefox) ‧ 解析度1024*768 <br /> <strong>E-Mail</strong>：<a href="mailto:contact@openfoundry.org">contact@openfoundry.org</a> <strong>Address</strong>：台北市南港區研究院路2段128號 中央研究院資訊科學研究所 . <a href="../../privacy-policy.html">隱私權條款</a>. <a href="../../terms-of-use.html">使用條款</a><span style="position: relative; top: 8px; margin-top: -8px;"> <a href="../../about/8101.html"><img src="../../images/M_images/rss-feed-all.png" border="0" /></a></span>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+        	
+</div>
+						<div class="clear"></div>
+					</div>
+					<div class="rt-footer-bottom-wrap"><div class="rt-footer-bottom"><div class="rt-footer-bottom2"><div class="rt-footer-bottom3"></div></div></div></div>
+									</div></div></div>
+				<div class="rt-surround-bottom"><div class="rt-surround-bottom2"><div class="rt-surround-bottom3"></div></div></div>
+							</div>
+		</div>
+		<!--
+		<script id="aptureScript">
+						(function (){var a=document.createElement("script");a.defer="true";a.src="http://www.apture.com/js/apture.js?siteToken=vsJttrn";document.getElementsByTagName("head")[0].appendChild(a);})();
+     </script>
+-->
+
+<!-- Piwik -->
+<!-- 			<script type="text/javascript">
+			  var _paq = _paq || [];
+		  _paq.push(["trackPageView"]);
+		  _paq.push(["enableLinkTracking"]);
+
+		    (function() {
+			        var u=(("https:" == document.location.protocol) ? "https" : "https") + "://www.openfoundry.org/piwik/";
+				    _paq.push(["setTrackerUrl", u+"piwik.php"]);
+				    _paq.push(["setSiteId", "1"]);
+				        var d=document, g=d.createElement("script"), s=d.getElementsByTagName("script")[0]; g.type="text/javascript";
+				        g.defer=true; g.async=true; g.src=u+"piwik.js"; s.parentNode.insertBefore(g,s);
+					  })();
+		  </script> -->
+<!-- End Piwik Code -->
+	</body>
+</html>

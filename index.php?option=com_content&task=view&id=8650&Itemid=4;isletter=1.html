@@ -1,0 +1,490 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="zh-tw" lang="zh-tw" >
+<head>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<link rel="shortcut icon" href="images/favicon.ico" />
+	  <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+  <meta name="robots" content="index, follow" />
+  <meta name="keywords" content="github, hack, mass-assignment,OSSFNL783" />
+  <meta name="title" content="從 Github 被 Hack，談 Rails 的安全性（Mass-assignment）" />
+  <meta name="description" content="◎ 本文轉載自 Blog.XDite.net。 關 於 Git hub 被入侵這件事，目前在國外開發圈傳的沸沸揚揚。看來中文圈還沒有消息，我來報導一下到底發生了什麼事好了。順便宣導一下開發 Rails 程式碼需要注意的其中一個觀念.. 到底發生了什麼事 Rails 的 master 被某個 hacker 塞上這一段 commit。以證明 Github 是可以被入侵的。" />
+  <meta name="generator" content="" />
+  <title>從 Github 被 Hack，談 Rails 的安全性（Mass-assignment） - OpenFoundry</title>
+  <link href="favicon.ico" rel="shortcut icon" type="image/x-icon" />
+  <link rel="stylesheet" href="components/com_jcomments/tpl/default/style.css%3Fv=10.css" type="text/css" />
+  <link rel="stylesheet" href="components/com_gantry/css/gantry.css" type="text/css" />
+  <link rel="stylesheet" href="components/com_gantry/css/grid-12.css" type="text/css" />
+  <link rel="stylesheet" href="components/com_gantry/css/joomla.css" type="text/css" />
+  <link rel="stylesheet" href="templates/rt_quantive_j15/css/joomla.css" type="text/css" />
+  <link rel="stylesheet" href="templates/rt_quantive_j15/css/style1.css" type="text/css" />
+  <link rel="stylesheet" href="templates/rt_quantive_j15/css/light-body.css" type="text/css" />
+  <link rel="stylesheet" href="templates/rt_quantive_j15/css/demo-styles.css" type="text/css" />
+  <link rel="stylesheet" href="templates/rt_quantive_j15/css/template.css" type="text/css" />
+  <link rel="stylesheet" href="templates/rt_quantive_j15/css/typography.css" type="text/css" />
+  <link rel="stylesheet" href="templates/rt_quantive_j15/css/fusionmenu.css" type="text/css" />
+  <style type="text/css">
+    <!--
+#rt-main-surround ul.menu li.active > a, #rt-main-surround ul.menu li.active > .separator, #rt-main-surround ul.menu li.active > .item, #rt-main-surround .square4 ul.menu li:hover > a, #rt-main-surround .square4 ul.menu li:hover > .item, #rt-main-surround .square4 ul.menu li:hover > .separator, .roktabs-links ul li.active span {color:#0088B5;}
+a, #rt-main-surround ul.menu a:hover, #rt-main-surround ul.menu .separator:hover, #rt-main-surround ul.menu .item:hover {color:#0088B5;}
+    -->
+  </style>
+  <script type="text/javascript" src="components/com_jcomments/js/jcomments-v2.1.js%3Fv=2"></script>
+  <script type="text/javascript" src="components/com_jcomments/libraries/joomlatune/ajax.js"></script>
+  <script type="text/javascript" src="media/system/js/mootools.js"></script>
+  <script type="text/javascript" src="media/system/js/caption.js"></script>
+  <script type="text/javascript" src="components/com_gantry/js/gantry-buildspans.js"></script>
+  <script type="text/javascript" src="components/com_gantry/js/gantry-inputs.js"></script>
+  <script type="text/javascript" src="templates/rt_quantive_j15/js/jquery.cookie.js"></script>
+  <script type="text/javascript" src="modules/mod_roknavmenu/themes/fusion/js/fusion.js"></script>
+  <script type="text/javascript" src="modules/mod_ofssologin/js/ofssologin.js"></script>
+  <script type="text/javascript">
+
+			window.addEvent('domready', function() {
+				var modules = ['rt-block'];
+				var header = ['h3','h2','h1'];
+				GantryBuildSpans(modules, header);
+			});
+		InputsExclusion.push('.content_vote','#rt-popup')
+		        window.addEvent('load', function() {
+					new Fusion('ul.menutop', {
+						pill: 0,
+						effect: 'slide and fade',
+						opacity: 1,
+						hideDelay: 500,
+						centered: 0,
+						tweakInitial: {'x': -2, 'y': 0},
+        				tweakSubsequent: {'x': 0, 'y': -14},
+						menuFx: {duration: 200, transition: Fx.Transitions.Sine.easeOut},
+						pillFx: {duration: 400, transition: Fx.Transitions.Back.easeOut}
+					});
+	            });
+  </script>
+<!-- <script type="text/javascript" src="/sso/javascripts/langsync.js"></script> -->
+<!-- <script src="/templates/rt_quantive_j15/js/ossf.js"></script> -->
+<script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-4136519-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
+</head>
+	<body  class="backgroundlevel-low backgroundstyle-style8 bodylevel-med bodystyle-light cssstyle-style1 logostyle-dark font-family-helvetica font-size-is-default menu-type-fusionmenu col12 ">
+		<div id="rt-main-background">
+			<div class="rt-container">
+																<div id="rt-header">
+					<div class="rt-grid-7 rt-alpha">
+    			<div class="rt-block">
+    	    	<a href="index.html" id="rt-logo"></a>
+    		</div>
+	    
+</div>
+<div class="rt-grid-5 rt-omega">
+                    <div class="square9">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<div class="ofssologin_square9"><a href="index.html">登入</a>&nbsp;&nbsp|&nbsp;&nbsp;<span><a href="en/news/8650%3Ftask=view.html" ><span lang="en" xml:lang="en">English</span></a></li></ul></span><!--Joom!fish V2.0.4 (Lightning)-->
+<!-- &copy; 2003-2009 Think Network, released under the GPL. -->
+<!-- More information: at http://www.joomfish.net -->
+<div class="ofssologin_search_square9">
+  <form id="of_search" action="https://www.openfoundry.org/of/openfoundry/search" method="get" onsubmit="of_search(); return false;">
+    <select id="of_search_type">
+      <option value="Projects"> 專案 </option>
+      <option value="Content"> 文章 </option>
+      <option value="People"> 人才 </option>
+    </select>
+    <input id="query" name="query" id="mod_search_searchword" maxlength="50" alt="search" class="inputbox" type="text" size="28" value="search..."  onblur="if(this.value=='') this.value='search...';" onfocus="if(this.value=='search...') this.value='';" />
+    <input type="hidden" name="commit" value="search" />
+  </form>
+</div></div>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		
+</div>
+					<div class="clear"></div>
+				</div>
+																<div id="rt-navigation"><div id="rt-navigation2"><div id="rt-navigation3">
+					
+<div class="nopill">
+	<ul class="menutop level1 " >
+						<li class="item1 root" >
+					<a class="orphan item bullet" href="index.html"  >
+				<span>
+			    				首頁				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item32 root" >
+					<a class="orphan item bullet" href="archived.html"  >
+				<span>
+			    				專案				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item186 root" >
+					<a class="orphan item bullet" href="tw/community.html"  >
+				<span>
+			    				Who&#039;s Who				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item4 active root" >
+					<a class="orphan item bullet" href="tw/news.html"  >
+				<span>
+			    				新聞				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item5 root" >
+					<a class="orphan item bullet" href="tw/law-and-licensing.html"  >
+				<span>
+			    				法律源地				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item3 root" >
+					<a class="orphan item bullet" href="tw/activities.html"  >
+				<span>
+			    				活動				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item2 root" >
+					<a class="orphan item bullet" href="tw/resourcecatalog%3FName=Value.html"  >
+				<span>
+			    				資源表列				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item45 root" >
+					<a class="orphan item bullet" href="tw/about.html"  >
+				<span>
+			    				關於				   
+				</span>
+			</a>
+			
+			
+	</li>	
+				</ul>
+</div>
+
+				    <div class="clear"></div>
+				</div></div></div>
+								<div class="rt-surround"><div class="rt-surround2"><div class="rt-surround3">
+										<div id="rt-showcase-section">
+												<div id="rt-showcase">
+							<div class="rt-grid-12 rt-alpha rt-omega">
+    		<div class="clear"></div>
+		
+		
+                <div class="close-note">
+                    <div class="rt-block">
+               					<div class="module-content">
+                	<div style="font-size:medium; background-image:linear-gradient(120deg,#159957,#4298b2);color:white;padding:20px;margin:-10px -18px;">感謝您對「自由軟體鑄造場」的支持與愛護，十多年來「自由軟體鑄造場」受中央研究院支持，並在資訊科學研究所以及資訊科技創新研究中心執行，現已完成階段性的任務。 本網站預計持續維運至 2021年底，網站內容基本上不會再更動。<br />也紀念我們永遠的朋友 李士傑先生（Shih-Chieh Ilya Li）。</div>				</div>
+            </div>
+                </div>
+		
+</div>
+							<div class="clear"></div>
+						</div>
+																	</div>
+															<div id="rt-main-surround">
+												<div id="rt-breadcrumbs">
+								<div class="rt-breadcrumb-surround">
+		<a href="index.html" id="breadcrumbs-home"></a>
+		<span class="breadcrumbs pathway">
+<span class="no-link">新聞</span></span>
+	</div>
+	
+							<div class="clear"></div>
+						</div>
+																							              <div id="rt-main" class="sa3-mb9">
+                <div class="rt-main-inner">
+                    <div class="rt-grid-9 rt-push-3">
+                                                <div class="rt-block">
+                            							<div class="square1">
+							<div class="rt-module-surround">
+								<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+								<div class="rt-module-inner">
+		                            <div id="rt-mainbody">
+		                                
+<div class="rt-joomla ">
+	<div class="rt-article">
+		
+				<div class="rt-headline"><h1 class="rt-article-title">從 Github 被 Hack，談 Rails 的安全性（Mass-assignment）</h1>		</div>
+		<div class="clear"></div>
+		
+		
+		
+				<div class="rt-articleinfo">
+						<div class="rt-article-icons">
+								<a href="tw/news/8650--github-hack-rails-%3Ftmpl=component&amp;print=1&amp;page=.html" title="列印" onclick="window.open(this.href,'win2','status=no,toolbar=no,scrollbars=yes,titlebar=no,menubar=no,resizable=yes,width=640,height=480,directories=no,location=no'); return false;" rel="nofollow"><span class="icon print"></span></a>																</div>
+			
+			<span class="rt-date-posted">
+						建立日期			2012-03-23 13:13						&nbsp;&nbsp;&nbsp;&nbsp;						最近更新在 2012-03-23 15:44						</span>
+
+						<span class="rt-author">
+				作者是 XDite			</span>
+				
+					</div>
+		
+		
+		<p>◎ 本文轉載自 <a href="https://blog.xdite.net/posts/2012/03/05/github-hacked-rails-security/" target="_blank">Blog.XDite.net</a>。</p>
+<p>關於 Github 被入侵這件事，目前在國外開發圈傳的沸沸揚揚。看來中文圈還沒有消息，我來報導一下到底發生了什麼事好了。順便宣導一下開發 Rails 程式碼需要注意的其中一個觀念..</p>
+<h2>到底發生了什麼事</h2>
+<p><a href="https://github.com/rails/rails" target="_blank">Rails</a> 的 master 被某個 hacker 塞上這一段 <a href="https://github.com/rails/rails/commit/b83965785db1eec019edf1fc272b1aa393e6dc57" target="_blank">commit</a>。以證明 Github 是可以被入侵的。</p>
+
+<h2>為什麼會發生這件事（糾紛起源）</h2>
+<p>有一個俄羅斯 Hacker : <a href="https://blog.xdite.net/posts/2012/03/05/github-hacked-rails-security/homakov" target="_blank">homakov</a> 到 Rails 的 Github issue 頁，report 了一個 <a href="https://github.com/rails/rails/issues/5228" target="_blank">issue</a>。聲稱他發現很多「中等程度以下的」Rails 開發者開發任何網站，都沒有在 model 內作上任何 <a href="https://api.rubyonrails.org/classes/ActiveModel/MassAssignmentSecurity/ClassMethods.html#method-i-attr_accessible" target="_blank">attr_accessible</a> 的防護，這樣會引起很多安全性的問題。</p>
+<p>Rails 官方應該設計一個機制強迫大家一定得「使用」attr_accessible。因為寫 code 要塞 attr_accessible 被多數開發者認為是根本是一個「常識」。所以這個 issue 很快就被 Rails core team 關掉了。他的意見是，這不是 Rails 的問題，而是開發者的問題，正常人都會做出這樣的反應。</p>
+<p>這個 Hacker 覺得他好心來報告，但是卻被忽視，感到很生氣。於是！他 Hack 了 Github 證明這件事情是真的。他不僅利用這個漏洞在 rails/rails 中塞了 commit ，連當初被關掉的 issue ，也用同樣方法打開了。所以這下就鬧到舉世震驚了！</p>
+<h2>為什麼會發生這件事（剖析 Rails）</h2>
+<h4>從 Rails 表單機制談起</h4>
+<p>Rails 秉持著 Don’t Repeat Yourself 的精神，將 Form 表單 Helper 直接與 Model 欄位直接結合，節省不少開發者撰寫表單的時間，是一個很聰明的作法。</p>
+<pre>＜%= form_for @post do |f| %＞
+  ＜%= f.text_field :title %＞
+  ＜%= f.text_area :content %＞
+  ＜%= f.sumbit "Submit" %＞
+＜% end %＞
+</pre>
+<p>當表單送出後，會被壓縮成一個 params[:post] 這樣的 Hash。controller 裡面透過 massive-assignment 的技巧直接 mapping 進 Model 裡。</p>
+<pre>class PostController < ApplicationController
+  def create
+     @post = current_user.posts.build(params[:post])
+     if @post.save
+       # do something
+     else
+       # do another thing
+     end
+  end
+end
+</pre>
+<p>這是一個自 Rails 誕生以來就有的機制了，十分便手。有些不了解的 Rails 的其他 Developer 批評這是一個不安全設計，並因此拒絕使用 Rails。欄位暴露在外被人知道，讓他們感到非常不自在。</p>
+<p>萬一被人猜到 user 權限是用 user.is_admin 作為 boolean 值，這樣豈不是很危險嗎？在修改個人資訊頁時，假造 DOM 就不是可以把自己提升為 admin 了嗎？</p>
+<h4>Rails 內建的安全防禦措施</h4>
+<p>Rails 也不是沒有針對這件事設計出防禦措施，有兩組 model API ：attr_accessible 與 <a href="https://api.rubyonrails.org/classes/ActiveModel/MassAssignmentSecurity/ClassMethods.html#method-i-attr_protected" target="_blank">attr_protected</a>。其實也就是 白名單、黑名單設計。把 attr_accessible 加在 model 裡，可以擋掉所有 massive assignement 傳進來的值，只開放你想讓使用填寫的欄位。</p>
+<pre>class Post < ActiveRecord::Base
+  attr_accessible :title, :content
+end
+</pre>
+<p>而 attr_protected 是完全相反地機制。</p>
+<h4>知名認證 Plugin 皆內建 attr_accessible</h4>
+<p>也因為 user.is_admin 幾乎是所有懶惰開發者會寫出來的 code。因此長久的歷史演變下來，許多知名認證 plugin，如 <a href="https://github.com/plataformatec/devise" target="_blank">devise</a>，restful-authentication 等等，在 User model 裡都會加上 attr_accessible（你可能沒有察覺到，因為可能是透過 include Module 塞進來的功能）。</p>
+<p>因為是隱藏的內建防禦，很多不夠經驗的開發者，反而會被這道自動防禦整到，在設計修改使用者資訊這個功能時，常常表單明明沒問題，但就是修改不了除了密碼和 email 以外的欄位。</p>
+<h4>User model 自動防禦，那其他 model 呢？</h4>
+<p>好問題！這就是這次 Github 發生的問題。嚴格來說，根本不是 rails/rails 的錯，而是 Github 內某個被罵 mid/junior level 的 developer 的錯。他根本沒有對其他 model 作上保護，才被 hacker 有機可趁。</p>
+<p>Hacker 也是想要證明連 Github 都會犯這種錯，才會鬧出這種事件。</p>
+<h4>看到 Github 的事件，我該做什麼？</h4>
+<p>請回家讀這兩組 model API ：attr_accessible 與 attr_protected 的作用。</p>
+<p>並檢查你的 project 內是否有類似問題：一般來說，容易被攻擊的點都跟 relation 比較有關係。也就是 xxxxx_id 的部分都要清查。</p>
+<h4>Scoped Mass Assignment</h4>
+<p>這是 Rails 3.1 加入的新 feature : scoped mass assignment，<a href="https://enlightsolutions.com/articles/whats-new-in-edge-scoped-mass-assignment-in-rails-3-1" target="_blank">https://enlightsolutions.com/articles/whats-new-in-edge-scoped-mass-assignment-in-rails-3-1</a>。也建議您閱讀。</p>
+<h4>Rails core team 目前的解法</h4>
+<p>大師 Yahuda Katz (wycats) 目前起草了一份新的 <a href="https://gist.github.com/1974187" target="_blank"> proposal</a>，並且丟在 <a href="https://news.ycombinator.com/item?id=3664334" target="_blank">Hacker News</a> 讓鄉民討論。應該可能近期就會進 Rails core 或以 plugin 的方式釋出。</p>
+<h4>我個人的感想</h4>
+<p>其實昨晚睡前看到一堆人說 Github 被 Hacked 掉，然後追了幾篇討論串之後，覺得真的是沒什麼，因為就我來說，的確應該就是這個 hacker 覺得有必要提醒大家，但這對多數的 Rails Developer 來說，根本是超小的小事，不值得這麼大驚小怪。</p>
+<p>結果憤怒的 Hacker 攻擊了 Github，Github 真的還因為某個 developer 犯了錯誤中招。但我還是覺得沒什麼…</p>
+<h4>XSS V.S. Massive Assignment</h4>
+<p>後來睡醒以後才發現不對，其實這東西應該要被拿來跟 auto escape 相比：XSS 是一般設計 Web Application 最容易中招的攻擊。</p>
+<p>XSS 的原因肇因是讓開發者開放讓使用者自行輸入內容，然後無保護的讀出來，Hacker 會利用這種漏洞，寫進有害的 JavaScript 讓使用者中招。正確的方式應該是：內容讀出來之後，都要利用 html_escape 濾掉。</p>
+<p>問題是，html_escape 濾不勝濾，沒有開發者能夠那麼神，寫任何一段 code 都會自律的加上 h(content)。最後 Rails core 痛定思痛，在 Rails 3.0 後效法 Django 的設計，在讀出 content 時，一律先 escape。除非有必要，才另行設定不需 escape。</p>
+<p>我想這次的 massive assignment 問題應該也要比照辦理才對…</p>
+<h2>延伸閱讀</h2>
+<ul>
+<li>國外鄉民懶人包：GitHub and Rails: You have let us all down<br /><a href="https://chrisacky.posterous.com/github-you-have-let-us-all-down" target="_blank">https://chrisacky.posterous.com/github-you-have-let-us-all-down</a></li>
+<li>DHH 給出的 37Signals 的作法<br /><a href="https://gist.github.com/1975644" target="_blank">https://gist.github.com/1975644</a></li>
+</ul>
+			<!-- Show relate article -->
+				<!-- end -->
+		<div class="article_note">
+		<!-- Add tags use metakey, and show OSSF Newsletter tag: OSSFNL+NUM-->
+		<br><br> <hr style='border: 1px dashed #D2DADB;'><b>自由軟體鑄造場電子報&nbsp;:</b>&nbsp;<a href='previous-issue%3Ftask=view&amp;id=783.html'>第 192 期 開放源碼的安全演算法工具︰OpenSSL（3）- RSA 非對稱式加解密演算法</a><br><b>標籤:</b>&nbsp;<a href='index.php%3Foption=com_search&amp;Itemid=58&amp;searchphrase=exact_meta&amp;ordering=newest&amp;searchword=github.html'>github</a>,&nbsp;&nbsp;<a href='index.php%3Foption=com_search&amp;Itemid=58&amp;searchphrase=exact_meta&amp;ordering=newest&amp;searchword=&#32;hack.html'> hack</a>,&nbsp;&nbsp;<a href='index.php%3Foption=com_search&amp;Itemid=58&amp;searchphrase=exact_meta&amp;ordering=newest&amp;searchword=&#32;mass-assignment.html'> mass-assignment</a>,&nbsp;&nbsp;				<!-- End -->
+					<br>
+					<b>分類: </b><a href="tw/tech-column.html">				技術專欄					</a>				</div>
+			 <!-- AddThis Button BEGIN ID 3001 is the front page article -->
+     			<br><br>
+       <div class="addthis_toolbox addthis_default_style addthis_32x32_style">
+       <a class="addthis_button_preferred_1"></a>
+       <a class="addthis_button_preferred_2"></a>
+       <a class="addthis_button_preferred_3"></a>
+       <a class="addthis_button_preferred_4"></a>
+       <a class="addthis_button_compact"></a>
+       <a class="addthis_counter addthis_bubble_style"></a>
+       </div>
+       <script type="text/javascript">var addthis_config = {"data_track_clickback":true};</script>
+       <script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js#pubid=openfoundry"></script>
+       <!-- AddThis Button END -->
+     <br>
+		<div class="totop" ><a class="rt-totop" href="index.php%3Foption=com_content&amp;task=view&amp;id=8650&amp;Itemid=4%3Bisletter=1.html#" style="outline: medium none;">↑ Top</a></div>
+            <!-- AddThis Button END -->
+
+		<script type="text/javascript">
+var jcomments=new JComments(8650, 'com_content','https://openfoundry.org/index.php?option=com_jcomments&amp;tmpl=component&amp;lang=');
+jcomments.setList('comments-list');
+</script>
+<div id="jc">
+<div id="comments"><h4>評論<a class="refresh" href="index.php%3Foption=com_content&amp;task=view&amp;id=8650&amp;Itemid=4%3Bisletter=1.html#" title="重新整理評論列表" onclick="jcomments.showPage(8650,'com_content',0);return false;">&nbsp;</a></h4>
+<div id="comments-list" class="comments-list">
+        <div class="even" id="comment-item-273"><div class="rbox"><div class="rbox_tr"><div class="rbox_tl"><div class="rbox_t">&nbsp;</div></div></div><div class="rbox_m">
+<div class="comment-avatar"><img src="http://www.gravatar.com/avatar.php?gravatar_id=38423b274d73297b4be407afeb18a436&amp;default=https%3A%2F%2Fwww.openfoundry.org%2Fcomponents%2Fcom_jcomments%2Fimages%2Fno_avatar.png" alt="" /></div>
+<div class="comment-box avatar-indent">
+<span class="comments-vote">
+	<span id="comment-vote-holder-273">
+<a href="index.php%3Foption=com_content&amp;task=view&amp;id=8650&amp;Itemid=4%3Bisletter=1.html#" class="vote-good" title="優質的評論" onclick="jcomments.voteComment(273, 1);return false;"></a><a href="index.php%3Foption=com_content&amp;task=view&amp;id=8650&amp;Itemid=4%3Bisletter=1.html#" class="vote-poor" title="差勁的評論" onclick="jcomments.voteComment(273, -1);return false;"></a>
+<span class="vote-none">0</span>
+	</span>
+</span>
+<a class="comment-anchor" href="tw/tech-column/8650--github-hack-rails-.html#comment-273" id="comment-273">#1</a>
+<span class="comment-author">JiMing</span>
+<span class="comment-date">2012-03-28 10:38</span>
+<div class="comment-body" id="comment-body-273">Hacker和Cracker是<span style="font-size:0px;padding:0;margin:0;"> </span>不同的，<br /><br /><br />XSS 的原因肇因是讓開發者開放讓使用<span style="font-size:0px;padding:0;margin:0;"> </span>者自行輸入內容，然後無保護的讀<span style="font-size:0px;padding:0;margin:0;"> </span>出來，Hacker 會利用這種漏洞，寫進有害的 JavaScript 讓使用者中招。<br /><br />這一段應該是講Cracker而<span style="font-size:0px;padding:0;margin:0;"> </span>不是Hacker。</div>
+</div><div class="clear"></div>
+</div><div class="rbox_br"><div class="rbox_bl"><div class="rbox_b">&nbsp;</div></div></div></div>
+</div>
+</div>
+<div id="comments-list-footer"><a class="refresh" href="index.php%3Foption=com_content&amp;task=view&amp;id=8650&amp;Itemid=4%3Bisletter=1.html#" title="重新整理評論列表" onclick="jcomments.showPage(8650,'com_content',0);return false;">重新整理評論列表</a></div>
+</div>
+<div id="comments-footer" align="center"><a href="http://www.joomlatune.com" title="JComments" target="_blank">JComments</a></div>
+<script type="text/javascript">
+jcomments.setAntiCache(1,0,0);
+</script> 
+</div>	</div>
+</div>
+
+		                            </div>
+									<div class="clear"></div>
+								</div>
+								<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+							</div>
+							</div>
+                                                    </div>
+                                            </div>
+                                <div class="rt-grid-3 rt-pull-9">
+                <div id="rt-sidebar-a">
+                                    <div class="square4">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<ul class="menu"><li class="item56"><a href="tw/previous-issue.html"><span>電子報總覽</span></a></li><li class="item55"><a href="tw/about-newsletter.html"><span>關於本報</span></a></li></ul>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<ul class="menu"><li class="item115"><a href="tw/foss-news.html"><span>源碼新聞</span></a></li><li class="item141"><a href="tw/case-job.html"><span>接案 / 工作</span></a></li></ul>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+        	                <div class="square1">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-title"><h2 class="title">專欄總覽</h2></div>
+						<div class="clear"></div>
+		                						<div class="module-content">
+		                	<ul class="menu"><li class="item37"><a href="tw/tech-column.html"><span>技術專欄</span></a></li><li class="item40"><a href="tw/foss-programs.html"><span>源碼秘技</span></a></li><li class="item35"><a href="tw/legal-article-.html"><span>法律專欄</span></a></li><li class="item154"><a href="tw/foss-forum.html"><span>自由專欄</span></a></li><li class="item162"><a href="tw/enterprise-application.html"><span>企業應用</span></a></li><li class="item44"><a href="tw/foss-projects.html"><span>源碼專案</span></a></li></ul>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		                <div class="square1">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<p style="text-align: center;"><a href="news%3Fformat=feed&amp;type=rss" target="_black"><img src="images/M_images/news-rss-feed.png" border="0" /></a><br /><a href="https://www.openfoundry.org/rss-feed/Newsletter" target="_black"><img src="images/M_images/newsletter-rss-feed.png" border="0" /></a></p>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		
+                </div>
+            </div>
+
+                    <div class="clear"></div>
+                </div>
+            </div>
+																													</div>
+										<div id="rt-copyright">
+						<div class="rt-grid-12 rt-alpha rt-omega">
+                        <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<div id="desktop-mobile-version-switch"><span id="mobile-version" class="version-switch"><a href="index.php%3Foption=com_content&amp;task=view&amp;id=8650&amp;Itemid=4%3Bisletter=1.html#">行動版</a></span></div>
+自由軟體鑄造場 製作 最佳瀏覽狀態：IE7或Firefox2.0以上 (建議使用Firefox) ‧ 解析度1024*768 <br /> <strong>E-Mail</strong>：<a href="mailto:contact@openfoundry.org">contact@openfoundry.org</a> <strong>Address</strong>：台北市南港區研究院路2段128號 中央研究院資訊科學研究所 . <a href="privacy-policy.html">隱私權條款</a>. <a href="terms-of-use.html">使用條款</a><span style="position: relative; top: 8px; margin-top: -8px;"> <a href="about/8101.html"><img src="images/M_images/rss-feed-all.png" border="0" /></a></span>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+        	
+</div>
+						<div class="clear"></div>
+					</div>
+					<div class="rt-footer-bottom-wrap"><div class="rt-footer-bottom"><div class="rt-footer-bottom2"><div class="rt-footer-bottom3"></div></div></div></div>
+									</div></div></div>
+				<div class="rt-surround-bottom"><div class="rt-surround-bottom2"><div class="rt-surround-bottom3"></div></div></div>
+							</div>
+		</div>
+		<!--
+		<script id="aptureScript">
+						(function (){var a=document.createElement("script");a.defer="true";a.src="http://www.apture.com/js/apture.js?siteToken=vsJttrn";document.getElementsByTagName("head")[0].appendChild(a);})();
+     </script>
+-->
+
+<!-- Piwik -->
+<!-- 			<script type="text/javascript">
+			  var _paq = _paq || [];
+		  _paq.push(["trackPageView"]);
+		  _paq.push(["enableLinkTracking"]);
+
+		    (function() {
+			        var u=(("https:" == document.location.protocol) ? "https" : "https") + "://www.openfoundry.org/piwik/";
+				    _paq.push(["setTrackerUrl", u+"piwik.php"]);
+				    _paq.push(["setSiteId", "1"]);
+				        var d=document, g=d.createElement("script"), s=d.getElementsByTagName("script")[0]; g.type="text/javascript";
+				        g.defer=true; g.async=true; g.src=u+"piwik.js"; s.parentNode.insertBefore(g,s);
+					  })();
+		  </script> -->
+<!-- End Piwik Code -->
+	</body>
+</html>

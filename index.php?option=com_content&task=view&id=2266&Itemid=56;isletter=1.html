@@ -1,0 +1,414 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="zh-tw" lang="zh-tw" >
+<head>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<link rel="shortcut icon" href="images/favicon.ico" />
+	  <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+  <meta name="robots" content="index, follow" />
+  <meta name="keywords" content="OSSFNL579" />
+  <meta name="title" content="可疑的中國互聯網絡信息中心 SSL 憑證" />
+  <meta name="description" content="◎ 緣由 從去年年底開始，中國互聯網絡信息中心（文後簡稱 CNNIC）為了推動其網址衛士服務，陸續將其根憑證申請納入眾多瀏覽器的 SSL 憑證。目前在 Firefox 3.6 ( #476766 ) 與 Windows IE8 (Windows Root Certificate Program) 瀏覽器系統都已經成為預設憑證。 這件事情，很快的引起華人網路使用社群的騷動。主要原因是 CNNIC" />
+  <meta name="generator" content="" />
+  <title>可疑的中國互聯網絡信息中心 SSL 憑證 - OpenFoundry</title>
+  <link href="favicon.ico" rel="shortcut icon" type="image/x-icon" />
+  <link rel="stylesheet" href="components/com_gantry/css/gantry.css" type="text/css" />
+  <link rel="stylesheet" href="components/com_gantry/css/grid-12.css" type="text/css" />
+  <link rel="stylesheet" href="components/com_gantry/css/joomla.css" type="text/css" />
+  <link rel="stylesheet" href="templates/rt_quantive_j15/css/joomla.css" type="text/css" />
+  <link rel="stylesheet" href="templates/rt_quantive_j15/css/style1.css" type="text/css" />
+  <link rel="stylesheet" href="templates/rt_quantive_j15/css/light-body.css" type="text/css" />
+  <link rel="stylesheet" href="templates/rt_quantive_j15/css/demo-styles.css" type="text/css" />
+  <link rel="stylesheet" href="templates/rt_quantive_j15/css/template.css" type="text/css" />
+  <link rel="stylesheet" href="templates/rt_quantive_j15/css/typography.css" type="text/css" />
+  <link rel="stylesheet" href="templates/rt_quantive_j15/css/fusionmenu.css" type="text/css" />
+  <style type="text/css">
+    <!--
+#rt-main-surround ul.menu li.active > a, #rt-main-surround ul.menu li.active > .separator, #rt-main-surround ul.menu li.active > .item, #rt-main-surround .square4 ul.menu li:hover > a, #rt-main-surround .square4 ul.menu li:hover > .item, #rt-main-surround .square4 ul.menu li:hover > .separator, .roktabs-links ul li.active span {color:#0088B5;}
+a, #rt-main-surround ul.menu a:hover, #rt-main-surround ul.menu .separator:hover, #rt-main-surround ul.menu .item:hover {color:#0088B5;}
+    -->
+  </style>
+  <script type="text/javascript" src="components/com_jcomments/js/jcomments-v2.1.js%3Fv=2"></script>
+  <script type="text/javascript" src="components/com_jcomments/libraries/joomlatune/ajax.js"></script>
+  <script type="text/javascript" src="media/system/js/mootools.js"></script>
+  <script type="text/javascript" src="media/system/js/caption.js"></script>
+  <script type="text/javascript" src="components/com_gantry/js/gantry-buildspans.js"></script>
+  <script type="text/javascript" src="components/com_gantry/js/gantry-inputs.js"></script>
+  <script type="text/javascript" src="templates/rt_quantive_j15/js/jquery.cookie.js"></script>
+  <script type="text/javascript" src="modules/mod_roknavmenu/themes/fusion/js/fusion.js"></script>
+  <script type="text/javascript" src="modules/mod_ofssologin/js/ofssologin.js"></script>
+  <script type="text/javascript">
+
+			window.addEvent('domready', function() {
+				var modules = ['rt-block'];
+				var header = ['h3','h2','h1'];
+				GantryBuildSpans(modules, header);
+			});
+		InputsExclusion.push('.content_vote','#rt-popup')
+		        window.addEvent('load', function() {
+					new Fusion('ul.menutop', {
+						pill: 0,
+						effect: 'slide and fade',
+						opacity: 1,
+						hideDelay: 500,
+						centered: 0,
+						tweakInitial: {'x': -2, 'y': 0},
+        				tweakSubsequent: {'x': 0, 'y': -14},
+						menuFx: {duration: 200, transition: Fx.Transitions.Sine.easeOut},
+						pillFx: {duration: 400, transition: Fx.Transitions.Back.easeOut}
+					});
+	            });
+  </script>
+<!-- <script type="text/javascript" src="/sso/javascripts/langsync.js"></script> -->
+<!-- <script src="/templates/rt_quantive_j15/js/ossf.js"></script> -->
+<script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-4136519-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
+</head>
+	<body  class="backgroundlevel-low backgroundstyle-style8 bodylevel-med bodystyle-light cssstyle-style1 logostyle-dark font-family-helvetica font-size-is-default menu-type-fusionmenu col12 ">
+		<div id="rt-main-background">
+			<div class="rt-container">
+																<div id="rt-header">
+					<div class="rt-grid-7 rt-alpha">
+    			<div class="rt-block">
+    	    	<a href="index.html" id="rt-logo"></a>
+    		</div>
+	    
+</div>
+<div class="rt-grid-5 rt-omega">
+                    <div class="square9">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<div class="ofssologin_square9"><a href="index.html">登入</a>&nbsp;&nbsp|&nbsp;&nbsp;<span><a href="en/component/content/2266%3Ftask=view.html" ><span lang="en" xml:lang="en">English</span></a></li></ul></span><!--Joom!fish V2.0.4 (Lightning)-->
+<!-- &copy; 2003-2009 Think Network, released under the GPL. -->
+<!-- More information: at http://www.joomfish.net -->
+<div class="ofssologin_search_square9">
+  <form id="of_search" action="https://www.openfoundry.org/of/openfoundry/search" method="get" onsubmit="of_search(); return false;">
+    <select id="of_search_type">
+      <option value="Projects"> 專案 </option>
+      <option value="Content"> 文章 </option>
+      <option value="People"> 人才 </option>
+    </select>
+    <input id="query" name="query" id="mod_search_searchword" maxlength="50" alt="search" class="inputbox" type="text" size="28" value="search..."  onblur="if(this.value=='') this.value='search...';" onfocus="if(this.value=='search...') this.value='';" />
+    <input type="hidden" name="commit" value="search" />
+  </form>
+</div></div>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		
+</div>
+					<div class="clear"></div>
+				</div>
+																<div id="rt-navigation"><div id="rt-navigation2"><div id="rt-navigation3">
+					
+<div class="nopill">
+	<ul class="menutop level1 " >
+						<li class="item1 root" >
+					<a class="orphan item bullet" href="index.html"  >
+				<span>
+			    				首頁				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item32 root" >
+					<a class="orphan item bullet" href="archived.html"  >
+				<span>
+			    				專案				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item186 root" >
+					<a class="orphan item bullet" href="tw/community.html"  >
+				<span>
+			    				Who&#039;s Who				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item4 root" >
+					<a class="orphan item bullet" href="tw/news.html"  >
+				<span>
+			    				新聞				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item5 root" >
+					<a class="orphan item bullet" href="tw/law-and-licensing.html"  >
+				<span>
+			    				法律源地				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item3 root" >
+					<a class="orphan item bullet" href="tw/activities.html"  >
+				<span>
+			    				活動				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item2 root" >
+					<a class="orphan item bullet" href="tw/resourcecatalog%3FName=Value.html"  >
+				<span>
+			    				資源表列				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item45 root" >
+					<a class="orphan item bullet" href="tw/about.html"  >
+				<span>
+			    				關於				   
+				</span>
+			</a>
+			
+			
+	</li>	
+				</ul>
+</div>
+
+				    <div class="clear"></div>
+				</div></div></div>
+								<div class="rt-surround"><div class="rt-surround2"><div class="rt-surround3">
+										<div id="rt-showcase-section">
+												<div id="rt-showcase">
+							<div class="rt-grid-12 rt-alpha rt-omega">
+    		<div class="clear"></div>
+		
+		
+                <div class="close-note">
+                    <div class="rt-block">
+               					<div class="module-content">
+                	<div style="font-size:medium; background-image:linear-gradient(120deg,#159957,#4298b2);color:white;padding:20px;margin:-10px -18px;">感謝您對「自由軟體鑄造場」的支持與愛護，十多年來「自由軟體鑄造場」受中央研究院支持，並在資訊科學研究所以及資訊科技創新研究中心執行，現已完成階段性的任務。 本網站預計持續維運至 2021年底，網站內容基本上不會再更動。<br />也紀念我們永遠的朋友 李士傑先生（Shih-Chieh Ilya Li）。</div>				</div>
+            </div>
+                </div>
+		
+</div>
+							<div class="clear"></div>
+						</div>
+																	</div>
+															<div id="rt-main-surround">
+												<div id="rt-breadcrumbs">
+								<div class="rt-breadcrumb-surround">
+		<a href="index.html" id="breadcrumbs-home"></a>
+		<span class="breadcrumbs pathway">
+<span class="no-link">電子報總覽</span></span>
+	</div>
+	
+							<div class="clear"></div>
+						</div>
+																							              <div id="rt-main" class="sa3-mb9">
+                <div class="rt-main-inner">
+                    <div class="rt-grid-9 rt-push-3">
+                                                <div class="rt-block">
+                            							<div class="square1">
+							<div class="rt-module-surround">
+								<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+								<div class="rt-module-inner">
+		                            <div id="rt-mainbody">
+		                                
+<div class="rt-joomla ">
+	<div class="rt-article">
+		
+				<div class="rt-headline"><h1 class="rt-article-title">可疑的中國互聯網絡信息中心 SSL 憑證</h1>		</div>
+		<div class="clear"></div>
+		
+		
+		
+				<div class="rt-articleinfo">
+						<div class="rt-article-icons">
+								<a href="https://www.openfoundry.org/tw/component/content/2266--ssl-?tmpl=component&amp;print=1&amp;page=" title="列印" onclick="window.open(this.href,'win2','status=no,toolbar=no,scrollbars=yes,titlebar=no,menubar=no,resizable=yes,width=640,height=480,directories=no,location=no'); return false;" rel="nofollow"><span class="icon print"></span></a>																</div>
+			
+			<span class="rt-date-posted">
+						建立日期			2010-03-05 08:00						&nbsp;&nbsp;&nbsp;&nbsp;						最近更新在 2011-01-12 00:41						</span>
+
+						<span class="rt-author">
+				作者是 Rex			</span>
+				
+					</div>
+		
+		
+		<p><strong>◎ 緣由</strong></p>
+<p>從去年年底開始，中國互聯網絡信息中心（文後簡稱 <a href="https://www.cnnic.net.cn/" target="_blank">CNNIC</a>）為了推動其<a href="https://www.cnnic.net.cn/index/0T/index.htm" target="_blank">網址衛士</a>服務，陸續將其根憑證申請納入眾多瀏覽器的 SSL 憑證。目前在 Firefox 3.6 ( <a href="https://bugzilla.mozilla.org/show_bug.cgi?id=476766#c14" target="_blank">#476766</a> ) 與 Windows IE8 (<a href="https://docs.google.com/viewer?url=https://download.microsoft.com/download/1/4/f/14f7067b-69d3-473a-ba5e-70d04aea5929/windows%2520root%2520certificate%2520program%2520members%2520november%25202009.pdf" target="_blank">Windows Root Certificate Program</a>) 瀏覽器系統都已經成為預設憑證。</p>
+<p>這件事情，很快的引起華人網路使用社群的騷動。主要原因是 CNNIC 過去的歷史，使其公眾觀感不佳，且 CA 根憑證對於網路安全影響事關重大。</p>
+<p>一般網路銀行、網路商店等金流服務，多利用 SSL 來提供安全保護，一是對網路流動資訊加密，二是利用 CA 所發布的憑證來提供基本的網站驗證。而所謂根憑證，就是 CA 用以發放次級憑證給網站，可用來辨識特定網域是否為合法組織。但前提是 CA 維持善良管理人義務，嚴格管理所核發的憑證、簽章。</p>
+<p><strong>◎ 爭議</strong></p>
+<p>而 CNNIC 過去最大的爭議之一，是曾發布<a href="https://zh.wikipedia.org/wiki/%E4%B8%AD%E6%96%87%E4%B8%8A%E7%B6%B2%E5%AE%98%E6%96%B9%E7%89%88%E8%BB%9F%E9%AB%94" target="_blank">中文上網官方版軟體</a>。這個軟體主要功能是網址查詢軟體，但核心卻用 rootkit 技術使人<a href="https://changyang319.pixnet.net/blog/post/4720671" target="_blank">無法刪除</a>，與木馬／病毒程式一般，可算是<a href="https://zh.wikipedia.org/zh-tw/%E6%B5%81%E6%B0%93%E8%BB%9F%E4%BB%B6" target="_blank">流氓軟體</a>。在微軟網站上，有詳細的<a href="https://www.microsoft.com/security/portal/Threat/Encyclopedia/Entry.aspx?Name=BrowserModifier%3aWin32%2fCNNIC" target="_blank">技術分析</a>說明相關問題。</p>
+<p>雖說這只是一項前科，不代表 CNNIC 也會濫用成CA 身份來作惡。但中國政府持續拿著民族主義、國家安全為藉口，於中國境內實施數種網路管制，甚至滲透國外企業、政府網路。而 CNNIC 背後支持的政府組織是<a href="https://www.miit.gov.cn/" target="_blank">中華人民共和國工業和信息化部</a>、<a href="https://www.cas.cn/" target="_blank">中國科學院</a>等中國政府組織，很難說，哪一天 CNNIC 不會被控制作為攻擊工具之一。</p>
+<p>從技術上的風險來看，若系統有此憑證，使用者將被剝奪警覺的能力。當攻擊事件發生時，唯一可以主動提示你的 SSL 機制也可能失效。在中國網路長城的「內部網路」，網址被攔截、更換是很平常的事件，即使你在網外，也可能在<a href="https://blog.net-hack.com/2009/03/www.html" target="_blank">網站轉址攻擊事件</a>或<a href="https://armorize-cht.blogspot.com/2009/03/blog-post.html" target="_blank">大規模網頁綁架轉址</a>發生時，變成受害者。例如許多網頁常使用外掛的流量追蹤系統，若這些服務被中間人攻擊 ( <a href="https://en.wikipedia.org/wiki/Man-in-the-middle_attack" target="_blank">MITM</a> ) 所置換，使用者可能毫無警覺的被竊取資料。</p>
+<p>除了 CNNIC 自行發布的 CA Cert Root 外，其實 CNNIC 也已經取得 <a href="https://www.entrust.net/" target="_blank">Entrust.net</a> 所發布的次級憑證。因此這個風險已經存在，無論你是否使用新版的瀏覽器。</p>
+<p>考量潛在風險與中國政府的威脅，為了確保資料安全，<strong>建議所有台灣政府單位與企業，一律移除 CNNIC 相關憑證</strong>。</p>
+<p>目前此事已經在 Mozilla Security Policy 論壇<a href="https://groups.google.com/group/mozilla.dev.security.policy/browse_thread/thread/17be3bd7e0b33e8c/d69aea4eb35c5ee3" target="_blank">公開討論</a>，如 AutoProxy 等網路自由倡議社群都提出<a href="https://autoproxy.org/zh-CN/node/66" target="_blank">CNNIC CA：最最最嚴重安全警告！</a>。若你覺得此事關係重大，可以投票方式附議 <a href="https://bugzilla.mozilla.org/show_bug.cgi?id=542689" target="_blank">Bug 542689</a>，提高該問題的被重視程度。</p>
+<p><strong>◎ 移除</strong></p>
+<p>要確認自己是否可能受害的驗證方法，是用瀏覽器開啟<a href="https://tns-fsverify.cnnic.cn/" target="_blank">網址衛士</a>（使用 Entrust.net）與 <a href="https://www.enum.cn/cn/" target="_blank">ENUM 試驗平台</a>（使用 CNNIC Root Cert）。若你的瀏覽器絲毫不予警告，你的系統即已安裝 CNNIC 憑證。</p>
+<p>依照目前的討論 ( <a href="https://bugzilla.mozilla.org/show_bug.cgi?id=542689" target="_blank">#542689</a>, <a href="https://bugzilla.mozilla.org/show_bug.cgi?id=476766" target="_blank">#476766</a> )，Mozilla 社群應採<a href="https://bugzilla.mozilla.org/show_bug.cgi?id=476766#c51" target="_blank">無罪推論原則</a>。也就是說雖 CNNIC 風評不佳，但在它實際作惡前，我們理因相信它無罪。目前已技術上的<a href="https://bugzilla.mozilla.org/show_bug.cgi?id=542689#c94" target="_blank">提議</a>，希望可以降低憑證管理的問題跟風險，但是這些功能恐怕需要點時間才會實踐。</p>
+<p>華人開放原碼社群已經針對這個問題為 Firefox 開發了兩個小附加元件。目的都是為了保護或警示使用者。你若是台灣使用者，不使用中國的網路服務，如 163.com 等，可以選擇移除或停用。否則，你也可以安裝輔助軟體，在下載可能危害系統的加密內容時，提供警示。</p>
+<p>警示 CNNIC 憑證：<a href="https://addons.mozilla.org/en-US/firefox/addon/83154" target="_blank">Cert Alert</a> <br />停用 CNNIC 憑證：<a href="https://addons.mozilla.org/en-US/firefox/addon/83152" target="_blank">CA Untrustworthy</a></p>
+<p>在香港開源社群 <a href="https://benlaux.blogspot.com/" target="_blank">Benlau</a>、<a href="https://littleblackrabit.mysinablog.com/" target="_blank">小兔黑黑</a>的<a href="https://www.plurk.com/p/3p4dfr" target="_blank">倡議與支持</a>下，筆者與他們開發了 <a href="https://addons.mozilla.org/zh-TW/firefox/addon/83154" target="_blank">Cert Alert</a>，這個元件的功能是「自動提醒」使用者，網頁中使用了特定 SSL Root CA 的內容。另外 <a href="https://addons.mozilla.org/zh-TW/firefox/addon/83152" target="_blank">CA Untrustworthy</a> 則由 <a href="https://blog.timc.idv.tw/" target="_blank">timdream</a> 所開發，功用是每次開啟 Firefox 時，自動移除或關閉高風險憑證。</p>
+<p>這兩套軟體都是開放原碼，原始碼都位於 Github。進一步詳情，請參考<a href="https://people.debian.org.tw/~chihchun/tag/cnnic/" target="_blank">筆者 blog 網站</a>。</p>
+<p><br /><strong>◎ 作者簡介</strong></p>
+<p>蔡志展 (Rex Tsai) 或網名 chihchun，現為自由工作者，從事開源軟體顧問或開發服務。倡議並推廣自由軟體與開放原碼，早期 KaLUG 成員，現常出席 Tossug, HackingThursday 聚會，亦是開源人年會(COSCUP) 籌備志工。長期 Debian、OpenWrt 使用者。關注議題甚廣，進一步資訊請參考<a href="https://people.debian.org.tw/~chihchun/" target="_blank">https://people.debian.org.tw/~chihchun/</a></p>
+			<!-- Show relate article -->
+				<!-- end -->
+		<div class="article_note">
+		<!-- Add tags use metakey, and show OSSF Newsletter tag: OSSFNL+NUM-->
+		<br><br> <hr style='border: 1px dashed #D2DADB;'><b>自由軟體鑄造場電子報&nbsp;:</b>&nbsp;<a href='previous-issue%3Ftask=view&amp;id=579.html'>第 145 期 可疑的中國互聯網絡信息中心 SSL 憑證</a><br>				<!-- End -->
+					<br>
+					<b>分類: </b><a href="tw/foss-forum.html">				自由專欄					</a>				</div>
+			 <!-- AddThis Button BEGIN ID 3001 is the front page article -->
+     			<br><br>
+       <div class="addthis_toolbox addthis_default_style addthis_32x32_style">
+       <a class="addthis_button_preferred_1"></a>
+       <a class="addthis_button_preferred_2"></a>
+       <a class="addthis_button_preferred_3"></a>
+       <a class="addthis_button_preferred_4"></a>
+       <a class="addthis_button_compact"></a>
+       <a class="addthis_counter addthis_bubble_style"></a>
+       </div>
+       <script type="text/javascript">var addthis_config = {"data_track_clickback":true};</script>
+       <script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js#pubid=openfoundry"></script>
+       <!-- AddThis Button END -->
+     <br>
+		<div class="totop" ><a class="rt-totop" href="index.php%3Foption=com_content&amp;task=view&amp;id=2266&amp;Itemid=56%3Bisletter=1.html#" style="outline: medium none;">↑ Top</a></div>
+            <!-- AddThis Button END -->
+
+			</div>
+</div>
+
+		                            </div>
+									<div class="clear"></div>
+								</div>
+								<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+							</div>
+							</div>
+                                                    </div>
+                                            </div>
+                                <div class="rt-grid-3 rt-pull-9">
+                <div id="rt-sidebar-a">
+                                    <div class="square4">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<ul class="menu"><li id="current" class="active item56"><a href="tw/previous-issue.html"><span>電子報總覽</span></a></li><li class="item55"><a href="tw/about-newsletter.html"><span>關於本報</span></a></li></ul>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<ul class="menu"><li class="item115"><a href="tw/foss-news.html"><span>源碼新聞</span></a></li><li class="item141"><a href="tw/case-job.html"><span>接案 / 工作</span></a></li></ul>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+        	                <div class="square1">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-title"><h2 class="title">專欄總覽</h2></div>
+						<div class="clear"></div>
+		                						<div class="module-content">
+		                	<ul class="menu"><li class="item37"><a href="tw/tech-column.html"><span>技術專欄</span></a></li><li class="item40"><a href="tw/foss-programs.html"><span>源碼秘技</span></a></li><li class="item35"><a href="tw/legal-article-.html"><span>法律專欄</span></a></li><li class="item154"><a href="tw/foss-forum.html"><span>自由專欄</span></a></li><li class="item162"><a href="tw/enterprise-application.html"><span>企業應用</span></a></li><li class="item44"><a href="tw/foss-projects.html"><span>源碼專案</span></a></li></ul>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		                <div class="square1">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<p style="text-align: center;"><a href="news%3Fformat=feed&amp;type=rss" target="_black"><img src="images/M_images/news-rss-feed.png" border="0" /></a><br /><a href="https://www.openfoundry.org/rss-feed/Newsletter" target="_black"><img src="images/M_images/newsletter-rss-feed.png" border="0" /></a></p>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		
+                </div>
+            </div>
+
+                    <div class="clear"></div>
+                </div>
+            </div>
+																													</div>
+										<div id="rt-copyright">
+						<div class="rt-grid-12 rt-alpha rt-omega">
+                        <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<div id="desktop-mobile-version-switch"><span id="mobile-version" class="version-switch"><a href="index.php%3Foption=com_content&amp;task=view&amp;id=2266&amp;Itemid=56%3Bisletter=1.html#">行動版</a></span></div>
+自由軟體鑄造場 製作 最佳瀏覽狀態：IE7或Firefox2.0以上 (建議使用Firefox) ‧ 解析度1024*768 <br /> <strong>E-Mail</strong>：<a href="mailto:contact@openfoundry.org">contact@openfoundry.org</a> <strong>Address</strong>：台北市南港區研究院路2段128號 中央研究院資訊科學研究所 . <a href="privacy-policy.html">隱私權條款</a>. <a href="terms-of-use.html">使用條款</a><span style="position: relative; top: 8px; margin-top: -8px;"> <a href="about/8101.html"><img src="images/M_images/rss-feed-all.png" border="0" /></a></span>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+        	
+</div>
+						<div class="clear"></div>
+					</div>
+					<div class="rt-footer-bottom-wrap"><div class="rt-footer-bottom"><div class="rt-footer-bottom2"><div class="rt-footer-bottom3"></div></div></div></div>
+									</div></div></div>
+				<div class="rt-surround-bottom"><div class="rt-surround-bottom2"><div class="rt-surround-bottom3"></div></div></div>
+							</div>
+		</div>
+		<!--
+		<script id="aptureScript">
+						(function (){var a=document.createElement("script");a.defer="true";a.src="http://www.apture.com/js/apture.js?siteToken=vsJttrn";document.getElementsByTagName("head")[0].appendChild(a);})();
+     </script>
+-->
+
+<!-- Piwik -->
+<!-- 			<script type="text/javascript">
+			  var _paq = _paq || [];
+		  _paq.push(["trackPageView"]);
+		  _paq.push(["enableLinkTracking"]);
+
+		    (function() {
+			        var u=(("https:" == document.location.protocol) ? "https" : "https") + "://www.openfoundry.org/piwik/";
+				    _paq.push(["setTrackerUrl", u+"piwik.php"]);
+				    _paq.push(["setSiteId", "1"]);
+				        var d=document, g=d.createElement("script"), s=d.getElementsByTagName("script")[0]; g.type="text/javascript";
+				        g.defer=true; g.async=true; g.src=u+"piwik.js"; s.parentNode.insertBefore(g,s);
+					  })();
+		  </script> -->
+<!-- End Piwik Code -->
+	</body>
+</html>

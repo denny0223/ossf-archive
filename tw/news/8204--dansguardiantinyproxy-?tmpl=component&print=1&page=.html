@@ -1,0 +1,210 @@
+	<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+	<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="zh-tw" lang="zh-tw" >
+		<head>
+			  <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+  <meta name="robots" content="noindex, nofollow" />
+  <meta name="keywords" content="OSSFNL700" />
+  <meta name="title" content="以開源碼 dansguardian+tinyproxy 實作色情守門員" />
+  <meta name="description" content="前言 相信每個父母都曾有這樣的經驗：小孩子躱在房裏通宵達旦的衝浪。您會很好奇，到底是什麼樣的網站可以讓人這麼無怨無悔，廢寢忘食。而在網路犯罪事件層出不窮的今日，更會擔心自己的心肝寶貝因涉世未深，而無法拒絕網路上的誘惑，甚至發生無法彌補的遺憾。因此，坊間有一些 ISP" />
+  <meta name="generator" content="" />
+  <title>以開源碼 dansguardian+tinyproxy 實作色情守門員</title>
+  <link href="../../favicon.ico" rel="shortcut icon" type="image/x-icon" />
+  <link rel="stylesheet" href="../../components/com_gantry/css/gantry.css" type="text/css" />
+  <link rel="stylesheet" href="../../components/com_gantry/css/grid-12.css" type="text/css" />
+  <link rel="stylesheet" href="../../components/com_gantry/css/joomla.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/joomla.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/style1.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/light-body.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/demo-styles.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/template.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/typography.css" type="text/css" />
+  <style type="text/css">
+    <!--
+#rt-main-surround ul.menu li.active > a, #rt-main-surround ul.menu li.active > .separator, #rt-main-surround ul.menu li.active > .item, #rt-main-surround .square4 ul.menu li:hover > a, #rt-main-surround .square4 ul.menu li:hover > .item, #rt-main-surround .square4 ul.menu li:hover > .separator, .roktabs-links ul li.active span {color:#0088B5;}
+a, #rt-main-surround ul.menu a:hover, #rt-main-surround ul.menu .separator:hover, #rt-main-surround ul.menu .item:hover {color:#0088B5;}
+    -->
+  </style>
+  <script type="text/javascript" src="../../components/com_jcomments/js/jcomments-v2.1.js%3Fv=2"></script>
+  <script type="text/javascript" src="../../components/com_jcomments/libraries/joomlatune/ajax.js"></script>
+  <script type="text/javascript" src="../../media/system/js/mootools.js"></script>
+  <script type="text/javascript" src="../../media/system/js/caption.js"></script>
+  <script type="text/javascript" src="../../components/com_gantry/js/gantry-buildspans.js"></script>
+  <script type="text/javascript" src="../../components/com_gantry/js/gantry-inputs.js"></script>
+  <script type="text/javascript">
+
+			window.addEvent('domready', function() {
+				var modules = ['rt-block'];
+				var header = ['h3','h2','h1'];
+				GantryBuildSpans(modules, header);
+			});
+		InputsExclusion.push('.content_vote','#rt-popup')
+  </script>
+		</head>
+		<body  class="backgroundlevel-low backgroundstyle-style8 bodylevel-med bodystyle-light cssstyle-style1 logostyle-dark font-family-helvetica font-size-is-default menu-type-fusionmenu col12 ">
+			<div id="rt-main-surround">
+				<div class="rt-container">
+					<div class="rt-block">
+						<div id="rt-mainbody">
+					    	
+<div class="rt-joomla ">
+	<div class="rt-article">
+		
+				<div class="rt-headline"><h1 class="rt-article-title">以開源碼 dansguardian+tinyproxy 實作色情守門員</h1>		</div>
+		<div class="clear"></div>
+		
+		
+		
+				<div class="rt-articleinfo">
+						<div class="rt-article-icons">
+				<a href="8204--dansguardiantinyproxy-%3Ftmpl=component&amp;print=1&amp;page=.html#" onclick="window.print();return false;"><span class="icon print"></span></a>									<span class="icon printscreen">
+						<a href="8204--dansguardiantinyproxy-%3Ftmpl=component&amp;print=1&amp;page=.html#" onclick="window.print();return false;"><img src="../../images/M_images/printButton.png" alt="列印"  /></a>					</span>
+							</div>
+			
+			<span class="rt-date-posted">
+						建立日期			2010-12-13 17:41						&nbsp;&nbsp;&nbsp;&nbsp;						最近更新在 2010-12-14 19:46						</span>
+
+						<span class="rt-author">
+				作者是 老薯條(https://vulscan.wynetech.com.tw)			</span>
+				
+					</div>
+		
+		
+		<h2>前言</h2>
+相信每個父母都曾有這樣的經驗：小孩子躱在房裏通宵達旦的衝浪。您會很好奇，到底是什麼樣的網站可以讓人這麼無怨無悔，廢寢忘食。而在網路犯罪事件層出不窮的今日，更會擔心自己的心肝寶貝因涉世未深，而無法拒絕網路上的誘惑，甚至發生無法彌補的遺憾。因此，坊間有一些 ISP 業者提供如「色情守門員」服務來過濾不當的網頁。對岸前一陣子鬧的沸沸揚揚的「綠霸」事件（規定新出廠的電腦上要預先安裝過濾軟體，以過濾不當的網頁，後因安全性問題而暫緩實施），均是基於保護未成年人的立場，以避免受到不當網頁的危害。因此，一套可過濾不當網頁的解決方案，會是每個父母心目中完美的軟體。在本篇文章中，筆者將以開源碼社群中的解決方案來實作一個過濾不當網頁的系統。我們希望系統能達到下列的功能。<br /> 
+
+<br /> 
+<ul>
+<li>可設定客戶端 (client) 用戶不能瀏覽那些網站，即所謂的 URL 過濾。</li>
+<li>可設定客戶端 (client) 用戶不能瀏覽內容含有某些關鍵字（如情色 SEX）的網站。即所謂的關鍵字過濾。</li>
+<li>限制客戶端 (client) 用戶不能下載某些類型的檔案（如不允許ppt pdf 類型的檔案等等）。</li>
+</ul>
+<br />所需軟體如下表所示：<br /> 
+<table id="customers" border="1" cellspacing="0" cellpadding="4" width="100%">
+<tbody>
+<tr valign="top">
+<th width="20%"> 軟體 </th> <th width="40%"> 說明 </th> <th width="40%"> 官方網址 </th>
+</tr>
+<tr valign="top">
+<td width="20%">Fedora 11</td>
+<td width="40%">作業系統</td>
+<td width="40%"><a href="https://fedoraproject.org/" target="_blank">https://fedoraproject.org/</a></td>
+</tr>
+<tr valign="top">
+<td width="20%">Tinyprox</td>
+<td width="40%">proxy 伺服器 ，與 dansguardian 結合來實作網頁過濾的功能</td>
+<td width="40%"><a href="https://banu.com/tinyproxy/" target="_blank">https://banu.com/tinyproxy/</a></td>
+</tr>
+<tr valign="top">
+<td width="20%">dansguardian</td>
+<td width="40%">內容過濾軟體,與 tinyproxy 配合來完成網頁過濾的功能</td>
+<td width="40%"><a href="https://dansguardian.org/" target="_blank">https://dansguardian.org/</a></td>
+</tr>
+</tbody>
+</table>
+<h2>說明2</h2>
+一般而言，要完成網頁過濾的功能，通常需要 http proxy（代理伺服器）的支援。<br /><br />以下先行說明快取伺服器 (proxy) 的原理及型式。快取伺服器 (proxy) 是一種中介者程式，介於使用者與 internet 間；擔任使用者與 internet 間的中介層。當使用者欲連線到外部網站時，將會先查詢 proxy 是否有相關的資訊，如果有相關的資訊，則會直接從 proxy 下載相關資訊（因此每種通訊協定均會有相對應的 proxy，如 HTTP 即為 http proxy，本文中的 tinyproxy即為一種 http proxy）。反之，即先由 proxy 伺服器至外部網站取得相關資訊，再由使用者經由 proxy 取回資訊，如圖 1 所示：<br /><a href="../../images/101214/dansguardtiny/dansguardtiny01.png" target="_blank"><img src="../../images/101214/dansguardtiny/dansguardtiny01.png" border="0" width="400" /></a><br /> ▲圖 1<br /><br />如果依 proxy 的型式來區分，可分為正向快取式 (forward caching) 及反向快取 (reverse caching)。正向快取式即是一般的運用模式（由內（內部使用者）向外 (internet) ），如圖 2 所示：<br /><a href="../../images/101214/dansguardtiny/dansguardtiny02.png" target="_blank"><img src="../../images/101214/dansguardtiny/dansguardtiny02.png" border="0" width="400" /></a><br /> ▲圖 2<br /><br />當內部使用者想存取外部 internet 的網站時，會先詢問上述的正向快取伺服器 (forward caching) 是否有相關的資訊，如果正向快取伺服器 (forward caching) 有儲存相關的資訊，即直接至正向快取伺服器 (forward caching) 內存取而無需實際至外部的網頁伺服器存取網頁，來增快網頁存取的時間（這也是為什麼正向快取伺服器 (forward caching) 常用來增快網頁存取時間的原因）。反之，如果正向快取伺服器 (forward caching) 無相關的資訊，即由正向快取伺服器 (forward caching) 至外部的網頁伺服器取得相關資訊後，再提供給內部使用者查詢（這也是為什麼正向快取伺服器 (forward caching) 又被稱為代理程式的原因，因為都是由正向快取伺服器 (forward caching) 代理使用者來存取外部的網頁伺服器）。接下來說明反向式的快取伺服器（reverse caching），反向式的快取伺服器則是要服務外部使用者存取內部網頁伺服器（即外 (internet) 對內（內部的服務主機））。反向式的快取伺服器 (reverse caching) 會先暫存內部服務主機的相關資料，當外部使用者欲存取內部服務主機的資料時，會先至快取伺服器 (reverse caching) 上存取，一旦快取伺服器 (reverse caching) 沒有相關資料，才至內部實際提供服務的主機上存取。如圖 3 所示：<br /><a href="../../images/101214/dansguardtiny/dansguardtiny03.png" target="_blank"><img src="../../images/101214/dansguardtiny/dansguardtiny03.png" border="0" width="400" /></a><br />▲圖 3<br /><br />通常反向式的快取伺服器 (reverse caching) 可以用於防火牆之外，當作外部使用者的內容伺服器（使用者並不會真正的接觸到實際服務的伺服器，而是透過反向式的快取伺服器 (reverse caching) 來存取），以避免有人在未受監視的情況下，從外部來直接存取伺服器的資料。另外，從負載平衡 (<strong>load balance</strong>) 的角度來看，由於反向快取伺服器 (reverse caching) 可與服務伺服器的資料同步，因此，我們可以思考可在高流量的服務器前架設多台的反向式的快取伺服器 (reverse caching)，來分散過高的使用流量，以實現負載平衡的功能。<br /><br /> 由上述說明，我們可以得知不論是正向快取伺服器 (forward caching) 或反向快取伺服器 (reverse caching) 都具有快取 (cache) 的功能，所以常被用來網頁加速用。但從另一角度來看，由於往來的網頁資訊均會存在快取伺服器 (proxy)。所以，如果要檢查往來的 HTTP 資訊是否有惡意的病毒，我們可以在快取伺服器 (proxy) 上再架構一層過濾機制（即為dansguardian），即可實作網頁過濾的任務。整體架構如圖 4 所示：<br /><a href="../../images/101214/dansguardtiny/dansguardtiny04.png" target="_blank"><img src="../../images/101214/dansguardtiny/dansguardtiny04.png" border="0" title="Original Resolution - 575x369px" width="483.78590785907863" height="299" style="cursor: pointer;" /></a><br /> ▲圖 4<br /><br />使用者瀏覽網頁流程如下：<br />1. 使用者開啟瀏覽器 proxy 功能，以 IE 為例，請設定【工具】→【<span style="font-family: ">網際網路選項</span>】→「連線」→「區域網路設定」，如圖 5 :<a href="../../images/101214/dansguardtiny/dansguardtiny05.png" target="_blank"><img src="../../images/101214/dansguardtiny/dansguardtiny05.png" border="0" title="Original Resolution - 370x306px" width="368.2287581699346" height="299" style="border: 0.25em groove #0000ee; cursor: pointer;" /></a><br />▲圖 5 設定 proxy server 的 IP 位址及埠為 8080<br />2. 使用者將要求瀏覽網站的 http 要求送往 proxy（在本例中為tinyproxy）<br />3. tinyproxy 再將 http 要求送往過濾軟體（在本例中為dansguardian）依據設定的過濾條件來判別是否欲瀏覽的網頁為不當網頁，若是則阻擋使用者瀏覽該網頁，否則使用者即可正常的瀏覽該網頁。<br /> 接下來我們來說明如何安裝相關軟體<br /><br /> 
+<ul>
+<li>安裝 tinyproxy</li>
+請至 tinyproxy 官方取得最新版本（筆者所取得的版本為 1.8.2），解開後執行./configure --prefix=/usr/local/tinyproxy && make && make Install，將 tinyproxy 裝到 /usr/local/tinyproxy 目錄上。<br />接下來即需設定 /usr/local/tinyproxy/etc/tinyproxy.conf 設定檔，新增如下一列<br />Port 3128　#設定 tinyproxy 運作在 3128 埠<br />Allow 140.xxx.xxx.xxx/24 # 表允許那些網段的主機可使用此 proxy 伺服器，<br />最後以 /usr/local/tinyproxy/sbin/tinyproxy & 執行即可。 
+</ul>
+<br /><br /> 
+<ul>
+<li>安裝 dansguardian</li>
+利用 yum install dansguardian* 安裝即可<br /> 修改 /etc/dansguardian/dansguardian.conf 設定檔，如下：<br /> language = 'chinesebig5'      #設定顯示訊息的語系<br /> filterport = 8080             #設定 dansguardian 運作埠<br /> proxyip = 127.0.0.1          #設定 proxy 伺服器的所在位址<br />即 squid 運作的主機，在本例中由於與 dansguardian 在同一台機器上，所以可設為本機<br />proxyport = 3128           #設定 proxy 伺服器的運作埠，即 tinyproxy 的運作埠，預設為 3128 
+</ul>
+<br /><br />4. 設定完成後，利用 /etc/init.d/dansguardian start 即可啟動 dansguardian<br /><br /> 可利用 netstat –an | grep 8080 查看主機上是否已開啟 8080 埠，如下圖<br /><img src="../../images/101214/dansguardtiny/dansguardtiny06.png" border="0" width="427" height="29" /><br />▲圖 6<br />此時需重新設定 IE 的 proxy 設定，如上步驟：但埠需改為 8080（dansguardian 的服務埠）<br /><br />如下圖所示：<br /><img src="../../images/101214/dansguardtiny/dansguardtiny07.png" border="0" title="Original Resolution - 381x315px" width="368.35238095238094" height="299" style="border: 0.25em groove #0000ee; cursor: pointer;" /><br />▲圖 7<br />dansguardian 主要是利用檔案來設定限制瀏覽網頁的規則，由於我們只想要達到下列功能：<br /><br /> 
+<ul>
+<li>禁止瀏覽某些網站</li>
+<li>禁止瀏覽含有某些關鍵字的網頁</li>
+<li>禁止下載某些類型的檔案</li>
+</ul>
+<br />因此本文中僅會介紹相關的設定檔，其餘相關設定檔就留待有興趣的讀者自行研究了。相關設定檔（位於 /etc/dansguardian/lists/ 目錄下）列表如下：<br /> 
+<table id="customers" border="1" cellspacing="0" cellpadding="4" width="100%">
+<tbody>
+<tr valign="top">
+<th width="20%"> 檔名 </th> <th width="40%"> 意義 </th>
+</tr>
+<tr valign="top">
+<td width="20%">bannedsitelist</td>
+<td width="40%">可在此檔案中寫入欲限制瀏覽的網站，如不想讓使用者瀏覽 www.example.com，即將 www.example.com 寫入此檔即可</td>
+</tr>
+<tr valign="top">
+<td width="20%">bannediplist</td>
+<td width="40%">同 bannedsitelist，不過將以IP的型式取代網址型式</td>
+</tr>
+<tr valign="top">
+<td width="20%">bannedphraselist</td>
+<td width="40%">可在此檔案設定關鍵字，一旦網頁出現關鍵字，即限制瀏覽網頁。如設定“情色”，一旦網頁含有此類關鍵字即限制瀏覽。</td>
+</tr>
+<tr valign="top">
+<td width="20%">bannedextensionlist</td>
+<td width="40%">限制下載檔案的類型，如要讓使用者不能下載 exe 的執行檔，可將 .exe 寫入檔案，即可限制使用者下載 .exe 的執行檔</td>
+</tr>
+<tr valign="top">
+<td width="20%">Bannedurllist</td>
+<td width="40%">以 URL 方式限制瀏覽網頁，如只要限制瀏覽 www.example.com/news/ 。可將www.example.com/news寫入此檔，如此，僅限制不能瀏覽 www.example.com/news 網頁，但可瀏覽 www.example.com 其它的網頁</td>
+</tr>
+<tr valign="top">
+<td width="20%">Exceptionsitelist</td>
+<td width="40%">設定網站名稱，只要連線到這些網站，即不受其它 dansguardian 規則的限制，如設定 www.example.com 即表示連線到 www.example.com 即不受其它 dansguardian 規則的限制</td>
+</tr>
+<tr valign="top">
+<td width="20%">Exceptioniplist</td>
+<td width="40%">設定不受 dansguardian 規則限制的來源 IP，可將不願受 dansguardian 限制的IP設於此，如此 dansguardian 對其而言僅為 proxy 的功能，而無任何的過濾功能</td>
+</tr>
+<tr valign="top">
+<td width="20%">Exceptionphraselist</td>
+<td width="40%">設定關鍵字，只要連線的網頁含有此類關鍵字，即不受其它 dansguardian 規則的限制</td>
+</tr>
+</tbody>
+</table>
+<br /> <br />一般我們在設定相關規定時，總想要加上限制時間，如＜朝九晚五的上班時間中才要套用相關的規則＞，所以 dansguardian 也很貼心的提供了時間參數的設定<br />時間參數格式如下所示：<br />time:      ＜start hour＞ ＜start minute＞＜end hour＞＜end minute＞ ＜days＞<br />＜start hour＞：開始時間(時)<br />＜start minute＞：開始時間(分)<br />＜end hour＞：結束時間(時)<br />＜end minute＞：結束時間(分)<br />＜days＞：0-6 星期一至星期天<br />如設定規則僅在星期一至星期五早上 8:00 至下午 5:00 生效則可設定如下<br />8 0 17 0 01234<br />如沒有設定時間參數，即表示該規則為全日生效，接下來，我們將來示範如何相關功能<br />1. URL過濾功能<br />以 vulscan.wynetech.com.tw 網站為例。限制使用者不能瀏覽該網站。<br /><br /> 
+<ul>
+<li>確定使用的瀏覽器已開啟 proxy，並設定 proxy 埠為 8080</li>
+<li>將 vulscan.wynetech.com.tw 寫入 bannedsitelist 檔案中</li>
+<li>重新啟動 dansguardian <br />/etc/init.d/dansguardian start</li>
+<li>當瀏覽器瀏覽 vulscan.wynetech.com.tw 即會出現如下圖示，而無法瀏覽該網頁</li>
+</ul>
+<a href="../../images/101214/dansguardtiny/dansguardtiny08.png" target="_blank"><img src="../../images/101214/dansguardtiny/dansguardtiny08.png" border="0" title="Original Resolution - 415x349px" width="361.5959885386819" height="299" style="cursor: pointer;" /></a><br /> ▲圖 8<br /><br />2. 關鍵字過濾（限定使用者不能瀏覽含有關鍵字的網頁，在此以關鍵字「情色」為例）。<br /> 
+<ul>
+<li>確定使用的瀏覽器已開啟 proxy，並設定 proxy 埠為 8080</li>
+<li>將「情色」寫入 bannedphraselist 檔案，後再重新啟動 dansguardian</li>
+<li> 關鍵字設法分為下列型式：</li>
+<li> ＜關鍵字＞：需完全符合關鍵字（如＜sex＞即網頁有 sex 關鍵字即符合）</li>
+<li> ＜ 關鍵字 ＞：網頁的字串中含有該關鍵字即符合，如＜ sex ＞即表示網頁有 sexual 字串即符合</li>
+<li> ＜關鍵字1＞,＜關鍵字2＞.. ：網頁資訊中需同時含有關鍵字 1 與關鍵字 ２．．．即符合</li>
+</ul>
+<br /> <a href="../../images/101214/dansguardtiny/dansguardtiny09.png" target="_blank"><img src="../../images/101214/dansguardtiny/dansguardtiny09.png" border="0" title="Original Resolution - 457x339px" width="414.2153392330383" height="299" style="cursor: pointer;" /></a><br />▲圖 9<br /> <br />3. 限制使用者能夠下載的檔案類型，在本例中將禁止使用者下載 ppt 檔。<br /> <a href="../../images/101214/dansguardtiny/dansguardtiny10.png" target="_blank"><img src="../../images/101214/dansguardtiny/dansguardtiny10.png" border="0" title="Original Resolution - 553x312px" width="554.6762820512821" height="299" style="cursor: pointer;" /></a><br />▲圖 10<br />
+			<!-- Show relate article -->
+				<!-- end -->
+		<div class="article_note">
+		<!-- Add tags use metakey, and show OSSF Newsletter tag: OSSFNL+NUM-->
+		<br><br> <hr style='border: 1px dashed #D2DADB;'><b>自由軟體鑄造場電子報&nbsp;:</b>&nbsp;<a href='../../previous-issue%3Ftask=view&amp;id=700.html'>第 163 期 FSCONS2010 會後報導-從根本上解決問題的思想革命</a><br>				<!-- End -->
+					<br>
+					<b>分類: </b><a href="../tech-column.html">				技術專欄					</a>				</div>
+			 <!-- AddThis Button BEGIN ID 3001 is the front page article -->
+     			<br><br>
+       <div class="addthis_toolbox addthis_default_style addthis_32x32_style">
+       <a class="addthis_button_preferred_1"></a>
+       <a class="addthis_button_preferred_2"></a>
+       <a class="addthis_button_preferred_3"></a>
+       <a class="addthis_button_preferred_4"></a>
+       <a class="addthis_button_compact"></a>
+       <a class="addthis_counter addthis_bubble_style"></a>
+       </div>
+       <script type="text/javascript">var addthis_config = {"data_track_clickback":true};</script>
+       <script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js#pubid=openfoundry"></script>
+       <!-- AddThis Button END -->
+     <br>
+		<div class="totop" ><a class="rt-totop" href="8204--dansguardiantinyproxy-%3Ftmpl=component&amp;print=1&amp;page=.html#" style="outline: medium none;">↑ Top</a></div>
+            <!-- AddThis Button END -->
+
+			</div>
+</div>
+
+						</div>
+					</div>
+				</div>
+			</div>
+		</body>
+	</html>

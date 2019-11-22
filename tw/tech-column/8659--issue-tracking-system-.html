@@ -1,0 +1,529 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="zh-tw" lang="zh-tw" >
+<head>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<link rel="shortcut icon" href="../../images/favicon.ico" />
+	  <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+  <meta name="robots" content="index, follow" />
+  <meta name="keywords" content="版本管理, Issue Tracking, 專案管理, OSSFNL786" />
+  <meta name="title" content="為什麼必須使用 Issue Tracking System 管理專案？" />
+  <meta name="description" content="◎ 本文轉載自 Blog.XDite.net。 我 在網站程式 上線前需要準備的事（四）提到了為了順利進行專案，一個好的專案管理系統絕對是必備的。 專案管理系統背後運作的邏輯何在，就是這篇文章主要的重點。 What is issue tracking (project management) system? Issue Tracking" />
+  <meta name="generator" content="" />
+  <title>為什麼必須使用 Issue Tracking System 管理專案？ - OpenFoundry</title>
+  <link href="../../favicon.ico" rel="shortcut icon" type="image/x-icon" />
+  <link rel="stylesheet" href="../../components/com_gantry/css/gantry.css" type="text/css" />
+  <link rel="stylesheet" href="../../components/com_gantry/css/grid-12.css" type="text/css" />
+  <link rel="stylesheet" href="../../components/com_gantry/css/joomla.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/joomla.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/style1.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/light-body.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/demo-styles.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/template.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/typography.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/fusionmenu.css" type="text/css" />
+  <style type="text/css">
+    <!--
+#rt-main-surround ul.menu li.active > a, #rt-main-surround ul.menu li.active > .separator, #rt-main-surround ul.menu li.active > .item, #rt-main-surround .square4 ul.menu li:hover > a, #rt-main-surround .square4 ul.menu li:hover > .item, #rt-main-surround .square4 ul.menu li:hover > .separator, .roktabs-links ul li.active span {color:#0088B5;}
+a, #rt-main-surround ul.menu a:hover, #rt-main-surround ul.menu .separator:hover, #rt-main-surround ul.menu .item:hover {color:#0088B5;}
+    -->
+  </style>
+  <script type="text/javascript" src="../../components/com_jcomments/js/jcomments-v2.1.js%3Fv=2"></script>
+  <script type="text/javascript" src="../../components/com_jcomments/libraries/joomlatune/ajax.js"></script>
+  <script type="text/javascript" src="../../media/system/js/mootools.js"></script>
+  <script type="text/javascript" src="../../media/system/js/caption.js"></script>
+  <script type="text/javascript" src="../../components/com_gantry/js/gantry-buildspans.js"></script>
+  <script type="text/javascript" src="../../components/com_gantry/js/gantry-inputs.js"></script>
+  <script type="text/javascript" src="../../templates/rt_quantive_j15/js/jquery.cookie.js"></script>
+  <script type="text/javascript" src="../../modules/mod_roknavmenu/themes/fusion/js/fusion.js"></script>
+  <script type="text/javascript" src="../../modules/mod_ofssologin/js/ofssologin.js"></script>
+  <script type="text/javascript">
+
+			window.addEvent('domready', function() {
+				var modules = ['rt-block'];
+				var header = ['h3','h2','h1'];
+				GantryBuildSpans(modules, header);
+			});
+		InputsExclusion.push('.content_vote','#rt-popup')
+		        window.addEvent('load', function() {
+					new Fusion('ul.menutop', {
+						pill: 0,
+						effect: 'slide and fade',
+						opacity: 1,
+						hideDelay: 500,
+						centered: 0,
+						tweakInitial: {'x': -2, 'y': 0},
+        				tweakSubsequent: {'x': 0, 'y': -14},
+						menuFx: {duration: 200, transition: Fx.Transitions.Sine.easeOut},
+						pillFx: {duration: 400, transition: Fx.Transitions.Back.easeOut}
+					});
+	            });
+  </script>
+<!-- <script type="text/javascript" src="/sso/javascripts/langsync.js"></script> -->
+<!-- <script src="/templates/rt_quantive_j15/js/ossf.js"></script> -->
+<script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-4136519-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
+</head>
+	<body  class="backgroundlevel-low backgroundstyle-style8 bodylevel-med bodystyle-light cssstyle-style1 logostyle-dark font-family-helvetica font-size-is-default menu-type-fusionmenu col12 ">
+		<div id="rt-main-background">
+			<div class="rt-container">
+																<div id="rt-header">
+					<div class="rt-grid-7 rt-alpha">
+    			<div class="rt-block">
+    	    	<a href="../../index.html" id="rt-logo"></a>
+    		</div>
+	    
+</div>
+<div class="rt-grid-5 rt-omega">
+                    <div class="square9">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<div class="ofssologin_square9"><a href="../../index.html">登入</a>&nbsp;&nbsp|&nbsp;&nbsp;<span><a href="../../en/tech-column/8659--issue-tracking-system-.html" ><span lang="en" xml:lang="en">English</span></a></li></ul></span><!--Joom!fish V2.0.4 (Lightning)-->
+<!-- &copy; 2003-2009 Think Network, released under the GPL. -->
+<!-- More information: at http://www.joomfish.net -->
+<div class="ofssologin_search_square9">
+  <form id="of_search" action="https://www.openfoundry.org/of/openfoundry/search" method="get" onsubmit="of_search(); return false;">
+    <select id="of_search_type">
+      <option value="Projects"> 專案 </option>
+      <option value="Content"> 文章 </option>
+      <option value="People"> 人才 </option>
+    </select>
+    <input id="query" name="query" id="mod_search_searchword" maxlength="50" alt="search" class="inputbox" type="text" size="28" value="search..."  onblur="if(this.value=='') this.value='search...';" onfocus="if(this.value=='search...') this.value='';" />
+    <input type="hidden" name="commit" value="search" />
+  </form>
+</div></div>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		
+</div>
+					<div class="clear"></div>
+				</div>
+																<div id="rt-navigation"><div id="rt-navigation2"><div id="rt-navigation3">
+					
+<div class="nopill">
+	<ul class="menutop level1 " >
+						<li class="item1 root" >
+					<a class="orphan item bullet" href="../../index.html"  >
+				<span>
+			    				首頁				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item32 root" >
+					<a class="orphan item bullet" href="../../archived.html"  >
+				<span>
+			    				專案				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item186 root" >
+					<a class="orphan item bullet" href="../community.html"  >
+				<span>
+			    				Who&#039;s Who				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item4 root" >
+					<a class="orphan item bullet" href="../news.html"  >
+				<span>
+			    				新聞				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item5 root" >
+					<a class="orphan item bullet" href="../law-and-licensing.html"  >
+				<span>
+			    				法律源地				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item3 root" >
+					<a class="orphan item bullet" href="../activities.html"  >
+				<span>
+			    				活動				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item2 root" >
+					<a class="orphan item bullet" href="../resourcecatalog%3FName=Value.html"  >
+				<span>
+			    				資源表列				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item45 root" >
+					<a class="orphan item bullet" href="../about.html"  >
+				<span>
+			    				關於				   
+				</span>
+			</a>
+			
+			
+	</li>	
+				</ul>
+</div>
+
+				    <div class="clear"></div>
+				</div></div></div>
+								<div class="rt-surround"><div class="rt-surround2"><div class="rt-surround3">
+										<div id="rt-showcase-section">
+												<div id="rt-showcase">
+							<div class="rt-grid-12 rt-alpha rt-omega">
+    		<div class="clear"></div>
+		
+		
+                <div class="close-note">
+                    <div class="rt-block">
+               					<div class="module-content">
+                	<div style="font-size:medium; background-image:linear-gradient(120deg,#159957,#4298b2);color:white;padding:20px;margin:-10px -18px;">感謝您對「自由軟體鑄造場」的支持與愛護，十多年來「自由軟體鑄造場」受中央研究院支持，並在資訊科學研究所以及資訊科技創新研究中心執行，現已完成階段性的任務。 本網站預計持續維運至 2021年底，網站內容基本上不會再更動。<br />也紀念我們永遠的朋友 李士傑先生（Shih-Chieh Ilya Li）。</div>				</div>
+            </div>
+                </div>
+		
+</div>
+							<div class="clear"></div>
+						</div>
+																	</div>
+															<div id="rt-main-surround">
+												<div id="rt-breadcrumbs">
+								<div class="rt-breadcrumb-surround">
+		<a href="../../index.html" id="breadcrumbs-home"></a>
+		<span class="breadcrumbs pathway">
+<a href="../tech-column.html" class="pathway">技術專欄</a> <img src="../../templates/rt_quantive_j15/images/arrow.png" alt=""  /> <span class="no-link">為什麼必須使用 Issue Tracking System 管理專案？</span></span>
+	</div>
+	
+							<div class="clear"></div>
+						</div>
+																							              <div id="rt-main" class="sa3-mb9">
+                <div class="rt-main-inner">
+                    <div class="rt-grid-9 rt-push-3">
+                                                <div class="rt-block">
+                            							<div class="square1">
+							<div class="rt-module-surround">
+								<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+								<div class="rt-module-inner">
+		                            <div id="rt-mainbody">
+		                                
+<div class="rt-joomla ">
+	<div class="rt-article">
+		
+				<div class="rt-headline"><h1 class="rt-article-title">為什麼必須使用 Issue Tracking System 管理專案？</h1>		</div>
+		<div class="clear"></div>
+		
+		
+		
+				<div class="rt-articleinfo">
+						<div class="rt-article-icons">
+								<a href="8659--issue-tracking-system-%3Ftmpl=component&amp;print=1&amp;layout=default&amp;page=.html" title="列印" onclick="window.open(this.href,'win2','status=no,toolbar=no,scrollbars=yes,titlebar=no,menubar=no,resizable=yes,width=640,height=480,directories=no,location=no'); return false;" rel="nofollow"><span class="icon print"></span></a>																</div>
+			
+			<span class="rt-date-posted">
+						建立日期			2012-04-06 09:46						&nbsp;&nbsp;&nbsp;&nbsp;						最近更新在 2012-04-23 11:10						</span>
+
+						<span class="rt-author">
+				作者是 XDite			</span>
+				
+					</div>
+		
+		
+		<p>◎ 本文轉載自 <a href="https://www.openfoundry.org/Blog.XDite.net" target="_blank">Blog.XDite.net</a>。</p>
+<p>我在<a href="https://blog.xdite.net/posts/2012/03/18/website-online-todo-4/" target="_blank">網站程式上線前需要準備的事（四）</a>提到了為了順利進行專案，一個好的專案管理系統絕對是必備的。</p>
+<p>專案管理系統背後運作的邏輯何在，就是這篇文章主要的重點。</p>
+<h2>What is issue tracking (project management) system?</h2>
+<p>Issue Tracking system，顧名思義就是紀錄、追蹤問題的系統。<a href="https://www.bugzilla.org/" target="_blank">BugZilla</a>、Trac、<a href="https://www.redmine.org/" target="_blank">Redmine</a>、<a href="https://www.atlassian.com/software/jira/overview" target="_blank">JIRA</a>、<a href="https://lighthouseapp.com/" target="_blank">lighthoustapp</a>、<a href="https://basecamp.com/" target="_blank">Basecamp</a>…等等這幾套軟體，都是知名的 Issue Tracking system。</p>
+
+<p>一套合格的 Issue Tracking system 的 Issue 至少要可以紀錄這些內容：</p>
+<ul>
+<li>Issue 的主題</li>
+<li>Issue 的內容</li>
+<li>Issue 現在的狀態（新建立、已指派、已解決、已回應、已結束、已擱置…etc）</li>
+<li>Issue 優先權（正常、重要、緊急、輕微、會擋路…etc.）</li>
+<li>Issue 發生日期</li>
+<li>Issue 希望解決日期</li>
+<li>Issue 實際解決日期</li>
+<li>Issue 被分派給誰</li>
+<li>Issue 的附件</li>
+<li>Isuue 的觀察者有誰</li>
+</ul>
+<p> </p>
+<h2>Project Management Tool</h2>
+<p>其中 Redmine、JIRA、Basecamp 並不僅止是 Issue Tracking System，更精確的來說，它們應該被稱為「專案管理工具」。</p>
+<p>它們多半能夠提供以下作用：</p>
+<ul>
+<li>一個地方可以透明的列出所有需要被執行的項目 (Issue List)</li>
+<li>一個地方可以列出階段內需要被執行的項目 ( Issue Milestone )</li>
+<li>一個可以記載 內容，狀態、優先權、日期、分派者、觀察者，且具有「permalink」、「權限控管」，且讓大家可以討論執行項目細節的地方。(Issue Ticket)</li>
+<li>可以 cross reference 或具有子票功能</li>
+<li>一個地方可以整理統合專案現在所有的相關資訊。( Wiki 功能)</li>
+<li>一個地方可以看到自己今天需要 Focus 進行哪些項目（Issue Personal Dashboard)</li>
+<li>一個地方能讓 Manager 可以看到自己的 Member 正在進行哪些項目，這些項目目前的狀態是什麼。（Issue Query)</li>
+</ul>
+<p> </p>
+<h2>背後運作的原理</h2>
+<p>網站程式上線前需要準備的事（四）這篇文章刊出後，得到不少的迴響。其中我看到的絕大多數的回應多是多半抱怨 PM 根本不稱職不盡責，只顧著畫規格，然後只按照自己寫出來的無法執行的天才（？）規格的催進度。所謂的 M 不是 Management，而是 Magic。即使成員賣了命的加班，專案還是得不到好的結果：超時，品質粗糙，成本過高，scope 過大無法完成。</p>
+<p>在我進行開發軟體專案時，也發現所謂的其實絕對多數的 PM，其實職稱與進行的事務完全不合。它們的工作內容往往只有 Project Planning，應該被稱作是 Planner，而不是 Project Manager。</p>
+<p>一個軟體開發專案，最重要的變數有四：成本、品質、時間和規模。真正的 Project Management，是能夠準確 Manage 這四項變因，在可以接受的與變動差異下，完成整個專案，產出預期的成果。</p>
+<p>我認為 Project management tool 可以協助做到專案中以下幾項的管理：</p>
+<p> </p>
+<h3>規模管理</h3>
+<p>專案會無限膨脹，主要多半是因為規模的掌控不佳。而規模掌控不佳，時間和成本就會隨之膨脹。</p>
+<p>規模之所以膨脹，有幾個原因：</p>
+<ul>
+<li>沒有人知道，到底「總共」有多少事情需要完成。</li>
+<li>離目前的時間表，「還有」多少事情需要完成，還有多少時間可以用。這些事情裡面有沒有可以被「調整縮減」的餘地。</li>
+</ul>
+<p>所以，專案需要一個工具能提供以下功能：</p>
+<ul>
+<li>一個地方可以透明的列出所有需要被執行的項目 (Issue List)</li>
+<li>一個地方可以列出階段內需要被執行的項目 (Issue Milestone)</li>
+<li>一個可以記載內容，狀態、分派者、執行者，且讓大家可以討論執行項目細節的地方。(Issue Ticket)</li>
+</ul>
+<p> </p>
+<h3>時間管理</h3>
+<p>一個專案中，最寶貴的資源是「時間」。什麼東西都可以用「錢」買到，唯獨時間不能。在專案中時間最容易被浪費的地方在：</p>
+<ul>
+<li>使用信件往來，交涉的互相等待時間。</li>
+<li>沒有被壓定「完成日期」，「詳細需求品質」的工作細項。（陷入不必要的完美，或者是悠哉的怠惰）</li>
+<li>不符合期待，修改的來回時間。（沒有達到良好溝通，導致方向錯誤）</li>
+<li>類似的事情，重複消耗資源。（沒有 SOP，每次都要花費一定以上的資源去解決）</li>
+</ul>
+<p>所以，專案需要一個工具能提供以下功能：</p>
+<ul>
+<li>一個可以記載內容，狀態、優先權、預計完成日期、分派者、執行者，且讓大家可以討論執行項目細節的地方。(Issue Ticket)</li>
+</ul>
+<ul type="circle">
+<li style="list-style-type: none;">
+<ul>
+<li>可以平行討論，而不是信件順序往來</li>
+<li>明確的完成時間</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li>一個地方可以整理統合專案現在所有的相關資訊。( Wiki 功能)</li>
+</ul>
+<ul type="circle">
+<li style="list-style-type: none;">
+<ul>
+<li>提供專案相關的資訊以及 SOP</li>
+</ul>
+</li>
+</ul>
+<p>同時，專案最好能夠搭配舉行每日的 Standup Meeting，確保每個人正在進行的方向是正確的，以及確保專案資源沒有被浪費的跡象。</p>
+<p> </p>
+<h3>團隊工作管理</h3>
+<p>一個專案，成員至少會有兩人以上。兩個人以上，就會有溝通與工作協調安排的問題。專案的工作項目往往是有 related 的，少有獨支。 比如說 Planner 沒有把規格寫完，RD 和 Art 就不太容易先動工。沒有把 Database schema 規劃好，後續就很難繼續開發程式。</p>
+<p>這也是專案當中最傷資源的狀況：優先權等級為：「block」票。因為 A 方沒有交付，導致 B 方不能交付，連帶導致 C 不能開始。</p>
+<p>而專案當中也有很多工作項目分別是「對最終專案目標很重要，但當下不重要」、「對當下 milestone 很重要，對最終目標沒那麼重要」，「只對合作同事很重要」…etc</p>
+<p>如果工作項目不能夠按照當下狀況調整正確的優先等級分派給團隊成員。就很容易會造成所有的人雖然很努力，整體工作效益卻非常低的情形。</p>
+<p>當然，不只是 Project Manager 需要知道全部的人今天要做什麼。而被分派到項目的成員，也需要能夠知道自己當天所需要執行的項目依序是哪些，按照優先狀況完成。如果優先狀況有錯誤，可以及早告知資源協調者 (Manager)。</p>
+<p>所以，專案需要一個工具能提供以下功能：</p>
+<ul>
+<li>一個地方可以列出階段內需要被執行的項目 ( Issue Milestone )</li>
+<li>一個可以記載 內容，狀態、優先權、日期、分派者、觀察者，且讓大家可以討論執行項目細節的地方。(Issue Ticket)</li>
+<li>可以 cross reference 或具有子票功能</li>
+<li>一個地方可以看到自己今天需要 Focus 進行哪些項目（Issue Personal Dashboard)</li>
+<li>一個地方能讓 Manager 可以看到自己的 Member 正在進行哪些項目，這些項目目前的狀態是什麼。（Issue Query)</li>
+</ul>
+<p> </p>
+<h3>資源調配管理</h3>
+<p>Project Management，並不是在專案的一開始設下「完成時間」，切出所有「工作項目」，列出「完成目標」這麼簡單。隨著專案的進行，開始會有很多變因出現，造成資源不足，需求改變，規模追加，人力減少…等等的挑戰障礙出現。</p>
+<p>都在考驗著專案經理對於資源調配的管理能力。能不能在預定的時間、預定的預算、預定的人力資源內，如期完成當初設立的目標以及交付達到品質要求的產品。</p>
+<p>如果條件不允許，當下必須作出取捨、做出決定，而非死板的捍衛規則與命令。</p>
+<p>所以，專案需要一個工具能提供以下功能：</p>
+<ul>
+<li>一個地方可以列出階段內需要被執行的項目，並可以移動改變階段項目。(Issue Milestone)</li>
+<li>一個可以記載內容，狀態、優先權、日期、分派者、觀察者，且讓大家可以討論執行項目細節的地方。(Issue Ticket)</li>
+</ul>
+<p> </p>
+<h2>Agile Method</h2>
+<p>若讀者對於專案管理有興趣的話，研究過一些「敏捷開發」的 method，不管是 XP、Scrum、Kanban…，你會發現到這些工作方法都在傳達幾件類似的事：</p>
+<ul>
+<li>專案必須透明，進行局勢一目了然</li>
+<li>專案要能拆分成可執行的階段</li>
+<li>溝通、溝通再溝通</li>
+<li>不斷的消除浪費</li>
+<li>不斷的 deliver</li>
+</ul>
+<p>而一個好的 Project Management Tool 能夠輔助專案具備以上的特徵。</p>
+<p> </p>
+<h2>小結</h2>
+<p>還是老話一句：真正的 Project Management，是要能夠準確管理，成本、品質、時間和規模這四項變因，在可以接受的與變動差異下，完成整個專案，產出預期的成果。</p>
+<p>「Project Manager」必須要做到的事，也就是要在動態的環境下，利用種種手段盡力讓這件事發生。</p>
+<p>所謂的「Project Management」其實可以用很科學的手段達成，因為事實上這本身就是一門科學。</p>
+<p>一般所謂的 PM 很常誤以為 Project Management 就是用 mail+excel、口頭分配任務，得到專案成員的口頭回覆，接著只要坐著回去發呆或無時無刻的跑到座位上催專案成員作事，整件事情就會發生。如果你真的一直這樣想，我想可能最後程式設計師可能做的事：就是直接用 shell script 換掉你。</p>
+<p>no kidding。</p>
+<p><a href="../../images/120410/IssueTrackingSystem/lg-go-away-tshirt.jpg" target="_blank"><img src="../../images/120410/IssueTrackingSystem/lg-go-away-tshirt.jpg" border="0" /></a></p>
+<p>▲ 圖1：Thinkgeek : Go away or I will replace you with a very small shell script (<a href="https://www.thinkgeek.com/tshirts-apparel/unisex/frustrations/374d/" target="_blank">https://www.thinkgeek.com/tshirts-apparel/unisex/frustrations/374d/</a>)</p>
+<p> </p>
+<h2>推薦書單</h2>
+<p><a href="../../images/120410/IssueTrackingSystem/7014948309_52e099ec27_z.jpg" target="_blank"><img src="../../images/120410/IssueTrackingSystem/7014948309_52e099ec27_z.jpg" border="0" /></a></p>
+<p>▲ 圖2：廣告：Essential Rails Pattern 開始 update 了</p>
+<p><a href="https://rails-101.logdown.com/books/3-essential-rails-pattern" target="_blank">Essntial Rails Pattern</a> 這本書已經進入排版階段。 詳情請看<a href="https://blog.xdite.net/posts/2012/03/24/essential-rails-pattern-update/" target="_blank">這篇文章</a>。</p>
+<p> </p>
+			<!-- Show relate article -->
+				<!-- end -->
+		<div class="article_note">
+		<!-- Add tags use metakey, and show OSSF Newsletter tag: OSSFNL+NUM-->
+		<br><br> <hr style='border: 1px dashed #D2DADB;'><b>自由軟體鑄造場電子報&nbsp;:</b>&nbsp;<a href='../../previous-issue%3Ftask=view&amp;id=786.html'>第 193 期 使用 Debian 與 KVM＋libvirt 架設虛擬化叢集－線上移轉與其他工具</a><br><b>標籤:</b>&nbsp;<a href='../../index.php%3Foption=com_search&amp;Itemid=58&amp;searchphrase=exact_meta&amp;ordering=newest&amp;searchword=版本管理.html'>版本管理</a>,&nbsp;&nbsp;<a href='../../index.php%3Foption=com_search&amp;Itemid=58&amp;searchphrase=exact_meta&amp;ordering=newest&amp;searchword=&#32;Issue&#32;Tracking.html'> Issue Tracking</a>,&nbsp;&nbsp;<a href='../../index.php%3Foption=com_search&amp;Itemid=58&amp;searchphrase=exact_meta&amp;ordering=newest&amp;searchword=&#32;專案管理.html'> 專案管理</a>,&nbsp;&nbsp;				<!-- End -->
+					<br>
+					<b>分類: </b><a href="../tech-column.html">				技術專欄					</a>				</div>
+			 <!-- AddThis Button BEGIN ID 3001 is the front page article -->
+     			<br><br>
+       <div class="addthis_toolbox addthis_default_style addthis_32x32_style">
+       <a class="addthis_button_preferred_1"></a>
+       <a class="addthis_button_preferred_2"></a>
+       <a class="addthis_button_preferred_3"></a>
+       <a class="addthis_button_preferred_4"></a>
+       <a class="addthis_button_compact"></a>
+       <a class="addthis_counter addthis_bubble_style"></a>
+       </div>
+       <script type="text/javascript">var addthis_config = {"data_track_clickback":true};</script>
+       <script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js#pubid=openfoundry"></script>
+       <!-- AddThis Button END -->
+     <br>
+		<div class="totop" ><a class="rt-totop" href="8659--issue-tracking-system-.html#" style="outline: medium none;">↑ Top</a></div>
+            <!-- AddThis Button END -->
+
+			</div>
+</div>
+
+		                            </div>
+									<div class="clear"></div>
+								</div>
+								<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+							</div>
+							</div>
+                                                    </div>
+                                            </div>
+                                <div class="rt-grid-3 rt-pull-9">
+                <div id="rt-sidebar-a">
+                                    <div class="square4">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<ul class="menu"><li class="item56"><a href="../previous-issue.html"><span>電子報總覽</span></a></li><li class="item55"><a href="../about-newsletter.html"><span>關於本報</span></a></li></ul>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<ul class="menu"><li class="item115"><a href="../foss-news.html"><span>源碼新聞</span></a></li><li class="item141"><a href="../case-job.html"><span>接案 / 工作</span></a></li></ul>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+        	                <div class="square1">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-title"><h2 class="title">專欄總覽</h2></div>
+						<div class="clear"></div>
+		                						<div class="module-content">
+		                	<ul class="menu"><li id="current" class="active item37"><a href="../tech-column.html"><span>技術專欄</span></a></li><li class="item40"><a href="../foss-programs.html"><span>源碼秘技</span></a></li><li class="item35"><a href="../legal-article-.html"><span>法律專欄</span></a></li><li class="item154"><a href="../foss-forum.html"><span>自由專欄</span></a></li><li class="item162"><a href="../enterprise-application.html"><span>企業應用</span></a></li><li class="item44"><a href="../foss-projects.html"><span>源碼專案</span></a></li></ul>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		                <div class="square1">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<p style="text-align: center;"><a href="../../news%3Fformat=feed&amp;type=rss" target="_black"><img src="../../images/M_images/news-rss-feed.png" border="0" /></a><br /><a href="https://www.openfoundry.org/rss-feed/Newsletter" target="_black"><img src="../../images/M_images/newsletter-rss-feed.png" border="0" /></a></p>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		
+                </div>
+            </div>
+
+                    <div class="clear"></div>
+                </div>
+            </div>
+																													</div>
+										<div id="rt-copyright">
+						<div class="rt-grid-12 rt-alpha rt-omega">
+                        <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<div id="desktop-mobile-version-switch"><span id="mobile-version" class="version-switch"><a href="8659--issue-tracking-system-.html#">行動版</a></span></div>
+自由軟體鑄造場 製作 最佳瀏覽狀態：IE7或Firefox2.0以上 (建議使用Firefox) ‧ 解析度1024*768 <br /> <strong>E-Mail</strong>：<a href="mailto:contact@openfoundry.org">contact@openfoundry.org</a> <strong>Address</strong>：台北市南港區研究院路2段128號 中央研究院資訊科學研究所 . <a href="../../privacy-policy.html">隱私權條款</a>. <a href="../../terms-of-use.html">使用條款</a><span style="position: relative; top: 8px; margin-top: -8px;"> <a href="../../about/8101.html"><img src="../../images/M_images/rss-feed-all.png" border="0" /></a></span>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+        	
+</div>
+						<div class="clear"></div>
+					</div>
+					<div class="rt-footer-bottom-wrap"><div class="rt-footer-bottom"><div class="rt-footer-bottom2"><div class="rt-footer-bottom3"></div></div></div></div>
+									</div></div></div>
+				<div class="rt-surround-bottom"><div class="rt-surround-bottom2"><div class="rt-surround-bottom3"></div></div></div>
+							</div>
+		</div>
+		<!--
+		<script id="aptureScript">
+						(function (){var a=document.createElement("script");a.defer="true";a.src="http://www.apture.com/js/apture.js?siteToken=vsJttrn";document.getElementsByTagName("head")[0].appendChild(a);})();
+     </script>
+-->
+
+<!-- Piwik -->
+<!-- 			<script type="text/javascript">
+			  var _paq = _paq || [];
+		  _paq.push(["trackPageView"]);
+		  _paq.push(["enableLinkTracking"]);
+
+		    (function() {
+			        var u=(("https:" == document.location.protocol) ? "https" : "https") + "://www.openfoundry.org/piwik/";
+				    _paq.push(["setTrackerUrl", u+"piwik.php"]);
+				    _paq.push(["setSiteId", "1"]);
+				        var d=document, g=d.createElement("script"), s=d.getElementsByTagName("script")[0]; g.type="text/javascript";
+				        g.defer=true; g.async=true; g.src=u+"piwik.js"; s.parentNode.insertBefore(g,s);
+					  })();
+		  </script> -->
+<!-- End Piwik Code -->
+	</body>
+</html>

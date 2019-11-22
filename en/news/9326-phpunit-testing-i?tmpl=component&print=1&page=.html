@@ -1,0 +1,565 @@
+	<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+	<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-gb" lang="en-gb" >
+		<head>
+			  <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+  <meta name="robots" content="noindex, nofollow" />
+  <meta name="keywords" content="OSSFNL869" />
+  <meta name="title" content="第一次用 PHPUnit 寫測試就上手（上）" />
+  <meta name="description" content="一、什麼是測試？測試的重要性？ 開發者在撰寫程式的時候，程式不大可能會沒有問題，所以通常就需要驗證程式的執行是不是符合預期。測試程式能用來驗證程式程式的運作是不是正常的，並發現程式中的錯誤，以增加軟體品質。 下面是一個活動報名的系統： 這一個活動報名系統主要提供使用者報名活動，在報名活動內還有一些子功能，像是「限制活動報名人數」，如果是這一個子功能，該如何測試呢？ 直覺想到可能就需要有 20" />
+  <meta name="generator" content="" />
+  <title>第一次用 PHPUnit 寫測試就上手（上）</title>
+  <link href="../../favicon.ico" rel="shortcut icon" type="image/x-icon" />
+  <link rel="stylesheet" href="../../components/com_gantry/css/gantry.css" type="text/css" />
+  <link rel="stylesheet" href="../../components/com_gantry/css/grid-12.css" type="text/css" />
+  <link rel="stylesheet" href="../../components/com_gantry/css/joomla.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/joomla.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/style1.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/light-body.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/demo-styles.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/template.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/typography.css" type="text/css" />
+  <style type="text/css">
+    <!--
+#rt-main-surround ul.menu li.active > a, #rt-main-surround ul.menu li.active > .separator, #rt-main-surround ul.menu li.active > .item, #rt-main-surround .square4 ul.menu li:hover > a, #rt-main-surround .square4 ul.menu li:hover > .item, #rt-main-surround .square4 ul.menu li:hover > .separator, .roktabs-links ul li.active span {color:#0088B5;}
+a, #rt-main-surround ul.menu a:hover, #rt-main-surround ul.menu .separator:hover, #rt-main-surround ul.menu .item:hover {color:#0088B5;}
+    -->
+  </style>
+  <script type="text/javascript" src="../../components/com_jcomments/js/jcomments-v2.1.js%3Fv=2"></script>
+  <script type="text/javascript" src="../../components/com_jcomments/libraries/joomlatune/ajax.js"></script>
+  <script type="text/javascript" src="../../media/system/js/mootools.js"></script>
+  <script type="text/javascript" src="../../media/system/js/caption.js"></script>
+  <script type="text/javascript" src="../../components/com_gantry/js/gantry-buildspans.js"></script>
+  <script type="text/javascript" src="../../components/com_gantry/js/gantry-inputs.js"></script>
+  <script type="text/javascript">
+
+			window.addEvent('domready', function() {
+				var modules = ['rt-block'];
+				var header = ['h3','h2','h1'];
+				GantryBuildSpans(modules, header);
+			});
+		InputsExclusion.push('.content_vote','#rt-popup')
+  </script>
+		</head>
+		<body  class="backgroundlevel-low backgroundstyle-style8 bodylevel-med bodystyle-light cssstyle-style1 logostyle-dark font-family-helvetica font-size-is-default menu-type-fusionmenu col12 ">
+			<div id="rt-main-surround">
+				<div class="rt-container">
+					<div class="rt-block">
+						<div id="rt-mainbody">
+					    	
+<div class="rt-joomla ">
+	<div class="rt-article">
+		
+				<div class="rt-headline"><h1 class="rt-article-title">第一次用 PHPUnit 寫測試就上手（上）</h1>		</div>
+		<div class="clear"></div>
+		
+		
+		
+				<div class="rt-articleinfo">
+						<div class="rt-article-icons">
+				<a href="9326-phpunit-testing-i%3Ftmpl=component&amp;print=1&amp;page=.html#" onclick="window.print();return false;"><span class="icon print"></span></a>									<span class="icon printscreen">
+						<a href="9326-phpunit-testing-i%3Ftmpl=component&amp;print=1&amp;page=.html#" onclick="window.print();return false;"><img src="../../images/M_images/printButton.png" alt="Print"  /></a>					</span>
+							</div>
+			
+			<span class="rt-date-posted">
+						 Created at			Monday, 29 December 2014 15:19						&nbsp;&nbsp;&nbsp;&nbsp;						Last Updated on Wednesday, 14 January 2015 15:50						</span>
+
+						<span class="rt-author">
+				Written by 黃儀銘／文			</span>
+				
+					</div>
+		
+		
+		<h3 id="一什麼是測試測試的重要性">一、什麼是測試？測試的重要性？</h3>
+<p>開發者在撰寫程式的時候，程式不大可能會沒有問題，所以通常就需要驗證程式的執行是不是符合預期。測試程式能用來驗證程式程式的運作是不是正常的，並發現程式中的錯誤，以增加軟體品質。</p>
+<p>下面是一個活動報名的系統：</p>
+
+<p><img title="title" src="../../images/141230/PHP-1_resized.jpg" alt="測試活動報名系統" /></p>
+<p>這一個活動報名系統主要提供使用者報名活動，在報名活動內還有一些子功能，像是「限制活動報名人數」，如果是這一個子功能，該如何測試呢？</p>
+<p>直覺想到可能就需要有 20 個以上的使用者，然後讓這個些使用者分別來報名活動，如果沒超過限制的人數，使用者就能繼續報名，反之，超過了限制人數的話，使用者就無法繼續報名了。說到這裡，會覺得這是什麼測試！</p>
+<p>先分析一下，照上面的方法進行測試會有什麼問題：</p>
+<ol>
+<li>
+<p><strong>測試案例一多，會花太多時間</strong></p>
+<ul>
+<li>這時候，如果再增加報名截止日期的測試，這樣又需要再對報名功能測試一次。</li>
+</ul>
+</li>
+<li>
+<p><strong>改了程式碼之後，需要再做一次測試</strong></p>
+<ul>
+<li>日後維護時，會需要再次修改程式碼，但是，改了程式碼之後，該如何驗證修改後的程式運作上是沒問題的？所以，可能又要再次從頭做一次測試。</li>
+</ul>
+</li>
+<li>
+<p><strong>與其他程式混在一起測試</strong></p>
+<ul>
+<li>要執行報名功能的程式碼，要透過 view 的程式去呼叫。但是，這樣做測試的時候，如果測試失敗，就必須花時間去找出是報名的程式出問題，還是 view 程式。</li>
+</ul>
+</li>
+</ol>
+<p>那該如何解決這些問題呢？針對開發者來說，需要一個可以自動化、重複的、獨立的測試。</p>
+<h3 id="二單元測試">二、單元測試</h3>
+<p>單元測試是分別對程式的單元，例如：函式 (function)、方法 (method)，進行測試，測試時會判斷單元的執行結果是不是有符合預期。</p>
+<p><img title="title" src="../../images/141230/PHP-2_resized.jpg" alt="Event &amp; EventTest" /></p>
+<p>從上圖可以看到，撰寫了<code>Event</code> 類別提供了兩個方法，<code>reserve()</code>、<code>unreserve()</code>，也就是目標程式。 <br /> 接著透過 <code>EventTest</code> 的兩個測試案例，<code>testReserve()</code> 與 <code>testUnreserve()</code> 分別來對 <code>Event</code> 類別中的兩個類別方法執行測試，測試的結果會在測試案例中驗證，如果驗證通過，表示測試就成功了！</p>
+<h4 id="單元測試能協助開發者什麼">單元測試能協助開發者什麼？</h4>
+<ol>
+<li>
+<p><strong>確保單元的執行結果</strong></p>
+<ul>
+<li>這一點蠻覺得就可以了解到，單元測試能協助驗證目標程式的執行結果。</li>
+</ul>
+</li>
+<li>
+<p><strong>儘早發現程式中的錯誤</strong></p>
+<ul>
+<li>因為單元測試是在開發的時候就進行的，所以能發現程式中存在的問題。</li>
+<li>沒使用單元測試的時候，寫好了一份程式，但是，這份程式碼需要與其他程式碼整合才有辦法運作。所以就需要等整個程式開發的差不多的時候，才能對程式進行測試，在測試出現問題的時候，會花許多時間來釐清是那一份程式導致的問題。</li>
+<li>如果使用單元測試，就能在寫好了一份程式之後進行單元測試，而不用等到之後才對程式測試。</li>
+</ul>
+</li>
+<li>
+<p><strong>修改程式，更加有信心</strong></p>
+<ul>
+<li>程式寫好了，需要維護、修 bug，如果修改了程式碼後，能確定修改後的程式與之前的正常運作是一樣的嗎？單元測試能協助修改程式後，對程式執行測試，如果測試過了，表示程式的運作是正常的，測試失敗的話，可能需要再回頭修改程式。</li>
+</ul>
+</li>
+<li>
+<p><strong>測試即文件</strong></p>
+<ul>
+<li>在撰寫測試的時候，會對單元所提供的功能進行驗證，所以，除了能透過程式來瞭解單元的運作外，也能用所撰寫的單元測試來知道，被測試的單元有哪些運作及功能。</li>
+<li>在開發的時候，會撰寫一些文件來作為軟體的文件，在實際上，有時候那些文件並不一定會隨著程式變更而修改，到後來會變成之前所做的文件跟程式是不同步的。</li>
+<li>因為，單元測試的程式會對目標程式進行驗證，所以，測試能避免掉傳統文件所造成的程式與文件不同步的問題。</li>
+</ul>
+</li>
+</ol>
+<h3 id="三簡介-phpunit">三、簡介 PHPUnit</h3>
+<p>PHPUnit 是 PHP 程式語言中最常見的單元測試 (unit testing) 框架，PHPUnit 是參考 xUnit 架構利用 PHP 實作出來。</p>
+<p>為什麼要使用 PHPUnit 來測試呢？雖然，要做單元測試可以自己寫程式來測試， 但是 PHPUnit 提供了一些測試時常用的 library 及解決測試時會遇到問題的方法，所以我們會使用 PHPUnit 來做單元測試。</p>
+<h3 id="四撰寫-phpunit-測試">四、撰寫 PHPUnit 測試</h3>
+<h4 id="說明">說明</h4>
+<p>在進入正題前，先說明範例程式，之後的程式，會利用一個小專案，活動報名系統來示範撰寫單元測試。</p>
+<p>活動報名系統主要的功能是提供報名及取消報名。</p>
+<p>示範流程： <br /> 1. 撰寫目標程式的介面及實作 <br /> 2. 撰寫單元測試程式碼 <br /> 3. 執行測試 <br /> 4. 如果測試失敗，回頭看是實作還是測試程式碼的問題</p>
+<p>活動報名系統目錄結構：</p>
+<pre class="prettyprint"><code class=" hljs brainfuck"><span class="hljs-string">.</span><span class="hljs-comment"> </span>
+<span class="hljs-comment">|</span><span class="hljs-literal">-</span><span class="hljs-literal">-</span> <span class="hljs-comment">src</span>     
+<span class="hljs-comment">|</span>  <span class="hljs-comment">'</span><span class="hljs-literal">-</span><span class="hljs-literal">-</span> <span class="hljs-comment">PHPUnitEventDemo</span>
+<span class="hljs-comment">|</span>     <span class="hljs-comment">'</span><span class="hljs-literal">-</span><span class="hljs-literal">-</span> <span class="hljs-comment">Event</span><span class="hljs-string">.</span><span class="hljs-comment">php</span>
+<span class="hljs-comment">|</span>     <span class="hljs-comment">'</span><span class="hljs-literal">-</span><span class="hljs-literal">-</span> <span class="hljs-comment">User</span><span class="hljs-string">.</span><span class="hljs-comment">php</span>
+<span class="hljs-comment">|</span>     
+<span class="hljs-comment">|</span><span class="hljs-literal">-</span><span class="hljs-literal">-</span> <span class="hljs-comment">tests</span>        
+     <span class="hljs-comment">'</span><span class="hljs-literal">-</span><span class="hljs-literal">-</span> <span class="hljs-comment">EventTest</span><span class="hljs-string">.</span><span class="hljs-comment">php</span></code></pre>
+<p>上面是範例程式的目錄架構</p>
+<ul>
+<li>PHPUnitEventDemo - 底下都是目標程式碼 <br />
+<ul>
+<li>Event.php - Event 類別</li>
+<li>User.php - User 類別</li>
+</ul>
+</li>
+<li>tests - 單元測試目錄 <br />
+<ul>
+<li>EventTest.php - 測試 Event 類別的單元測試</li>
+</ul>
+</li>
+</ul>
+<h4 id="1-assertions斷言">1. Assertions（斷言）</h4>
+<p>Assertions 為 PHPUnit 的主要功能，用來驗證單元的執行結果是不是預期值。</p>
+<p>小範例：</p>
+<pre class="prettyprint"><code class="language-php hljs ">assertTrue(<span class="hljs-keyword">true</span>);   <span class="hljs-comment"># SUCCESSFUL</span>
+assertEquals(<span class="hljs-string">'orz'</span>, <span class="hljs-string">'oxz'</span>, <span class="hljs-string">'The string is not equal with orz'</span>);   <span class="hljs-comment">#UNSUCCESSFUL</span>
+assertCount(<span class="hljs-number">1</span>, <span class="hljs-keyword">array</span>(<span class="hljs-string">'Monday'</span>));   <span class="hljs-comment"># SUCCESSFUL</span>
+assertContains(<span class="hljs-string">'PHP'</span>, <span class="hljs-keyword">array</span>(<span class="hljs-string">'PHP'</span>, <span class="hljs-string">'Java'</span>, <span class="hljs-string">'Ruby'</span>));   <span class="hljs-comment"># SUCCESSFUL</span></code></pre>
+<ul>
+<li><code>assertTrue()</code>：判斷實際值是否為 <code>true</code>。</li>
+<li><code>assertEquals()</code>：預期值是 <code>orz</code>，實際值是 <code>oxz</code>，因為兩個值不相等，所以這一個斷言失敗，會顯示 <code>The string is not equal with orz</code> 的字串。</li>
+<li><code>assertCount()</code>：預期陣列大小為 1。</li>
+<li><code>assertContains()</code>：預期陣列內有一個 <code>PHP</code> 字串的元素存在。</li>
+</ul>
+<p>從上面的後三個 assertions 可以發現，預期值都是在第一個參數，而後面則是實際值。</p>
+<p><strong>● 測試 1 - 提供使用者報名</strong></p>
+<p>預期結果：</p>
+<ol>
+<li>符合的報名人數。</li>
+<li>報名的名單中有已經報名的使用者。</li>
+</ol>
+<p>接下來開始撰寫 <code>User</code> 及 <code>Event</code> 類別。</p>
+<p><strong>src/PHPUnitEventDemo/User.php</strong></p>
+<div class="highlight">
+<pre><span class="cp"><!--?php </span-->
+
+<span class="k">namespace</span> <span class="nx">PHPUnitEventDemo</span><span class="p">;</span>
+
+<span class="k">class</span> <span class="nc">User</span>
+<span class="p">{</span>
+    <span class="k">public</span> <span class="nv">$id</span><span class="p">;</span>
+    <span class="k">public</span> <span class="nv">$name</span><span class="p">;</span>
+    <span class="k">public</span> <span class="nv">$email</span><span class="p">;</span>
+
+    <span class="k">public</span> <span class="k">function</span> <span class="nf">__construct</span><span class="p">(</span><span class="nv">$id</span><span class="p">,</span> <span class="nv">$name</span><span class="p">,</span> <span class="nv">$email</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">id</span> <span class="o">=</span> <span class="nv">$id</span><span class="p">;</span>
+        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">name</span> <span class="o">=</span> <span class="nv">$name</span><span class="p">;</span>
+        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">email</span> <span class="o">=</span> <span class="nv">$email</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</span></pre>
+</div>
+<p><code>User</code> 類別很單純，主要就是建立 <code>User</code> 物件用。</p>
+<p><strong>src/PHPUnitEventDemo/Event.php</strong></p>
+<div class="highlight">
+<pre><span class="cp"><!--?php</span-->
+
+<span class="k">namespace</span> <span class="nx">PHPUnitEventDemo</span><span class="p">;</span>
+
+<span class="k">class</span> <span class="nc">Event</span>
+<span class="p">{</span>
+    <span class="k">public</span> <span class="nv">$id</span><span class="p">;</span>
+    <span class="k">public</span> <span class="nv">$name</span><span class="p">;</span>
+    <span class="k">public</span> <span class="nv">$start_date</span><span class="p">;</span>
+    <span class="k">public</span> <span class="nv">$end_date</span><span class="p">;</span>
+    <span class="k">public</span> <span class="nv">$deadline</span><span class="p">;</span>
+    <span class="k">public</span> <span class="nv">$attendee_limit</span><span class="p">;</span>
+    <span class="k">public</span> <span class="nv">$attendees</span> <span class="o">=</span> <span class="k">array</span><span class="p">();</span>
+
+    <span class="k">public</span> <span class="k">function</span> <span class="nf">__construct</span><span class="p">(</span><span class="nv">$id</span><span class="p">,</span> <span class="nv">$name</span><span class="p">,</span> <span class="nv">$start_date</span><span class="p">,</span> <span class="nv">$end_date</span><span class="p">,</span> <span class="nv">$deadline</span><span class="p">,</span> <span class="nv">$attendee_limit</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">id</span> <span class="o">=</span> <span class="nv">$id</span><span class="p">;</span>
+        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">name</span> <span class="o">=</span> <span class="nv">$name</span><span class="p">;</span>
+        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">start_date</span> <span class="o">=</span> <span class="nv">$start_date</span><span class="p">;</span>
+        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">end_date</span> <span class="o">=</span> <span class="nv">$end_date</span><span class="p">;</span>
+        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">deadline</span> <span class="o">=</span> <span class="nv">$deadline</span><span class="p">;</span>
+        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">attendee_limit</span> <span class="o">=</span> <span class="nv">$attendee_limit</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="k">public</span> <span class="k">function</span> <span class="nf">reserve</span><span class="p">(</span><span class="nv">$user</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="c1">// 使用者報名</span>
+        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">attendees</span><span class="p">[</span><span class="nv">$user</span><span class="o">-&gt;</span><span class="na">id</span><span class="p">]</span> <span class="o">=</span> <span class="nv">$user</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="k">public</span> <span class="k">function</span> <span class="nf">getAttendeeNumber</span><span class="p">()</span>
+    <span class="p">{</span>
+        <span class="k">return</span> <span class="nb">sizeof</span><span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">attendees</span><span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</span></pre>
+</div>
+<p><code>Event</code> 類別有兩個要說明的變數，<code>$attendee_limit</code>、<code>$attendees</code>：</p>
+<ul>
+<li><code>$attendee_limit</code> : 活動限制的報名人數。</li>
+<li><code>$attendees</code> : 陣列型態，每一個元素為一個 <code>User</code> 物件。</li>
+</ul>
+<p>另外 <code>Event</code> 類別內還主有兩個方法，<code>reserve()</code> 及 <code>getAttendeeNumber()</code>：</p>
+<ul>
+<li><code>reserve()</code> : 提供使用者報名，將報名的使用者存在陣列中，陣列的索引值就是使用者的 id。</li>
+<li><code>getAttendeeNumber()</code> : 取得目前報名人數。</li>
+</ul>
+<p>最後，我們需要撰寫 <code>EventTest</code> 來測試 <code>Event</code> 的單元結果是不是符合預期。</p>
+<p><strong>tests/EventTest.php</strong></p>
+<div class="highlight">
+<pre><span class="cp"><!--?php</span-->
+
+<span class="k">class</span> <span class="nc">EventTest</span> <span class="k">extends</span> <span class="nx">PHPUnit_Framework_TestCase</span>
+<span class="p">{</span>
+    <span class="k">public</span> <span class="k">function</span> <span class="nf">testReserve</span><span class="p">()</span>
+    <span class="p">{</span>
+        <span class="c1">// 測試活動報名功能</span>
+        <span class="nv">$eventId</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span> 
+        <span class="nv">$eventName</span> <span class="o">=</span> <span class="s1">'活動1'</span><span class="p">;</span>
+        <span class="nv">$eventStartDate</span> <span class="o">=</span> <span class="s1">'2014-12-24 18:00:00'</span><span class="p">;</span>
+        <span class="nv">$eventEndDate</span> <span class="o">=</span> <span class="s1">'2014-12-24 20:00:00'</span><span class="p">;</span>
+        <span class="nv">$eventDeadline</span> <span class="o">=</span> <span class="s1">'2014-12-23 23:59:59'</span><span class="p">;</span>
+        <span class="nv">$eventAttendeeLimit</span> <span class="o">=</span> <span class="mi">10</span><span class="p">;</span>
+        <span class="nv">$event</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">\PHPUnitEventDemo\Event</span><span class="p">(</span><span class="nv">$eventId</span><span class="p">,</span> 
+            <span class="nv">$eventName</span><span class="p">,</span> <span class="nv">$eventStartDate</span><span class="p">,</span> <span class="nv">$eventEndDate</span><span class="p">,</span> 
+            <span class="nv">$eventDeadline</span><span class="p">,</span> <span class="nv">$eventAttendeeLimit</span><span class="p">);</span>
+
+        <span class="nv">$userId</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+        <span class="nv">$userName</span> <span class="o">=</span> <span class="s1">'User1'</span><span class="p">;</span>
+        <span class="nv">$userEmail</span> <span class="o">=</span> <span class="s1">'
+ <script language='JavaScript' type='text/javascript'>
+ <!--
+ var prefix = 'm&#97;&#105;lt&#111;:';
+ var suffix = '';
+ var attribs = '';
+ var path = 'hr' + 'ef' + '=';
+ var addy79277 = '&#117;s&#101;r1' + '&#64;';
+ addy79277 = addy79277 + '&#111;p&#101;nf&#111;&#117;ndry' + '&#46;' + '&#111;rg';
+ document.write( '<a ' + path + '\'' + prefix + addy79277 + suffix + '\'' + attribs + '>' );
+ document.write( addy79277 );
+ document.write( '<\/a>' );
+ //-->
+ </script> <script language='JavaScript' type='text/javascript'>
+ <!--
+ document.write( '<span style=\'display: none;\'>' );
+ //-->
+ </script>This e-mail address is being protected from spambots. You need JavaScript enabled to view it
+ <script language='JavaScript' type='text/javascript'>
+ <!--
+ document.write( '</' );
+ document.write( 'span>' );
+ //-->
+ </script>'</span><span class="p">;</span>
+        <span class="nv">$user</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">\PHPUnitEventDemo\User</span><span class="p">(</span><span class="nv">$userId</span><span class="p">,</span> <span class="nv">$userName</span><span class="p">,</span> <span class="nv">$userEmail</span><span class="p">);</span>
+        <span class="c1">// 使用者報名活動</span>
+        <span class="nv">$event</span><span class="o">-&gt;</span><span class="na">reserve</span><span class="p">(</span><span class="nv">$user</span><span class="p">);</span>
+
+        <span class="nv">$expectedNumber</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+        <span class="c1">// 預期報名人數</span>
+        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">assertEquals</span><span class="p">(</span><span class="nv">$expectedNumber</span><span class="p">,</span> <span class="nv">$event</span><span class="o">-&gt;</span><span class="na">getAttendeeNumber</span><span class="p">());</span>
+        <span class="c1">// 報名清單中有已經報名的人</span>
+        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">assertContains</span><span class="p">(</span><span class="nv">$user</span><span class="p">,</span> <span class="nv">$event</span><span class="o">-&gt;</span><span class="na">attendees</span><span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</span></pre>
+</div>
+<ul>
+<li><code>EventTest</code> 會繼承了 PHPUnit 的類別 <code>PHPUnit_Framework_TestCase。</code></li>
+<li><code>EventTest</code> 內有一個測試案例 <code>testReserve()</code>。</li>
+<li><code>testReserve()</code> 內主要會建立一個 <code>User</code> 及 <code>Event</code> 物件，使用者再去報名一個活動，所以活動已經有一個人報名了。</li>
+<li>接下來的斷言，<code>assertEquals()</code> 會預期活動報名人數有 1 個人。</li>
+<li><code>assertContains()</code> 預期在活動報名清單內，已經有已報名的使用者。</li>
+</ul>
+<p><strong>執行測試</strong></p>
+<pre class="prettyprint"><code class="language-sh hljs livecodeserver">$ phpunit <span class="hljs-comment">--bootstrap vendor/autoload.php tests/EventTest</span>
+PHPUnit <span class="hljs-number">4.4</span><span class="hljs-number">.0</span> <span class="hljs-keyword">by</span> Sebastian Bergmann.
+
+.
+
+Time: <span class="hljs-number">56</span> ms, Memory: <span class="hljs-number">3.25</span>Mb
+
+OK (<span class="hljs-number">1</span> test, <span class="hljs-number">2</span> assertions)</code></pre>
+<p>. 表示測試了一個測試案例，且通過測試。</p>
+<p><strong>● 測試 2 - 提供使用者取消報名</strong></p>
+<p>活動除了可以讓使用者報名外，也能取消報名，但是要測試取消報名需要有人報名才能取消。</p>
+<p>實作取消報名</p>
+<p><strong>src/PHPUnitEventDemo/Event.php</strong></p>
+<div class="highlight">
+<pre><span class="cp"><!--?php</span-->
+
+<span class="k">namespace</span> <span class="nx">PHPUnitEventDemo</span><span class="p">;</span>
+
+<span class="k">class</span> <span class="nc">Event</span>
+<span class="p">{</span>
+    <span class="c1">// ignore ...</span>
+
+    <span class="k">public</span> <span class="k">function</span> <span class="nf">unreserve</span><span class="p">(</span><span class="nv">$user</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="nb">unset</span><span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">attendees</span><span class="p">[</span><span class="nv">$user</span><span class="o">-&gt;</span><span class="na">id</span><span class="p">]);</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</span></pre>
+</div>
+<p>取消報名的實作很簡單，因為 <code>Event</code> 物件的 <code>$attendees</code> 陣列索引值為使用者的 id，所以使用者要取消報名時，只要將 <code>$attendees</code> 對應到使用者 id 陣列索引值的元素給刪掉。</p>
+<p><strong>tests/EventTest.php</strong></p>
+<div class="highlight">
+<pre><span class="cp"><!--?php</span-->
+
+<span class="k">class</span> <span class="nc">EventTest</span> <span class="k">extends</span> <span class="nx">PHPUnit_Framework_TestCase</span>
+<span class="p">{</span>
+    <span class="sd">/**</span>
+<span class="sd">    *   不應該把兩個不同的測試放在一起</span>
+<span class="sd">    */</span>
+    <span class="k">public</span> <span class="k">function</span> <span class="nf">testReserveAndUnreserve</span><span class="p">()</span>
+    <span class="p">{</span>
+        <span class="nv">$eventId</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span> 
+        <span class="nv">$eventName</span> <span class="o">=</span> <span class="s1">'活動1'</span><span class="p">;</span>
+        <span class="nv">$eventStartDate</span> <span class="o">=</span> <span class="s1">'2014-12-24 18:00:00'</span><span class="p">;</span>
+        <span class="nv">$eventEndDate</span> <span class="o">=</span> <span class="s1">'2014-12-24 20:00:00'</span><span class="p">;</span>
+        <span class="nv">$eventDeadline</span> <span class="o">=</span> <span class="s1">'2014-12-23 23:59:59'</span><span class="p">;</span>
+        <span class="nv">$eventAttendeeLimit</span> <span class="o">=</span> <span class="mi">10</span><span class="p">;</span>
+        <span class="nv">$event</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">\PHPUnitEventDemo\Event</span><span class="p">(</span><span class="nv">$eventId</span><span class="p">,</span> <span class="nv">$eventName</span><span class="p">,</span> <span class="nv">$eventStartDate</span><span class="p">,</span> <span class="nv">$eventEndDate</span><span class="p">,</span> <span class="nv">$eventDeadline</span><span class="p">,</span> <span class="nv">$eventAttendeeLimit</span><span class="p">);</span>
+
+        <span class="nv">$userId</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+        <span class="nv">$userName</span> <span class="o">=</span> <span class="s1">'User1'</span><span class="p">;</span>
+        <span class="nv">$userEmail</span> <span class="o">=</span> <span class="s1">'
+ <script language='JavaScript' type='text/javascript'>
+ <!--
+ var prefix = 'm&#97;&#105;lt&#111;:';
+ var suffix = '';
+ var attribs = '';
+ var path = 'hr' + 'ef' + '=';
+ var addy12792 = '&#117;s&#101;r1' + '&#64;';
+ addy12792 = addy12792 + '&#111;p&#101;nf&#111;&#117;ndry' + '&#46;' + '&#111;rg';
+ document.write( '<a ' + path + '\'' + prefix + addy12792 + suffix + '\'' + attribs + '>' );
+ document.write( addy12792 );
+ document.write( '<\/a>' );
+ //-->
+ </script> <script language='JavaScript' type='text/javascript'>
+ <!--
+ document.write( '<span style=\'display: none;\'>' );
+ //-->
+ </script>This e-mail address is being protected from spambots. You need JavaScript enabled to view it
+ <script language='JavaScript' type='text/javascript'>
+ <!--
+ document.write( '</' );
+ document.write( 'span>' );
+ //-->
+ </script>'</span><span class="p">;</span>
+        <span class="nv">$user</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">\PHPUnitEventDemo\User</span><span class="p">(</span><span class="nv">$userId</span><span class="p">,</span> <span class="nv">$userName</span><span class="p">,</span> <span class="nv">$userEmail</span><span class="p">);</span>
+
+        <span class="c1">// 使用者報名活動</span>
+        <span class="nv">$event</span><span class="o">-&gt;</span><span class="na">reserve</span><span class="p">(</span><span class="nv">$user</span><span class="p">);</span>
+
+        <span class="nv">$expectedNumber</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+        <span class="c1">// 預期報名人數</span>
+        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">assertEquals</span><span class="p">(</span><span class="nv">$expectedNumber</span><span class="p">,</span> <span class="nv">$event</span><span class="o">-&gt;</span><span class="na">getAttendeeNumber</span><span class="p">());</span>
+        <span class="c1">// 報名清單中有已經報名的人</span>
+        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">assertContains</span><span class="p">(</span><span class="nv">$user</span><span class="p">,</span> <span class="nv">$event</span><span class="o">-&gt;</span><span class="na">attendees</span><span class="p">);</span>
+
+        <span class="c1">// 使用者取消報名</span>
+        <span class="nv">$event</span><span class="o">-&gt;</span><span class="na">unreserve</span><span class="p">(</span><span class="nv">$user</span><span class="p">);</span>
+
+        <span class="nv">$unreserveExpectedCount</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+        <span class="c1">// 預期報名人數</span>
+        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">assertEquals</span><span class="p">(</span><span class="nv">$unreserveExpectedCount</span><span class="p">,</span> <span class="nv">$event</span><span class="o">-&gt;</span><span class="na">getAttendeeNumber</span><span class="p">());</span>
+        <span class="c1">// 報名清單中沒有已經取消報名的人</span>
+        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">assertNotContains</span><span class="p">(</span><span class="nv">$user</span><span class="p">,</span> <span class="nv">$event</span><span class="o">-&gt;</span><span class="na">attendees</span><span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</span></pre>
+</div>
+<p>把報名與取消報名的功能放在同一個測試案例內，這樣是不好的做法，因為，單元測試是分別對每一個單元做驗證，所以需要把報名與取消報名的功能分開測試，寫成不同的測試案例。</p>
+<p>該如何將報名與取消報名測試分開呢？往下一個部分 Test Dependencies 看下去。</p>
+<h4 id="2-test-dependencies相依測試">2. Test Dependencies（相依測試）</h4>
+<p>相依測試，如果有兩個測試案例，具有相依關係，就可以使用 test dependencies 在兩個測試案例建立相依關係。</p>
+<p>承接上面要把報名與取消報名測試分開的問題，可以將報名與取消報名分成兩個測試案例，讓取消報名的測試相依於報名的測試。</p>
+<p><strong>tests/EventTest.php</strong></p>
+<div class="highlight">
+<pre><span class="cp"><!--?php</span-->
+
+<span class="k">class</span> <span class="nc">EventTest</span> <span class="k">extends</span> <span class="nx">PHPUnit_Framework_TestCase</span>
+<span class="p">{</span>
+    <span class="k">public</span> <span class="k">function</span> <span class="nf">testReserve</span><span class="p">()</span>
+    <span class="p">{</span>
+        <span class="nv">$eventId</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span> 
+        <span class="nv">$eventName</span> <span class="o">=</span> <span class="s1">'活動1'</span><span class="p">;</span>
+        <span class="nv">$eventStartDate</span> <span class="o">=</span> <span class="s1">'2014-12-24 18:00:00'</span><span class="p">;</span>
+        <span class="nv">$eventEndDate</span> <span class="o">=</span> <span class="s1">'2014-12-24 20:00:00'</span><span class="p">;</span>
+        <span class="nv">$eventDeadline</span> <span class="o">=</span> <span class="s1">'2014-12-23 23:59:59'</span><span class="p">;</span>
+        <span class="nv">$eventAttendeeLimit</span> <span class="o">=</span> <span class="mi">10</span><span class="p">;</span>
+        <span class="nv">$event</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">\PHPUnitEventDemo\Event</span><span class="p">(</span><span class="nv">$eventId</span><span class="p">,</span>  <span class="nv">$eventName</span><span class="p">,</span> <span class="nv">$eventStartDate</span><span class="p">,</span> <span class="nv">$eventEndDate</span><span class="p">,</span> <span class="nv">$eventDeadline</span><span class="p">,</span> <span class="nv">$eventAttendeeLimit</span><span class="p">);</span>
+
+        <span class="nv">$userId</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+        <span class="nv">$userName</span> <span class="o">=</span> <span class="s1">'User1'</span><span class="p">;</span>
+        <span class="nv">$userEmail</span> <span class="o">=</span> <span class="s1">'</span>
+<span class="s1"> 
+ <script language='JavaScript' type='text/javascript'>
+ <!--
+ var prefix = 'm&#97;&#105;lt&#111;:';
+ var suffix = '';
+ var attribs = '';
+ var path = 'hr' + 'ef' + '=';
+ var addy56838 = '&#117;s&#101;r1' + '&#64;';
+ addy56838 = addy56838 + '&#111;p&#101;nf&#111;&#117;ndry' + '&#46;' + '&#111;rg';
+ document.write( '<a ' + path + '\'' + prefix + addy56838 + suffix + '\'' + attribs + '>' );
+ document.write( addy56838 );
+ document.write( '<\/a>' );
+ //-->
+ </script> <script language='JavaScript' type='text/javascript'>
+ <!--
+ document.write( '<span style=\'display: none;\'>' );
+ //-->
+ </script>This e-mail address is being protected from spambots. You need JavaScript enabled to view it
+ <script language='JavaScript' type='text/javascript'>
+ <!--
+ document.write( '</' );
+ document.write( 'span>' );
+ //-->
+ </script> '</span><span class="p">;</span>
+        <span class="nv">$user</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">\PHPUnitEventDemo\User</span><span class="p">(</span><span class="nv">$userId</span><span class="p">,</span> <span class="nv">$userName</span><span class="p">,</span> <span class="nv">$userEmail</span><span class="p">);</span>
+
+        <span class="c1">// 使用者報名活動</span>
+        <span class="nv">$event</span><span class="o">-&gt;</span><span class="na">reserve</span><span class="p">(</span><span class="nv">$user</span><span class="p">);</span>
+
+        <span class="nv">$expectedNumber</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+        <span class="c1">// 預期報名人數</span>
+        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">assertEquals</span><span class="p">(</span><span class="nv">$expectedNumber</span><span class="p">,</span> <span class="nv">$event</span><span class="o">-&gt;</span><span class="na">getAttendeeNumber</span><span class="p">());</span>
+        <span class="c1">// 報名清單中有已經報名的人</span>
+        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">assertContains</span><span class="p">(</span><span class="nv">$user</span><span class="p">,</span> <span class="nv">$event</span><span class="o">-&gt;</span><span class="na">attendees</span><span class="p">);</span>
+
+        <span class="k">return</span> <span class="p">[</span><span class="nv">$event</span><span class="p">,</span> <span class="nv">$user</span><span class="p">];</span>
+    <span class="p">}</span>
+
+    <span class="sd">/**</span>
+<span class="sd">     *  @depends testReserve</span>
+<span class="sd">     */</span>
+    <span class="k">public</span> <span class="k">function</span> <span class="nf">testUnreserve</span><span class="p">(</span><span class="nv">$objs</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="nv">$event</span> <span class="o">=</span> <span class="nv">$objs</span><span class="p">[</span><span class="mi">0</span><span class="p">];</span>
+        <span class="nv">$user</span> <span class="o">=</span> <span class="nv">$objs</span><span class="p">[</span><span class="mi">1</span><span class="p">];</span>
+
+        <span class="c1">// 使用者取消報名</span>
+        <span class="nv">$event</span><span class="o">-&gt;</span><span class="na">unreserve</span><span class="p">(</span><span class="nv">$user</span><span class="p">);</span>
+
+        <span class="nv">$unreserveExpectedCount</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+        <span class="c1">// 預期報名人數</span>
+        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">assertEquals</span><span class="p">(</span><span class="nv">$unreserveExpectedCount</span><span class="p">,</span> <span class="nv">$event</span><span class="o">-&gt;</span><span class="na">getAttendeeNumber</span><span class="p">());</span>
+        <span class="c1">// 報名清單中沒有已經取消報名的人</span>
+        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">assertNotContains</span><span class="p">(</span><span class="nv">$user</span><span class="p">,</span> <span class="nv">$event</span><span class="o">-&gt;</span><span class="na">attendees</span><span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</span></pre>
+</div>
+<p>把原本的<code>testReserveAndUnreserve()</code> 拆成兩個測試：</p>
+<ul>
+<li><code>testReserve()</code> : 測試報名功能</li>
+<li><code>testUnreserve()</code> : 測試取消報名</li>
+</ul>
+<p><strong>Producer 與 Consumer</strong></p>
+<p><code>testUnreserve()</code> 在註解內有利用 <code>@depends testReserve()</code> 標註相依於 <code>testReserve()</code> 測試，而被相依的測試可以當作 producer，將值傳給相依的測試 <code>testUnreserve()</code> 為 consumer，透過引數接收。</p>
+<p>這樣就能將報名 <code>testReserve()</code> 與取消報名 <code>testUnreserve()</code> 測試分開，<code>testUnreserve()</code> 會接收來自 <code>testReserve()</code> 的回傳值，為一個兩個元素的陣列，陣列的第一個元素為，已經有人報名的 <code>Event</code> 物件，第二個元素為 <code>User</code> 物件，是已經報名的使用者。</p>
+<p>如果 <code>testReserve()</code> 執行失敗，<code>testUnreserve()</code> 會執行嗎？ <br /> 是不會的，當被相依的測試案例如果測試失敗，那相依的測試就會忽略執行。</p>
+<p>我們可以試著將 <code>testReserve()</code> 故意測試失敗，只要將針對 <code>Event</code> 物件的 <code>getAttendeeNumber()</code> 斷言的預期值，從 1 改成 0 就可以讓 <code>testReserve()</code> 測試失敗，接著再執行測試：</p>
+<pre class="prettyprint"><code class="language-sh hljs lasso">$ phpunit <span class="hljs-subst">--</span>bootstrap vendor/autoload<span class="hljs-built_in">.</span>php tests/EventTest
+PHPUnit <span class="hljs-number">4.4</span><span class="hljs-number">.0</span> <span class="hljs-keyword">by</span> Sebastian Bergmann<span class="hljs-built_in">.</span>
+
+FS
+
+Time: <span class="hljs-number">73</span> ms, Memory: <span class="hljs-number">3.50</span>Mb
+
+There was <span class="hljs-number">1</span> failure:
+
+<span class="hljs-number">1</span>) EventTest<span class="hljs-tag">::testReserve</span>
+Failed asserting that <span class="hljs-number">1</span> matches expected <span class="hljs-number">0.</span>
+
+/Users/aming/git/Hands<span class="hljs-attribute">-On</span><span class="hljs-attribute">-Writing</span><span class="hljs-attribute">-Unit</span><span class="hljs-attribute">-Testing</span><span class="hljs-attribute">-With</span><span class="hljs-attribute">-PHPUnit</span>/tests/EventTest<span class="hljs-built_in">.</span>php:<span class="hljs-number">15</span>
+
+FAILURES<span class="hljs-subst">!</span>
+Tests: <span class="hljs-number">1</span>, Assertions: <span class="hljs-number">2</span>, Failures: <span class="hljs-number">1</span>, Skipped: <span class="hljs-number">1.</span></code></pre>
+<h3>（待續...）</h3>
+			<!-- Show relate article -->
+		<br><br><h4>You may be interested in the following articles:</h4><ul><li><a href='../../tech-column/9328.html'>第一次用 PHPUnit 寫測試就上手（下）</a> - <span class='date-posted'>2014-12-29</span></li></ul>		<!-- end -->
+		<div class="article_note">
+		<!-- Add tags use metakey, and show OSSF Newsletter tag: OSSFNL+NUM-->
+		<br><br> <hr style='border: 1px dashed #D2DADB;'><b>OSSF Newsletter&nbsp;:</b>&nbsp;<a href='../../previous-issue%3Ftask=view&amp;id=869.html'>第 256 期 第一次用 PHPUnit 寫測試就上手（上）</a><br>				<!-- End -->
+					<br>
+					<b>Category: </b><a href="../tech-column.html">				Tech Column					</a>				</div>
+			 <!-- AddThis Button BEGIN ID 3001 is the front page article -->
+     			<br><br>
+       <div class="addthis_toolbox addthis_default_style addthis_32x32_style">
+       <a class="addthis_button_preferred_1"></a>
+       <a class="addthis_button_preferred_2"></a>
+       <a class="addthis_button_preferred_3"></a>
+       <a class="addthis_button_preferred_4"></a>
+       <a class="addthis_button_compact"></a>
+       <a class="addthis_counter addthis_bubble_style"></a>
+       </div>
+       <script type="text/javascript">var addthis_config = {"data_track_clickback":true};</script>
+       <script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js#pubid=openfoundry"></script>
+       <!-- AddThis Button END -->
+     <br>
+		<div class="totop" ><a class="rt-totop" href="9326-phpunit-testing-i%3Ftmpl=component&amp;print=1&amp;page=.html#" style="outline: medium none;">↑ Top</a></div>
+            <!-- AddThis Button END -->
+
+			</div>
+</div>
+
+						</div>
+					</div>
+				</div>
+			</div>
+		</body>
+	</html>

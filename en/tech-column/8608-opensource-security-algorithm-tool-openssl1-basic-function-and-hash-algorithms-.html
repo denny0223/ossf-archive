@@ -1,0 +1,506 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-gb" lang="en-gb" >
+<head>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<link rel="shortcut icon" href="../../images/favicon.ico" />
+	  <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+  <meta name="robots" content="index, follow" />
+  <meta name="keywords" content="Hash algorithms, Encryption/Decryption algorithms, SSL / TLS, OpenSSL, OSSFNL779" />
+  <meta name="title" content="開放源碼的安全演算法工具: OpenSSL (1) - 基礎操作與雜湊演算法" />
+  <meta name="description" content="前言 OpenSSL 提供了完整安全通信所需的編碼工具，諸如雜湊演算法 (Hash algorithms)、加解密演算法 (Encryption/Decryption algorithms) 及 SSL / TLS 協議的實現等。加上其開放源碼的特性，使得許多開源專案或商業套件都有其踪跡。OpenSSL 除了提供程式 API 擴充接口外，也有命令列模式的操作。本篇將著重於命令列模式下的操作。" />
+  <meta name="generator" content="" />
+  <title>開放源碼的安全演算法工具: OpenSSL (1) - 基礎操作與雜湊演算法 - OpenFoundry</title>
+  <link href="../../favicon.ico" rel="shortcut icon" type="image/x-icon" />
+  <link rel="stylesheet" href="../../components/com_jcomments/tpl/default/style.css%3Fv=10.css" type="text/css" />
+  <link rel="stylesheet" href="../../components/com_gantry/css/gantry.css" type="text/css" />
+  <link rel="stylesheet" href="../../components/com_gantry/css/grid-12.css" type="text/css" />
+  <link rel="stylesheet" href="../../components/com_gantry/css/joomla.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/joomla.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/style1.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/light-body.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/demo-styles.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/template.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/typography.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/fusionmenu.css" type="text/css" />
+  <style type="text/css">
+    <!--
+#rt-main-surround ul.menu li.active > a, #rt-main-surround ul.menu li.active > .separator, #rt-main-surround ul.menu li.active > .item, #rt-main-surround .square4 ul.menu li:hover > a, #rt-main-surround .square4 ul.menu li:hover > .item, #rt-main-surround .square4 ul.menu li:hover > .separator, .roktabs-links ul li.active span {color:#0088B5;}
+a, #rt-main-surround ul.menu a:hover, #rt-main-surround ul.menu .separator:hover, #rt-main-surround ul.menu .item:hover {color:#0088B5;}
+    -->
+  </style>
+  <script type="text/javascript" src="../../components/com_jcomments/js/jcomments-v2.1.js%3Fv=2"></script>
+  <script type="text/javascript" src="../../components/com_jcomments/libraries/joomlatune/ajax.js"></script>
+  <script type="text/javascript" src="../../media/system/js/mootools.js"></script>
+  <script type="text/javascript" src="../../media/system/js/caption.js"></script>
+  <script type="text/javascript" src="../../components/com_gantry/js/gantry-buildspans.js"></script>
+  <script type="text/javascript" src="../../components/com_gantry/js/gantry-inputs.js"></script>
+  <script type="text/javascript" src="../../templates/rt_quantive_j15/js/jquery.cookie.js"></script>
+  <script type="text/javascript" src="../../modules/mod_roknavmenu/themes/fusion/js/fusion.js"></script>
+  <script type="text/javascript" src="../../modules/mod_ofssologin/js/ofssologin.js"></script>
+  <script type="text/javascript">
+
+			window.addEvent('domready', function() {
+				var modules = ['rt-block'];
+				var header = ['h3','h2','h1'];
+				GantryBuildSpans(modules, header);
+			});
+		InputsExclusion.push('.content_vote','#rt-popup')
+		        window.addEvent('load', function() {
+					new Fusion('ul.menutop', {
+						pill: 0,
+						effect: 'slide and fade',
+						opacity: 1,
+						hideDelay: 500,
+						centered: 0,
+						tweakInitial: {'x': -2, 'y': 0},
+        				tweakSubsequent: {'x': 0, 'y': -14},
+						menuFx: {duration: 200, transition: Fx.Transitions.Sine.easeOut},
+						pillFx: {duration: 400, transition: Fx.Transitions.Back.easeOut}
+					});
+	            });
+  </script>
+<!-- <script type="text/javascript" src="/sso/javascripts/langsync.js"></script> -->
+<!-- <script src="/templates/rt_quantive_j15/js/ossf.js"></script> -->
+<script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-4136519-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
+</head>
+	<body  class="backgroundlevel-low backgroundstyle-style8 bodylevel-med bodystyle-light cssstyle-style1 logostyle-dark font-family-helvetica font-size-is-default menu-type-fusionmenu col12 ">
+		<div id="rt-main-background">
+			<div class="rt-container">
+																<div id="rt-header">
+					<div class="rt-grid-7 rt-alpha">
+    			<div class="rt-block">
+    	    	<a href="../../index.html" id="rt-logo"></a>
+    		</div>
+	    
+</div>
+<div class="rt-grid-5 rt-omega">
+                    <div class="square9">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<div class="ofssologin_square9"><a href="../../index.html">Login</a>&nbsp;&nbsp|&nbsp;&nbsp;<span><a href="../../tw/tech-column/8608-opensource-security-algorithm-tool-openssl1-basic-function-and-hash-algorithms-.html" ><span lang="tw" xml:lang="tw">繁體中文</span></a></li></ul></span><!--Joom!fish V2.0.4 (Lightning)-->
+<!-- &copy; 2003-2009 Think Network, released under the GPL. -->
+<!-- More information: at http://www.joomfish.net -->
+<div class="ofssologin_search_square9">
+  <form id="of_search" action="https://www.openfoundry.org/of/openfoundry/search" method="get" onsubmit="of_search(); return false;">
+    <select id="of_search_type">
+      <option value="Projects"> Projects </option>
+      <option value="Content"> Content </option>
+      <option value="People"> People </option>
+    </select>
+    <input id="query" name="query" id="mod_search_searchword" maxlength="50" alt="search" class="inputbox" type="text" size="28" value="search..."  onblur="if(this.value=='') this.value='search...';" onfocus="if(this.value=='search...') this.value='';" />
+    <input type="hidden" name="commit" value="search" />
+  </form>
+</div></div>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		
+</div>
+					<div class="clear"></div>
+				</div>
+																<div id="rt-navigation"><div id="rt-navigation2"><div id="rt-navigation3">
+					
+<div class="nopill">
+	<ul class="menutop level1 " >
+						<li class="item1 root" >
+					<a class="orphan item bullet" href="../../index.html"  >
+				<span>
+			    				Home				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item32 root" >
+					<a class="orphan item bullet" href="../../archived.html"  >
+				<span>
+			    				Projects				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item186 root" >
+					<a class="orphan item bullet" href="../community.html"  >
+				<span>
+			    				Who&#039;s Who				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item4 root" >
+					<a class="orphan item bullet" href="../news.html"  >
+				<span>
+			    				News				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item5 root" >
+					<a class="orphan item bullet" href="../law-and-licensing.html"  >
+				<span>
+			    				Law &amp; Licensing				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item3 root" >
+					<a class="orphan item bullet" href="../activities.html"  >
+				<span>
+			    				Activities				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item2 root" >
+					<a class="orphan item bullet" href="../resourcecatalog.html"  >
+				<span>
+			    				Resource Catalog				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item45 root" >
+					<a class="orphan item bullet" href="../about.html"  >
+				<span>
+			    				About				   
+				</span>
+			</a>
+			
+			
+	</li>	
+				</ul>
+</div>
+
+				    <div class="clear"></div>
+				</div></div></div>
+								<div class="rt-surround"><div class="rt-surround2"><div class="rt-surround3">
+										<div id="rt-showcase-section">
+												<div id="rt-showcase">
+							<div class="rt-grid-12 rt-alpha rt-omega">
+    		<div class="clear"></div>
+		
+		
+                <div class="close-note">
+                    <div class="rt-block">
+               					<div class="module-content">
+                	<div style="font-size:medium; background-image:linear-gradient(120deg,#159957,#4298b2);color:white;padding:20px;margin:-10px -18px;">感謝您對「自由軟體鑄造場」的支持與愛護，十多年來「自由軟體鑄造場」受中央研究院支持，並在資訊科學研究所以及資訊科技創新研究中心執行，現已完成階段性的任務。 本網站預計持續維運至 2021年底，網站內容基本上不會再更動。<br />也紀念我們永遠的朋友 李士傑先生（Shih-Chieh Ilya Li）。</div>				</div>
+            </div>
+                </div>
+		
+</div>
+							<div class="clear"></div>
+						</div>
+																	</div>
+															<div id="rt-main-surround">
+												<div id="rt-breadcrumbs">
+								<div class="rt-breadcrumb-surround">
+		<a href="../../index.html" id="breadcrumbs-home"></a>
+		<span class="breadcrumbs pathway">
+<a href="../tech-column.html" class="pathway">Tech Column</a> <img src="../../templates/rt_quantive_j15/images/arrow.png" alt=""  /> <span class="no-link">開放源碼的安全演算法工具: OpenSSL (1) - 基礎操作與雜湊演算法</span></span>
+	</div>
+	
+							<div class="clear"></div>
+						</div>
+																							              <div id="rt-main" class="sa3-mb9">
+                <div class="rt-main-inner">
+                    <div class="rt-grid-9 rt-push-3">
+                                                <div class="rt-block">
+                            							<div class="square1">
+							<div class="rt-module-surround">
+								<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+								<div class="rt-module-inner">
+		                            <div id="rt-mainbody">
+		                                
+<div class="rt-joomla ">
+	<div class="rt-article">
+		
+				<div class="rt-headline"><h1 class="rt-article-title">開放源碼的安全演算法工具: OpenSSL (1) - 基礎操作與雜湊演算法</h1>		</div>
+		<div class="clear"></div>
+		
+		
+		
+				<div class="rt-articleinfo">
+						<div class="rt-article-icons">
+								<a href="8608-opensource-security-algorithm-tool-openssl1-basic-function-and-hash-algorithms-%3Ftmpl=component&amp;print=1&amp;layout=default&amp;page=.html" title="Print" onclick="window.open(this.href,'win2','status=no,toolbar=no,scrollbars=yes,titlebar=no,menubar=no,resizable=yes,width=640,height=480,directories=no,location=no'); return false;" rel="nofollow"><span class="icon print"></span></a>																</div>
+			
+			<span class="rt-date-posted">
+						 Created at			Wednesday, 15 February 2012 09:17						&nbsp;&nbsp;&nbsp;&nbsp;						Last Updated on Tuesday, 21 February 2012 16:51						</span>
+
+						<span class="rt-author">
+				Written by 曾義峰			</span>
+				
+					</div>
+		
+		
+		<h3>前言</h3>
+<div>OpenSSL 提供了完整安全通信所需的編碼工具，諸如雜湊演算法 (Hash algorithms)、加解密演算法 (Encryption/Decryption algorithms) 及 SSL / TLS 協議的實現等。加上其開放源碼的特性，使得許多開源專案或商業套件都有其踪跡。OpenSSL 除了提供程式 API 擴充接口外，也有命令列模式的操作。本篇將著重於命令列模式下的操作。</div>
+
+<div>本專案主要使用 C 程式語言撰寫，於 Windows/Linux/BSD/MacOS 下皆可運行。</div>
+<ul>
+<li>官方網站: <a href="https://www.openssl.org/" target="_blank">https://www.openssl.org/</a></li>
+<li>軟體授權: OpenSSL License 或 SSLeay License 的雙重授權</li>
+</ul>
+<h3>基礎操作</h3>
+<h3>01.查詢目前 OpenSSL 的版本</h3>
+<div>請使用 "version" 為其參數:</div>
+<pre>$ openssl version<br />OpenSSL 0.9.8o 01 Jun 2010</pre>
+<div>若想要了解更詳細的資訊，還可加上 "-a" 的參數:</div>
+<pre>
+<div>&nbsp; &nbsp; $ openssl version -a</div>
+<div>&nbsp; &nbsp; OpenSSL 0.9.8o 01 Jun 2010</div>
+<div>&nbsp; &nbsp; built on: Thu Feb 10 01:49:17 UTC 2011</div>
+<div>&nbsp; &nbsp; platform: debian-i386</div>
+<div>&nbsp; &nbsp; options: &nbsp;bn(64,32) md2(int) rc4(idx,int) des(ptr,risc1,1ong) blowfish(idx)</div>
+<div>&nbsp; &nbsp; compiler: cc -fPIC -DOPENSSL_PIC -DZLIB -DOPENSSL_THREADS -D_REENTRANT -DDSO_DLFCN -DHAVE_DLFCN_H -DL_ENDIAN -DTERMIO -O3 -Wa,--noexecstack -g -Wall</div>
+<div>&nbsp; &nbsp; OPENSSLDIR: "/usr/lib/ssl"</div>
+
+
+
+
+</pre>
+<h3>02.列出 OpenSSL 的使用參數</h3>
+<div>OpenSSL 沒有提供列出參數的功能，但當使用者使用任意非內建的參數時，OpenSSL 預設會列出支援的參數列表:</div>
+<pre>$ openssl -h<br />openssl:Error: '-h' is an invalid command.<br />Standard commands<br />asn1parse &nbsp; &nbsp; &nbsp;ca &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; ciphers &nbsp; &nbsp; &nbsp; &nbsp;crl &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;crl2pkcs7<br />dgst &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; dh &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; dhparam &nbsp; &nbsp; &nbsp; &nbsp;dsa &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;dsaparam<br />ec &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; ecparam &nbsp; &nbsp; &nbsp; &nbsp;enc &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;engine &nbsp; &nbsp; &nbsp; &nbsp; errstr<br />gendh &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;gendsa &nbsp; &nbsp; &nbsp; &nbsp; genrsa &nbsp; &nbsp; &nbsp; &nbsp; nseq &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; ocsp<br />passwd &nbsp; &nbsp; &nbsp; &nbsp; pkcs12 &nbsp; &nbsp; &nbsp; &nbsp; pkcs7 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;pkcs8 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;prime<br />rand &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; req &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;rsa &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;rsautl &nbsp; &nbsp; &nbsp; &nbsp; s_client<br />s_server &nbsp; &nbsp; &nbsp; s_time &nbsp; &nbsp; &nbsp; &nbsp; sess_id &nbsp; &nbsp; &nbsp; &nbsp;smime &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;speed<br />spkac &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;verify &nbsp; &nbsp; &nbsp; &nbsp; version &nbsp; &nbsp; &nbsp; &nbsp;x509<br />Message Digest commands (see the `dgst' command for more details)<br />md2 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;md4 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;md5 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;rmd160 &nbsp; &nbsp; &nbsp; &nbsp; sha<br />sha1<br />Cipher commands (see the `enc' command for more details)<br />aes-128-cbc &nbsp; &nbsp;aes-128-ecb &nbsp; &nbsp;aes-192-cbc &nbsp; &nbsp;aes-192-ecb &nbsp; &nbsp;aes-256-cbc<br />aes-256-ecb &nbsp; &nbsp;base64 &nbsp; &nbsp; &nbsp; &nbsp; bf &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; bf-cbc &nbsp; &nbsp; &nbsp; &nbsp; bf-cfb<br />bf-ecb &nbsp; &nbsp; &nbsp; &nbsp; bf-ofb &nbsp; &nbsp; &nbsp; &nbsp; cast &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; cast-cbc &nbsp; &nbsp; &nbsp; cast5-cbc<br />cast5-cfb &nbsp; &nbsp; &nbsp;cast5-ecb &nbsp; &nbsp; &nbsp;cast5-ofb &nbsp; &nbsp; &nbsp;des &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;des-cbc<br />des-cfb &nbsp; &nbsp; &nbsp; &nbsp;des-ecb &nbsp; &nbsp; &nbsp; &nbsp;des-ede &nbsp; &nbsp; &nbsp; &nbsp;des-ede-cbc &nbsp; &nbsp;des-ede-cfb<br />des-ede-ofb &nbsp; &nbsp;des-ede3 &nbsp; &nbsp; &nbsp; des-ede3-cbc &nbsp; des-ede3-cfb &nbsp; des-ede3-ofb<br />des-ofb &nbsp; &nbsp; &nbsp; &nbsp;des3 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; desx &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; rc2 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;rc2-40-cbc<br />rc2-64-cbc &nbsp; &nbsp; rc2-cbc &nbsp; &nbsp; &nbsp; &nbsp;rc2-cfb &nbsp; &nbsp; &nbsp; &nbsp;rc2-ecb &nbsp; &nbsp; &nbsp; &nbsp;rc2-ofb<br />rc4 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;rc4-40</pre>
+<div>雖然上例使用 "-h" 為其參數，但是這個參數在 OpenSSL 是不支援的。使用其它非內建的參數，亦有相同的效果。</div>
+<h3>使用 OpenSSL 測試系統效能</h3>
+<div>測試系統效能的方法有很多，其中一種是以運行一連串的演算法，並計算其運行時間。除了利用 OpenSSl 來協助我們了解系統的效能外，也可以進一步了解各種演算法在系統上運行的速度差異。</div>
+<h3>01.測試所有常見的演算法</h3>
+<div>請使用 "speed" 為其參數:</div>
+<pre>$ openssl speed<br />Doing md2 for 3s on 16 size blocks: 216134 md2's in 2.98s<br />Doing md2 for 3s on 64 size blocks: 110034 md2's in 2.99s<br />Doing md2 for 3s on 256 size blocks: 37397 md2's in 2.99s<br />Doing md2 for 3s on 1024 size blocks: 10157 md2's in 3.00s<br />Doing md2 for 3s on 8192 size blocks: 1322 md2's in 3.00s<br />Doing md4 for 3s on 16 size blocks: 5080098 md4's in 2.96s<br />Doing md4 for 3s on 64 size blocks: 4274286 md4's in 3.00s<br />Doing md4 for 3s on 256 size blocks: 2889950 md4's in 2.94s<br />Doing md4 for 3s on 1024 size blocks: 1262368 md4's in 2.94s<br />Doing md4 for 3s on 8192 size blocks: 205260 md4's in 3.00s<br />Doing md5 for 3s on 16 size blocks: 4010019 md5's in 3.00s<br />Doing md5 for 3s on 64 size blocks: 3208521 md5's in 2.99s<br />Doing md5 for 3s on 256 size blocks: 1998828 md5's in 3.00s<br />Doing md5 for 3s on 1024 size blocks: 798719 md5's in 3.00s<br />Doing md5 for 3s on 8192 size blocks: 120678 md5's in 2.99s<br />Doing hmac(md5) for 3s on 16 size blocks: 3929559 hmac(md5)'s in 2.97s<br />Doing hmac(md5) for 3s on 64 size blocks: 3053322 hmac(md5)'s in 2.98s<br />Doing hmac(md5) for 3s on 256 size blocks: 1933109 hmac(md5)'s in 3.00s<br />Doing hmac(md5) for 3s on 1024 size blocks: 783766 hmac(md5)'s in 2.99s<br />Doing hmac(md5) for 3s on 8192 size blocks: 120355 hmac(md5)'s in 3.00s<br />Doing sha1 for 3s on 16 size blocks: 3374252 sha1's in 2.99s<br />Doing sha1 for 3s on 64 size blocks: 2356623 sha1's in 2.99s<br />Doing sha1 for 3s on 256 size blocks: 1211815 sha1's in 2.99s<br />Doing sha1 for 3s on 1024 size blocks: 415609 sha1's in 3.00s<br />Doing sha1 for 3s on 8192 size blocks: 58418 sha1's in 2.99s<br />...... (略)</pre>
+<div>此方式會進行幾個常見的演算法，包含雜湊演算法，對稱式加解密演算法及非對稱式加解密演算法。需要特別提醒使用者，因為此方式針對多款演算法進行測試，所以測試時間會非常久，但使用者可以使用鍵盤上的 "Ctrl" + "c" 的組合鍵終止測試。</div>
+<h3>02.測試 AES 對稱式加解密演算法</h3>
+<div>請使用 "speed aes" 為其參數:</div>
+<pre>$ openssl speed aes<br />Doing aes-128 cbc for 3s on 16 size blocks: 9105763 aes-128 cbc's in 2.99s<br />Doing aes-128 cbc for 3s on 64 size blocks: 2389933 aes-128 cbc's in 2.99s<br />Doing aes-128 cbc for 3s on 256 size blocks: 610982 aes-128 cbc's in 3.00s<br />Doing aes-128 cbc for 3s on 1024 size blocks: 151887 aes-128 cbc's in 3.00s<br />Doing aes-128 cbc for 3s on 8192 size blocks: 19063 aes-128 cbc's in 3.00s<br />Doing aes-192 cbc for 3s on 16 size blocks: 7934694 aes-192 cbc's in 3.00s<br />Doing aes-192 cbc for 3s on 64 size blocks: 2051030 aes-192 cbc's in 2.99s<br />Doing aes-192 cbc for 3s on 256 size blocks: 508600 aes-192 cbc's in 2.95s<br />Doing aes-192 cbc for 3s on 1024 size blocks: 129624 aes-192 cbc's in 3.00s<br />Doing aes-192 cbc for 3s on 8192 size blocks: 16219 aes-192 cbc's in 3.00s<br />Doing aes-256 cbc for 3s on 16 size blocks: 6914734 aes-256 cbc's in 2.99s<br />Doing aes-256 cbc for 3s on 64 size blocks: 1779332 aes-256 cbc's in 3.00s<br />Doing aes-256 cbc for 3s on 256 size blocks: 448172 aes-256 cbc's in 2.99s<br />Doing aes-256 cbc for 3s on 1024 size blocks: 112342 aes-256 cbc's in 2.99s<br />Doing aes-256 cbc for 3s on 8192 size blocks: 13953 aes-256 cbc's in 2.99s<br />OpenSSL 0.9.8o 01 Jun 2010<br />built on: Thu Feb 10 01:49:17 UTC 2011<br />options:bn(64,32) md2(int) rc4(idx,int) des(ptr,risc1,1ong) aes(partial) blowfish(idx)<br />compiler: cc -fPIC -DOPENSSL_PIC -DZLIB -DOPENSSL_THREADS -D_REENTRANT -DDSO_DLFCN -DHAVE_DLFCN_H -DL_ENDIAN -DTERMIO -O3 -Wa,--noexecstack -g -Wall<br />available timing options: TIMES TIMEB HZ=100 [sysconf value]<br />timing function used: times<br />The 'numbers' are in 1000s of bytes per second processed.<br />type &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 16 bytes &nbsp; &nbsp; 64 bytes &nbsp; &nbsp;256 bytes &nbsp; 1024 bytes &nbsp; 8192 bytes<br />aes-128 cbc &nbsp; &nbsp; &nbsp;48726.49k &nbsp; &nbsp;51155.76k &nbsp; &nbsp;52137.13k &nbsp; &nbsp;51844.10k &nbsp; &nbsp;52054.70k<br />aes-192 cbc &nbsp; &nbsp; &nbsp;42318.37k &nbsp; &nbsp;43901.65k &nbsp; &nbsp;44136.14k &nbsp; &nbsp;44244.99k &nbsp; &nbsp;44288.68k<br />aes-256 cbc &nbsp; &nbsp; &nbsp;37001.92k &nbsp; &nbsp;37959.08k &nbsp; &nbsp;38371.92k &nbsp; &nbsp;38474.32k &nbsp; &nbsp;38228.42k</pre>
+<div>相對於前一指令，此方式僅測試 AES 對稱式加解密演算法，所以測試期間比較短。</div>
+<h3>03.測試 RSA 非對稱式加解密演算法</h3>
+<div>請使用 "speed rsa" 為其參數:</div>
+<pre>$ openssh speed rsa<br />Doing 512 bit private rsa's for 10s: 8333 512 bit private RSA's in 9.99s<br />Doing 512 bit public rsa's for 10s: 95531 512 bit public RSA's in 9.97s<br />Doing 1024 bit private rsa's for 10s: 1367 1024 bit private RSA's in 9.98s<br />Doing 1024 bit public rsa's for 10s: 27114 1024 bit public RSA's in 9.98s<br />Doing 2048 bit private rsa's for 10s: 207 2048 bit private RSA's in 10.02s<br />Doing 2048 bit public rsa's for 10s: 7363 2048 bit public RSA's in 9.99s<br />Doing 4096 bit private rsa's for 10s: 30 4096 bit private RSA's in 10.14s<br />Doing 4096 bit public rsa's for 10s: 2007 4096 bit public RSA's in 9.97s<br />OpenSSL 0.9.8o 01 Jun 2010<br />built on: Thu Feb 10 01:49:17 UTC 2011<br />options:bn(64,32) md2(int) rc4(idx,int) des(ptr,risc1,1ong) aes(partial) blowfish(idx)<br />compiler: cc -fPIC -DOPENSSL_PIC -DZLIB -DOPENSSL_THREADS -D_REENTRANT -DDSO_DLFCN -DHAVE_DLFCN_H -DL_ENDIAN -DTERMIO -O3 -Wa,--noexecstack -g -Wall<br />available timing options: TIMES TIMEB HZ=100 [sysconf value]<br />timing function used: times<br />sign &nbsp; &nbsp;verify &nbsp; &nbsp;sign/s verify/s<br />rsa &nbsp;512 bits 0.001199s 0.000104s &nbsp; &nbsp;834.1 &nbsp; 9581.8<br />rsa 1024 bits 0.007301s 0.000368s &nbsp; &nbsp;137.0 &nbsp; 2716.8<br />rsa 2048 bits 0.048406s 0.001357s &nbsp; &nbsp; 20.7 &nbsp; &nbsp;737.0<br />rsa 4096 bits 0.338000s 0.004968s &nbsp; &nbsp; &nbsp;3.0 &nbsp; &nbsp;201.3</pre>
+<div>將前一指令的稍微替換後，也可以進行其它的演算法測試，如此方式將僅測試 RSA 非對稱式加解密演算法。</div>
+<h3>雜湊演算法</h3>
+<div>OpenSSL 支援常見的雜湊演算法 (Hash algorithms)，如 MD5, SHA1, SHA256 等。</div>
+<h3>01.列出所有支援的雜湊演算法</h3>
+<div>請使用 "dgst -h" 為其參數:</div>
+<pre>$ openssl dgst -h<br />unknown option '-h'<br />options are<br />-c &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;to output the digest with separating colons<br />-d &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;to output debug info<br />-hex &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;output as hex dump<br />-binary &nbsp; &nbsp; &nbsp; &nbsp; output in binary form<br />-sign &nbsp; file &nbsp; &nbsp;sign digest using private key in file<br />-verify file &nbsp; &nbsp;verify a signature using public key in file<br />-prverify file &nbsp;verify a signature using private key in file<br />-keyform arg &nbsp; &nbsp;key file format (PEM or ENGINE)<br />-signature file signature to verify<br />-binary &nbsp; &nbsp; &nbsp; &nbsp; output in binary form<br />-hmac key &nbsp; &nbsp; &nbsp; create hashed MAC with key<br />-engine e &nbsp; &nbsp; &nbsp; use engine e, possibly a hardware device.<br />-md5 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;to use the md5 message digest algorithm (default)<br />-md4 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;to use the md4 message digest algorithm<br />-md2 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;to use the md2 message digest algorithm<br />-sha1 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; to use the sha1 message digest algorithm<br />-sha &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;to use the sha message digest algorithm<br />-sha224 &nbsp; &nbsp; &nbsp; &nbsp; to use the sha224 message digest algorithm<br />-sha256 &nbsp; &nbsp; &nbsp; &nbsp; to use the sha256 message digest algorithm<br />-sha384 &nbsp; &nbsp; &nbsp; &nbsp; to use the sha384 message digest algorithm<br />-sha512 &nbsp; &nbsp; &nbsp; &nbsp; to use the sha512 message digest algorithm<br />-mdc2 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; to use the mdc2 message digest algorithm<br />-ripemd160 &nbsp; &nbsp; &nbsp;to use the ripemd160 message digest algorithm</pre>
+<div>列表中可以發現，除了常見的 MD5, SHA1 及 SHA256 外，還有其它的雜湊演算法可供使用。</div>
+<h3>02.使用 MD5 雜湊演算法</h3>
+<div>請使用 "dgst -md5" 為其參數，並以 "-c" 來指定目標檔案:</div>
+<pre>$ openssl dgst -md5 -c testfile<br />MD5(file)= f1:c9:64:5d:bc:14:ef:dd:c7:d8:a3:22:68:5f:26:eb</pre>
+<div>輸出結果顯示，testfile 這個檔案的 MD5 Hash 為 "f1:c9:64:5d:bc:14:ef:dd:c7:d8:a3:22:68:5f:26:eb"。</div>
+<div>我們可以使用其它 MD5 演算法來驗證其正確性，例如 Debian/Ubuntu 的 coreutils 套件提供的 md5sum 指令。</div>
+<pre>$ md5sum testfile<br />f1c9645dbc14efddc7d8a322685f26eb &nbsp;file</pre>
+<div>輸出結果顯示，testfile 的 MD5 Hash 為 "f1c9645dbc14efddc7d8a322685f26eb"。這與 OpenSSL 的輸出結果吻合，只是在比較前，我們需要將 OpenSSL 輸出的結果刪去 ":" 冒號來進行比對。</div>
+<h3>03.使用 SHA1 雜湊演算法</h3>
+<div>請使用 "dgst -sha1" 為其參數，並以 "-c" 來指定目標檔案:</div>
+<pre>$ openssl dgst -sha1 -c testfile<br />SHA1(file)= 8c:20:6a:1a:87:59:9f:53:2c:e6:86:75:53:6f:0b:15:46:90:0d:7a</pre>
+<div>輸出結果顯示，testfile 這個檔案的 MD5 Hash 為 "8c:20:6a:1a:87:59:9f:53:2c:e6:86:75:53:6f:0b:15:46:90:0d:7a"。</div>
+<div>我們可以使用其它 SHA1 演算法來驗證其正確性，例如 Debian/Ubuntu 的 coreutils 套件提供的 sha1sum 指令。</div>
+<pre>$ sha1sum testfile<br />8c206a1a87599f532ce68675536f0b1546900d7a &nbsp;file</pre>
+<div>輸出結果顯示，testfile 的 SHA1 Hash 為 "8c206a1a87599f532ce68675536f0b1546900d7a"。這與 OpenSSL 的輸出結果吻合，只是在比較前，我們需要將 OpenSSL 輸出的結果刪去 ":" 冒號來進行比對。</div>
+<h3>結語</h3>
+<div>本篇範例介紹了幾款常見的操作，以及 OpenSSL 雜湊演算法的運用方式。在下一篇文章中，將介紹 OpenSSL 的對稱式加解密演算法的操作。</div>
+			<!-- Show relate article -->
+		<br><br><h4>You may be interested in the following articles:</h4><ul><li><a href='../../tech-column/8615.html'>開放源碼的安全演算法工具: OpenSSL (3) - RSA 非對稱式加解密演算法</a> - <span class='date-posted'>2012-03-14</span></li><li><a href='../../tech-column/8609.html'>開放源碼的安全演算法工具: OpenSSL (2) - 對稱式加解密演算法</a> - <span class='date-posted'>2012-02-23</span></li></ul>		<!-- end -->
+		<div class="article_note">
+		<!-- Add tags use metakey, and show OSSF Newsletter tag: OSSFNL+NUM-->
+		<br><br> <hr style='border: 1px dashed #D2DADB;'><b>OSSF Newsletter&nbsp;:</b>&nbsp;<a href='../../previous-issue%3Ftask=view&amp;id=779.html'>第 190 期 開放源碼的安全演算法工具︰OpenSSL（1） - 基礎操作與雜湊演算法</a><br><b>Tags:</b>&nbsp;<a href='../../index.php%3Foption=com_search&amp;Itemid=58&amp;searchphrase=exact_meta&amp;ordering=newest&amp;searchword=Hash&#32;algorithms.html'>Hash algorithms</a>,&nbsp;&nbsp;<a href='../../index.php%3Foption=com_search&amp;Itemid=58&amp;searchphrase=exact_meta&amp;ordering=newest&amp;searchword=&#32;Encryption%252FDecryption&#32;algorithms.html'> Encryption/Decryption algorithms</a>,&nbsp;&nbsp;<a href='../../index.php%3Foption=com_search&amp;Itemid=58&amp;searchphrase=exact_meta&amp;ordering=newest&amp;searchword=&#32;SSL&#32;%252F&#32;TLS.html'> SSL / TLS</a>,&nbsp;&nbsp;<a href='../../index.php%3Foption=com_search&amp;Itemid=58&amp;searchphrase=exact_meta&amp;ordering=newest&amp;searchword=&#32;OpenSSL.html'> OpenSSL</a>,&nbsp;&nbsp;				<!-- End -->
+					<br>
+					<b>Category: </b><a href="../tech-column.html">				Tech Column					</a>				</div>
+			 <!-- AddThis Button BEGIN ID 3001 is the front page article -->
+     			<br><br>
+       <div class="addthis_toolbox addthis_default_style addthis_32x32_style">
+       <a class="addthis_button_preferred_1"></a>
+       <a class="addthis_button_preferred_2"></a>
+       <a class="addthis_button_preferred_3"></a>
+       <a class="addthis_button_preferred_4"></a>
+       <a class="addthis_button_compact"></a>
+       <a class="addthis_counter addthis_bubble_style"></a>
+       </div>
+       <script type="text/javascript">var addthis_config = {"data_track_clickback":true};</script>
+       <script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js#pubid=openfoundry"></script>
+       <!-- AddThis Button END -->
+     <br>
+		<div class="totop" ><a class="rt-totop" href="8608-opensource-security-algorithm-tool-openssl1-basic-function-and-hash-algorithms-.html#" style="outline: medium none;">↑ Top</a></div>
+            <!-- AddThis Button END -->
+
+		<script type="text/javascript">
+var jcomments=new JComments(8608, 'com_content','https://openfoundry.org/index.php?option=com_jcomments&amp;tmpl=component&amp;lang=');
+jcomments.setList('comments-list');
+</script>
+<div id="jc">
+<div id="comments"><h4>Comments<a class="refresh" href="8608-opensource-security-algorithm-tool-openssl1-basic-function-and-hash-algorithms-.html#" title="Refresh comments list" onclick="jcomments.showPage(8608,'com_content',0);return false;">&nbsp;</a></h4>
+<div id="comments-list" class="comments-list">
+        <div class="even" id="comment-item-222"><div class="rbox"><div class="rbox_tr"><div class="rbox_tl"><div class="rbox_t">&nbsp;</div></div></div><div class="rbox_m">
+<div class="comment-avatar"><img src="http://www.gravatar.com/avatar.php?gravatar_id=85049df710c0367dfa0c437a962412f9&amp;default=https%3A%2F%2Fwww.openfoundry.org%2Fcomponents%2Fcom_jcomments%2Fimages%2Fno_avatar.png" alt="" /></div>
+<div class="comment-box avatar-indent">
+<span class="comments-vote">
+	<span id="comment-vote-holder-222">
+<a href="8608-opensource-security-algorithm-tool-openssl1-basic-function-and-hash-algorithms-.html#" class="vote-good" title="Good comment!" onclick="jcomments.voteComment(222, 1);return false;"></a><a href="8608-opensource-security-algorithm-tool-openssl1-basic-function-and-hash-algorithms-.html#" class="vote-poor" title="Poor comment!" onclick="jcomments.voteComment(222, -1);return false;"></a>
+<span class="vote-none">0</span>
+	</span>
+</span>
+<a class="comment-anchor" href="8608-opensource-security-algorithm-tool-openssl1-basic-function-and-hash-algorithms-.html#comment-222" id="comment-222">#1</a>
+<span class="comment-author">Macer</span>
+<span class="comment-date">2012-02-21 16:01</span>
+<div class="comment-body" id="comment-body-222">讚～～, 受教了, 謝謝!</div>
+</div><div class="clear"></div>
+</div><div class="rbox_br"><div class="rbox_bl"><div class="rbox_b">&nbsp;</div></div></div></div>
+</div>
+        <div class="odd" id="comment-item-224"><div class="rbox"><div class="rbox_tr"><div class="rbox_tl"><div class="rbox_t">&nbsp;</div></div></div><div class="rbox_m">
+<div class="comment-avatar"><img src="http://www.gravatar.com/avatar.php?gravatar_id=b79b69eed2010ac6887879895252167c&amp;default=https%3A%2F%2Fwww.openfoundry.org%2Fcomponents%2Fcom_jcomments%2Fimages%2Fno_avatar.png" alt="" /></div>
+<div class="comment-box avatar-indent">
+<span class="comments-vote">
+	<span id="comment-vote-holder-224">
+<a href="8608-opensource-security-algorithm-tool-openssl1-basic-function-and-hash-algorithms-.html#" class="vote-good" title="Good comment!" onclick="jcomments.voteComment(224, 1);return false;"></a><a href="8608-opensource-security-algorithm-tool-openssl1-basic-function-and-hash-algorithms-.html#" class="vote-poor" title="Poor comment!" onclick="jcomments.voteComment(224, -1);return false;"></a>
+<span class="vote-none">0</span>
+	</span>
+</span>
+<a class="comment-anchor" href="8608-opensource-security-algorithm-tool-openssl1-basic-function-and-hash-algorithms-.html#comment-224" id="comment-224">#2</a>
+<span class="comment-author">znul</span>
+<span class="comment-date">2012-02-22 09:50</span>
+<div class="comment-body" id="comment-body-224">實用的文章～ <img src="../../components/com_jcomments/images/smiles/lol.gif" border="0" alt="" /></div>
+</div><div class="clear"></div>
+</div><div class="rbox_br"><div class="rbox_bl"><div class="rbox_b">&nbsp;</div></div></div></div>
+</div>
+</div>
+<div id="comments-list-footer"><a class="refresh" href="8608-opensource-security-algorithm-tool-openssl1-basic-function-and-hash-algorithms-.html#" title="Refresh comments list" onclick="jcomments.showPage(8608,'com_content',0);return false;">Refresh comments list</a></div>
+</div>
+<div id="comments-footer" align="center"><a href="http://www.joomlatune.com" title="JComments" target="_blank">JComments</a></div>
+<script type="text/javascript">
+jcomments.setAntiCache(1,0,0);
+</script> 
+</div>	</div>
+</div>
+
+		                            </div>
+									<div class="clear"></div>
+								</div>
+								<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+							</div>
+							</div>
+                                                    </div>
+                                            </div>
+                                <div class="rt-grid-3 rt-pull-9">
+                <div id="rt-sidebar-a">
+                                    <div class="square4">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<ul class="menu"><li class="item56"><a href="../previous-issue.html"><span>Previous Issue</span></a></li><li class="item55"><a href="../about-newsletter.html"><span>About Newsletter</span></a></li></ul>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<ul class="menu"><li class="item115"><a href="../foss-news.html"><span>FOSS News</span></a></li><li class="item141"><a href="../case-job.html"><span>Case and Jobs</span></a></li></ul>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+        	                <div class="square1">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-title"><h2 class="title">Special</h2></div>
+						<div class="clear"></div>
+		                						<div class="module-content">
+		                	<ul class="menu"><li id="current" class="active item37"><a href="../tech-column.html"><span>Tech Column</span></a></li><li class="item40"><a href="../foss-programs.html"><span>FOSS Programs</span></a></li><li class="item35"><a href="../legal-column.html"><span>Legal Column</span></a></li><li class="item154"><a href="../foss-forum.html"><span>FOSS Forum</span></a></li><li class="item162"><a href="../enterprise-application.html"><span>Enterprise Application</span></a></li><li class="item44"><a href="../foss-projects.html"><span>FOSS Projects</span></a></li></ul>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		                <div class="square1">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<p style="text-align: center;"><a href="../../news%3Fformat=feed&amp;type=rss" target="_black"><img src="../../images/M_images/news-rss-feed.png" border="0" /></a><br /><a href="https://www.openfoundry.org/rss-feed/Newsletter" target="_black"><img src="../../images/M_images/newsletter-rss-feed.png" border="0" /></a></p>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		
+                </div>
+            </div>
+
+                    <div class="clear"></div>
+                </div>
+            </div>
+																													</div>
+										<div id="rt-copyright">
+						<div class="rt-grid-12 rt-alpha rt-omega">
+                        <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<span class="nowrap">Open Source Software Foundry</span><span class="nowrap">‧</span><span class="nowrap"> </span><span class="nowrap">Best  Viewed with IE7.0 or Firefox2.0 above, 1024x768 Resolution. </span><strong>E-Mail</strong>：<a href="mailto:contact@openfoundry.org">contact@openfoundry.org</a> <br /><strong>Address</strong>：No.128, Sec.2, Academia Rd., Institute of Information Science, Academia Sinica, Nangang District, Taipei City 11529, Taiwan (R.O.C). <br /><a href="../privacy-policy.html">Privacy Policy</a>. <a href="../terms-of-use.html">Terms-of-use</a> <span style="position: relative; top: 8px; margin-top: -8px;"> <a href="../../about/8101.html"><img src="../../images/M_images/rss-feed-all.png" border="0" /></a></span>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+        	
+</div>
+						<div class="clear"></div>
+					</div>
+					<div class="rt-footer-bottom-wrap"><div class="rt-footer-bottom"><div class="rt-footer-bottom2"><div class="rt-footer-bottom3"></div></div></div></div>
+									</div></div></div>
+				<div class="rt-surround-bottom"><div class="rt-surround-bottom2"><div class="rt-surround-bottom3"></div></div></div>
+							</div>
+		</div>
+		<!--
+		<script id="aptureScript">
+						(function (){var a=document.createElement("script");a.defer="true";a.src="http://www.apture.com/js/apture.js?siteToken=vsJttrn";document.getElementsByTagName("head")[0].appendChild(a);})();
+     </script>
+-->
+
+<!-- Piwik -->
+<!-- 			<script type="text/javascript">
+			  var _paq = _paq || [];
+		  _paq.push(["trackPageView"]);
+		  _paq.push(["enableLinkTracking"]);
+
+		    (function() {
+			        var u=(("https:" == document.location.protocol) ? "https" : "https") + "://www.openfoundry.org/piwik/";
+				    _paq.push(["setTrackerUrl", u+"piwik.php"]);
+				    _paq.push(["setSiteId", "1"]);
+				        var d=document, g=d.createElement("script"), s=d.getElementsByTagName("script")[0]; g.type="text/javascript";
+				        g.defer=true; g.async=true; g.src=u+"piwik.js"; s.parentNode.insertBefore(g,s);
+					  })();
+		  </script> -->
+<!-- End Piwik Code -->
+	</body>
+</html>

@@ -1,0 +1,161 @@
+	<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+	<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-gb" lang="en-gb" >
+		<head>
+			  <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+  <meta name="robots" content="noindex, nofollow" />
+  <meta name="keywords" content="OSSFNL240" />
+  <meta name="title" content="Java Web Parts" />
+  <meta name="description" content="Java Opensources for Web Development Part I：Chapter 3 當 Java 遇到 AJAXLession 12 : Java Web Parts 上期說明了 AjaxTags 的應用，讓 Java Web 工程師可以利用簡單的 Taglibs 就可以完成 ajax 的技巧。在我們開始複雜 ajax framework 如" />
+  <meta name="generator" content="" />
+  <title>Java Web Parts</title>
+  <link href="../../favicon.ico" rel="shortcut icon" type="image/x-icon" />
+  <link rel="stylesheet" href="../../components/com_gantry/css/gantry.css" type="text/css" />
+  <link rel="stylesheet" href="../../components/com_gantry/css/grid-12.css" type="text/css" />
+  <link rel="stylesheet" href="../../components/com_gantry/css/joomla.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/joomla.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/style1.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/light-body.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/demo-styles.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/template.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/typography.css" type="text/css" />
+  <style type="text/css">
+    <!--
+#rt-main-surround ul.menu li.active > a, #rt-main-surround ul.menu li.active > .separator, #rt-main-surround ul.menu li.active > .item, #rt-main-surround .square4 ul.menu li:hover > a, #rt-main-surround .square4 ul.menu li:hover > .item, #rt-main-surround .square4 ul.menu li:hover > .separator, .roktabs-links ul li.active span {color:#0088B5;}
+a, #rt-main-surround ul.menu a:hover, #rt-main-surround ul.menu .separator:hover, #rt-main-surround ul.menu .item:hover {color:#0088B5;}
+    -->
+  </style>
+  <script type="text/javascript" src="../../components/com_jcomments/js/jcomments-v2.1.js%3Fv=2"></script>
+  <script type="text/javascript" src="../../components/com_jcomments/libraries/joomlatune/ajax.js"></script>
+  <script type="text/javascript" src="../../media/system/js/mootools.js"></script>
+  <script type="text/javascript" src="../../media/system/js/caption.js"></script>
+  <script type="text/javascript" src="../../components/com_gantry/js/gantry-buildspans.js"></script>
+  <script type="text/javascript" src="../../components/com_gantry/js/gantry-inputs.js"></script>
+  <script type="text/javascript">
+
+			window.addEvent('domready', function() {
+				var modules = ['rt-block'];
+				var header = ['h3','h2','h1'];
+				GantryBuildSpans(modules, header);
+			});
+		InputsExclusion.push('.content_vote','#rt-popup')
+  </script>
+		</head>
+		<body  class="backgroundlevel-low backgroundstyle-style8 bodylevel-med bodystyle-light cssstyle-style1 logostyle-dark font-family-helvetica font-size-is-default menu-type-fusionmenu col12 ">
+			<div id="rt-main-surround">
+				<div class="rt-container">
+					<div class="rt-block">
+						<div id="rt-mainbody">
+					    	
+<div class="rt-joomla ">
+	<div class="rt-article">
+		
+				<div class="rt-headline"><h1 class="rt-article-title">Java Web Parts</h1>		</div>
+		<div class="clear"></div>
+		
+		
+		
+				<div class="rt-articleinfo">
+						<div class="rt-article-icons">
+				<a href="727%3Ftmpl=component&amp;print=1&amp;layout=default&amp;page=.html#" onclick="window.print();return false;"><span class="icon print"></span></a>									<span class="icon printscreen">
+						<a href="727%3Ftmpl=component&amp;print=1&amp;layout=default&amp;page=.html#" onclick="window.print();return false;"><img src="../../images/M_images/printButton.png" alt="Print"  /></a>					</span>
+							</div>
+			
+			<span class="rt-date-posted">
+						 Created at			Saturday, 27 January 2007 16:00						&nbsp;&nbsp;&nbsp;&nbsp;						Last Updated on Thursday, 05 July 2007 23:20						</span>
+
+						<span class="rt-author">
+				Written by 李日貴			</span>
+				
+					</div>
+		
+		
+		<p>Java Opensources for Web Development Part I：Chapter 3 當 Java 遇到 AJAX<br />Lession 12 : Java Web Parts<br /></p>
+<p>上期說明了 AjaxTags 的應用，讓 Java Web 工程師可以利用簡單的 Taglibs 就可以完成 ajax 的技巧。在我們開始複雜 ajax framework 如 DWR、Prototype、ZK、或 Scriptaculous 之前，除了 AjaxTags 還有如 Java Web Parts 或是 AjaxAnywhere 等元件可以利用。</p>
+<div class="storybody"><br /></div>相同的技巧，我們先到 <a href="https://javawebparts.sourceforge.net/" target="_blank"><u><font color="#003366">Java Web Parts 的官方網站</font></u></a>下載相關的 JAR 檔案，在 1.0 的範例之中具有許多的 jar 檔案，其實內部最重要的有兩項：
+<p> javawebparts-core-1.0.jar<br /> javawebparts-ajaxparts-1.0.jar </p>
+<p>除此之外，共有 </p>
+<table cellspacing="0" cellpadding="0" border="1" style="width: 446px; text-align: left;">
+    <tbody>
+        <tr>
+            <td style="width: 64px;"><font size="2">AjaxParts</font></td>
+            <td style="width: 378px;"><font size="2">蒐集了許多著名的 ajax taglibs (APT)，例如上次介紹的 Ajaxtags</font></td>
+        </tr>
+        <tr>
+            <td style="width: 64px;"><font size="2">Context</font></td>
+            <td style="width: 378px;"><font size="2">處理 Servlet Context 的元件</font></td>
+        </tr>
+        <tr>
+            <td style="width: 64px;"><font size="2">Filter</font></td>
+            <td style="width: 378px;"><font size="2">處理 Servlet Filter 的元件</font></td>
+        </tr>
+        <tr>
+            <td style="width: 64px;"><font size="2">Listener</font></td>
+            <td style="width: 378px;"><font size="2">處理 Context 或 Session Listeners</font></td>
+        </tr>
+        <tr>
+            <td style="width: 64px;"><font size="2">Misc</font></td>
+            <td style="width: 378px;"><font size="2">一些沒辦法歸納的有用元件</font></td>
+        </tr>
+        <tr>
+            <td style="width: 64px;"><font size="2">Taglib</font></td>
+            <td style="width: 378px;"><font size="2">各式各樣的 taglibs</font></td>
+        </tr>
+        <tr>
+            <td style="width: 64px;"><font size="2">Servlet</font></td>
+            <td style="width: 378px;"><font size="2">利用在 Servlet 之上的一些元件</font></td>
+        </tr>
+        <tr>
+            <td style="width: 64px;"><font size="2">Request</font></td>
+            <td style="width: 378px;"><font size="2">專門處理 HTTP Request 的元件</font></td>
+        </tr>
+        <tr>
+            <td style="width: 64px;"><font size="2">Response</font></td>
+            <td style="width: 378px;"><font size="2">專門處理 HTTP Response 的元件</font></td>
+        </tr>
+        <tr>
+            <td style="width: 64px;"><font size="2">Session</font></td>
+            <td style="width: 378px;"><font size="2">專門處理 HTTP Session 的元件</font></td>
+        </tr>
+    </tbody>
+</table>
+<p>雙下拉選單的一個範例，我們可以先在 web.xml 設定 ajaxTagsConfig 的位置： </p>
+<p>&lt;context-param&gt;<br />&lt;param-name&gt;AjaxPartsTaglibConfig&lt;/param-name&gt;<br />&nbsp;&nbsp; &nbsp;&lt;param-value&gt;/WEB-INF/ajax_config.xml&lt;/param-value&gt;<br />&lt;/context-param&gt;<br />&lt;servlet&gt;<br />&lt;servlet-name&gt;DynamicDoubleSelectServlet&lt;/servlet-name&gt;<br />&lt;servlet-class&gt;javawebparts.cookbook.dynamicdoubleselect.DynamicDoubleSelectServlet&lt;/servlet-class&gt;<br />&lt;/servlet&gt;<br />&lt;servlet-mapping&gt;<br />&lt;servlet-name&gt;DynamicDoubleSelectServlet&lt;/servlet-name&gt;<br />&lt;url-pattern&gt;/dynamicDoubleSelect&lt;/url-pattern&gt;<br />&lt;/servlet-mapping&gt; </p>
+<p>在 JSP 之中可以設定，我們會希望 當 showTitleSelect 有所變化時，id = characters 的 DIV 中的 select 可以顯示相關的選項。在 jsp 的最末要設定 ajax:enable ，如果 ajax:enable 設定 logger 就要利用 commons-logger 來記錄相關的 Log。 </p>
+<p>&lt;%@ taglib prefix=&quot;ajax&quot; uri=&quot;javawebparts/ajaxparts/taglib&quot; %&gt;<br />&lt;form name=&quot;DynamicDoubleSelectForm&quot;&gt;<br />&lt;select name=&quot;showTitleSelect&quot;&gt;<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;option&gt;&lt;/option&gt;<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;option value=&quot;B5&quot;&gt;Babylon 5&lt;/option&gt;<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;option value=&quot;BSG&quot;&gt;Battlestar Galactica&lt;/option&gt;<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;option value=&quot;STTNG&quot;&gt;Star Trek The Next Generation&lt;/option&gt;<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;option value=&quot;STTOS&quot;&gt;Star Trek The Original Series&lt;/option&gt;<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;option value=&quot;SGA&quot;&gt;Stargate Atlantis&lt;/option&gt;<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;option value=&quot;SG1&quot;&gt;Stargate SG-1&lt;/option&gt;<br />&lt;/select&gt;<br />&lt;ajax:event ajaxRef=&quot;DynamicDoubleSelectForm/showTitleChange&quot;/&gt;<br />&lt;div id=&quot;characters&quot;&gt;<br />&nbsp;&nbsp; &lt;select&gt;<br />&nbsp;&nbsp; &lt;/select&gt;<br />&lt;/div&gt;<br />&lt;/form&gt;<br />&lt;ajax:enable debug=&quot;debug&quot; logger=&quot;JWPAlertLogger&quot;/&gt; </p>
+<p>當 ajax event 驅動就是在 web.xml 之中所設定的 AjaxPartsTaglibConfig，會去查詢相關對應的事件，例如範例中就是查詢 ajax_config.xml。 </p>
+<p>&lt;ajaxConfig&gt;<br />&lt;group ajaxRef=&quot;DynamicDoubleSelectForm&quot;&gt;<br />&lt;element ajaxRef=&quot;showTitleChange&quot;&gt;<br />&lt;event type=&quot;onchange&quot;&gt;<br />&lt;requestHandler type=&quot;std:QueryString&quot; method=&quot;get&quot; target=&quot;/dynamicDoubleSelect?method=first&quot;&gt;<br />&lt;parameter&gt;showTitle=showTitleSelect&lt;/parameter&gt;<br />&lt;/requestHandler&gt;<br />&lt;responseHandler type=&quot;std:InnerHTML&quot;&gt;<br />&lt;parameter&gt;characters&lt;/parameter&gt;<br />&lt;/responseHandler&gt;<br />&lt;/event&gt;<br />&lt;/element&gt;<br />&lt;/group&gt;<br />&lt;/ajaxConfig&gt; </p>
+<p>ajax:event 利用 ajaxRef=&quot;DynamicDoubleSelectForm/showTitleChange&quot;，找到 ajax_config.xml 之中的 showTitleChange element，並且知道 event 的型態是 onchange，所以處理 AJAX 資料是去拿著 showTitle=$ 傳入的showTitleSelect 變數去呼叫 /dynamicDoubleSelect?method=first　這支 Servlet，當資料取得之後，利用 responseHandler 將資料透過 InnerHTML 方式放回原有的 JSP 之中。 </p>
+<p>假設在 DynamicDoubleSelectServlet 收到 showTitle=&quot;B5&quot;，就會回傳 String[] characters 回到 Java Web Parts ，如此簡單的雙下拉選單就可以製作出來了，利用這種方式，即使多維式關聯性表單也都可以輕易地完成之。</p>
+			<!-- Show relate article -->
+				<!-- end -->
+		<div class="article_note">
+		<!-- Add tags use metakey, and show OSSF Newsletter tag: OSSFNL+NUM-->
+		<br><br> <hr style='border: 1px dashed #D2DADB;'><b>OSSF Newsletter&nbsp;:</b>&nbsp;<a href='../../previous-issue%3Ftask=view&amp;id=240.html'>第 74 期 自由軟體人才資料庫推廣活動</a><br>				<!-- End -->
+					<br>
+					<b>Category: </b><a href="../tech-column.html">				Tech Column					</a>				</div>
+			 <!-- AddThis Button BEGIN ID 3001 is the front page article -->
+     			<br><br>
+       <div class="addthis_toolbox addthis_default_style addthis_32x32_style">
+       <a class="addthis_button_preferred_1"></a>
+       <a class="addthis_button_preferred_2"></a>
+       <a class="addthis_button_preferred_3"></a>
+       <a class="addthis_button_preferred_4"></a>
+       <a class="addthis_button_compact"></a>
+       <a class="addthis_counter addthis_bubble_style"></a>
+       </div>
+       <script type="text/javascript">var addthis_config = {"data_track_clickback":true};</script>
+       <script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js#pubid=openfoundry"></script>
+       <!-- AddThis Button END -->
+     <br>
+		<div class="totop" ><a class="rt-totop" href="727%3Ftmpl=component&amp;print=1&amp;layout=default&amp;page=.html#" style="outline: medium none;">↑ Top</a></div>
+            <!-- AddThis Button END -->
+
+			</div>
+</div>
+
+						</div>
+					</div>
+				</div>
+			</div>
+		</body>
+	</html>

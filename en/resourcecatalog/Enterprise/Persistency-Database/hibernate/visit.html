@@ -1,0 +1,752 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Hibernate. Everything data. - Hibernate</title>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <meta content="" name="description">
+    <meta content="" name="author">
+    <meta CONTENT="default-src 'none'; font-src 'self' data: https://cdn.jsdelivr.net https://static.jboss.org https://in.relation.to https://staging.in.relation.to https://fonts.gstatic.com https://fonts.googleapis.com; style-src 'unsafe-inline' 'self' https://cdn.jsdelivr.net https://fonts.googleapis.com; script-src 'self' 'unsafe-inline' https://in.relation.to https://staging.in.relation.to https://www.redhat.com https://cdn.jsdelivr.net https://code.jquery.com www.google-analytics.com; img-src 'self' https://*.githubusercontent.com  www.google-analytics.com https://static.jboss.org https://cdn.jsdelivr.net; base-uri 'none'; form-action 'none'; object-src 'none'; connect-src 'self' https://api.github.com" HTTP-EQUIV="Content-Security-Policy">
+    <meta HTTP-EQUIV="X-XSS-Protection" content="1; mode=block">
+    <meta HTTP-EQUIV="X-Content-Type-Options" content="nosniff">
+    <link href="https://cdn.jsdelivr.net/npm/semantic-ui@2.2.14/dist/semantic.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/slick-carousel@1.7.1/slick/slick.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/slick-carousel@1.7.1/slick/slick-theme.css" rel="stylesheet">
+    <link href="http://hibernate.org/stylesheets/styles.css?t=1574276127" rel="stylesheet">
+    <!-- Defines the project favicon. Change these URLs to your specific project folder on static.jboss.org. -->
+    <link href="https://static.jboss.org/hibernate/images/favicon.ico" rel="shortcut icon">
+    <link href="https://static.jboss.org/hibernate/images/apple-touch-icon-144x144-precomposed.png" rel="apple-touch-icon-precomposed" sizes="144x144">
+    <link href="https://static.jboss.org/hibernate/images/apple-touch-icon-114x114-precomposed.png" rel="apple-touch-icon-precomposed" sizes="114x114">
+    <link href="https://static.jboss.org/hibernate/images/apple-touch-icon-72x72-precomposed.png" rel="apple-touch-icon-precomposed" sizes="72x72">
+    <link href="https://static.jboss.org/hibernate/images/apple-touch-icon-precomposed.png" rel="apple-touch-icon-precomposed">
+    <script crossorigin="anonymous" integrity="sha384-3ceskX3iaEnIogmQchP8opvBy3Mi7Ce34nWjpBIwVTHfGYWQS9jwHDVRnpKKHJg7" src="https://code.jquery.com/jquery-3.1.1.min.js" type="text/javascript"></script>
+    <script crossorigin="anonymous" integrity="sha384-KfrAxmzWxzKdfquWGNOhm/N9kEjIgoP2yBPMQmAjQ+Is0hp+3BlcWT6PcI7NuKEP" src="https://cdn.jsdelivr.net/npm/semantic-ui@2.2.14/dist/semantic.min.js" type="text/javascript"></script>
+    <script crossorigin="anonymous" integrity="sha384-wBo76R9TGH6DxuCcambHkpxJKY96xJq59OwZONC0A2v0rlNK9Kb75uRdSgxK5j9+" src="https://cdn.jsdelivr.net/npm/slick-carousel@1.7.1/slick/slick.min.js" type="text/javascript"></script>
+    <script crossorigin="anonymous" integrity="sha384-8tbVdDPB3bZ0bpwXcWj84BJ4lNn6EWyBX8/Uz+tVSAKxz2u+8lYENBTZMZOF29QA" src="https://cdn.jsdelivr.net/npm/jquery-match-height@0.7.2/jquery.matchHeight.min.js" type="text/javascript"></script>
+  </head>
+  <body class="pushable">
+    <div class="ui vertical inverted sidebar left" id="mobile-menu">
+      <div class="ui vertical fluid inverted text menu accordion">
+        <div class="item">
+          <a class="title">
+            <i class="database grid icon"></i>
+            <i class="dropdown icon"></i>
+            <strong>ORM</strong>
+          </a>
+          <div class="content">
+            <div class="menu internal-links">
+              <a class="item" href="http://hibernate.org/orm/">
+                <i class="grid home icon"></i>
+                About
+              </a>
+              <a class="item" href="http://hibernate.org/orm/releases/">
+                <i class="grid icon tags"></i>
+                Releases
+              </a>
+              <a class="item" href="http://hibernate.org/orm/documentation/">
+                <i class="folder grid icon open"></i>
+                Documentation
+              </a>
+              <a class="item" href="http://hibernate.org/orm/books/">
+                <i class="book grid icon"></i>
+                Books
+              </a>
+              <a class="item" href="https://github.com/hibernate/hibernate-orm/wiki/Migration-Guides">
+                <i class="grid icon share"></i>
+                Migration guides
+              </a>
+              <a class="item" href="https://github.com/hibernate/hibernate-orm/wiki/Roadmap">
+                <i class="grid icon road"></i>
+                Roadmap
+              </a>
+              <a class="item" href="http://hibernate.org/orm/tooling/">
+                <i class="grid icon wrench"></i>
+                Tooling
+              </a>
+              <a class="item" href="http://hibernate.org/orm/envers/">
+                <i class="grid icon time"></i>
+                Envers
+              </a>
+              <a class="item" href="http://hibernate.org/orm/contribute/">
+                <i class="grid icon users"></i>
+                Contribute
+              </a>
+              <a class="item" href="http://hibernate.org/orm/support/">
+                <i class="doctor grid icon"></i>
+                Paid support
+              </a>
+              <a class="item" href="http://hibernate.org/orm/faq/">
+                <i class="circle grid help icon"></i>
+                FAQ
+              </a>
+            </div>
+            <div class="menu external-links">
+              <a class="item" href="https://github.com/hibernate/hibernate-orm">
+                <i class="code grid icon"></i>
+                Source code
+              </a>
+              <a class="item" href="https://hibernate.atlassian.net/browse/HHH">
+                <i class="bug grid icon"></i>
+                Issue tracker
+              </a>
+              <a class="item" href="https://access.redhat.com/security/team/contact/">
+                <i class="grid icon lock"></i>
+                Security issue
+              </a>
+              <a class="item" href="https://discourse.hibernate.org/c/hibernate-orm">
+                <i class="comments grid icon"></i>
+                Forum
+              </a>
+              <a class="item" href="https://community.jboss.org/en/hibernate">
+                <i class="edit grid icon"></i>
+                Wiki
+              </a>
+              <a class="item" href="https://ci.hibernate.org/">
+                <i class="grid icon treatment"></i>
+                CI
+              </a>
+            </div>
+          </div>
+        </div>
+        <div class="item">
+          <a class="title">
+            <i class="grid icon search"></i>
+            <i class="dropdown icon"></i>
+            <strong>Search</strong>
+          </a>
+          <div class="content">
+            <div class="menu internal-links">
+              <a class="item" href="http://hibernate.org/search/">
+                <i class="grid home icon"></i>
+                About
+              </a>
+              <a class="item" href="http://hibernate.org/search/releases/">
+                <i class="grid icon tags"></i>
+                Releases
+              </a>
+              <a class="item" href="http://hibernate.org/search/documentation/">
+                <i class="book grid icon"></i>
+                Documentation
+              </a>
+              <a class="item" href="http://hibernate.org/search/roadmap/">
+                <i class="grid icon road"></i>
+                Roadmap
+              </a>
+              <a class="item" href="http://hibernate.org/search/contribute/">
+                <i class="grid icon users"></i>
+                Contribute
+              </a>
+              <a class="item" href="http://hibernate.org/search/tooling/">
+                <i class="grid icon wrench"></i>
+                Tooling
+              </a>
+              <a class="item" href="http://hibernate.org/search/support/">
+                <i class="doctor grid icon"></i>
+                Paid support
+              </a>
+              <a class="item" href="http://hibernate.org/search/faq/">
+                <i class="circle grid help icon"></i>
+                FAQ
+              </a>
+            </div>
+            <div class="menu external-links">
+              <a class="item" href="https://github.com/hibernate/hibernate-orm">
+                <i class="code grid icon"></i>
+                Source code
+              </a>
+              <a class="item" href="https://hibernate.atlassian.net/browse/HHH">
+                <i class="bug grid icon"></i>
+                Issue tracker
+              </a>
+              <a class="item" href="https://access.redhat.com/security/team/contact/">
+                <i class="grid icon lock"></i>
+                Security issue
+              </a>
+              <a class="item" href="https://discourse.hibernate.org/c/hibernate-orm">
+                <i class="comments grid icon"></i>
+                Forum
+              </a>
+              <a class="item" href="https://community.jboss.org/en/hibernate">
+                <i class="edit grid icon"></i>
+                Wiki
+              </a>
+              <a class="item" href="https://ci.hibernate.org/">
+                <i class="grid icon treatment"></i>
+                CI
+              </a>
+            </div>
+          </div>
+        </div>
+        <div class="item">
+          <a class="title">
+            <i class="box checkmark grid icon"></i>
+            <i class="dropdown icon"></i>
+            <strong>Validator</strong>
+          </a>
+          <div class="content">
+            <div class="menu internal-links">
+              <a class="item" href="http://hibernate.org/validator/">
+                <i class="grid home icon"></i>
+                About
+              </a>
+              <a class="item" href="http://hibernate.org/validator/releases/">
+                <i class="grid icon tags"></i>
+                Releases
+              </a>
+              <a class="item" href="http://hibernate.org/validator/documentation/">
+                <i class="book grid icon"></i>
+                Documentation
+              </a>
+              <a class="item" href="http://hibernate.org/validator/roadmap/">
+                <i class="grid icon road"></i>
+                Roadmap
+              </a>
+              <a class="item" href="http://hibernate.org/validator/contribute/">
+                <i class="grid icon users"></i>
+                Contribute
+              </a>
+              <a class="item" href="http://hibernate.org/validator/tooling/">
+                <i class="grid icon wrench"></i>
+                Tooling
+              </a>
+              <a class="item" href="http://hibernate.org/validator/support/">
+                <i class="doctor grid icon"></i>
+                Paid support
+              </a>
+              <a class="item" href="http://hibernate.org/validator/faq/">
+                <i class="circle grid help icon"></i>
+                FAQ
+              </a>
+            </div>
+            <div class="menu external-links">
+              <a class="item" href="https://github.com/hibernate/hibernate-orm">
+                <i class="code grid icon"></i>
+                Source code
+              </a>
+              <a class="item" href="https://hibernate.atlassian.net/browse/HHH">
+                <i class="bug grid icon"></i>
+                Issue tracker
+              </a>
+              <a class="item" href="https://access.redhat.com/security/team/contact/">
+                <i class="grid icon lock"></i>
+                Security issue
+              </a>
+              <a class="item" href="https://discourse.hibernate.org/c/hibernate-orm">
+                <i class="comments grid icon"></i>
+                Forum
+              </a>
+              <a class="item" href="https://community.jboss.org/en/hibernate">
+                <i class="edit grid icon"></i>
+                Wiki
+              </a>
+              <a class="item" href="https://ci.hibernate.org/">
+                <i class="grid icon treatment"></i>
+                CI
+              </a>
+            </div>
+          </div>
+        </div>
+        <div class="item">
+          <a class="title">
+            <i class="grid icon sitemap"></i>
+            <i class="dropdown icon"></i>
+            <strong>OGM</strong>
+          </a>
+          <div class="content">
+            <div class="menu internal-links">
+              <a class="item" href="http://hibernate.org/ogm/">
+                <i class="grid home icon"></i>
+                About
+              </a>
+              <a class="item" href="http://hibernate.org/ogm/releases/">
+                <i class="grid icon tags"></i>
+                Releases
+              </a>
+              <a class="item" href="http://hibernate.org/ogm/documentation/">
+                <i class="book grid icon"></i>
+                Documentation
+              </a>
+              <a class="item" href="http://hibernate.org/ogm/roadmap/">
+                <i class="grid icon road"></i>
+                Roadmap
+              </a>
+              <a class="item" href="http://hibernate.org/ogm/contribute/">
+                <i class="grid icon users"></i>
+                Contribute
+              </a>
+              <a class="item" href="http://hibernate.org/ogm/support/">
+                <i class="doctor grid icon"></i>
+                Paid support
+              </a>
+              <a class="item" href="http://hibernate.org/ogm/faq/">
+                <i class="circle grid help icon"></i>
+                FAQ
+              </a>
+            </div>
+            <div class="menu external-links">
+              <a class="item" href="https://github.com/hibernate/hibernate-orm">
+                <i class="code grid icon"></i>
+                Source code
+              </a>
+              <a class="item" href="https://hibernate.atlassian.net/browse/HHH">
+                <i class="bug grid icon"></i>
+                Issue tracker
+              </a>
+              <a class="item" href="https://access.redhat.com/security/team/contact/">
+                <i class="grid icon lock"></i>
+                Security issue
+              </a>
+              <a class="item" href="https://discourse.hibernate.org/c/hibernate-orm">
+                <i class="comments grid icon"></i>
+                Forum
+              </a>
+              <a class="item" href="https://community.jboss.org/en/hibernate">
+                <i class="edit grid icon"></i>
+                Wiki
+              </a>
+              <a class="item" href="https://ci.hibernate.org/">
+                <i class="grid icon treatment"></i>
+                CI
+              </a>
+            </div>
+          </div>
+        </div>
+        <div class="item">
+          <a class="title">
+            <i class="grid icon wrench"></i>
+            <i class="dropdown icon"></i>
+            <strong>Tools</strong>
+          </a>
+          <div class="content">
+            <div class="menu internal-links">
+              <a class="item" href="http://hibernate.org/tools/">
+                <i class="grid home icon"></i>
+                About
+              </a>
+            </div>
+            <div class="menu external-links">
+              <a class="item" href="https://github.com/hibernate/hibernate-orm">
+                <i class="code grid icon"></i>
+                Source code
+              </a>
+              <a class="item" href="https://hibernate.atlassian.net/browse/HHH">
+                <i class="bug grid icon"></i>
+                Issue tracker
+              </a>
+              <a class="item" href="https://access.redhat.com/security/team/contact/">
+                <i class="grid icon lock"></i>
+                Security issue
+              </a>
+              <a class="item" href="https://discourse.hibernate.org/c/hibernate-orm">
+                <i class="comments grid icon"></i>
+                Forum
+              </a>
+              <a class="item" href="https://community.jboss.org/en/hibernate">
+                <i class="edit grid icon"></i>
+                Wiki
+              </a>
+              <a class="item" href="https://ci.hibernate.org/">
+                <i class="grid icon treatment"></i>
+                CI
+              </a>
+            </div>
+          </div>
+        </div>
+        <a class="item" href="http://hibernate.org/others/">
+          Others
+        </a>
+        <div class="item">
+          <a class="title">
+            <i class="grid icon users"></i>
+            <i class="dropdown icon"></i>
+            <strong>Community</strong>
+          </a>
+          <div class="content">
+            <div class="menu external-links">
+              <a class="item" href="http://hibernate.org/community/">
+                <i class="grid icon users"></i>
+                Community
+              </a>
+              <a class="item" href="http://hibernate.org/community/contributors/orm/">
+                <i class="grid icon database"></i>
+                Contributors to ORM
+              </a>
+              <a class="item" href="http://hibernate.org/community/contributors/search/">
+                <i class="grid icon search"></i>
+                Contributors to Search
+              </a>
+              <a class="item" href="http://hibernate.org/community/contributors/validator/">
+                <i class="grid icon checkmark box"></i>
+                Contributors to Validator
+              </a>
+              <a class="item" href="http://hibernate.org/community/contributors/ogm/">
+                <i class="grid icon sitemap"></i>
+                Contributors to OGM
+              </a>
+              <a class="item" href="http://hibernate.org/community/corporate-contributors/">
+                <i class="grid icon building outline"></i>
+                Corporate contributors
+              </a>
+              <a class="item" href="http://hibernate.org/community/license/">
+                <i class="grid icon legal"></i>
+                Licenses
+              </a>
+            </div>
+          </div>
+        </div>
+        <a class="item" href="https://in.relation.to/">
+          Blog
+        </a>
+        <a class="item" href="https://discourse.hibernate.org/">
+          Forums
+        </a>
+        <a class="item" href="https://twitter.com/hibernate/">
+          <i class="icon twitter"></i>
+          Follow us
+        </a>
+      </div>
+    </div>
+    <div class="pusher">
+      <div class="mobile-menu-button-bar mobile only print hidden">
+        <a class="item" id="mobile-menu-toggle">
+          <i class="sidebar icon"></i>
+          Menu
+        </a>
+      </div>
+      <!-- begin accesibility skip to top -->
+      <ul class="sr-only">
+        <li>
+          <a accesskey="n" href="visit.html#nav" title="Skip to navigation">Skip to navigation</a>
+        </li>
+        <li>
+          <a accesskey="c" href="visit.html#content" title="Skip to content">Skip to content</a>
+        </li>
+      </ul>
+      <div class="ui container banner">
+        <div class="logo">
+          <a href="visit.html">
+            <img alt="Hibernate" height="53" src="http://hibernate.org/images/hibernate-logo.svg" width="200">
+          </a>
+        </div>
+        <div class="clearfix"></div>
+        <div class="ui stackable menu mobile hidden print hidden" id="nav">
+          <a class="item" href="http://hibernate.org/orm/">ORM</a>
+          <a class="item" href="http://hibernate.org/search/">Search</a>
+          <a class="item" href="http://hibernate.org/validator/">Validator</a>
+          <a class="item" href="http://hibernate.org/ogm/">OGM</a>
+          <a class="item" href="http://hibernate.org/tools/">Tools</a>
+          <a class="item" href="http://hibernate.org/others/">Others</a>
+          <div class="right menu">
+            <a class="item" href="https://in.relation.to/">Blog</a>
+            <a class="item" href="https://discourse.hibernate.org/">Forums</a>
+            <a class="item" href="http://hibernate.org/community/">Community</a>
+            <a class="item" href="https://twitter.com/hibernate/">
+              <i class="twitter icon"></i>
+              Follow us
+            </a>
+          </div>
+        </div>
+      </div>
+      <div class="jumbotron">
+        <div class="ui container">
+          <div class="ui grid stackable">
+            <div class="column row" style="z-index: 1;">
+              <div class="left floated column eight wide middle aligned">
+                <h1>
+                  <span>Hibernate</span>
+                </h1>
+                <h2>
+                  <span>Everything data.</span>
+                </h2>
+              </div>
+              <div class="right floated column five wide middle aligned print hidden">
+                <div id="carousel"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="page-title home">
+        <div class="ui container">
+          <h1>More than an ORM, discover the Hibernate galaxy.</h1>
+        </div>
+      </div>
+      <div class="ui container content" id="content">
+        <div class="projects">
+          <div class="ui three column doubling grid stackable">
+            <div class="column">
+              <div class="ui raised segment orm">
+                <div class="project">
+                  <h3 class="ui header">
+                    <a href="http://hibernate.org/orm">Hibernate ORM</a>
+                  </h3>
+                  <p>
+                    <i class="big icon database"></i>
+                    Domain model persistence for relational databases.
+                  </p>
+                  <div class="ui right aligned basic segment">
+                    <a class="ui button right labeled icon a primary" href="http://hibernate.org/orm">
+                      <i class="right arrow icon"></i>
+                      More
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="column">
+              <div class="ui raised segment search">
+                <div class="project">
+                  <h3 class="ui header">
+                    <a href="http://hibernate.org/search">Hibernate Search</a>
+                  </h3>
+                  <p>
+                    <i class="big icon search"></i>
+                    Full-text search for your domain model.
+                  </p>
+                  <div class="ui right aligned basic segment">
+                    <a class="button ui right labeled icon a primary" href="http://hibernate.org/search">
+                      <i class="right arrow icon"></i>
+                      More
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="column">
+              <div class="ui raised segment validator">
+                <div class="project">
+                  <h3 class="ui header">
+                    <a href="http://hibernate.org/validator">Hibernate Validator</a>
+                  </h3>
+                  <p>
+                    <i class="big icon checkmark box"></i>
+                    Annotation based constraints for your domain model.
+                  </p>
+                  <div class="ui right aligned basic segment">
+                    <a class="ui button right labeled icon a primary" href="http://hibernate.org/validator">
+                      <i class="right arrow icon"></i>
+                      More
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="column">
+              <div class="ui raised segment ogm">
+                <div class="project">
+                  <h3 class="ui header">
+                    <a href="http://hibernate.org/ogm">Hibernate OGM</a>
+                  </h3>
+                  <p>
+                    <i class="big icon sitemap"></i>
+                    Domain model persistence for NoSQL datastores.
+                  </p>
+                  <div class="ui right aligned basic segment">
+                    <a class="ui button right labeled icon a primary" href="http://hibernate.org/ogm">
+                      <i class="right arrow icon"></i>
+                      More
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="column">
+              <div class="ui raised segment tools">
+                <div class="project">
+                  <h3 class="ui header">
+                    <a href="http://hibernate.org/tools">Hibernate Tools</a>
+                  </h3>
+                  <p>
+                    <i class="big icon wrench"></i>
+                    Command line tools and IDE plugins for your Hibernate usages.
+                  </p>
+                  <div class="ui right aligned basic segment">
+                    <a class="ui button right labeled icon a primary" href="http://hibernate.org/tools">
+                      <i class="right arrow icon"></i>
+                      More
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="column">
+              <div class="ui raised segment others">
+                <div class="project">
+                  <h3 class="ui header">
+                    <a href="http://hibernate.org/others">Others</a>
+                  </h3>
+                  <p>We like the symmetry, everything else is here.</p>
+                  <div class="ui right aligned basic segment">
+                    <a class="ui button right labeled icon a primary" href="http://hibernate.org/others">
+                      <i class="right arrow icon"></i>
+                      Even more
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <script>
+        $(document).ready(function() {
+          $('.project').matchHeight({ byRow: false });
+        
+          $.ajax({
+            url: "https://in.relation.to/feeds/global.json",
+            jsonpCallback: "getBlogEntries",
+            dataType: "jsonp",
+        
+            // Work with the response
+            success: function( data ) {
+              var carousel = $('#carousel');
+              for (var i = 0; i < data.length; i++) {
+                var entry = data[i];
+        
+                var carouselElement = $('<div class="carousel-element" />');
+                var segment = $('<div class="ui raised segment" />');
+                carouselElement.append(segment);
+        
+                var ribbonText = 'Community';
+                var ribbonIcon = 'users';
+                if ( entry.tags ) {
+                  if ( entry.tags.includes('Newsletter') ) {
+                    ribbonText = 'Newsletter';
+                    ribbonIcon = 'newspaper';
+                  }
+                  else if ( entry.tags.includes('Interview') ) {
+                    ribbonText = 'Community';
+                    ribbonIcon = 'users';
+                  }
+                  else if ( entry.tags.includes('Hibernate ORM') ) {
+                    ribbonText = 'ORM';
+                    ribbonIcon = 'database';
+                  }
+                  else if ( entry.tags.includes('Hibernate Search') ) {
+                    ribbonText = 'Search';
+                    ribbonIcon = 'search';
+                  }
+                  else if ( entry.tags.includes('Hibernate OGM') ) {
+                    ribbonText = 'OGM';
+                    ribbonIcon = 'database';
+                  }
+                  else if ( entry.tags.includes('Hibernate Validator') ) {
+                    ribbonText = 'Validator';
+                    ribbonIcon = 'check';
+                  }
+                  else if ( entry.tags.includes('Hibernate Tools') ) {
+                    ribbonText = 'Tooling';
+                    ribbonIcon = 'wrench';
+                  }
+                }
+        
+                var ribbon = $('<span class="ui brown right ribbon label" />');
+                var icon = $('<i class="icon ' + ribbonIcon + '" />');
+        
+                segment.append(ribbon);
+                ribbon.append(icon);
+                ribbon.append(ribbonText);
+        
+                var entryItem = $('<h4/>');
+                entryItem.append(
+                  $('<a href="http://hibernate.org/'&#32;+&#32;entry.url&#32;+&#32;'"/>').text(entry.title)
+                );
+                segment.append(entryItem);
+        
+                carousel.append(carouselElement);
+              }
+        
+              $('#carousel').slick({
+                slidesToShow: 1,
+                slidesToScroll: 1,
+                autoplay: true,
+                autoplaySpeed: 4000,
+                focusOnSelect: true,
+                arrows: false,
+                dots: true
+              });
+            }
+          });
+        });
+      </script>
+      <div class="ui inverted vertical footer segment print hidden">
+        <div class="ui container">
+          <div class="ui stackable inverted divided equal height stackable grid">
+            <div class="three wide column">
+              <h4 class="ui inverted header">Projects</h4>
+              <div class="ui inverted link list">
+                <a class="item" href="http://hibernate.org/orm" title="Hibernate ORM">Hibernate ORM</a>
+                <a class="item" href="http://hibernate.org/search" title="Search">Hibernate Search</a>
+                <a class="item" href="http://hibernate.org/validator" title="Hibernate Validator">Hibernate Validator</a>
+                <a class="item" href="http://hibernate.org/ogm" title="Hibernate OGM">Hibernate OGM</a>
+                <a class="item" href="http://hibernate.org/tools" title="Hibernate Tools">Hibernate Tools</a>
+                <a class="item" href="http://hibernate.org/others" title="Other projects">Other projects</a>
+              </div>
+            </div>
+            <div class="three wide column">
+              <h4 class="ui inverted header">Follow us</h4>
+              <div class="ui inverted link list">
+                <a class="item" href="https://in.relation.to/" title="Blog">Blog</a>
+                <a class="item" href="https://twitter.com/hibernate/" title="Twitter">Twitter</a>
+                <a class="item" href="https://plus.google.com/112681342290762837955/posts" title="Google+">Google+</a>
+              </div>
+            </div>
+            <div class="five wide column">
+              <h4 class="ui inverted header">Contribute and community</h4>
+              <div class="ui inverted link list">
+                <a class="item" href="http://hibernate.org/community" title="Community resources">Community resources</a>
+                <a class="item" href="https://github.com/hibernate/">Our GitHub organization</a>
+                <a class="item" href="https://hibernate.atlassian.net/" title="Submit a bug">Submit a bug</a>
+                <a class="item" href="https://discourse.hibernate.org/" title="Submit a bug">Our forums</a>
+                <a class="item" href="https://access.redhat.com/security/team/contact/" title="Report a security issue">Report a security issue</a>
+              </div>
+            </div>
+            <div class="five wide column sponsor">
+              <div class="logo">
+                <a href="https://www.redhat.com/">
+                  <img src="http://hibernate.org/images/sponsored-by-redhat.svg" title="Red Hat">
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <span class="back-to-top computer only">
+        <a href="javascript: void(0)">Back to top</a>
+      </span>
+    </div>
+    <script>
+     (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+                        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+                        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+                        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+     
+    ga('create', 'UA-45270411-1', 'auto');
+    ga('send', 'pageview');
+    
+    </script>
+    <script>
+      $(function() {
+        $('#mobile-menu').sidebar('setting', {
+          transition: 'push'
+        });
+        $('#mobile-menu').sidebar('attach events', '#mobile-menu-toggle');
+      
+        $('.ui.accordion').accordion();
+      
+        $(window).scroll(function(e) {
+          if($(this).scrollTop()>150){
+            $('.back-to-top').fadeIn(1000); // Fading in the button on scroll after 150px
+          }
+          else {
+            $('.back-to-top').fadeOut(500); // Fading out the button on scroll if less than 150px
+          }
+        });
+      
+          $('.back-to-top').click(function(e) {
+            $('body, html').animate({scrollTop:0}, 800);
+          });
+        });
+    </script>
+  </body>
+</html>

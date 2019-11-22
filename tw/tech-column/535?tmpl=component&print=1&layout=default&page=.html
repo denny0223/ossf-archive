@@ -1,0 +1,119 @@
+	<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+	<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="zh-tw" lang="zh-tw" >
+		<head>
+			  <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+  <meta name="robots" content="noindex, nofollow" />
+  <meta name="keywords" content="OSSFNL226" />
+  <meta name="title" content="隨時記錄你的 Log" />
+  <meta name="description" content="Java Opensources for Web Development Part I：嘗試使用來自 Opensource 的小工具(1)Lession 3 : 隨時記錄你的 Log 在開發一套複雜的企業系統之時，我們面臨到許多挑戰，尤其是單人單機的運作環境，與多人多工的作業環境，管理與控制是非常不同的。尤其我們在開發除錯的階段，與測試上線的階段，都需要一套完整的 Logging" />
+  <meta name="generator" content="" />
+  <title>隨時記錄你的 Log</title>
+  <link href="../../favicon.ico" rel="shortcut icon" type="image/x-icon" />
+  <link rel="stylesheet" href="../../components/com_gantry/css/gantry.css" type="text/css" />
+  <link rel="stylesheet" href="../../components/com_gantry/css/grid-12.css" type="text/css" />
+  <link rel="stylesheet" href="../../components/com_gantry/css/joomla.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/joomla.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/style1.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/light-body.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/demo-styles.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/template.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/typography.css" type="text/css" />
+  <style type="text/css">
+    <!--
+#rt-main-surround ul.menu li.active > a, #rt-main-surround ul.menu li.active > .separator, #rt-main-surround ul.menu li.active > .item, #rt-main-surround .square4 ul.menu li:hover > a, #rt-main-surround .square4 ul.menu li:hover > .item, #rt-main-surround .square4 ul.menu li:hover > .separator, .roktabs-links ul li.active span {color:#0088B5;}
+a, #rt-main-surround ul.menu a:hover, #rt-main-surround ul.menu .separator:hover, #rt-main-surround ul.menu .item:hover {color:#0088B5;}
+    -->
+  </style>
+  <script type="text/javascript" src="../../components/com_jcomments/js/jcomments-v2.1.js%3Fv=2"></script>
+  <script type="text/javascript" src="../../components/com_jcomments/libraries/joomlatune/ajax.js"></script>
+  <script type="text/javascript" src="../../media/system/js/mootools.js"></script>
+  <script type="text/javascript" src="../../media/system/js/caption.js"></script>
+  <script type="text/javascript" src="../../components/com_gantry/js/gantry-buildspans.js"></script>
+  <script type="text/javascript" src="../../components/com_gantry/js/gantry-inputs.js"></script>
+  <script type="text/javascript">
+
+			window.addEvent('domready', function() {
+				var modules = ['rt-block'];
+				var header = ['h3','h2','h1'];
+				GantryBuildSpans(modules, header);
+			});
+		InputsExclusion.push('.content_vote','#rt-popup')
+  </script>
+		</head>
+		<body  class="backgroundlevel-low backgroundstyle-style8 bodylevel-med bodystyle-light cssstyle-style1 logostyle-dark font-family-helvetica font-size-is-default menu-type-fusionmenu col12 ">
+			<div id="rt-main-surround">
+				<div class="rt-container">
+					<div class="rt-block">
+						<div id="rt-mainbody">
+					    	
+<div class="rt-joomla ">
+	<div class="rt-article">
+		
+				<div class="rt-headline"><h1 class="rt-article-title">隨時記錄你的 Log</h1>		</div>
+		<div class="clear"></div>
+		
+		
+		
+				<div class="rt-articleinfo">
+						<div class="rt-article-icons">
+				<a href="535%3Ftmpl=component&amp;print=1&amp;layout=default&amp;page=.html#" onclick="window.print();return false;"><span class="icon print"></span></a>									<span class="icon printscreen">
+						<a href="535%3Ftmpl=component&amp;print=1&amp;layout=default&amp;page=.html#" onclick="window.print();return false;"><img src="../../images/M_images/printButton.png" alt="列印"  /></a>					</span>
+							</div>
+			
+			<span class="rt-date-posted">
+						建立日期			2006-06-23 08:00						&nbsp;&nbsp;&nbsp;&nbsp;						最近更新在 2007-09-11 23:23						</span>
+
+						<span class="rt-author">
+				作者是 李日貴			</span>
+				
+					</div>
+		
+		
+		Java Opensources for Web Development Part I：嘗試使用來自 Opensource 的小工具(1)<br />Lession 3 : 隨時記錄你的 Log 在開發一套複雜的企業系統之時，我們面臨到許多挑戰，尤其是單人單機的運作環境，與多人多工的作業環境，管理與控制是非常不同的。尤其我們在開發除錯的階段，與測試上線的階段，都需要一套完整的 Logging 機制來存查所有的紀錄。Log4j 已經有 10 年左右的歷史了，在 Apache Software License 的推廣之下，許許多多的工程師與許多專案貨系統，大多都以 Log4j 作為 logging 與追蹤 APIs 的基本元件。Log4j也從原本屬於 jakarta 的次專案，提升為 logging 的專案，並且建立其他語言的 Log 機制，如 log4cxx、log4net、log4php 等等。<p>另外，這股風潮也迫使 JCP 制訂了 Logging Standard APIs 放在 J2SE 1.4 裡頭，不過，畫虎不成反成犬，倒是 JDK14 Logging 的敗筆，這又是另話了。 在進入 Log4j 殿堂之前，我們可以先到 apache 的 logging 專案，下載 log4j 的 Binary 檔案 (https://logging.apache.org/log4j/docs/) ，其實，裡面也有許多文件可以參考，除了基本的教學之外，可以看一下 vipan singla 寫的 &quot;Don't Use System.out.println&quot;，為什麼不要用 System.out.println 呢，因為當你希望查看一些比較細膩的資料訊息，例如 SQL 命令內容，該怎麼去做呢？重新編譯程式嗎？還是該開始就寫很多浪費 I/O 的資源呢？ 首先，我們可以看到，我們該如何讓一些資訊隱藏起來，等到要用的時候再把她叫出來，這就是 Log 等級 (Level) 的重要性。我們可以設定 Logger（Log 記錄器）等級為 DEBUG、INFO、WARN、ERROR、 FATAL。透過 categories 的設定與 levels 的應用，log4j 可以產生 Log Filter，他會根據現在目錄的屬性，來決定是否針對此訊息紀錄下來，還是忽略之。例如：</p>
+<p><br /> Logger 的階層名稱&nbsp;&nbsp;&nbsp; |&nbsp; 設定的Level&nbsp;&nbsp; | 有效會輸出的 Level</p>
+<p>root&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; | &nbsp;&nbsp;&nbsp; INFO&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp; &nbsp; &nbsp;&nbsp; | &nbsp; INFO</p>
+<p>x&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; | &nbsp;&nbsp; DEBUG&nbsp;&nbsp; &nbsp; &nbsp; &nbsp;&nbsp; &nbsp;&nbsp; | &nbsp;&nbsp; DEBUG</p>
+<p>x.y&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; | &nbsp; none&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; |&nbsp; DEBUG</p>
+<p>x.y.z&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; | &nbsp; WARN&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp; &nbsp; &nbsp;&nbsp; | &nbsp; WARN</p>
+<p><br /> 接著，我們就要思考，輸出的方式是檔案呢？還是資料庫？還是  FATAL 錯誤發生時給我一封 Email？這些輸出的方式，我們稱之為  Appender，也就是 Log 的附加器。 </p>
+<p> 我們可以指定想要使用的 Appender 為何，只要該 Appender 有確實  implements Appender 這個 interface。例如我常用的  ConsoleAppender, DailyRollingFileAppender, 或是 extension 中 的 JDBCAppender 都是非常好用的。 </p>
+<p> 最後，我們要考慮的就是輸出的格式 (Layout) 為何？通常都會採用  PatternLayout 並且設定該 Pattern 屬性，這方法彈性較大，或是 直接使用 XMLLayout 可以透過 sax 或 dom 的方法來取得必要的欄 位。PatternLayout 定義了很多 %[alpha-code] ，詳細可以在  </p>
+<p> https://logging.apache.org/log4j/docs/api/org/apache/log4j/ PatternLayout.html 查詢使用方式。 </p>
+<p>當我們都已經準備好以上的資訊時，我們就要開始設定 log4j.properties 在 classes 之下即可。裡面可寫，例如：</p>
+<pre>log4j.debug=true<br />log4j.rootLogger=debug, TEST<br />log4j.appender.TEST=org.apache.log4j.FileAppender<br />log4j.appender.TEST.File=${user.home}/test.log<br />log4j.appender.TEST.layout=org.apache.log4j.PatternLayout<br />log4j.appender.TEST.layout.ConversionPattern=%p %t %c - %m%n</pre>
+<p><br /> 也可以設定多個 Appender.<br /></p>
+<pre>log4j.rootLogger=debug, <strong>stdout</strong>, <strong>R</strong><br /><strong>log4j.appender.stdout=org.apache.log4j.ConsoleAppender</strong><br />log4j.appender.stdout.layout=org.apache.log4j.PatternLayout<br /># Pattern to output the caller's file name and line number.<br />log4j.appender.stdout.layout.ConversionPattern=%5p [%t] <strong>(%F:%L)</strong> - %m%n<br /><strong>log4j.appender.R=org.apache.log4j.RollingFileAppender</strong><br />log4j.appender.R.File=example.log<br />log4j.appender.R.MaxFileSize=100KB<br />log4j.appender.R.MaxBackupIndex=1<br />log4j.appender.R.layout=org.apache.log4j.PatternLayout<br />log4j.appender.R.layout.ConversionPattern=%p %t %c - %m%n</pre>
+<p>當你上線的時候，只需要調整輸出的 level ，就可以得到更好的效能，或是在問題發生的時候，降低 level 讓更多資訊呈現出來，這麼方便的小工具，實在不能錯過 。 </p>
+			<!-- Show relate article -->
+				<!-- end -->
+		<div class="article_note">
+		<!-- Add tags use metakey, and show OSSF Newsletter tag: OSSFNL+NUM-->
+		<br><br> <hr style='border: 1px dashed #D2DADB;'><b>自由軟體鑄造場電子報&nbsp;:</b>&nbsp;<a href='../../previous-issue%3Ftask=view&amp;id=226.html'>第 60 期 LSM & Ubuntu Installfest 活動預告</a><br>				<!-- End -->
+					<br>
+					<b>分類: </b><a href="../tech-column.html">				技術專欄					</a>				</div>
+			 <!-- AddThis Button BEGIN ID 3001 is the front page article -->
+     			<br><br>
+       <div class="addthis_toolbox addthis_default_style addthis_32x32_style">
+       <a class="addthis_button_preferred_1"></a>
+       <a class="addthis_button_preferred_2"></a>
+       <a class="addthis_button_preferred_3"></a>
+       <a class="addthis_button_preferred_4"></a>
+       <a class="addthis_button_compact"></a>
+       <a class="addthis_counter addthis_bubble_style"></a>
+       </div>
+       <script type="text/javascript">var addthis_config = {"data_track_clickback":true};</script>
+       <script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js#pubid=openfoundry"></script>
+       <!-- AddThis Button END -->
+     <br>
+		<div class="totop" ><a class="rt-totop" href="535%3Ftmpl=component&amp;print=1&amp;layout=default&amp;page=.html#" style="outline: medium none;">↑ Top</a></div>
+            <!-- AddThis Button END -->
+
+			</div>
+</div>
+
+						</div>
+					</div>
+				</div>
+			</div>
+		</body>
+	</html>

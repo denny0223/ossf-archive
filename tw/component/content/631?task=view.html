@@ -1,0 +1,359 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="zh-tw" lang="zh-tw" >
+<head>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<link rel="shortcut icon" href="../../../images/favicon.ico" />
+	  <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+  <meta name="robots" content="index, follow" />
+  <meta name="keywords" content="OSSFNL169" />
+  <meta name="title" content="GNU GateKeeper 的開放 VoIP 技術經驗" />
+  <meta name="description" content="開放源碼的採用，對於許多台灣企業而言，恐怕還是生疏的。本期我們採訪了 VoIP (Voice over IP) 開發公司，呈祺資訊 (Citron)。除了要將呈祺在開放 VoIP 方面的經驗介紹給大家之外，呈祺的技術總監 (CTO) 黃志偉 -- 這位 GNU GateKeeper 開發健將 -- 在開放源碼方面的經驗，也是我們邀約的主因。有些人質疑 VoIP" />
+  <meta name="generator" content="" />
+  <title>GNU GateKeeper 的開放 VoIP 技術經驗 - OpenFoundry</title>
+  <link href="../../../favicon.ico" rel="shortcut icon" type="image/x-icon" />
+  <link rel="stylesheet" href="../../../components/com_gantry/css/gantry.css" type="text/css" />
+  <link rel="stylesheet" href="../../../components/com_gantry/css/grid-12.css" type="text/css" />
+  <link rel="stylesheet" href="../../../components/com_gantry/css/joomla.css" type="text/css" />
+  <link rel="stylesheet" href="../../../templates/rt_quantive_j15/css/joomla.css" type="text/css" />
+  <link rel="stylesheet" href="../../../templates/rt_quantive_j15/css/style1.css" type="text/css" />
+  <link rel="stylesheet" href="../../../templates/rt_quantive_j15/css/light-body.css" type="text/css" />
+  <link rel="stylesheet" href="../../../templates/rt_quantive_j15/css/demo-styles.css" type="text/css" />
+  <link rel="stylesheet" href="../../../templates/rt_quantive_j15/css/template.css" type="text/css" />
+  <link rel="stylesheet" href="../../../templates/rt_quantive_j15/css/typography.css" type="text/css" />
+  <link rel="stylesheet" href="../../../templates/rt_quantive_j15/css/fusionmenu.css" type="text/css" />
+  <style type="text/css">
+    <!--
+#rt-main-surround ul.menu li.active > a, #rt-main-surround ul.menu li.active > .separator, #rt-main-surround ul.menu li.active > .item, #rt-main-surround .square4 ul.menu li:hover > a, #rt-main-surround .square4 ul.menu li:hover > .item, #rt-main-surround .square4 ul.menu li:hover > .separator, .roktabs-links ul li.active span {color:#0088B5;}
+a, #rt-main-surround ul.menu a:hover, #rt-main-surround ul.menu .separator:hover, #rt-main-surround ul.menu .item:hover {color:#0088B5;}
+    -->
+  </style>
+  <script type="text/javascript" src="../../../components/com_jcomments/js/jcomments-v2.1.js%3Fv=2"></script>
+  <script type="text/javascript" src="../../../components/com_jcomments/libraries/joomlatune/ajax.js"></script>
+  <script type="text/javascript" src="../../../media/system/js/mootools.js"></script>
+  <script type="text/javascript" src="../../../media/system/js/caption.js"></script>
+  <script type="text/javascript" src="../../../components/com_gantry/js/gantry-buildspans.js"></script>
+  <script type="text/javascript" src="../../../components/com_gantry/js/gantry-inputs.js"></script>
+  <script type="text/javascript" src="../../../templates/rt_quantive_j15/js/jquery.cookie.js"></script>
+  <script type="text/javascript" src="../../../modules/mod_roknavmenu/themes/fusion/js/fusion.js"></script>
+  <script type="text/javascript" src="../../../modules/mod_ofssologin/js/ofssologin.js"></script>
+  <script type="text/javascript">
+
+			window.addEvent('domready', function() {
+				var modules = ['rt-block'];
+				var header = ['h3','h2','h1'];
+				GantryBuildSpans(modules, header);
+			});
+		InputsExclusion.push('.content_vote','#rt-popup')
+		        window.addEvent('load', function() {
+					new Fusion('ul.menutop', {
+						pill: 0,
+						effect: 'slide and fade',
+						opacity: 1,
+						hideDelay: 500,
+						centered: 0,
+						tweakInitial: {'x': -2, 'y': 0},
+        				tweakSubsequent: {'x': 0, 'y': -14},
+						menuFx: {duration: 200, transition: Fx.Transitions.Sine.easeOut},
+						pillFx: {duration: 400, transition: Fx.Transitions.Back.easeOut}
+					});
+	            });
+  </script>
+<!-- <script type="text/javascript" src="/sso/javascripts/langsync.js"></script> -->
+<!-- <script src="/templates/rt_quantive_j15/js/ossf.js"></script> -->
+<script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-4136519-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
+</head>
+	<body  class="backgroundlevel-low backgroundstyle-style8 bodylevel-med bodystyle-light cssstyle-style1 logostyle-dark font-family-helvetica font-size-is-default menu-type-fusionmenu col12">
+		<div id="rt-main-background">
+			<div class="rt-container">
+																<div id="rt-header">
+					<div class="rt-grid-7 rt-alpha">
+    			<div class="rt-block">
+    	    	<a href="../../../index.html" id="rt-logo"></a>
+    		</div>
+	    
+</div>
+<div class="rt-grid-5 rt-omega">
+                    <div class="square9">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<div class="ofssologin_square9"><a href="../../../index.html">登入</a>&nbsp;&nbsp|&nbsp;&nbsp;<span><a href="https://www.openfoundry.org/en/component/content/631/631?task=view" ><span lang="en" xml:lang="en">English</span></a></li></ul></span><!--Joom!fish V2.0.4 (Lightning)-->
+<!-- &copy; 2003-2009 Think Network, released under the GPL. -->
+<!-- More information: at http://www.joomfish.net -->
+<div class="ofssologin_search_square9">
+  <form id="of_search" action="https://www.openfoundry.org/of/openfoundry/search" method="get" onsubmit="of_search(); return false;">
+    <select id="of_search_type">
+      <option value="Projects"> 專案 </option>
+      <option value="Content"> 文章 </option>
+      <option value="People"> 人才 </option>
+    </select>
+    <input id="query" name="query" id="mod_search_searchword" maxlength="50" alt="search" class="inputbox" type="text" size="28" value="search..."  onblur="if(this.value=='') this.value='search...';" onfocus="if(this.value=='search...') this.value='';" />
+    <input type="hidden" name="commit" value="search" />
+  </form>
+</div></div>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		
+</div>
+					<div class="clear"></div>
+				</div>
+																<div id="rt-navigation"><div id="rt-navigation2"><div id="rt-navigation3">
+					
+<div class="nopill">
+	<ul class="menutop level1 " >
+						<li class="item1 root" >
+					<a class="orphan item bullet" href="../../../index.html"  >
+				<span>
+			    				首頁				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item32 root" >
+					<a class="orphan item bullet" href="../../../archived.html"  >
+				<span>
+			    				專案				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item186 root" >
+					<a class="orphan item bullet" href="../../community.html"  >
+				<span>
+			    				Who&#039;s Who				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item4 root" >
+					<a class="orphan item bullet" href="../../news.html"  >
+				<span>
+			    				新聞				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item5 root" >
+					<a class="orphan item bullet" href="../../law-and-licensing.html"  >
+				<span>
+			    				法律源地				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item3 root" >
+					<a class="orphan item bullet" href="../../activities.html"  >
+				<span>
+			    				活動				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item2 root" >
+					<a class="orphan item bullet" href="../../resourcecatalog%3FName=Value.html"  >
+				<span>
+			    				資源表列				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item45 root" >
+					<a class="orphan item bullet" href="../../about.html"  >
+				<span>
+			    				關於				   
+				</span>
+			</a>
+			
+			
+	</li>	
+				</ul>
+</div>
+
+				    <div class="clear"></div>
+				</div></div></div>
+								<div class="rt-surround"><div class="rt-surround2"><div class="rt-surround3">
+										<div id="rt-showcase-section">
+												<div id="rt-showcase">
+							<div class="rt-grid-12 rt-alpha rt-omega">
+    		<div class="clear"></div>
+		
+		
+                <div class="close-note">
+                    <div class="rt-block">
+               					<div class="module-content">
+                	<div style="font-size:medium; background-image:linear-gradient(120deg,#159957,#4298b2);color:white;padding:20px;margin:-10px -18px;">感謝您對「自由軟體鑄造場」的支持與愛護，十多年來「自由軟體鑄造場」受中央研究院支持，並在資訊科學研究所以及資訊科技創新研究中心執行，現已完成階段性的任務。 本網站預計持續維運至 2021年底，網站內容基本上不會再更動。<br />也紀念我們永遠的朋友 李士傑先生（Shih-Chieh Ilya Li）。</div>				</div>
+            </div>
+                </div>
+		
+</div>
+							<div class="clear"></div>
+						</div>
+																	</div>
+															<div id="rt-main-surround">
+																							              <div id="rt-main" class="mb12">
+                <div class="rt-main-inner">
+                    <div class="rt-grid-12 ">
+                                                <div class="rt-block">
+                            							<div class="square1">
+							<div class="rt-module-surround">
+								<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+								<div class="rt-module-inner">
+		                            <div id="rt-mainbody">
+		                                
+<div class="rt-joomla ">
+	<div class="rt-article">
+		
+				<div class="rt-headline"><h1 class="rt-article-title">GNU GateKeeper 的開放 VoIP 技術經驗</h1>		</div>
+		<div class="clear"></div>
+		
+		
+		
+				<div class="rt-articleinfo">
+						<div class="rt-article-icons">
+								<a href="https://www.openfoundry.org/tw/component/content/article/631-gnu-gatekeeper-voip-?tmpl=component&amp;print=1&amp;page=" title="列印" onclick="window.open(this.href,'win2','status=no,toolbar=no,scrollbars=yes,titlebar=no,menubar=no,resizable=yes,width=640,height=480,directories=no,location=no'); return false;" rel="nofollow"><span class="icon print"></span></a>																</div>
+			
+			<span class="rt-date-posted">
+						建立日期			2003-09-28 08:00						&nbsp;&nbsp;&nbsp;&nbsp;						最近更新在 2011-12-07 14:49						</span>
+
+						<span class="rt-author">
+				作者是 藍雲紋			</span>
+				
+					</div>
+		
+		
+		<p class="MsoNormal"><span style="font-family: 新細明體;">開放源碼的採用，對於許多台灣企業而言，恐怕還是生疏的。本期我們採訪了<span> VoIP (Voice over IP) 開發公司，呈祺資訊 (Citron)。除了要將呈祺在開放 VoIP 方面的經驗介紹給大家之外，呈祺的技術總監 (CTO) 黃志偉 -- 這位 GNU GateKeeper 開發健將 -- 在開放源碼方面的經驗，也是我們邀約的主因。有些人質疑 VoIP 網路電話之所以歷經數年還未成為主流商品，原因有幾：(1)產品本身品質還有待提升(2)防火牆與網址轉換，導致居家通話完成率偏低、造成通訊障礙，傳統 VoIP 軟體有待改良(3)使用者介面不佳、親和力不足(4)需要一定的設定技術。黃志偉以開發人員與源碼使用者的雙重身分，現身說法，跟大家作了深入淺出的分 享。</span></span></p>
+<p class="MsoNormal"><span style="font-family: 新細明體;">《右圖：黃志偉<span> -- GNU GateKeeper 開發健將》 </span></span></p>
+
+<p class="MsoNormal"><span style="font-family: 新細明體;">● 呈祺資訊及其 VoIP 產品</span></p>
+<p class="MsoNormal"><span style="font-family: 新細明體;">Q: 幫我們簡單描述一下呈祺跟它的產品？<br /> A: 呈祺是第二類電信公司，就像大哥大公司。只是那些公司用的是 GSM 的協定，而呈祺用的是 VoIP 的通訊協定。我們是服務作業者。我們也有電話機的產品，影像的電話機等。</span></p>
+<p class="MsoNormal"><span style="font-family: 新細明體;">Q: 呈祺的產品，是國內第一個 P2P VoIP 系統嗎？<br /> A: 第一個 P2P 可能不是，但應該是第一個開放 VoIP 的系統。<br /> ● 第一家開放 VoIP 享受了開放源碼的優點</span></p>
+<p class="MsoNormal"><span style="font-family: 新細明體;">Q: 國內也有些「非開放源碼」的公司在做 VoIP、影像電話這方面的產品。可不可以談一下開放源碼為呈祺帶來什麼好處？開放源碼主要應用在哪些部分？<br /> A: 好處：節省人力、成本、時間。主要是協定方面採用開放源碼。協定堆方面也採用開放源碼的 OpenH323，它是 MPL 授權方式，商業及非商業應用都是自由[軟體]。OpenH323 有來自全世界各地的 VoIP 及 H.323 專家，協助修改、測試、偵錯，並且跟各種各樣的產品做過互通性測試，品質相當有保證。如果購買商業的協定堆，光是授權的費用可能就要上百萬。如果自行開發 可能要花上數年的時間，而且沒有機會跟許多產品做互通測試，品質也會有問題。</span></p>
+<p class="MsoNormal"><span style="font-family: 新細明體;">Q: 有了這些開放源碼，之後的軟體開發約花了多久的時間？<br /> A: 我們從 2001 年 6 月開始與 GNU GateKeeper 計劃的協調聯繫，開始參與計劃的測試、修改並增添許多新功能，以符合我們營運上的需求。同年 11, 12 月便開始進行線上測試。2002 年 3 月 19 號舉行開台記者會，正式對外營運。</span></p>
+<p class="MsoNormal"><span style="font-family: 新細明體;">Q: 除了剛剛提到的優點之外，您覺得採用開放源碼有為呈祺帶來名聲上的幫助或影響嗎？如果有其他的影響，會是什麼？<br /> A: 當然有，有些客戶就是來自 開放源碼 的領域。甚至到大陸，別人告訴他來找 GNU GateKeeper 的開發人員 - 台灣某某人。網路上也會有人來請教技術問題，甚至跟我們購買系統。</span></p>
+<p class="MsoNormal"><span style="font-family: 新細明體;">● 開放源碼經驗的分享<br /> Q: 對於所有還未使用開放源碼的公司，呈祺有沒有什麼建議給他們？(經驗分享) - 比方哪些部份或哪些技術適合採用開放源碼？或者，要採用開放源碼應該有些什麼樣的準備？或是什麼情形適合/不適合採用開放源碼？<br /> A: 目前我們用戶端尚未開放源碼，因為牽扯到一些軟體專利的問題，而且業務部門擔心會影響我們的競爭力。至於伺服器端就比較沒有這個困擾，所需要專業知識和入門門檻也較高，競爭者沒那麼容易出現。</span></p>
+<p class="MsoNormal"><span style="font-family: 新細明體;">Q: 有些人對開放源碼在安全性方面有顧慮，呈祺在這方面的看法是怎麼樣？你們的產品在安全性方面的關鍵技術也採用開放源碼嗎？<br /> A: 這些問題其實是可以透過組織，由許多人的測試得到良好的品質把關。</span></p>
+<p class="MsoNormal"><span style="font-family: 新細明體;">Q: 可不可以請您談談 GNU Gatekeeper 專案運作的模式。目前有多少成員？如何運作？如何與專案原作者作互動？<br /> A: 運作主要還是透過軟體鑄造廠，利用郵寄清單做為溝通方式，或直接信件。原開發者現在已經不再寫程式了，寫程式後來大部分是我在作；他現在扮演協調者的角色、跟負責網站維護。</span></p>
+<p class="MsoNormal"><span style="font-family: 新細明體;">Q: 呈祺的客戶目前有沒有遇到下載、或其他方面的問題？國外好像已經發生了一些這方面的問題。呈祺有沒有一些預備的做法或想法？<br /> A: 不會，因為源碼是放在軟體鑄造廠。</span></p>
+<p class="MsoNormal"><span style="font-family: 新細明體;">Q: 您覺得很快會有同業跟進採用開放源碼嗎？還是，據您所知台灣已經有這樣的風氣了？<br /> A: 應該不多。有些 VoIP 的公司都是只是代理、服務方面。</span></p>
+<p class="MsoNormal"><span style="font-family: 新細明體;">● VoIP產業</span></p>
+<p class="MsoNormal"><span style="font-family: 新細明體;">Q: 有些人會擔心停電的時候，VoIP 電話也停了，所以，緊急狀況也就不能打１１９求救了。您覺得 VoIP 還會成為電話服務的主流嗎？<br /> A: VoIP 不會是人們唯一使用的電話服務，所以這種擔心幾乎是不必。也不影響 VoIP 的成長。</span></p>
+<p class="MsoNormal"><span style="font-family: 新細明體;">Q: 好像美國有要管制 VoIP 提供者。台灣會不會? 歐洲呢？如果歐美管制，會不會衝擊到 VoIP 在台灣的發展？<br /> A: 在美國，再怎麼管制都不會有太大的問題；反倒是落後國家對普通媒體/網路的管制，才是問題。對台灣不會有什麼直接影響，因為 VoIP 的使用是一端有裝置，就可以使用了。在台灣的使用者安裝了，即使國外的一端沒裝，他照樣可以透過 VoIP 跟在美國、歐洲的那端交談。</span></p>
+<p class="MsoNormal"><span style="font-family: 新細明體;">Q: VoIP 產業的市場成熟了嗎？在台灣。<br /> A: 最近幾個月，5月份開始吧，業務呈倍數上升。不只是表現在每月的通話費上面，也表現在客戶數上面，目前約有4、5千人在使用。</span></p>
+<p class="MsoNormal"><span style="font-family: 新細明體;">Q: 呈祺目前有沒有 VoIP 方面的競爭者？(國內、國外)。<br /> A: 競爭者，目前比較不是我們關注的。</span></p>
+<p class="MsoNormal"><span style="font-family: 新細明體;">Q: 好像有些 VoIP 業者，會將競爭目標鎖定在傳統電話業者，是嗎？<br /> A: 應該是相反，是傳統電話業者會擔心 VoIP 業者來分食大餅。</span></p>
+<p class="MsoNormal"><span style="font-family: 新細明體;">Q: 呈祺目前有些什麼樣的作法？<br /> A: 我們跟台灣固網合作，解決了所謂 "Last mile" 問題。除中華電信外，其他固網業者目前的問題在於 "Last mile"，線路沒有辦法與使用者作末端接續。但是卻可以透過我們來弭補。台灣固網將它的門號指定一段給我們，並透過 PRI 跟 Gateway、GateKeeper 連結。門號由我們一併售給客戶並由我們聯結這些末端。</span></p>
+<p class="MsoNormal"><span style="font-family: 新細明體;">Q: 聽起來，是你們只缺門號；這個結構裡面，台灣固網靠你們的地方很多。<br /> A: (微笑) 關係會很微妙。</span></p>
+<p class="MsoNormal"><span style="font-family: 新細明體;">Q: 呈祺對目前產品，會計畫跟即時通訊 (IM) 使用介面作結合嗎？<br /> A: 會，使用者有這樣的需求的話，就會做。</span></p>
+<p class="MsoNormal"><span style="font-family: 新細明體;">Q: 有報導說，國外有業者在嘗試讓電腦對電腦 VoIP 服務能撥接另一部電腦。呈祺也會往這方面發展嗎？<br /> A: 視訊會議。國外有人在做；但(1)價格太貴(2)網路頻寬還不夠普及(3)有待壓縮技術更成熟，所以目前對呈祺的優先順序還不高。</span></p>
+<p class="MsoNormal"><span style="font-family: 新細明體;">● 開放源碼對產業整合願景助益大</span></p>
+<p class="MsoNormal"><span style="font-family: 新細明體;">Q: 呈祺對 VoIP 未來的願景是什麼？<br /> A: VoIP 要成功，開放源碼是很關鍵的助力。目前不同廠商間的 VoIP 產品常會遇到互通性的問題。如果大家都能採開放源碼，互通性將可獲致更良好的解決，VoIP 的市場也才能有更大幅的成長。</span></p>
+<p class="MsoNormal"><span style="font-family: 新細明體;">相關網址：<span> 1. GnuGK web https://www.gnugk.org/</span></span></p>
+<p class="MsoNormal"><span> </span></p>
+			<!-- Show relate article -->
+				<!-- end -->
+		<div class="article_note">
+		<!-- Add tags use metakey, and show OSSF Newsletter tag: OSSFNL+NUM-->
+		<br><br> <hr style='border: 1px dashed #D2DADB;'><b>自由軟體鑄造場電子報&nbsp;:</b>&nbsp;<a href='../../../previous-issue%3Ftask=view&amp;id=169.html'>第 4 期 多媒體</a><br>				<!-- End -->
+					<br>
+					<b>分類: </b><a href="../../foss-news.html">				源碼新聞					</a>				</div>
+			 <!-- AddThis Button BEGIN ID 3001 is the front page article -->
+     			<br><br>
+       <div class="addthis_toolbox addthis_default_style addthis_32x32_style">
+       <a class="addthis_button_preferred_1"></a>
+       <a class="addthis_button_preferred_2"></a>
+       <a class="addthis_button_preferred_3"></a>
+       <a class="addthis_button_preferred_4"></a>
+       <a class="addthis_button_compact"></a>
+       <a class="addthis_counter addthis_bubble_style"></a>
+       </div>
+       <script type="text/javascript">var addthis_config = {"data_track_clickback":true};</script>
+       <script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js#pubid=openfoundry"></script>
+       <!-- AddThis Button END -->
+     <br>
+		<div class="totop" ><a class="rt-totop" href="631%3Ftask=view.html#" style="outline: medium none;">↑ Top</a></div>
+            <!-- AddThis Button END -->
+
+			</div>
+</div>
+
+		                            </div>
+									<div class="clear"></div>
+								</div>
+								<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+							</div>
+							</div>
+                                                    </div>
+                                            </div>
+                                        <div class="clear"></div>
+                </div>
+            </div>
+																													</div>
+										<div id="rt-copyright">
+						<div class="rt-grid-12 rt-alpha rt-omega">
+                        <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<div id="desktop-mobile-version-switch"><span id="mobile-version" class="version-switch"><a href="631%3Ftask=view.html#">行動版</a></span></div>
+自由軟體鑄造場 製作 最佳瀏覽狀態：IE7或Firefox2.0以上 (建議使用Firefox) ‧ 解析度1024*768 <br /> <strong>E-Mail</strong>：<a href="mailto:contact@openfoundry.org">contact@openfoundry.org</a> <strong>Address</strong>：台北市南港區研究院路2段128號 中央研究院資訊科學研究所 . <a href="../../../privacy-policy.html">隱私權條款</a>. <a href="../../../terms-of-use.html">使用條款</a><span style="position: relative; top: 8px; margin-top: -8px;"> <a href="../../../about/8101.html"><img src="../../../images/M_images/rss-feed-all.png" border="0" /></a></span>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+        	
+</div>
+						<div class="clear"></div>
+					</div>
+					<div class="rt-footer-bottom-wrap"><div class="rt-footer-bottom"><div class="rt-footer-bottom2"><div class="rt-footer-bottom3"></div></div></div></div>
+									</div></div></div>
+				<div class="rt-surround-bottom"><div class="rt-surround-bottom2"><div class="rt-surround-bottom3"></div></div></div>
+							</div>
+		</div>
+		<!--
+		<script id="aptureScript">
+						(function (){var a=document.createElement("script");a.defer="true";a.src="http://www.apture.com/js/apture.js?siteToken=vsJttrn";document.getElementsByTagName("head")[0].appendChild(a);})();
+     </script>
+-->
+
+<!-- Piwik -->
+<!-- 			<script type="text/javascript">
+			  var _paq = _paq || [];
+		  _paq.push(["trackPageView"]);
+		  _paq.push(["enableLinkTracking"]);
+
+		    (function() {
+			        var u=(("https:" == document.location.protocol) ? "https" : "https") + "://www.openfoundry.org/piwik/";
+				    _paq.push(["setTrackerUrl", u+"piwik.php"]);
+				    _paq.push(["setSiteId", "1"]);
+				        var d=document, g=d.createElement("script"), s=d.getElementsByTagName("script")[0]; g.type="text/javascript";
+				        g.defer=true; g.async=true; g.src=u+"piwik.js"; s.parentNode.insertBefore(g,s);
+					  })();
+		  </script> -->
+<!-- End Piwik Code -->
+	</body>
+</html>

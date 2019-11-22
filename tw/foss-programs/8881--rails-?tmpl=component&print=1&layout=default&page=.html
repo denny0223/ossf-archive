@@ -1,0 +1,157 @@
+	<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+	<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="zh-tw" lang="zh-tw" >
+		<head>
+			  <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+  <meta name="robots" content="noindex, nofollow" />
+  <meta name="keywords" content="OSSFNL818" />
+  <meta name="title" content="如何閱讀 Rails 原始碼" />
+  <meta name="description" content="◎本文原載 Blog.XDite.net， 原文章連結 按此。 開始有計畫整理一些在 RubyConf China 大家線下問我的問題的答案。 挑選出來暫定的第一篇是大會期間詢問度最高的：「如何閱讀 Rails 原始碼」。 想要「閱讀 Rails 原始碼」的原因很多，不過多半的出發點都是想要能夠設計出更好的 Plugin (Gem)、或者是希望能在程式碼出錯時，能夠更快在 Rails" />
+  <meta name="generator" content="" />
+  <title>如何閱讀 Rails 原始碼</title>
+  <link href="../../favicon.ico" rel="shortcut icon" type="image/x-icon" />
+  <link rel="stylesheet" href="../../components/com_gantry/css/gantry.css" type="text/css" />
+  <link rel="stylesheet" href="../../components/com_gantry/css/grid-12.css" type="text/css" />
+  <link rel="stylesheet" href="../../components/com_gantry/css/joomla.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/joomla.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/style1.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/light-body.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/demo-styles.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/template.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/typography.css" type="text/css" />
+  <style type="text/css">
+    <!--
+#rt-main-surround ul.menu li.active > a, #rt-main-surround ul.menu li.active > .separator, #rt-main-surround ul.menu li.active > .item, #rt-main-surround .square4 ul.menu li:hover > a, #rt-main-surround .square4 ul.menu li:hover > .item, #rt-main-surround .square4 ul.menu li:hover > .separator, .roktabs-links ul li.active span {color:#0088B5;}
+a, #rt-main-surround ul.menu a:hover, #rt-main-surround ul.menu .separator:hover, #rt-main-surround ul.menu .item:hover {color:#0088B5;}
+    -->
+  </style>
+  <script type="text/javascript" src="../../components/com_jcomments/js/jcomments-v2.1.js%3Fv=2"></script>
+  <script type="text/javascript" src="../../components/com_jcomments/libraries/joomlatune/ajax.js"></script>
+  <script type="text/javascript" src="../../media/system/js/mootools.js"></script>
+  <script type="text/javascript" src="../../media/system/js/caption.js"></script>
+  <script type="text/javascript" src="../../components/com_gantry/js/gantry-buildspans.js"></script>
+  <script type="text/javascript" src="../../components/com_gantry/js/gantry-inputs.js"></script>
+  <script type="text/javascript">
+
+			window.addEvent('domready', function() {
+				var modules = ['rt-block'];
+				var header = ['h3','h2','h1'];
+				GantryBuildSpans(modules, header);
+			});
+		InputsExclusion.push('.content_vote','#rt-popup')
+  </script>
+		</head>
+		<body  class="backgroundlevel-low backgroundstyle-style8 bodylevel-med bodystyle-light cssstyle-style1 logostyle-dark font-family-helvetica font-size-is-default menu-type-fusionmenu col12 ">
+			<div id="rt-main-surround">
+				<div class="rt-container">
+					<div class="rt-block">
+						<div id="rt-mainbody">
+					    	
+<div class="rt-joomla ">
+	<div class="rt-article">
+		
+				<div class="rt-headline"><h1 class="rt-article-title">如何閱讀 Rails 原始碼</h1>		</div>
+		<div class="clear"></div>
+		
+		
+		
+				<div class="rt-articleinfo">
+						<div class="rt-article-icons">
+				<a href="8881--rails-%3Ftmpl=component&amp;print=1&amp;layout=default&amp;page=.html#" onclick="window.print();return false;"><span class="icon print"></span></a>									<span class="icon printscreen">
+						<a href="8881--rails-%3Ftmpl=component&amp;print=1&amp;layout=default&amp;page=.html#" onclick="window.print();return false;"><img src="../../images/M_images/printButton.png" alt="列印"  /></a>					</span>
+							</div>
+			
+			<span class="rt-date-posted">
+						建立日期			2012-12-21 15:42						&nbsp;&nbsp;&nbsp;&nbsp;						最近更新在 2013-01-15 13:56						</span>
+
+						<span class="rt-author">
+				作者是 XDite			</span>
+				
+					</div>
+		
+		
+		<p>◎本文原載 Blog.XDite.net，原文章<a target="_blank" href="https://blog.xdite.net/posts/2012/11/25/how-to-read-sourcecode/">連結按此</a>。</p>
+<p>開始有計畫整理一些在 <a target="_blank" href="https://rubyconfchina.org">RubyConf China</a> 大家線下問我的問題的答案。</p>
+<p>挑選出來暫定的第一篇是大會期間詢問度最高的：「如何閱讀 Rails 原始碼」。</p>
+<p>想要「閱讀 Rails 原始碼」的原因很多，不過多半的出發點都是想要能夠設計出更好的 Plugin (Gem)、或者是希望能在程式碼出錯時，能夠更快在 Rails 原始碼快速找到答案。</p>
+
+<p>但擺在眼前的事實是， Rails 的原始碼已經成長大到成幾萬行的怪獸，如何「看懂」或者是有效率的找到答案，已經變成是一個很大的難題。</p>
+<p>以下是我根據這幾年的經驗，能夠給各位的建議：</p>
+<br />
+<h2>1. 從單純的部分切入，例如 Helper</h2>
+<p>最令大家頭疼的地方是，這麼多程式碼，要從哪部分開始讀起。</p>
+<p>如果你是初心者，想要跳進這個池子裡，想找點簡單的東西讀，我會建議你先從「Helper」的部分開始讀。「Helper」是整個 Rails 程式碼裡面最獨立的部分（不牽扯到 request 呼叫），而且結構相對單純。</p>
+<br />
+<h2>2. 從 request 開始，到 rack，到 routing，到 controller，最後再到 model</h2>
+<p>我真正開始有系統的讀懂 Rails code，是從一門線上 <a target="_blank" href="https://owningrails.com">Owning Rails</a> 開始的。這門課的宗旨是，就是教你有效掌握搞懂 Rails 的核心與結構。相當有趣的是，他並不是教你讀任何 Rails 代碼，而是實際一步步帶你造出一個「mini Rails」。而造完這個 「mini Rails」之後，學員也能夠開始神奇的開始擁有快速找 code 的能力。</p>
+<p>我在去年曾經寫過一篇 <a target="_blank" href="https://wp.xdite.net/?p=2407">Owning Rails masterclass</a> 介紹過這個課程。</p>
+<br />
+<h4>第一天：造出自己的 mini Rails</h4>
+<p>帶你如何寫出精簡版 ActiveRecord、寫 rack app、用 rack app 改出精簡版 ActionController、自己 implement 出 before<em>, after</em>, around_ filter、自己 implement 出 view。然後最後再用你自己刻出來的這套 mini Rails 寫 web application。</p>
+<br />
+<h4>第二天的課程</h4>
+<p>Refactor 昨天寫的 mini Rails，教你如何 trace Rails core。利用 Rails internal API 客製化出你想要的特殊 function、library。作業有 custom validator、custom finder、create responder、create form builder、使用 Railtie 客制 Engine、造 plugin。</p>
+<p>宥於這是付費課程的關係，我也無法公開提供各位更進一步的教材內容。但是我能夠告訴各位這們課程為什麼會這樣設計，讓你可以也依循著這個軌道去自我進修。</p>
+<h3>rack</h3>
+<p>一個 request 進來，首先通過的是層層的 rack middleware。所以必須要先理解什麼是 rack，rack 的運作原理是什麼。可以試著自己先寫一個 rack app 玩看看。</p>
+<p>如果想知道 Rails 裡面的 request 流程會經過哪些 middleware，被加過哪些工。可以在 Rails 專案裡面打 rake middleware，再去把 class 一個一個叫出來讀。</p>
+<h3>routing</h3>
+<p>request 通過 rack 層進來後，首先面對的是 dispatch 問題，Rails 透過 routes.rb 進行 dispatch。而如何 dispatch 到正確的 controller，中間靠的就是 regexp。</p>
+<h3>controller</h3>
+<p>開發者在 controller 會牽涉到兩個常用的相關機制：Filter 與 View Rendering。Filter 時怎麼運作的。method 應該是回傳「值」，怎麼做到自動回傳的是 render 出來的 view。</p>
+<h3>model</h3>
+<p>ActiveRecord 的上一層就是一套 ActiveModel API。其實 Rails 不一定要靠 ActiveRecord，也可以透過實作一個 Class 加上部分機制做出自己的 ORM。其中 validation, finder 都是這方面的課題。</p>
+<br />
+<h2>3. 搞懂 Rails 的啟動流程</h2>
+<p><a target="_blank" href="https://railscast-china.com">RailsCast China</a> 曾經 release 過一個很好的影片：<a target="_blank" href="https://railscasts-china.com/episodes/the-rails-initialization-process-by-kenshin54">The Rails Initialization Process By kenshin54</a>講解了整個 Rails 啟動流程。你也可以讀由 Ruby on Rails 官方釋出的這篇<a target="_blank" href="https://guides.rubyonrails.org/initialization.html">官方教學啟動流程</a>去更加了解啟動過程中究竟會經過哪些檔案，如果要寫 plugin 可以 hook 在哪一些部分。</p>
+<br />
+<h2>4. 實際簡單寫一個 Rails Plugin</h2>
+<p>最好的學習方法就是動手實作。在看過以上這一些資料之後，我建議你可以實際透過開發一個 Gem 去更加了解整個 Rails 內部的結構。</p>
+<p>目前 Rails Plugin 幾乎都是以 Engine Gem 的形式釋出。所以透過撰寫一個 Gem，可以了解到：</p>
+<ul>
+<li class="c1">如何將自己的 Library 與現有 API 整合。</li>
+<li class="c1">如何將自己的 Library 掛 / 不掛進啟動 process 中。</li>
+<li class="c1">Engine 與 Railtie 的結構。</li>
+<li class="c1">如果有相依檔案，如何撰寫 generator，把檔案放進去 project 裡面。</li>
+<li class="c1">如果有檔案操作和客製選項，如何透過 thor 這個工具去達到檔案修改的目的。</li>
+</ul>
+<p>算是一個相當好的鍛鍊。</p>
+<br />
+<h2>5. 讀別人（熱門）的 Rails Plugin</h2>
+<p>有時候，想要實作某一些功能不得其法。最好的方式就是去讀有類似功能的 Gem，去看看其他作者怎麼做的。有時候會翻到他們用了不少你根本不知道的 Rails API。</p>
+<p>順著他們用這些 Rails API 的方法，可以更快的在 Rails 原始碼找到你要的答案...</p>
+<br />
+<h2>小結</h2>
+<p>希望以上的方法能夠協助各位更快的上手讀通 Rails 的原始碼。有任何問題歡迎留言在底下討論。</p>
+			<!-- Show relate article -->
+				<!-- end -->
+		<div class="article_note">
+		<!-- Add tags use metakey, and show OSSF Newsletter tag: OSSFNL+NUM-->
+		<br><br> <hr style='border: 1px dashed #D2DADB;'><b>自由軟體鑄造場電子報&nbsp;:</b>&nbsp;<a href='../../previous-issue%3Ftask=view&amp;id=818.html'>第 211 期 《雪凡與好朋友們的 Ren'Py 遊戲引擎初學心得提示》第六回：Displayable 與動畫轉置語言 </a><br>				<!-- End -->
+					<br>
+					<b>分類: </b><a href="../foss-programs.html">				源碼秘技					</a>				</div>
+			 <!-- AddThis Button BEGIN ID 3001 is the front page article -->
+     			<br><br>
+       <div class="addthis_toolbox addthis_default_style addthis_32x32_style">
+       <a class="addthis_button_preferred_1"></a>
+       <a class="addthis_button_preferred_2"></a>
+       <a class="addthis_button_preferred_3"></a>
+       <a class="addthis_button_preferred_4"></a>
+       <a class="addthis_button_compact"></a>
+       <a class="addthis_counter addthis_bubble_style"></a>
+       </div>
+       <script type="text/javascript">var addthis_config = {"data_track_clickback":true};</script>
+       <script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js#pubid=openfoundry"></script>
+       <!-- AddThis Button END -->
+     <br>
+		<div class="totop" ><a class="rt-totop" href="8881--rails-%3Ftmpl=component&amp;print=1&amp;layout=default&amp;page=.html#" style="outline: medium none;">↑ Top</a></div>
+            <!-- AddThis Button END -->
+
+			</div>
+</div>
+
+						</div>
+					</div>
+				</div>
+			</div>
+		</body>
+	</html>

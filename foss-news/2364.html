@@ -1,0 +1,394 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-gb" lang="en-gb" >
+<head>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<link rel="shortcut icon" href="../images/favicon.ico" />
+	  <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+  <meta name="robots" content="index, follow" />
+  <meta name="keywords" content="OSSFNL665" />
+  <meta name="title" content="Google 釋出影音系統 WebM 專案  開放源碼 codec 引發論戰" />
+  <meta name="description" content="日前正如開放源碼社群眾人所預料的，Google 以免權利金的開放源碼 BSD 形式授權，公開釋出 VP8 影片 codec，同時也推出 WebM，這是針對 HTML5 並使用 VP8 的開放源碼影音傳播系統。Google 宣佈許多支持該格式的組織與開放源碼 WebM 合作夥伴，其中包括網路瀏覽器、影音網站，如該公司旗下的 YouTube。 Google 釋出 VP8 並不讓人意外，早在" />
+  <meta name="generator" content="" />
+  <title>Google 釋出影音系統 WebM 專案  開放源碼 codec 引發論戰 - OpenFoundry</title>
+  <link href="../favicon.ico" rel="shortcut icon" type="image/x-icon" />
+  <link rel="stylesheet" href="../components/com_gantry/css/gantry.css" type="text/css" />
+  <link rel="stylesheet" href="../components/com_gantry/css/grid-12.css" type="text/css" />
+  <link rel="stylesheet" href="../components/com_gantry/css/joomla.css" type="text/css" />
+  <link rel="stylesheet" href="../templates/rt_quantive_j15/css/joomla.css" type="text/css" />
+  <link rel="stylesheet" href="../templates/rt_quantive_j15/css/style1.css" type="text/css" />
+  <link rel="stylesheet" href="../templates/rt_quantive_j15/css/light-body.css" type="text/css" />
+  <link rel="stylesheet" href="../templates/rt_quantive_j15/css/demo-styles.css" type="text/css" />
+  <link rel="stylesheet" href="../templates/rt_quantive_j15/css/template.css" type="text/css" />
+  <link rel="stylesheet" href="../templates/rt_quantive_j15/css/typography.css" type="text/css" />
+  <link rel="stylesheet" href="../templates/rt_quantive_j15/css/fusionmenu.css" type="text/css" />
+  <style type="text/css">
+    <!--
+#rt-main-surround ul.menu li.active > a, #rt-main-surround ul.menu li.active > .separator, #rt-main-surround ul.menu li.active > .item, #rt-main-surround .square4 ul.menu li:hover > a, #rt-main-surround .square4 ul.menu li:hover > .item, #rt-main-surround .square4 ul.menu li:hover > .separator, .roktabs-links ul li.active span {color:#0088B5;}
+a, #rt-main-surround ul.menu a:hover, #rt-main-surround ul.menu .separator:hover, #rt-main-surround ul.menu .item:hover {color:#0088B5;}
+    -->
+  </style>
+  <script type="text/javascript" src="../components/com_jcomments/js/jcomments-v2.1.js%3Fv=2"></script>
+  <script type="text/javascript" src="../components/com_jcomments/libraries/joomlatune/ajax.js"></script>
+  <script type="text/javascript" src="../media/system/js/mootools.js"></script>
+  <script type="text/javascript" src="../media/system/js/caption.js"></script>
+  <script type="text/javascript" src="../components/com_gantry/js/gantry-buildspans.js"></script>
+  <script type="text/javascript" src="../components/com_gantry/js/gantry-inputs.js"></script>
+  <script type="text/javascript" src="../templates/rt_quantive_j15/js/jquery.cookie.js"></script>
+  <script type="text/javascript" src="../modules/mod_roknavmenu/themes/fusion/js/fusion.js"></script>
+  <script type="text/javascript" src="../modules/mod_ofssologin/js/ofssologin.js"></script>
+  <script type="text/javascript">
+
+			window.addEvent('domready', function() {
+				var modules = ['rt-block'];
+				var header = ['h3','h2','h1'];
+				GantryBuildSpans(modules, header);
+			});
+		InputsExclusion.push('.content_vote','#rt-popup')
+		        window.addEvent('load', function() {
+					new Fusion('ul.menutop', {
+						pill: 0,
+						effect: 'slide and fade',
+						opacity: 1,
+						hideDelay: 500,
+						centered: 0,
+						tweakInitial: {'x': -2, 'y': 0},
+        				tweakSubsequent: {'x': 0, 'y': -14},
+						menuFx: {duration: 200, transition: Fx.Transitions.Sine.easeOut},
+						pillFx: {duration: 400, transition: Fx.Transitions.Back.easeOut}
+					});
+	            });
+  </script>
+<!-- <script type="text/javascript" src="/sso/javascripts/langsync.js"></script> -->
+<!-- <script src="/templates/rt_quantive_j15/js/ossf.js"></script> -->
+<script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-4136519-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
+</head>
+	<body  class="backgroundlevel-low backgroundstyle-style8 bodylevel-med bodystyle-light cssstyle-style1 logostyle-dark font-family-helvetica font-size-is-default menu-type-fusionmenu col12 ">
+		<div id="rt-main-background">
+			<div class="rt-container">
+																<div id="rt-header">
+					<div class="rt-grid-7 rt-alpha">
+    			<div class="rt-block">
+    	    	<a href="../index.html" id="rt-logo"></a>
+    		</div>
+	    
+</div>
+<div class="rt-grid-5 rt-omega">
+                    <div class="square9">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<div class="ofssologin_square9"><a href="../index.html">Login</a>&nbsp;&nbsp|&nbsp;&nbsp;<span><a href="https://www.openfoundry.org/tw/foss-news/2364" ><span lang="tw" xml:lang="tw">繁體中文</span></a></li></ul></span><!--Joom!fish V2.0.4 (Lightning)-->
+<!-- &copy; 2003-2009 Think Network, released under the GPL. -->
+<!-- More information: at http://www.joomfish.net -->
+<div class="ofssologin_search_square9">
+  <form id="of_search" action="https://www.openfoundry.org/of/openfoundry/search" method="get" onsubmit="of_search(); return false;">
+    <select id="of_search_type">
+      <option value="Projects"> Projects </option>
+      <option value="Content"> Content </option>
+      <option value="People"> People </option>
+    </select>
+    <input id="query" name="query" id="mod_search_searchword" maxlength="50" alt="search" class="inputbox" type="text" size="28" value="search..."  onblur="if(this.value=='') this.value='search...';" onfocus="if(this.value=='search...') this.value='';" />
+    <input type="hidden" name="commit" value="search" />
+  </form>
+</div></div>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		
+</div>
+					<div class="clear"></div>
+				</div>
+																<div id="rt-navigation"><div id="rt-navigation2"><div id="rt-navigation3">
+					
+<div class="nopill">
+	<ul class="menutop level1 " >
+						<li class="item1 root" >
+					<a class="orphan item bullet" href="../index.html"  >
+				<span>
+			    				Home				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item32 root" >
+					<a class="orphan item bullet" href="../archived.html"  >
+				<span>
+			    				Projects				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item186 root" >
+					<a class="orphan item bullet" href="../en/community.html"  >
+				<span>
+			    				Who&#039;s Who				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item4 root" >
+					<a class="orphan item bullet" href="../en/news.html"  >
+				<span>
+			    				News				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item5 root" >
+					<a class="orphan item bullet" href="../en/law-and-licensing.html"  >
+				<span>
+			    				Law &amp; Licensing				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item3 root" >
+					<a class="orphan item bullet" href="../en/activities.html"  >
+				<span>
+			    				Activities				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item2 root" >
+					<a class="orphan item bullet" href="../en/resourcecatalog.html"  >
+				<span>
+			    				Resource Catalog				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item45 root" >
+					<a class="orphan item bullet" href="../en/about.html"  >
+				<span>
+			    				About				   
+				</span>
+			</a>
+			
+			
+	</li>	
+				</ul>
+</div>
+
+				    <div class="clear"></div>
+				</div></div></div>
+								<div class="rt-surround"><div class="rt-surround2"><div class="rt-surround3">
+										<div id="rt-showcase-section">
+												<div id="rt-showcase">
+							<div class="rt-grid-12 rt-alpha rt-omega">
+    		<div class="clear"></div>
+		
+		
+                <div class="close-note">
+                    <div class="rt-block">
+               					<div class="module-content">
+                	<div style="font-size:medium; background-image:linear-gradient(120deg,#159957,#4298b2);color:white;padding:20px;margin:-10px -18px;">感謝您對「自由軟體鑄造場」的支持與愛護，十多年來「自由軟體鑄造場」受中央研究院支持，並在資訊科學研究所以及資訊科技創新研究中心執行，現已完成階段性的任務。 本網站預計持續維運至 2021年底，網站內容基本上不會再更動。<br />也紀念我們永遠的朋友 李士傑先生（Shih-Chieh Ilya Li）。</div>				</div>
+            </div>
+                </div>
+		
+</div>
+							<div class="clear"></div>
+						</div>
+																	</div>
+															<div id="rt-main-surround">
+												<div id="rt-breadcrumbs">
+								<div class="rt-breadcrumb-surround">
+		<a href="../index.html" id="breadcrumbs-home"></a>
+		<span class="breadcrumbs pathway">
+<a href="../en/foss-news.html" class="pathway">FOSS News</a> <img src="../templates/rt_quantive_j15/images/arrow.png" alt=""  /> <span class="no-link">Google 釋出影音系統 WebM 專案  開放源碼 codec 引發論戰</span></span>
+	</div>
+	
+							<div class="clear"></div>
+						</div>
+																							              <div id="rt-main" class="sa3-mb9">
+                <div class="rt-main-inner">
+                    <div class="rt-grid-9 rt-push-3">
+                                                <div class="rt-block">
+                            							<div class="square1">
+							<div class="rt-module-surround">
+								<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+								<div class="rt-module-inner">
+		                            <div id="rt-mainbody">
+		                                
+<div class="rt-joomla ">
+	<div class="rt-article">
+		
+				<div class="rt-headline"><h1 class="rt-article-title">Google 釋出影音系統 WebM 專案  開放源碼 codec 引發論戰</h1>		</div>
+		<div class="clear"></div>
+		
+		
+		
+				<div class="rt-articleinfo">
+						<div class="rt-article-icons">
+								<a href="https://www.openfoundry.org/en/foss-news/2364?tmpl=component&amp;print=1&amp;layout=default&amp;page=" title="Print" onclick="window.open(this.href,'win2','status=no,toolbar=no,scrollbars=yes,titlebar=no,menubar=no,resizable=yes,width=640,height=480,directories=no,location=no'); return false;" rel="nofollow"><span class="icon print"></span></a>																</div>
+			
+			<span class="rt-date-posted">
+						 Created at			Thursday, 03 June 2010 08:00						&nbsp;&nbsp;&nbsp;&nbsp;						</span>
+
+						<span class="rt-author">
+				Written by 謝良奇/編譯			</span>
+				
+					</div>
+		
+		
+		日前正如開放源碼社群眾人所預料的，Google 以免權利金的開放源碼 BSD 形式授權，公開釋出 VP8 影片 codec，同時也推出 WebM，這是針對 HTML5 並使用 VP8 的開放源碼影音傳播系統。Google 宣佈許多支持該格式的組織與開放源碼 WebM 合作夥伴，其中包括網路瀏覽器、影音網站，如該公司旗下的 YouTube。Google 釋出 VP8 並不讓人意外，早在 Google 嘗試購併 VP8 開發商 On2 時，就已傳出相關推測。同樣的，推出 WebM 獲得的回應也不令人意外，出售競爭對手 H.264 codec 商業授權的 MPEG-LA，表示使用 VP8 會因為專利侵害而吃上官司。獨立 H.264 黑客 Jason Garrett-Glaser 迅速地抨擊 VP8 為次級技術，並宣稱其違反多項 H.264 專利。H.264 支持者和新聞網站開始流傳該篇部落格文章，據稱 Apple 的 Steve Jobs 在電子郵件中被問到有關 VP8 的意見時，也轉寄了該文章的連接。<br /><br />來自開放源碼社群的回應可以分成兩部份。首先是一連串多媒體專案和公司宣佈支持 VP8 與 WebM。另一批人則駁斥 MPEG-LA 的公開說法和 Garrett-Glaser 的說詞。許多人指出 Garrett-Glaser 因為開發 x264 專案而在 H.264 上獲得的既得利益，顯示他在實際檢視 VP8 釋出前就做出有預設立場的判斷。StreamingMedia.com 將 2 種 codec 放在一起做比較，以同樣的影音資料轉換率對同一份媒體作編碼，發現 2 者之間無明顯區別。Garrett-Glaser 並沒有做同樣的比較。<br /><br />其他持反對意見的人認為硬體裝置已經廣為支援 H.264，因此排斥 VP8。然而，多數的硬體支援採取的是嵌入式數位信號處理器 (DSP) 程式碼的形式，而 Theora 的 DSP 移植已經在進行中，考慮到 Google 已經贊助 Theora 的 ARM 最佳化，有理由相信該公司也會推動 VP8 的 DSP 錄放。Google 的 Android 平台會是一個可能的應用領域。<br /><br />比 VP8 技術實做更為重要的是，該技術能否如 WebM 授權條款與專利許可下合法使用。同樣的，這裡也出現兩部份的討論。第一批人認為因為 2 種 codec 有類似的結構，因此 VP8 肯定侵害了 H.264 所使用的專利。Garrett-Glaser 的立場正是如此，他指出 2 種演算法的相似處。Xiph.org 的 Christopher &quot;Monty&quot; Montgomery 駁斥此說法過份誇大。網路上的許多討論串指出，所有以離散餘弦變換 (discrete cosine transform，DCT) 為基礎的 codec 都採取了相同的基本步驟，這些步驟並不在影片 codec 專利的範圍內。<br /><br />Theora 黑客 Gregory Maxwell 回應表示，Garrett-Glaser 並非專利專家，甚至對特殊 H.264 專利的所知不足。他指出，codec 專利一般來說是極為特殊的，這一點大大降低通過審查的難度，但是並不因此減少該專利保護特定格式的能力。因此該格式嚴格規範了其確切的行為。因此通常也使得避開這些行為更加簡單。<br /><br />另一派討論則在探測 H.264 的專利授權者 MPEG-LA 是否真的會對 VP8 提出專利侵害訴訟，討論中充斥各種假設性的說法。然而，考慮真實情況時，MPEG-LA 握有真實案例時，提出訴訟是合乎邏輯的，問題是，假如沒有確切案例，MPEG-LA 是否仍會打官司以便造成市場混亂，好爭取時間繼續銷售 H.264 專利授權？<br /><br />有趣的是，MPEG-LA 的宣傳資料讓人認為，取得授權伴隨著使用 H.264 的總括權利，但其專利聯盟 (patent pool) 的確實保證卻是相當微弱。換句話說，潛水艇專利 (submarine patents) 和專利流氓 (patent trolls) 會威脅到 H.264。理論上，On2 與 Google 很可能握有這類專利。對於 MPEG-LA，不論握有真實案例與否，提出侵害訴訟可能是拿 H.264 這棵搖錢樹作賭注。比較好的安全牌是製造市場混亂，盡可能與軟硬體商達成授權協議，然後找出下一個 codec 授權組合。<br /><br />在這方面，Google 除了自信表示沒有專利問題外，並沒有花太多力氣向大眾作更多澄清。對於軟體開發者來說，他們需要的是更清楚明確的安全界線。盡管這跟商業遊戲中專利作為隱藏性武器的本質背道而馳，還是有人建議 Google 公開在 VP8 上握有的專利和相關專利搜尋過程。<br /><br />這一切背後涉及到 HTML5 是否擁有可免費實做的影片 codec。MPEG-LA 和其聯盟成員過去反對 Theora，未來也會反對 VP8。在 MPEG-LA 的授權模式下，開放源碼軟體處於相當古怪的位置，即使是終端使用者觀賞 H.264 內容而侵害其專利，MPEG-LA 還是會要求散佈 codec 的廠商，例如瀏覽器公司，來支付授權費。這一點對自由軟體似乎行不通。<br /><br />因此 MPEG-LA 其實不太關心開放源碼瀏覽器市場，它主要的進帳來自影片製作與編輯軟體，以及對數百萬影片作轉碼的大型影片網站。而這才是 VP8 普及的真正戰場所在。Google 在公開 WebM 專案時已經列出一長串的支持夥伴，包括若干重要的私有軟體公司，像是創意應用軟體大廠 Adobe 和 Sorenson。目前看來 MPEG-LA 針對 VP8 而控告 Google 將得不償失，但是一旦這些影片製作大廠大舉跳槽到 WebM，情況將有所不同，屆時，或許將迫使 MPEG-LA 不得不訴諸法庭。<br /><br />此外，儘管 Google 釋出了 WebM 的程式碼，但並未採用開放源碼組織 (Open Source Initiative，OSI) 核可的授權，使得部份開放源碼專家懷疑 WebM 是否能歸類為開放源碼軟體。由於 OSI 核可的授權已經變成廠商宣稱自家產品為開放源碼時，外界的既定衡量標準，專家們擔心 Google 此舉可能讓其他廠商跟進，降低 OSI 核可授權的重要性進而弱化開放源碼品牌。<br /><br /><br />相關網址﹕<br />1.<a href="https://lwn.net/SubscriberLink/389029/33b71acac7c6ffd8/" target="_blank">針對 WebM 快速且可預期的回應</a><br />2.<a href="https://www.infoworld.com/d/open-source/googles-webm-license-could-undermine-the-meaning-open-source-308" target="_blank">Google 的 WebM 授權可能弱化開放源碼的意義</a>
+			<!-- Show relate article -->
+		<br><br><h4>You may be interested in the following articles:</h4><ul><li><a href='2168.html'>Google 釋出 Chrome 3  Mac、Linux 開發版本更新</a> - <span class='date-posted'>2009-09-24</span></li><li><a href='2056.html'>Google 釋出更新軟體 Google Update 原始碼</a> - <span class='date-posted'>2009-04-14</span></li><li><a href='1775.html'>Google 釋出 Google Picasa 3 的 Linux beta 版本</a> - <span class='date-posted'>2008-10-09</span></li><li><a href='1731.html'>Google 釋出小而快瀏覽器 Google Chrome</a> - <span class='date-posted'>2008-09-04</span></li></ul>		<!-- end -->
+		<div class="article_note">
+		<!-- Add tags use metakey, and show OSSF Newsletter tag: OSSFNL+NUM-->
+		<br><br> <hr style='border: 1px dashed #D2DADB;'><b>OSSF Newsletter&nbsp;:</b>&nbsp;<a href='../previous-issue%3Ftask=view&amp;id=665.html'>第 151 期 試算表軟體的另一種選擇 - Gnumeric</a><br>				<!-- End -->
+					<br>
+					<b>Category: </b><a href="../en/foss-news.html">				FOSS News					</a>				</div>
+			 <!-- AddThis Button BEGIN ID 3001 is the front page article -->
+     			<br><br>
+       <div class="addthis_toolbox addthis_default_style addthis_32x32_style">
+       <a class="addthis_button_preferred_1"></a>
+       <a class="addthis_button_preferred_2"></a>
+       <a class="addthis_button_preferred_3"></a>
+       <a class="addthis_button_preferred_4"></a>
+       <a class="addthis_button_compact"></a>
+       <a class="addthis_counter addthis_bubble_style"></a>
+       </div>
+       <script type="text/javascript">var addthis_config = {"data_track_clickback":true};</script>
+       <script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js#pubid=openfoundry"></script>
+       <!-- AddThis Button END -->
+     <br>
+		<div class="totop" ><a class="rt-totop" href="2364.html#" style="outline: medium none;">↑ Top</a></div>
+            <!-- AddThis Button END -->
+
+			</div>
+</div>
+
+		                            </div>
+									<div class="clear"></div>
+								</div>
+								<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+							</div>
+							</div>
+                                                    </div>
+                                            </div>
+                                <div class="rt-grid-3 rt-pull-9">
+                <div id="rt-sidebar-a">
+                                    <div class="square4">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<ul class="menu"><li class="item56"><a href="../en/previous-issue.html"><span>Previous Issue</span></a></li><li class="item55"><a href="../en/about-newsletter.html"><span>About Newsletter</span></a></li></ul>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<ul class="menu"><li id="current" class="active item115"><a href="../en/foss-news.html"><span>FOSS News</span></a></li><li class="item141"><a href="../en/case-job.html"><span>Case and Jobs</span></a></li></ul>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+        	                <div class="square1">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-title"><h2 class="title">Special</h2></div>
+						<div class="clear"></div>
+		                						<div class="module-content">
+		                	<ul class="menu"><li class="item37"><a href="../en/tech-column.html"><span>Tech Column</span></a></li><li class="item40"><a href="../en/foss-programs.html"><span>FOSS Programs</span></a></li><li class="item35"><a href="../en/legal-column.html"><span>Legal Column</span></a></li><li class="item154"><a href="../en/foss-forum.html"><span>FOSS Forum</span></a></li><li class="item162"><a href="../en/enterprise-application.html"><span>Enterprise Application</span></a></li><li class="item44"><a href="../en/foss-projects.html"><span>FOSS Projects</span></a></li></ul>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		                <div class="square1">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<p style="text-align: center;"><a href="../news%3Fformat=feed&amp;type=rss" target="_black"><img src="../images/M_images/news-rss-feed.png" border="0" /></a><br /><a href="https://www.openfoundry.org/rss-feed/Newsletter" target="_black"><img src="../images/M_images/newsletter-rss-feed.png" border="0" /></a></p>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		
+                </div>
+            </div>
+
+                    <div class="clear"></div>
+                </div>
+            </div>
+																													</div>
+										<div id="rt-copyright">
+						<div class="rt-grid-12 rt-alpha rt-omega">
+                        <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<span class="nowrap">Open Source Software Foundry</span><span class="nowrap">‧</span><span class="nowrap"> </span><span class="nowrap">Best  Viewed with IE7.0 or Firefox2.0 above, 1024x768 Resolution. </span><strong>E-Mail</strong>：<a href="mailto:contact@openfoundry.org">contact@openfoundry.org</a> <br /><strong>Address</strong>：No.128, Sec.2, Academia Rd., Institute of Information Science, Academia Sinica, Nangang District, Taipei City 11529, Taiwan (R.O.C). <br /><a href="../en/privacy-policy.html">Privacy Policy</a>. <a href="../en/terms-of-use.html">Terms-of-use</a> <span style="position: relative; top: 8px; margin-top: -8px;"> <a href="../about/8101.html"><img src="../images/M_images/rss-feed-all.png" border="0" /></a></span>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+        	
+</div>
+						<div class="clear"></div>
+					</div>
+					<div class="rt-footer-bottom-wrap"><div class="rt-footer-bottom"><div class="rt-footer-bottom2"><div class="rt-footer-bottom3"></div></div></div></div>
+									</div></div></div>
+				<div class="rt-surround-bottom"><div class="rt-surround-bottom2"><div class="rt-surround-bottom3"></div></div></div>
+							</div>
+		</div>
+		<!--
+		<script id="aptureScript">
+						(function (){var a=document.createElement("script");a.defer="true";a.src="http://www.apture.com/js/apture.js?siteToken=vsJttrn";document.getElementsByTagName("head")[0].appendChild(a);})();
+     </script>
+-->
+
+<!-- Piwik -->
+<!-- 			<script type="text/javascript">
+			  var _paq = _paq || [];
+		  _paq.push(["trackPageView"]);
+		  _paq.push(["enableLinkTracking"]);
+
+		    (function() {
+			        var u=(("https:" == document.location.protocol) ? "https" : "https") + "://www.openfoundry.org/piwik/";
+				    _paq.push(["setTrackerUrl", u+"piwik.php"]);
+				    _paq.push(["setSiteId", "1"]);
+				        var d=document, g=d.createElement("script"), s=d.getElementsByTagName("script")[0]; g.type="text/javascript";
+				        g.defer=true; g.async=true; g.src=u+"piwik.js"; s.parentNode.insertBefore(g,s);
+					  })();
+		  </script> -->
+<!-- End Piwik Code -->
+	</body>
+</html>

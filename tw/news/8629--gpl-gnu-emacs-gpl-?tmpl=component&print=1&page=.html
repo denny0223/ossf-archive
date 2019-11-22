@@ -1,0 +1,240 @@
+	<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+	<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="zh-tw" lang="zh-tw" >
+		<head>
+			  <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+  <meta name="robots" content="noindex, nofollow" />
+  <meta name="keywords" content="Emacs, GNU, 授權, GPL, OSSFNL780" />
+  <meta name="title" content="談 GPL 軟體原始碼定義及瑕疵修復方式－從 GNU Emacs 違反 GPL 授權條款一事說起" />
+  <meta name="description" content="前言 Emacs 編輯器家族的發展歷史，最早可追溯回 40 多年前。第一個 Emacs 編輯器於 1970 年誕生於 MIT 人工智慧實驗室，其後 James Gosling（Java 程式語言之父）於 1981 年開發的 Gosling Emacs 則是第一款能在 UNIX 上運行的 Emacs。 隨著 1984 年，Gosling Emacs 成為商業專有軟體後，Richard" />
+  <meta name="generator" content="" />
+  <title>談 GPL 軟體原始碼定義及瑕疵修復方式－從 GNU Emacs 違反 GPL 授權條款一事說起</title>
+  <link href="../../favicon.ico" rel="shortcut icon" type="image/x-icon" />
+  <link rel="stylesheet" href="../../components/com_gantry/css/gantry.css" type="text/css" />
+  <link rel="stylesheet" href="../../components/com_gantry/css/grid-12.css" type="text/css" />
+  <link rel="stylesheet" href="../../components/com_gantry/css/joomla.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/joomla.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/style1.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/light-body.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/demo-styles.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/template.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/typography.css" type="text/css" />
+  <style type="text/css">
+    <!--
+#rt-main-surround ul.menu li.active > a, #rt-main-surround ul.menu li.active > .separator, #rt-main-surround ul.menu li.active > .item, #rt-main-surround .square4 ul.menu li:hover > a, #rt-main-surround .square4 ul.menu li:hover > .item, #rt-main-surround .square4 ul.menu li:hover > .separator, .roktabs-links ul li.active span {color:#0088B5;}
+a, #rt-main-surround ul.menu a:hover, #rt-main-surround ul.menu .separator:hover, #rt-main-surround ul.menu .item:hover {color:#0088B5;}
+    -->
+  </style>
+  <script type="text/javascript" src="../../components/com_jcomments/js/jcomments-v2.1.js%3Fv=2"></script>
+  <script type="text/javascript" src="../../components/com_jcomments/libraries/joomlatune/ajax.js"></script>
+  <script type="text/javascript" src="../../media/system/js/mootools.js"></script>
+  <script type="text/javascript" src="../../media/system/js/caption.js"></script>
+  <script type="text/javascript" src="../../components/com_gantry/js/gantry-buildspans.js"></script>
+  <script type="text/javascript" src="../../components/com_gantry/js/gantry-inputs.js"></script>
+  <script type="text/javascript">
+
+			window.addEvent('domready', function() {
+				var modules = ['rt-block'];
+				var header = ['h3','h2','h1'];
+				GantryBuildSpans(modules, header);
+			});
+		InputsExclusion.push('.content_vote','#rt-popup')
+  </script>
+		</head>
+		<body  class="backgroundlevel-low backgroundstyle-style8 bodylevel-med bodystyle-light cssstyle-style1 logostyle-dark font-family-helvetica font-size-is-default menu-type-fusionmenu col12 ">
+			<div id="rt-main-surround">
+				<div class="rt-container">
+					<div class="rt-block">
+						<div id="rt-mainbody">
+					    	
+<div class="rt-joomla ">
+	<div class="rt-article">
+		
+				<div class="rt-headline"><h1 class="rt-article-title">談 GPL 軟體原始碼定義及瑕疵修復方式－從 GNU Emacs 違反 GPL 授權條款一事說起</h1>		</div>
+		<div class="clear"></div>
+		
+		
+		
+				<div class="rt-articleinfo">
+						<div class="rt-article-icons">
+				<a href="8629--gpl-gnu-emacs-gpl-%3Ftmpl=component&amp;print=1&amp;page=.html#" onclick="window.print();return false;"><span class="icon print"></span></a>									<span class="icon printscreen">
+						<a href="8629--gpl-gnu-emacs-gpl-%3Ftmpl=component&amp;print=1&amp;page=.html#" onclick="window.print();return false;"><img src="../../images/M_images/printButton.png" alt="列印"  /></a>					</span>
+							</div>
+			
+			<span class="rt-date-posted">
+						建立日期			2012-03-03 10:55						&nbsp;&nbsp;&nbsp;&nbsp;						最近更新在 2012-04-06 10:12						</span>
+
+						<span class="rt-author">
+				作者是 曾義峰			</span>
+				
+					</div>
+		
+		
+		<h2>前言</h2>
+<p>Emacs 編輯器家族的發展歷史，最早可追溯回 40 多年前。第一個 Emacs 編輯器於 1970 年誕生於 MIT 人工智慧實驗室，其後 James Gosling（Java 程式語言之父）於 1981 年開發的 Gosling Emacs 則是第一款能在 UNIX 上運行的 Emacs。</p>
+<p>隨著 1984 年，Gosling Emacs 成為商業專有軟體後，Richard Stallman（美國自由軟體運動的精神領袖／自由軟體基金會創立者）開始致力於開發基於自由軟體精神的 <a href="https://www.gnu.org/software/emacs/" target="_blank">GNU Emacs</a>，以代替 Gosling Emacs。接著，另一款以 GNU Emacs 為基礎開發的自由軟體 XEmacs 也於 1991 年誕生。</p>
+
+<p>由於在 Emacs 家族中，以 GNU Emacs 的聲勢最大，所以目前自由開源軟體的使用者所稱的 Emacs，通常指的就是 GNU Emacs。但為了避免造成讀者混淆，接下來筆者仍以 GNU Emacs 稱之。</p>
+<p>這個骨子裡帶著 Richard Stallman 自由軟體鬥士精神，且身為世界上第一款以 GPL 授權條款釋出的 GNU Emacs，可以說是完全遵照最純正 GPL 精神來發展的自由軟體。</p>
+<p>不幸的是，這次違反 GPL 授權條款的事件正好發生在 GNU Emacs 本身。也因為其特殊身份，使得整個事件的始末變成一個非常值得探討的議題。</p>
+<h2>GNU Emacs 違反 GPL 授權條款一事</h2>
+<p>2011 年 7 月 27 日，在專門討論 GNU Emacs 開發的 emacs-devel 電子郵件論壇上，<a href="https://lists.gnu.org/archive/html/emacs-devel/2011-07/msg01029.html" target="_blank">David Kastrup 發表的一篇文章</a>引起了許多人的關注。David Kastrup 指出，在 GNU Emacs 釋出的軟體原始碼中，某些程式碼並沒有附帶最初編輯的原始碼。</p>
+<p>造成這個問題的原因是，從 2009 年 12 月 9 日 開發 GNU Emacs 23.1.90 版本以來，軟體的原始碼中包括了許多使用 <a href="https://www.gnu.org/software/bison/" target="_blank">GNU Bison</a> 建立但未提供最初編輯的原始解析程式。這使得之後於 2010 年 5 月 8 日釋出的 GNU Emacs 23.2 及 2011 年 3 月 10 日釋出的 GNU Emacs 23.3 版本中，都沒有在專案原始碼中附上最初編輯的原始碼。導致散布 GNU Emacs 23.2 及 GNU Emacs 23.3 時，即違反了 GPL 授權條款的規定。</p>
+<p>Richard Stallman 隔日隨即於該電子郵件論壇上<a href="https://lists.gnu.org/archive/html/emacs-devel/2011-07/msg01085.html" target="_blank">回覆</a>，並聲稱「這是一個嚴重的錯誤，因為不僅是個法律問題，更是道德問題」。隨後更<a href="https://lists.gnu.org/archive/html/emacs-devel/2011-07/msg01155.html" target="_blank">指出</a>，「任何重新散布這些 GNU Emacs 版本的人也都違反了 GPL，雖然錯不在他們。但我們必須盡快修正這個問題。我認為有兩種最快的修復方法: 刪除那些經由 GNU Bison 建立的問題程式，或者加入最初編輯的原始碼」。</p>
+<h2>GNU Emacs 的後續處理流程</h2>
+<h2>I. 版本號的變更歷程</h2>
+<p>首先，在事件曝光的幾天內，GNU Emacs 的<a href="https://ftp.gnu.org/pub/gnu/emacs/" target="_blank">下載首頁</a>中仍然可以下載到 GNU Emacs 23.2 及 GNU Emacs 23.3 這兩個部份程式碼沒有附帶原始碼的版本。</p>
+<p><a href="../../images/120313/emacs/emacs01.png" target="_blank"><img src="../../images/120313/emacs/emacs01.png" border="0" width="450" /></a></p>
+<p>▲ 圖1：GNU Emacs 下載首頁截圖 (2011-07-28)</p>
+<p>在圖1 中，可以注意紅色框的部分，其日期還是當時瑕疵專案釋出的日期，尚未因為 David Kastrup 發表的文章而發生下架或更動。</p>
+<p>於事件曝光後的第 5 天，GNU Emacs 團隊才釋出了新的修正版本。這些版本正是補上遺缺最初編輯程式的完整專案原始碼。</p>
+<p><a href="../../images/120313/emacs/emacs02.png" target="_blank"><img src="../../images/120313/emacs/emacs02.png" border="0" width="430" /></a></p>
+<p>▲ 圖2：GNU Emacs 下載首頁截圖 (2011-07-31)</p>
+<p>最後，GNU Emacs 又於 2011 年 8 月 2 日釋出 emacs-23.2a 及 emacs-23.3a 的<a href="https://ftp.gnu.org/pub/gnu/emacs/" target="_blank">完整原始碼</a>後，此事才告一段落。</p>
+<p><a href="../../images/120313/emacs/emacs03.png" target="_blank"><img src="../../images/120313/emacs/emacs03.png" border="0" width="430" /></a></p>
+<p>▲ 圖3：GNU Emacs 下載首頁截圖 (2011-08-02)</p>
+<p>其實最終的 emacs-23.2a 及 emacs-23.3a 的程式碼，與先前 2011 年 7 月 31 日釋出的 emacs-23.2 及 emacs-23.3 是一樣的。唯一不同的是專案釋出的名稱。我們可以看到新釋出專案在其版本號之後新增了後綴的「a」，這是自由開源專案對於該版本發生意外性微小修補的常見方式。</p>
+<h2>II. 原始碼的變更歷程</h2>
+<p>由於筆者在這段期間有持續關注 GNU Emacs 的演變，所以原始的 GNU Emacs 23.2 及 GNU Emacs 23.3，還有其後釋出的 GNU Emacs 23.2a 及 GNU Emacs 23.3a 修正版都有完整的專案原始碼。此時只要進行原始碼的比對，就可以了解 GNU Emacs 的變化。為了簡單解說，筆者在本篇文章中，僅以 GNU Emacs 23.3 版本為例。</p>
+<p>在使用 diff 指令進行 GNU Emacs 23.3 及 GNU Emacs 23.3a 原始碼比對後，結果如下圖，</p>
+<p><a href="../../images/120313/emacs/emacs04.png" target="_blank"><img src="../../images/120313/emacs/emacs04.png" style="border: 0;" border="0" width="650" /></a></p>
+<p>▲ 圖4：GNU Emacs 23.3 與 23.3a 的原始碼差異</p>
+<p>我們可以發現兩個版本的差異僅在於 emacs-23.3a/etc/grammers 這個新建立的目錄，以及 5 個 .el 原始碼的變更。</p>
+<p>其中 emacs-23.3a/etc/grammers 的目錄內容為，</p>
+<p><a href="../../images/120313/emacs/emacs05.png" target="_blank"><img src="../../images/120313/emacs/emacs05.png" border="0" /></a></p>
+<p>▲ 圖5：GNU Emacs 23.3a 的 etc/grammers 目錄內容</p>
+<p>首先，我們可以從 README 的內容中找出彼此間的關聯性。下圖為 README 的全文，</p>
+<p><a href="../../images/120313/emacs/emacs06.png" target="_blank"><img src="../../images/120313/emacs/emacs06.png" border="0" /></a></p>
+<p>▲ 圖6：GNU Emacs 23.3a - etc/grammers/README 內容</p>
+<p>因此我們可以知道該 5 個 .el 原始碼皆是由 grammers 目錄的內容所產生，並且最後再交由 fixes.patch 來完成最終的修正。這些關聯可以整理成下表，</p>
+<table frame="border" border="0.5">
+<thead>
+<tr><th>grammers 目錄的檔案</th><th>.el 的檔案</th><th>說明</th></tr>
+</thead>
+<tbody>
+<tr>
+<td>fixes.patch</td>
+<td></td>
+<td>修正檔</td>
+</tr>
+<tr>
+<td>bovine-grammer.el</td>
+<td></td>
+<td>Bovine's input grammar mode</td>
+</tr>
+<tr>
+<td>wisent-grammer.el</td>
+<td></td>
+<td>Translate Yacc/Bison files to wisent</td>
+</tr>
+<tr>
+<td>java-tags.wy</td>
+<td></td>
+<td>Semantic LALR grammar for Java</td>
+</tr>
+<tr>
+<td>README</td>
+<td></td>
+<td>說明檔</td>
+</tr>
+<tr>
+<td>c.by</td>
+<td>c-by.el</td>
+<td>c.by 為 c-by.el 的原始碼</td>
+</tr>
+<tr>
+<td>make.by</td>
+<td>make-by.el</td>
+<td>make.by 為 make-by.el 的原始碼</td>
+</tr>
+<tr>
+<td>schema.by</td>
+<td>scm-by.el</td>
+<td>schema.by 為 scm-by.el 的原始碼</td>
+</tr>
+<tr>
+<td>js.wy</td>
+<td>js-wy.el</td>
+<td>js.wy 為 js-wy.el 的原始碼</td>
+</tr>
+<tr>
+<td>python.wy</td>
+<td>python-wy.el</td>
+<td>python.wy 為 python-wy.el 的原始碼</td>
+</tr>
+</tbody>
+</table>
+<p>▲ 表1：emacs-23.3a/etc/grammers 及該 5 個 .el 原始碼的相關性</p>
+<p>這些修正使得原先遺缺的程式碼得以由 emacs-23.3a 所提供的 etc/grammers 目錄來產生，從而符合 GPL 授權條款中提供原始碼 (Source Code) 的規定。</p>
+<h2>案例探討</h2>
+<p>從 GNU Emacs 團隊對於此次事件處理方式的觀察與分析，筆者特別提出幾項值得討論的議題。</p>
+<h2>I. 程式原始碼的定義</h2>
+<p>根據 <a href="https://www.gnu.org/licenses/gpl-2.0.html" target="_blank">GPL-2.0</a> 及 <a href="https://www.gnu.org/copyleft/gpl-3.0.html" target="_blank">GPL-3.0</a> 授權條款對於原始碼 (source code) 的定義皆為，「The "source code" for a work means the preferred form of the work for making modifications to it.」</p>
+<p>但很多人對於「preferred form」這個關鍵詞有著不同的見解。筆者遇到常見的問題包括，混淆過後的程式原始碼，或者經由解析器處理過後的原始碼，是否還可以認定為原始碼？</p>
+<p>以本案為例，經由解析器處理前的 c.by 部分程式碼如下，</p>
+<p><a href="../../images/120313/emacs/emacs07.png" target="_blank"><img src="../../images/120313/emacs/emacs07.png" border="0" /></a></p>
+<p>▲ 圖7：GNU Emacs 23.3a - etc/grammers/c.by 的部分程式碼</p>
+<p>而解析器處理後的 c-by.el 部分程式碼如下，</p>
+<p><a href="../../images/120313/emacs/emacs08.png" target="_blank"><img src="../../images/120313/emacs/emacs08.png" border="0" /></a></p>
+<p>▲ 圖8：GNU Emacs 23.3a - lisp/cedet/semantic/bovine/c-by.el 的部分程式碼</p>
+<p>兩者都是以純文字型態展現，在文法結構上也可以讓開發者很直覺的進行編輯，所以若僅立足在這點上，何者較容易修改就見人見智了。但筆者認為關鍵詞「preferred form」的解釋，不僅止於在程式碼的呈現，還可以從軟體開發工程的角度來探討。</p>
+<p>解析器的用途在於語意／語法的分析，並產生更具意義的文法 (grammer)。換句話說，解析器在程式開發過程中扮演著協助開發者「智慧型修改」的角色，替開發者自動產生更具意義的文法。而且，相同的語意／語法可以利用同一個解析器的不同參數，或利用不同的解析器，來產生出不一樣的修改結果。所以，如果可以取得「原始的材料」，也就是解析器處理前的程式碼，開發者將更有利於進行客製化或後續的「修改」行為。</p>
+<p>因此，即使有人認為目前 c.by 與 c-by.el 在程式碼呈現上較難以分出軒輊，但在軟體開發工程的角度上，提供解析器處理前的程式碼，長遠來看會是比較適合的修改形式。</p>
+<h2>II. 重新命名後再行發布</h2>
+<p>GNU Emacs 於 2011 年 7 月 31 日釋出的 emacs-23.2 及 emacs-23.3，與之後 2011 年 emacs-23.2a 及 emacs-23.3a 的內容是一樣的。這種在原名稱加上後綴字符的原因是為了避免後續使用者混淆。</p>
+<p>我們可以想像，假如修正後的 GNU Emacs 23.3 並未更名來做區別，往往會造成網路上散布的 GNU Emacs 23.3 版本難以區分究竟是瑕疵事件發生前的 GPL 違規版本，還是修改後的正確版本。因此，對於散布後的任何修正，不管是功能上或是授權條款上，都建議使用新的版本號，或是加上後綴字符來明顯區分。</p>
+<h2>III. 如何進行 GPL 授權程式的瑕疵修復</h2>
+<p>常見錯誤的 GPL 釋出瑕疵修復方法，是只將遺缺的程式碼收編後就進行再散布。不幸地，這樣的結果仍然很可能不符合 GPL 的規定。</p>
+<p>在 GPL-2.0 中指出，「（略）complete source code means all the source code for all modules　it contains, plus any associated interface definition files, plus　the scripts used to control compilation and installation of the　executable.（略）」</p>
+<p>而在 GPL-3.0 中也指出，「The "Corresponding Source" for a work in object code form means all the source code needed to generate, install, and (for an executable work) run the object code and to modify the work, including scripts to control those activities.（略）」</p>
+<p>兩個條款的重點都在於遺缺程式碼收編後的完整性，不單只是程式碼本身，還包含了與這些程式碼相關的說明、設定及編譯方式等。</p>
+<p>因此 GNU Emacs 對於此事件的處理流程並非僅僅補足遺缺的程式碼。因為這些程式碼是經由解析器處理的，所以除了增加 README 說明及編譯方法外，還需要補足其它相關的檔案。而且對於解析器處理後的結果，GNU Emacs 團隊還針對個別檔案再次進行了人工的修改，而這些事後的人工修改，也特別以 fixes.patch 檔案另外說明。至此才滿足了 GPL 授權條款的規定。</p>
+<h2>IV. GNU Emacs 處理瑕疵修復的時間</h2>
+<p>由於軟體釋出前還需要經過一系列的測試與討論，因此從事件發生到處理完成，GNU Emacs 團隊總共花了 7 天的時間進行相關的瑕疵修復。</p>
+<p>但這是否意謂著任何專案或公司都可以進行相同的修復模式？例如以嵌入式系統開發為例，是否可以用系統比 GNU Emacs 專案龐大的理由，來取得更長的時間來進行瑕疵修正，以達到刻意延後的目的？</p>
+<p>首先，GNU Emacs 使用的是 GPL-3.0 授權條款，在該條款「第 8 條－Termination」中有明定違規散布時的復權規定，這是 GPL-2.0 沒有提及的。所以，部分的自由軟體推動者認為，如果違規散布的對象是使用 GPL-2.0 授權條款，例如 Linux Kernel，則按照授權條款的文義解釋，授權不僅可能立即自動終止，且唯有再次向著作權利人取得同意後，才可以復權。</p>
+<p>但即使侵權的對象是 GPL-3.0，筆者認為重點也不在利用多少時間進行瑕疵修復，更不在於專案或系統有多龐大，所以無法完全以 GNU Emacs 處理此案的時間為例來推導其它情形。因為真正核心的問題在於處理期間的透明性及態度。</p>
+<p>GNU Emacs 處理釋出瑕疵的過程都是開放性的，任何人都可以從電子郵件論壇及版本控制系統中追蹤目前的處理進度。不僅如此，在處理的過程中，也可以發現 GNU Emacs 處理的誠意與積極的態度。</p>
+<p>筆者分析過去許多違規公司被批評的原因，都不是一般表面上所認定的處理緩慢，而是在處理過程不夠透明，以及未展現出適當的積極態度。因此，倘若不幸發生自由軟體的散布瑕疵及其相關的侵權爭議，請務必以積極的態度進行處理，並且所有過程都必須透明化，隨時以公開的方式說明目前處理的進度。切勿假工時之理由來進行拖延之實，因為社群都是具有經驗的開發者，任何商業或技術的偽裝與含糊都很容易被拆穿。</p>
+<h2>V. 瑕疵修復期間是否需要下架產品</h2>
+<p>從 GNU Emacs 的案例中，可以發現在瑕疵修復期間，違規的版本依然可以在公開的網站上取得。GNU Emacs 團隊並沒有因違規而暫時下架。所以，倘若專案或公司的產品發生自由軟體的散布瑕疵時，在處理的期間是否也可以繼續提供這些可能涉及侵權爭議的產品？</p>
+<p>筆者認為要視違規的情形而定。在 GNU Emacs 的案例中，肇生瑕疵散布行為者為 GNU Emacs 開發團隊本身，所以情形不如對他人專案產生違規嚴重。因此，假如違規散布的對象並非散布者本身的專案，建議先與該專案的相關權利人取得聯繫，並討論出對方可以接受的方式來進行瑕疵修補，否則產品暫時下架會是個比較保險的做法。</p>
+<h2>結論</h2>
+<p>人總有犯錯的時候，從 GNU Emacs 專案的瑕疵散布事件來看，我們可以發現重點在於後續的處理態度與透明性。除了公開性的進度說明外，還需要展現出處理的誠意。而在處理過程中，也不是僅補足遺缺的檔案，還需遵守 GPL 授權條款中的完整性要求，並且為了讓後續使用者可以很直覺的判斷出何者為瑕疵修復的版本，最後也需要將新版本重新命名後再行發布。</p>
+<p>本篇內容感謝林誠夏 (Lucien Lin) 先生針對「IV. GNU Emacs 處理瑕疵修復的時間」內文所提供的修改建議，將原文，「如果違規散布的對象是使用 GPL-2.0 授權條款，例如 Linux Kernel，則授權不僅立即自動終止，且唯有再次向著作權利人取得同意後，才可以復權。」修訂為，「如果違規散布的對象是使用 GPL-2.0 授權條款，例如 Linux Kernel，則按照條款的文義解釋，授權不僅可能立即自動終止，且唯有再次向著作權利人取得同意後，才可以復權。」</p>
+<h2>延伸閱讀</h2>
+<p>◎ LWN.net: Emacs and the GPL: <a href="https://lwn.net/Articles/453970/" target="_blank">https://lwn.net/Articles/453970/</a></p>
+<p>◎ Slashdot: Emacs Has Been Violating the GPL Since 2009: <a href="https://news.slashdot.org/story/11/07/29/1445252/Emacs-Has-Been-Violating-the-GPL-Since-2009" target="_blank">https://news.slashdot.org/story/11/07/29/1445252/Emacs-Has-Been-Violating-the-GPL-Since-2009</a></p>
+<p>◎ 保護密度的高與低：侵權與違約差異之我見：<a href="../../news/1628.html" target="_blank">https://www.openfoundry.org/news/1628</a></p>
+			<!-- Show relate article -->
+				<!-- end -->
+		<div class="article_note">
+		<!-- Add tags use metakey, and show OSSF Newsletter tag: OSSFNL+NUM-->
+		<br><br> <hr style='border: 1px dashed #D2DADB;'><b>自由軟體鑄造場電子報&nbsp;:</b>&nbsp;<a href='../../previous-issue%3Ftask=view&amp;id=780.html'>第 191 期  開放源碼的安全演算法工具︰OpenSSL（2）- 對稱式加解密演算法</a><br><b>標籤:</b>&nbsp;<a href='../../index.php%3Foption=com_search&amp;Itemid=58&amp;searchphrase=exact_meta&amp;ordering=newest&amp;searchword=Emacs.html'>Emacs</a>,&nbsp;&nbsp;<a href='../../index.php%3Foption=com_search&amp;Itemid=58&amp;searchphrase=exact_meta&amp;ordering=newest&amp;searchword=&#32;GNU.html'> GNU</a>,&nbsp;&nbsp;<a href='../../index.php%3Foption=com_search&amp;Itemid=58&amp;searchphrase=exact_meta&amp;ordering=newest&amp;searchword=&#32;授權.html'> 授權</a>,&nbsp;&nbsp;<a href='../../index.php%3Foption=com_search&amp;Itemid=58&amp;searchphrase=exact_meta&amp;ordering=newest&amp;searchword=&#32;GPL.html'> GPL</a>,&nbsp;&nbsp;				<!-- End -->
+					<br>
+					<b>分類: </b><a href="../enterprise-application.html">				企業應用					</a>				</div>
+			 <!-- AddThis Button BEGIN ID 3001 is the front page article -->
+     			<br><br>
+       <div class="addthis_toolbox addthis_default_style addthis_32x32_style">
+       <a class="addthis_button_preferred_1"></a>
+       <a class="addthis_button_preferred_2"></a>
+       <a class="addthis_button_preferred_3"></a>
+       <a class="addthis_button_preferred_4"></a>
+       <a class="addthis_button_compact"></a>
+       <a class="addthis_counter addthis_bubble_style"></a>
+       </div>
+       <script type="text/javascript">var addthis_config = {"data_track_clickback":true};</script>
+       <script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js#pubid=openfoundry"></script>
+       <!-- AddThis Button END -->
+     <br>
+		<div class="totop" ><a class="rt-totop" href="8629--gpl-gnu-emacs-gpl-%3Ftmpl=component&amp;print=1&amp;page=.html#" style="outline: medium none;">↑ Top</a></div>
+            <!-- AddThis Button END -->
+
+			</div>
+</div>
+
+						</div>
+					</div>
+				</div>
+			</div>
+		</body>
+	</html>

@@ -1,0 +1,209 @@
+	<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+	<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="zh-tw" lang="zh-tw" >
+		<head>
+			  <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+  <meta name="robots" content="noindex, nofollow" />
+  <meta name="keywords" content="OSSFNL831" />
+  <meta name="title" content="如何在 Linux 與 GnuCash 上使用 Awk 進行文字搜尋與排序" />
+  <meta name="description" content="awk 是一套用以處理文字檔案的優秀 Unix 腳本語言，在多數 Linux 散佈套件中的版本是簡稱為 gawk 的 GNU awk。awk 將檔案中的每一行視為個別的記錄，一行中的每一個項目則是個別的欄位。如此一來就可以用各種彈性的方式處理你的檔案。經典的方式是以 /etc/passwd 來作說明，以下範例會輸出該檔案所有內容： $ awk '' /etc/passwd" />
+  <meta name="generator" content="" />
+  <title>如何在 Linux 與 GnuCash 上使用 Awk 進行文字搜尋與排序</title>
+  <link href="../../favicon.ico" rel="shortcut icon" type="image/x-icon" />
+  <link rel="stylesheet" href="../../components/com_gantry/css/gantry.css" type="text/css" />
+  <link rel="stylesheet" href="../../components/com_gantry/css/grid-12.css" type="text/css" />
+  <link rel="stylesheet" href="../../components/com_gantry/css/joomla.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/joomla.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/style1.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/light-body.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/demo-styles.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/template.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/typography.css" type="text/css" />
+  <style type="text/css">
+    <!--
+#rt-main-surround ul.menu li.active > a, #rt-main-surround ul.menu li.active > .separator, #rt-main-surround ul.menu li.active > .item, #rt-main-surround .square4 ul.menu li:hover > a, #rt-main-surround .square4 ul.menu li:hover > .item, #rt-main-surround .square4 ul.menu li:hover > .separator, .roktabs-links ul li.active span {color:#0088B5;}
+a, #rt-main-surround ul.menu a:hover, #rt-main-surround ul.menu .separator:hover, #rt-main-surround ul.menu .item:hover {color:#0088B5;}
+    -->
+  </style>
+  <script type="text/javascript" src="../../components/com_jcomments/js/jcomments-v2.1.js%3Fv=2"></script>
+  <script type="text/javascript" src="../../components/com_jcomments/libraries/joomlatune/ajax.js"></script>
+  <script type="text/javascript" src="../../media/system/js/mootools.js"></script>
+  <script type="text/javascript" src="../../media/system/js/caption.js"></script>
+  <script type="text/javascript" src="../../components/com_gantry/js/gantry-buildspans.js"></script>
+  <script type="text/javascript" src="../../components/com_gantry/js/gantry-inputs.js"></script>
+  <script type="text/javascript">
+
+			window.addEvent('domready', function() {
+				var modules = ['rt-block'];
+				var header = ['h3','h2','h1'];
+				GantryBuildSpans(modules, header);
+			});
+		InputsExclusion.push('.content_vote','#rt-popup')
+  </script>
+		</head>
+		<body  class="backgroundlevel-low backgroundstyle-style8 bodylevel-med bodystyle-light cssstyle-style1 logostyle-dark font-family-helvetica font-size-is-default menu-type-fusionmenu col12 ">
+			<div id="rt-main-surround">
+				<div class="rt-container">
+					<div class="rt-block">
+						<div id="rt-mainbody">
+					    	
+<div class="rt-joomla ">
+	<div class="rt-article">
+		
+				<div class="rt-headline"><h1 class="rt-article-title">如何在 Linux 與 GnuCash 上使用 Awk 進行文字搜尋與排序</h1>		</div>
+		<div class="clear"></div>
+		
+		
+		
+				<div class="rt-articleinfo">
+						<div class="rt-article-icons">
+				<a href="9009--linux-gnucash-awk-%3Ftmpl=component&amp;print=1&amp;layout=default&amp;page=.html#" onclick="window.print();return false;"><span class="icon print"></span></a>									<span class="icon printscreen">
+						<a href="9009--linux-gnucash-awk-%3Ftmpl=component&amp;print=1&amp;layout=default&amp;page=.html#" onclick="window.print();return false;"><img src="../../images/M_images/printButton.png" alt="列印"  /></a>					</span>
+							</div>
+			
+			<span class="rt-date-posted">
+						建立日期			2013-06-25 10:10						&nbsp;&nbsp;&nbsp;&nbsp;						最近更新在 2013-06-25 11:21						</span>
+
+						<span class="rt-author">
+				作者是 謝良奇／編譯			</span>
+				
+					</div>
+		
+		
+		<p>awk 是一套用以處理文字檔案的優秀 Unix 腳本語言，在多數 Linux 散佈套件中的版本是簡稱為 gawk 的 GNU awk。awk 將檔案中的每一行視為個別的記錄，一行中的每一個項目則是個別的欄位。如此一來就可以用各種彈性的方式處理你的檔案。經典的方式是以 /etc/passwd 來作說明，以下範例會輸出該檔案所有內容：</p>
+
+<pre>$ awk '{ print $0 }' /etc/passwd 
+root:x:0:0:root:/root:/bin/bash
+daemon:x:1:1:daemon:/usr/sbin:/bin/sh
+bin:x:2:2:bin:/bin:/bin/sh
+sys:x:3:3:sys:/dev:/bin/sh
+</pre>
+<p>不帶參數的 print 指令表示輸出一整行，$0 意思也是一整行，所以忽略 $0 同樣會得到一樣結果。假設你現在只想要用戶名稱與 UID 列表：由於 /etc/passwd 的資料欄位是以冒號分隔，因此很適合用 awk 來解析。你只需要從左邊從 1 開始數到你想輸出的欄位，然後像這樣截取出用戶名稱與 UID：</p>
+<pre>$ awk -F":" '{ print $1 " " $3 }' /etc/passwd 
+root 0
+daemon 1
+bin 2
+sys 3
+</pre>
+<p>-F 用來定義欄位分隔字元，" " 則插入空白。想要先列出 UID？簡單，交換變數順序即可：</p>
+<pre>$ awk -F":" '{ print $3 " " $1 }' /etc/passwd</pre>
+<p>現在讓我們看看運用 awk 把一大堆財務數據匯入 GnuCash 的實際例子。</p>
+<p>GnuCash 是自由與開放源碼軟體中的瑰寶之一，是一套執行於 Linux、Mac、Windows 的強大會計軟體。你可以匯入 QIF 與 OFX 檔案，不過說來可惜，儘管 CSV 是財務資料匯出匯入的通用格式，許多財務應用軟體都支援 CSV 匯出入，GnuCash 對 CSV 匯入卻僅提供部份支援。</p>
+<p>假設你有一個包含歷年財務資料的龐大試算表，你希望將資料放進適當的會計軟體中，或是你想要把資料從某個會計軟體，匯入到 GnuCash 之中，但該軟體僅支援 CSV 匯出。你可以選擇重新鍵入所有資料，或是讓你的 Linux 腳本語言技術派上用場。流程是先產生 CSV 檔案，然後轉成 QIF 格式，再將 QIF 檔案匯入 GnuCash。GnuCash 對於 QIF 檔案正確性相當挑剔，因此得確保檔案內容無誤。</p>
+<p>先確定複製一份你的原始檔案，不要破壞了原始檔案。</p>
+<p>我會讓例子盡量簡單，僅使用以下的 QIF 欄位：</p>
+<pre>D - date
+P - payee
+M - memo
+T - amount
+N - check number, or any notation in the check number field
+L - category, which corresponds to GnuCash accounts
+^ - end of record
+</pre>
+<p>我們還需要在 QIF 檔頭中指定會計形態，如：</p>
+<pre>!Type:Bank  
+!Type:Cash  
+!Type:CCard  
+!Type:Invst
+</pre>
+<p>QIF 規格支援更多項目，你可在 <a target="_blank" href="https://www.respmech.com/mym2qifw/qif_new.htm">https://www.respmech.com/mym2qifw/qif_new.htm</a> 找到完整列表。或者用 qif spec 作為關鍵字去查詢相關資料。</p>
+<p>轉成 QIF 格式前，先確認你的 CSV 檔案格式是否正確。確認你的提款前有減號，例如 -33.72，而且不要使用錢字符號，存款前的加號可有可無，隨你喜歡。你的存提款必須在同一欄位。最後的 CSV 匯出檔案像這樣：</p>
+<pre>11/03/2008  Copy Junction  Copy of building codes	-33.72	8732  Supplies	
+11/03/2008  Home Depot	Trowel	-17.05	8734  Tools	
+11/03/2008  Dewalt Service Center	Charger for Drill  -75.85  8735	Tools	
+11/04/2008  Building Supply  Margin trowel  -13.23  8736  Tools	
+11/05/2008  Jane Smith   invoice #5843	8,500.00	   dep   income:contracting
+</pre>
+<p>如果 QIF 檔案中有任何錯誤，GnuCash 就無法成功匯入。我碰過的問題有，用了多個減號如 --33.72，額外的小數點，日期格式錯誤。awk 不會理會這些問題，但 GnuCash 會。準備好之後，將 CSV 檔案轉成 QIF 格式：</p>
+<pre>$ ( echo '!Type:Bank'; cat exportfile.csv | awk -F $'\t' '{ print "D" $1; print "P" $2; print "M" $3; print "T" $4; print "N" $5; print "L" $6; print "^"; }' ) ＞ importfile.qif
+</pre>
+<p>結果像這樣，提款以減號表示，存款則無符號：</p>
+<pre>!Type:Bank
+D03/25/2008
+PJane Smith
+M invoice #4657
+T4000.00
+Ndep
+Lincome:contracting
+^
+D04/02/2008
+PFirst Bank of Money
+MCheck Order
+T-21.44
+NACH
+Lbank fees
+^
+D05/15/2008
+PPretty Designs
+MDesign Services
+T-500.00
+N8922
+LContract Services
+^
+</pre>
+<p>注意到如何使用針對水平製表 \t 的 ASCII 跳脫序列，來指定以 tab 鍵作為欄位分隔符號。如果一切無誤，你會得到可匯入 GnuCash 的 QIF 檔案。</p>
+<p>awk 在搜尋文字區塊上有著優秀能力，當 grep 沒辦法得到你想要的結果時，你可以試試 awk。例如，你想要從完整 lspci 輸出中找出特定設備：</p>
+<pre>$ lspci -v | awk '/VGA/,/^$/'
+01:00.0 VGA compatible controller: NVIDIA Corporation G98 [GeForce 8400 GS] (rev a1) (prog-if 00 [VGA controller])
+        Subsystem: Micro-Star International Co., Ltd. Device 1162
+        Flags: bus master, fast devsel, latency 0, IRQ 18
+        Memory at fd000000 (32-bit, non-prefetchable) [size=16M]
+        Memory at d0000000 (64-bit, prefetchable) [size=256M]
+        Memory at fa000000 (64-bit, non-prefetchable) [size=32M]
+        I/O ports at dc00 [size=128]
+        [virtual] Expansion ROM at fe9e0000 [disabled] [size=128K]
+        Capabilities: 
+        Kernel driver in use: nvidia
+        Kernel modules: nvidia_current, nouveau, nvidiafb
+</pre>
+<p>插入符號 ^ 正規表示式的定位符，用來對應字串起始處，$ 則對應終止處。所以上例中 /^$/ 會找出文字區塊起始與終止處的斷行。這是從以空白區隔各個段落的大型設定檔案中，截取特定區塊的漂亮技巧，例如 sshd_config：</p>
+<pre>$ awk '/X11Forwarding/, /^$/' /etc/ssh/sshd_config 
+X11Forwarding yes
+X11DisplayOffset 10
+PrintMotd no
+PrintLastLog yes
+TCPKeepAlive yes
+#UseLogin no
+</pre>
+<p>我們經常使用 sort 與 uniq 指令，從檔案中找出並移除重複項目。不過如果你不希望你的原始檔被排序或更動，這時正是 awk 派上用場的時候，我們可以用 awk 截取不重複記錄並儲存在新的檔案中：</p>
+<pre>$ awk '!x[$0]++' filewithdupes ＞ newfile
+</pre>
+<p>你的原始檔案原封不動，新檔案僅包含依序排列的不重複項目。</p>
+<p>man awk 可以查到完整的選項說明，要發揮 awk 或任何 Unix/Linux 指令的大部份功能，你需要對正規表示式有不錯的理解。對此我推薦 Mastering Regular Expressions 這本書。如果你想挑最有用的東西來學，就學正規表示式吧，因為多數程式語言和 Linux/Unix 指令都用得到正規表示式。</p>
+<br />
+<h3>原文網址：</h3>
+<ol style="list-style-type: decimal;">
+<li>如何在 Linux 與 GnuCash 上使用 Awk 進行文字搜尋與排序<br /><a href="https://www.linux.com/learn/tutorials/724060-amazing-awk-fu-gnucash-import-find-blocks-of-text-remove-dupes-without-sorting/" target="_blank">https://www.linux.com/learn/tutorials/724060-amazing-awk-fu-gnucash-import-find-blocks-of-text-remove-dupes-without-sorting/</a></li>
+</ol>
+			<!-- Show relate article -->
+		<br><br><h4>您也許有興趣閱讀以下文章:</h4><ul><li><a href='../../foss-programs/9280.html'>如何在 Linux 上加密電子郵件</a> - <span class='date-posted'>2014-08-20</span></li><li><a href='../../foss-programs/8628.html'>如何在 Linux 底下找到想找的東西？</a> - <span class='date-posted'>2012-03-01</span></li></ul>		<!-- end -->
+		<div class="article_note">
+		<!-- Add tags use metakey, and show OSSF Newsletter tag: OSSFNL+NUM-->
+		<br><br> <hr style='border: 1px dashed #D2DADB;'><b>自由軟體鑄造場電子報&nbsp;:</b>&nbsp;<a href='../../previous-issue%3Ftask=view&amp;id=831.html'>第 222 期 Sphinx - 用 reStructuredText 寫網站與書</a><br>				<!-- End -->
+					<br>
+					<b>分類: </b><a href="../foss-programs.html">				源碼秘技					</a>				</div>
+			 <!-- AddThis Button BEGIN ID 3001 is the front page article -->
+     			<br><br>
+       <div class="addthis_toolbox addthis_default_style addthis_32x32_style">
+       <a class="addthis_button_preferred_1"></a>
+       <a class="addthis_button_preferred_2"></a>
+       <a class="addthis_button_preferred_3"></a>
+       <a class="addthis_button_preferred_4"></a>
+       <a class="addthis_button_compact"></a>
+       <a class="addthis_counter addthis_bubble_style"></a>
+       </div>
+       <script type="text/javascript">var addthis_config = {"data_track_clickback":true};</script>
+       <script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js#pubid=openfoundry"></script>
+       <!-- AddThis Button END -->
+     <br>
+		<div class="totop" ><a class="rt-totop" href="9009--linux-gnucash-awk-%3Ftmpl=component&amp;print=1&amp;layout=default&amp;page=.html#" style="outline: medium none;">↑ Top</a></div>
+            <!-- AddThis Button END -->
+
+			</div>
+</div>
+
+						</div>
+					</div>
+				</div>
+			</div>
+		</body>
+	</html>

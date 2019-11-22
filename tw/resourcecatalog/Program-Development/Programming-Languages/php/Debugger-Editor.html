@@ -1,0 +1,525 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="zh-tw" lang="zh-tw" >
+<head>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<link rel="shortcut icon" href="../../../../../images/favicon.ico" />
+	  <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+  <meta name="robots" content="index, follow" />
+  <meta name="keywords" content="Who's Who, whoswho, opensource, Open Source, People, people, Community, 社群, Group, group, Taiwan, taiwan, 台灣, workshop, 工作坊, OSSF, 自由軟體鑄造場， 自由軟體，人才，產業，Linux, GNU, 人群,工作坊,分享,學習,法律,授權,GPL,資源表列,討論區,專案開發平台,OpenFoundry,自由軟體人才資料庫,開放源碼, 專案, 軟體, Web Hosting, 網站代管, Subversion, CVS, Issue Tracker, 待辨事項, Wiki, 共同筆記， Project Management, 專案管理, Release, 釋出, Version Control, 版本釋出, tw,TW, Open Foundry, Open, 中央研究院，資訊科學研究所, 自由軟體電子報" />
+  <meta name="title" content="除錯/編輯器" />
+  <meta name="description" content="OpenFoundry provides essential tools and services through its service platform for users to develop Open Source Software Projects, the operating funds comes from the National Science Council and the Research Center for Information Technology Innovation of Academia Sinica Taiwan." />
+  <meta name="generator" content="" />
+  <title>除錯/編輯器 - OpenFoundry</title>
+  <link href="../../../../../favicon.ico" rel="shortcut icon" type="image/x-icon" />
+  <link rel="stylesheet" href="../../../../../components/com_gantry/css/gantry.css" type="text/css" />
+  <link rel="stylesheet" href="../../../../../components/com_gantry/css/grid-12.css" type="text/css" />
+  <link rel="stylesheet" href="../../../../../components/com_gantry/css/joomla.css" type="text/css" />
+  <link rel="stylesheet" href="../../../../../templates/rt_quantive_j15/css/joomla.css" type="text/css" />
+  <link rel="stylesheet" href="../../../../../templates/rt_quantive_j15/css/style1.css" type="text/css" />
+  <link rel="stylesheet" href="../../../../../templates/rt_quantive_j15/css/light-body.css" type="text/css" />
+  <link rel="stylesheet" href="../../../../../templates/rt_quantive_j15/css/demo-styles.css" type="text/css" />
+  <link rel="stylesheet" href="../../../../../templates/rt_quantive_j15/css/template.css" type="text/css" />
+  <link rel="stylesheet" href="../../../../../templates/rt_quantive_j15/css/typography.css" type="text/css" />
+  <link rel="stylesheet" href="../../../../../templates/rt_quantive_j15/css/fusionmenu.css" type="text/css" />
+  <style type="text/css">
+    <!--
+#rt-main-surround ul.menu li.active > a, #rt-main-surround ul.menu li.active > .separator, #rt-main-surround ul.menu li.active > .item, #rt-main-surround .square4 ul.menu li:hover > a, #rt-main-surround .square4 ul.menu li:hover > .item, #rt-main-surround .square4 ul.menu li:hover > .separator, .roktabs-links ul li.active span {color:#0088B5;}
+a, #rt-main-surround ul.menu a:hover, #rt-main-surround ul.menu .separator:hover, #rt-main-surround ul.menu .item:hover {color:#0088B5;}
+    -->
+  </style>
+  <script type="text/javascript" src="../../../../../components/com_jcomments/js/jcomments-v2.1.js%3Fv=2"></script>
+  <script type="text/javascript" src="../../../../../components/com_jcomments/libraries/joomlatune/ajax.js"></script>
+  <script type="text/javascript" src="../../../../../media/system/js/mootools.js"></script>
+  <script type="text/javascript" src="../../../../../components/com_gantry/js/gantry-buildspans.js"></script>
+  <script type="text/javascript" src="../../../../../components/com_gantry/js/gantry-inputs.js"></script>
+  <script type="text/javascript" src="../../../../../templates/rt_quantive_j15/js/jquery.cookie.js"></script>
+  <script type="text/javascript" src="../../../../../modules/mod_roknavmenu/themes/fusion/js/fusion.js"></script>
+  <script type="text/javascript" src="../../../../../modules/mod_ofssologin/js/ofssologin.js"></script>
+  <script type="text/javascript">
+
+			window.addEvent('domready', function() {
+				var modules = ['rt-block'];
+				var header = ['h3','h2','h1'];
+				GantryBuildSpans(modules, header);
+			});
+		InputsExclusion.push('.content_vote','#rt-popup')
+		        window.addEvent('load', function() {
+					new Fusion('ul.menutop', {
+						pill: 0,
+						effect: 'slide and fade',
+						opacity: 1,
+						hideDelay: 500,
+						centered: 0,
+						tweakInitial: {'x': -2, 'y': 0},
+        				tweakSubsequent: {'x': 0, 'y': -14},
+						menuFx: {duration: 200, transition: Fx.Transitions.Sine.easeOut},
+						pillFx: {duration: 400, transition: Fx.Transitions.Back.easeOut}
+					});
+	            });
+  </script>
+  <link rel="alternate" type="application/rss+xml" title="OpenFoundry - 除錯/編輯器" href="Debugger-Editor/rss/new" />
+  <link href="../../../../../components/com_mtree/templates/m2/template.css" rel="stylesheet" type="text/css"/>
+<!-- <script type="text/javascript" src="/sso/javascripts/langsync.js"></script> -->
+<!-- <script src="/templates/rt_quantive_j15/js/ossf.js"></script> -->
+<script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-4136519-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
+</head>
+	<body  class="backgroundlevel-low backgroundstyle-style8 bodylevel-med bodystyle-light cssstyle-style1 logostyle-dark font-family-helvetica font-size-is-default menu-type-fusionmenu col12 ">
+		<div id="rt-main-background">
+			<div class="rt-container">
+																<div id="rt-header">
+					<div class="rt-grid-7 rt-alpha">
+    			<div class="rt-block">
+    	    	<a href="../../../../../index.html" id="rt-logo"></a>
+    		</div>
+	    
+</div>
+<div class="rt-grid-5 rt-omega">
+                    <div class="square9">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<div class="ofssologin_square9"><a href="../../../../../index.html">登入</a>&nbsp;&nbsp|&nbsp;&nbsp;<span><a href="../../../../../en/resourcecatalog/Program-Development/Programming-Languages/php/Debugger-Editor.html" ><span lang="en" xml:lang="en">English</span></a></li></ul></span><!--Joom!fish V2.0.4 (Lightning)-->
+<!-- &copy; 2003-2009 Think Network, released under the GPL. -->
+<!-- More information: at http://www.joomfish.net -->
+<div class="ofssologin_search_square9">
+  <form id="of_search" action="https://www.openfoundry.org/of/openfoundry/search" method="get" onsubmit="of_search(); return false;">
+    <select id="of_search_type">
+      <option value="Projects"> 專案 </option>
+      <option value="Content"> 文章 </option>
+      <option value="People"> 人才 </option>
+    </select>
+    <input id="query" name="query" id="mod_search_searchword" maxlength="50" alt="search" class="inputbox" type="text" size="28" value="search..."  onblur="if(this.value=='') this.value='search...';" onfocus="if(this.value=='search...') this.value='';" />
+    <input type="hidden" name="commit" value="search" />
+  </form>
+</div></div>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		
+</div>
+					<div class="clear"></div>
+				</div>
+																<div id="rt-navigation"><div id="rt-navigation2"><div id="rt-navigation3">
+					
+<div class="nopill">
+	<ul class="menutop level1 " >
+						<li class="item1 root" >
+					<a class="orphan item bullet" href="../../../../../index.html"  >
+				<span>
+			    				首頁				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item32 root" >
+					<a class="orphan item bullet" href="../../../../../archived.html"  >
+				<span>
+			    				專案				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item186 root" >
+					<a class="orphan item bullet" href="../../../../community.html"  >
+				<span>
+			    				Who&#039;s Who				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item4 root" >
+					<a class="orphan item bullet" href="../../../../news.html"  >
+				<span>
+			    				新聞				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item5 root" >
+					<a class="orphan item bullet" href="../../../../law-and-licensing.html"  >
+				<span>
+			    				法律源地				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item3 root" >
+					<a class="orphan item bullet" href="../../../../activities.html"  >
+				<span>
+			    				活動				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item2 active root" >
+					<a class="orphan item bullet" href="../../../../resourcecatalog%3FName=Value.html"  >
+				<span>
+			    				資源表列				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item45 root" >
+					<a class="orphan item bullet" href="../../../../about.html"  >
+				<span>
+			    				關於				   
+				</span>
+			</a>
+			
+			
+	</li>	
+				</ul>
+</div>
+
+				    <div class="clear"></div>
+				</div></div></div>
+								<div class="rt-surround"><div class="rt-surround2"><div class="rt-surround3">
+										<div id="rt-showcase-section">
+												<div id="rt-showcase">
+							<div class="rt-grid-12 rt-alpha rt-omega">
+    		<div class="clear"></div>
+		
+		
+                <div class="close-note">
+                    <div class="rt-block">
+               					<div class="module-content">
+                	<div style="font-size:medium; background-image:linear-gradient(120deg,#159957,#4298b2);color:white;padding:20px;margin:-10px -18px;">感謝您對「自由軟體鑄造場」的支持與愛護，十多年來「自由軟體鑄造場」受中央研究院支持，並在資訊科學研究所以及資訊科技創新研究中心執行，現已完成階段性的任務。 本網站預計持續維運至 2021年底，網站內容基本上不會再更動。<br />也紀念我們永遠的朋友 李士傑先生（Shih-Chieh Ilya Li）。</div>				</div>
+            </div>
+                </div>
+		
+</div>
+							<div class="clear"></div>
+						</div>
+																	</div>
+															<div id="rt-main-surround">
+												<div id="rt-breadcrumbs">
+								<div class="rt-breadcrumb-surround">
+		<a href="../../../../../index.html" id="breadcrumbs-home"></a>
+		<span class="breadcrumbs pathway">
+	<a  class="pathway" href="../../../../resourcecatalog.html">資源表列</a>
+					<a href="../../../Program-Development.html" class="sublevel">程式開發</a>
+					<a href="../../Programming-Languages.html" class="sublevel">程式語言</a>
+					<a href="../php.html" class="sublevel">PHP</a>
+					<a href="Debugger-Editor.html" class="sublevel">除錯/編輯器</a>
+					</span>
+	</div>
+	
+							<div class="clear"></div>
+						</div>
+																							              <div id="rt-main" class="sa3-mb9">
+                <div class="rt-main-inner">
+                    <div class="rt-grid-9 rt-push-3">
+                                                <div id="rt-content-top">
+                            <div class="rt-grid-9 rt-alpha rt-omega">
+                    <div class="title1">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-title"><h2 class="title">什麼是資源表列?</h2></div>
+						<div class="clear"></div>
+		                						<div class="module-content">
+		                	<img src="../../../../../images/mtree/catalog-icon.png" width="80" height="80" alt="catalog-icon" style="float: right;" />OpenFoundry 蒐集與自由軟體相關的連結資訊並將其分類，供您依此資源目錄架構，循序深入自由軟體豐富的應用世界。若此分類下發現有任何問題及建議，非常歡迎您協助我們改進，請寄至<a href="mailto:contact@openfoundry.org">contact@openfoundry.org</a>。						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		
+</div>
+							<div class="clear"></div>
+                        </div>
+                                                <div class="rt-block">
+                            							<div class="square1">
+							<div class="rt-module-surround">
+								<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+								<div class="rt-module-inner">
+		                            <div id="rt-mainbody">
+		                                 
+<h2 class="contentheading">除錯/編輯器</h2>
+
+
+
+<div id="listings">	<div class="title">Listings</div>
+
+	<div class="rt-pagination">
+				<p class="pagescounter">
+結果 1 - 13 共 13</p>
+	</div>
+
+	<div class="listing-summary">
+		<h3><a href="Debugger-Editor/xdebug.html" >Xdebug</a> 				
+				
+				</h3><img src="../../../../../components/com_mtree/img/star_00.png" width="14" height="14" hspace="1" class="star" alt="" /><img src="../../../../../components/com_mtree/img/star_00.png" width="14" height="14" hspace="1" class="star" alt="" /><img src="../../../../../components/com_mtree/img/star_00.png" width="14" height="14" hspace="1" class="star" alt="" /><img src="../../../../../components/com_mtree/img/star_00.png" width="14" height="14" hspace="1" class="star" alt="" /><img src="../../../../../components/com_mtree/img/star_00.png" width="14" height="14" hspace="1" class="star" alt="" /><p style="margin:0;"><p>
+<p>Xdebug擴充元件提供了很多寶貴的除錯訊息幫助你對你的腳本進行除錯。Xdebug提供的除錯訊息包括：</p>
+<p><span style="white-space: pre;"> </span>1. 錯誤信息中提供堆疊與子程式之追蹤</p>
+<p><span style="white-space: pre;"> </span>a. 用戶定義之子程式完整參數顯示</p>
+<p><span style="white-space: pre;"> </span>b. 子程式名，文件名和行數表示</p>
+<p><span style="white-space: pre;"> </span>c. 支持Member Functions</p>
+<p><span style="white-space: pre;"> </span>2. 記憶體分配</p>
+<p><span style="white-space: pre;"> </span>3. 保護防止無限遞迴</p>
+<p>適用平台: PEAR version 0.9.1-dev or higher and some UNIX; 原始碼授權類型: The Xdebug License</p>
+<p>資料來源: <a href="https://xdebug.org/" target="_blank">https://xdebug.org/</a></p>
+</p></p></div>
+<div class="listing-summary">
+		<h3><a href="Debugger-Editor/apd.html" >apd</a> 				
+				
+				</h3><img src="../../../../../components/com_mtree/img/star_00.png" width="14" height="14" hspace="1" class="star" alt="" /><img src="../../../../../components/com_mtree/img/star_00.png" width="14" height="14" hspace="1" class="star" alt="" /><img src="../../../../../components/com_mtree/img/star_00.png" width="14" height="14" hspace="1" class="star" alt="" /><img src="../../../../../components/com_mtree/img/star_00.png" width="14" height="14" hspace="1" class="star" alt="" /><img src="../../../../../components/com_mtree/img/star_00.png" width="14" height="14" hspace="1" class="star" alt="" /><p style="margin:0;"><p>
+<p>apd是一個以zend_extension形式載入之具有功能完整的Profiler/Debugger。它的目標是成為如C語言的gprof或者是Perl的Devel::Dprof。</p>
+<p>適用平台: 多平台; 原始碼授權類型: PHP License</p>
+<p>資料來源: <a href="https://pecl.php.net/package/apd" target="_blank">https://pecl.php.net/package/apd</a></p>
+</p></p></div>
+<div class="listing-summary">
+		<h3><a href="Debugger-Editor/dbg.html" >DBG</a> 				
+				
+				</h3><img src="../../../../../components/com_mtree/img/star_00.png" width="14" height="14" hspace="1" class="star" alt="" /><img src="../../../../../components/com_mtree/img/star_00.png" width="14" height="14" hspace="1" class="star" alt="" /><img src="../../../../../components/com_mtree/img/star_00.png" width="14" height="14" hspace="1" class="star" alt="" /><img src="../../../../../components/com_mtree/img/star_00.png" width="14" height="14" hspace="1" class="star" alt="" /><img src="../../../../../components/com_mtree/img/star_00.png" width="14" height="14" hspace="1" class="star" alt="" /><p style="margin:0;"><p>
+<p>DBG是功能完整的PHP Debugger, 提供互動式工具幫助你對PHP腳本進行除錯。它適用於開發或生產的WEB Server, 並允許你由本地或遠程透過IDE或Console對腳本進行除錯。</p>
+<p>適用平台: 多平台; 原始碼授權類型: OSI-Approved Open Source</p>
+<p>資料來源: <a href="https://sourceforge.net/projects/dbg2/" target="_blank">https://sourceforge.net/projects/dbg2/</a></p>
+</p></p></div>
+<div class="listing-summary">
+		<h3><a href="Debugger-Editor/expert-debugger.html" >Expert Debugger</a> 				
+				
+				</h3><img src="../../../../../components/com_mtree/img/star_00.png" width="14" height="14" hspace="1" class="star" alt="" /><img src="../../../../../components/com_mtree/img/star_00.png" width="14" height="14" hspace="1" class="star" alt="" /><img src="../../../../../components/com_mtree/img/star_00.png" width="14" height="14" hspace="1" class="star" alt="" /><img src="../../../../../components/com_mtree/img/star_00.png" width="14" height="14" hspace="1" class="star" alt="" /><img src="../../../../../components/com_mtree/img/star_00.png" width="14" height="14" hspace="1" class="star" alt="" /><p style="margin:0;"><p>
+<p>Expert Debugger 可以debug PHP 腳本。該軟體使用 DBG PHP 除錯器，允許你經由網路或者在本地電腦上debug script。你可以採用逐步模式運行script並且可以跟蹤任何變量和script輸出的值。該除錯器可以被結合於 IDE 或者編輯器中。</p>
+<p>適用平台: Windows; 原始碼授權類型: Freeware</p>
+<p>資料來源:<a href="https://www.skycn.com/soft/36356.html" target="_blank"> https://www.skycn.com/soft/36356.html</a></p>
+</p></p></div>
+<div class="listing-summary">
+		<h3><a href="Debugger-Editor/gubed.html" >Gubed</a> 				
+				
+				</h3><img src="../../../../../components/com_mtree/img/star_00.png" width="14" height="14" hspace="1" class="star" alt="" /><img src="../../../../../components/com_mtree/img/star_00.png" width="14" height="14" hspace="1" class="star" alt="" /><img src="../../../../../components/com_mtree/img/star_00.png" width="14" height="14" hspace="1" class="star" alt="" /><img src="../../../../../components/com_mtree/img/star_00.png" width="14" height="14" hspace="1" class="star" alt="" /><img src="../../../../../components/com_mtree/img/star_00.png" width="14" height="14" hspace="1" class="star" alt="" /><p style="margin:0;"><p>
+<p>Gubed PHP Debugger是一個用來對PHP腳本進行除錯的程式。它目前支援程式碼Stepping、監看變數內容以及設置斷點(對行與條件敘述)。使用此工具不需對Server軟體或腳本進行修改。</p>
+<p>適用平台: Cross-platform; 原始碼授權類型: GNU General Public License</p>
+<p>資料來源:<a href="https://sourceforge.net/projects/gubed/" target="_blank"> https://sourceforge.net/projects/gubed/</a></p>
+</p></p></div>
+<div class="listing-summary">
+		<h3><a href="Debugger-Editor/maguma-studio.html" >Maguma Studio</a> 				
+				
+				</h3><img src="../../../../../components/com_mtree/img/star_00.png" width="14" height="14" hspace="1" class="star" alt="" /><img src="../../../../../components/com_mtree/img/star_00.png" width="14" height="14" hspace="1" class="star" alt="" /><img src="../../../../../components/com_mtree/img/star_00.png" width="14" height="14" hspace="1" class="star" alt="" /><img src="../../../../../components/com_mtree/img/star_00.png" width="14" height="14" hspace="1" class="star" alt="" /><img src="../../../../../components/com_mtree/img/star_00.png" width="14" height="14" hspace="1" class="star" alt="" /><p style="margin:0;"><p>
+<p>熟悉PHP開發的朋友對Maguma不會陌生，Maguma Studio是一款性能優異的IDE，她曾是收費的，而在Maguma宣佈開發全新的Workbench平台後，Studio便成為免費軟體了，只要在官網上註冊會員即可下載。</p>
+<p>Maguma Studio包含了編輯和除錯 PHP 程式所有必須的工具。無論您是經驗豐富的開發者、或是初學者它都適合您。帶有十分完整的斷點、分步等除錯功能。支持以樹狀方式顯示文件中的函數和類別。</p>
+<p>適用平台: Windows; 原始碼授權類型: Freeware</p>
+<p>資料來源: <a href="https://www.jfsky.com/SoftView/SoftView_49534.html" target="_blank">https://www.jfsky.com/SoftView/SoftView_49534.html</a></p>
+</p></p></div>
+<div class="listing-summary">
+		<h3><a href="Debugger-Editor/seg.html" >SEG</a> 				
+				
+				</h3><img src="../../../../../components/com_mtree/img/star_00.png" width="14" height="14" hspace="1" class="star" alt="" /><img src="../../../../../components/com_mtree/img/star_00.png" width="14" height="14" hspace="1" class="star" alt="" /><img src="../../../../../components/com_mtree/img/star_00.png" width="14" height="14" hspace="1" class="star" alt="" /><img src="../../../../../components/com_mtree/img/star_00.png" width="14" height="14" hspace="1" class="star" alt="" /><img src="../../../../../components/com_mtree/img/star_00.png" width="14" height="14" hspace="1" class="star" alt="" /><p style="margin:0;"><p>
+<p>SEG是一個文字編輯器，雖然是為PHP腳本撰寫設計，但是也提供其他用途。它的功能包括:</p>
+<p><span style="white-space: pre;"> </span>1. 為以下語言提供標記: HTML, PHP, CSS, JavaScript, VBScript, SQL, Java, C#, C++, Delphi, x86 Assembly, MS-DOS Batch, Perl, Tcl/Tk, Borland Form Files</p>
+<p><span style="white-space: pre;"> </span>2. 提供製作Templates與測試腳本的使用者選項</p>
+<p><span style="white-space: pre;"> </span>3. 其他功能...</p>
+<p>適用平台: Windows; 原始碼授權類型: Unspecified</p>
+<p>資料來源: <a href="https://gonix.ten.lt/" target="_blank">https://gonix.ten.lt/</a></p>
+</p></p></div>
+<div class="listing-summary">
+		<h3><a href="Debugger-Editor/light-php-edit.html" >Light PHP Edit</a> 				
+				
+				</h3><img src="../../../../../components/com_mtree/img/star_00.png" width="14" height="14" hspace="1" class="star" alt="" /><img src="../../../../../components/com_mtree/img/star_00.png" width="14" height="14" hspace="1" class="star" alt="" /><img src="../../../../../components/com_mtree/img/star_00.png" width="14" height="14" hspace="1" class="star" alt="" /><img src="../../../../../components/com_mtree/img/star_00.png" width="14" height="14" hspace="1" class="star" alt="" /><img src="../../../../../components/com_mtree/img/star_00.png" width="14" height="14" hspace="1" class="star" alt="" /><p style="margin:0;"><p>
+<p>簡單、易用、體積小的PHP編輯器，</p>
+<p>以php4delphi元件完成PHP整合，</p>
+<p>藉由SynEdit達到語言標記，</p>
+<p>利用XDebug.org DBGp protocol進行Debug</p>
+<p>內建Console提供學習PHP還有Run、Check、Breakpoints與Watches的功能。</p>
+<p>適用平台: Windows; 原始碼授權類型: GNU General Public License</p>
+<p>資料來源: <a href="https://www.parmaja.com/projects/LightPHPEdit/" target="_blank">https://www.parmaja.com/projects/LightPHPEdit/</a></p>
+</p></p></div>
+<div class="listing-summary">
+		<h3><a href="Debugger-Editor/arisesoft-winsyntax.html" >Arisesoft Winsyntax</a> 				
+				
+				</h3><img src="../../../../../components/com_mtree/img/star_00.png" width="14" height="14" hspace="1" class="star" alt="" /><img src="../../../../../components/com_mtree/img/star_00.png" width="14" height="14" hspace="1" class="star" alt="" /><img src="../../../../../components/com_mtree/img/star_00.png" width="14" height="14" hspace="1" class="star" alt="" /><img src="../../../../../components/com_mtree/img/star_00.png" width="14" height="14" hspace="1" class="star" alt="" /><img src="../../../../../components/com_mtree/img/star_00.png" width="14" height="14" hspace="1" class="star" alt="" /><p style="margin:0;"><p>
+<p>Arisesoft Winsyntax是一套只有400kb的免費軟體，專為PHP設計，具備語法提示、字體顏色顯示語法、多語言語法加亮顯示、自定義語法顯示、多文件介面等多種實用功能。</p>
+<p>適用平台: Windows; 原始碼授權類型:Freeware</p>
+<p>資料來源: <a href="https://www.parmaja.com/projects/LightPHPEdit/" target="_blank">https://www.parmaja.com/projects/LightPHPEdit/</a></p>
+</p></p></div>
+<div class="listing-summary">
+		<h3><a href="Debugger-Editor/rspe-real-simple-php-editor.html" >RSPE-Real Simple PHP Editor</a> 				
+				
+				</h3><img src="../../../../../components/com_mtree/img/star_00.png" width="14" height="14" hspace="1" class="star" alt="" /><img src="../../../../../components/com_mtree/img/star_00.png" width="14" height="14" hspace="1" class="star" alt="" /><img src="../../../../../components/com_mtree/img/star_00.png" width="14" height="14" hspace="1" class="star" alt="" /><img src="../../../../../components/com_mtree/img/star_00.png" width="14" height="14" hspace="1" class="star" alt="" /><img src="../../../../../components/com_mtree/img/star_00.png" width="14" height="14" hspace="1" class="star" alt="" /><p style="margin:0;"><p>
+<p>RSPE是一個開發和編輯PHP程式碼的簡易IDE。RSPE配備的數據庫包括一些預製的腳本、例子、教程和一些Snipits代碼。</p>
+<p>適用平台: Windows; 原始碼授權類型: GNU General Public License</p>
+<p>資料來源: <a href="https://sourceforge.net/projects/rspe/" target="_blank">https://sourceforge.net/projects/rspe/</a></p>
+</p></p></div>
+<div class="listing-summary">
+		<h3><a href="Debugger-Editor/html-kit.html" >HTML-Kit</a> 				
+				
+				</h3><img src="../../../../../components/com_mtree/img/star_00.png" width="14" height="14" hspace="1" class="star" alt="" /><img src="../../../../../components/com_mtree/img/star_00.png" width="14" height="14" hspace="1" class="star" alt="" /><img src="../../../../../components/com_mtree/img/star_00.png" width="14" height="14" hspace="1" class="star" alt="" /><img src="../../../../../components/com_mtree/img/star_00.png" width="14" height="14" hspace="1" class="star" alt="" /><img src="../../../../../components/com_mtree/img/star_00.png" width="14" height="14" hspace="1" class="star" alt="" /><p style="margin:0;"><p>
+<p>HTML-Kit讓你在一個簡單易用的環境裡編輯、格式化、校驗、預覽、發佈 HTML文件, 該軟體可以直接指出錯誤所在並可選擇自動更新錯誤.其他的特點還有支持拖放的全功能編輯器, 語法加亮等。</p>
+<p>適用平台: Windows; 原始碼授權類型: https://www.htmlkit.com/license/</p>
+<p>資料來源:<a href="https://www.onlinedown.net/soft/9735.htm" target="_blank">https://www.onlinedown.net/soft/9735.htm</a></p>
+</p></p></div>
+<div class="listing-summary">
+		<h3><a href="Debugger-Editor/scintilla.html" >Scintilla</a> 				
+				
+				</h3><img src="../../../../../components/com_mtree/img/star_00.png" width="14" height="14" hspace="1" class="star" alt="" /><img src="../../../../../components/com_mtree/img/star_00.png" width="14" height="14" hspace="1" class="star" alt="" /><img src="../../../../../components/com_mtree/img/star_00.png" width="14" height="14" hspace="1" class="star" alt="" /><img src="../../../../../components/com_mtree/img/star_00.png" width="14" height="14" hspace="1" class="star" alt="" /><img src="../../../../../components/com_mtree/img/star_00.png" width="14" height="14" hspace="1" class="star" alt="" /><p style="margin:0;"><p>
+<p>Scintilla是一個免費的code編輯器，它完全open source，並且提供一個license允許用戶自由地將它用在開源軟體或是商業軟體中。</p>
+<p>它是一個強大和穩定的源碼編輯器，我們能在普通的的文本編輯器中能看到的功能，Scintilla都完全能夠實現，而且，它還能夠提供很多編輯和除錯源碼時有用的特殊功能。包括語法高亮顯示，錯誤指示，code自動完成以及code提示等。而且在左邊的空白處(margin)，可以顯示除錯代碼中非常有用的顯示斷點以及顯示當前運行等功能。而且，自定義風格的功能比其他大部分編輯器都開放，它允許用戶自定義不同類型下的字體，是否粗體，是否斜體，前景色和背景色，支持大量的字體。給使用者極大的自由。</p>
+<p>適用平台: 跨平台; 原始碼授權類型: License for Scintilla and SciTE</p>
+<p>資料來源: <a href="https://baike.baidu.com/view/3434624.html?fromTaglist" target="_blank">https://baike.baidu.com/view/3434624.html?fromTaglist</a></p>
+</p></p></div>
+<div class="listing-summary">
+		<h3><a href="Debugger-Editor/fte.html" >FTE</a> 				
+				
+				</h3><img src="../../../../../components/com_mtree/img/star_00.png" width="14" height="14" hspace="1" class="star" alt="" /><img src="../../../../../components/com_mtree/img/star_00.png" width="14" height="14" hspace="1" class="star" alt="" /><img src="../../../../../components/com_mtree/img/star_00.png" width="14" height="14" hspace="1" class="star" alt="" /><img src="../../../../../components/com_mtree/img/star_00.png" width="14" height="14" hspace="1" class="star" alt="" /><img src="../../../../../components/com_mtree/img/star_00.png" width="14" height="14" hspace="1" class="star" alt="" /><p style="margin:0;"><p>
+<p>FTE是一款功能強大的編輯器。它支持標簽和非常強大的縮進功能。它可以讀取並編譯C語言(或其他語言，如果有編譯器)source code，並理解代碼中的函數，列出所有函數以方便編寫程式。若編譯發生錯誤，它還能解釋錯誤原因。FTE還包含語法高亮，它可以讀懂許多種編程語言(C、HTML、REXX、Makefile、Unix腳本、MAN頁面等等)。FTE甚至包含CVS功能，一個內置的版本控制系統，方便軟件開發的多人協作。總之FTE是一個編程功能豐富、可高度自定義的編輯器。</p>
+<p>適用平台: 跨平台; 原始碼授權類型: GNU GPL</p>
+<p>資料來源: <a href="https://ms-dos.cz.cc/show.php?id=303" target="_blank">https://ms-dos.cz.cc/show.php?id=303</a></p>
+</p></p></div>
+</div>
+<div class="totop" ><a class="rt-totop" href="Debugger-Editor.html#" style="outline: medium none;">↑ Top</a></div>
+
+
+
+
+		                            </div>
+									<div class="clear"></div>
+								</div>
+								<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+							</div>
+							</div>
+                                                    </div>
+                                            </div>
+                                <div class="rt-grid-3 rt-pull-9">
+                <div id="rt-sidebar-a">
+                                    <div class="square5">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<center><b><font color="#ff8000">1309</font>  項目  / <font color="#ff8000"> 227</font>  分類  </b></center>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		                <div class="square4">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-title"><h2 class="title">搜尋項目</h2></div>
+						<div class="clear"></div>
+		                						<div class="module-content">
+		                	<form action="https://www.openfoundry.org/tw/resourcecatalog/Program-Development/Programming-Languages/php/index.php" method="post">
+
+	<div class="searchsquare4">
+	<input type="text" id="mod_mt_search_searchword" name="searchword" maxlength="20" size="20" value="Search..."  onblur="if(this.value=='') this.value='Search...';" onfocus="if(this.value=='Search...') this.value='';" />
+		
+			<br /><input type="submit" value="Search" class="button" />
+	
+			<br /><a href="../../../advanced-search.html">Advanced Search</a>
+	
+	</div>
+	<input type="hidden" name="task" value="search" />
+	<input type="hidden" name="option" value="com_mtree" />
+</form>
+						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		                <div class="_menu">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<ul class="menu">
+<li><a href="../../../Enterprise.html">企業運算 <small>(173)</small></a></li><li><a href="../../../Embedded.html">嵌入式系統 <small>(299)</small></a></li><li><a href="../../../Program-Development.html">程式開發 <small>(344)</small></a></li><li><a href="../../../Security.html">資訊安全 <small>(194)</small></a></li><li><a href="../../../GIS.html">地理資訊系統 <small>(143)</small></a></li><li><a href="../../../Cloud-Computing.html">雲端運算 <small>(92)</small></a></li><li><a href="../../../Groups.html">相關組織 <small>(19)</small></a></li><li><a href="../../../General-Applications.html">一般應用 <small>(72)</small></a></li><li><a href="../../../Law-and-Licensing.html">法律授權 <small>(23)</small></a></li><li><a href="../../../open-data.html">Open Data <small>(0)</small></a></li><li><a href="../../../software-testing.html">Software Testing <small>(0)</small></a></li><li><a href="../../../code-quality.html">Code Quality <small>(0)</small></a></li></ul>
+						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-title"><h2 class="title">最近更新</h2></div>
+						<div class="clear"></div>
+		                						<div class="module-content">
+		                	<center>6 October 2014</center>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+        	
+                </div>
+            </div>
+
+                    <div class="clear"></div>
+                </div>
+            </div>
+																													</div>
+										<div id="rt-copyright">
+						<div class="rt-grid-12 rt-alpha rt-omega">
+                        <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<div id="desktop-mobile-version-switch"><span id="mobile-version" class="version-switch"><a href="Debugger-Editor.html#">行動版</a></span></div>
+自由軟體鑄造場 製作 最佳瀏覽狀態：IE7或Firefox2.0以上 (建議使用Firefox) ‧ 解析度1024*768 <br /> <strong>E-Mail</strong>：<a href="mailto:contact@openfoundry.org">contact@openfoundry.org</a> <strong>Address</strong>：台北市南港區研究院路2段128號 中央研究院資訊科學研究所 . <a href="../../../../../privacy-policy.html">隱私權條款</a>. <a href="../../../../../terms-of-use.html">使用條款</a><span style="position: relative; top: 8px; margin-top: -8px;"> <a href="../../../../../about/8101.html"><img src="../../../../../images/M_images/rss-feed-all.png" border="0" /></a></span>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+        	
+</div>
+						<div class="clear"></div>
+					</div>
+					<div class="rt-footer-bottom-wrap"><div class="rt-footer-bottom"><div class="rt-footer-bottom2"><div class="rt-footer-bottom3"></div></div></div></div>
+									</div></div></div>
+				<div class="rt-surround-bottom"><div class="rt-surround-bottom2"><div class="rt-surround-bottom3"></div></div></div>
+							</div>
+		</div>
+		<!--
+		<script id="aptureScript">
+						(function (){var a=document.createElement("script");a.defer="true";a.src="http://www.apture.com/js/apture.js?siteToken=vsJttrn";document.getElementsByTagName("head")[0].appendChild(a);})();
+     </script>
+-->
+
+<!-- Piwik -->
+<!-- 			<script type="text/javascript">
+			  var _paq = _paq || [];
+		  _paq.push(["trackPageView"]);
+		  _paq.push(["enableLinkTracking"]);
+
+		    (function() {
+			        var u=(("https:" == document.location.protocol) ? "https" : "https") + "://www.openfoundry.org/piwik/";
+				    _paq.push(["setTrackerUrl", u+"piwik.php"]);
+				    _paq.push(["setSiteId", "1"]);
+				        var d=document, g=d.createElement("script"), s=d.getElementsByTagName("script")[0]; g.type="text/javascript";
+				        g.defer=true; g.async=true; g.src=u+"piwik.js"; s.parentNode.insertBefore(g,s);
+					  })();
+		  </script> -->
+<!-- End Piwik Code -->
+	</body>
+</html>

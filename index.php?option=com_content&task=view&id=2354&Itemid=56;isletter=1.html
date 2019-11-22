@@ -1,0 +1,421 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="zh-tw" lang="zh-tw" >
+<head>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<link rel="shortcut icon" href="images/favicon.ico" />
+	  <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+  <meta name="robots" content="index, follow" />
+  <meta name="keywords" content="OSSFNL665" />
+  <meta name="title" content="Web Security 網站安全基礎篇（二）" />
+  <meta name="description" content="前言我們在前篇已經有介紹一些駭客的思維以及攻擊手法，接下來我們要介紹身為開發者的我們，要如何去確保自己的網站應用程式是安全無虞的。透過網路上 OWASP 組織提供的防護方法以及弱點介紹，我們可以很快的檢視自己的網站是否有安全弱點。以下我們會介紹 OWASP Top 10 十大網站安全弱點，以十項最常見的弱點來介紹網站的安全問題。Open Web Application Security" />
+  <meta name="generator" content="" />
+  <title>Web Security 網站安全基礎篇（二） - OpenFoundry</title>
+  <link href="favicon.ico" rel="shortcut icon" type="image/x-icon" />
+  <link rel="stylesheet" href="components/com_gantry/css/gantry.css" type="text/css" />
+  <link rel="stylesheet" href="components/com_gantry/css/grid-12.css" type="text/css" />
+  <link rel="stylesheet" href="components/com_gantry/css/joomla.css" type="text/css" />
+  <link rel="stylesheet" href="templates/rt_quantive_j15/css/joomla.css" type="text/css" />
+  <link rel="stylesheet" href="templates/rt_quantive_j15/css/style1.css" type="text/css" />
+  <link rel="stylesheet" href="templates/rt_quantive_j15/css/light-body.css" type="text/css" />
+  <link rel="stylesheet" href="templates/rt_quantive_j15/css/demo-styles.css" type="text/css" />
+  <link rel="stylesheet" href="templates/rt_quantive_j15/css/template.css" type="text/css" />
+  <link rel="stylesheet" href="templates/rt_quantive_j15/css/typography.css" type="text/css" />
+  <link rel="stylesheet" href="templates/rt_quantive_j15/css/fusionmenu.css" type="text/css" />
+  <style type="text/css">
+    <!--
+#rt-main-surround ul.menu li.active > a, #rt-main-surround ul.menu li.active > .separator, #rt-main-surround ul.menu li.active > .item, #rt-main-surround .square4 ul.menu li:hover > a, #rt-main-surround .square4 ul.menu li:hover > .item, #rt-main-surround .square4 ul.menu li:hover > .separator, .roktabs-links ul li.active span {color:#0088B5;}
+a, #rt-main-surround ul.menu a:hover, #rt-main-surround ul.menu .separator:hover, #rt-main-surround ul.menu .item:hover {color:#0088B5;}
+    -->
+  </style>
+  <script type="text/javascript" src="components/com_jcomments/js/jcomments-v2.1.js%3Fv=2"></script>
+  <script type="text/javascript" src="components/com_jcomments/libraries/joomlatune/ajax.js"></script>
+  <script type="text/javascript" src="media/system/js/mootools.js"></script>
+  <script type="text/javascript" src="media/system/js/caption.js"></script>
+  <script type="text/javascript" src="components/com_gantry/js/gantry-buildspans.js"></script>
+  <script type="text/javascript" src="components/com_gantry/js/gantry-inputs.js"></script>
+  <script type="text/javascript" src="templates/rt_quantive_j15/js/jquery.cookie.js"></script>
+  <script type="text/javascript" src="modules/mod_roknavmenu/themes/fusion/js/fusion.js"></script>
+  <script type="text/javascript" src="modules/mod_ofssologin/js/ofssologin.js"></script>
+  <script type="text/javascript">
+
+			window.addEvent('domready', function() {
+				var modules = ['rt-block'];
+				var header = ['h3','h2','h1'];
+				GantryBuildSpans(modules, header);
+			});
+		InputsExclusion.push('.content_vote','#rt-popup')
+		        window.addEvent('load', function() {
+					new Fusion('ul.menutop', {
+						pill: 0,
+						effect: 'slide and fade',
+						opacity: 1,
+						hideDelay: 500,
+						centered: 0,
+						tweakInitial: {'x': -2, 'y': 0},
+        				tweakSubsequent: {'x': 0, 'y': -14},
+						menuFx: {duration: 200, transition: Fx.Transitions.Sine.easeOut},
+						pillFx: {duration: 400, transition: Fx.Transitions.Back.easeOut}
+					});
+	            });
+  </script>
+<!-- <script type="text/javascript" src="/sso/javascripts/langsync.js"></script> -->
+<!-- <script src="/templates/rt_quantive_j15/js/ossf.js"></script> -->
+<script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-4136519-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
+</head>
+	<body  class="backgroundlevel-low backgroundstyle-style8 bodylevel-med bodystyle-light cssstyle-style1 logostyle-dark font-family-helvetica font-size-is-default menu-type-fusionmenu col12 ">
+		<div id="rt-main-background">
+			<div class="rt-container">
+																<div id="rt-header">
+					<div class="rt-grid-7 rt-alpha">
+    			<div class="rt-block">
+    	    	<a href="index.html" id="rt-logo"></a>
+    		</div>
+	    
+</div>
+<div class="rt-grid-5 rt-omega">
+                    <div class="square9">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<div class="ofssologin_square9"><a href="index.html">登入</a>&nbsp;&nbsp|&nbsp;&nbsp;<span><a href="en/component/content/2354%3Ftask=view.html" ><span lang="en" xml:lang="en">English</span></a></li></ul></span><!--Joom!fish V2.0.4 (Lightning)-->
+<!-- &copy; 2003-2009 Think Network, released under the GPL. -->
+<!-- More information: at http://www.joomfish.net -->
+<div class="ofssologin_search_square9">
+  <form id="of_search" action="https://www.openfoundry.org/of/openfoundry/search" method="get" onsubmit="of_search(); return false;">
+    <select id="of_search_type">
+      <option value="Projects"> 專案 </option>
+      <option value="Content"> 文章 </option>
+      <option value="People"> 人才 </option>
+    </select>
+    <input id="query" name="query" id="mod_search_searchword" maxlength="50" alt="search" class="inputbox" type="text" size="28" value="search..."  onblur="if(this.value=='') this.value='search...';" onfocus="if(this.value=='search...') this.value='';" />
+    <input type="hidden" name="commit" value="search" />
+  </form>
+</div></div>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		
+</div>
+					<div class="clear"></div>
+				</div>
+																<div id="rt-navigation"><div id="rt-navigation2"><div id="rt-navigation3">
+					
+<div class="nopill">
+	<ul class="menutop level1 " >
+						<li class="item1 root" >
+					<a class="orphan item bullet" href="index.html"  >
+				<span>
+			    				首頁				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item32 root" >
+					<a class="orphan item bullet" href="archived.html"  >
+				<span>
+			    				專案				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item186 root" >
+					<a class="orphan item bullet" href="tw/community.html"  >
+				<span>
+			    				Who&#039;s Who				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item4 root" >
+					<a class="orphan item bullet" href="tw/news.html"  >
+				<span>
+			    				新聞				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item5 root" >
+					<a class="orphan item bullet" href="tw/law-and-licensing.html"  >
+				<span>
+			    				法律源地				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item3 root" >
+					<a class="orphan item bullet" href="tw/activities.html"  >
+				<span>
+			    				活動				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item2 root" >
+					<a class="orphan item bullet" href="tw/resourcecatalog%3FName=Value.html"  >
+				<span>
+			    				資源表列				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item45 root" >
+					<a class="orphan item bullet" href="tw/about.html"  >
+				<span>
+			    				關於				   
+				</span>
+			</a>
+			
+			
+	</li>	
+				</ul>
+</div>
+
+				    <div class="clear"></div>
+				</div></div></div>
+								<div class="rt-surround"><div class="rt-surround2"><div class="rt-surround3">
+										<div id="rt-showcase-section">
+												<div id="rt-showcase">
+							<div class="rt-grid-12 rt-alpha rt-omega">
+    		<div class="clear"></div>
+		
+		
+                <div class="close-note">
+                    <div class="rt-block">
+               					<div class="module-content">
+                	<div style="font-size:medium; background-image:linear-gradient(120deg,#159957,#4298b2);color:white;padding:20px;margin:-10px -18px;">感謝您對「自由軟體鑄造場」的支持與愛護，十多年來「自由軟體鑄造場」受中央研究院支持，並在資訊科學研究所以及資訊科技創新研究中心執行，現已完成階段性的任務。 本網站預計持續維運至 2021年底，網站內容基本上不會再更動。<br />也紀念我們永遠的朋友 李士傑先生（Shih-Chieh Ilya Li）。</div>				</div>
+            </div>
+                </div>
+		
+</div>
+							<div class="clear"></div>
+						</div>
+																	</div>
+															<div id="rt-main-surround">
+												<div id="rt-breadcrumbs">
+								<div class="rt-breadcrumb-surround">
+		<a href="index.html" id="breadcrumbs-home"></a>
+		<span class="breadcrumbs pathway">
+<span class="no-link">電子報總覽</span></span>
+	</div>
+	
+							<div class="clear"></div>
+						</div>
+																							              <div id="rt-main" class="sa3-mb9">
+                <div class="rt-main-inner">
+                    <div class="rt-grid-9 rt-push-3">
+                                                <div class="rt-block">
+                            							<div class="square1">
+							<div class="rt-module-surround">
+								<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+								<div class="rt-module-inner">
+		                            <div id="rt-mainbody">
+		                                
+<div class="rt-joomla ">
+	<div class="rt-article">
+		
+				<div class="rt-headline"><h1 class="rt-article-title">Web Security 網站安全基礎篇（二）</h1>		</div>
+		<div class="clear"></div>
+		
+		
+		
+				<div class="rt-articleinfo">
+						<div class="rt-article-icons">
+								<a href="https://www.openfoundry.org/tw/component/content/2354-web-security-?tmpl=component&amp;print=1&amp;page=" title="列印" onclick="window.open(this.href,'win2','status=no,toolbar=no,scrollbars=yes,titlebar=no,menubar=no,resizable=yes,width=640,height=480,directories=no,location=no'); return false;" rel="nofollow"><span class="icon print"></span></a>																</div>
+			
+			<span class="rt-date-posted">
+						建立日期			2010-05-27 22:38						&nbsp;&nbsp;&nbsp;&nbsp;						最近更新在 2011-10-12 11:05						</span>
+
+						<span class="rt-author">
+				作者是 Allen Own			</span>
+				
+					</div>
+		
+		
+		<strong>前言</strong><br /><br />我們在前篇已經有介紹一些駭客的思維以及攻擊手法，接下來我們要介紹身為開發者的我們，要如何去確保自己的網站應用程式是安全無虞的。透過網路上 OWASP 組織提供的防護方法以及弱點介紹，我們可以很快的檢視自己的網站是否有安全弱點。以下我們會介紹 OWASP Top 10 十大網站安全弱點，以十項最常見的弱點來介紹網站的安全問題。<br /><br /><br /><strong>Open Web Application Security Project  開放網站應用程式安全計畫</strong><br /><br />OWASP 是一個開放社群的非營利組織，致力於改善網站應用程式的安全性。OWASP Top 10 揭露常見的網站應用程式弱點，以供軟體開發安全參考。 
+
+<p> </p>
+<p><a href="https://www.owasp.org/index.php/Top_10 (https://www.owasp.org/index.php/Top_10" target="_blank"><span style="text-decoration: underline;">OWASP Top 10</span></a><br /><br />通常我們會針對 OWASP Top 10 來進行基本的網站安全風險說明。目前 OWASP Top 10 釋出 2010 年版。十大風險如下：<br /><br />A1 – Injection（注入攻擊）<br />A2 – Cross Site Scripting (XSS)（跨站腳本攻擊）<br />A3 – Broken Authentication and Session Management（身分驗證功能缺失）<br />A4 – Insecure Direct Object References（不安全的物件參考）<br />A5 – Cross Site Request Forgery (CSRF)（跨站冒名請求）<br />A6 – Security Misconfiguration（安全性設定疏失）<br />A7 – Failure to Restrict URL Access（限制 URL 存取失敗）<br />A8 – Unvalidated Redirects and Forwards（未驗證的導向）<br />A9 – Insecure Cryptographic Storage（未加密的儲存設備） <br />A10 – Insufficient Transport Layer Protection（傳輸層保護不足）<br /><br />以下針對這十大風險做一個簡單的介紹。<br /><br /><span style="text-decoration: underline;">A1 – Injection（注入攻擊）</span><br /><br />網站應用程式執行來自外部包括資料庫在內的惡意指令，SQL Injection 與 Command Injection 等攻擊包括在內。 因為駭客必須猜測管理者所撰寫的方式，因此又稱「駭客的填空遊戲」。<br /><br />舉例來說，原本管理者設計的登入頁面資料庫語法如下：<br /><br />$str = "SELECT * FROM Users WHERE Username='“.$user."' and Password=‘”.$pass."'“;<br /><br />如果說 $user 以及 $pass 變數沒有做保護，駭客只要輸入「’ or ‘‘=’」字串，就會變成以下：<br /><br />$str = “SELECT * FROM Users WHERE Username='' or ''='' and Password= '' or ‘’=‘’”;<br /><br />如此一來，這個 SQL 語法就會規避驗證手續，直接顯示資料。<br /><br />簡述駭客攻擊流程：<br />1. 找出未保護變數，作為注入點<br />2. 猜測完整 Command 並嘗試插入<br />3. 推測欄位數、Table 名稱、SQL 版本等資訊<br />4. 完整插入完成攻擊程序<br /><br />防護建議：<br />● 使用 Prepared Statements，例如 Java PreparedStatement()，.NET SqlCommand(), OleDbCommand()，PHP PDO bindParam()<br />● 使用 Stored Procedures<br />● 嚴密的檢查所有輸入值<br />● 使用過濾字串函數過濾非法的字元，例如 mysql_real_escape_string、addslashes<br />● 控管錯誤訊息只有管理者可以閱讀<br />● 控管資料庫及網站使用者帳號權限為何<br /><br /><span style="text-decoration: underline;">A2 – Cross Site Scripting ( XSS )（跨站腳本攻擊）</span><br /><br />網站應用程式直接將來自使用者的執行請求送回瀏覽器執行，使得攻擊者可擷取使用者的 Cookie 或 Session 資料而能假冒直接登入為合法使用者。 <br /><br />此為目前受災最廣的攻擊。簡稱 XSS 攻擊。攻擊流程如下圖：<br /><br />1. 受害者登入一個網站<br />2. 從 Server 端取得 Cookie<br />3. 但是 Server 端上有著 XSS 攻擊，使受害者將 Cookie 回傳至 Bad Server<br />4. 攻擊者從自己架設的 Bad Server 上取得受害者 Cookie<br />5. 攻擊者取得控制使用受害者的身分<br /><br /><a href="images/100608/web&#32;security.png" target="_blank"><img src="images/100608/web&#32;security.png" border="0" hspace="5" vspace="5" width="601" height="457" align="absBottom" /></a><br /><br />防護建議：<br />● 檢查頁面輸入數值<br />● 輸出頁面做 Encoding 檢查<br />● 使用白名單機制過濾，而不單只是黑名單<br />● PHP 使用 htmlentities 過濾字串<br />● .NET 使用 Microsoft Anti-XSS Library<br />● <a href="https://www.owasp.org/index.php/XSS_(Cross_Site_Scripting)_Prevention_Cheat_Sheet" target="_blank">OWASP Cross Site Scripting Prevention Cheat Sheet</a><br />● <a href="https://ha.ckers.org/xss.html" target="_blank">各種 XSS 攻擊的 Pattern 參考</a><br /><br /><span style="text-decoration: underline;">A3 – Broken Authentication and Session Management（身分驗證功能缺失）</span><br /><br />網站應用程式中自行撰寫的身分驗證相關功能有缺陷。例如，登入時無加密、SESSION 無控管、Cookie 未保護、密碼強度過弱等等。<br /><br />例如： <br /><br />應用程式 SESSION Timeout 沒有設定。使用者在使用公用電腦登入後卻沒有登出，只是關閉視窗。攻擊者在經過一段時間之後使用同一台電腦，卻可以直接登入。<br /><br />網站並沒有使用 SSL / TLS 加密，使用者在使用一般網路或者無線網路時，被攻擊者使用 Sniffer 竊聽取得 User ID、密碼、SESSION ID 等，進一步登入該帳號。<br /><br />這些都是身分驗證功能缺失的例子。<br /><br />管理者必須做以下的檢查：<br />● 所有的密碼、 Session ID 、以及其他資訊都有透過加密傳輸嗎？<br />● 憑證都有經過加密或 hash 保護嗎？<br />● 驗證資訊能被猜測到或被其他弱點修改嗎<br />● Session ID 是否在 URL 中暴露出來？<br />● Session ID 是否有 Timeout 機制？<br /><br />防護建議：<br />● 使用完善的 COOKIE / SESSION 保護機制<br />● 不允許外部 SESSION<br />● 登入及修改資訊頁面使用 SSL 加密<br />● 設定完善的 Timeout 機制<br />● 驗證密碼強度及密碼更換機制<br /><br /><span style="text-decoration: underline;">A4 – Insecure Direct Object References（不安全的物件參考）</span><br /><br />攻擊者利用網站應用程式本身的檔案讀取功能任意存取檔案或重要資料。進一步利用這個弱點分析網站原始碼、系統帳號密碼檔等資訊，進而控制整台主機。<br /><br />例如：https://example/read.php?file=../../../../../../../c:\boot.ini。<br /><br />防護建議：<br />● 避免將私密物件直接暴露給使用者<br />● 驗證所有物件是否為正確物件<br />● 使用 Index / Hash 等方法，而非直接讀取檔案<br /><br /><span style="text-decoration: underline;">A5 – Cross Site Request Forgery (CSRF)（跨站冒名請求）</span><br /><br />已登入網站應用程式的合法使用者執行到惡意的 HTTP 指令，但網站卻當成合法需求處理，使得惡意指令被正常執行。<br /><br />舉例來說，攻擊者在網站內放置了 <img src="https://www.openfoundry.org/”https:/server.com/send.asp?to=...”" border="0" /> ，受害者讀取到此頁面之後，就會去 server.com 主機執行 send.asp 惡意行為。<br /><br />例如 Web 2.0 時代的社交網站等等，都是 CSRF 攻擊的天堂。<br /><br />防護建議：<br />● 確保網站內沒有任何可供 XSS 攻擊的弱點<br />● 在 Input 欄位加上亂數產生的驗證編碼<br />● 在能使用高權限的頁面，重新驗證使用者<br />● 禁止使用 GET 參數傳遞防止快速散佈<br />● 使用 Captcha 等技術驗證是否為人為操作<br /><br />或者參考  OWASP 所提供的 CSRF Solution<br />● <a href="https://www.owasp.org/index.php/CSRFTester" target="_blank">OWASP CSRFTester Project</a> <br />● <a href="https://www.owasp.org/index.php/Category:OWASP_CSRFGuard_Project" target="_blank">OWASP CSRFGuard Project</a> <br />● <a href="https://www.owasp.org/index.php/Cross-Site_Request_Forgery_(CSRF)_Prevention_Cheat_Sheet" target="_blank">OWASP CSRF Prevention Cheat Sheet</a> <br /><br /><span style="text-decoration: underline;">A6 – Security Misconfiguration（安全性設定疏失）</span><br /><br />系統的安全性取決於應用程式、伺服器、平台的設定。因此所有設定值必須確保安全，避免預設帳號、密碼、路徑等。甚至被 Google Hacking 直接取得攻擊弱點。<br /><br />防護建議： <br />● 軟體、作業系統是否都有更新到最新版本？是否都有上最新 Patch?<br />● 不需要的帳號、頁面、服務、連接埠是否都有關閉？<br />● 預設密碼是否都有更改？<br />● 安全設定是否都完備？<br />● 伺服器是否都有經過防火牆等設備保護？<br /><br />各種設備、系統的預設密碼，都可以在網路上找到一些整理資料。<br /><a href="https://www.phenoelit-us.org/dpl/dpl.html" target="_blank">https://www.phenoelit-us.org/dpl/dpl.html</a><br /><a href="https://www.routerpasswords.com/" target="_blank">https://www.routerpasswords.com/</a><br /><a href="https://www.defaultpassword.com/" target="_blank">https://www.defaultpassword.com/</a><br /><br /><br /><span style="text-decoration: underline;">A7 – Failure to Restrict URL Access（限制 URL 存取失敗）</span><br /><br />網頁因為沒有權限控制，使得攻擊者可透過網址直接存取能夠擁有權限或進階資訊的頁面。例如管理介面、修改資料頁面、個人機敏資訊頁面洩漏等等。<br /><br />舉例來說，<br />/admin<br />/backup<br />/logs<br />/phpmyadmin<br />/phpinfo.php<br />/manage<br />這些都是常見的路徑及檔案。攻擊者只要猜測到，就可以操弄主機。<br /><br />防護建議：<br />● HTTP Service 直接限制來源 IP<br />● 使用防火牆阻擋<br />● 密碼授權加密頁面<br />● 網站架構最佳化<br /><br /><span style="text-decoration: underline;">A8 – Unvalidated Redirects and Forwards（未驗證的導向）</span><br /><br />網頁應用程式經常將使用者 Forward 或 Redirect 至其他頁面或網站，沒有驗證的機制。攻擊者可將受害者導向至釣魚網站或惡意網站，甚至存取受限制的資源。<br /><br />例如： <br /><a href="https://example.cc/redir.jsp?url=evil.com" target="_blank">https://example.cc/redir.jsp?url=evil.com</a><br /><a href="https://example.cc/func.jsp?fwd=admin.jsp" target="_blank">https://example.cc/func.jsp?fwd=admin.jsp </a><br /><a href="https://g.msn.com/9SE/1?https://xxx.com" target="_blank">https://g.msn.com/9SE/1?https://xxx.com</a><br /><br />防護建議：<br />● 非必要時避免使用 Redirect 及 Forward<br />● 驗證導向位置及存取資源是合法的<br /><br /><span style="text-decoration: underline;">A9 – Insecure Cryptographic Storage（未加密的儲存設備） </span><br /><br />網站應用程式沒有對敏感性資料使用加密、使用較弱的加密演算法或將金鑰儲存於容易被取得之處。加密演算法是安全防護的最後一道防線，當駭客取得了帳號密碼，可以簡單的使用一些破解軟體甚至線上服務進行破解。例如 Cain & Abel，MD5 Reverse Lookup 等。<br /><br />防護建議：<br />● 使用現有公認安全的加密演算法<br />● 減少使用已有弱點的演算法，例如 MD5 / SHA-1，甚至更簡單的加密法<br />● 安全的保存私鑰<br /><br /><span style="text-decoration: underline;">A10 – Insufficient Transport Layer Protection（傳輸層保護不足）</span><br /><br />網頁應用程式未在傳輸機敏資訊時提供加密功能，或者是使用過期、無效的憑證，使加密不可信賴。<br /><br />例如：攻擊者竊聽無線網路，偷取使用者cookie；網站憑證無效，使用者誤入釣魚網站。<br /><br />防護建議：<br />● 盡可能的使用加密連線<br />● Cookie 使用 Secure Flag<br />● 確認加密憑證是有效並符合 domain 的<br />● 後端連線也使用加密通道傳輸<br />● <a href="https://www.owasp.org/index.php/Transport_Layer_Protection_Cheat_Sheet" target="_blank">https://www.owasp.org/index.php/Transport_Layer_Protection_Cheat_Sheet</a> <br /><br />Cookie Secure Flag 設定：<br />● PHP setcookie ("TestCookie", "", time() - 3600, “/", ".example.com", 1); <br />● JSP cookie.setSecure(true);<br />● ASP.NET cookie.Secure = True;<br /><br /><strong>小結</strong><br /><br />以上 OWASP Top 10 包含了大部分常見的網站安全弱點，但並不是只有這些。管理者必須時時注意最新的資安消息，並且對自己的主機定時進行更新，檢查系統記錄檔，絕不可有僥倖之心。如此一來，才能確保主機處於安全的狀態。<br /><br /><br /><strong>附錄</strong><br /><br />以下附上常見的弱點資料庫以及網站淪陷資料庫，管理者可以定期瀏覽最新的資訊安全消息，並且檢查自己的網站有沒有在淪陷資料庫榜上有名。<br /><br />弱點資料庫<br /><a href="https://cve.mitre.org/" target="_blank">CVE - Common Vulnerabilities and Exposures (CVE) </a><br /><a href="https://www.securityfocus.com/bid" target="_blank">SecurityFocus</a> <br /><a href="https://nvd.nist.gov/" target="_blank">National Vulnerability Database</a> <br /><a href="https://www.vupen.com/" target="_blank">VUPEN Security</a><br /><br />網站淪陷資料庫<br /><a href="https://www.itis.tw/compromised" target="_blank">TW 網站淪陷資料庫</a><br /><a href="https://www.zone-h.org/archive" target="_blank">Zone-H </a><br /><a href="https://www.xssed.com/archive" target="_blank"></a> <br /><br />◎ 作者簡介<br /><br />翁浩正 ( Allen Own )<br />網駭科技技術顧問，資安團隊 NISRA 創辦人，多年網路管理、資訊安全、駭客攻防技術經驗，自覺什麼都沒有，只有滿腔熱血。<br /><br /> * <a href="https://
+ <script language='JavaScript' type='text/javascript'>
+ <!--
+ var prefix = 'm&#97;&#105;lt&#111;:';
+ var suffix = '';
+ var attribs = '';
+ var path = 'hr' + 'ef' + '=';
+ var addy21651 = '&#97;ll&#101;n&#111;wn' + '&#64;';
+ addy21651 = addy21651 + 'gm&#97;&#105;l' + '&#46;' + 'c&#111;m';
+ document.write( '<a ' + path + '\'' + prefix + addy21651 + suffix + '\'' + attribs + '>' );
+ document.write( addy21651 );
+ document.write( '<\/a>' );
+ //-->
+ </script> <script language='JavaScript' type='text/javascript'>
+ <!--
+ document.write( '<span style=\'display: none;\'>' );
+ //-->
+ </script>這個 E-mail 地址已經被防止灌水惡意程式保護，您需要啟用 Java Script 才能觀看
+ <script language='JavaScript' type='text/javascript'>
+ <!--
+ document.write( '</' );
+ document.write( 'span>' );
+ //-->
+ </script>" target="_blank">Mail</a><br /> * <a href="https://allenown.blogspot.com" target="_blank">Blog</a><br /> * <a href="https://twitter.com/allenown" target="_blank">Twitter</a><br /> * <a href="https://www.plurk.com/allenown" target="_blank">Plurk</a></p>
+			<!-- Show relate article -->
+		<br><br><h4>您也許有興趣閱讀以下文章:</h4><ul><li><a href='tech-column/2346.html'>Web Security 網站安全基礎篇（一）</a> - <span class='date-posted'>2010-05-21</span></li></ul>		<!-- end -->
+		<div class="article_note">
+		<!-- Add tags use metakey, and show OSSF Newsletter tag: OSSFNL+NUM-->
+		<br><br> <hr style='border: 1px dashed #D2DADB;'><b>自由軟體鑄造場電子報&nbsp;:</b>&nbsp;<a href='previous-issue%3Ftask=view&amp;id=665.html'>第 151 期 試算表軟體的另一種選擇 - Gnumeric</a><br>				<!-- End -->
+					<br>
+					<b>分類: </b><a href="tw/tech-column.html">				技術專欄					</a>				</div>
+			 <!-- AddThis Button BEGIN ID 3001 is the front page article -->
+     			<br><br>
+       <div class="addthis_toolbox addthis_default_style addthis_32x32_style">
+       <a class="addthis_button_preferred_1"></a>
+       <a class="addthis_button_preferred_2"></a>
+       <a class="addthis_button_preferred_3"></a>
+       <a class="addthis_button_preferred_4"></a>
+       <a class="addthis_button_compact"></a>
+       <a class="addthis_counter addthis_bubble_style"></a>
+       </div>
+       <script type="text/javascript">var addthis_config = {"data_track_clickback":true};</script>
+       <script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js#pubid=openfoundry"></script>
+       <!-- AddThis Button END -->
+     <br>
+		<div class="totop" ><a class="rt-totop" href="index.php%3Foption=com_content&amp;task=view&amp;id=2354&amp;Itemid=56%3Bisletter=1.html#" style="outline: medium none;">↑ Top</a></div>
+            <!-- AddThis Button END -->
+
+			</div>
+</div>
+
+		                            </div>
+									<div class="clear"></div>
+								</div>
+								<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+							</div>
+							</div>
+                                                    </div>
+                                            </div>
+                                <div class="rt-grid-3 rt-pull-9">
+                <div id="rt-sidebar-a">
+                                    <div class="square4">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<ul class="menu"><li id="current" class="active item56"><a href="tw/previous-issue.html"><span>電子報總覽</span></a></li><li class="item55"><a href="tw/about-newsletter.html"><span>關於本報</span></a></li></ul>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<ul class="menu"><li class="item115"><a href="tw/foss-news.html"><span>源碼新聞</span></a></li><li class="item141"><a href="tw/case-job.html"><span>接案 / 工作</span></a></li></ul>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+        	                <div class="square1">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-title"><h2 class="title">專欄總覽</h2></div>
+						<div class="clear"></div>
+		                						<div class="module-content">
+		                	<ul class="menu"><li class="item37"><a href="tw/tech-column.html"><span>技術專欄</span></a></li><li class="item40"><a href="tw/foss-programs.html"><span>源碼秘技</span></a></li><li class="item35"><a href="tw/legal-article-.html"><span>法律專欄</span></a></li><li class="item154"><a href="tw/foss-forum.html"><span>自由專欄</span></a></li><li class="item162"><a href="tw/enterprise-application.html"><span>企業應用</span></a></li><li class="item44"><a href="tw/foss-projects.html"><span>源碼專案</span></a></li></ul>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		                <div class="square1">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<p style="text-align: center;"><a href="news%3Fformat=feed&amp;type=rss" target="_black"><img src="images/M_images/news-rss-feed.png" border="0" /></a><br /><a href="https://www.openfoundry.org/rss-feed/Newsletter" target="_black"><img src="images/M_images/newsletter-rss-feed.png" border="0" /></a></p>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		
+                </div>
+            </div>
+
+                    <div class="clear"></div>
+                </div>
+            </div>
+																													</div>
+										<div id="rt-copyright">
+						<div class="rt-grid-12 rt-alpha rt-omega">
+                        <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<div id="desktop-mobile-version-switch"><span id="mobile-version" class="version-switch"><a href="index.php%3Foption=com_content&amp;task=view&amp;id=2354&amp;Itemid=56%3Bisletter=1.html#">行動版</a></span></div>
+自由軟體鑄造場 製作 最佳瀏覽狀態：IE7或Firefox2.0以上 (建議使用Firefox) ‧ 解析度1024*768 <br /> <strong>E-Mail</strong>：<a href="mailto:contact@openfoundry.org">contact@openfoundry.org</a> <strong>Address</strong>：台北市南港區研究院路2段128號 中央研究院資訊科學研究所 . <a href="privacy-policy.html">隱私權條款</a>. <a href="terms-of-use.html">使用條款</a><span style="position: relative; top: 8px; margin-top: -8px;"> <a href="about/8101.html"><img src="images/M_images/rss-feed-all.png" border="0" /></a></span>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+        	
+</div>
+						<div class="clear"></div>
+					</div>
+					<div class="rt-footer-bottom-wrap"><div class="rt-footer-bottom"><div class="rt-footer-bottom2"><div class="rt-footer-bottom3"></div></div></div></div>
+									</div></div></div>
+				<div class="rt-surround-bottom"><div class="rt-surround-bottom2"><div class="rt-surround-bottom3"></div></div></div>
+							</div>
+		</div>
+		<!--
+		<script id="aptureScript">
+						(function (){var a=document.createElement("script");a.defer="true";a.src="http://www.apture.com/js/apture.js?siteToken=vsJttrn";document.getElementsByTagName("head")[0].appendChild(a);})();
+     </script>
+-->
+
+<!-- Piwik -->
+<!-- 			<script type="text/javascript">
+			  var _paq = _paq || [];
+		  _paq.push(["trackPageView"]);
+		  _paq.push(["enableLinkTracking"]);
+
+		    (function() {
+			        var u=(("https:" == document.location.protocol) ? "https" : "https") + "://www.openfoundry.org/piwik/";
+				    _paq.push(["setTrackerUrl", u+"piwik.php"]);
+				    _paq.push(["setSiteId", "1"]);
+				        var d=document, g=d.createElement("script"), s=d.getElementsByTagName("script")[0]; g.type="text/javascript";
+				        g.defer=true; g.async=true; g.src=u+"piwik.js"; s.parentNode.insertBefore(g,s);
+					  })();
+		  </script> -->
+<!-- End Piwik Code -->
+	</body>
+</html>

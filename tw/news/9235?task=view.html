@@ -1,0 +1,471 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="zh-tw" lang="zh-tw" >
+<head>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<link rel="shortcut icon" href="../../images/favicon.ico" />
+	  <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+  <meta name="robots" content="index, follow" />
+  <meta name="keywords" content="OSSFNL854" />
+  <meta name="title" content="將封閉式軟體遷移到開源的 10 個步驟" />
+  <meta name="description" content="◎本文翻譯自 opensource.com ，原作者為 Al exander Todorov： https://opensource.com/business/14/5/10-ste ps-migrate-closed-to-open-source Difio 是一個 Django 的基本應用程式，其對軟體包 (packages)" />
+  <meta name="generator" content="" />
+  <title>將封閉式軟體遷移到開源的 10 個步驟 - OpenFoundry</title>
+  <link href="../../favicon.ico" rel="shortcut icon" type="image/x-icon" />
+  <link rel="stylesheet" href="../../components/com_gantry/css/gantry.css" type="text/css" />
+  <link rel="stylesheet" href="../../components/com_gantry/css/grid-12.css" type="text/css" />
+  <link rel="stylesheet" href="../../components/com_gantry/css/joomla.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/joomla.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/style1.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/light-body.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/demo-styles.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/template.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/typography.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/fusionmenu.css" type="text/css" />
+  <style type="text/css">
+    <!--
+#rt-main-surround ul.menu li.active > a, #rt-main-surround ul.menu li.active > .separator, #rt-main-surround ul.menu li.active > .item, #rt-main-surround .square4 ul.menu li:hover > a, #rt-main-surround .square4 ul.menu li:hover > .item, #rt-main-surround .square4 ul.menu li:hover > .separator, .roktabs-links ul li.active span {color:#0088B5;}
+a, #rt-main-surround ul.menu a:hover, #rt-main-surround ul.menu .separator:hover, #rt-main-surround ul.menu .item:hover {color:#0088B5;}
+    -->
+  </style>
+  <script type="text/javascript" src="../../components/com_jcomments/js/jcomments-v2.1.js%3Fv=2"></script>
+  <script type="text/javascript" src="../../components/com_jcomments/libraries/joomlatune/ajax.js"></script>
+  <script type="text/javascript" src="../../media/system/js/mootools.js"></script>
+  <script type="text/javascript" src="../../media/system/js/caption.js"></script>
+  <script type="text/javascript" src="../../components/com_gantry/js/gantry-buildspans.js"></script>
+  <script type="text/javascript" src="../../components/com_gantry/js/gantry-inputs.js"></script>
+  <script type="text/javascript" src="../../templates/rt_quantive_j15/js/jquery.cookie.js"></script>
+  <script type="text/javascript" src="../../modules/mod_roknavmenu/themes/fusion/js/fusion.js"></script>
+  <script type="text/javascript" src="../../modules/mod_ofssologin/js/ofssologin.js"></script>
+  <script type="text/javascript">
+
+			window.addEvent('domready', function() {
+				var modules = ['rt-block'];
+				var header = ['h3','h2','h1'];
+				GantryBuildSpans(modules, header);
+			});
+		InputsExclusion.push('.content_vote','#rt-popup')
+		        window.addEvent('load', function() {
+					new Fusion('ul.menutop', {
+						pill: 0,
+						effect: 'slide and fade',
+						opacity: 1,
+						hideDelay: 500,
+						centered: 0,
+						tweakInitial: {'x': -2, 'y': 0},
+        				tweakSubsequent: {'x': 0, 'y': -14},
+						menuFx: {duration: 200, transition: Fx.Transitions.Sine.easeOut},
+						pillFx: {duration: 400, transition: Fx.Transitions.Back.easeOut}
+					});
+	            });
+  </script>
+<!-- <script type="text/javascript" src="/sso/javascripts/langsync.js"></script> -->
+<!-- <script src="/templates/rt_quantive_j15/js/ossf.js"></script> -->
+<script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-4136519-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
+</head>
+	<body  class="backgroundlevel-low backgroundstyle-style8 bodylevel-med bodystyle-light cssstyle-style1 logostyle-dark font-family-helvetica font-size-is-default menu-type-fusionmenu col12 ">
+		<div id="rt-main-background">
+			<div class="rt-container">
+																<div id="rt-header">
+					<div class="rt-grid-7 rt-alpha">
+    			<div class="rt-block">
+    	    	<a href="../../index.html" id="rt-logo"></a>
+    		</div>
+	    
+</div>
+<div class="rt-grid-5 rt-omega">
+                    <div class="square9">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<div class="ofssologin_square9"><a href="../../index.html">登入</a>&nbsp;&nbsp|&nbsp;&nbsp;<span><a href="https://www.openfoundry.org/en/news/9235?task=view" ><span lang="en" xml:lang="en">English</span></a></li></ul></span><!--Joom!fish V2.0.4 (Lightning)-->
+<!-- &copy; 2003-2009 Think Network, released under the GPL. -->
+<!-- More information: at http://www.joomfish.net -->
+<div class="ofssologin_search_square9">
+  <form id="of_search" action="https://www.openfoundry.org/of/openfoundry/search" method="get" onsubmit="of_search(); return false;">
+    <select id="of_search_type">
+      <option value="Projects"> 專案 </option>
+      <option value="Content"> 文章 </option>
+      <option value="People"> 人才 </option>
+    </select>
+    <input id="query" name="query" id="mod_search_searchword" maxlength="50" alt="search" class="inputbox" type="text" size="28" value="search..."  onblur="if(this.value=='') this.value='search...';" onfocus="if(this.value=='search...') this.value='';" />
+    <input type="hidden" name="commit" value="search" />
+  </form>
+</div></div>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		
+</div>
+					<div class="clear"></div>
+				</div>
+																<div id="rt-navigation"><div id="rt-navigation2"><div id="rt-navigation3">
+					
+<div class="nopill">
+	<ul class="menutop level1 " >
+						<li class="item1 root" >
+					<a class="orphan item bullet" href="../../index.html"  >
+				<span>
+			    				首頁				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item32 root" >
+					<a class="orphan item bullet" href="../../archived.html"  >
+				<span>
+			    				專案				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item186 root" >
+					<a class="orphan item bullet" href="../community.html"  >
+				<span>
+			    				Who&#039;s Who				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item4 root" >
+					<a class="orphan item bullet" href="../news.html"  >
+				<span>
+			    				新聞				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item5 root" >
+					<a class="orphan item bullet" href="../law-and-licensing.html"  >
+				<span>
+			    				法律源地				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item3 root" >
+					<a class="orphan item bullet" href="../activities.html"  >
+				<span>
+			    				活動				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item2 root" >
+					<a class="orphan item bullet" href="../resourcecatalog%3FName=Value.html"  >
+				<span>
+			    				資源表列				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item45 root" >
+					<a class="orphan item bullet" href="../about.html"  >
+				<span>
+			    				關於				   
+				</span>
+			</a>
+			
+			
+	</li>	
+				</ul>
+</div>
+
+				    <div class="clear"></div>
+				</div></div></div>
+								<div class="rt-surround"><div class="rt-surround2"><div class="rt-surround3">
+										<div id="rt-showcase-section">
+												<div id="rt-showcase">
+							<div class="rt-grid-12 rt-alpha rt-omega">
+    		<div class="clear"></div>
+		
+		
+                <div class="close-note">
+                    <div class="rt-block">
+               					<div class="module-content">
+                	<div style="font-size:medium; background-image:linear-gradient(120deg,#159957,#4298b2);color:white;padding:20px;margin:-10px -18px;">感謝您對「自由軟體鑄造場」的支持與愛護，十多年來「自由軟體鑄造場」受中央研究院支持，並在資訊科學研究所以及資訊科技創新研究中心執行，現已完成階段性的任務。 本網站預計持續維運至 2021年底，網站內容基本上不會再更動。<br />也紀念我們永遠的朋友 李士傑先生（Shih-Chieh Ilya Li）。</div>				</div>
+            </div>
+                </div>
+		
+</div>
+							<div class="clear"></div>
+						</div>
+																	</div>
+															<div id="rt-main-surround">
+												<div id="rt-breadcrumbs">
+								<div class="rt-breadcrumb-surround">
+		<a href="../../index.html" id="breadcrumbs-home"></a>
+		<span class="breadcrumbs pathway">
+<span class="no-link">新聞</span></span>
+	</div>
+	
+							<div class="clear"></div>
+						</div>
+																							              <div id="rt-main" class="sa3-mb9">
+                <div class="rt-main-inner">
+                    <div class="rt-grid-9 rt-push-3">
+                                                <div class="rt-block">
+                            							<div class="square1">
+							<div class="rt-module-surround">
+								<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+								<div class="rt-module-inner">
+		                            <div id="rt-mainbody">
+		                                
+<div class="rt-joomla ">
+	<div class="rt-article">
+		
+				<div class="rt-headline"><h1 class="rt-article-title">將封閉式軟體遷移到開源的 10 個步驟</h1>		</div>
+		<div class="clear"></div>
+		
+		
+		
+				<div class="rt-articleinfo">
+						<div class="rt-article-icons">
+								<a href="https://www.openfoundry.org/tw/news/9235-10-steps-to-migrate-your-closed-software-to-open-source?tmpl=component&amp;print=1&amp;page=" title="列印" onclick="window.open(this.href,'win2','status=no,toolbar=no,scrollbars=yes,titlebar=no,menubar=no,resizable=yes,width=640,height=480,directories=no,location=no'); return false;" rel="nofollow"><span class="icon print"></span></a>																</div>
+			
+			<span class="rt-date-posted">
+						建立日期			2014-05-27 13:54						&nbsp;&nbsp;&nbsp;&nbsp;						最近更新在 2014-05-29 11:11						</span>
+
+						<span class="rt-author">
+				作者是 Circle／翻譯			</span>
+				
+					</div>
+		
+		
+		<p>◎本文翻譯自 opensource.com ，原作者為 Alexander Todorov：
+<a href="https://opensource.com/business/14/5/10-steps-migrate-closed-to-open-source">https://opensource.com/business/14/5/10-steps-migrate-closed-to-open-source</a></p>
+<p>Difio 是一個 Django 的基本應用程式，其對軟體包 (packages) 保持追蹤，當軟體包產生改變時它會告訴你。它提供了多變化的分析，讓你在何時或如何升級上可以做出明智的決定。Difio 是個封閉的軟體，然而我決定將它遷移至開源，以便於在內部部署以及吸引更多的社群參與這個項目。</p>
+<br />
+<ol />
+<li>
+<p>簡化： <p>
+任何一個已經存在好幾年的應用程式，將不再使用其累積的代碼和功能。為了得到一個更乾淨、更簡單的共享代碼，刪除掉可以安全刪除的一切。開源 Difio 從移除約 20％ 現有代碼庫開始進行。</p>
+<p>移除的部份包括了：</p>
+<ul>
+<li>未使用和過時的設置</li>
+<li>Django 的應用程式</li>
+<li>靜態文件和模板</li>
+<li>模型類別</li>
+<li>傳統的 URL</li>
+<li>不適用的功能</li>
+<li>其它 Python 公用程式</li>
+</ul>
+<p>對於額外的依據和一次性的代碼，例如，我曾在一些模板和純 HTML 中使用 markdown 。也有一些只使用在一兩個地方的自定義的模板標籤。而所有的這些都已經刪除，模板之間更為相容一致。</p>
+<p>當做快速的原型設計時，確實的編碼路徑、價值觀、網址…等是照例必須要有的。在某些時候，一個封閉源碼的應用程式除了繼承其部署環境的物件也繼承了這些需要進行清理的事務。我已使用自定義的模板標籤以及將其設置在需要的地方。</p>
+</li>
+<li>
+<p>創建自含式的模組：　<P />
+換句話說，重新組織文件的結構，不只變得簡單也使事情更自然了一些。讓模塊自成一體並且各自獨立，將使它更容易在之後分離。</p>
+<p>Difio 的 Web 後端部署在 OpenShift，它對模板和靜態文件使用了不同的目錄佈局。為了使他們能夠正確加載，我必須移動文件和更新 Django 的設置。這也使我重新思考從原始的靜態文件移至 CDN 後台的方式。</p>
+</li>
+<li>
+<p>來自外部的獨立內部：　<p>
+在你的應用程式裡存在一些內部代碼來為你提供更多的訊息，這是很自然的事。例如，使用追蹤和其他度量標準及佈告排列次序等。在基於網路服務的情況下，這些通常與核心功能整合在一起，但需要獨立分開。</p>
+<p>這也是一個很好的機會來決定什麼該捨棄而什麼該留下。例如，Difio 不出貨的測試案例，因為他們需要在 CI 環境裡做更多需要乾淨分離的工作，並同時運行整個 Web 服務和反對獨立的應用程序。</p>
+<p>Difio包含五個不同的模塊：</p>
+<ul>
+<li>Difio ／（核心用戶體驗）</li>
+<li>一個概況子系統 (a profile sub-system)</li>
+<li>佈告排列次序的模塊</li>
+<li>擴展管理界面</li>
+<li>與部署相關的模塊（主要是設置）</li>
+</ul>
+<p>將這些正確地分離並相互隔離，以去除外部和內部的依賴關係。而目前 Difio/ 依賴於幾個配置文件的 API，為其提供正確的默認值。這個步驟也可以幫助你從核心用戶體驗方面來分割操作物件（如定制的電子郵件模板）。</p>
+</li>
+<li>
+<p>代碼的重構：　<p>
+這不需要多說，重構和測試應該是一件要持續努力的事。然而，到現在為止，你可能已經對整個（或大部分）現有的資源代碼做了快速的審查，並已經注意到很多東西需要改進。而現在有機會這麼做。</p>
+<p>這也是一個很好的機會來創建一個簡短的路線圖，並將錯誤修正預先加載到你的公共問題追蹤裡。當找不到新的貢獻者時，它會幫助你的新生項目展示活動並在創業初期做持續的改進。</p>
+<p>隨著 Difio，我主要是在內部重構了一些方法，讓他們適應新的應用程式結構。而外部的方法在留下後修復它，因為它們還是不錯的，並不需要重構。</p>
+</li>
+<li>
+<p>法律工作：　<p>
+根據使用軟體的規模和複雜性以及你的組織，遷移到開源可能是相當耗時的。一切應該被考慮在這一步：從選擇合適的許可證、品牌、命名個別作者、做法律審查，以及尋找潛在的專利侵權代碼。</p>
+<p>對於 Difio，這簡單得多。我選擇了 Apache 2.0 許可，所有資源文件的表頭許可證，並且妥善地將著作權和版權歸因，因此，我在互聯網上找到了外部代碼（它在大部分時間裡並沒有指定任何特定條款）。</p>
+</li>
+<li>
+<p>更新列表和外部依賴：　<p>
+作為一名軟體開發人員，你必須採取額外的步驟來升級到最新版本，並確保你的軟體能與他們正常運作（或至少要相當不錯）。沒有人想與舊的依存關係運行代碼，很多時候，甚至是不可能運行代碼。</p>
+<p>也要提供一個依賴列表（例如 requirements.txt 文件），讓人們知道如何在運行軟體之前安裝它們。幸運的是，Difio 是一個基於 Django 的應用程序，只有一些升級上的小問題和中等的外部依賴。</p>
+</li>
+<li>
+<p>提供文檔和範例：　<p>
+對任何新人來說，如果在項目中有個文檔，將會是個很好的附加檔案。畢竟這是個開放的東西，也希望吸引到社群。所以，書面文檔和範例是必須要有的。</p>
+<p>對於 Difio，我寫了一個關於設置 README 的詳細文件，因為應用程式有多個子系統（消息傳遞層、cron 的調度等），其可以在無數的方法中被構建。我建立的第二個文件，是一個內容管理指南，因為不是一切的應用程序都是自動的，有時也需要手動調整。這兩個文件總結了 Difio 最重要的設計和部署功能，但你可能需要為你的項目編寫更多的其他文件。</p>
+</li>
+<li>
+<p>建立一個公共代碼庫：　<p>
+時間會建立一個公共代碼庫並將軟體推至上游。</p>
+<p>對於 Difio，我決定複製其先前位置的整個 Difio/ 目錄，並做一個初步的提交。雖然這有個缺點，所有以前的歷史紀錄都將不能再使用的，但我已經決定要走這條路，為了避免洩露秘密密鑰和密碼，那些在確實編碼的過程中，代碼的某個點。</p>
+<p>在產生的過程中，Difio/ 目錄被 git 的子模塊所取代，以便發布／部署週期能更為快速，而這主要是因為我在雲端環境中使用 git 的部署機制。</p>
+<p>從現在開始，你做的一切資源應公開地進行。</p>
+</li>
+<li>
+<p>在一個新的環境測試單機部署：　<p>
+直到最近，你可能一直在你現有的本機副本內努力著，並繼承所有來自專有版本應用程序裡的各種因素，像是依賴性、環境配置…等等。如果在一個（或多個）新的環境中，從外部用戶的觀點進行測試，將能幫助你進一步地細化你的文檔以及清理遺留的問題。</p>
+<p>在測試 Difio 時，我發現了幾個缺失和過多的要求，例如缺少和不恰當的設置、一些錯誤和不完整的文檔。</p>
+<p>將這些完成後，重新開始、再次重複，直到每個步驟都是正確的解釋並能在機箱中適用！這將確保未來的貢獻者和用戶至少能夠安裝你的軟體。</p>
+</li>
+<li />
+<p>將它宣布：　<p>
+這是最後一步！寫下你的新聞稿，並向世界公佈新的軟體。恭喜你，現在你已是開源的了！</p>
+			<!-- Show relate article -->
+				<!-- end -->
+		<div class="article_note">
+		<!-- Add tags use metakey, and show OSSF Newsletter tag: OSSFNL+NUM-->
+		<br><br> <hr style='border: 1px dashed #D2DADB;'><b>自由軟體鑄造場電子報&nbsp;:</b>&nbsp;<a href='../../previous-issue%3Ftask=view&amp;id=854.html'>第 242 期 CSS3 動畫基礎</a><br>				<!-- End -->
+					<br>
+					<b>分類: </b><a href="../foss-forum.html">				自由專欄					</a>				</div>
+			 <!-- AddThis Button BEGIN ID 3001 is the front page article -->
+     			<br><br>
+       <div class="addthis_toolbox addthis_default_style addthis_32x32_style">
+       <a class="addthis_button_preferred_1"></a>
+       <a class="addthis_button_preferred_2"></a>
+       <a class="addthis_button_preferred_3"></a>
+       <a class="addthis_button_preferred_4"></a>
+       <a class="addthis_button_compact"></a>
+       <a class="addthis_counter addthis_bubble_style"></a>
+       </div>
+       <script type="text/javascript">var addthis_config = {"data_track_clickback":true};</script>
+       <script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js#pubid=openfoundry"></script>
+       <!-- AddThis Button END -->
+     <br>
+		<div class="totop" ><a class="rt-totop" href="9235%3Ftask=view.html#" style="outline: medium none;">↑ Top</a></div>
+            <!-- AddThis Button END -->
+
+			</div>
+</div>
+
+		                            </div>
+									<div class="clear"></div>
+								</div>
+								<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+							</div>
+							</div>
+                                                    </div>
+                                            </div>
+                                <div class="rt-grid-3 rt-pull-9">
+                <div id="rt-sidebar-a">
+                                    <div class="square4">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<ul class="menu"><li class="item56"><a href="../previous-issue.html"><span>電子報總覽</span></a></li><li class="item55"><a href="../about-newsletter.html"><span>關於本報</span></a></li></ul>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<ul class="menu"><li class="item115"><a href="../foss-news.html"><span>源碼新聞</span></a></li><li class="item141"><a href="../case-job.html"><span>接案 / 工作</span></a></li></ul>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+        	                <div class="square1">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-title"><h2 class="title">專欄總覽</h2></div>
+						<div class="clear"></div>
+		                						<div class="module-content">
+		                	<ul class="menu"><li class="item37"><a href="../tech-column.html"><span>技術專欄</span></a></li><li class="item40"><a href="../foss-programs.html"><span>源碼秘技</span></a></li><li class="item35"><a href="../legal-article-.html"><span>法律專欄</span></a></li><li class="item154"><a href="../foss-forum.html"><span>自由專欄</span></a></li><li class="item162"><a href="../enterprise-application.html"><span>企業應用</span></a></li><li class="item44"><a href="../foss-projects.html"><span>源碼專案</span></a></li></ul>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		                <div class="square1">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<p style="text-align: center;"><a href="../../news%3Fformat=feed&amp;type=rss" target="_black"><img src="../../images/M_images/news-rss-feed.png" border="0" /></a><br /><a href="https://www.openfoundry.org/rss-feed/Newsletter" target="_black"><img src="../../images/M_images/newsletter-rss-feed.png" border="0" /></a></p>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		
+                </div>
+            </div>
+
+                    <div class="clear"></div>
+                </div>
+            </div>
+																													</div>
+										<div id="rt-copyright">
+						<div class="rt-grid-12 rt-alpha rt-omega">
+                        <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<div id="desktop-mobile-version-switch"><span id="mobile-version" class="version-switch"><a href="9235%3Ftask=view.html#">行動版</a></span></div>
+自由軟體鑄造場 製作 最佳瀏覽狀態：IE7或Firefox2.0以上 (建議使用Firefox) ‧ 解析度1024*768 <br /> <strong>E-Mail</strong>：<a href="mailto:contact@openfoundry.org">contact@openfoundry.org</a> <strong>Address</strong>：台北市南港區研究院路2段128號 中央研究院資訊科學研究所 . <a href="../../privacy-policy.html">隱私權條款</a>. <a href="../../terms-of-use.html">使用條款</a><span style="position: relative; top: 8px; margin-top: -8px;"> <a href="../../about/8101.html"><img src="../../images/M_images/rss-feed-all.png" border="0" /></a></span>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+        	
+</div>
+						<div class="clear"></div>
+					</div>
+					<div class="rt-footer-bottom-wrap"><div class="rt-footer-bottom"><div class="rt-footer-bottom2"><div class="rt-footer-bottom3"></div></div></div></div>
+									</div></div></div>
+				<div class="rt-surround-bottom"><div class="rt-surround-bottom2"><div class="rt-surround-bottom3"></div></div></div>
+							</div>
+		</div>
+		<!--
+		<script id="aptureScript">
+						(function (){var a=document.createElement("script");a.defer="true";a.src="http://www.apture.com/js/apture.js?siteToken=vsJttrn";document.getElementsByTagName("head")[0].appendChild(a);})();
+     </script>
+-->
+
+<!-- Piwik -->
+<!-- 			<script type="text/javascript">
+			  var _paq = _paq || [];
+		  _paq.push(["trackPageView"]);
+		  _paq.push(["enableLinkTracking"]);
+
+		    (function() {
+			        var u=(("https:" == document.location.protocol) ? "https" : "https") + "://www.openfoundry.org/piwik/";
+				    _paq.push(["setTrackerUrl", u+"piwik.php"]);
+				    _paq.push(["setSiteId", "1"]);
+				        var d=document, g=d.createElement("script"), s=d.getElementsByTagName("script")[0]; g.type="text/javascript";
+				        g.defer=true; g.async=true; g.src=u+"piwik.js"; s.parentNode.insertBefore(g,s);
+					  })();
+		  </script> -->
+<!-- End Piwik Code -->
+	</body>
+</html>

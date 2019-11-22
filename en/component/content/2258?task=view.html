@@ -1,0 +1,463 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-gb" lang="en-gb" >
+<head>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<link rel="shortcut icon" href="../../../images/favicon.ico" />
+	  <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+  <meta name="robots" content="index, follow" />
+  <meta name="keywords" content="OSSFNL569" />
+  <meta name="title" content="Vimana 簡介" />
+  <meta name="description" content="一般來說，Vim Script 的安裝都是到 vim.org 上，搜尋 Script，然後參考該項 目的安裝細節來手動安裝。但是每個 Script 的發行、打包的方式又不一樣，所以大部分 Script 的安裝都還是得手動進行。 有的是直接將檔案複製到 Vim 的 Runtime 目錄裡頭即可，有的是得先解壓縮，然後使用 cp 或是 rsync 命令依序照目錄結構複製到 Vim 的 Runtime" />
+  <meta name="generator" content="" />
+  <title>Vimana 簡介 - OpenFoundry</title>
+  <link href="../../../favicon.ico" rel="shortcut icon" type="image/x-icon" />
+  <link rel="stylesheet" href="../../../components/com_gantry/css/gantry.css" type="text/css" />
+  <link rel="stylesheet" href="../../../components/com_gantry/css/grid-12.css" type="text/css" />
+  <link rel="stylesheet" href="../../../components/com_gantry/css/joomla.css" type="text/css" />
+  <link rel="stylesheet" href="../../../templates/rt_quantive_j15/css/joomla.css" type="text/css" />
+  <link rel="stylesheet" href="../../../templates/rt_quantive_j15/css/style1.css" type="text/css" />
+  <link rel="stylesheet" href="../../../templates/rt_quantive_j15/css/light-body.css" type="text/css" />
+  <link rel="stylesheet" href="../../../templates/rt_quantive_j15/css/demo-styles.css" type="text/css" />
+  <link rel="stylesheet" href="../../../templates/rt_quantive_j15/css/template.css" type="text/css" />
+  <link rel="stylesheet" href="../../../templates/rt_quantive_j15/css/typography.css" type="text/css" />
+  <link rel="stylesheet" href="../../../templates/rt_quantive_j15/css/fusionmenu.css" type="text/css" />
+  <style type="text/css">
+    <!--
+#rt-main-surround ul.menu li.active > a, #rt-main-surround ul.menu li.active > .separator, #rt-main-surround ul.menu li.active > .item, #rt-main-surround .square4 ul.menu li:hover > a, #rt-main-surround .square4 ul.menu li:hover > .item, #rt-main-surround .square4 ul.menu li:hover > .separator, .roktabs-links ul li.active span {color:#0088B5;}
+a, #rt-main-surround ul.menu a:hover, #rt-main-surround ul.menu .separator:hover, #rt-main-surround ul.menu .item:hover {color:#0088B5;}
+    -->
+  </style>
+  <script type="text/javascript" src="../../../components/com_jcomments/js/jcomments-v2.1.js%3Fv=2"></script>
+  <script type="text/javascript" src="../../../components/com_jcomments/libraries/joomlatune/ajax.js"></script>
+  <script type="text/javascript" src="../../../media/system/js/mootools.js"></script>
+  <script type="text/javascript" src="../../../media/system/js/caption.js"></script>
+  <script type="text/javascript" src="../../../components/com_gantry/js/gantry-buildspans.js"></script>
+  <script type="text/javascript" src="../../../components/com_gantry/js/gantry-inputs.js"></script>
+  <script type="text/javascript" src="../../../templates/rt_quantive_j15/js/jquery.cookie.js"></script>
+  <script type="text/javascript" src="../../../modules/mod_roknavmenu/themes/fusion/js/fusion.js"></script>
+  <script type="text/javascript" src="../../../modules/mod_ofssologin/js/ofssologin.js"></script>
+  <script type="text/javascript">
+
+			window.addEvent('domready', function() {
+				var modules = ['rt-block'];
+				var header = ['h3','h2','h1'];
+				GantryBuildSpans(modules, header);
+			});
+		InputsExclusion.push('.content_vote','#rt-popup')
+		        window.addEvent('load', function() {
+					new Fusion('ul.menutop', {
+						pill: 0,
+						effect: 'slide and fade',
+						opacity: 1,
+						hideDelay: 500,
+						centered: 0,
+						tweakInitial: {'x': -2, 'y': 0},
+        				tweakSubsequent: {'x': 0, 'y': -14},
+						menuFx: {duration: 200, transition: Fx.Transitions.Sine.easeOut},
+						pillFx: {duration: 400, transition: Fx.Transitions.Back.easeOut}
+					});
+	            });
+  </script>
+<!-- <script type="text/javascript" src="/sso/javascripts/langsync.js"></script> -->
+<!-- <script src="/templates/rt_quantive_j15/js/ossf.js"></script> -->
+<script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-4136519-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
+</head>
+	<body  class="backgroundlevel-low backgroundstyle-style8 bodylevel-med bodystyle-light cssstyle-style1 logostyle-dark font-family-helvetica font-size-is-default menu-type-fusionmenu col12">
+		<div id="rt-main-background">
+			<div class="rt-container">
+																<div id="rt-header">
+					<div class="rt-grid-7 rt-alpha">
+    			<div class="rt-block">
+    	    	<a href="../../../index.html" id="rt-logo"></a>
+    		</div>
+	    
+</div>
+<div class="rt-grid-5 rt-omega">
+                    <div class="square9">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<div class="ofssologin_square9"><a href="../../../index.html">Login</a>&nbsp;&nbsp|&nbsp;&nbsp;<span><a href="https://www.openfoundry.org/tw/component/content/2258/2258?task=view" ><span lang="tw" xml:lang="tw">繁體中文</span></a></li></ul></span><!--Joom!fish V2.0.4 (Lightning)-->
+<!-- &copy; 2003-2009 Think Network, released under the GPL. -->
+<!-- More information: at http://www.joomfish.net -->
+<div class="ofssologin_search_square9">
+  <form id="of_search" action="https://www.openfoundry.org/of/openfoundry/search" method="get" onsubmit="of_search(); return false;">
+    <select id="of_search_type">
+      <option value="Projects"> Projects </option>
+      <option value="Content"> Content </option>
+      <option value="People"> People </option>
+    </select>
+    <input id="query" name="query" id="mod_search_searchword" maxlength="50" alt="search" class="inputbox" type="text" size="28" value="search..."  onblur="if(this.value=='') this.value='search...';" onfocus="if(this.value=='search...') this.value='';" />
+    <input type="hidden" name="commit" value="search" />
+  </form>
+</div></div>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		
+</div>
+					<div class="clear"></div>
+				</div>
+																<div id="rt-navigation"><div id="rt-navigation2"><div id="rt-navigation3">
+					
+<div class="nopill">
+	<ul class="menutop level1 " >
+						<li class="item1 root" >
+					<a class="orphan item bullet" href="../../../index.html"  >
+				<span>
+			    				Home				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item32 root" >
+					<a class="orphan item bullet" href="../../../archived.html"  >
+				<span>
+			    				Projects				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item186 root" >
+					<a class="orphan item bullet" href="../../community.html"  >
+				<span>
+			    				Who&#039;s Who				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item4 root" >
+					<a class="orphan item bullet" href="../../news.html"  >
+				<span>
+			    				News				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item5 root" >
+					<a class="orphan item bullet" href="../../law-and-licensing.html"  >
+				<span>
+			    				Law &amp; Licensing				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item3 root" >
+					<a class="orphan item bullet" href="../../activities.html"  >
+				<span>
+			    				Activities				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item2 root" >
+					<a class="orphan item bullet" href="../../resourcecatalog.html"  >
+				<span>
+			    				Resource Catalog				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item45 root" >
+					<a class="orphan item bullet" href="../../about.html"  >
+				<span>
+			    				About				   
+				</span>
+			</a>
+			
+			
+	</li>	
+				</ul>
+</div>
+
+				    <div class="clear"></div>
+				</div></div></div>
+								<div class="rt-surround"><div class="rt-surround2"><div class="rt-surround3">
+										<div id="rt-showcase-section">
+												<div id="rt-showcase">
+							<div class="rt-grid-12 rt-alpha rt-omega">
+    		<div class="clear"></div>
+		
+		
+                <div class="close-note">
+                    <div class="rt-block">
+               					<div class="module-content">
+                	<div style="font-size:medium; background-image:linear-gradient(120deg,#159957,#4298b2);color:white;padding:20px;margin:-10px -18px;">感謝您對「自由軟體鑄造場」的支持與愛護，十多年來「自由軟體鑄造場」受中央研究院支持，並在資訊科學研究所以及資訊科技創新研究中心執行，現已完成階段性的任務。 本網站預計持續維運至 2021年底，網站內容基本上不會再更動。<br />也紀念我們永遠的朋友 李士傑先生（Shih-Chieh Ilya Li）。</div>				</div>
+            </div>
+                </div>
+		
+</div>
+							<div class="clear"></div>
+						</div>
+																	</div>
+															<div id="rt-main-surround">
+																							              <div id="rt-main" class="mb12">
+                <div class="rt-main-inner">
+                    <div class="rt-grid-12 ">
+                                                <div class="rt-block">
+                            							<div class="square1">
+							<div class="rt-module-surround">
+								<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+								<div class="rt-module-inner">
+		                            <div id="rt-mainbody">
+		                                
+<div class="rt-joomla ">
+	<div class="rt-article">
+		
+				<div class="rt-headline"><h1 class="rt-article-title">Vimana 簡介</h1>		</div>
+		<div class="clear"></div>
+		
+		
+		
+				<div class="rt-articleinfo">
+						<div class="rt-article-icons">
+								<a href="https://www.openfoundry.org/en/component/content/article/2258?tmpl=component&amp;print=1&amp;page=" title="Print" onclick="window.open(this.href,'win2','status=no,toolbar=no,scrollbars=yes,titlebar=no,menubar=no,resizable=yes,width=640,height=480,directories=no,location=no'); return false;" rel="nofollow"><span class="icon print"></span></a>																</div>
+			
+			<span class="rt-date-posted">
+						 Created at			Monday, 08 February 2010 03:11						&nbsp;&nbsp;&nbsp;&nbsp;						Last Updated on Tuesday, 09 March 2010 21:33						</span>
+
+						<span class="rt-author">
+				Written by 林佑安 (Cornelius)			</span>
+				
+					</div>
+		
+		
+		<p>一般來說，Vim Script 的安裝都是到 <a title="Vim.org" href="https://vim.org/" target="_blank">vim.org</a> 上，搜尋 Script，然後參考該項目的安裝細節來手動安裝。但是每個 Script 的發行、打包的方式又不一樣，所以大部分 Script 的安裝都還是得手動進行。 有的是直接將檔案複製到 Vim 的 Runtime 目錄裡頭即可，有的是得先解壓縮，然後使用 cp 或是 rsync 命令依序照目錄結構複製到 Vim 的 Runtime 目錄裡。Vim 雖然也提供了 Vimball 格式的打包檔，但是也不夠普及。</p>
+<p>然而 Perl 有 cpan 命令、Ruby 有 gem 命令、Debian 有 apt-get 命令，Vim 卻因為發行方式不統一而一直沒有一個可用、堪用的工具來做這樣的事情。為了解決這個問題，我的想法是，針對每一個發行的 Script (該 Script 有可能用是 tarball 包裝也可能只是純文字檔案) 來做安裝策略的偵測，於是 Vimana 就誕生了。<br /></p><p>為了文字處理的方便性，<a title="Vimana on GitHub" href="https://github.com/c9s/Vimana" target="_blank">Vimana</a> 使用 Perl 來實做，相依 <a href="https://search.cpan.org/" target="_blank">CPAN</a> 上的 10 多個模組，來減少重複開發。(DRY) 由於大多相依的模組都可以跨平台，所以要將 Vimana 移植到其他平台如 Windows ，也可以相當容易。</p>
+<p>目前針對打包起來的 Script 安裝策略有四種:</p>
+<ul>
+    <li>Meta </li>
+</ul>
+<blockquote>
+<p>Meta 檔案以 VIM::Packager 所規範的 Meta 格式來定義該 Script 的 Script ID 以及 該 Script 相依的 Script，或是檢查 Vim 相容版本，或者執行檔檢查。</p>
+</blockquote>
+<ul>
+    <li>Rakefile </li>
+</ul>
+<blockquote>
+<p>Rakefile 為 Ruby 的 Makefile ，可透過 rake 命令來進行安裝。大多數於 Github 上的 Script 也都會附上 Rakefile。</p>
+</blockquote>
+<ul>
+    <li>Makefile </li>
+</ul>
+<blockquote>
+<p>Makefile 可透過 make 命令來進行安裝。</p>
+</blockquote>
+<ul>
+    <li>Auto </li>
+</ul>
+<blockquote>
+<p>自動安裝，偵測該包裝檔案的目錄結構，或是掃描是否有 Vimball 格式的檔案， 再一次安裝到 Vim Runtime 目錄裡。</p>
+</blockquote>
+<p>而文字格式的 Script 則是透過 <a href="https://vim.org/" target="_blank">vim.org</a> 網站上該 Script 提供的 Script 類型來做判斷，但是因為 <a href="https://vim.org/" target="_blank">vim.org</a> 上的 Script 類型又太過空泛，只有 utility , plugin , colors , game 等等幾種類型，所以在文字檔案安裝的部份使用了正規表示示來偵測 Script 內容，以決定 indent , syntax , colorscheme , ftplugin , autoload 等等類別。</p>
+<p>以上策略都會依序檢查，如果其中一個安裝失敗，<wbr></wbr>則會執行下一個策略，如果沒有可行的安裝策略那麼使用者會被告知檔案存放的目錄，以進行手動安裝。</p>
+<h2>安裝 Vimana</h2>
+<h3>從 CPAN 安裝</h3>
+<p>Vimana 可透過 cpan 命令直接安裝，但是不用擔心在你的系統上找不到該命令，因為 Perl 幾乎預設存在於各式各樣的平台上 (除了 Windows)。</p>
+<p>使用 cpan 命令進入 CPAN Shell (你會需要 root 權限):</p>
+<pre><code># cpan<br /></code></pre>
+<p>即可進入 cpan 命令，初次執行 cpan 命令，會詢問您是否要讓 CPAN 自動做設置調整，按 Enter 確定。</p>
+<pre><code>Would you like me to configure as much as possible automatically? [yes]<br /></code></pre>
+<p>接著會進入 CPAN shell</p>
+<pre><code>cpan&gt;<br /></code></pre>
+<p>初次使用 cpan 我們需要一些調整，調整 <code>urllist</code> 以及 <code>prerequisites_policy</code> ， <code>urllist</code> 為 CPAN 所使用的鏡射位址，我們需要設置為 <code><a href="https://cpan.nctu.edu.tw/" target="_blank">https://cpan.nctu.edu.tw</a></code> ， <code>prerequisites_policy</code> 則為安裝模組時的方法，設置為 <code>follow</code>:</p>
+<pre><code>cpan&gt; o conf prerequisites_policy follow<br />cpan&gt; o conf urllist unshift <a href="https://cpan.nctu.edu.tw/" target="_blank">https://cpan.nctu.edu.tw/</a><br />cpan&gt; o conf commit<br /></code></pre>
+<p>如果已經有設置過 cpan 那麼會進入以下的畫面:</p>
+<pre><code># cpan<br />cpan shell -- CPAN exploration and modules installation (v1.9402)<br />Enter 'h' for help.<br />cpan[1]&gt;<br /></code></pre>
+<p>接下來便可以安裝 Vimana:</p>
+<pre><code>cpan&gt; install Vimana<br /># ....<br />cpan&gt; quit<br /></code></pre>
+<h3>從 Github 安裝</h3>
+<p>從 <a title="Github" href="https://github.com/" target="_blank">Github</a> 可以取得 <a title="Vimana on GitHub" href="https://github.com/c9s/Vimana" target="_blank">Vimana</a> 最新的開發版本，您需要已經安裝 Git 版本控制系統，使用 Git 將 Repository 取得，接著安裝:</p>
+<pre><code>$ git clone 
+ <script language='JavaScript' type='text/javascript'>
+ <!--
+ var prefix = 'm&#97;&#105;lt&#111;:';
+ var suffix = '';
+ var attribs = '';
+ var path = 'hr' + 'ef' + '=';
+ var addy45485 = 'g&#105;t' + '&#64;';
+ addy45485 = addy45485 + 'g&#105;th&#117;b' + '&#46;' + 'c&#111;m';
+ document.write( '<a ' + path + '\'' + prefix + addy45485 + suffix + '\'' + attribs + '>' );
+ document.write( addy45485 );
+ document.write( '<\/a>' );
+ //-->
+ </script> <script language='JavaScript' type='text/javascript'>
+ <!--
+ document.write( '<span style=\'display: none;\'>' );
+ //-->
+ </script>This e-mail address is being protected from spambots. You need JavaScript enabled to view it
+ <script language='JavaScript' type='text/javascript'>
+ <!--
+ document.write( '</' );
+ document.write( 'span>' );
+ //-->
+ </script>:c9s/Vimana.git<br />$ cd Vimana<br />$ perl Makefile.PL<br />$ sudo make install<br /></code></pre>
+<h2>基本操作</h2>
+<p>首先我們需要取得 <a title="Vim.org" href="https://vim.org/" target="_blank">vim.org</a> 上得所有套件清單來建立索引檔，很不幸的 <a href="https://vim.org/" target="_blank">vim.org</a> 並無提供任何 API 或是良好的頁面設計，所以這個動作基本上是透過正規表示示 (Regular Expression) 來整理所有的 Script 內容，幸好 <a title="Vim.org" href="https://vim.org/" target="_blank">vim.org</a> 更動不大，且我們的索引建置相當快速:</p>
+<pre><code>$ vimana update<br /></code></pre>
+<p>在 Vimana ，所有的 Script 名稱都經過了正規化，去除了所有特殊字元，而只允許 <code>[a-zA-Z0-9-_]</code> 等字元，以統一安裝的 Script 名稱。</p>
+<p>接著我們可以做一點搜尋，譬如說 nerd tree:</p>
+<pre><code>$ vimana s nerd-tree<br />the-nerd-tree      - A tree explorer plugin for navigating the filesystem<br />nerd-tree-project  - It tries to find out root project directory, browse project file with NERD_tree.<br />$<br /></code></pre>
+<p>第一個欄位便是 Script 名稱，安裝任何 Script 都必須透過正規化過的名稱:</p>
+<pre><code>$ vimana install the-nerd-tree<br />Plugin will be installed to vim runtime path: /Users/c9s/.vim<br />Canonical name: the-nerd-tree<br />Downloading from: <a href="https://www.vim.org/scripts/download_script.php?src_id=11834" target="_blank">https://www.vim.org/scripts/<wbr></wbr>download_script.php?src_id=<wbr></wbr>11834</a><br />Saving file to /var/folders/4o/<wbr></wbr>4omYKsGdFEyBuGRUVlwuNU+++TM/-<wbr></wbr>Tmp-/vimana-aovhjd/NERD_tree.<wbr></wbr>zip<br />Extracting to /var/folders/4o/<wbr></wbr>4omYKsGdFEyBuGRUVlwuNU+++TM/-<wbr></wbr>Tmp-/vimana-qgdvmz.<br />Extracting to: /var/folders/4o/<wbr></wbr>4omYKsGdFEyBuGRUVlwuNU+++TM/-<wbr></wbr>Tmp-/vimana-qgdvmz<br />Changing directory to /var/folders/4o/<wbr></wbr>4omYKsGdFEyBuGRUVlwuNU+++TM/-<wbr></wbr>Tmp-/vimana-qgdvmz.<br />Meta : Check if 'META' or 'VIMMETA' file exists. support for VIM::Packager. ...not ok<br />Makefile : Check if makefile exists. ...not ok<br />Rakefile : Check if rakefile exists. ...not ok<br />Package doesn't contain META,VIMMETA,VIMMETA.yml or Makefile file<br />No availiable strategy, try to auto-install.<br />Archive content:<br />doc/NERD_tree.txt<br />nerdtree_plugin/exec_menuitem.<wbr></wbr>vim<br />nerdtree_plugin/fs_menu.vim<br />plugin/NERD_tree.vim<br />Initializing vim runtime directories<br />Basepath found: /var/folders/4o/<wbr></wbr>4omYKsGdFEyBuGRUVlwuNU+++TM/-<wbr></wbr>Tmp-/vimana-qgdvmz/<br />Copying files...<br />/var/folders/4o/<wbr></wbr>4omYKsGdFEyBuGRUVlwuNU+++TM/-<wbr></wbr>Tmp-/vimana-qgdvmz/ =&gt; /Users/c9s/.vim<br />Updating helptags<br />vim -e -s -c &quot;:helptags /Users/c9s/.vim/doc&quot; -c &quot;:q&quot;<br />Making checksum...<br />Cleaning up temporary directory.<br />Succeed.<br />Installation Done.<br /></code></pre>
+<p>如此便可以直接將 NERD Tree Plugin 安裝完成。</p>
+<p>除此之外 search 命令，也可指定 Script 類型:</p>
+<p>列出所有色彩主題:</p>
+<pre><code>$ vimana search -t color<br /></code></pre>
+<p>列出 ftplugin 類型:</p>
+<pre><code>$ vimana search -t ftplugin<br /></code></pre>
+<p>搜尋 ftplugin 類型，且包含 abc 關鍵字:</p>
+<pre><code>$ vimana search -t ftplugin abc<br /></code></pre>
+<p>安裝時，也可以指定 Vim Runtime 目錄:</p>
+<pre><code>$ vimana install snipmate -r ~/.vim-other-rtp<br /></code></pre>
+<p>那麼就可以 snipmate 安裝到 <code>~/.vim-other-rtp</code> 路徑之下。要讓 Vim 在啟動時，也去載入這個資料夾內的 Script ，只需要在 .vimrc 內加入:</p>
+<pre><code>set runtimepath+=~/.vim-other-rtp<br /></code></pre>
+<p>如果要移除可透過 remove 命令來移除:</p>
+<pre><code>$ vimana remove the-nerd-tree<br />Removing package the-nerd-tree<br />Removing /Users/c9s/.vim/doc/NERD_tree.<wbr></wbr>txt<br />Removing /Users/c9s/.vim/nerdtree_<wbr></wbr>plugin/exec_menuitem.vim<br />Removing /Users/c9s/.vim/nerdtree_<wbr></wbr>plugin/fs_menu.vim<br />Removing /Users/c9s/.vim/plugin/NERD_<wbr></wbr>tree.vim<br />Removing record<br />Done<br /></code></pre>
+<h2>讓您的 Script 可被自動安裝</h2>
+<p>如果您有 Script 要發行到 <a href="https://vim.org/" target="_blank">vim.org</a> 上，並且也希望能夠被 Vimana 安裝，可參考以下作法：</p>
+<p>Script 只是文字格式檔案，可以直接在 Script 內加上:</p>
+<pre><code>&quot; Script type: plugin<br /></code></pre>
+<p>來告知 Vimana ，該檔案是 plugin 類型的 Script。 </p>
+<p>如果 Script 包含了多個檔案，那麼請遵循 Vim Runtime 目錄的結構來放置，例如:</p>
+<pre><code>autoload/your_plugin.vim<br />plugin/your_plugin.vim<br />doc/your_plugin.vim<br />README<br />other_file<br /></code></pre>
+<p>如此符合 Vim Runtime 目錄名稱的資料夾便會自動安裝。</p>
+<p>或是</p>
+<pre><code>foo/autoload/your_plugin.vim<br />foo/plugin/your_plugin.vim<br />foo/doc/your_plugin.vim<br />utils/...<br />README<br />other_file<br /></code></pre>
+<p>那麼 foo 路徑底下的 Vim Runtime 目錄都會被安裝。</p>
+<h2>其他</h2>
+<h3>上傳 Vim Script</h3>
+<p>可參考 VIM::Uploader 模組:</p>
+<ul>
+    <li><a href="https://search.cpan.org/dist/VIM-Uploader/lib/VIM/Uploader.pm" target="_blank">https://search.cpan.org/dist/<wbr></wbr>VIM-Uploader/lib/VIM/Uploader.<wbr></wbr>pm</a> </li>
+</ul>
+<h3>讀取安裝紀錄</h3>
+<p>Vimana 所儲存的安裝紀錄，基本上是 JSON 格式，不過你同時也可以利用 VimL 來讀取:</p>
+<pre><code>let record = eval(join(readfile(expand('~/.<wbr></wbr>vim/record/fuzzyfinder'),&quot;&quot;))<br />echo record<br /></code></pre>
+<h3>Windows 支援</h3>
+<p>目前已經和日本的 <a href="https://mattn.kaoriya.net/" target="_blank">@mattn, Yasuhiro Matsumoto</a> 在進行 Windows 的支援，這些修改進行在 Vimana 的 windows branch 上。基本上已經能在 Windows 上頭順利運作，如果有興趣的朋友也歡迎幫我們測試。</p>
+<ul>
+    <li><a href="https://github.com/c9s/Vimana/tree/windows" target="_blank">https://github.com/c9s/Vimana/<wbr></wbr>tree/windows</a> </li>
+</ul>
+<h3>錯誤回報</h3>
+<ul>
+    <li><a href="https://rt.cpan.org/Public/Dist/Display.html?Name=Vimana" target="_blank">https://rt.cpan.org/Public/<wbr></wbr>Dist/Display.html?Name=Vimana</a> </li>
+</ul>
+<h3>參見</h3>
+<ul>
+    <li><a title="Vim.org" href="https://vim.org/" target="_blank">Vim.org</a> </li>
+    <li><a title="Github" href="https://github.com/" target="_blank">Github</a> </li>
+    <li><a title="Vimana on GitHub" href="https://github.com/c9s/Vimana" target="_blank">Vimana</a> </li>
+    <li><a title="Vim Plugin Manager - Vim Wiki" href="https://vim.wikia.com/wiki/Vim-plugin-manager" target="_blank">Vim Plugin Manager</a> </li>
+    <li><a href="https://github.com/c9s" target="_blank">https://github.com/c9s</a> - c9s on Github.com </li>
+    <li><a href="https://c9s.blogspot.com/2009/05/cpanplus.html" target="_blank">https://c9s.blogspot.com/2009/<wbr></wbr>05/cpanplus.html</a> - CPANPlugin 快速上手 </li>
+    <li><a href="https://c9s.blogspot.com/2009/04/cpan-home.html" target="_blank">https://c9s.blogspot.com/2009/<wbr></wbr>04/cpan-home.html</a> - 安裝 CPAN 模組於 Home 目錄下 </li>
+</ul>
+<h2>作者簡介</h2>
+<p>林佑安 (Cornelius)，目前在 AIINK（愛印網），以 Perl 語言開發的 Jifty web framework 從事網站開發相關工作。於 CPAN - Perl 模組典藏網維護多個 Perl 模組，參與 Jifty, SD 等 Perl 相關開放原始碼專案 。主要以 Vim 做為開發工具，著有 cpan.vim , perl-completion.vim , perldoc.vim 等多個 vim 相關 Plugin。&nbsp;<br />&nbsp;<a href="https://www.github.com/c9s" target="_blank">Github</a><br />&nbsp;<a href="https://twitter.com/c9s" target="_blank">Twitter</a><br />&nbsp;<a href="https://www.plurk.com/c9s" target="_blank">Plurk<br /></a>&nbsp;<a href="https://c9s.blogspot.com/" target="_blank">Blog</a><br />&nbsp;<a href="https://groups.google.com/group/vim-taiwan" target="_blank">Google group</a></p>
+			<!-- Show relate article -->
+				<!-- end -->
+		<div class="article_note">
+		<!-- Add tags use metakey, and show OSSF Newsletter tag: OSSFNL+NUM-->
+		<br><br> <hr style='border: 1px dashed #D2DADB;'><b>OSSF Newsletter&nbsp;:</b>&nbsp;<a href='../../../previous-issue%3Ftask=view&amp;id=569.html'>第 144 期 2010 年 2 月的近期瀏覽器 JS 測試比較</a><br>				<!-- End -->
+					<br>
+					<b>Category: </b><a href="../../tech-column.html">				Tech Column					</a>				</div>
+			 <!-- AddThis Button BEGIN ID 3001 is the front page article -->
+     			<br><br>
+       <div class="addthis_toolbox addthis_default_style addthis_32x32_style">
+       <a class="addthis_button_preferred_1"></a>
+       <a class="addthis_button_preferred_2"></a>
+       <a class="addthis_button_preferred_3"></a>
+       <a class="addthis_button_preferred_4"></a>
+       <a class="addthis_button_compact"></a>
+       <a class="addthis_counter addthis_bubble_style"></a>
+       </div>
+       <script type="text/javascript">var addthis_config = {"data_track_clickback":true};</script>
+       <script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js#pubid=openfoundry"></script>
+       <!-- AddThis Button END -->
+     <br>
+		<div class="totop" ><a class="rt-totop" href="2258%3Ftask=view.html#" style="outline: medium none;">↑ Top</a></div>
+            <!-- AddThis Button END -->
+
+			</div>
+</div>
+
+		                            </div>
+									<div class="clear"></div>
+								</div>
+								<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+							</div>
+							</div>
+                                                    </div>
+                                            </div>
+                                        <div class="clear"></div>
+                </div>
+            </div>
+																													</div>
+										<div id="rt-copyright">
+						<div class="rt-grid-12 rt-alpha rt-omega">
+                        <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<span class="nowrap">Open Source Software Foundry</span><span class="nowrap">‧</span><span class="nowrap"> </span><span class="nowrap">Best  Viewed with IE7.0 or Firefox2.0 above, 1024x768 Resolution. </span><strong>E-Mail</strong>：<a href="mailto:contact@openfoundry.org">contact@openfoundry.org</a> <br /><strong>Address</strong>：No.128, Sec.2, Academia Rd., Institute of Information Science, Academia Sinica, Nangang District, Taipei City 11529, Taiwan (R.O.C). <br /><a href="../../privacy-policy.html">Privacy Policy</a>. <a href="../../terms-of-use.html">Terms-of-use</a> <span style="position: relative; top: 8px; margin-top: -8px;"> <a href="../../../about/8101.html"><img src="../../../images/M_images/rss-feed-all.png" border="0" /></a></span>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+        	
+</div>
+						<div class="clear"></div>
+					</div>
+					<div class="rt-footer-bottom-wrap"><div class="rt-footer-bottom"><div class="rt-footer-bottom2"><div class="rt-footer-bottom3"></div></div></div></div>
+									</div></div></div>
+				<div class="rt-surround-bottom"><div class="rt-surround-bottom2"><div class="rt-surround-bottom3"></div></div></div>
+							</div>
+		</div>
+		<!--
+		<script id="aptureScript">
+						(function (){var a=document.createElement("script");a.defer="true";a.src="http://www.apture.com/js/apture.js?siteToken=vsJttrn";document.getElementsByTagName("head")[0].appendChild(a);})();
+     </script>
+-->
+
+<!-- Piwik -->
+<!-- 			<script type="text/javascript">
+			  var _paq = _paq || [];
+		  _paq.push(["trackPageView"]);
+		  _paq.push(["enableLinkTracking"]);
+
+		    (function() {
+			        var u=(("https:" == document.location.protocol) ? "https" : "https") + "://www.openfoundry.org/piwik/";
+				    _paq.push(["setTrackerUrl", u+"piwik.php"]);
+				    _paq.push(["setSiteId", "1"]);
+				        var d=document, g=d.createElement("script"), s=d.getElementsByTagName("script")[0]; g.type="text/javascript";
+				        g.defer=true; g.async=true; g.src=u+"piwik.js"; s.parentNode.insertBefore(g,s);
+					  })();
+		  </script> -->
+<!-- End Piwik Code -->
+	</body>
+</html>

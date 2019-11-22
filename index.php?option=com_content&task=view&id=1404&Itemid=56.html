@@ -1,0 +1,423 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-gb" lang="en-gb" >
+<head>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<link rel="shortcut icon" href="images/favicon.ico" />
+	  <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+  <meta name="robots" content="index, follow" />
+  <meta name="keywords" content="Coder 必讀, 三分法, 授權選擇, CDDL, GPL, MPL, OSSFNL415" />
+  <meta name="title" content="程式碼釋出實例分享：選用授權條款的分析與考量" />
+  <meta name="description" content="最近工作上處理到一件程式釋出案，覺得十分有趣，所以在這邊跟大家分享一下，不過因為整件釋出案的釋出方式尚未定稿，所以我會隱去真名實姓與許多片段，僅就必要的資訊加以描述。" />
+  <meta name="generator" content="" />
+  <title>程式碼釋出實例分享：選用授權條款的分析與考量 - OpenFoundry</title>
+  <link href="favicon.ico" rel="shortcut icon" type="image/x-icon" />
+  <link rel="stylesheet" href="components/com_gantry/css/gantry.css" type="text/css" />
+  <link rel="stylesheet" href="components/com_gantry/css/grid-12.css" type="text/css" />
+  <link rel="stylesheet" href="components/com_gantry/css/joomla.css" type="text/css" />
+  <link rel="stylesheet" href="templates/rt_quantive_j15/css/joomla.css" type="text/css" />
+  <link rel="stylesheet" href="templates/rt_quantive_j15/css/style1.css" type="text/css" />
+  <link rel="stylesheet" href="templates/rt_quantive_j15/css/light-body.css" type="text/css" />
+  <link rel="stylesheet" href="templates/rt_quantive_j15/css/demo-styles.css" type="text/css" />
+  <link rel="stylesheet" href="templates/rt_quantive_j15/css/template.css" type="text/css" />
+  <link rel="stylesheet" href="templates/rt_quantive_j15/css/typography.css" type="text/css" />
+  <link rel="stylesheet" href="templates/rt_quantive_j15/css/fusionmenu.css" type="text/css" />
+  <style type="text/css">
+    <!--
+#rt-main-surround ul.menu li.active > a, #rt-main-surround ul.menu li.active > .separator, #rt-main-surround ul.menu li.active > .item, #rt-main-surround .square4 ul.menu li:hover > a, #rt-main-surround .square4 ul.menu li:hover > .item, #rt-main-surround .square4 ul.menu li:hover > .separator, .roktabs-links ul li.active span {color:#0088B5;}
+a, #rt-main-surround ul.menu a:hover, #rt-main-surround ul.menu .separator:hover, #rt-main-surround ul.menu .item:hover {color:#0088B5;}
+    -->
+  </style>
+  <script type="text/javascript" src="components/com_jcomments/js/jcomments-v2.1.js%3Fv=2"></script>
+  <script type="text/javascript" src="components/com_jcomments/libraries/joomlatune/ajax.js"></script>
+  <script type="text/javascript" src="media/system/js/mootools.js"></script>
+  <script type="text/javascript" src="media/system/js/caption.js"></script>
+  <script type="text/javascript" src="components/com_gantry/js/gantry-buildspans.js"></script>
+  <script type="text/javascript" src="components/com_gantry/js/gantry-inputs.js"></script>
+  <script type="text/javascript" src="templates/rt_quantive_j15/js/jquery.cookie.js"></script>
+  <script type="text/javascript" src="modules/mod_roknavmenu/themes/fusion/js/fusion.js"></script>
+  <script type="text/javascript" src="modules/mod_ofssologin/js/ofssologin.js"></script>
+  <script type="text/javascript">
+
+			window.addEvent('domready', function() {
+				var modules = ['rt-block'];
+				var header = ['h3','h2','h1'];
+				GantryBuildSpans(modules, header);
+			});
+		InputsExclusion.push('.content_vote','#rt-popup')
+		        window.addEvent('load', function() {
+					new Fusion('ul.menutop', {
+						pill: 0,
+						effect: 'slide and fade',
+						opacity: 1,
+						hideDelay: 500,
+						centered: 0,
+						tweakInitial: {'x': -2, 'y': 0},
+        				tweakSubsequent: {'x': 0, 'y': -14},
+						menuFx: {duration: 200, transition: Fx.Transitions.Sine.easeOut},
+						pillFx: {duration: 400, transition: Fx.Transitions.Back.easeOut}
+					});
+	            });
+  </script>
+<!-- <script type="text/javascript" src="/sso/javascripts/langsync.js"></script> -->
+<!-- <script src="/templates/rt_quantive_j15/js/ossf.js"></script> -->
+<script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-4136519-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
+</head>
+	<body  class="backgroundlevel-low backgroundstyle-style8 bodylevel-med bodystyle-light cssstyle-style1 logostyle-dark font-family-helvetica font-size-is-default menu-type-fusionmenu col12 ">
+		<div id="rt-main-background">
+			<div class="rt-container">
+																<div id="rt-header">
+					<div class="rt-grid-7 rt-alpha">
+    			<div class="rt-block">
+    	    	<a href="index.html" id="rt-logo"></a>
+    		</div>
+	    
+</div>
+<div class="rt-grid-5 rt-omega">
+                    <div class="square9">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<div class="ofssologin_square9"><a href="index.html">Login</a>&nbsp;&nbsp|&nbsp;&nbsp;<span><a href="tw/component/content/1404%3Ftask=view.html" ><span lang="tw" xml:lang="tw">繁體中文</span></a></li></ul></span><!--Joom!fish V2.0.4 (Lightning)-->
+<!-- &copy; 2003-2009 Think Network, released under the GPL. -->
+<!-- More information: at http://www.joomfish.net -->
+<div class="ofssologin_search_square9">
+  <form id="of_search" action="https://www.openfoundry.org/of/openfoundry/search" method="get" onsubmit="of_search(); return false;">
+    <select id="of_search_type">
+      <option value="Projects"> Projects </option>
+      <option value="Content"> Content </option>
+      <option value="People"> People </option>
+    </select>
+    <input id="query" name="query" id="mod_search_searchword" maxlength="50" alt="search" class="inputbox" type="text" size="28" value="search..."  onblur="if(this.value=='') this.value='search...';" onfocus="if(this.value=='search...') this.value='';" />
+    <input type="hidden" name="commit" value="search" />
+  </form>
+</div></div>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		
+</div>
+					<div class="clear"></div>
+				</div>
+																<div id="rt-navigation"><div id="rt-navigation2"><div id="rt-navigation3">
+					
+<div class="nopill">
+	<ul class="menutop level1 " >
+						<li class="item1 root" >
+					<a class="orphan item bullet" href="index.html"  >
+				<span>
+			    				Home				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item32 root" >
+					<a class="orphan item bullet" href="archived.html"  >
+				<span>
+			    				Projects				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item186 root" >
+					<a class="orphan item bullet" href="en/community.html"  >
+				<span>
+			    				Who&#039;s Who				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item4 root" >
+					<a class="orphan item bullet" href="en/news.html"  >
+				<span>
+			    				News				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item5 root" >
+					<a class="orphan item bullet" href="en/law-and-licensing.html"  >
+				<span>
+			    				Law &amp; Licensing				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item3 root" >
+					<a class="orphan item bullet" href="en/activities.html"  >
+				<span>
+			    				Activities				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item2 root" >
+					<a class="orphan item bullet" href="en/resourcecatalog.html"  >
+				<span>
+			    				Resource Catalog				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item45 root" >
+					<a class="orphan item bullet" href="en/about.html"  >
+				<span>
+			    				About				   
+				</span>
+			</a>
+			
+			
+	</li>	
+				</ul>
+</div>
+
+				    <div class="clear"></div>
+				</div></div></div>
+								<div class="rt-surround"><div class="rt-surround2"><div class="rt-surround3">
+										<div id="rt-showcase-section">
+												<div id="rt-showcase">
+							<div class="rt-grid-12 rt-alpha rt-omega">
+    		<div class="clear"></div>
+		
+		
+                <div class="close-note">
+                    <div class="rt-block">
+               					<div class="module-content">
+                	<div style="font-size:medium; background-image:linear-gradient(120deg,#159957,#4298b2);color:white;padding:20px;margin:-10px -18px;">感謝您對「自由軟體鑄造場」的支持與愛護，十多年來「自由軟體鑄造場」受中央研究院支持，並在資訊科學研究所以及資訊科技創新研究中心執行，現已完成階段性的任務。 本網站預計持續維運至 2021年底，網站內容基本上不會再更動。<br />也紀念我們永遠的朋友 李士傑先生（Shih-Chieh Ilya Li）。</div>				</div>
+            </div>
+                </div>
+		
+</div>
+							<div class="clear"></div>
+						</div>
+																	</div>
+															<div id="rt-main-surround">
+												<div id="rt-breadcrumbs">
+								<div class="rt-breadcrumb-surround">
+		<a href="index.html" id="breadcrumbs-home"></a>
+		<span class="breadcrumbs pathway">
+<span class="no-link">Previous Issue</span></span>
+	</div>
+	
+							<div class="clear"></div>
+						</div>
+																							              <div id="rt-main" class="sa3-mb9">
+                <div class="rt-main-inner">
+                    <div class="rt-grid-9 rt-push-3">
+                                                <div class="rt-block">
+                            							<div class="square1">
+							<div class="rt-module-surround">
+								<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+								<div class="rt-module-inner">
+		                            <div id="rt-mainbody">
+		                                
+<div class="rt-joomla ">
+	<div class="rt-article">
+		
+				<div class="rt-headline"><h1 class="rt-article-title">程式碼釋出實例分享：選用授權條款的分析與考量</h1>		</div>
+		<div class="clear"></div>
+		
+		
+		
+				<div class="rt-articleinfo">
+						<div class="rt-article-icons">
+								<a href="https://www.openfoundry.org/en/component/content/1404-2010-07-15-10-31-15?tmpl=component&amp;print=1&amp;page=" title="Print" onclick="window.open(this.href,'win2','status=no,toolbar=no,scrollbars=yes,titlebar=no,menubar=no,resizable=yes,width=640,height=480,directories=no,location=no'); return false;" rel="nofollow"><span class="icon print"></span></a>																</div>
+			
+			<span class="rt-date-posted">
+						 Created at			Friday, 25 January 2008 08:00						&nbsp;&nbsp;&nbsp;&nbsp;						Last Updated on Wednesday, 23 May 2012 13:28						</span>
+
+						<span class="rt-author">
+				Written by 葛冬梅			</span>
+				
+					</div>
+		
+		
+		<p>最近工作上處理到一件程式釋出案，覺得十分有趣，所以在這邊跟大家分享一下，不過因為整件釋出案的釋出方式尚未定稿，所以我會隱去真名實姓與許多片段，僅就必要的資訊加以描述。</p>
+<p>整件釋出案的最終的目的是：「為自己寫的程式碼挑選一份合適的自由／開放源碼條款來授權」，但這個程式有利用到他人的自由／開放源碼程式碼（他人程式碼），所以就要看這些他人程式碼的授權內容為何，是否會對挑選自己程式碼的授權條款有所限制。這些他人程式的授權條款如下（註一）：</p>
+<ol>
+<li>Apache-2.0 (Apache License 2.0) </li>
+<li>MPL-1.0  (Mozilla Public License 1.0)</li>
+<li>SPL-1.0 (Sun Public Licnese 1.0)</li>
+<li>LGPL-2.1 (GNU Library/Lesser Public License 2.1)</li>
+</ol>
+<p><br />首先要找出 BSD 類的條款，因為這一類條款的規定寬鬆，對於修改出來的衍生程式並沒有任何的限制，也因此對於選擇自己程式碼授權條款幾乎沒有任何影響。在這四份條款中，Apache-2.0 屬於 BSD 類，所以 Apahce-2.0 可以放在一邊先不用考慮。</p>
+<p>剩下的三份條款分屬二類：MPL-1.0 與 SPL-1.0 同屬 MPL 類，LGPL-2.1 屬於 GPL 類。</p>
+<p>MPL 類的具有部分 copyleft 的特性，也就是修改 MPL 類程式碼檔案出來的衍生部分當然還是用原條款授權，若完全是自己寫的部分就可以自己任意授權，只要自己所檢選的授權內容不會影響到 MPL 類授權的程式碼即可。而 SPL-1.0 也具有這樣的特性，所以，MPL-1.0 與 SPL-1.0 部分的程式碼，對於選擇授權條款的限制在於，不可以影響使用者依照條款內容對於 MPL-1.0 與 SPL-1.0 程式碼的運用。</p>
+<p>LGPL-2.1 屬於具有 copyleft 性質的 GPL 類，所以 LGPL-2.1 具有感染性，不過 LGPL-2.1 具有弱化的感染性：若是單純利用 LGPL-2.1 的函式庫，自己寫的程式將不需要受到感染，若是修改 LGPL-2.1 函式庫，納入到自己的程式中，自己寫的程式碼則會受到感染。在這個釋出案中，LGPL-2.1 程式碼僅被單純地連結利用，並未被修改納入整體程式中，所以並未感染自己寫的程式碼，因此，只要所選擇的授權條款不會影響到 LGPL-2.1 程式碼即可。</p>
+<p>這樣一個乍看之下頗複雜的條款結構，很幸運地，並沒有任何條款感染或者條款衝突的情況發生，對於為自己程式碼選擇條款的限制也不多，因此接下來的工作就是挑一份合適的條款了。</p>
+<p>程式碼的撰寫者對於釋出程式碼當然會有一些既定的想法，其中比較重要的有：</p>
+<ol>
+<li>程式碼與一些付隨文件一同釋出，</li>
+<li>要顯名，</li>
+<li>希望原始碼可以一直維持開放的狀態，</li>
+<li>但又不想要 copyleft 那樣強烈的感染性。</li>
+</ol>
+<p><br />上述第 4 項將 GPL 類的給剔除，第 3 項將 BSD 類給剔除，剩下的就只考慮 MPL 類或其他不可規類的條款。分析到這邊，我自己選擇條款的因素還多一項：未來與其他程式的融合度！這方面考量上，一方面他人程式碼的四份條款中 MPL 類的就佔了兩項，另外一方面經詢問過開發團隊，顯示未來這個釋出案直接相關的程式領域仍應該大多是採用 MPL 類授權，所以在融合度上我比較傾向於 MPL 類條款。只是要選擇 MPL 類中的哪一份呢？身為一個臺灣本土專案，當然不可以選到在法院管轄權在國外，或者準據法是外國法的條款，大多數的 MPL 類條款因為都有特定的國外法院管轄與外國法準據法規定，所以都不適合當作臺灣釋出案的條款。我曾在上個月的電子報文章中表示偏好 CDDL 這份條款（註二），再加上 CDDL 並不會影響 MPL-1.0 與 SPL-1.0 程式碼的運用，這些條款彼此相容，因此我強烈建議採用 CDDL 來釋出自己所寫的程式碼。至於顯名這一點，其實任何一份條款均要求要保留著作權聲明，這樣的要求就已經可以達到相當程度的顯名效果，CDDL 當然也有這樣的規定。所以CDDL可以說是我當時心目中的最佳選擇與答案。不過，到了這裡我卻漏掉了一個很重要的思考點：GPL 的高知名度與被廣泛運用的程度。</p>
+<p>GPL 是最為知名的自由／開放源碼授權條款，甚至被視為「自由軟體運動憲法」，許多開發者對於自由／開放源碼的認知因此僅侷限在 GPL，非 GPL 的專案不會想要參與，只專挑 GPL 授權的專案參與。此外，採用 GPL-2.0 授權的 Linux 作業系統使用廣泛，造成許多與之相關的程式也採用 GPL 授權，未來這件釋出案程式碼也有可能與 GPL 程式碼結合開發，為了避免喪失掉與 GPL 程式碼結合開發的可能性，再加上前述理由，所以採用 GPL 授權似乎是件不得不為之的事情了！只是，GPL 具有感染性，一方面可能因此會有些未知的疑惑與困擾產生，另外一方面，也可能會侷限釋出案程式碼在直接相關領域的運用，因為直接相關領域的程式碼大多採用 MPL 類授權，而 MPL 類與 GPL 類的條款是互不相容的，所以若只用 GPL 授權並非完美。</p>
+<p>所以，各位想想究竟應該有一個怎麼樣的授權方式，來兼顧到所有的好處呢？我目前想到的是用 GPL-3.0/CDDL 來雙重授權自己寫的程式碼，也就是讓下載程式碼之人自行決定，這些程式碼是要用 CDDL 或是 GPL 授權！若是下載者運用的領域大多為 MPL 類的授權條款，可以選擇 CDDL 授權，若是運用的領域以 GPL 類授權條款居多，就可以選擇 GPL-3.0 授權。</p>
+<p>整個釋出案討論到這裡，其實我是深深地震被憾到，深深地被 GPL 這樣的影響力給震憾到！即使早已經知道 GPL 如明星般的知名度與受歡迎程度，以及它被廣泛運用的程度，但是只有當親自面臨到「必須選擇 GPL」來授權的情況時，才會深刻地感受到 GPL 如此強大的影響力，尤其當相對被比下的選項是我自己偏好的 CDDL 時，那種感覺當然強烈。</p>
+<p>不過這件釋出案尚未最後定案，仍與開發團隊討論溝通中，最後究竟會討論出一個什麼樣的模式來授權這些自己寫的程式碼，連我自己也非常期待，就請各位拭目以待吧！</p>
+<p> </p>
+<hr />
+<p>註一：這些條款的內文請自<a href="https://www.opensource.org/licenses/" target="_blank">下列網址</a>中查閱。</p>
+<p>註二：<a href="index.php%3Foption=com_content&amp;task=view&amp;id=1348&amp;Itemid=56.html" target="_blank">葛冬梅，CDDL：MPL 的衍生條款</a>，開放鑄造場電子報，第 95 期。</p>
+<p>註三：<a href="https://www.dwheeler.com/essays/gpl-compatible.html" target="_blank">David A. Wheeler, Make Your Open Source Software GPL-Compatible. Or Else</a>., last visited Januar 23 2008（感謝 Jserv 提供此份資料）。</p>
+			<!-- Show relate article -->
+				<!-- end -->
+		<div class="article_note">
+		<!-- Add tags use metakey, and show OSSF Newsletter tag: OSSFNL+NUM-->
+		<br><br> <hr style='border: 1px dashed #D2DADB;'><b>OSSF Newsletter&nbsp;:</b>&nbsp;<a href='previous-issue%3Ftask=view&amp;id=415.html'>第 97 期 OSSF 電子報祝各位：鼠年行大運  好運鼠不完！</a><br><b>Tags:</b>&nbsp;<a href='index.php%3Foption=com_search&amp;Itemid=58&amp;searchphrase=exact_meta&amp;ordering=newest&amp;searchword=Coder&#32;必讀.html'>Coder 必讀</a>,&nbsp;&nbsp;<a href='index.php%3Foption=com_search&amp;Itemid=58&amp;searchphrase=exact_meta&amp;ordering=newest&amp;searchword=&#32;三分法.html'> 三分法</a>,&nbsp;&nbsp;<a href='index.php%3Foption=com_search&amp;Itemid=58&amp;searchphrase=exact_meta&amp;ordering=newest&amp;searchword=&#32;授權選擇.html'> 授權選擇</a>,&nbsp;&nbsp;<a href='index.php%3Foption=com_search&amp;Itemid=58&amp;searchphrase=exact_meta&amp;ordering=newest&amp;searchword=&#32;CDDL.html'> CDDL</a>,&nbsp;&nbsp;<a href='index.php%3Foption=com_search&amp;Itemid=58&amp;searchphrase=exact_meta&amp;ordering=newest&amp;searchword=&#32;GPL.html'> GPL</a>,&nbsp;&nbsp;<a href='index.php%3Foption=com_search&amp;Itemid=58&amp;searchphrase=exact_meta&amp;ordering=newest&amp;searchword=&#32;MPL.html'> MPL</a>,&nbsp;&nbsp;				<!-- End -->
+					<br>
+					<b>Category: </b><a href="en/legal-column-list.html">				Legal Column					</a>				</div>
+			 <!-- AddThis Button BEGIN ID 3001 is the front page article -->
+     			<br><br>
+       <div class="addthis_toolbox addthis_default_style addthis_32x32_style">
+       <a class="addthis_button_preferred_1"></a>
+       <a class="addthis_button_preferred_2"></a>
+       <a class="addthis_button_preferred_3"></a>
+       <a class="addthis_button_preferred_4"></a>
+       <a class="addthis_button_compact"></a>
+       <a class="addthis_counter addthis_bubble_style"></a>
+       </div>
+       <script type="text/javascript">var addthis_config = {"data_track_clickback":true};</script>
+       <script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js#pubid=openfoundry"></script>
+       <!-- AddThis Button END -->
+     <br>
+		<div class="totop" ><a class="rt-totop" href="index.php%3Foption=com_content&amp;task=view&amp;id=1404&amp;Itemid=56.html#" style="outline: medium none;">↑ Top</a></div>
+            <!-- AddThis Button END -->
+
+			</div>
+</div>
+
+		                            </div>
+									<div class="clear"></div>
+								</div>
+								<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+							</div>
+							</div>
+                                                    </div>
+                                            </div>
+                                <div class="rt-grid-3 rt-pull-9">
+                <div id="rt-sidebar-a">
+                                    <div class="square4">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<ul class="menu"><li id="current" class="active item56"><a href="en/previous-issue.html"><span>Previous Issue</span></a></li><li class="item55"><a href="en/about-newsletter.html"><span>About Newsletter</span></a></li></ul>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<ul class="menu"><li class="item115"><a href="en/foss-news.html"><span>FOSS News</span></a></li><li class="item141"><a href="en/case-job.html"><span>Case and Jobs</span></a></li></ul>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+        	                <div class="square1">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-title"><h2 class="title">Special</h2></div>
+						<div class="clear"></div>
+		                						<div class="module-content">
+		                	<ul class="menu"><li class="item37"><a href="en/tech-column.html"><span>Tech Column</span></a></li><li class="item40"><a href="en/foss-programs.html"><span>FOSS Programs</span></a></li><li class="item35"><a href="en/legal-column.html"><span>Legal Column</span></a></li><li class="item154"><a href="en/foss-forum.html"><span>FOSS Forum</span></a></li><li class="item162"><a href="en/enterprise-application.html"><span>Enterprise Application</span></a></li><li class="item44"><a href="en/foss-projects.html"><span>FOSS Projects</span></a></li></ul>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		                <div class="square1">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<p style="text-align: center;"><a href="news%3Fformat=feed&amp;type=rss" target="_black"><img src="images/M_images/news-rss-feed.png" border="0" /></a><br /><a href="https://www.openfoundry.org/rss-feed/Newsletter" target="_black"><img src="images/M_images/newsletter-rss-feed.png" border="0" /></a></p>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		
+                </div>
+            </div>
+
+                    <div class="clear"></div>
+                </div>
+            </div>
+																													</div>
+										<div id="rt-copyright">
+						<div class="rt-grid-12 rt-alpha rt-omega">
+                        <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<span class="nowrap">Open Source Software Foundry</span><span class="nowrap">‧</span><span class="nowrap"> </span><span class="nowrap">Best  Viewed with IE7.0 or Firefox2.0 above, 1024x768 Resolution. </span><strong>E-Mail</strong>：<a href="mailto:contact@openfoundry.org">contact@openfoundry.org</a> <br /><strong>Address</strong>：No.128, Sec.2, Academia Rd., Institute of Information Science, Academia Sinica, Nangang District, Taipei City 11529, Taiwan (R.O.C). <br /><a href="en/privacy-policy.html">Privacy Policy</a>. <a href="en/terms-of-use.html">Terms-of-use</a> <span style="position: relative; top: 8px; margin-top: -8px;"> <a href="about/8101.html"><img src="images/M_images/rss-feed-all.png" border="0" /></a></span>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+        	
+</div>
+						<div class="clear"></div>
+					</div>
+					<div class="rt-footer-bottom-wrap"><div class="rt-footer-bottom"><div class="rt-footer-bottom2"><div class="rt-footer-bottom3"></div></div></div></div>
+									</div></div></div>
+				<div class="rt-surround-bottom"><div class="rt-surround-bottom2"><div class="rt-surround-bottom3"></div></div></div>
+							</div>
+		</div>
+		<!--
+		<script id="aptureScript">
+						(function (){var a=document.createElement("script");a.defer="true";a.src="http://www.apture.com/js/apture.js?siteToken=vsJttrn";document.getElementsByTagName("head")[0].appendChild(a);})();
+     </script>
+-->
+
+<!-- Piwik -->
+<!-- 			<script type="text/javascript">
+			  var _paq = _paq || [];
+		  _paq.push(["trackPageView"]);
+		  _paq.push(["enableLinkTracking"]);
+
+		    (function() {
+			        var u=(("https:" == document.location.protocol) ? "https" : "https") + "://www.openfoundry.org/piwik/";
+				    _paq.push(["setTrackerUrl", u+"piwik.php"]);
+				    _paq.push(["setSiteId", "1"]);
+				        var d=document, g=d.createElement("script"), s=d.getElementsByTagName("script")[0]; g.type="text/javascript";
+				        g.defer=true; g.async=true; g.src=u+"piwik.js"; s.parentNode.insertBefore(g,s);
+					  })();
+		  </script> -->
+<!-- End Piwik Code -->
+	</body>
+</html>

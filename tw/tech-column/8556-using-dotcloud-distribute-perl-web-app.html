@@ -1,0 +1,768 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="zh-tw" lang="zh-tw" >
+<head>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<link rel="shortcut icon" href="../../images/favicon.ico" />
+	  <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+  <meta name="robots" content="index, follow" />
+  <meta name="keywords" content="DotCloud, Perl, Web App, programing in PaaS, platform as a service,OSSFNL766" />
+  <meta name="title" content="以 DotCloud 部署 Perl Web App" />
+  <meta name="description" content="前言 DotCloud 是個很新的 PaaS 供應商，與之前的 PaaS 系統相比，這一家所提供的平台其資料庫以及程式語言十分豐富，目前的支援列表包括了 Java、Perl、Python、Ruby、PHP、Node.JS、MySQL、PostgreSQL、Redis、MongoDB，目前的主流組合都可以滿足。 在 DotCloud 系統中，使用者需替 App 定義所需的服務節點（在" />
+  <meta name="generator" content="" />
+  <title>以 DotCloud 部署 Perl Web App - OpenFoundry</title>
+  <link href="../../favicon.ico" rel="shortcut icon" type="image/x-icon" />
+  <link rel="stylesheet" href="../../components/com_gantry/css/gantry.css" type="text/css" />
+  <link rel="stylesheet" href="../../components/com_gantry/css/grid-12.css" type="text/css" />
+  <link rel="stylesheet" href="../../components/com_gantry/css/joomla.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/joomla.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/style1.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/light-body.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/demo-styles.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/template.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/typography.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/fusionmenu.css" type="text/css" />
+  <style type="text/css">
+    <!--
+#rt-main-surround ul.menu li.active > a, #rt-main-surround ul.menu li.active > .separator, #rt-main-surround ul.menu li.active > .item, #rt-main-surround .square4 ul.menu li:hover > a, #rt-main-surround .square4 ul.menu li:hover > .item, #rt-main-surround .square4 ul.menu li:hover > .separator, .roktabs-links ul li.active span {color:#0088B5;}
+a, #rt-main-surround ul.menu a:hover, #rt-main-surround ul.menu .separator:hover, #rt-main-surround ul.menu .item:hover {color:#0088B5;}
+    -->
+  </style>
+  <script type="text/javascript" src="../../components/com_jcomments/js/jcomments-v2.1.js%3Fv=2"></script>
+  <script type="text/javascript" src="../../components/com_jcomments/libraries/joomlatune/ajax.js"></script>
+  <script type="text/javascript" src="../../media/system/js/mootools.js"></script>
+  <script type="text/javascript" src="../../media/system/js/caption.js"></script>
+  <script type="text/javascript" src="../../components/com_gantry/js/gantry-buildspans.js"></script>
+  <script type="text/javascript" src="../../components/com_gantry/js/gantry-inputs.js"></script>
+  <script type="text/javascript" src="../../templates/rt_quantive_j15/js/jquery.cookie.js"></script>
+  <script type="text/javascript" src="../../modules/mod_roknavmenu/themes/fusion/js/fusion.js"></script>
+  <script type="text/javascript" src="../../modules/mod_ofssologin/js/ofssologin.js"></script>
+  <script type="text/javascript">
+
+			window.addEvent('domready', function() {
+				var modules = ['rt-block'];
+				var header = ['h3','h2','h1'];
+				GantryBuildSpans(modules, header);
+			});
+		InputsExclusion.push('.content_vote','#rt-popup')
+		        window.addEvent('load', function() {
+					new Fusion('ul.menutop', {
+						pill: 0,
+						effect: 'slide and fade',
+						opacity: 1,
+						hideDelay: 500,
+						centered: 0,
+						tweakInitial: {'x': -2, 'y': 0},
+        				tweakSubsequent: {'x': 0, 'y': -14},
+						menuFx: {duration: 200, transition: Fx.Transitions.Sine.easeOut},
+						pillFx: {duration: 400, transition: Fx.Transitions.Back.easeOut}
+					});
+	            });
+  </script>
+<!-- <script type="text/javascript" src="/sso/javascripts/langsync.js"></script> -->
+<!-- <script src="/templates/rt_quantive_j15/js/ossf.js"></script> -->
+<script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-4136519-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
+</head>
+	<body  class="backgroundlevel-low backgroundstyle-style8 bodylevel-med bodystyle-light cssstyle-style1 logostyle-dark font-family-helvetica font-size-is-default menu-type-fusionmenu col12 ">
+		<div id="rt-main-background">
+			<div class="rt-container">
+																<div id="rt-header">
+					<div class="rt-grid-7 rt-alpha">
+    			<div class="rt-block">
+    	    	<a href="../../index.html" id="rt-logo"></a>
+    		</div>
+	    
+</div>
+<div class="rt-grid-5 rt-omega">
+                    <div class="square9">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<div class="ofssologin_square9"><a href="../../index.html">登入</a>&nbsp;&nbsp|&nbsp;&nbsp;<span><a href="../../en/tech-column/8556-using-dotcloud-distribute-perl-web-app.html" ><span lang="en" xml:lang="en">English</span></a></li></ul></span><!--Joom!fish V2.0.4 (Lightning)-->
+<!-- &copy; 2003-2009 Think Network, released under the GPL. -->
+<!-- More information: at http://www.joomfish.net -->
+<div class="ofssologin_search_square9">
+  <form id="of_search" action="https://www.openfoundry.org/of/openfoundry/search" method="get" onsubmit="of_search(); return false;">
+    <select id="of_search_type">
+      <option value="Projects"> 專案 </option>
+      <option value="Content"> 文章 </option>
+      <option value="People"> 人才 </option>
+    </select>
+    <input id="query" name="query" id="mod_search_searchword" maxlength="50" alt="search" class="inputbox" type="text" size="28" value="search..."  onblur="if(this.value=='') this.value='search...';" onfocus="if(this.value=='search...') this.value='';" />
+    <input type="hidden" name="commit" value="search" />
+  </form>
+</div></div>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		
+</div>
+					<div class="clear"></div>
+				</div>
+																<div id="rt-navigation"><div id="rt-navigation2"><div id="rt-navigation3">
+					
+<div class="nopill">
+	<ul class="menutop level1 " >
+						<li class="item1 root" >
+					<a class="orphan item bullet" href="../../index.html"  >
+				<span>
+			    				首頁				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item32 root" >
+					<a class="orphan item bullet" href="../../archived.html"  >
+				<span>
+			    				專案				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item186 root" >
+					<a class="orphan item bullet" href="../community.html"  >
+				<span>
+			    				Who&#039;s Who				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item4 root" >
+					<a class="orphan item bullet" href="../news.html"  >
+				<span>
+			    				新聞				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item5 root" >
+					<a class="orphan item bullet" href="../law-and-licensing.html"  >
+				<span>
+			    				法律源地				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item3 root" >
+					<a class="orphan item bullet" href="../activities.html"  >
+				<span>
+			    				活動				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item2 root" >
+					<a class="orphan item bullet" href="../resourcecatalog%3FName=Value.html"  >
+				<span>
+			    				資源表列				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item45 root" >
+					<a class="orphan item bullet" href="../about.html"  >
+				<span>
+			    				關於				   
+				</span>
+			</a>
+			
+			
+	</li>	
+				</ul>
+</div>
+
+				    <div class="clear"></div>
+				</div></div></div>
+								<div class="rt-surround"><div class="rt-surround2"><div class="rt-surround3">
+										<div id="rt-showcase-section">
+												<div id="rt-showcase">
+							<div class="rt-grid-12 rt-alpha rt-omega">
+    		<div class="clear"></div>
+		
+		
+                <div class="close-note">
+                    <div class="rt-block">
+               					<div class="module-content">
+                	<div style="font-size:medium; background-image:linear-gradient(120deg,#159957,#4298b2);color:white;padding:20px;margin:-10px -18px;">感謝您對「自由軟體鑄造場」的支持與愛護，十多年來「自由軟體鑄造場」受中央研究院支持，並在資訊科學研究所以及資訊科技創新研究中心執行，現已完成階段性的任務。 本網站預計持續維運至 2021年底，網站內容基本上不會再更動。<br />也紀念我們永遠的朋友 李士傑先生（Shih-Chieh Ilya Li）。</div>				</div>
+            </div>
+                </div>
+		
+</div>
+							<div class="clear"></div>
+						</div>
+																	</div>
+															<div id="rt-main-surround">
+												<div id="rt-breadcrumbs">
+								<div class="rt-breadcrumb-surround">
+		<a href="../../index.html" id="breadcrumbs-home"></a>
+		<span class="breadcrumbs pathway">
+<a href="../tech-column.html" class="pathway">技術專欄</a> <img src="../../templates/rt_quantive_j15/images/arrow.png" alt=""  /> <span class="no-link">以 DotCloud 部署 Perl Web App</span></span>
+	</div>
+	
+							<div class="clear"></div>
+						</div>
+																							              <div id="rt-main" class="sa3-mb9">
+                <div class="rt-main-inner">
+                    <div class="rt-grid-9 rt-push-3">
+                                                <div class="rt-block">
+                            							<div class="square1">
+							<div class="rt-module-surround">
+								<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+								<div class="rt-module-inner">
+		                            <div id="rt-mainbody">
+		                                
+<div class="rt-joomla ">
+	<div class="rt-article">
+		
+				<div class="rt-headline"><h1 class="rt-article-title">以 DotCloud 部署 Perl Web App</h1>		</div>
+		<div class="clear"></div>
+		
+		
+		
+				<div class="rt-articleinfo">
+						<div class="rt-article-icons">
+								<a href="8556-using-dotcloud-distribute-perl-web-app%3Ftmpl=component&amp;print=1&amp;layout=default&amp;page=.html" title="列印" onclick="window.open(this.href,'win2','status=no,toolbar=no,scrollbars=yes,titlebar=no,menubar=no,resizable=yes,width=640,height=480,directories=no,location=no'); return false;" rel="nofollow"><span class="icon print"></span></a>																</div>
+			
+			<span class="rt-date-posted">
+						建立日期			2011-12-22 09:22						&nbsp;&nbsp;&nbsp;&nbsp;						最近更新在 2011-12-22 12:02						</span>
+
+						<span class="rt-author">
+				作者是 Gugod			</span>
+				
+					</div>
+		
+		
+		<h3>前言</h3>
+<p><a href="https://dotcloud.com" target="_blank">DotCloud</a> 是個很新的 PaaS 供應商，與之前的 PaaS 系統相比，這一家所提供的平台其資料庫以及程式語言十分豐富，目前的<a href="https://docs.dotcloud.com/services/roadmap" target="_blank">支援列表</a>包括了 Java、Perl、Python、Ruby、PHP、Node.JS、MySQL、PostgreSQL、Redis、MongoDB，目前的主流組合都可以滿足。</p>
+<p>在 DotCloud 系統中，使用者需替 App 定義所需的服務節點（在 DotCloud 網站中，稱為 "Stack" 或 "Service"，因 Stack 意義為「堆疊」，容易造成混淆，在本中以一般分散式計算所用的名詞「節點」或「服務節點」代稱之）。例如，一個需要 Perl 與 MySQL 組合的 App，就需要建立兩個服務節點，其一負責執行 Perl 程式，其二則運行 MySQL。爾後如需擴增規模，可視實際負載情況選擇增加 Perl 節點或是 MySQL 節點。若需要替 App 增加頁面快取，可選擇增加 Static 節點（只存靜態檔案），並配合 Perl Worker 節點在背景產生靜態頁面。</p>
+<p>作為替 Web App 特別打造的服務平台，DotCloud 獨特的彈性可見一斑。</p>
+<h3>準備開始</h3>
+<p>到 <a href="https://dotcloud.com" target="_blank">DotClout</a> 申請免費帳號之後，便可以開啟 2 個節點，足夠一般試用評估。申請完畢後，需到<a href="https://www.dotcloud.com/accounts/settings" target="_blank">設定頁</a>取得 API Key，會在之後的步驟中用到。</p>
+<p>所有的節點控制，是透過一個叫做 <code>dotcloud</code> 的命令列指令進行，這個指令是個 python 程式，需要透過 pip 來安裝，因此系統中必須先安裝 python，之後需用 <code>pip</code> 來裝 dotcloud：</p>
+<pre><code>sudo easy_install pip &amp;&amp; sudo pip install dotcloud
+
+</code></pre>
+<p>安裝後直接執行，會要求輸入 API Key。</p>
+<pre><code>$ dotcloud
+Enter your api key (You can find it at https://www.dotcloud.com/account/settings):
+</code></pre>
+<p>此後執行便不必再度設定 API Key，設定檔會存在 <code>~/.dotcloud</code> 目錄中。</p>
+<p><code>dotcloud</code> 這個指令有許多小命令，比較常用的有：</p>
+<pre><code>list      列出目前開了哪些服務節點
+push      上傳最新程式碼
+rollback  回復到前一版
+alias     設定網址別名
+logs      讀 Server 端最新的 HTTP log
+info      顯示 App 服務節點基本資料
+status    顯示 App 服務節點目前上線狀態
+ssh       登入服務節點
+</code></pre>
+<p>每個命令都可加上 <code>-h</code> 參數，會顯示詳細說明。執行 <code>dotcloud -h</code> 也會有完整的命令列表。</p>
+<h3>建立靜態頁面 Web App</h3>
+<p>先看看如何建立一個單純提供檔案的靜態 App，在 DotCloud 文件中，這稱為「Static」。</p>
+<p>首先要先向 DotCloud 系統建立 App，假設專案名叫做 <code>helloapp</code>，就執行以下指令：</p>
+<pre><code>dotcloud create helloapp
+
+</code></pre>
+<p>接著要替 App 開個專案目錄放置網頁靜態檔案，假設名為 <code>"hello"</code>，並在此目錄中建立名為 <code>dotcloud.yml</code> 的設定檔案，列出如下：</p>
+<pre><code>hello/
+hello/dotcloud.yml
+hello/index.html
+</code></pre>
+<p>其中 <code>dotcloud.yml</code> 的內容為：</p>
+<pre><code>www:
+  type: static
+</code></pre>
+<p>這個檔案的格式是 <a href="https://yaml.org" target="_blank">YAML</a>，其目的是定義：本 Hello App 需要一個名為「www」的節點，所需的服務型別為「static」，所需的檔案都放在本目錄中（就是 <code>dotcloud.yml</code> 的所在目錄）。</p>
+<p>假設 <code>index.html</code> 的內容為（就是 HTML Hello World 範例）：</p>
+<pre><code>
+
+    Hello World!
+
+</code></pre>
+<p>到此已經準備完畢，接著就是把這個 App 上線了，執行：</p>
+<pre><code>cd hello/ # （必需在 `dotcloud.yml` 所在目錄執行）
+dotcloud push helloapp
+</code></pre>
+<p>這樣就行了，<code>dotcloud</code> 指令會自動利用 <code>rsync</code> 或 <code>git</code> 上傳整個 <code>hello</code> 資料夾，並且啟動伺服器，自動產生專用的網址。</p>
+<h3>建立 Perl Web App</h3>
+<p>要建立 Perl Web App，需以 <a href="https://metacpan.org/module/PSGI" target="_blank">PSGI</a> 規格實做，不是 CGI。以 Hello World 為例的話，就算不用任何 MVC Web Framework，所需要的程式碼也相當簡單。在專案目錄中需要準備以下兩個檔案：</p>
+<pre><code>hello/app.psgi
+hello/dotcloud.yml
+
+</code></pre>
+<p><code>app.psgi</code> 內容為</p>
+<pre><code>sub {
+    return [
+        '200',
+        [ 'Content-Type' =&gt; 'text/html ],
+        [ "Hello World!" ]
+    ];
+}
+</code></pre>
+<p><code>dotcloud.yml</code> 內容為</p>
+<pre><code>app:
+  type: perl
+</code></pre>
+<p>同樣的，做完之後執行 <code>push</code> 命令就可以將 App 上線了：</p>
+<pre><code>cd hello/
+dotcloud push helloapp
+
+</code></pre>
+<p>為了團隊合作方便，我們終究會需要使用某個 Web Framework，時至今日，Perl 社群中大部份的 Web Framework 都支援 PSGI。<a href="https://perldancer.org/" target="_blank">Dancer</a> 或 <a href="https://mojolicio.us/" target="_blank">Mojoliciou</a> 都是很新穎又容易上手的選擇。</p>
+<h3>替 Perl Web App 加上 MySQL</h3>
+<p>實際的應用中，多半會使用某種資料庫來儲存各種資料，以下以 MySQL 為例，簡介如何使用 DotCloud 所提供的 MySQL 服務節點，用 Perl 與 MySQL 實做出一個簡易留言版，並部署到 DotCloud。使用 <a href="https://perldancer.org/" target="_blank">Dancer</a> 作為範例。</p>
+<p>Dancer 可以透過 CPAN 來安裝：</p>
+<pre><code>cpan -i Dancer
+</code></pre>
+<p>完畢之後，先以 dancer 指令建立留言版 App 專案，名稱定為 EasyBoard：</p>
+<pre><code>$ dancer -a EasyBoard
+</code></pre>
+<p>Dancer 會開好目錄，並自動生成基本架構所需的程式碼以及預設的設定。執行以下命令，就可以啟動本機開發用的 App 伺服器，位於 <code>https://localhost:3000</code>：</p>
+<pre><code>cd EasyBoard; bin/app.pl
+
+</code></pre>
+<p>接下來，在專案目錄中寫好 <code>dotcloud.yml</code>，這次有兩個節點：</p>
+<pre><code># EasyBoard/dotcloud.yml
+app:
+  type: perl
+db:
+  type: mysql
+</code></pre>
+<p>DotCloud 的 Perl 節點，需要使用者提供 <code>app.psgi</code> 這個檔案，Dancer 預設並沒有生成這個檔案，但也很容易解決：</p>
+<pre><code>echo "require 'bin/app.pl';" &gt; app.psgi
+</code></pre>
+<p>此外要修改一下 <code>Makefile.PL</code>，把 <code>Plack</code> 加入 <code>PREREQ_PM</code> 當中：</p>
+<pre><code>PREREQ_PM =&gt; {
+    'Test::More' =&gt; 0,
+    'YAML'       =&gt; 0,
+    'Dancer'     =&gt; 1.3080,
+    'Plack'      =&gt; 0.9985
+},
+
+</code></pre>
+<p>雖然還沒有寫真正的程式碼，但到此就算基本準備完成了，可以立刻將 App 部署到 DotCloud。首先要建立 App（dotcloud 限制 App 名稱中的英文全要用小寫）：</p>
+<pre><code>dotcloud create easyboard
+</code></pre>
+<p>然後上傳程式碼：</p>
+<pre><code>dotcloud push easyboard
+</code></pre>
+<p>在上傳的過程中，可以看見訊息顯示在 <code>app.0</code> 這個節點有安裝 CPAN 模組的過程，首次執行的話，可能會花上一小段時間，但通常不會太久。等做完後，會得到類似以下訊息報告 App 的網址：</p>
+<pre><code>Deployment finished. Your application is available at the following URLs
+app: https://easyboard-gugod.dotcloud.com/
+</code></pre>
+<p>這時可以先用瀏覽器打開此網址確認一下畫面。看到 Dancer 預設的歡迎畫面的話，就表示成功了。</p>
+<p>在 Perl 的許多 Web Framework 中，都不包含「Model」的部份，因為早在 MVC Web Framework 風行之前，CPAN 上就已經有為數眾多的 ORM 系模組，Web Programmer 只要選用就可以了，因此多數的Perl Web Framework 並不特別再多做新的 ORM。</p>
+<h4>熟悉環境</h4>
+<p>dotcloud 有指令可以讓開發者取得 mysql 節點的一些資訊，執行：</p>
+<pre><code>dotcloud info easyboard.db
+</code></pre>
+<p>會輸出如下：</p>
+<pre><code>&gt;  dotcloud info easyboard.db
+config:
+    mysql_masterslave: true
+    mysql_password: E6oPYcv96CQbsbUY1GSK
+created_at: 1323387548.1464889
+datacenter: Amazon-us-east-1d
+image_version: 1120eda9aa82 (latest)
+instances:
+    easyboard.db.0:
+        role: master
+        state: up
+ports:
+-   name: ssh
+    url: ssh://
+ <script language='JavaScript' type='text/javascript'>
+ <!--
+ var prefix = 'm&#97;&#105;lt&#111;:';
+ var suffix = '';
+ var attribs = '';
+ var path = 'hr' + 'ef' + '=';
+ var addy55575 = 'mysql' + '&#64;';
+ addy55575 = addy55575 + '&#101;&#97;syb&#111;&#97;rd-g&#117;g&#111;d' + '&#46;' + 'd&#111;tcl&#111;&#117;d' + '&#46;' + 'c&#111;m';
+ document.write( '<a ' + path + '\'' + prefix + addy55575 + suffix + '\'' + attribs + '>' );
+ document.write( addy55575 );
+ document.write( '<\/a>' );
+ //-->
+ </script> <script language='JavaScript' type='text/javascript'>
+ <!--
+ document.write( '<span style=\'display: none;\'>' );
+ //-->
+ </script>這個 E-mail 地址已經被防止灌水惡意程式保護，您需要啟用 Java Script 才能觀看
+ <script language='JavaScript' type='text/javascript'>
+ <!--
+ document.write( '</' );
+ document.write( 'span>' );
+ //-->
+ </script>:19668
+-   name: mysql
+    url: mysql://root:
+ <script language='JavaScript' type='text/javascript'>
+ <!--
+ var prefix = 'm&#97;&#105;lt&#111;:';
+ var suffix = '';
+ var attribs = '';
+ var path = 'hr' + 'ef' + '=';
+ var addy79824 = 'p&#97;ssw&#111;rd' + '&#64;';
+ addy79824 = addy79824 + '&#101;&#97;syb&#111;&#97;rd-g&#117;g&#111;d' + '&#46;' + 'd&#111;tcl&#111;&#117;d' + '&#46;' + 'c&#111;m';
+ document.write( '<a ' + path + '\'' + prefix + addy79824 + suffix + '\'' + attribs + '>' );
+ document.write( addy79824 );
+ document.write( '<\/a>' );
+ //-->
+ </script> <script language='JavaScript' type='text/javascript'>
+ <!--
+ document.write( '<span style=\'display: none;\'>' );
+ //-->
+ </script>這個 E-mail 地址已經被防止灌水惡意程式保護，您需要啟用 Java Script 才能觀看
+ <script language='JavaScript' type='text/javascript'>
+ <!--
+ document.write( '</' );
+ document.write( 'span>' );
+ //-->
+ </script>:19667
+type: mysql
+
+</code></pre>
+<p>其中可以看到 <code>config</code> 中有 <code>mysql_password</code> 這一項，事實上，也可以直接連進 mysql console：</p>
+<pre><code>dotcloud run easyboard.db -- mysql -uroot -ppassword
+</code></pre>
+<p>輸出如下：</p>
+<pre><code>&gt;  dotcloud run easyboard.db -- mysql -uroot -ppassword
+# mysql -uroot -ppassword
+Welcome to the MySQL monitor.  Commands end with ; or \g.
+Your MySQL connection id is 34
+Server version: 5.1.41-3ubuntu12.10-log (Ubuntu)
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+mysql&gt;
+</code></pre>
+<p>基本上在程式中只要使用這裡提供的 mysql 主機、帳號密碼資訊就可以了，但是，沒有人會希望把帳號密碼直接用字串寫在程式碼裡，這樣是很不好的。DotCloud 平台對此提供的解決辨法，是將各節點設定值寫在 <code>/home/dotcloud/environment.json</code> 這個檔案中。開發人員必須修改一部份程式，檢查這個檔案是否存在，並解出其中變數的值。</p>
+<p>要快速條列出所有變數的方式，請執行下列指令：</p>
+<pre><code>dotcloud var list easyboard
+
+</code></pre>
+<p>輸出如下：</p>
+<pre><code>&gt;  dotcloud var list easyboard
+DOTCLOUD_APP_SSH_HOST=easyboard-gugod.dotcloud.com
+DOTCLOUD_APP_HTTP_HOST=easyboard-gugod.dotcloud.com
+DOTCLOUD_ENVIRONMENT=default
+DOTCLOUD_DB_SSH_HOST=easyboard-gugod.dotcloud.com
+DOTCLOUD_APP_HTTP_URL=https://easyboard-gugod.dotcloud.com/
+DOTCLOUD_DB_MYSQL_URL=mysql://root:
+ <script language='JavaScript' type='text/javascript'>
+ <!--
+ var prefix = 'm&#97;&#105;lt&#111;:';
+ var suffix = '';
+ var attribs = '';
+ var path = 'hr' + 'ef' + '=';
+ var addy82358 = 'p&#97;ssw&#111;rd' + '&#64;';
+ addy82358 = addy82358 + '&#101;&#97;syb&#111;&#97;rd-g&#117;g&#111;d' + '&#46;' + 'd&#111;tcl&#111;&#117;d' + '&#46;' + 'c&#111;m';
+ document.write( '<a ' + path + '\'' + prefix + addy82358 + suffix + '\'' + attribs + '>' );
+ document.write( addy82358 );
+ document.write( '<\/a>' );
+ //-->
+ </script> <script language='JavaScript' type='text/javascript'>
+ <!--
+ document.write( '<span style=\'display: none;\'>' );
+ //-->
+ </script>這個 E-mail 地址已經被防止灌水惡意程式保護，您需要啟用 Java Script 才能觀看
+ <script language='JavaScript' type='text/javascript'>
+ <!--
+ document.write( '</' );
+ document.write( 'span>' );
+ //-->
+ </script>:19667
+DOTCLOUD_APP_SSH_PORT=1282
+DOTCLOUD_DB_MYSQL_LOGIN=root
+DOTCLOUD_DB_MYSQL_PASSWORD=password
+DOTCLOUD_PROJECT=easyboard
+DOTCLOUD_DB_MYSQL_PORT=19667
+DOTCLOUD_DB_MYSQL_HOST=easyboard-gugod.dotcloud.com
+DOTCLOUD_DB_SSH_URL=ssh://
+ <script language='JavaScript' type='text/javascript'>
+ <!--
+ var prefix = 'm&#97;&#105;lt&#111;:';
+ var suffix = '';
+ var attribs = '';
+ var path = 'hr' + 'ef' + '=';
+ var addy48052 = 'mysql' + '&#64;';
+ addy48052 = addy48052 + '&#101;&#97;syb&#111;&#97;rd-g&#117;g&#111;d' + '&#46;' + 'd&#111;tcl&#111;&#117;d' + '&#46;' + 'c&#111;m';
+ document.write( '<a ' + path + '\'' + prefix + addy48052 + suffix + '\'' + attribs + '>' );
+ document.write( addy48052 );
+ document.write( '<\/a>' );
+ //-->
+ </script> <script language='JavaScript' type='text/javascript'>
+ <!--
+ document.write( '<span style=\'display: none;\'>' );
+ //-->
+ </script>這個 E-mail 地址已經被防止灌水惡意程式保護，您需要啟用 Java Script 才能觀看
+ <script language='JavaScript' type='text/javascript'>
+ <!--
+ document.write( '</' );
+ document.write( 'span>' );
+ //-->
+ </script>:19668
+DOTCLOUD_DB_SSH_PORT=19668
+DOTCLOUD_APP_SSH_URL=ssh://
+ <script language='JavaScript' type='text/javascript'>
+ <!--
+ var prefix = 'm&#97;&#105;lt&#111;:';
+ var suffix = '';
+ var attribs = '';
+ var path = 'hr' + 'ef' + '=';
+ var addy85482 = 'd&#111;tcl&#111;&#117;d' + '&#64;';
+ addy85482 = addy85482 + '&#101;&#97;syb&#111;&#97;rd-g&#117;g&#111;d' + '&#46;' + 'd&#111;tcl&#111;&#117;d' + '&#46;' + 'c&#111;m';
+ document.write( '<a ' + path + '\'' + prefix + addy85482 + suffix + '\'' + attribs + '>' );
+ document.write( addy85482 );
+ document.write( '<\/a>' );
+ //-->
+ </script> <script language='JavaScript' type='text/javascript'>
+ <!--
+ document.write( '<span style=\'display: none;\'>' );
+ //-->
+ </script>這個 E-mail 地址已經被防止灌水惡意程式保護，您需要啟用 Java Script 才能觀看
+ <script language='JavaScript' type='text/javascript'>
+ <!--
+ document.write( '</' );
+ document.write( 'span>' );
+ //-->
+ </script>:1282
+</code></pre>
+<p>主要會用到的，是 <code>DOTCLOUD_DB_MYSQL_HOST</code>、<code>DOTCLOUD_DB_MYSQL_POST</code>、<code>DOTCLOUD_DB_MYSQL_LOGIN</code>、<code>DOTCLOUD_DB_MYSQL_PASSWORD</code> 這四項。注意，DotCloud 並沒有自動替專案建出 App 所要用的資料庫，它只是先開好 MySQL 伺服器而已。而事實上，App 大可以在此伺服器上使用複數個資料庫。</p>
+<p>如果真有必要，每個節點都可以 ssh 進去管理，執行：</p>
+<pre><code> dotcloud ssh thegoodapp.data
+</code></pre>
+<p>就可以連進 thegoodapp 這個 app 之中名為 "data" 的節點。以本文的 easyboard app 為例，可以連進 "easyboard.app" 與 "easyboard.db" 兩個節點：</p>
+<pre><code> dotcloud ssh easyboard.app
+ dotcloud ssh easyboard.db
+
+</code></pre>
+<p>基本上，每個服務節點，都可視為一台獨立的主機，其中執行著自動設定好的伺服器。開發人員只要用一個設定檔，便可以指定要使用幾個節點，以及每個節點上要執行何種項目。徹底省下安裝時間，以及設定的麻煩。</p>
+<h4>程式主體</h4>
+<p>在了解環境之後，寫完程式自然就是時間問題了，在本例中刻意不使用 ORM，直接透過 DBI 與 SQL 來說明，ORM 的選擇留給讀者自行決定。為了不讓程式碼佔去太多篇幅，完整的範例程式可在以下網址取得，本文中只針對重點部份說明，請讀者對照本文與程式碼，便能理解：</p>
+<pre><code>https://github.com/gugod/EasyBoard
+</code></pre>
+<p>首先將資料庫準備好，先連到 mysql 建立好所需的資料庫與 Table：</p>
+<pre><code>dotcloud run easyboard.db -- mysql -uroot -ppassword
+</code></pre>
+<p>連進 mysql console 之後，輸入以下的 SQL 指令來建立資料庫與 Table：</p>
+<pre><code>set NAMES UTF8;
+create database easyboard;
+create table if not exists entries (
+    id integer primary key auto_increment,
+    name varchar(255) not null default 'Someone',
+    body text not null
+) DEFAULT CHARACTER SET = utf8 COLLATE = utf8_bin;
+</code></pre>
+<p>在 <code>lib/EasyBoard.pm</code> 開頭的部份可看見如下的程式片段，主要是在讀取 DotCloud 提供的設定值。</p>
+<pre><code>my $DOTCLOUD_ENV = undef;
+my $DOTCLOUD_ENV_FILE = "/home/dotcloud/environment.json";
+
+if (-f $DOTCLOUD_ENV_FILE) {
+    local $/ = undef;
+    open(my $fh, "&lt;", $DOTCLOUD_ENV_FILE) or die $!;
+    my $json = ;
+    $DOTCLOUD_ENV = JSON::decode_json($json);
+    close($fh);
+}
+</code></pre>
+<p>如果 DotCloud 的設定檔案存在，就會在程式啟動時被讀取。接下來便可以利用其中的設定值連接至資料庫。在其之後定義的 <code>database</code> 函式，會連到 mysql 並傳回 DBI Handle，如果在程式的 process 中已經連接上，便會重複使用這個DBI Handle 而不會重連。如果發現程式是處於 DotCloud 節點上，就會使用 DotCloud 的設定值，否則就連到本機的 mysql（是為開發模式）。</p>
+<pre><code>my $dbh;
+sub database {
+    return $dbh if $dbh;
+
+    my $dsn = "DBI:mysql:database=easyboard";
+    my ($user, $pass) = ("root", "");
+
+    if ($DOTCLOUD_ENV) {
+        $dsn .= ";host=" . $DOTCLOUD_ENV-&gt;{DOTCLOUD_DB_MYSQL_HOST};
+        $dsn .= ";port=" . $DOTCLOUD_ENV-&gt;{DOTCLOUD_DB_MYSQL_PORT};
+        $user = $DOTCLOUD_ENV-&gt;{DOTCLOUD_DB_MYSQL_LOGIN};
+        $pass = $DOTCLOUD_ENV-&gt;{DOTCLOUD_DB_MYSQL_PASSWORD};
+    }
+
+    $dbh = DBI-&gt;connect($dsn, $user, $pass, { mysql_auto_reconnect =&gt; 1, mysql_enable_utf8 =&gt; 1 })
+        or die "Fail to connect to db: $!";
+
+    $dbh-&gt;do("SET NAMES UTF8");
+    return $dbh;
+}
+
+database(); # connect to database on startup
+
+</code></pre>
+<p>Controller 與 View 的部份，就是去資料庫中取出留言板內容，與 DotCloud 無關，因此不多著墨。</p>
+<p>在 App 中使用到的 CPAN 模組，需在 <code>Makefile.PL</code> 中列舉。另外，也可以在 <code>dotcloud.yml</code> 中列出所需要的其他模組，範例如下：</p>
+<pre><code>app:
+  type: perl
+  requirements:
+    - Template::Toolkit
+    - JSON
+    - Dancer::Session::Cookie
+    - https://example.com/something/not/on/cpan/yet.tar.gz
+</code></pre>
+<p>這部份的設定是 DotCloud 專用，不過可以指定模組網址，如果需要安裝不在 CPAN 上的模組，便可利用此方法。</p>
+<p>所有程式準備完畢之後，執行 <code>dotcloud push easyboard</code> 便會將程式碼部署完畢。</p>
+<h3>結尾</h3>
+<p>DotCloud 是今年才開始營運的全新 PaaS 廠商，但到目前為止，其產品的便利性及完整度都令人十分讚嘆，所提供的說明文件也足夠一般開發人員參考。雖然目前提供的服務節點種類仍限於主流使用的幾種，但如 Erlang、CouchDB、ElasticSearch 等節點也將逐漸完成。對於只是想要試用、評估特定服務的開發人員來說，可以直接省去安裝伺服器軟體的時間。</p>
+			<!-- Show relate article -->
+				<!-- end -->
+		<div class="article_note">
+		<!-- Add tags use metakey, and show OSSF Newsletter tag: OSSFNL+NUM-->
+		<br><br> <hr style='border: 1px dashed #D2DADB;'><b>自由軟體鑄造場電子報&nbsp;:</b>&nbsp;<a href='../../previous-issue%3Ftask=view&amp;id=766.html'>第 187 期 PaaS：程式語言開發在雲端「Programming in Paas」（上）</a><br><b>標籤:</b>&nbsp;<a href='../../index.php%3Foption=com_search&amp;Itemid=58&amp;searchphrase=exact_meta&amp;ordering=newest&amp;searchword=DotCloud.html'>DotCloud</a>,&nbsp;&nbsp;<a href='../../index.php%3Foption=com_search&amp;Itemid=58&amp;searchphrase=exact_meta&amp;ordering=newest&amp;searchword=&#32;Perl.html'> Perl</a>,&nbsp;&nbsp;<a href='../../index.php%3Foption=com_search&amp;Itemid=58&amp;searchphrase=exact_meta&amp;ordering=newest&amp;searchword=&#32;Web&#32;App.html'> Web App</a>,&nbsp;&nbsp;<a href='../../index.php%3Foption=com_search&amp;Itemid=58&amp;searchphrase=exact_meta&amp;ordering=newest&amp;searchword=&#32;programing&#32;in&#32;PaaS.html'> programing in PaaS</a>,&nbsp;&nbsp;<a href='../../index.php%3Foption=com_search&amp;Itemid=58&amp;searchphrase=exact_meta&amp;ordering=newest&amp;searchword=&#32;platform&#32;as&#32;a&#32;service.html'> platform as a service</a>,&nbsp;&nbsp;				<!-- End -->
+					<br>
+					<b>分類: </b><a href="../tech-column.html">				技術專欄					</a>				</div>
+			 <!-- AddThis Button BEGIN ID 3001 is the front page article -->
+     			<br><br>
+       <div class="addthis_toolbox addthis_default_style addthis_32x32_style">
+       <a class="addthis_button_preferred_1"></a>
+       <a class="addthis_button_preferred_2"></a>
+       <a class="addthis_button_preferred_3"></a>
+       <a class="addthis_button_preferred_4"></a>
+       <a class="addthis_button_compact"></a>
+       <a class="addthis_counter addthis_bubble_style"></a>
+       </div>
+       <script type="text/javascript">var addthis_config = {"data_track_clickback":true};</script>
+       <script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js#pubid=openfoundry"></script>
+       <!-- AddThis Button END -->
+     <br>
+		<div class="totop" ><a class="rt-totop" href="8556-using-dotcloud-distribute-perl-web-app.html#" style="outline: medium none;">↑ Top</a></div>
+            <!-- AddThis Button END -->
+
+			</div>
+</div>
+
+		                            </div>
+									<div class="clear"></div>
+								</div>
+								<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+							</div>
+							</div>
+                                                    </div>
+                                            </div>
+                                <div class="rt-grid-3 rt-pull-9">
+                <div id="rt-sidebar-a">
+                                    <div class="square4">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<ul class="menu"><li class="item56"><a href="../previous-issue.html"><span>電子報總覽</span></a></li><li class="item55"><a href="../about-newsletter.html"><span>關於本報</span></a></li></ul>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<ul class="menu"><li class="item115"><a href="../foss-news.html"><span>源碼新聞</span></a></li><li class="item141"><a href="../case-job.html"><span>接案 / 工作</span></a></li></ul>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+        	                <div class="square1">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-title"><h2 class="title">專欄總覽</h2></div>
+						<div class="clear"></div>
+		                						<div class="module-content">
+		                	<ul class="menu"><li id="current" class="active item37"><a href="../tech-column.html"><span>技術專欄</span></a></li><li class="item40"><a href="../foss-programs.html"><span>源碼秘技</span></a></li><li class="item35"><a href="../legal-article-.html"><span>法律專欄</span></a></li><li class="item154"><a href="../foss-forum.html"><span>自由專欄</span></a></li><li class="item162"><a href="../enterprise-application.html"><span>企業應用</span></a></li><li class="item44"><a href="../foss-projects.html"><span>源碼專案</span></a></li></ul>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		                <div class="square1">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<p style="text-align: center;"><a href="../../news%3Fformat=feed&amp;type=rss" target="_black"><img src="../../images/M_images/news-rss-feed.png" border="0" /></a><br /><a href="https://www.openfoundry.org/rss-feed/Newsletter" target="_black"><img src="../../images/M_images/newsletter-rss-feed.png" border="0" /></a></p>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		
+                </div>
+            </div>
+
+                    <div class="clear"></div>
+                </div>
+            </div>
+																													</div>
+										<div id="rt-copyright">
+						<div class="rt-grid-12 rt-alpha rt-omega">
+                        <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<div id="desktop-mobile-version-switch"><span id="mobile-version" class="version-switch"><a href="8556-using-dotcloud-distribute-perl-web-app.html#">行動版</a></span></div>
+自由軟體鑄造場 製作 最佳瀏覽狀態：IE7或Firefox2.0以上 (建議使用Firefox) ‧ 解析度1024*768 <br /> <strong>E-Mail</strong>：<a href="mailto:contact@openfoundry.org">contact@openfoundry.org</a> <strong>Address</strong>：台北市南港區研究院路2段128號 中央研究院資訊科學研究所 . <a href="../../privacy-policy.html">隱私權條款</a>. <a href="../../terms-of-use.html">使用條款</a><span style="position: relative; top: 8px; margin-top: -8px;"> <a href="../../about/8101.html"><img src="../../images/M_images/rss-feed-all.png" border="0" /></a></span>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+        	
+</div>
+						<div class="clear"></div>
+					</div>
+					<div class="rt-footer-bottom-wrap"><div class="rt-footer-bottom"><div class="rt-footer-bottom2"><div class="rt-footer-bottom3"></div></div></div></div>
+									</div></div></div>
+				<div class="rt-surround-bottom"><div class="rt-surround-bottom2"><div class="rt-surround-bottom3"></div></div></div>
+							</div>
+		</div>
+		<!--
+		<script id="aptureScript">
+						(function (){var a=document.createElement("script");a.defer="true";a.src="http://www.apture.com/js/apture.js?siteToken=vsJttrn";document.getElementsByTagName("head")[0].appendChild(a);})();
+     </script>
+-->
+
+<!-- Piwik -->
+<!-- 			<script type="text/javascript">
+			  var _paq = _paq || [];
+		  _paq.push(["trackPageView"]);
+		  _paq.push(["enableLinkTracking"]);
+
+		    (function() {
+			        var u=(("https:" == document.location.protocol) ? "https" : "https") + "://www.openfoundry.org/piwik/";
+				    _paq.push(["setTrackerUrl", u+"piwik.php"]);
+				    _paq.push(["setSiteId", "1"]);
+				        var d=document, g=d.createElement("script"), s=d.getElementsByTagName("script")[0]; g.type="text/javascript";
+				        g.defer=true; g.async=true; g.src=u+"piwik.js"; s.parentNode.insertBefore(g,s);
+					  })();
+		  </script> -->
+<!-- End Piwik Code -->
+	</body>
+</html>

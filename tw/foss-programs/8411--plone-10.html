@@ -1,0 +1,406 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="zh-tw" lang="zh-tw" >
+<head>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<link rel="shortcut icon" href="../../images/favicon.ico" />
+	  <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+  <meta name="robots" content="index, follow" />
+  <meta name="keywords" content="OSSFNL753" />
+  <meta name="title" content="用自由軟體 Plone 來架設網站(10)－連接資料庫" />
+  <meta name="description" content="儘管 NoSQL 一度成為熱門話題，我們還是活在 SQL 世界裡，到處可見 RDBMS (Relational database management system) 作為資料服務的後端引擎，使用 ZODB (Zope Object Database) 的 Plone 該如何與 SQL 資料庫和平共處，必然是整合人員關心的議題。想要存取 SQL 資料庫，早期是透過 Database" />
+  <meta name="generator" content="" />
+  <title>用自由軟體 Plone 來架設網站(10)－連接資料庫 - OpenFoundry</title>
+  <link href="../../favicon.ico" rel="shortcut icon" type="image/x-icon" />
+  <link rel="stylesheet" href="../../components/com_gantry/css/gantry.css" type="text/css" />
+  <link rel="stylesheet" href="../../components/com_gantry/css/grid-12.css" type="text/css" />
+  <link rel="stylesheet" href="../../components/com_gantry/css/joomla.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/joomla.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/style1.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/light-body.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/demo-styles.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/template.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/typography.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/fusionmenu.css" type="text/css" />
+  <style type="text/css">
+    <!--
+#rt-main-surround ul.menu li.active > a, #rt-main-surround ul.menu li.active > .separator, #rt-main-surround ul.menu li.active > .item, #rt-main-surround .square4 ul.menu li:hover > a, #rt-main-surround .square4 ul.menu li:hover > .item, #rt-main-surround .square4 ul.menu li:hover > .separator, .roktabs-links ul li.active span {color:#0088B5;}
+a, #rt-main-surround ul.menu a:hover, #rt-main-surround ul.menu .separator:hover, #rt-main-surround ul.menu .item:hover {color:#0088B5;}
+    -->
+  </style>
+  <script type="text/javascript" src="../../components/com_jcomments/js/jcomments-v2.1.js%3Fv=2"></script>
+  <script type="text/javascript" src="../../components/com_jcomments/libraries/joomlatune/ajax.js"></script>
+  <script type="text/javascript" src="../../media/system/js/mootools.js"></script>
+  <script type="text/javascript" src="../../media/system/js/caption.js"></script>
+  <script type="text/javascript" src="../../components/com_gantry/js/gantry-buildspans.js"></script>
+  <script type="text/javascript" src="../../components/com_gantry/js/gantry-inputs.js"></script>
+  <script type="text/javascript" src="../../templates/rt_quantive_j15/js/jquery.cookie.js"></script>
+  <script type="text/javascript" src="../../modules/mod_roknavmenu/themes/fusion/js/fusion.js"></script>
+  <script type="text/javascript" src="../../modules/mod_ofssologin/js/ofssologin.js"></script>
+  <script type="text/javascript">
+
+			window.addEvent('domready', function() {
+				var modules = ['rt-block'];
+				var header = ['h3','h2','h1'];
+				GantryBuildSpans(modules, header);
+			});
+		InputsExclusion.push('.content_vote','#rt-popup')
+		        window.addEvent('load', function() {
+					new Fusion('ul.menutop', {
+						pill: 0,
+						effect: 'slide and fade',
+						opacity: 1,
+						hideDelay: 500,
+						centered: 0,
+						tweakInitial: {'x': -2, 'y': 0},
+        				tweakSubsequent: {'x': 0, 'y': -14},
+						menuFx: {duration: 200, transition: Fx.Transitions.Sine.easeOut},
+						pillFx: {duration: 400, transition: Fx.Transitions.Back.easeOut}
+					});
+	            });
+  </script>
+<!-- <script type="text/javascript" src="/sso/javascripts/langsync.js"></script> -->
+<!-- <script src="/templates/rt_quantive_j15/js/ossf.js"></script> -->
+<script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-4136519-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
+</head>
+	<body  class="backgroundlevel-low backgroundstyle-style8 bodylevel-med bodystyle-light cssstyle-style1 logostyle-dark font-family-helvetica font-size-is-default menu-type-fusionmenu col12 ">
+		<div id="rt-main-background">
+			<div class="rt-container">
+																<div id="rt-header">
+					<div class="rt-grid-7 rt-alpha">
+    			<div class="rt-block">
+    	    	<a href="../../index.html" id="rt-logo"></a>
+    		</div>
+	    
+</div>
+<div class="rt-grid-5 rt-omega">
+                    <div class="square9">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<div class="ofssologin_square9"><a href="../../index.html">登入</a>&nbsp;&nbsp|&nbsp;&nbsp;<span><a href="../../en/foss-programs/8411--plone-10.html" ><span lang="en" xml:lang="en">English</span></a></li></ul></span><!--Joom!fish V2.0.4 (Lightning)-->
+<!-- &copy; 2003-2009 Think Network, released under the GPL. -->
+<!-- More information: at http://www.joomfish.net -->
+<div class="ofssologin_search_square9">
+  <form id="of_search" action="https://www.openfoundry.org/of/openfoundry/search" method="get" onsubmit="of_search(); return false;">
+    <select id="of_search_type">
+      <option value="Projects"> 專案 </option>
+      <option value="Content"> 文章 </option>
+      <option value="People"> 人才 </option>
+    </select>
+    <input id="query" name="query" id="mod_search_searchword" maxlength="50" alt="search" class="inputbox" type="text" size="28" value="search..."  onblur="if(this.value=='') this.value='search...';" onfocus="if(this.value=='search...') this.value='';" />
+    <input type="hidden" name="commit" value="search" />
+  </form>
+</div></div>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		
+</div>
+					<div class="clear"></div>
+				</div>
+																<div id="rt-navigation"><div id="rt-navigation2"><div id="rt-navigation3">
+					
+<div class="nopill">
+	<ul class="menutop level1 " >
+						<li class="item1 root" >
+					<a class="orphan item bullet" href="../../index.html"  >
+				<span>
+			    				首頁				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item32 root" >
+					<a class="orphan item bullet" href="../../archived.html"  >
+				<span>
+			    				專案				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item186 root" >
+					<a class="orphan item bullet" href="../community.html"  >
+				<span>
+			    				Who&#039;s Who				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item4 root" >
+					<a class="orphan item bullet" href="../news.html"  >
+				<span>
+			    				新聞				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item5 root" >
+					<a class="orphan item bullet" href="../law-and-licensing.html"  >
+				<span>
+			    				法律源地				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item3 root" >
+					<a class="orphan item bullet" href="../activities.html"  >
+				<span>
+			    				活動				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item2 root" >
+					<a class="orphan item bullet" href="../resourcecatalog%3FName=Value.html"  >
+				<span>
+			    				資源表列				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item45 root" >
+					<a class="orphan item bullet" href="../about.html"  >
+				<span>
+			    				關於				   
+				</span>
+			</a>
+			
+			
+	</li>	
+				</ul>
+</div>
+
+				    <div class="clear"></div>
+				</div></div></div>
+								<div class="rt-surround"><div class="rt-surround2"><div class="rt-surround3">
+										<div id="rt-showcase-section">
+												<div id="rt-showcase">
+							<div class="rt-grid-12 rt-alpha rt-omega">
+    		<div class="clear"></div>
+		
+		
+                <div class="close-note">
+                    <div class="rt-block">
+               					<div class="module-content">
+                	<div style="font-size:medium; background-image:linear-gradient(120deg,#159957,#4298b2);color:white;padding:20px;margin:-10px -18px;">感謝您對「自由軟體鑄造場」的支持與愛護，十多年來「自由軟體鑄造場」受中央研究院支持，並在資訊科學研究所以及資訊科技創新研究中心執行，現已完成階段性的任務。 本網站預計持續維運至 2021年底，網站內容基本上不會再更動。<br />也紀念我們永遠的朋友 李士傑先生（Shih-Chieh Ilya Li）。</div>				</div>
+            </div>
+                </div>
+		
+</div>
+							<div class="clear"></div>
+						</div>
+																	</div>
+															<div id="rt-main-surround">
+												<div id="rt-breadcrumbs">
+								<div class="rt-breadcrumb-surround">
+		<a href="../../index.html" id="breadcrumbs-home"></a>
+		<span class="breadcrumbs pathway">
+<a href="../foss-programs.html" class="pathway">源碼秘技</a> <img src="../../templates/rt_quantive_j15/images/arrow.png" alt=""  /> <span class="no-link">用自由軟體 Plone 來架設網站(10)－連接資料庫</span></span>
+	</div>
+	
+							<div class="clear"></div>
+						</div>
+																							              <div id="rt-main" class="sa3-mb9">
+                <div class="rt-main-inner">
+                    <div class="rt-grid-9 rt-push-3">
+                                                <div class="rt-block">
+                            							<div class="square1">
+							<div class="rt-module-surround">
+								<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+								<div class="rt-module-inner">
+		                            <div id="rt-mainbody">
+		                                
+<div class="rt-joomla ">
+	<div class="rt-article">
+		
+				<div class="rt-headline"><h1 class="rt-article-title">用自由軟體 Plone 來架設網站(10)－連接資料庫</h1>		</div>
+		<div class="clear"></div>
+		
+		
+		
+				<div class="rt-articleinfo">
+						<div class="rt-article-icons">
+								<a href="8411--plone-10%3Ftmpl=component&amp;print=1&amp;layout=default&amp;page=.html" title="列印" onclick="window.open(this.href,'win2','status=no,toolbar=no,scrollbars=yes,titlebar=no,menubar=no,resizable=yes,width=640,height=480,directories=no,location=no'); return false;" rel="nofollow"><span class="icon print"></span></a>																</div>
+			
+			<span class="rt-date-posted">
+						建立日期			2011-08-05 09:49						&nbsp;&nbsp;&nbsp;&nbsp;						最近更新在 2012-02-17 10:12						</span>
+
+						<span class="rt-author">
+				作者是 marr			</span>
+				
+					</div>
+		
+		
+		<p style="margin-bottom: 0cm;">儘管 NoSQL 一度成為熱門話題，我們還是活在 SQL 世界裡，到處可見 RDBMS (Relational database management system) 作為資料服務的後端引擎，使用 ZODB (Zope Object Database) 的 Plone 該如何與 SQL 資料庫和平共處，必然是整合人員關心的議題。想要存取 SQL 資料庫，早期是透過 Database Adapter 直接建立連接，再用 Z SQL Method 建立存取邏輯的程式，最後由 Page Template 建立操作介面。<br /><br />除了 Database Adapter 之外，現在常見作法則是透過 SQLAlchemy 來連接，因為 SQLAlchemy 提供 Object-Relational-Mapper (ORM) 介面，讓 Python 程式員擁有更直覺的操作經驗。由於 RDBMS 的 transaction 系統必須和 Zope 搭配合作，SQLAlchemy 並不能直接在 Zope 裡面工作，必須藉由 zope.sqlalchemy 模組來整合。利用這些工具，本文將在 Plone 4.1 環境，分別以 MySQL 和 PostgreSQL 為範例，介紹幾種常見的資料庫結合方式。</p>
+
+<h3 style="margin-bottom: 0cm;"><span>整合原理</span></h3>
+<p style="margin-bottom: 0cm;"><br />以 Database Adapter 為例，它們屬於 Zope 系統的低階程式，和資料庫連接後，透過 Database Connection 和 Plone 應用程式互動，如圖1 所示。<br /><br /><a href="../../images/110809/plone10/01.png" target="_blank"><img src="../../images/110809/plone10/01.png" alt="01" height="357" border="0" width="400" /></a><br />▲ 圖1 Zope 和關聯式資料庫連接示意<br /><br />建立 Database Connection 後，通常再透過 Z SQL Method 存取資料庫，執行包括「查詢」、「新增」、「刪除」、「修改」的動作，執行結果再由 (Python) Script 或 Page Template 處理，最後產生成 HTML 給使用者，如圖2 所示。<br /><br /><a href="../../images/110809/plone10/02.png" target="_blank"><img src="../../images/110809/plone10/02.png" alt="02" height="375" border="0" width="500" /></a><br />▲ 圖2 透過 Z SQL Method 存取資料庫的示意<br /><br />系統可以存在多個 Z SQL Method 和 Database Connection，同時存取不同的資料庫內容。<br /><br /></p>
+<h3 style="margin-bottom: 0cm;">存取既有資料庫</h3>
+<p style="margin-bottom: 0cm;"><br />MySQL 是很常見的線上資料庫選項，Python 或 Plone 可以透過 MySQL-python 和 ZMySQLDA 來連接，安裝方式是在 develop.cfg 檔案裡指定 MySQL 的 python 函式庫，還有 [zmysqlda] 的設定值，如圖3 所示。<br /><br />註：由於 ZMySQLDA 未必追上 Zope2 的更新速度，有些變通的修改技巧，可私下討論，不在此文細述。<br /><br /><a href="../../images/110809/plone10/03.png" target="_blank"><img src="../../images/110809/plone10/03.png" alt="03" height="187" border="0" width="400" /></a><br />▲ 圖3 develop.cfg 設定 ZMySQLDA 範例<br /><br />成功啟動 Zope 後，在 ZMI 裡可以看到 Z MySQL Database Connection 的新增選項，如圖4 所示。<br /><br /><a href="../../images/110809/plone10/04.png" target="_blank"><img src="../../images/110809/plone10/04.png" alt="04" height="281" border="0" width="500" /></a><br />▲ 圖4 ZMI 下拉選單可新增 Z MySQL DC<br /><br />只需要在 Database Connection String 欄位，依序填寫 database user password 等參數，就能完成基本連結，如圖5 所示。<br /><br /><a href="../../images/110809/plone10/05.png" target="_blank"><img src="../../images/110809/plone10/05.png" alt="05" height="392" border="0" width="500" /></a><br />▲ 圖5 填寫 Z MySQL DC 連接字串<br /><br />進入 MySQL_database_connection 後，點選 Test 頁籤，在此可編寫 SQL 語法，直接管理 MySQL 資料庫表單，例如，在文字區塊中填寫建立表單的語法，如圖6 所示。<br /><br /><a href="../../images/110809/plone10/06.png" target="_blank"><img src="../../images/110809/plone10/06.png" alt="06" height="252" border="0" width="500" /></a><br />▲ 圖6 在 Test 頁籤執行 SQL 語法<br /><br />再點選 Submit Query 按鈕確認執行，系統回覆我們成功建立一個 dirbook 表格，如圖7 所示。<br /><br /><a href="../../images/110809/plone10/07.png" target="_blank"><img src="../../images/110809/plone10/07.png" alt="07" height="270" border="0" width="500" /></a><br />▲ 圖7 系統回應 MySQL 指令執行結果<br /><br />點選 Browse 頁籤，可顯示新建表單的狀況，如圖8 所示。<br /><br /><a href="../../images/110809/plone10/08.png" target="_blank"><img src="../../images/110809/plone10/08.png" alt="08" height="178" border="0" width="500" /></a><br />▲ 圖8 在 Browse 頁籤顯示表單狀況<br /><br />接著，可以繼續執行 SQL 語法來新增資料，如圖9 所示。<br /><br /><a href="../../images/110809/plone10/09.png" target="_blank"><img src="../../images/110809/plone10/09.png" alt="09" height="250" border="0" width="500" /></a><br />▲ 圖9 在 Test 頁籤執行新增資料<br /><br /></p>
+<h3 style="margin-bottom: 0cm;">建立 Z SQL Method</h3>
+<p style="margin-bottom: 0cm;"><br />假設 mysite 的 Plone 網站裡已建立一個 /mydirbook 目錄，我們在 ZMI 的 /mysite/mydirbook 裡，新增一個 Z SQL Method，如圖10 所示。<br /><br /><a href="../../images/110809/plone10/10.png" target="_blank"><img src="../../images/110809/plone10/10.png" alt="10" height="396" border="0" width="500" /></a><br />▲ 圖10 在 ZMI 新增 Z SQL Method<br /><br />編輯 Z SQL Method 的 Id 和 Connection Id 欄位，假設我們要建立查詢的程式，在 Query Template 欄位輸入查詢的 SQL 語法內容，如圖11 所示。留意不需要在語法最後加上「;」符號。<br /><br /><a href="../../images/110809/plone10/11.png" target="_blank"><img src="../../images/110809/plone10/11.png" alt="11" height="394" border="0" width="500" /></a><br />▲ 圖11 編輯 Z SQL Method 內容的範例<br /><br />同樣可以到 Test 頁籤，測試查詢結果，成功的話，畫面類似圖12 所示。<br /><br /><a href="../../images/110809/plone10/12.png" target="_blank"><img src="../../images/110809/plone10/12.png" alt="12" height="214" border="0" width="500" /></a><br />▲ 圖12 Z SQL Method 查詢結果範例<br /><br />再於 /mysite/mydirbook 裡新增 Z Search Interface，選擇上述建立的 query_search，填寫 Report Id 和 Report Style 欄位，並選擇 Generate Page Templates 為程式碼格式，如圖13 所示。<br /><br /><a href="../../images/110809/plone10/13.png" target="_blank"><img src="../../images/110809/plone10/13.png" alt="13" height="430" border="0" width="400" /></a><br />▲ 圖13 編輯 Z Search Interface 內容的範例<br /><br />此時，已經可以在 https://localhost:8080/mysite/mydirbook/result_search 之類的網址，看到資料庫查詢結果，不過，結果畫面還未跟 Plone 介面整合。<br /><br /></p>
+<h3 style="margin-bottom: 0cm;">與 Plone 頁面結合</h3>
+<p style="margin-bottom: 0cm;"><br />接著，我們需要修改 Search Interface 的 Page Template 內容，把上述的查詢結果，與 Plone 頁面結合。不過，預設的 Page Template 內容有多餘的 HTML 標籤：<br /><br />＜html＜body＞<br />＜html＞<br />· here/query_search;<br /> start request/start|python:0;<br /> batch python:modules['ZTUtils'].Batch(results,<br /> size=20,<br /> start=start);<br /> previous python:batch.previous;<br /> next python:batch.next"<br /><br />顯然的，多了一組標籤，請先刪除。<br /><br />我們將從最簡單的調整做起，把<span style="font-family: DejaVu Serif Condensed,serif;"> ＜div metal:fill-slot="main"</span><span style="font-family: DejaVu Serif Condensed,serif;">＞</span> 加在<span style="font-family: DejaVu Serif Condensed,serif;"> ＜html</span><span style="font-family: DejaVu Serif Condensed,serif;">＞ </span>與<span style="font-family: DejaVu Serif Condensed,serif;"> ＜body</span><span style="font-family: DejaVu Serif Condensed,serif;">＞ </span>之間，再把<span style="font-family: DejaVu Serif Condensed,serif;"> ＜/div</span><span style="font-family: DejaVu Serif Condensed,serif;">＞ 加在 </span><span style="font-family: DejaVu Serif Condensed,serif;">＜/body</span><span style="font-family: DejaVu Serif Condensed,serif;">＞ </span><span style="font-family: DejaVu Serif Condensed,serif;">與 </span><span style="font-family: DejaVu Serif Condensed,serif;">＜/html</span><span style="font-family: DejaVu Serif Condensed,serif;">＞</span><span style="font-family: DejaVu Serif Condensed,serif;"> 之間。完整的程式碼如下：<br /><br /></span><span style="font-family: DejaVu Serif Condensed,serif;">＜html xmlns="https://www.w3.org/1999/xhtml" xml:lang="en"</span><br /><span style="font-family: DejaVu Serif Condensed,serif;"> xmlns:tal="https://xml.zope.org/namespaces/tal"<br /> xmlns:metal="https://xml.zope.org/namespaces/metal"<br /> xmlns:i18n="https://xml.zope.org/namespaces/i18n"<br /> lang="en"<br /> metal:use-macro="here/main_template/macros/master"<br /> i18n:domain="plone"</span><span style="font-family: DejaVu Serif Condensed,serif;">＞<br /></span><span style="font-family: DejaVu Serif Condensed,serif;">＜div metal:fill-slot="main"</span><span style="font-family: DejaVu Serif Condensed,serif;">＞</span> <span style="font-family: DejaVu Serif Condensed,serif;">＜body tal:define="results  here/query_search;</span> start request/start|python:0;                    batch python:modules['ZTUtils'].Batch(results,                                                           size=20,                                                           start=start);                    previous python:batch.previous;                    next python:batch.next"  <br /> tal:attributes="href string:${request/URL0}?start:int=${next/first}"<br /> href="/next_url"<br /><br /> <br /> ＜table border＞<br /> ＜tr＞<br /> ＜th＞Name＜/th＞<br /> ＜th＞Email＜/th＞<br /> ＜th＞Tel＜/th＞<br /> ＜/tr＞<br /> <br /> ＜tal:x repeat="result batch" ＞<br /> <br /> ＜tr＞<br /> ＜td＞＜span tal:replace="result/name"＞name goes here＜/span＞＜/td＞<br /> ＜td＞＜span tal:replace="result/email"＞email goes here＜/span＞＜/td＞<br /> ＜td＞＜span tal:replace="result/tel"＞tel goes here＜/span＞＜/td＞<br /> ＜/tr＞<br /><br /> ＜/tal:x＞<br /><br /> ＜/table＞<br /> ＜p＞<br /> ＜a tal:condition="previous"<br /> tal:attributes="href string:${request/URL0}?start:int=${previous/first}"<br /> href="/previous_url"＞previous ＜span tal:replace="previous/length"＞20＜/span＞ results＜/a＞<br /> ＜a tal:condition="next"<br /> tal:attributes="href string:${request/URL0}?start:int=${next/first}"<br /> href="/next_url"＞next ＜span tal:replace="next/length"＞20＜/span＞ results＜/a＞<br /> ＜/p＞<br /><br /> ＜/body＞<br />＜/div＞<br />＜/html＞<br /><br /><br /><br />這樣就把 Z SQL Method 的執行結果與 Plone 頁面結合，如圖14 所示。<br /><br /><a href="../../images/110809/plone10/14.png" target="_blank"><img src="../../images/110809/plone10/14.png" alt="14" height="232" border="0" width="500" /></a><br />▲ 圖14 Z SQL Method 執行結果與頁面整合<br /><br />同步備份的場合<br /><br />另一個常見的應用方式，是備份 Plone 內容到 SQL 資料庫裡。安裝 ore.contentmirror 模組後，就能夠把 Plone 網站的內容，同步備份到 SQL 資料庫，這種方式特別適合全新的 Plone 網站，原本儲存到 ZODB 的內容資料，會同時儲存在 SQL 資料庫。<br /><br />ore.contentmirror 原則上支援所有 Archetypes 的內容，也支援各種常見的 SQL 資料庫，下列則以 Plone 4.1 環境搭配 PostgreSQL 作為範例。<br /><br />在 develop.cfg 設定檔裡，指定 eggs 和 zcml 設定值，並新增 [zopepy] 的設定內容，如圖15 所示。<br /><br /><a href="../../images/110809/plone10/15.png" target="_blank"><img src="../../images/110809/plone10/15.png" alt="15" height="350" border="0" width="400" /></a><br />▲ 圖15 安裝 contentmirror 的 develop.cfg 內容<br /><br />特別注意到 psycopg2 的安裝，它扮演 Database Driver 角色。<br /><br />接著，要執行設定步驟，先找到 ore.contentmirror 安裝的目錄位置，例如 buildout-cache/eggs/ore.contentmirror-0.7.1-py2.6.egg/ore/contentmirror 目錄，建立一個 settings.zcml 檔案，內容如圖16 所示。<br /><br /><a href="../../images/110809/plone10/16.png" target="_blank"><img src="../../images/110809/plone10/16.png" alt="16" height="153" border="0" width="500" /></a><br />▲ 圖16 settings.zcml 設定範例<br /><br />最重要的內容是＜ore:engine /＞裡的資料庫連接設定值，其中的 postgres:mypass 分別代表存取帳號和密碼，請自行配合修改，最後面的 ContentMirror 是資料庫名稱。<br /><br />接下來的步驟，是產生 SQL DDL/Schema 檔案，可藉由 mirror-ddl 工具程式來完成，原則上的指令內容如圖17 所示。<br /><br /><a href="../../images/110809/plone10/17.png" target="_blank"><img src="../../images/110809/plone10/17.png" alt="17" height="91" border="0" width="500" /></a><br />▲ 圖17 資料庫 Schema 建置的指令步驟範例<br /><br />不過，實際上很可能會遇到建置失敗的訊息，我們將嘗試下列的修改，把 mirror.sql 檔案裡的 DATETIME 改為 TIMESTAMP，如圖18 所示。<br /><a href="https://www.openfoundry.org/%20https:/www.openfoundry.org/images/110809/plone10/18.png" target="_blank"><img src="../../images/110809/plone10/18.png" alt="18" height="379" border="0" width="400" /></a><br />▲ 圖18 mirror.sql 內容範例<br /><br />同樣的原理，再把 mirror.sql 檔案裡的 BLOB 改為 BYTEA，如圖19 所示。<br /><br /><a href="../../images/110809/plone10/19.png" target="_blank"><img src="../../images/110809/plone10/19.png" alt="19" height="172" border="0" width="500" /></a><br />▲ 圖19 修改 BLOB 成為 BYTEA 的範例<br /><br />最後，再把 mirror.sql 檔案裡的 IN (0, 1) 改為 IN ('f', 't')，如圖20 所示。<br /><br /><a href="../../images/110809/plone10/20.png" target="_blank"><img src="../../images/110809/plone10/20.png" alt="20" height="137" border="0" width="500" /></a><br />▲ 圖20 修改 IN (0, 1) 成為 IN ('f', 't)<br /><br />成功執行 psql ContentMirror < mirror.sql 的結果如圖21 所示。<br /><br /><a href="../../images/110809/plone10/21.png" target="_blank"><img src="../../images/110809/plone10/21.png" alt="21" height="275" border="0" width="500" /></a><br />▲ 圖21 成功執行 psql 的訊息範例<br /><br />接著，建立新的 Plone 網站，並新增內容後，使用查詢工具瀏覽資料庫，就會發現系統已經同步備份內容資料。<br /><br /></p>
+<h3 style="margin-bottom: 0cm;">結論</h3>
+<p style="margin-bottom: 0cm;"><br /><br />以上範例分別以 MySQL 和 PostgreSQL 練習操作，原理可以應用到不同的 SQL 資料庫。從技術角度來看，我們概分成「直接連結」和「ORM 連結」兩種類型，對直接連結的場合，只要找得到 Database Adapter 就行，必要時要花錢購買商業版本的 Adapter 軟體，使用 ORM 連結的場合，目前跟著 SQLAlchemy 走就行了。<br /><br />如果你有大量舊資料，已經藉由 RDBMS 管理，或是想用 SQL 資料庫來執行靜態資料的查詢，都可以利用上述方法提供整合服務。不過，ZODB 已是身經百戰的資料庫系統，非常適合用於開發階段，即使上線服務，效能也沒問題，它被迫退居幕後的主要原因，在於支援人力並不足夠。</p>
+			<!-- Show relate article -->
+		<br><br><h4>您也許有興趣閱讀以下文章:</h4><ul><li><a href='../../foss-programs/8402.html'>用自由軟體 Plone 來架設網站(9)－多媒體結合</a> - <span class='date-posted'>2011-07-25</span></li><li><a href='../../foss-programs/8392.html'>用自由軟體 Plone 來架設網站(8)－內容查詢</a> - <span class='date-posted'>2011-07-12</span></li><li><a href='../../foss-programs/8380.html'>用自由軟體 Plone 來架設網站(7)－版型調整</a> - <span class='date-posted'>2011-06-28</span></li><li><a href='../../foss-programs/8353.html'>用自由軟體 Plone 來架設網站 (6)－動態網頁</a> - <span class='date-posted'>2011-06-09</span></li><li><a href='../../foss-programs/8346.html'>用自由軟體 Plone 來架設網站 (5)－元件架構</a> - <span class='date-posted'>2011-05-20</span></li><li><a href='../../foss-programs/8320.html'>用自由軟體 Plone 來架設網站 (4)－建立專案</a> - <span class='date-posted'>2011-05-04</span></li><li><a href='../../foss-programs/8318.html'>用自由軟體 Plone 來架設網站 (3)— 內部設定</a> - <span class='date-posted'>2011-04-25</span></li><li><a href='../../foss-programs/8294.html'>用自由軟體 Plone 來架設網站 (2)— 內容管理</a> - <span class='date-posted'>2011-04-11</span></li><li><a href='../../foss-programs/8288.html'>用自由軟體 Plone 來架設網站 (1)— 基礎安裝</a> - <span class='date-posted'>2011-03-21</span></li></ul>		<!-- end -->
+		<div class="article_note">
+		<!-- Add tags use metakey, and show OSSF Newsletter tag: OSSFNL+NUM-->
+		<br><br> <hr style='border: 1px dashed #D2DADB;'><b>自由軟體鑄造場電子報&nbsp;:</b>&nbsp;<a href='../../previous-issue%3Ftask=view&amp;id=753.html'>第 178 期 利用 FreeNAS 打造儲存設備(1)－歷史篇</a><br>				<!-- End -->
+					<br>
+					<b>分類: </b><a href="../foss-programs.html">				源碼秘技					</a>				</div>
+			 <!-- AddThis Button BEGIN ID 3001 is the front page article -->
+     			<br><br>
+       <div class="addthis_toolbox addthis_default_style addthis_32x32_style">
+       <a class="addthis_button_preferred_1"></a>
+       <a class="addthis_button_preferred_2"></a>
+       <a class="addthis_button_preferred_3"></a>
+       <a class="addthis_button_preferred_4"></a>
+       <a class="addthis_button_compact"></a>
+       <a class="addthis_counter addthis_bubble_style"></a>
+       </div>
+       <script type="text/javascript">var addthis_config = {"data_track_clickback":true};</script>
+       <script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js#pubid=openfoundry"></script>
+       <!-- AddThis Button END -->
+     <br>
+		<div class="totop" ><a class="rt-totop" href="8411--plone-10.html#" style="outline: medium none;">↑ Top</a></div>
+            <!-- AddThis Button END -->
+
+			</div>
+</div>
+
+		                            </div>
+									<div class="clear"></div>
+								</div>
+								<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+							</div>
+							</div>
+                                                    </div>
+                                            </div>
+                                <div class="rt-grid-3 rt-pull-9">
+                <div id="rt-sidebar-a">
+                                    <div class="square4">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<ul class="menu"><li class="item56"><a href="../previous-issue.html"><span>電子報總覽</span></a></li><li class="item55"><a href="../about-newsletter.html"><span>關於本報</span></a></li></ul>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<ul class="menu"><li class="item115"><a href="../foss-news.html"><span>源碼新聞</span></a></li><li class="item141"><a href="../case-job.html"><span>接案 / 工作</span></a></li></ul>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+        	                <div class="square1">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-title"><h2 class="title">專欄總覽</h2></div>
+						<div class="clear"></div>
+		                						<div class="module-content">
+		                	<ul class="menu"><li class="item37"><a href="../tech-column.html"><span>技術專欄</span></a></li><li id="current" class="active item40"><a href="../foss-programs.html"><span>源碼秘技</span></a></li><li class="item35"><a href="../legal-article-.html"><span>法律專欄</span></a></li><li class="item154"><a href="../foss-forum.html"><span>自由專欄</span></a></li><li class="item162"><a href="../enterprise-application.html"><span>企業應用</span></a></li><li class="item44"><a href="../foss-projects.html"><span>源碼專案</span></a></li></ul>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		                <div class="square1">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<p style="text-align: center;"><a href="../../news%3Fformat=feed&amp;type=rss" target="_black"><img src="../../images/M_images/news-rss-feed.png" border="0" /></a><br /><a href="https://www.openfoundry.org/rss-feed/Newsletter" target="_black"><img src="../../images/M_images/newsletter-rss-feed.png" border="0" /></a></p>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		
+                </div>
+            </div>
+
+                    <div class="clear"></div>
+                </div>
+            </div>
+																													</div>
+										<div id="rt-copyright">
+						<div class="rt-grid-12 rt-alpha rt-omega">
+                        <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<div id="desktop-mobile-version-switch"><span id="mobile-version" class="version-switch"><a href="8411--plone-10.html#">行動版</a></span></div>
+自由軟體鑄造場 製作 最佳瀏覽狀態：IE7或Firefox2.0以上 (建議使用Firefox) ‧ 解析度1024*768 <br /> <strong>E-Mail</strong>：<a href="mailto:contact@openfoundry.org">contact@openfoundry.org</a> <strong>Address</strong>：台北市南港區研究院路2段128號 中央研究院資訊科學研究所 . <a href="../../privacy-policy.html">隱私權條款</a>. <a href="../../terms-of-use.html">使用條款</a><span style="position: relative; top: 8px; margin-top: -8px;"> <a href="../../about/8101.html"><img src="../../images/M_images/rss-feed-all.png" border="0" /></a></span>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+        	
+</div>
+						<div class="clear"></div>
+					</div>
+					<div class="rt-footer-bottom-wrap"><div class="rt-footer-bottom"><div class="rt-footer-bottom2"><div class="rt-footer-bottom3"></div></div></div></div>
+									</div></div></div>
+				<div class="rt-surround-bottom"><div class="rt-surround-bottom2"><div class="rt-surround-bottom3"></div></div></div>
+							</div>
+		</div>
+		<!--
+		<script id="aptureScript">
+						(function (){var a=document.createElement("script");a.defer="true";a.src="http://www.apture.com/js/apture.js?siteToken=vsJttrn";document.getElementsByTagName("head")[0].appendChild(a);})();
+     </script>
+-->
+
+<!-- Piwik -->
+<!-- 			<script type="text/javascript">
+			  var _paq = _paq || [];
+		  _paq.push(["trackPageView"]);
+		  _paq.push(["enableLinkTracking"]);
+
+		    (function() {
+			        var u=(("https:" == document.location.protocol) ? "https" : "https") + "://www.openfoundry.org/piwik/";
+				    _paq.push(["setTrackerUrl", u+"piwik.php"]);
+				    _paq.push(["setSiteId", "1"]);
+				        var d=document, g=d.createElement("script"), s=d.getElementsByTagName("script")[0]; g.type="text/javascript";
+				        g.defer=true; g.async=true; g.src=u+"piwik.js"; s.parentNode.insertBefore(g,s);
+					  })();
+		  </script> -->
+<!-- End Piwik Code -->
+	</body>
+</html>

@@ -1,0 +1,406 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="zh-tw" lang="zh-tw" >
+<head>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<link rel="shortcut icon" href="../../images/favicon.ico" />
+	  <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+  <meta name="robots" content="index, follow" />
+  <meta name="keywords" content="OSSFNL714" />
+  <meta name="title" content="以磁碟為主要處理對象的備份工具 - DAR & DarGUI" />
+  <meta name="description" content="DAR 簡介 想在 UNIX/Linux 系統上備份檔案有許多選擇，最知名的莫過於 tar 指令。傳統的 tar 指令只能打包檔案，不支援壓縮功能，但透過管線轉向的方式並搭配 gzip、bzip2 等指令，或是直接使用較新版本的 tar 指令，都可以同時打包並壓縮檔案。如果使用者不熟悉 tar 指令，亦可選擇安裝 zip/unzip 或 rar/unrar 等套件來備份與壓縮檔案。" />
+  <meta name="generator" content="" />
+  <title>以磁碟為主要處理對象的備份工具 - DAR &amp; DarGUI - OpenFoundry</title>
+  <link href="../../favicon.ico" rel="shortcut icon" type="image/x-icon" />
+  <link rel="stylesheet" href="../../components/com_gantry/css/gantry.css" type="text/css" />
+  <link rel="stylesheet" href="../../components/com_gantry/css/grid-12.css" type="text/css" />
+  <link rel="stylesheet" href="../../components/com_gantry/css/joomla.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/joomla.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/style1.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/light-body.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/demo-styles.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/template.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/typography.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/fusionmenu.css" type="text/css" />
+  <style type="text/css">
+    <!--
+#rt-main-surround ul.menu li.active > a, #rt-main-surround ul.menu li.active > .separator, #rt-main-surround ul.menu li.active > .item, #rt-main-surround .square4 ul.menu li:hover > a, #rt-main-surround .square4 ul.menu li:hover > .item, #rt-main-surround .square4 ul.menu li:hover > .separator, .roktabs-links ul li.active span {color:#0088B5;}
+a, #rt-main-surround ul.menu a:hover, #rt-main-surround ul.menu .separator:hover, #rt-main-surround ul.menu .item:hover {color:#0088B5;}
+    -->
+  </style>
+  <script type="text/javascript" src="../../components/com_jcomments/js/jcomments-v2.1.js%3Fv=2"></script>
+  <script type="text/javascript" src="../../components/com_jcomments/libraries/joomlatune/ajax.js"></script>
+  <script type="text/javascript" src="../../media/system/js/mootools.js"></script>
+  <script type="text/javascript" src="../../media/system/js/caption.js"></script>
+  <script type="text/javascript" src="../../components/com_gantry/js/gantry-buildspans.js"></script>
+  <script type="text/javascript" src="../../components/com_gantry/js/gantry-inputs.js"></script>
+  <script type="text/javascript" src="../../templates/rt_quantive_j15/js/jquery.cookie.js"></script>
+  <script type="text/javascript" src="../../modules/mod_roknavmenu/themes/fusion/js/fusion.js"></script>
+  <script type="text/javascript" src="../../modules/mod_ofssologin/js/ofssologin.js"></script>
+  <script type="text/javascript">
+
+			window.addEvent('domready', function() {
+				var modules = ['rt-block'];
+				var header = ['h3','h2','h1'];
+				GantryBuildSpans(modules, header);
+			});
+		InputsExclusion.push('.content_vote','#rt-popup')
+		        window.addEvent('load', function() {
+					new Fusion('ul.menutop', {
+						pill: 0,
+						effect: 'slide and fade',
+						opacity: 1,
+						hideDelay: 500,
+						centered: 0,
+						tweakInitial: {'x': -2, 'y': 0},
+        				tweakSubsequent: {'x': 0, 'y': -14},
+						menuFx: {duration: 200, transition: Fx.Transitions.Sine.easeOut},
+						pillFx: {duration: 400, transition: Fx.Transitions.Back.easeOut}
+					});
+	            });
+  </script>
+<!-- <script type="text/javascript" src="/sso/javascripts/langsync.js"></script> -->
+<!-- <script src="/templates/rt_quantive_j15/js/ossf.js"></script> -->
+<script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-4136519-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
+</head>
+	<body  class="backgroundlevel-low backgroundstyle-style8 bodylevel-med bodystyle-light cssstyle-style1 logostyle-dark font-family-helvetica font-size-is-default menu-type-fusionmenu col12 ">
+		<div id="rt-main-background">
+			<div class="rt-container">
+																<div id="rt-header">
+					<div class="rt-grid-7 rt-alpha">
+    			<div class="rt-block">
+    	    	<a href="../../index.html" id="rt-logo"></a>
+    		</div>
+	    
+</div>
+<div class="rt-grid-5 rt-omega">
+                    <div class="square9">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<div class="ofssologin_square9"><a href="../../index.html">登入</a>&nbsp;&nbsp|&nbsp;&nbsp;<span><a href="../../en/foss-programs/8268--dar-a-dargui.html" ><span lang="en" xml:lang="en">English</span></a></li></ul></span><!--Joom!fish V2.0.4 (Lightning)-->
+<!-- &copy; 2003-2009 Think Network, released under the GPL. -->
+<!-- More information: at http://www.joomfish.net -->
+<div class="ofssologin_search_square9">
+  <form id="of_search" action="https://www.openfoundry.org/of/openfoundry/search" method="get" onsubmit="of_search(); return false;">
+    <select id="of_search_type">
+      <option value="Projects"> 專案 </option>
+      <option value="Content"> 文章 </option>
+      <option value="People"> 人才 </option>
+    </select>
+    <input id="query" name="query" id="mod_search_searchword" maxlength="50" alt="search" class="inputbox" type="text" size="28" value="search..."  onblur="if(this.value=='') this.value='search...';" onfocus="if(this.value=='search...') this.value='';" />
+    <input type="hidden" name="commit" value="search" />
+  </form>
+</div></div>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		
+</div>
+					<div class="clear"></div>
+				</div>
+																<div id="rt-navigation"><div id="rt-navigation2"><div id="rt-navigation3">
+					
+<div class="nopill">
+	<ul class="menutop level1 " >
+						<li class="item1 root" >
+					<a class="orphan item bullet" href="../../index.html"  >
+				<span>
+			    				首頁				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item32 root" >
+					<a class="orphan item bullet" href="../../archived.html"  >
+				<span>
+			    				專案				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item186 root" >
+					<a class="orphan item bullet" href="../community.html"  >
+				<span>
+			    				Who&#039;s Who				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item4 root" >
+					<a class="orphan item bullet" href="../news.html"  >
+				<span>
+			    				新聞				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item5 root" >
+					<a class="orphan item bullet" href="../law-and-licensing.html"  >
+				<span>
+			    				法律源地				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item3 root" >
+					<a class="orphan item bullet" href="../activities.html"  >
+				<span>
+			    				活動				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item2 root" >
+					<a class="orphan item bullet" href="../resourcecatalog%3FName=Value.html"  >
+				<span>
+			    				資源表列				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item45 root" >
+					<a class="orphan item bullet" href="../about.html"  >
+				<span>
+			    				關於				   
+				</span>
+			</a>
+			
+			
+	</li>	
+				</ul>
+</div>
+
+				    <div class="clear"></div>
+				</div></div></div>
+								<div class="rt-surround"><div class="rt-surround2"><div class="rt-surround3">
+										<div id="rt-showcase-section">
+												<div id="rt-showcase">
+							<div class="rt-grid-12 rt-alpha rt-omega">
+    		<div class="clear"></div>
+		
+		
+                <div class="close-note">
+                    <div class="rt-block">
+               					<div class="module-content">
+                	<div style="font-size:medium; background-image:linear-gradient(120deg,#159957,#4298b2);color:white;padding:20px;margin:-10px -18px;">感謝您對「自由軟體鑄造場」的支持與愛護，十多年來「自由軟體鑄造場」受中央研究院支持，並在資訊科學研究所以及資訊科技創新研究中心執行，現已完成階段性的任務。 本網站預計持續維運至 2021年底，網站內容基本上不會再更動。<br />也紀念我們永遠的朋友 李士傑先生（Shih-Chieh Ilya Li）。</div>				</div>
+            </div>
+                </div>
+		
+</div>
+							<div class="clear"></div>
+						</div>
+																	</div>
+															<div id="rt-main-surround">
+												<div id="rt-breadcrumbs">
+								<div class="rt-breadcrumb-surround">
+		<a href="../../index.html" id="breadcrumbs-home"></a>
+		<span class="breadcrumbs pathway">
+<a href="../foss-programs.html" class="pathway">源碼秘技</a> <img src="../../templates/rt_quantive_j15/images/arrow.png" alt=""  /> <span class="no-link">以磁碟為主要處理對象的備份工具 - DAR &amp; DarGUI</span></span>
+	</div>
+	
+							<div class="clear"></div>
+						</div>
+																							              <div id="rt-main" class="sa3-mb9">
+                <div class="rt-main-inner">
+                    <div class="rt-grid-9 rt-push-3">
+                                                <div class="rt-block">
+                            							<div class="square1">
+							<div class="rt-module-surround">
+								<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+								<div class="rt-module-inner">
+		                            <div id="rt-mainbody">
+		                                
+<div class="rt-joomla ">
+	<div class="rt-article">
+		
+				<div class="rt-headline"><h1 class="rt-article-title">以磁碟為主要處理對象的備份工具 - DAR &amp; DarGUI</h1>		</div>
+		<div class="clear"></div>
+		
+		
+		
+				<div class="rt-articleinfo">
+						<div class="rt-article-icons">
+								<a href="8268--dar-a-dargui%3Ftmpl=component&amp;print=1&amp;layout=default&amp;page=.html" title="列印" onclick="window.open(this.href,'win2','status=no,toolbar=no,scrollbars=yes,titlebar=no,menubar=no,resizable=yes,width=640,height=480,directories=no,location=no'); return false;" rel="nofollow"><span class="icon print"></span></a>																</div>
+			
+			<span class="rt-date-posted">
+						建立日期			2011-03-05 01:49						&nbsp;&nbsp;&nbsp;&nbsp;						最近更新在 2011-03-08 03:17						</span>
+
+						<span class="rt-author">
+				作者是 翁卓立			</span>
+				
+					</div>
+		
+		
+		<h2>DAR 簡介</h2>
+想在 UNIX/Linux 系統上備份檔案有許多選擇，最知名的莫過於 tar 指令。傳統的 tar 指令只能打包檔案，不支援壓縮功能，但透過管線轉向的方式並搭配 gzip、bzip2 等指令，或是直接使用較新版本的 tar 指令，都可以同時打包並壓縮檔案。如果使用者不熟悉 tar 指令，亦可選擇安裝 zip/unzip 或 rar/unrar 等套件來備份與壓縮檔案。<br /> 
+
+<br />DAR:<br />官方網站：<a href="https://dar.linux.free.fr/" target="_blank">https://dar.linux.free.fr/</a><br />原始檔網址：<a href="https://ncu.dl.sourceforge.net/project/dar/dar/2.3.10/dar-2.3.10.tar.gz" target="_blank">https://ncu.dl.sourceforge.net/project/dar/dar/2.3.10/dar-2.3.10.tar.gz</a> (1.3MB)<br />（大多數 Linux 發行版本均有內建 DAR 套件，例如 Red Hat、SUSE、Gentoo 與 Ubuntu 等，可直接使用該發行版本的套件管理程式進行安裝。）<br /><br />DarGUI:<br />官方網站：<a href="https://dargui.sourceforge.net/" target="_blank">https://dargui.sourceforge.net/</a><br />下載網址：<a href="https://nchc.dl.sourceforge.net/project/dargui/dargui/0.5.2/dargui-0.5.2_i386.deb" target="_blank">https://nchc.dl.sourceforge.net/project/dargui/dargui/0.5.2/dargui-0.5.2_i386.deb</a> (2.3MB)<br /><br />使用 tar 指令打包與壓縮檔案雖然方便，但 tar 指令卻存在著一個問題：tar 指令不支援以分割檔案的方式，進行檔案打包與壓縮。假設主機上的備份裝置只有 DVD 燒錄機，但打包好需要備份的檔案遠超過 4.37 GiB（或 4.7 GB），此時便無法直接將打包完成的檔案備份到其他儲存媒體上。就算使用 Double Layer 的 DVD 光碟片進行備份，也仍然有 8.75 GiB（或 9.4 GB）的容量限制問題。當然遇到此類問題時，仍然有許多解決辦法，例如直接複製檔案存入外接硬碟，或是藉由網路將檔案傳輸到另一部主機的硬碟空間。但這樣的解決方案，都無法將檔案備份到相對而言比較穩定的光碟儲存裝置之中，對於備份檔案的安全性而言，仍然無法讓人放心。有些人可能會透過 split 指令，先將打包後的檔案進行分割，再依序處理所有檔案。只是這樣的備份檔案需要先後使用二個指令，使用者不免覺得麻煩。<br /><br />所幸在 UNIX/Linux 系統上打包與備份，並不是只有 tar 一種解決方案。大多數 Linux 發行版本中，都提供一套名為 DAR 的套件可以作為檔案打包、備份的另一種選擇。DAR 這套工具的全名為 Disk ARchive（磁碟備存），本身是以 Shell 命令備份檔案。 DAR 與 tar 相當類似，都是用於打包及壓縮檔案或目錄，二者最大的差異是，DAR 打包後的檔案，主要是輸出到磁碟儲存裝置。由於使用的是磁碟裝置，輸出檔案時自然會面臨各種磁碟裝置的容量上限問題，因此 DAR 採用了分割方式，也就是依照使用者指定的參數將輸出檔案進行切割，並儲存成數個分割檔案。這些分割檔案被稱為 slice，可以依照不同的輸出裝置調整檔案大小。例如，檔案輸出時要使用軟碟機、CD-R 光碟燒錄機、DVD-R 光碟燒錄機，或是已經快被眾人遺忘的 ZIP Drive 等裝置進行備份，即可依照上述輸出裝置的容量上限，調整每一個 slice 的大小。<br /><br /><br /><a href="../../images/110308/DAR/dar_01.png" target="_blank"><img src="../../images/110308/DAR/dar_01.png" border="0" width="450" /></a><br />▲ DAR 是以 Shell 命令的方式進行作業。<br /><br /><br />由於打包檔案可能會佔用許多磁碟空間，即使事先指定以分割方式進行處理，仍然需要預留足夠的磁碟空間，才能存放這些打包後的分割檔案。如果系統上的磁碟剩餘空間不足，備份檔案時可能會發生些許問題。對此 DAR 提供了一項非常特別的設計。亦即，在建立每一個 slice 之後，可以暫停動作，讓使用者先行處理其他工作，或是直接執行 Shell Script，繼續該 slice 的後續處理。例如打包並切割後的檔案要備份到 CD-R 光碟片，即可要求 DAR 建立一個 slice 之後，先將該 slice 備份到 CD-R 光碟片中，完成後再切割出下一個 slice 及其它備份工作。<br /><br /><br /><a href="../../images/110308/DAR/dar_02.png" target="_blank"><img src="../../images/110308/DAR/dar_02.png" border="0" width="450" /></a><br />▲ DAR 在每一個 slice 建立完成後，可以暫停執行以便讓使用者進行其他處理。<br /><br />
+<h2>DAR 的主要特色</h2>
+除了打包檔案的切割與壓縮功能外，DAR 也擁有許多其他備份工具無法兼備的特色。例如差異化備份功能，即為 DAR 最重要的特色之一。在大部份的情況下，前後二次備份系統之間，系統上的檔案多半只有一部份經過變動，如果二次均全數重新備份，將會相當耗時費力。但 DAR 所支援的差異化備份模式，可以自動比較二次備份，辨認出新增或變更過的檔案，並只處理這些檔案，所以能採用較有效的方式備份系統。如果系統發生問題需要回存備份檔案，只需要先回存先前的完整備份檔，再回存後續的差異備份檔，即可將檔案系統恢復至原先的狀態，即使原先的完整備份檔包括事後已經被刪除的檔案，也不會產生處理上的問題。<br /><br />DAR 在進行備份作業時，也可使用過濾器，指定需要備份的檔案。例如需要連同檔案目錄一起備份時，可能有些不必要的檔案不希望被加入備份檔之中（例如暫存檔或不重要的記錄檔），此時就可以利用過濾器的功能，將這些檔案排除在備份檔案的範圍之外。相反的，如果有某些檔案一定要進行備份，就可使用過濾器的含括功能，將這些檔案列為必需備份的檔案之一。而且無論在建立或解開備份檔案時，都能套用過濾器功能。過濾器是以檔案名稱作為處理依據，但並未限定只能處理檔案，如果備份時需要或不需要子目錄，亦可使用過濾器進行處理。<br /><br /><br /><a href="../../images/110308/DAR/dar_03.png" target="_blank"><img src="../../images/110308/DAR/dar_03.png" border="0" width="450" /></a><br />▲ DAR 可以利用過濾器功能，將檔案包含或排除在備份檔案之列。<br /><br /><br />由於備份時通常會產生一個相當大的檔案，因此經常使用壓縮模式。但有時候需要從備份中還原某一個檔案，而不需要將整個備份目錄回存，此時便需要備份工具提供直接存取功能，使用者才能在不需要解開整個備份，直接將某個檔案回存至系統中。DAR 就支援直接存取功能。需要使用直接存取功能時，DAR 會先讀取備份的索引目錄資訊，直接找到欲回存檔案在備份中的位置，並回存該檔案至系統中。如果備份時使用了分割功能將備份切成好幾個 slice，則 DAR 會告知使用者該檔案位於哪一份 slice 之中，並要求使用者提供該 slice ，即可回存該檔案。<br /><br />除了上述功能以外，比較值得一提的是，DAR 還支援測試功能與管線功能。其中，測試功能可以直接測試備份，以確定備份中資料是否損毀，並將測試結果告知使用者。如果只想確認備份檔的正確性，不想花時間解開整個備份，選擇使用測試功能會比較方便。管線功能則允許 DAR 將備份結果輸出到標準輸出介面，或是轉向至其他軟體進行後續處理。相反的，DAR 也可以接收經由管線轉向而來的資料，並進行回存處理。操作管線轉向功能較為複雜，但 DAR 的功能也因此能發揮到極致。<br /><br />雖然大多數人通常會在 Linux 系統中使用 DAR，這並不代表 DAR 只能在 Linux 系統中使用。相反的，使用者已經在許多不同的作業系統平台上測試過 DAR，而且執行時也沒有因而產生問題。這些作業系統包含 Windows、Solaris、FreeBSD、NetBSD 與 MacOS X 等等，幾乎涵蓋了所有主流的作業系統。而在 DAR 2.0.0 版之後，DAR 也開始提供應用程式介面（即 API），讓有意為 DAR 開發相關程式者，也能直接使用這些 API 進行資料處理。這樣的運作模式同時也為 DAR 帶來許多好處－若有使用者認為文字介面的 DAR 在操作上不夠便利，可以選擇使用利用這些 API 所開發的 DAR 圖形使用者介面，例如 KDar 與 DarGUI 。<br /><br />
+<h2>DarGUI 簡介</h2>
+從 DarGUI 的名稱之中即可得知，這套工具是以圖形前端介面操作 DAR 的應用程式。DarGUI 是以 GTK+ 進行開發，也由於大多數的 Linux 發行版本都支援 GTK+ 程式庫，因此大部份的 Linux 發行版本上都可以執行 DarGUI。會出現 DarGUI 自然是因為 DAR 的參數與選項很多，造成備份作業較複雜，對於剛接觸 DAR 的使用者來說，也是一項嚴苛的考驗。但有了 DarGUI 的輔助，即可使用最直覺的操作介面，直接利用 DAR 備份資料，減輕許多使用者的負擔。<br /><br /><br /><a href="../../images/110308/DAR/dar_04.png" target="_blank"><img src="../../images/110308/DAR/dar_04.png" border="0" title="Original Resolution - 435x306px" width="438.5392156862745" height="299" style="border: 0.25em groove #0000ee; cursor: pointer;" /></a><br />▲ DarGUI 提供了 DAR 的圖形操作前端介面。<br /><br /><br />事實上 DarGUI 並不是第一個 DAR 的圖形前端介面，先前也曾經出現過 KDar 這套軟體，提供了類似 DarGUI 的功能。但 KDar 在 2007 年 12 月釋出最後一個版本之後，已經長達三年不曾更新。再加上 KDar 是針對 KDE 所設計，而 KDE 這幾年來已經產生相當程度的變化，所以即使是「最新」版本的 KDar，也已經無法在目前大多數的 Linux 發行版本上執行。這樣的過程，也是促使 DarGUI 作者開發一套全新 DAR 使用者介面的主要原因。<br /><br />由於 DarGUI 的主要特色都是基於 DAR 提供的功能，它只是 DAR 的前端介面，提供使用者以圖形介面進行操控，可以降低使用上的難度，減少不必要的困擾，卻依然能使用 DAR 提供的各式功能。例如使用者可以利用 DarGUI 直接查看 DAR 備份中的內容，或是在備份中點選開啟要解開的檔案。選擇欲解開的檔案時，亦可使用特定關鍵字進行搜尋，以過濾不必要的檔案。如果想要了解備份檔案的相關統計資訊，也能以 DarGUI 直接瀏覽相關資訊，例如備份中所包含的檔案數量，或是檔案壓縮的相關資訊等等。而在建立備份檔案時，使用者也能藉 DarGUI 的介面直接方便地進行處理。使用者只需要指定一些必要選項，例如 slice 的大小、是否採用壓縮功能，以及決定檔案或目錄的過濾關鍵字，即可立即備份資料。<br /><br /><br /><a href="../../images/110308/DAR/dar_05.png" target="_blank"><img src="../../images/110308/DAR/dar_05.png" border="0" title="Original Resolution - 500x352px" width="438.1704545454545" height="299" style="border: 0.25em groove #0000ee; cursor: pointer;" /></a><br />▲以 DarGUI 建立備份檔案相當方便，所有 DAR 所支援的選項都能且接在畫面上進行設定。<br /><br /><br />如果要進行的是差異化備份功能，或是要檢查備份的正確性，也能直接使用 DarGUI 進行處理。此外，DarGUI 還能使用比對功能進行檢查，找出備份檔案與原系統存放的檔案間是否有差異，方便使用者決定如何備份或回存。如果希望定期備份，DarGUI 也提供了排程功能。使用者可以指定定期備份的週期，或是在指定的時間點備份。由於作者也提到可能有許多功能並未被考慮到，作者相當歡迎任何人提出針對 DarGUI 功能上的看法與建議。目前仍然有許多人持續開發 DarGUI，只要提出的是技術上可行的建議方案，便會在後續版本中陸續加入這些新功能。<br /><br />英文是 DarGUI 操作介面的預設語言，但 DarGUI 也支援數種不同的語言，包含法文、西班牙文、德文以及瑞典文。雖然 DarGUI 缺少熱心人士協助中文化，目前尚未支援正體中文，將來仍然有可能釋出 DarGUI 中文版本。但即使是使用英文介面，由於 DarGUI 已經簡化 DAR 的操作過程，只要事先熟悉軟體的使用方式，使用時也不至於發生太大問題。<br /><br /><a href="../../images/110308/DAR/dar_06.png" target="_blank"><img src="../../images/110308/DAR/dar_06.png" border="0" title="Original Resolution - 500x352px" width="438.1704545454545" height="299" style="border: 0.25em groove #0000ee; cursor: pointer;" /></a><br />▲ DarGUI 目前仍是以英文介面為主，但本身已經提供了多國語系支援功能。<br /><br />
+<h2>結語</h2>
+使用開放原始碼的作業系統或是工具程式，在功能支援上永遠有無限的可能。比方，tar 指令不夠友善，便出現 DAR 這種改進後的備份工具；而 DAR 的操作介面為人垢病，便出現 圖形使用者介面的 DarGUI。或許目前這些工具的表現都稱不上盡善盡美、毫無缺點，但只要開發團隊持續維護，或具備相關技術能力的人可以提供支援，在不久的將來，這些軟體都可能提出更多新功能，以滿足各種不同的需求者。<br /><br />
+<h2>作者簡介</h2>
+翁卓立<br />逢甲大學資訊工程學系、台灣科技大學電子所畢業，目前擔任韌體研發工作，主要使用 Embedded Linux 進行產品開發。著有「Linux 進化特區：Ubuntu 10.04 從入門到精通」等書。
+			<!-- Show relate article -->
+				<!-- end -->
+		<div class="article_note">
+		<!-- Add tags use metakey, and show OSSF Newsletter tag: OSSFNL+NUM-->
+		<br><br> <hr style='border: 1px dashed #D2DADB;'><b>自由軟體鑄造場電子報&nbsp;:</b>&nbsp;<a href='../../previous-issue%3Ftask=view&amp;id=714.html'>第 168 期 以 Snort 實作入侵偵測系統</a><br>				<!-- End -->
+					<br>
+					<b>分類: </b><a href="../foss-programs.html">				源碼秘技					</a>				</div>
+			 <!-- AddThis Button BEGIN ID 3001 is the front page article -->
+     			<br><br>
+       <div class="addthis_toolbox addthis_default_style addthis_32x32_style">
+       <a class="addthis_button_preferred_1"></a>
+       <a class="addthis_button_preferred_2"></a>
+       <a class="addthis_button_preferred_3"></a>
+       <a class="addthis_button_preferred_4"></a>
+       <a class="addthis_button_compact"></a>
+       <a class="addthis_counter addthis_bubble_style"></a>
+       </div>
+       <script type="text/javascript">var addthis_config = {"data_track_clickback":true};</script>
+       <script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js#pubid=openfoundry"></script>
+       <!-- AddThis Button END -->
+     <br>
+		<div class="totop" ><a class="rt-totop" href="8268--dar-a-dargui.html#" style="outline: medium none;">↑ Top</a></div>
+            <!-- AddThis Button END -->
+
+			</div>
+</div>
+
+		                            </div>
+									<div class="clear"></div>
+								</div>
+								<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+							</div>
+							</div>
+                                                    </div>
+                                            </div>
+                                <div class="rt-grid-3 rt-pull-9">
+                <div id="rt-sidebar-a">
+                                    <div class="square4">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<ul class="menu"><li class="item56"><a href="../previous-issue.html"><span>電子報總覽</span></a></li><li class="item55"><a href="../about-newsletter.html"><span>關於本報</span></a></li></ul>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<ul class="menu"><li class="item115"><a href="../foss-news.html"><span>源碼新聞</span></a></li><li class="item141"><a href="../case-job.html"><span>接案 / 工作</span></a></li></ul>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+        	                <div class="square1">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-title"><h2 class="title">專欄總覽</h2></div>
+						<div class="clear"></div>
+		                						<div class="module-content">
+		                	<ul class="menu"><li class="item37"><a href="../tech-column.html"><span>技術專欄</span></a></li><li id="current" class="active item40"><a href="../foss-programs.html"><span>源碼秘技</span></a></li><li class="item35"><a href="../legal-article-.html"><span>法律專欄</span></a></li><li class="item154"><a href="../foss-forum.html"><span>自由專欄</span></a></li><li class="item162"><a href="../enterprise-application.html"><span>企業應用</span></a></li><li class="item44"><a href="../foss-projects.html"><span>源碼專案</span></a></li></ul>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		                <div class="square1">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<p style="text-align: center;"><a href="../../news%3Fformat=feed&amp;type=rss" target="_black"><img src="../../images/M_images/news-rss-feed.png" border="0" /></a><br /><a href="https://www.openfoundry.org/rss-feed/Newsletter" target="_black"><img src="../../images/M_images/newsletter-rss-feed.png" border="0" /></a></p>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		
+                </div>
+            </div>
+
+                    <div class="clear"></div>
+                </div>
+            </div>
+																													</div>
+										<div id="rt-copyright">
+						<div class="rt-grid-12 rt-alpha rt-omega">
+                        <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<div id="desktop-mobile-version-switch"><span id="mobile-version" class="version-switch"><a href="8268--dar-a-dargui.html#">行動版</a></span></div>
+自由軟體鑄造場 製作 最佳瀏覽狀態：IE7或Firefox2.0以上 (建議使用Firefox) ‧ 解析度1024*768 <br /> <strong>E-Mail</strong>：<a href="mailto:contact@openfoundry.org">contact@openfoundry.org</a> <strong>Address</strong>：台北市南港區研究院路2段128號 中央研究院資訊科學研究所 . <a href="../../privacy-policy.html">隱私權條款</a>. <a href="../../terms-of-use.html">使用條款</a><span style="position: relative; top: 8px; margin-top: -8px;"> <a href="../../about/8101.html"><img src="../../images/M_images/rss-feed-all.png" border="0" /></a></span>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+        	
+</div>
+						<div class="clear"></div>
+					</div>
+					<div class="rt-footer-bottom-wrap"><div class="rt-footer-bottom"><div class="rt-footer-bottom2"><div class="rt-footer-bottom3"></div></div></div></div>
+									</div></div></div>
+				<div class="rt-surround-bottom"><div class="rt-surround-bottom2"><div class="rt-surround-bottom3"></div></div></div>
+							</div>
+		</div>
+		<!--
+		<script id="aptureScript">
+						(function (){var a=document.createElement("script");a.defer="true";a.src="http://www.apture.com/js/apture.js?siteToken=vsJttrn";document.getElementsByTagName("head")[0].appendChild(a);})();
+     </script>
+-->
+
+<!-- Piwik -->
+<!-- 			<script type="text/javascript">
+			  var _paq = _paq || [];
+		  _paq.push(["trackPageView"]);
+		  _paq.push(["enableLinkTracking"]);
+
+		    (function() {
+			        var u=(("https:" == document.location.protocol) ? "https" : "https") + "://www.openfoundry.org/piwik/";
+				    _paq.push(["setTrackerUrl", u+"piwik.php"]);
+				    _paq.push(["setSiteId", "1"]);
+				        var d=document, g=d.createElement("script"), s=d.getElementsByTagName("script")[0]; g.type="text/javascript";
+				        g.defer=true; g.async=true; g.src=u+"piwik.js"; s.parentNode.insertBefore(g,s);
+					  })();
+		  </script> -->
+<!-- End Piwik Code -->
+	</body>
+</html>

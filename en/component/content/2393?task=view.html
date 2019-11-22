@@ -1,0 +1,763 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-gb" lang="en-gb" >
+<head>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<link rel="shortcut icon" href="../../../images/favicon.ico" />
+	  <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+  <meta name="robots" content="index, follow" />
+  <meta name="keywords" content="OSSFNL671" />
+  <meta name="title" content="以 IPP2P 控管 P2P 軟體" />
+  <meta name="description" content="前言 隨著 internet 的風行，相關的資安問題也層出不窮，除了傳統的病毒及網路釣魚等威脅外，不當使用 P2P 軟體所衍生的資安問題也日漸受到重視，在本文中，筆者將應用開源碼社群中的 IPP2P 搭配 netfilter（linux 系統上最有名的防火牆軟體，即一般人所熟知的 iptables）機制，來建構一個可控管 P2P 軟體的防火牆系統。在本方案中所使用到的軟體如下表所示： 軟體名稱" />
+  <meta name="generator" content="" />
+  <title>以 IPP2P 控管 P2P 軟體 - OpenFoundry</title>
+  <link href="../../../favicon.ico" rel="shortcut icon" type="image/x-icon" />
+  <link rel="stylesheet" href="../../../components/com_gantry/css/gantry.css" type="text/css" />
+  <link rel="stylesheet" href="../../../components/com_gantry/css/grid-12.css" type="text/css" />
+  <link rel="stylesheet" href="../../../components/com_gantry/css/joomla.css" type="text/css" />
+  <link rel="stylesheet" href="../../../templates/rt_quantive_j15/css/joomla.css" type="text/css" />
+  <link rel="stylesheet" href="../../../templates/rt_quantive_j15/css/style1.css" type="text/css" />
+  <link rel="stylesheet" href="../../../templates/rt_quantive_j15/css/light-body.css" type="text/css" />
+  <link rel="stylesheet" href="../../../templates/rt_quantive_j15/css/demo-styles.css" type="text/css" />
+  <link rel="stylesheet" href="../../../templates/rt_quantive_j15/css/template.css" type="text/css" />
+  <link rel="stylesheet" href="../../../templates/rt_quantive_j15/css/typography.css" type="text/css" />
+  <link rel="stylesheet" href="../../../templates/rt_quantive_j15/css/fusionmenu.css" type="text/css" />
+  <style type="text/css">
+    <!--
+#rt-main-surround ul.menu li.active > a, #rt-main-surround ul.menu li.active > .separator, #rt-main-surround ul.menu li.active > .item, #rt-main-surround .square4 ul.menu li:hover > a, #rt-main-surround .square4 ul.menu li:hover > .item, #rt-main-surround .square4 ul.menu li:hover > .separator, .roktabs-links ul li.active span {color:#0088B5;}
+a, #rt-main-surround ul.menu a:hover, #rt-main-surround ul.menu .separator:hover, #rt-main-surround ul.menu .item:hover {color:#0088B5;}
+    -->
+  </style>
+  <script type="text/javascript" src="../../../components/com_jcomments/js/jcomments-v2.1.js%3Fv=2"></script>
+  <script type="text/javascript" src="../../../components/com_jcomments/libraries/joomlatune/ajax.js"></script>
+  <script type="text/javascript" src="../../../media/system/js/mootools.js"></script>
+  <script type="text/javascript" src="../../../media/system/js/caption.js"></script>
+  <script type="text/javascript" src="../../../components/com_gantry/js/gantry-buildspans.js"></script>
+  <script type="text/javascript" src="../../../components/com_gantry/js/gantry-inputs.js"></script>
+  <script type="text/javascript" src="../../../templates/rt_quantive_j15/js/jquery.cookie.js"></script>
+  <script type="text/javascript" src="../../../modules/mod_roknavmenu/themes/fusion/js/fusion.js"></script>
+  <script type="text/javascript" src="../../../modules/mod_ofssologin/js/ofssologin.js"></script>
+  <script type="text/javascript">
+
+			window.addEvent('domready', function() {
+				var modules = ['rt-block'];
+				var header = ['h3','h2','h1'];
+				GantryBuildSpans(modules, header);
+			});
+		InputsExclusion.push('.content_vote','#rt-popup')
+		        window.addEvent('load', function() {
+					new Fusion('ul.menutop', {
+						pill: 0,
+						effect: 'slide and fade',
+						opacity: 1,
+						hideDelay: 500,
+						centered: 0,
+						tweakInitial: {'x': -2, 'y': 0},
+        				tweakSubsequent: {'x': 0, 'y': -14},
+						menuFx: {duration: 200, transition: Fx.Transitions.Sine.easeOut},
+						pillFx: {duration: 400, transition: Fx.Transitions.Back.easeOut}
+					});
+	            });
+  </script>
+<!-- <script type="text/javascript" src="/sso/javascripts/langsync.js"></script> -->
+<!-- <script src="/templates/rt_quantive_j15/js/ossf.js"></script> -->
+<script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-4136519-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
+</head>
+	<body  class="backgroundlevel-low backgroundstyle-style8 bodylevel-med bodystyle-light cssstyle-style1 logostyle-dark font-family-helvetica font-size-is-default menu-type-fusionmenu col12">
+		<div id="rt-main-background">
+			<div class="rt-container">
+																<div id="rt-header">
+					<div class="rt-grid-7 rt-alpha">
+    			<div class="rt-block">
+    	    	<a href="../../../index.html" id="rt-logo"></a>
+    		</div>
+	    
+</div>
+<div class="rt-grid-5 rt-omega">
+                    <div class="square9">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<div class="ofssologin_square9"><a href="../../../index.html">Login</a>&nbsp;&nbsp|&nbsp;&nbsp;<span><a href="https://www.openfoundry.org/tw/component/content/2393/2393?task=view" ><span lang="tw" xml:lang="tw">繁體中文</span></a></li></ul></span><!--Joom!fish V2.0.4 (Lightning)-->
+<!-- &copy; 2003-2009 Think Network, released under the GPL. -->
+<!-- More information: at http://www.joomfish.net -->
+<div class="ofssologin_search_square9">
+  <form id="of_search" action="https://www.openfoundry.org/of/openfoundry/search" method="get" onsubmit="of_search(); return false;">
+    <select id="of_search_type">
+      <option value="Projects"> Projects </option>
+      <option value="Content"> Content </option>
+      <option value="People"> People </option>
+    </select>
+    <input id="query" name="query" id="mod_search_searchword" maxlength="50" alt="search" class="inputbox" type="text" size="28" value="search..."  onblur="if(this.value=='') this.value='search...';" onfocus="if(this.value=='search...') this.value='';" />
+    <input type="hidden" name="commit" value="search" />
+  </form>
+</div></div>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		
+</div>
+					<div class="clear"></div>
+				</div>
+																<div id="rt-navigation"><div id="rt-navigation2"><div id="rt-navigation3">
+					
+<div class="nopill">
+	<ul class="menutop level1 " >
+						<li class="item1 root" >
+					<a class="orphan item bullet" href="../../../index.html"  >
+				<span>
+			    				Home				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item32 root" >
+					<a class="orphan item bullet" href="../../../archived.html"  >
+				<span>
+			    				Projects				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item186 root" >
+					<a class="orphan item bullet" href="../../community.html"  >
+				<span>
+			    				Who&#039;s Who				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item4 root" >
+					<a class="orphan item bullet" href="../../news.html"  >
+				<span>
+			    				News				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item5 root" >
+					<a class="orphan item bullet" href="../../law-and-licensing.html"  >
+				<span>
+			    				Law &amp; Licensing				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item3 root" >
+					<a class="orphan item bullet" href="../../activities.html"  >
+				<span>
+			    				Activities				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item2 root" >
+					<a class="orphan item bullet" href="../../resourcecatalog.html"  >
+				<span>
+			    				Resource Catalog				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item45 root" >
+					<a class="orphan item bullet" href="../../about.html"  >
+				<span>
+			    				About				   
+				</span>
+			</a>
+			
+			
+	</li>	
+				</ul>
+</div>
+
+				    <div class="clear"></div>
+				</div></div></div>
+								<div class="rt-surround"><div class="rt-surround2"><div class="rt-surround3">
+										<div id="rt-showcase-section">
+												<div id="rt-showcase">
+							<div class="rt-grid-12 rt-alpha rt-omega">
+    		<div class="clear"></div>
+		
+		
+                <div class="close-note">
+                    <div class="rt-block">
+               					<div class="module-content">
+                	<div style="font-size:medium; background-image:linear-gradient(120deg,#159957,#4298b2);color:white;padding:20px;margin:-10px -18px;">感謝您對「自由軟體鑄造場」的支持與愛護，十多年來「自由軟體鑄造場」受中央研究院支持，並在資訊科學研究所以及資訊科技創新研究中心執行，現已完成階段性的任務。 本網站預計持續維運至 2021年底，網站內容基本上不會再更動。<br />也紀念我們永遠的朋友 李士傑先生（Shih-Chieh Ilya Li）。</div>				</div>
+            </div>
+                </div>
+		
+</div>
+							<div class="clear"></div>
+						</div>
+																	</div>
+															<div id="rt-main-surround">
+																							              <div id="rt-main" class="mb12">
+                <div class="rt-main-inner">
+                    <div class="rt-grid-12 ">
+                                                <div class="rt-block">
+                            							<div class="square1">
+							<div class="rt-module-surround">
+								<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+								<div class="rt-module-inner">
+		                            <div id="rt-mainbody">
+		                                
+<div class="rt-joomla ">
+	<div class="rt-article">
+		
+				<div class="rt-headline"><h1 class="rt-article-title">以 IPP2P 控管 P2P 軟體</h1>		</div>
+		<div class="clear"></div>
+		
+		
+		
+				<div class="rt-articleinfo">
+						<div class="rt-article-icons">
+								<a href="https://www.openfoundry.org/en/component/content/article/2393--ipp2p-p2p-?tmpl=component&amp;print=1&amp;page=" title="Print" onclick="window.open(this.href,'win2','status=no,toolbar=no,scrollbars=yes,titlebar=no,menubar=no,resizable=yes,width=640,height=480,directories=no,location=no'); return false;" rel="nofollow"><span class="icon print"></span></a>																</div>
+			
+			<span class="rt-date-posted">
+						 Created at			Friday, 02 July 2010 19:20						&nbsp;&nbsp;&nbsp;&nbsp;						Last Updated on Monday, 08 November 2010 20:01						</span>
+
+						<span class="rt-author">
+				Written by 老薯條(https://vulscan.wynetech.com.tw) 			</span>
+				
+					</div>
+		
+		
+		<h3>前言</h3>
+<p>隨著 internet 的風行，相關的資安問題也層出不窮，除了傳統的病毒及網路釣魚等威脅外，不當使用 P2P 軟體所衍生的資安問題也日漸受到重視，在本文中，筆者將應用開源碼社群中的 IPP2P 搭配 netfilter（linux 系統上最有名的防火牆軟體，即一般人所熟知的 iptables）機制，來建構一個可控管 P2P 軟體的防火牆系統。在本方案中所使用到的軟體如下表所示：</p>
+<p> </p>
+<table class="vstborder" style="height: 467px;" border="1" cellspacing="5" cellpadding="5" width="620">
+<colgroup><col width="7%"></col><col width="41%"></col><col width="41%"></col></colgroup> <thead> 
+<tr>
+<td width="30%">
+<p>軟體名稱</p>
+</td>
+<td width="60%">
+<p>說明</p>
+</td>
+<td width="10%">
+<p>官方網址</p>
+</td>
+</tr>
+</thead> 
+<tbody>
+<tr>
+<td>
+<p>Fedora 11</p>
+</td>
+<td>
+<p>所使用的作業系統</p>
+</td>
+<td>
+<p><a href="https://fedoraproject.org/" target="_blank">https://fedoraproject.org/</a></p>
+</td>
+</tr>
+<tr>
+<td>
+<p>L7-filter</p>
+</td>
+<td>
+<p>Netfilter 的外掛核心模組，將新增此模組才可讓 Netfilter 具有應用層的封包分析能力</p>
+</td>
+<td>
+<p><a href="https://l7-filter.sourceforge.net/" target="_blank">https://l7-filter.sourceforge.net/</a></p>
+</td>
+</tr>
+<tr>
+<td>
+<p>Kernel 2.6.28</p>
+</td>
+<td>
+<p>本次所使用的Linux核心程式，L7-FILTER 需重新編譯核心，在本方案中，筆者採用 2.6.28版本</p>
+</td>
+<td>
+<p><a href="https://www.kernel.org/" target="_blank">https://www.kernel.org/</a></p>
+</td>
+</tr>
+<tr>
+<td>
+<p>iptables 1.4.3</p>
+</td>
+<td>
+<p>Netfilter的管理應用程式，L7-FILTER 需重新編譯 iptables，新增 L7 的比對項目</p>
+</td>
+<td>
+<p><a href="https://netfilter.org/" target="_blank">https://netfilter.org/</a></p>
+</td>
+</tr>
+<tr>
+<td>
+<p>IPP2P</p>
+</td>
+<td>
+<p>阻檔 P2P 軟體程式</p>
+</td>
+<td>
+<p><a href="https://www.ipp2p.org/" target="_blank">https://www.ipp2p.org/</a></p>
+</td>
+</tr>
+<tr>
+<td>
+<p>相關 patch 檔</p>
+</td>
+<td>
+<p>Ipp2p 的相關修正檔（包含 iptables 及 kernel）的修正檔</p>
+</td>
+<td>
+<p><a href="https://aur.archlinux.org/packages/ipp2p/ipp2p/ipp2p-0.8.2-iptables-1.4.0.patch" target="_blank">https://aur.archlinux.org/packages/ipp2p/ipp2p/ipp2p-0.8.2-iptables-1.4.0.patch</a><br /><a href="https://aur.archlinux.org/packages/ipp2p/ipp2p/ipp2p-0.8.2-iptables-1.4.1.patch" target="_blank">https://aur.archlinux.org/packages/ipp2p/ipp2p/ipp2p-0.8.2-iptables-1.4.1.patch</a><br /><a href="https://aur.archlinux.org/packages/ipp2p/ipp2p/ipp2p-0.8.2-kernel-2.6.28.patch" target="_blank">https://aur.archlinux.org/packages/ipp2p/ipp2p/ipp2p-0.8.2-kernel-2.6.28.patch</a></p>
+</td>
+</tr>
+</tbody>
+</table>
+<h3><span id="l421604811444111-40netfilter47iptables41"> </span>什麼是 (netfilter/iptables)</h3>
+<p>Netfilter 機制是 linux 系統上最有名的 L4 (Level 4) 防火牆，其中 netfilter 指的是核心處理的模組，而 iptables 即為設定管理 Netfilter 的使用者程式。所謂 L4 意指 Netfilter 運作 OSI (Open system Interconnection) 模型的第四層（國際標準組織所提出的共通標準化的通訊協定標準），OSI 模型共分七層，各層各司其職，概述如下（由下而上）：</p>
+<dl><dt class="normal"><strong>實體層 (Physical Layer)</strong></dt><dd class="normal">
+<p>主要定義底層傳輸介面的電氣媒體 (MEDIA)，傳輸方法 (TRANSMISSION METHOD) 與佈線方式 (TOPOLOGY) 等等。</p>
+</dd><dt class="normal"><strong>資料連結 (Data LinK Layer)</strong> </dt><dd class="normal">
+<p>定義如何確保資料正確傳輸，及將資料切割並加上來源與目的地位址與資料長度等訊息，包裝成頁框 (FRAME)，在此層中具有 MAC 資訊。</p>
+</dd><dt class="normal"><strong>網路層 (Network Layer)</strong> </dt><dd class="normal">
+<p>負責資料繞徑 (ROUTING )，包括轉換地 (TRANSLATES ADDRESSES)，尋找最佳路徑 (BEST ROUTING) 與管理流量 (TRAFFIC)，在此層中具有 IP 等資訊。</p>
+</dd><dt class="normal"><strong>傳輸層 (Transport Layer)</strong> </dt><dd class="normal">
+<p>確保資料到達順序與正確性，在此層中具有埠等資訊。</p>
+</dd><dt class="normal"><strong>會談層 (Session Layer)</strong> </dt><dd class="normal">
+<p>定義連結建立與結束的對話。</p>
+</dd><dt class="normal"><strong>表達層 (Presentation Layer)</strong> </dt><dd class="normal">
+<p>處理資料格式，包括格式轉換，加密 (ENCRYPTION) 與解密 (DECRYPTION)，壓縮 (COMPRESSION) 與還原。</p>
+</dd><dt class="normal"><strong>應用層 (Application Layer)</strong> </dt><dd class="normal">
+<p>定義供應用程式存取的介面與功能。</p>
+</dd></dl>
+<p>由上可知，netfilter 即是運作在傳輸層中，所能掌握的資訊即為 IP、埠及 MAC 等相關資訊。這也是為什麼 netfilter 要控管 P2P 軟體需要新增 IPP2P 模組的原因。在未新增 IPP2P 模組之前，netfilter 僅能以 IP 位址（來源或目的），埠資訊（來源或目的），MAC 資訊（來源或目的）控管來往的封包。如此對於使用固定埠的網路服務或許有控管的能力，但對於未使用固定埠的網路服務（如某些 P2P 軟體會使用動態埠【即每次使用會使用不同埠】）卻無能為力。所以欲控管如 P2P 等軟體，我們需要利用解析應用層的資訊，來辨識 P2P 的服務。在新增 IPP2P 模組之前，我們必需先修正 (patch) 核心，讓核心具有應用層解析的能力，這需要 L7－FILTER 的幫忙。先讓 netfilter 具有分析應用層封包的能力，後再使用 IPP2P 的模組，藉由分析應用層封包的特徵碼來辨識 P2P 軟體並加以控管。Netfilter分為核心模組與應用程式，以下先簡單說明 NETFILTER 機制：</p>
+<ul class="circle">
+<li>
+<p class="onlyli">核心模組 (MODULE)</p>
+<blockquote>
+<p>Netfilter 利用掛鉤 (HOOK) 的方式，將相關的核心模組掛鉤 (HOOK) 於核心處理封包的流程上，針對通過的封包實施檢查及過濾。系統架構如下圖所示：</p>
+</blockquote>
+</li>
+</ul>
+<p><a href="../../../images/100713/image001.jpg" target="_blank"><img src="../../../images/100713/image001.jpg" border="0" hspace="5" vspace="5" width="600" height="519" align="absBottom" /></a></p>
+<ol class="decimal">
+<li>
+<p class="firstli">PREROUTING：當封包進入時即會經過 PREROUTING 檢查點，這也是封包進入後所遇到的第一個檢查點。接下來，封包會判斷是否已到達目的主機，如果確定則會進入 INPUT 檢查點，否則即進入 FORWARD 檢查點；</p>
+</li>
+<li>
+<p class="firstli">INPUT：當封包發現己到達目標主機時即會進入本機並經過 INPUT 檢查點，否則將進入 FORWARD 檢查點，繼續往下個目標主機前進；</p>
+</li>
+<li>
+<p class="onlyli">OUTPUT：當封包經由本機發出即會經過 OUTPUT 檢查點；</p>
+</li>
+<li>
+<p class="firstli">FORWARD：如封包發現並非到達目標主機，即會經過 FORWARD 檢查點；</p>
+</li>
+<li>
+<p class="onlyli">POSTROUTING：當封包要離開系統主機時會經過 POSTROUTING 檢查點，這也是封包進入後所遇到的最後一個檢查點。</p>
+</li>
+</ol> 
+<ul class="circle">
+<li>
+<p class="firstli"><strong>應用程式</strong></p>
+<blockquote>
+<p>Netfilter 提供 iptables 應用程式，用來設定 Netfilter 檢查點的過濾規則。設定規則是以表格 (table) 及鏈 (chain) 的概念來設定，Netfilter 總共提供了三個表格及五個規則鏈。</p>
+<ul class="circle">
+<li>
+<p class="firstli">Filter：主要提供封包過濾，可過濾 TCP、UDP、MAC、ICMP 等類型封包，包含 INPUT、FORWARD 和 OUTPUT 等規則鏈。</p>
+</li>
+<li>
+<p class="firstli">nat：提供 SNAT 及 DNAT 等功能，可用來 IP 偽裝，讓網域內的多台電腦可共用一個公共 IP 上網。本表格包含 PREROUTING、POSTROUTING、OUTPUT 等規則鏈。</p>
+</li>
+<li>
+<p class="onlyli">mangle：主要用來修改封包內容，包含 PREROUTING、POSTROUTING、FORWARD、INPUT 和 OUTPUT 等規則鏈。</p>
+</li>
+</ul>
+</blockquote>
+</li>
+</ul>
+<p>以下簡略說明 iptables 的語法結構，如下例：</p>
+<p><code>Iptables [-t table] command [match][-j target/jump]</code></p>
+<dl><dt class="normal"><code>[-t table]</code></dt><dd class="normal">
+<p>用來指定要設定那個表格的規則，如未指定即預設為 filter。</p>
+</dd><dt class="normal"><code>Command</code></dt><dd class="normal">
+<p>命令，通常後會接鏈 (chain) 名稱。常用命令如下：</p>
+<dl class="option">-A 在指定的鏈 (chain) 之後新增一個規則 </dl><dl class="option">-D 在指定的鏈 (chain) 之後刪除一個規則 </dl><dl class="option">-F 清除規則 </dl><dl class="option">-L 顯示規則 <br /></dl></dd><dt class="normal"><code>[match]</code></dt><dd class="normal">
+<p>比對條件。常用的比對條件如下：</p>
+<dl class="option">-d 指定套用規則的目的主機或 IP 位址 </dl><dl class="option">-I 當封包進入 FORWARD、OUTPUT 或 POSTROUTING 所通過的網路介面名稱（如 eth0） </dl>
+<p>（其餘相關的設定參數就請有興趣的讀者自行參閱手冊）</p>
+</dd><dt class="normal"><code>[-j]</code></dt><dd class="normal">
+<p>目標（表示設定規則的目的），常用目的選項如下：</p>
+<p>ACCEPT 表示允許封包通過</p>
+<p>DROP 表示丟棄封包</p>
+<p>RETURN 表示直接離開目前規則，直接跳到下個規則比對</p>
+<p>QUEUE 表示將封包重導到本機的佇列 (QUEUE) 中，通常用來供其它應用程式處理</p>
+</dd></dl>
+<p>如下為一設定範例：</p>
+<p><code>iptables -A INPUT -p tcp --dport 80 -j ACCEPT</code></p>
+<dl class="option">-A INPUT：在 INPUT 的鏈 (chain) 上新增一規則 </dl><dl class="option">-p tcp --dport 80：比對條件（表示如果通訊協定為 tcp 且目的埠為 80） </dl><dl class="option">-j ACCEPT：即表示接受 </dl>
+<p>（整段的規則為如果封包為 tcp 型式且目標埠為 80 即讓它通過）</p>
+<ul class="circle">
+<li>
+<p class="firstli"><strong>安裝說明</strong></p>
+<blockquote>
+<p>基本上要建造一個可控管 P2P 軟體的防火牆，我們需要下列的工作：</p>
+<ol class="decimal">
+<li>
+<p class="firstli">重新編譯核心，使核心能夠控管到 L7 的封包</p>
+</li>
+<li>
+<p class="firstli">安裝 L7-FILTER</p>
+</li>
+<li>
+<p class="onlyli">安裝 IPP2P</p>
+</li>
+<li>
+<p class="firstli">重新編譯 iptables，使 iptables 能設定 L7 的比對規則</p>
+</li>
+</ol></blockquote>
+</li>
+</ul>
+<p>L7-FILTER 為 Netfilter 標準外掛的模組，利用特徵碼的方式來加強 Netfilter 解析 L7 應用層的封包能力來辨識出不同的應用程式。至此，讀者可能會有個疑問，既然 L7-FILTER 已可辨識 L7 應用程式，那應該可辨識出 P2P 軟體，為何還需要 IPP2P，這涉及到兩套軟體實作的方式，L7-FILTER 是採用正規表示法來比對每個 L7 應用程式的連接 (CONNECT) 前 20 個 byte 的方式，而 IPP2P 則是將常用的 P2P 軟體特徵碼直接寫入程式中，這意謂著 IPP2P 將會比 L7-FILTER 模組更能精確地辨識出 P2P 軟體並加以控制。根據 L7-FILTER 官方網址的說明，以 Kernel 2.6.28 的相容性最佳，因此本次我們將採用 2.6.28 的核心來編譯。相關步驟如下：</p>
+<ol class="decimal">
+<li>
+<p class="onlyli"><code>wget <a href="https://www.kernel.org/pub/linux/kernel/v2.6/linux-2.6.28.tar.gz" target="_blank">https://www.kernel.org/pub/linux/kernel/v2.6/linux-2.6.28.tar.gz</a></code> #取得 2.6.28 kernel 的原始碼</p>
+</li>
+<li>
+<p class="firstli"><code>wget <a href="https://downloads.sourceforge.net/project/l7-filter/l7-filter%20kernel%20version/2.22/netfilter-layer7-v2.22.tar.gz?use_mirror=ncu" target="_blank">https://downloads.sourceforge.net/project/l7-filter/l7-filter%20kernel%20version/2.22/netfilter-layer7-v2.22.tar.gz?use_mirror=ncu</a></code> #取得 L7-FILTER 原始碼，目前最新的版本為 2.2</p>
+</li>
+<li>
+<p class="onlyli">將 linux-2.6.28.tar.gz 解壓縮並置於/usr/src/linux2.6.28目錄下</p>
+</li>
+<li>
+<p class="firstli">將 netfilter-layer7-v2.22.tar.gz 解壓縮並將其中的 kernel-2.6.25-2.6.28-layer7-2.22.patch 複製到 /usr/src/linux2.6.28</p>
+</li>
+<li>
+<p class="onlyli"><code>cd /usr/src/linux-2.6.28</code></p>
+</li>
+<li>
+<p class="firstli"><code>patch -p1</code> #修正核心組態，新增 L7 MATCH 模組</p>
+</li>
+<li>
+<p class="onlyli"><code>make oldconfig</code> #利用系統原有的參數來設定核心組態（讀者有興趣可參閱 /boot/config-2.6.29.4-167.fc11.i686.PAE，此檔案記錄目前系統核心所使用的參數【不一定最精簡，但保證穩定】。 在設定的過程中，系統會詢問一些問題，除了 <code>support (NETFILTER_XT_MATCH_LAYER7) [N/m/y/?]</code> 設定為 <code>m</code>，其餘皆使用預設即可</p>
+</li>
+<li>
+<p class="firstli"><code>make</code> #編譯核心，在編譯的過程中，筆者曾發生 getline() 的錯誤，這是因為在核心程式 (unifdef.c) 中有自定義一個 getline 函數，剛好與標準的函數庫 getline 名稱相同而造成錯誤。讀者只需在 scripts/unifdef.c 中，把 getline 名稱改成另外的名稱即可</p>
+</li>
+<li>
+<p class="onlyli"><code>make modules</code> #編譯核心模組</p>
+</li>
+<li>
+<p class="firstli"><code>make modules_install</code> #安裝核心模組</p>
+</li>
+<li>
+<p class="onlyli"><code>make install</code> #重新安裝核心並重新設定開機組態（讀者需修改 /etc/grub.conf 將預設開機設為 kernel 2.6.28【將 default=1 改為 default=0】）</p>
+</li>
+<li>
+<p class="firstli"><code>reboot</code> #重新開機後，即會使用新編譯的核心開機。讀者可利用 <code>uname –r</code> 指令來驗證是否為 2.6.28 的核心。</p>
+</li>
+</ol>
+<p>IPP2P 為 netfilter 標準的外掛模組，主要目的在於控管 P2P 軟體。根據官方網站所述，支援的 P2P 軟體如下表：</p>
+<table class="vstborder" border="1" cellspacing="5" cellpadding="5">
+<colgroup><col width="16%"></col><col width="46%"></col><col width="26%"></col></colgroup> <thead> 
+<tr>
+<td>
+<p>參數</p>
+</td>
+<td>
+<p>P2P 軟體</p>
+</td>
+<td>
+<p>通訊協定</p>
+</td>
+</tr>
+</thead> 
+<tbody>
+<tr>
+<td><dl class="option">--edk </dl></td>
+<td>
+<p>eDonkey, eMule, Kademlia</p>
+</td>
+<td>
+<p>TCP and UDP</p>
+</td>
+</tr>
+<tr>
+<td><dl class="option">--kazaa </dl></td>
+<td>
+<p>KaZaA, FastTrack</p>
+</td>
+<td>
+<p>TCP and UDP</p>
+</td>
+</tr>
+<tr>
+<td><dl class="option">--gnu </dl></td>
+<td>
+<p>Gnutella</p>
+</td>
+<td>
+<p>TCP and UDP</p>
+</td>
+</tr>
+<tr>
+<td><dl class="option">--dc </dl></td>
+<td>
+<p>Direct Connect</p>
+</td>
+<td>
+<p>TCP only</p>
+</td>
+</tr>
+<tr>
+<td><dl class="option">--bit </dl></td>
+<td>
+<p>BitTorrent, extended BT</p>
+</td>
+<td>
+<p>TCP and UDP</p>
+</td>
+</tr>
+<tr>
+<td><dl class="option">--apple </dl></td>
+<td>
+<p>AppleJuice</p>
+</td>
+<td>
+<p>TCP only</p>
+</td>
+</tr>
+<tr>
+<td><dl class="option">--winmx </dl></td>
+<td>
+<p>WinMX</p>
+</td>
+<td>
+<p>TCP only</p>
+</td>
+</tr>
+<tr>
+<td><dl class="option">--soul </dl></td>
+<td>
+<p>SoulSeek</p>
+</td>
+<td>
+<p>TCP only</p>
+</td>
+</tr>
+<tr>
+<td><dl class="option">--ares </dl></td>
+<td>
+<p>Ares, AresLite</p>
+</td>
+<td>
+<p>TCP only</p>
+</td>
+</tr>
+</tbody>
+</table>
+<p>安裝步驟如下：</p>
+<ol class="decimal">
+<li>
+<p class="onlyli"><code>wget <a href="https://netfilter.org/projects/iptables/files/iptables-1.4.3.tar.bz2" target="_blank">https://netfilter.org/projects/iptables/files/iptables-1.4.3.tar.bz2</a></code></p>
+</li>
+<li>
+<p class="firstli">解開並將 iptables 的原始碼置於 /home/johnwu/iptables-1.4.3</p>
+</li>
+<li>
+<p class="onlyli"><code>cd /home/johnwu/iptables-1.4.3</code></p>
+</li>
+<li>
+<p class="firstli">先針對 iptables 做 configure。<code>./configure --prefix=/usr/local/iptables143 --with-ksource=/usr/src/linux-2.6.28/</code></p>
+</li>
+<li>
+<p class="onlyli"><code>wget <a href="https://www.ipp2p.org/downloads/ipp2p-0.8.2.tar.gz" target="_blank">https://www.ipp2p.org/downloads/ipp2p-0.8.2.tar.gz</a></code></p>
+</li>
+<li>
+<p class="firstli">解開 ipp2p 壓縮檔並進入該目錄中</p>
+</li>
+<li>
+<p class="onlyli">下載相關的 patch 檔</p>
+<ol class="decimal">
+<li>
+<p class="firstli"><code>wget <a href="https://aur.archlinux.org/packages/ipp2p/ipp2p/ipp2p-0.8.2-iptables-1.4.0.patch" target="_blank">https://aur.archlinux.org/packages/ipp2p/ipp2p/ipp2p-0.8.2-iptables-1.4.0.patch</a></code></p>
+</li>
+<li>
+<p class="firstli"><code>wget <a href="https://aur.archlinux.org/packages/ipp2p/ipp2p/ipp2p-0.8.2-iptables-1.4.1.patch" target="_blank">https://aur.archlinux.org/packages/ipp2p/ipp2p/ipp2p-0.8.2-iptables-1.4.1.patch</a></code></p>
+</li>
+<li>
+<p class="onlyli"><code>wget <a href="https://www.caronico.com/linux/ipp2p-0.8.2-iptables-1.4.3.patch" target="_blank">https://www.caronico.com/linux/ipp2p-0.8.2-iptables-1.4.3.patch</a></code></p>
+</li>
+<li>
+<p class="firstli"><code>wget <a href="https://aur.archlinux.org/packages/ipp2p/ipp2p/ipp2p-0.8.2-kernel-2.6.22.patch" target="_blank">https://aur.archlinux.org/packages/ipp2p/ipp2p/ipp2p-0.8.2-kernel-2.6.22.patch</a></code></p>
+</li>
+<li>
+<p class="onlyli"><code>wget <a href="https://aur.archlinux.org/packages/ipp2p/ipp2p/ipp2p-0.8.2-kernel-2.6.28.patch" target="_blank">https://aur.archlinux.org/packages/ipp2p/ipp2p/ipp2p-0.8.2-kernel-2.6.28.patch</a></code></p>
+</li>
+</ol> </li>
+<li>
+<p class="firstli">修正 patch 檔，請依次執行下列指令：</p>
+<ol class="decimal">
+<li>
+<p class="firstli"><code>patch -p1</code></p>
+</li>
+<li>
+<p class="firstli"><code>patch -p1</code></p>
+</li>
+<li>
+<p class="onlyli"><code>patch -p1</code></p>
+</li>
+<li>
+<p class="firstli"><code>patch -p1</code></p>
+</li>
+<li>
+<p class="onlyli"><code>patch -p1</code></p>
+</li>
+</ol> </li>
+<li>
+<p class="firstli">修正 ipp2p 所附的 Makefile</p>
+<ol class="decimal">
+<li>
+<p class="firstli">將 <code>ld -shared -o libipt_ipp2p.so libipt_ipp2p.o</code> 改為 <code>$(CC) -shared -o libipt_ipp2p.so libipt_ipp2p.o</code>（不然編譯出來的執行檔會有問題）</p>
+</li>
+<li>
+<p class="firstli">在 ifndef $(IPTABLES_SRC) 的區段中，將 IPTVER 改為 1.4.3</p>
+</li>
+</ol>
+<p>如下示：</p>
+<pre> ifndef $(IPTABLES_SRC)<br />    IPTVER =1.4.3<br />    IPTABLES_SRC = $(wildcard /home/johnwu/iptables-$(IPTVER))<br /> endif<br /></pre>
+</li>
+</ol>
+<p>其中 /home/johnwu/iptables-$(IPTVER) 為 iptables 原始碼所在的目錄</p>
+<ol class="decimal">
+<li>
+<p class="onlyli"><code>make</code> #編譯成功後會產生ipt_ipp2p.ko及libipt_ipp2p.so</p>
+</li>
+<li>
+<p class="firstli"><code>cp libipt_ipp2p.so /usr/local/iptables143/libexec/xtables/</code></p>
+</li>
+<li>
+<p class="onlyli"><code>cd iptables-1.4.1 && make && make install</code> #編譯 iptables</p>
+</li>
+</ol> 
+<ul class="circle">
+<li>
+<p class="firstli"><strong>測試</strong></p>
+</li>
+</ul>
+<p>筆者的測試環境為 IPP2P 主機當成 NAT 主機，其餘客戶端主機均透過此主機連到外面去，在此即不多說 NAT 原理，有興趣的讀者可自行參閱相關文件。請依序下達下列指令：</p>
+<ol class="decimal">
+<li>
+<p class="firstli"><code>echo "1">/proc/sys/net/ipv4/ip_forward</code> #開啟主機 ip forward功能</p>
+</li>
+<li>
+<p class="firstli"><code>/usr/local/iptables143/sbin/iptables -t nat -A POSTROUTING -o XXX.XXX.XXX.XXX -s 192.168.2.0/24 -j MASQUERADE</code> #利用 MASQUERADE 功能設定 NAT 功能。在本例中，對外實際 IP 為 XXX.XXX.XXX.XXX，而 192.168.2.0 網域的內部主機均能以此真實 IP 上網。請讀者自行依據本身環境自行調整。在設定完成後，讀者可將內部主機的閘道器 (gateway) 指向此台主機，如果可正常上網即表示設定正確。</p>
+</li>
+<li>
+<p class="firstli"><code>/usr/local/iptables143/sbin/iptables -A FORWARD -m ipp2p --ipp2p -j DROP</code> #設定阻檔全部支援的 P2P 軟體，或者讀者可視個別情況來決定欲阻擋的 P2P 軟體，如：<code>iptables -A FORWARD -m ipp2p --bit　-j DROP</code>（設定阻檔個別的p2p軟體，如本例即為阻檔 BitTorrent）</p>
+</li>
+</ol>
+<p>在讀者設定完成後，可利用 <code>iptables –L</code> 查看是否有下列的資訊，如下圖示：</p>
+<p><a href="../../../images/100713/image003.png" target="_blank"><img src="../../../images/100713/image003.png" border="0" hspace="5" vspace="5" width="600" height="75" align="absBottom" /></a></p>
+<p>至此，讀者可將本機的預設閘道器 (gateway) 指向 ipp2p 所在的主機，後即可開啟 BT 軟體來測試是否可阻檔 P2P 軟體，限於時間及設備因素，筆者僅測試 BitTorrent 此款軟體。其餘的 bittorrent 軟體就請讀者自行測試了。</p>
+			<!-- Show relate article -->
+				<!-- end -->
+		<div class="article_note">
+		<!-- Add tags use metakey, and show OSSF Newsletter tag: OSSFNL+NUM-->
+		<br><br> <hr style='border: 1px dashed #D2DADB;'><b>OSSF Newsletter&nbsp;:</b>&nbsp;<a href='../../../previous-issue%3Ftask=view&amp;id=671.html'>第 153 期 以 IPP2P 控管 P2P 軟體</a><br>				<!-- End -->
+					<br>
+					<b>Category: </b><a href="../../tech-column.html">				Tech Column					</a>				</div>
+			 <!-- AddThis Button BEGIN ID 3001 is the front page article -->
+     			<br><br>
+       <div class="addthis_toolbox addthis_default_style addthis_32x32_style">
+       <a class="addthis_button_preferred_1"></a>
+       <a class="addthis_button_preferred_2"></a>
+       <a class="addthis_button_preferred_3"></a>
+       <a class="addthis_button_preferred_4"></a>
+       <a class="addthis_button_compact"></a>
+       <a class="addthis_counter addthis_bubble_style"></a>
+       </div>
+       <script type="text/javascript">var addthis_config = {"data_track_clickback":true};</script>
+       <script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js#pubid=openfoundry"></script>
+       <!-- AddThis Button END -->
+     <br>
+		<div class="totop" ><a class="rt-totop" href="2393%3Ftask=view.html#" style="outline: medium none;">↑ Top</a></div>
+            <!-- AddThis Button END -->
+
+			</div>
+</div>
+
+		                            </div>
+									<div class="clear"></div>
+								</div>
+								<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+							</div>
+							</div>
+                                                    </div>
+                                            </div>
+                                        <div class="clear"></div>
+                </div>
+            </div>
+																													</div>
+										<div id="rt-copyright">
+						<div class="rt-grid-12 rt-alpha rt-omega">
+                        <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<span class="nowrap">Open Source Software Foundry</span><span class="nowrap">‧</span><span class="nowrap"> </span><span class="nowrap">Best  Viewed with IE7.0 or Firefox2.0 above, 1024x768 Resolution. </span><strong>E-Mail</strong>：<a href="mailto:contact@openfoundry.org">contact@openfoundry.org</a> <br /><strong>Address</strong>：No.128, Sec.2, Academia Rd., Institute of Information Science, Academia Sinica, Nangang District, Taipei City 11529, Taiwan (R.O.C). <br /><a href="../../privacy-policy.html">Privacy Policy</a>. <a href="../../terms-of-use.html">Terms-of-use</a> <span style="position: relative; top: 8px; margin-top: -8px;"> <a href="../../../about/8101.html"><img src="../../../images/M_images/rss-feed-all.png" border="0" /></a></span>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+        	
+</div>
+						<div class="clear"></div>
+					</div>
+					<div class="rt-footer-bottom-wrap"><div class="rt-footer-bottom"><div class="rt-footer-bottom2"><div class="rt-footer-bottom3"></div></div></div></div>
+									</div></div></div>
+				<div class="rt-surround-bottom"><div class="rt-surround-bottom2"><div class="rt-surround-bottom3"></div></div></div>
+							</div>
+		</div>
+		<!--
+		<script id="aptureScript">
+						(function (){var a=document.createElement("script");a.defer="true";a.src="http://www.apture.com/js/apture.js?siteToken=vsJttrn";document.getElementsByTagName("head")[0].appendChild(a);})();
+     </script>
+-->
+
+<!-- Piwik -->
+<!-- 			<script type="text/javascript">
+			  var _paq = _paq || [];
+		  _paq.push(["trackPageView"]);
+		  _paq.push(["enableLinkTracking"]);
+
+		    (function() {
+			        var u=(("https:" == document.location.protocol) ? "https" : "https") + "://www.openfoundry.org/piwik/";
+				    _paq.push(["setTrackerUrl", u+"piwik.php"]);
+				    _paq.push(["setSiteId", "1"]);
+				        var d=document, g=d.createElement("script"), s=d.getElementsByTagName("script")[0]; g.type="text/javascript";
+				        g.defer=true; g.async=true; g.src=u+"piwik.js"; s.parentNode.insertBefore(g,s);
+					  })();
+		  </script> -->
+<!-- End Piwik Code -->
+	</body>
+</html>

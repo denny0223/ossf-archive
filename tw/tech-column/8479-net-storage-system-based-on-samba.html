@@ -1,0 +1,601 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="zh-tw" lang="zh-tw" >
+<head>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<link rel="shortcut icon" href="../../images/favicon.ico" />
+	  <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+  <meta name="robots" content="index, follow" />
+  <meta name="keywords" content="OSSFNL759" />
+  <meta name="title" content="基於 Samba 的網路儲存系統" />
+  <meta name="description" content="前言 網路儲存設備 (Network-attached storage, NAS) 的基本功能，不外乎資料儲存，以及利用權限來控管資料的存取，高階的型號更支援惡意程式掃描及 RAID（磁碟陣列）功能。在本篇文章中，筆者將簡介開放源碼社群中著名的 Samba 伺服器，並實作具有帳號控管及資料儲存功能的 NAS 系統。 下表為本篇教學的系統環境： 軟體名稱 官方網址 說明 Fedora 11" />
+  <meta name="generator" content="" />
+  <title>基於 Samba 的網路儲存系統 - OpenFoundry</title>
+  <link href="../../favicon.ico" rel="shortcut icon" type="image/x-icon" />
+  <link rel="stylesheet" href="../../components/com_gantry/css/gantry.css" type="text/css" />
+  <link rel="stylesheet" href="../../components/com_gantry/css/grid-12.css" type="text/css" />
+  <link rel="stylesheet" href="../../components/com_gantry/css/joomla.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/joomla.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/style1.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/light-body.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/demo-styles.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/template.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/typography.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/fusionmenu.css" type="text/css" />
+  <style type="text/css">
+    <!--
+#rt-main-surround ul.menu li.active > a, #rt-main-surround ul.menu li.active > .separator, #rt-main-surround ul.menu li.active > .item, #rt-main-surround .square4 ul.menu li:hover > a, #rt-main-surround .square4 ul.menu li:hover > .item, #rt-main-surround .square4 ul.menu li:hover > .separator, .roktabs-links ul li.active span {color:#0088B5;}
+a, #rt-main-surround ul.menu a:hover, #rt-main-surround ul.menu .separator:hover, #rt-main-surround ul.menu .item:hover {color:#0088B5;}
+    -->
+  </style>
+  <script type="text/javascript" src="../../components/com_jcomments/js/jcomments-v2.1.js%3Fv=2"></script>
+  <script type="text/javascript" src="../../components/com_jcomments/libraries/joomlatune/ajax.js"></script>
+  <script type="text/javascript" src="../../media/system/js/mootools.js"></script>
+  <script type="text/javascript" src="../../media/system/js/caption.js"></script>
+  <script type="text/javascript" src="../../components/com_gantry/js/gantry-buildspans.js"></script>
+  <script type="text/javascript" src="../../components/com_gantry/js/gantry-inputs.js"></script>
+  <script type="text/javascript" src="../../templates/rt_quantive_j15/js/jquery.cookie.js"></script>
+  <script type="text/javascript" src="../../modules/mod_roknavmenu/themes/fusion/js/fusion.js"></script>
+  <script type="text/javascript" src="../../modules/mod_ofssologin/js/ofssologin.js"></script>
+  <script type="text/javascript">
+
+			window.addEvent('domready', function() {
+				var modules = ['rt-block'];
+				var header = ['h3','h2','h1'];
+				GantryBuildSpans(modules, header);
+			});
+		InputsExclusion.push('.content_vote','#rt-popup')
+		        window.addEvent('load', function() {
+					new Fusion('ul.menutop', {
+						pill: 0,
+						effect: 'slide and fade',
+						opacity: 1,
+						hideDelay: 500,
+						centered: 0,
+						tweakInitial: {'x': -2, 'y': 0},
+        				tweakSubsequent: {'x': 0, 'y': -14},
+						menuFx: {duration: 200, transition: Fx.Transitions.Sine.easeOut},
+						pillFx: {duration: 400, transition: Fx.Transitions.Back.easeOut}
+					});
+	            });
+  </script>
+<!-- <script type="text/javascript" src="/sso/javascripts/langsync.js"></script> -->
+<!-- <script src="/templates/rt_quantive_j15/js/ossf.js"></script> -->
+<script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-4136519-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
+</head>
+	<body  class="backgroundlevel-low backgroundstyle-style8 bodylevel-med bodystyle-light cssstyle-style1 logostyle-dark font-family-helvetica font-size-is-default menu-type-fusionmenu col12 ">
+		<div id="rt-main-background">
+			<div class="rt-container">
+																<div id="rt-header">
+					<div class="rt-grid-7 rt-alpha">
+    			<div class="rt-block">
+    	    	<a href="../../index.html" id="rt-logo"></a>
+    		</div>
+	    
+</div>
+<div class="rt-grid-5 rt-omega">
+                    <div class="square9">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<div class="ofssologin_square9"><a href="../../index.html">登入</a>&nbsp;&nbsp|&nbsp;&nbsp;<span><a href="../../en/tech-column/8479-net-storage-system-based-on-samba.html" ><span lang="en" xml:lang="en">English</span></a></li></ul></span><!--Joom!fish V2.0.4 (Lightning)-->
+<!-- &copy; 2003-2009 Think Network, released under the GPL. -->
+<!-- More information: at http://www.joomfish.net -->
+<div class="ofssologin_search_square9">
+  <form id="of_search" action="https://www.openfoundry.org/of/openfoundry/search" method="get" onsubmit="of_search(); return false;">
+    <select id="of_search_type">
+      <option value="Projects"> 專案 </option>
+      <option value="Content"> 文章 </option>
+      <option value="People"> 人才 </option>
+    </select>
+    <input id="query" name="query" id="mod_search_searchword" maxlength="50" alt="search" class="inputbox" type="text" size="28" value="search..."  onblur="if(this.value=='') this.value='search...';" onfocus="if(this.value=='search...') this.value='';" />
+    <input type="hidden" name="commit" value="search" />
+  </form>
+</div></div>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		
+</div>
+					<div class="clear"></div>
+				</div>
+																<div id="rt-navigation"><div id="rt-navigation2"><div id="rt-navigation3">
+					
+<div class="nopill">
+	<ul class="menutop level1 " >
+						<li class="item1 root" >
+					<a class="orphan item bullet" href="../../index.html"  >
+				<span>
+			    				首頁				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item32 root" >
+					<a class="orphan item bullet" href="../../archived.html"  >
+				<span>
+			    				專案				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item186 root" >
+					<a class="orphan item bullet" href="../community.html"  >
+				<span>
+			    				Who&#039;s Who				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item4 root" >
+					<a class="orphan item bullet" href="../news.html"  >
+				<span>
+			    				新聞				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item5 root" >
+					<a class="orphan item bullet" href="../law-and-licensing.html"  >
+				<span>
+			    				法律源地				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item3 root" >
+					<a class="orphan item bullet" href="../activities.html"  >
+				<span>
+			    				活動				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item2 root" >
+					<a class="orphan item bullet" href="../resourcecatalog%3FName=Value.html"  >
+				<span>
+			    				資源表列				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item45 root" >
+					<a class="orphan item bullet" href="../about.html"  >
+				<span>
+			    				關於				   
+				</span>
+			</a>
+			
+			
+	</li>	
+				</ul>
+</div>
+
+				    <div class="clear"></div>
+				</div></div></div>
+								<div class="rt-surround"><div class="rt-surround2"><div class="rt-surround3">
+										<div id="rt-showcase-section">
+												<div id="rt-showcase">
+							<div class="rt-grid-12 rt-alpha rt-omega">
+    		<div class="clear"></div>
+		
+		
+                <div class="close-note">
+                    <div class="rt-block">
+               					<div class="module-content">
+                	<div style="font-size:medium; background-image:linear-gradient(120deg,#159957,#4298b2);color:white;padding:20px;margin:-10px -18px;">感謝您對「自由軟體鑄造場」的支持與愛護，十多年來「自由軟體鑄造場」受中央研究院支持，並在資訊科學研究所以及資訊科技創新研究中心執行，現已完成階段性的任務。 本網站預計持續維運至 2021年底，網站內容基本上不會再更動。<br />也紀念我們永遠的朋友 李士傑先生（Shih-Chieh Ilya Li）。</div>				</div>
+            </div>
+                </div>
+		
+</div>
+							<div class="clear"></div>
+						</div>
+																	</div>
+															<div id="rt-main-surround">
+												<div id="rt-breadcrumbs">
+								<div class="rt-breadcrumb-surround">
+		<a href="../../index.html" id="breadcrumbs-home"></a>
+		<span class="breadcrumbs pathway">
+<a href="../tech-column.html" class="pathway">技術專欄</a> <img src="../../templates/rt_quantive_j15/images/arrow.png" alt=""  /> <span class="no-link">基於 Samba 的網路儲存系統</span></span>
+	</div>
+	
+							<div class="clear"></div>
+						</div>
+																							              <div id="rt-main" class="sa3-mb9">
+                <div class="rt-main-inner">
+                    <div class="rt-grid-9 rt-push-3">
+                                                <div class="rt-block">
+                            							<div class="square1">
+							<div class="rt-module-surround">
+								<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+								<div class="rt-module-inner">
+		                            <div id="rt-mainbody">
+		                                
+<div class="rt-joomla ">
+	<div class="rt-article">
+		
+				<div class="rt-headline"><h1 class="rt-article-title">基於 Samba 的網路儲存系統</h1>		</div>
+		<div class="clear"></div>
+		
+		
+		
+				<div class="rt-articleinfo">
+						<div class="rt-article-icons">
+								<a href="8479-net-storage-system-based-on-samba%3Ftmpl=component&amp;print=1&amp;layout=default&amp;page=.html" title="列印" onclick="window.open(this.href,'win2','status=no,toolbar=no,scrollbars=yes,titlebar=no,menubar=no,resizable=yes,width=640,height=480,directories=no,location=no'); return false;" rel="nofollow"><span class="icon print"></span></a>																</div>
+			
+			<span class="rt-date-posted">
+						建立日期			2011-10-13 16:30						&nbsp;&nbsp;&nbsp;&nbsp;						最近更新在 2011-10-25 11:01						</span>
+
+						<span class="rt-author">
+				作者是 老薯條 (https://vulscan.wynetech.com.tw)			</span>
+				
+					</div>
+		
+		
+		<h3>前言</h3>
+<p>網路儲存設備 (Network-attached storage, NAS) 的基本功能，不外乎資料儲存，以及利用權限來控管資料的存取，高階的型號更支援惡意程式掃描及 RAID（磁碟陣列）功能。在本篇文章中，筆者將簡介開放源碼社群中著名的 Samba 伺服器，並實作具有帳號控管及資料儲存功能的 NAS 系統。</p>
+<p>下表為本篇教學的系統環境：</p>
+<table style="width: 571px;" border="0" summary="Submitted table designs">
+<thead> 
+<tr>
+<th style="width: 77px;" scope="col">軟體名稱</th> <th style="width: 187px;" scope="col">官方網址<br /> </th> <th style="width: 271px;" scope="col">說明</th>
+</tr>
+</thead><tfoot> </tfoot> 
+<tbody>
+<tr>
+<th id="r100" style="width: 77px;" scope="row">
+<p style="margin: 0.21cm;"><span style="color: #000000;"><span style="font-family: Verdana,Arial,Helvetica,sans-serif;">Fedora 11</span></span></p>
+</th>
+<td style="width: 187px;"><a href="https://fedoraproject.org">https://fedoraproject.org</a><br /></td>
+<td style="vertical-align: top; width: 271px;">Linux 作業系統。<br /></td>
+</tr>
+<tr class="odd">
+<th id="r99" style="width: 77px;" scope="row">Samba<br /> </th>
+<td style="width: 187px;"><a href="https://www.samba.org">https://www.samba.org</a><br /></td>
+<td style="vertical-align: top; width: 271px;">檔案伺服器，為了預留後續新增病毒掃描的功能,因此在此使用 Samba 3.0.23 版本，而不使用最新版本。<br /></td>
+</tr>
+</tbody>
+</table>
+<p>▲ 表1: 本篇教學的系統環境</p>
+
+<p> </p>
+<h3>Samba 的簡介</h3>
+<p>Samba 是架構在 NetBIOS (Network Basic Input/Output System) 系統基礎上的開放源碼軟體。主要用來連結 Microsoft Windows 系統的 SMB/CIFS (Server Message Block/Common Internet File System) 網路協定。自 1992 年 Samba 發表第一代版本以來，成為 Microsoft Windows 系統與 Linux 系統之間常用的溝通橋樑。</p>
+<p>在最新的版本中（目前的版本為 V3），Samba 除了可與 Microsoft Windows 系統分享資料夾及印表機資源外，也可整合於 Windows Server 的網域、扮演網域控制站 (Domain Controller)，以及加入 Active Directory 成員等功能。</p>
+<p>為了讓後續 Samba 伺服器支援即時掃毒模組，本篇文章將以原始碼編譯的方式來安裝 Samba。</p>
+<p>首先，移除系統內建的 Samba 伺服器，</p>
+<pre><code>$ yum erase samba*<br /></code></pre>
+<p>接著請讀者至 Samba 的官方網站取得原始碼，並依序執行下列指令編譯：</p>
+<h4>取得原始碼</h4>
+<pre><code>$ wget https://www.samba.org/samba/ftp/stable/samba-3.0.23.tar.gz <br /></code></pre>
+<h4>進行配置</h4>
+<p>將下載的檔案解壓縮後，可使用 --prefix 參數指定程式安裝的路徑(本例為 /usr/local/samba)，並記得啟用 pam 認證 (--with-pam)。若在編譯過程中，出現找不到 iniparser.h 的錯誤，讀者可將 /iniparser/src/ 中的 iniparser.h 複製至 /usr/include 目錄即可解決。</p>
+<pre><code>$ ./configure --prefix=/usr/local/samba  --with-pam<br /><br /></code></pre>
+<h4>開始編譯</h4>
+<pre><code>$ make proto<br />$ make<br /></code></pre>
+<h4>正式安裝</h4>
+<pre><code>$ make install<br /></code></pre>
+<p>安裝的路徑為先前設定的 --prefix 參數值。</p>
+<h3>Samba 的指令說明</h3>
+<p>下表為 Samba 重要執行檔的說明，</p>
+<table style="width: 571px;" border="0" summary="Submitted table designs">
+<thead> 
+<tr>
+<th style="width: 127px;" scope="col">程式名稱</th> <th style="width: 423px;" scope="col">說明</th>
+</tr>
+</thead><tfoot> </tfoot> 
+<tbody>
+<tr>
+<th id="r100" style="width: 127px;" scope="row">smb<br /> </th>
+<td style="width: 423px;">此程式用來管理 Samba 主機分享的目錄、檔案與印表機等相關資源。主要利用 TCP 埠 139 及 445 來傳輸資料。<br /></td>
+</tr>
+<tr class="odd">
+<th id="r99" style="width: 127px;" scope="row">nmbd<br /> </th>
+<td style="width: 423px;">此程式用來管理工作群組、 NetBIOS 名稱等等的解析工作。主要利用 UDP 協定開啟埠 137, 138 負責名稱解析的任務。一個完整的 Samba 服務需同時啟動 smbd 及 nmbd 程式。<br /></td>
+</tr>
+<tr>
+<th id="r98" style="width: 127px;" scope="row">testparm<br /> </th>
+<td style="width: 423px;">此程式用來檢驗 Samba 設定檔 smb.conf 的語法是否正確，當編輯完成 smb.conf 後，建議使用這個指令檢查以確定設定檔的語法皆正確。<br /></td>
+</tr>
+<tr class="odd">
+<th id="r97" style="width: 127px; height: 65px;" scope="row">smbstatus<br /> </th>
+<td style="width: 423px; height: 65px;">列出目前的 Samba 的執行狀態。<br /></td>
+</tr>
+<tr>
+<th id="r96" style="width: 127px; height: 28px;" scope="row">smbpasswd<br /> </th>
+<td style="width: 423px; height: 28px;">如果 Samba 伺服器所分享的資源需設定帳號／密碼的控管，即可使用此指令來建立所需的帳號／密碼。<br /></td>
+</tr>
+<tr class="odd">
+<th id="r95" style="width: 127px;" scope="row">smbclient<br /> </th>
+<td style="width: 423px;">欲查看別台電腦所分享出來的目錄與裝置時，就可以使用 smbclient 來查看啦！這個指令也可以用在自己的 Samba 主機上面，查看是否設定成功。<br /></td>
+</tr>
+<tr>
+<th id="r93" style="width: 127px;" scope="row">smbmount<br /> </th>
+<td style="width: 423px;">在微軟的 Windows 系統上，我們可以利用「網路磁碟機」的功能來連接到自己的主機，而在 Linux 系統上，即可以透過 smbmount 將遠端主機分享的檔案與目錄掛載到自己的 Linux 系統。<br /></td>
+</tr>
+<tr class="odd">
+<th id="r91" style="width: 127px;" scope="row">smbtree<br /> </th>
+<td style="width: 423px;">有點像 Windows 系統的「網路上的芳鄰」顯示的結果，可以查到工作群組與電腦名稱的樹狀目錄分佈圖。<br /></td>
+</tr>
+</tbody>
+</table>
+<p>▲ 表2: Samba 重要的執行檔及其說明</p>
+<h3>Samba 的設定說明</h3>
+<p>Samba 伺服器的主要設定檔為 smb.conf。下表為常見的設定及說明，</p>
+<table style="width: 656px;" border="0" summary="Submitted table designs">
+<thead> 
+<tr>
+<th style="width: 100px;" scope="col">Section(區間)</th> <th style="width: 219px;" scope="col">屬性名稱<br /> </th> <th style="vertical-align: top; width: 271px;">說明<br /> </th>
+</tr>
+</thead><tfoot> </tfoot> 
+<tbody>
+<tr>
+<th id="r100" style="width: 100px;" scope="row">global<br /> </th>
+<td style="width: 219px;">workgroup [工作群組名稱]<br /></td>
+<td style="vertical-align: top; width: 271px;">設定工作群組名稱（如 WORKGROUP），此設定要與 Windows 系統的工作群組名稱一致。<br /></td>
+</tr>
+<tr class="odd">
+<th id="r99" style="width: 100px;" scope="row"><br /> </th>
+<td style="width: 219px;">server string [說明文字]<br /></td>
+<td style="vertical-align: top; width: 271px;">描述此 Samba 伺服器的說明文字。<br /></td>
+</tr>
+<tr>
+<th id="r98" style="width: 100px;" scope="row"><br /> </th>
+<td style="width: 219px;">security <br /> [share|user|server|domain|ads]<br /></td>
+<td style="vertical-align: top; width: 271px;">設定此 Samba 伺服器的管控方式，提供下列管控方式。<br /> <br /> share:<br /> 不設定任何的認證方式來存取 Samba 伺服器所分享的資源，即完全開放任何人存取。<br /> <br /> user: <br /> 可利用帳號／密碼的認證方式來存取 Samba 伺服器所分享的資源，這也是本文所採用的存取方式。<br /> <br /> server: <br /> 可利用其它的認證主機來從事帳號認證，如利用 LDAP 伺服器來認證。<br /> <br /> domain: <br /> 採用網域控制器 (Domain Controllers) 的帳號／密碼認證方式來存取 Samba 伺服器所分享的資源。<br /> <br /> ads: <br /> 使用 AD(Active Directory) 伺服器來認證帳號 / 密碼的有效性。<br /></td>
+</tr>
+<tr class="odd">
+<th id="r97" style="width: 100px; height: 65px;" scope="row"><br /> </th>
+<td style="width: 219px; height: 65px;">smb passwd file [檔名]<br /></td>
+<td style="vertical-align: top; width: 271px;">設定密碼是否要經過加密。<br /></td>
+</tr>
+<tr>
+<th id="r96" style="width: 100px; height: 28px;" scope="row"><br /> </th>
+<td style="width: 219px; height: 28px;">hosts allow [ip資訊]<br /></td>
+<td style="vertical-align: top; width: 271px;">限制可存取 Samba 伺服器的主機。<br /> 如設定<br /> hosts allow 192.168.2. #僅允許192.168.2 網段中的主機存取此 Samba 伺服器。<br /> 一般建議讀者除了使用帳號/密碼認證外，還可使用此參數來限制能存取的主機，更能確保 Samba 伺服器的安全。<br /></td>
+</tr>
+<tr class="odd">
+<th id="r95" style="width: 100px;" scope="row"><br /> </th>
+<td style="width: 219px;">Client code page[code 編號]<br /></td>
+<td style="vertical-align: top; width: 271px;">設定字元編碼，如果需要儲存以中文為檔名 的檔案，建議可設為 950，以避免中文檔名變成亂碼。<br /></td>
+</tr>
+<tr>
+<th id="r93" style="width: 100px;" scope="row">[名稱]<br /> </th>
+<td style="width: 219px;"><br /></td>
+<td style="vertical-align: top; width: 271px;">設定分享的資源區段，名稱可自取。<br /></td>
+</tr>
+<tr class="odd">
+<th id="r91" style="width: 100px;" scope="row"><br /> </th>
+<td style="width: 219px;">comment [字串]<br /></td>
+<td style="vertical-align: top; width: 271px;">說明此分享資源的說明文字。<br /></td>
+</tr>
+<tr>
+<td style="vertical-align: top;"><br /></td>
+<td style="vertical-align: top; width: 219px;">path [目錄名稱]<br /></td>
+<td style="vertical-align: top; width: 271px;">分享資源的所在目錄<br /> 如設定 path /tmp 即其它使用者可存取 /tmp目錄下的檔案。<br /></td>
+</tr>
+<tr class="odd">
+<th id="r91" style="width: 100px;" scope="row"><br /> </th>
+<td style="width: 219px;">browseable [yes|no]<br /></td>
+<td style="vertical-align: top; width: 271px;">是否可被微軟 Windows 系統的網路芳鄰瀏覽，如設為 yes 即表示利用 Windows 系統的網路芳鄰功能即可瀏覽此分享目 錄。<br /></td>
+</tr>
+<tr>
+<td style="vertical-align: top;"><br /></td>
+<td style="vertical-align: top; width: 219px;">Writable [yes|no]<br /></td>
+<td style="vertical-align: top; width: 271px;">分享的目錄是否被允許寫入。<br /></td>
+</tr>
+<tr class="odd">
+<th id="r91" style="width: 100px;" scope="row"><br /> </th>
+<td style="width: 219px;">read only [yes|no]<br /></td>
+<td style="vertical-align: top; width: 271px;">分享的目錄是否為唯讀。<br /></td>
+</tr>
+<tr>
+<td style="vertical-align: top;"><br /></td>
+<td style="vertical-align: top; width: 219px;">public  [yes|no]<br /></td>
+<td style="vertical-align: top; width: 271px;">是否要公開分享的目錄。<br /></td>
+</tr>
+<tr class="odd">
+<th id="r91" style="width: 100px;" scope="row"><br /> </th>
+<td style="width: 219px;">valid users [使用者名稱]<br /></td>
+<td style="vertical-align: top; width: 271px;">白名單設定，設定可使用此 Samba 伺服器所分享資源的使用者。<br /></td>
+</tr>
+<tr>
+<td style="vertical-align: top;"><br /></td>
+<td style="vertical-align: top; width: 219px;">invalid users [使用者名稱]<br /></td>
+<td style="vertical-align: top; width: 271px;">黑名單設定，設定不可使用此 Samba 伺服器所分享資源的使用者。</td>
+</tr>
+</tbody>
+</table>
+<p>▲ 表3: Samba 常見設定及說明</p>
+<p>接下來將以 /share 為 Samba 伺服器的分享目錄，權限僅允許 admin 得以存取。</p>
+<h4>I. smb.conf 的範例設定</h4>
+<pre><code>[global]<br />#指定工作群組的名稱，此名稱需與使用者所使用的工作群組名稱相同。<br />workgroup = WORKGROUP <br />#說明 Samba 伺服器的文字。<br />server string = Samba Server <br />#指定使用帳號／密碼的認證方式來控管。<br />security = user<br />#設定帳號/密碼資訊所存的檔案位置，在此為 /etc/smbpwd 。<br />smb passwd file /etc/smbpwd         <br />#設定密碼需為加密過的型式，不得為明碼型式。<br />encrypt password true <br />#設定文字編碼為 950，支援繁體中文，以避免中文檔名發生亂碼。<br />Client code page　950  <br />#描述此分享資源的說明。<br />comment = virus-protected  /public directory  <br />#分享目錄為 /share 。<br />path = /share<br />#可以利用網路芳鄰的功能來瀏覽此分享資源。                           <br />browseable = yes                         <br />#設定可寫入此目錄。<br />writable = yes                           <br />#設定可使用此分享資源的使用者，在此例中為只有 admin 使用者可使用。<br />valid users admin       <br />#設定是否為唯讀                。<br />read only = no                      <br />#是否要公開此分享資源，在此例中設定為公開。<br />public = yes                            <br /></code></pre>
+<h4>設定帳號及密碼</h4>
+<p>建立名為 smbpasswd 的密碼檔案:</p>
+<pre><code>$ touch /etc/smbpasswd<br /><br /></code></pre>
+<p>記得將該密碼檔設定為只有 root 才有讀寫的權限：</p>
+<pre><code>$ chmod 600 /etc/smbpasswd<br /></code></pre>
+<p>利用 smbpasswd 指令建立名為 "admin" 的使用者:</p>
+<pre><code>$ /usr/local/samba/bin/smbpasswd -a admin -c /usr/local/samba/etc/smb.conf<br /></code></pre>
+<p>接下來，請按照指示設定相關資訊。</p>
+<p>設定完成後可利用下列指令檢查是否已寫入相關的帳號及密碼。</p>
+<pre><code>$ cat /etc/smbpasswd<br /></code></pre>
+<h4>啟動 Samba 伺服器</h4>
+<p>在重新啟動 Samba 伺服器之前，讀者可利用下列指令檢查 Samba 伺服器設定檔是否有錯誤。</p>
+<pre><code>$ testparm  -C /usr/local/samba/etc/smb.conf<br /></code></pre>
+<p>如果沒有錯誤，則用下列指令以常駐程式的方式啟動 Samba 伺服器。</p>
+<pre><code>$ nmbd -D -s /usr/local/samba/etc/smb.conf<br />$ smbd -D -s /usr/local/samba/etc/smb.conf<br /></code></pre>
+<p>啟動完成後，讀者可利用「網路芳鄰」瀏覽分享的資源（本例的分享資源為 /share 目錄），並以先前設定的帳號及密碼（僅允許 admin 帳號登入）登入。</p>
+<h3>安裝 Samba 的圖形化管理介面 - SWAT</h3>
+<p>對於不習慣文字介面編輯設定檔的讀者，Samba 伺服器貼心提供 Web 管理程式 - SWAT。</p>
+<p>SWAT 依賴超級常駐程式 (super-daemon)，如 inetd 或 xinetd 來啟動。由於目前 Linux 系統大多使用 xinetd 程式，所以接下來將以 xinetd 為範例。</p>
+<p>xinetd 主要利用 /etc/xinetd.d 目錄下的設定檔決定啟動的服務，因此我們在 /etc/xinetd.d 目錄下新增一個名稱為 "swat" 的檔案如下：</p>
+<pre><code>service swat<br />{<br />    port = 901<br />    socket_type = stream<br />    wait    = no<br />    only_from = 192.168.2.0 # 允許使用的來源IP資訊，讀者可自行針對本身實際系統環境設定。<br />    user    = root<br />    server  = /usr/local/samba/sbin/swat # 指定 SWAT 主程式的所在位置。<br />    log_on_failure  += USERID<br />    disable = no  #啟動此服務。<br />}<br /><br /></code></pre>
+<p>設定完成後，僅需利用下列指令來重新啟動 xinetd 即可。</p>
+<pre><code>$ /etc/init.d/xinetd restart<br /></code></pre>
+<p>接下來，讀者可利用瀏覽器開啟 URL 瀏覽，如 https://192.168.2.1:901（SWAT 是運作在 901 埠），正常可看到如下畫面：</p>
+<p><a href="../../images/111018/Samba/i1.png"><img src="../../images/111018/Samba/i1.png" border="0" alt="圖1: SWAT 的畫面" title="SWAT 的畫面" width="450" height="146" /></a></p>
+<p>▲ 圖1: SWAT 的畫面</p>
+<h3>結論</h3>
+<p>筆者僅簡單說明 Samba 伺服器，其實 Samba 可搭配其他相關模組，如利用 Clamav（Linux 系統下著名的防毒軟體）實作 Samba 伺服器的即時病毒掃描功能，或利用 Linux Software RAID 實作磁碟陣列。甚至組合相關開放源碼社群的資源，也可以實作出媲美商業化的 NAS 系統，或者直接採用開放源碼社群成熟且完整的 FreeNAS 解決方案。</p>
+<p>後續文章將繼續為讀者介紹如何擴充 Samba 的功能，例如即時惡意程式掃描等。</p>
+			<!-- Show relate article -->
+				<!-- end -->
+		<div class="article_note">
+		<!-- Add tags use metakey, and show OSSF Newsletter tag: OSSFNL+NUM-->
+		<br><br> <hr style='border: 1px dashed #D2DADB;'><b>自由軟體鑄造場電子報&nbsp;:</b>&nbsp;<a href='../../previous-issue%3Ftask=view&amp;id=759.html'>第 183 期 GPL 條款對於衍生程式的判定標準與其授權拘束性的擴散範圍（下）</a><br>				<!-- End -->
+					<br>
+					<b>分類: </b><a href="../tech-column.html">				技術專欄					</a>				</div>
+			 <!-- AddThis Button BEGIN ID 3001 is the front page article -->
+     			<br><br>
+       <div class="addthis_toolbox addthis_default_style addthis_32x32_style">
+       <a class="addthis_button_preferred_1"></a>
+       <a class="addthis_button_preferred_2"></a>
+       <a class="addthis_button_preferred_3"></a>
+       <a class="addthis_button_preferred_4"></a>
+       <a class="addthis_button_compact"></a>
+       <a class="addthis_counter addthis_bubble_style"></a>
+       </div>
+       <script type="text/javascript">var addthis_config = {"data_track_clickback":true};</script>
+       <script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js#pubid=openfoundry"></script>
+       <!-- AddThis Button END -->
+     <br>
+		<div class="totop" ><a class="rt-totop" href="8479-net-storage-system-based-on-samba.html#" style="outline: medium none;">↑ Top</a></div>
+            <!-- AddThis Button END -->
+
+			</div>
+</div>
+
+		                            </div>
+									<div class="clear"></div>
+								</div>
+								<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+							</div>
+							</div>
+                                                    </div>
+                                            </div>
+                                <div class="rt-grid-3 rt-pull-9">
+                <div id="rt-sidebar-a">
+                                    <div class="square4">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<ul class="menu"><li class="item56"><a href="../previous-issue.html"><span>電子報總覽</span></a></li><li class="item55"><a href="../about-newsletter.html"><span>關於本報</span></a></li></ul>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<ul class="menu"><li class="item115"><a href="../foss-news.html"><span>源碼新聞</span></a></li><li class="item141"><a href="../case-job.html"><span>接案 / 工作</span></a></li></ul>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+        	                <div class="square1">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-title"><h2 class="title">專欄總覽</h2></div>
+						<div class="clear"></div>
+		                						<div class="module-content">
+		                	<ul class="menu"><li id="current" class="active item37"><a href="../tech-column.html"><span>技術專欄</span></a></li><li class="item40"><a href="../foss-programs.html"><span>源碼秘技</span></a></li><li class="item35"><a href="../legal-article-.html"><span>法律專欄</span></a></li><li class="item154"><a href="../foss-forum.html"><span>自由專欄</span></a></li><li class="item162"><a href="../enterprise-application.html"><span>企業應用</span></a></li><li class="item44"><a href="../foss-projects.html"><span>源碼專案</span></a></li></ul>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		                <div class="square1">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<p style="text-align: center;"><a href="../../news%3Fformat=feed&amp;type=rss" target="_black"><img src="../../images/M_images/news-rss-feed.png" border="0" /></a><br /><a href="https://www.openfoundry.org/rss-feed/Newsletter" target="_black"><img src="../../images/M_images/newsletter-rss-feed.png" border="0" /></a></p>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		
+                </div>
+            </div>
+
+                    <div class="clear"></div>
+                </div>
+            </div>
+																													</div>
+										<div id="rt-copyright">
+						<div class="rt-grid-12 rt-alpha rt-omega">
+                        <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<div id="desktop-mobile-version-switch"><span id="mobile-version" class="version-switch"><a href="8479-net-storage-system-based-on-samba.html#">行動版</a></span></div>
+自由軟體鑄造場 製作 最佳瀏覽狀態：IE7或Firefox2.0以上 (建議使用Firefox) ‧ 解析度1024*768 <br /> <strong>E-Mail</strong>：<a href="mailto:contact@openfoundry.org">contact@openfoundry.org</a> <strong>Address</strong>：台北市南港區研究院路2段128號 中央研究院資訊科學研究所 . <a href="../../privacy-policy.html">隱私權條款</a>. <a href="../../terms-of-use.html">使用條款</a><span style="position: relative; top: 8px; margin-top: -8px;"> <a href="../../about/8101.html"><img src="../../images/M_images/rss-feed-all.png" border="0" /></a></span>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+        	
+</div>
+						<div class="clear"></div>
+					</div>
+					<div class="rt-footer-bottom-wrap"><div class="rt-footer-bottom"><div class="rt-footer-bottom2"><div class="rt-footer-bottom3"></div></div></div></div>
+									</div></div></div>
+				<div class="rt-surround-bottom"><div class="rt-surround-bottom2"><div class="rt-surround-bottom3"></div></div></div>
+							</div>
+		</div>
+		<!--
+		<script id="aptureScript">
+						(function (){var a=document.createElement("script");a.defer="true";a.src="http://www.apture.com/js/apture.js?siteToken=vsJttrn";document.getElementsByTagName("head")[0].appendChild(a);})();
+     </script>
+-->
+
+<!-- Piwik -->
+<!-- 			<script type="text/javascript">
+			  var _paq = _paq || [];
+		  _paq.push(["trackPageView"]);
+		  _paq.push(["enableLinkTracking"]);
+
+		    (function() {
+			        var u=(("https:" == document.location.protocol) ? "https" : "https") + "://www.openfoundry.org/piwik/";
+				    _paq.push(["setTrackerUrl", u+"piwik.php"]);
+				    _paq.push(["setSiteId", "1"]);
+				        var d=document, g=d.createElement("script"), s=d.getElementsByTagName("script")[0]; g.type="text/javascript";
+				        g.defer=true; g.async=true; g.src=u+"piwik.js"; s.parentNode.insertBefore(g,s);
+					  })();
+		  </script> -->
+<!-- End Piwik Code -->
+	</body>
+</html>

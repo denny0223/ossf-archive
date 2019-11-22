@@ -1,0 +1,344 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="zh-tw" lang="zh-tw" >
+<head>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<link rel="shortcut icon" href="../../../images/favicon.ico" />
+	  <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+  <meta name="robots" content="index, follow" />
+  <meta name="keywords" content="OSSFNL541" />
+  <meta name="title" content="微軟釋出驅動程式原始碼  外界懷疑違反 GPL" />
+  <meta name="description" content="微軟史無前例地以 GPL (GNU General Public Licence) 釋出兩套軟體。外界矚目的不單單只是釋出的軟體，此舉的重要性在於微軟多年來一直不願意擁抱 GPL 這個最重要的開放源碼授權。過去微軟從未採用 GPL 釋出程式碼，而是偏好將該公司的開放軟體，以自己的共享源碼方案釋出，MPL (Microsoft Public Licence) 即是其中之一，MPL" />
+  <meta name="generator" content="" />
+  <title>微軟釋出驅動程式原始碼  外界懷疑違反 GPL - OpenFoundry</title>
+  <link href="../../../favicon.ico" rel="shortcut icon" type="image/x-icon" />
+  <link rel="stylesheet" href="../../../components/com_gantry/css/gantry.css" type="text/css" />
+  <link rel="stylesheet" href="../../../components/com_gantry/css/grid-12.css" type="text/css" />
+  <link rel="stylesheet" href="../../../components/com_gantry/css/joomla.css" type="text/css" />
+  <link rel="stylesheet" href="../../../templates/rt_quantive_j15/css/joomla.css" type="text/css" />
+  <link rel="stylesheet" href="../../../templates/rt_quantive_j15/css/style1.css" type="text/css" />
+  <link rel="stylesheet" href="../../../templates/rt_quantive_j15/css/light-body.css" type="text/css" />
+  <link rel="stylesheet" href="../../../templates/rt_quantive_j15/css/demo-styles.css" type="text/css" />
+  <link rel="stylesheet" href="../../../templates/rt_quantive_j15/css/template.css" type="text/css" />
+  <link rel="stylesheet" href="../../../templates/rt_quantive_j15/css/typography.css" type="text/css" />
+  <link rel="stylesheet" href="../../../templates/rt_quantive_j15/css/fusionmenu.css" type="text/css" />
+  <style type="text/css">
+    <!--
+#rt-main-surround ul.menu li.active > a, #rt-main-surround ul.menu li.active > .separator, #rt-main-surround ul.menu li.active > .item, #rt-main-surround .square4 ul.menu li:hover > a, #rt-main-surround .square4 ul.menu li:hover > .item, #rt-main-surround .square4 ul.menu li:hover > .separator, .roktabs-links ul li.active span {color:#0088B5;}
+a, #rt-main-surround ul.menu a:hover, #rt-main-surround ul.menu .separator:hover, #rt-main-surround ul.menu .item:hover {color:#0088B5;}
+    -->
+  </style>
+  <script type="text/javascript" src="../../../components/com_jcomments/js/jcomments-v2.1.js%3Fv=2"></script>
+  <script type="text/javascript" src="../../../components/com_jcomments/libraries/joomlatune/ajax.js"></script>
+  <script type="text/javascript" src="../../../media/system/js/mootools.js"></script>
+  <script type="text/javascript" src="../../../media/system/js/caption.js"></script>
+  <script type="text/javascript" src="../../../components/com_gantry/js/gantry-buildspans.js"></script>
+  <script type="text/javascript" src="../../../components/com_gantry/js/gantry-inputs.js"></script>
+  <script type="text/javascript" src="../../../templates/rt_quantive_j15/js/jquery.cookie.js"></script>
+  <script type="text/javascript" src="../../../modules/mod_roknavmenu/themes/fusion/js/fusion.js"></script>
+  <script type="text/javascript" src="../../../modules/mod_ofssologin/js/ofssologin.js"></script>
+  <script type="text/javascript">
+
+			window.addEvent('domready', function() {
+				var modules = ['rt-block'];
+				var header = ['h3','h2','h1'];
+				GantryBuildSpans(modules, header);
+			});
+		InputsExclusion.push('.content_vote','#rt-popup')
+		        window.addEvent('load', function() {
+					new Fusion('ul.menutop', {
+						pill: 0,
+						effect: 'slide and fade',
+						opacity: 1,
+						hideDelay: 500,
+						centered: 0,
+						tweakInitial: {'x': -2, 'y': 0},
+        				tweakSubsequent: {'x': 0, 'y': -14},
+						menuFx: {duration: 200, transition: Fx.Transitions.Sine.easeOut},
+						pillFx: {duration: 400, transition: Fx.Transitions.Back.easeOut}
+					});
+	            });
+  </script>
+<!-- <script type="text/javascript" src="/sso/javascripts/langsync.js"></script> -->
+<!-- <script src="/templates/rt_quantive_j15/js/ossf.js"></script> -->
+<script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-4136519-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
+</head>
+	<body  class="backgroundlevel-low backgroundstyle-style8 bodylevel-med bodystyle-light cssstyle-style1 logostyle-dark font-family-helvetica font-size-is-default menu-type-fusionmenu col12">
+		<div id="rt-main-background">
+			<div class="rt-container">
+																<div id="rt-header">
+					<div class="rt-grid-7 rt-alpha">
+    			<div class="rt-block">
+    	    	<a href="../../../index.html" id="rt-logo"></a>
+    		</div>
+	    
+</div>
+<div class="rt-grid-5 rt-omega">
+                    <div class="square9">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<div class="ofssologin_square9"><a href="../../../index.html">登入</a>&nbsp;&nbsp|&nbsp;&nbsp;<span><a href="https://www.openfoundry.org/en/component/content/2131/2131?task=view" ><span lang="en" xml:lang="en">English</span></a></li></ul></span><!--Joom!fish V2.0.4 (Lightning)-->
+<!-- &copy; 2003-2009 Think Network, released under the GPL. -->
+<!-- More information: at http://www.joomfish.net -->
+<div class="ofssologin_search_square9">
+  <form id="of_search" action="https://www.openfoundry.org/of/openfoundry/search" method="get" onsubmit="of_search(); return false;">
+    <select id="of_search_type">
+      <option value="Projects"> 專案 </option>
+      <option value="Content"> 文章 </option>
+      <option value="People"> 人才 </option>
+    </select>
+    <input id="query" name="query" id="mod_search_searchword" maxlength="50" alt="search" class="inputbox" type="text" size="28" value="search..."  onblur="if(this.value=='') this.value='search...';" onfocus="if(this.value=='search...') this.value='';" />
+    <input type="hidden" name="commit" value="search" />
+  </form>
+</div></div>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		
+</div>
+					<div class="clear"></div>
+				</div>
+																<div id="rt-navigation"><div id="rt-navigation2"><div id="rt-navigation3">
+					
+<div class="nopill">
+	<ul class="menutop level1 " >
+						<li class="item1 root" >
+					<a class="orphan item bullet" href="../../../index.html"  >
+				<span>
+			    				首頁				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item32 root" >
+					<a class="orphan item bullet" href="../../../archived.html"  >
+				<span>
+			    				專案				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item186 root" >
+					<a class="orphan item bullet" href="../../community.html"  >
+				<span>
+			    				Who&#039;s Who				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item4 root" >
+					<a class="orphan item bullet" href="../../news.html"  >
+				<span>
+			    				新聞				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item5 root" >
+					<a class="orphan item bullet" href="../../law-and-licensing.html"  >
+				<span>
+			    				法律源地				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item3 root" >
+					<a class="orphan item bullet" href="../../activities.html"  >
+				<span>
+			    				活動				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item2 root" >
+					<a class="orphan item bullet" href="../../resourcecatalog%3FName=Value.html"  >
+				<span>
+			    				資源表列				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item45 root" >
+					<a class="orphan item bullet" href="../../about.html"  >
+				<span>
+			    				關於				   
+				</span>
+			</a>
+			
+			
+	</li>	
+				</ul>
+</div>
+
+				    <div class="clear"></div>
+				</div></div></div>
+								<div class="rt-surround"><div class="rt-surround2"><div class="rt-surround3">
+										<div id="rt-showcase-section">
+												<div id="rt-showcase">
+							<div class="rt-grid-12 rt-alpha rt-omega">
+    		<div class="clear"></div>
+		
+		
+                <div class="close-note">
+                    <div class="rt-block">
+               					<div class="module-content">
+                	<div style="font-size:medium; background-image:linear-gradient(120deg,#159957,#4298b2);color:white;padding:20px;margin:-10px -18px;">感謝您對「自由軟體鑄造場」的支持與愛護，十多年來「自由軟體鑄造場」受中央研究院支持，並在資訊科學研究所以及資訊科技創新研究中心執行，現已完成階段性的任務。 本網站預計持續維運至 2021年底，網站內容基本上不會再更動。<br />也紀念我們永遠的朋友 李士傑先生（Shih-Chieh Ilya Li）。</div>				</div>
+            </div>
+                </div>
+		
+</div>
+							<div class="clear"></div>
+						</div>
+																	</div>
+															<div id="rt-main-surround">
+																							              <div id="rt-main" class="mb12">
+                <div class="rt-main-inner">
+                    <div class="rt-grid-12 ">
+                                                <div class="rt-block">
+                            							<div class="square1">
+							<div class="rt-module-surround">
+								<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+								<div class="rt-module-inner">
+		                            <div id="rt-mainbody">
+		                                
+<div class="rt-joomla ">
+	<div class="rt-article">
+		
+				<div class="rt-headline"><h1 class="rt-article-title">微軟釋出驅動程式原始碼  外界懷疑違反 GPL</h1>		</div>
+		<div class="clear"></div>
+		
+		
+		
+				<div class="rt-articleinfo">
+						<div class="rt-article-icons">
+								<a href="https://www.openfoundry.org/tw/component/content/article/2131?tmpl=component&amp;print=1&amp;page=" title="列印" onclick="window.open(this.href,'win2','status=no,toolbar=no,scrollbars=yes,titlebar=no,menubar=no,resizable=yes,width=640,height=480,directories=no,location=no'); return false;" rel="nofollow"><span class="icon print"></span></a>																</div>
+			
+			<span class="rt-date-posted">
+						建立日期			2009-07-28 08:00						&nbsp;&nbsp;&nbsp;&nbsp;						</span>
+
+						<span class="rt-author">
+				作者是 謝良奇/編譯			</span>
+				
+					</div>
+		
+		
+		微軟史無前例地以 GPL (GNU General Public Licence) 釋出兩套軟體。外界矚目的不單單只是釋出的軟體，此舉的重要性在於微軟多年來一直不願意擁抱 GPL 這個最重要的開放源碼授權。過去微軟從未採用 GPL 釋出程式碼，而是偏好將該公司的開放軟體，以自己的共享源碼方案釋出，MPL (Microsoft Public Licence) 即是其中之一，MPL 雖然取得開放源碼組織 (Open Source Initiative) 的認可，在開放源碼社群中並未受到廣泛採納。<br /><p>這次由微軟釋出的第一套 GPL 軟體，是用來在微軟的虛擬化平台 Hyper-V 上運行 Linux 之用，超過 2 萬行以上的驅動程式。對於在微軟 Hyper-V 平台上執行 Linux 的用戶，可說是個好消息。同時，此舉也形成僅提供封閉原始碼驅動程式的數家主要供應商，跟進類似釋出的壓力。</p>
+<p>包括虛擬化廠商 VMware、Wi-Fi 晶片商 Broadcom Corp.、圖形晶片商 Nvidia Inc. 等公司，目前仍不願以 GPL 釋出各自的 Linux 驅動程式。Illuminata Inc. 分析師 Gordon Haff 認為，其他廠商不會因為微軟此舉而開放自身驅動程式。因為對於 Nvidia 等公司而言，驅動程式被視為競爭優勢之一。VMware 與 Nvidia 並未回應，Broadcom 則宣稱正在與社群合作，將在未來數月內釋出。</p>
+<p>第二套微軟以 GPL 釋出的，是開放源碼教育平台 Moodle 的 Microsoft Live plugin。Live Services plugin 整合微軟的 <a href="mailto:Live@edu">Live@edu</a> 服務如電子郵件、日曆、即時通訊與搜尋功能至 Moodle 平台，並提供 Moodle 與 Live 服務的單一登入。</p>
+<p>正如微軟平台策略群社群經理 Peter Galli 在部落格中所言，微軟急切希望透過這兩份釋出，展示對於相互運作性與開放標準的執行決心。透過釋出 GPL 軟體以認可該授權，微軟對於 GPL 的支持可算做出強力的宣示。</p>
+<p>然而部份人士指出，這些只不過是微軟擺脫困境的策略。特別是知名的軟體自由法律中心 (Software Freedom Law Center，SFLC) 宣稱，微軟因為散佈 Hyper-V Linux Integration Components (LinuxIC)，卻未提供原始程式碼，已經違反了 GPLv2。微軟釋出超過 2 萬行程式碼給 Linux 社群，是為了改正此一錯誤。</p>
+<p>一名開放源碼網路軟體公司 Vyatta 的工程師 Stephen Hemminger，日前發現了微軟封閉源碼的 Hyper-V 網路驅動程式，連結到其他人撰寫的 GPL 軟體。GPL 明確禁止混合封閉與開放源碼程式，因此微軟已經違反了 GPL 授權。</p>
+<p>發現此事後，Hemminger 連絡了 Novell 的 Linux 核心驅動程式團隊領導人 Greg Kroah-Hartman，希望 Kroah-Hartman 提醒對方解決這個問題。</p>
+<p>微軟事後選擇釋出原始程式碼。因而，這次的程式碼釋出並非出自貢獻 Linux 核心的動機，只是單純為了補救上述情況。對此，微軟平台策略資深總監 Sam Ramji 聲稱，此次程式碼貢獻並非因為 GPL 的關係。Ramji 說，微軟採用 GPLv2 釋出原始碼，為的是客戶、夥伴、社群與微軟的共同利益，而非基於遵守 GPLv2 的職責。</p>
+<p>他表示，微軟原本就有使用 GPL 釋出該驅動程式的計畫，有關於微軟是否違反 GPL 的問題，就交給社群來決定。根據 Ramji 的說法，Kroah-Hartman 在 3 月時告知微軟此事。一名微軟工程師 Hank Janssen 則更早就提出，將程式碼提交給 Linux 核心的想法。</p>
+<p>SFLC 政策分析師與技術總監 Bradley Kuhn 認為，Ramji 說微軟在 Linux 開發者行動之前，已經展開原始碼釋出的計畫，儘管可能是真的，但並不表示這樣就沒有問題了。只要有人散佈 GPL 作品的二進位格式，就必須提供原始程式碼。即使微軟的耽擱，已是違反 GPL。</p>
+<p>Kuhn 指出，從自由的觀點看來重要的是，這是一套用來說服用戶放棄自由虛擬化平台如 Xen、KVM 等，轉向微軟虛擬化技術的軟體。</p>
+<p>Kroah-Hartman 的發言人表示，授權問題在 Kroah-Hartman 與微軟的合作中，扮演了一個角色。當微軟獲悉該問題後，就走向了釋出程式碼的程序，Greg 與 Sam Ramji 是其中的推動者。Kuhn 並讚揚社群採取友善的策略，低調地與微軟合作告知其責任，協助該公司遵守 GPL。這個過程總是能發揮功用，微軟選擇遵守該授權，顯示出社群的標準執行活動的價值。</p>
+<p><br />相關網址：<br />1.<a href="https://www.computerworld.com/s/article/341371/Microsoft_Frees_Linux_Driver_Source_Code" target="_blank">微軟釋出 Linux 驅動程式原始碼</a><br />2.<a href="https://mybroadband.co.za/news/Software/8948.html" target="_blank">微軟擁抱開放源碼<br /></a>3.<a href="https://www.sdtimes.com/SFLC_MICROSOFT_VIOLATED_THE_GPL/By_David_Worthington/About_GPL_and_MICROSOFT_and_SFLC/33641" target="_blank">SFLC: 微軟違反 GPL<br /></a>4.<a href="https://www.itwire.com/content/view/26553/1141/" target="_blank">微軟宣稱 Linux 提交中未違反 GPL<br /></a></p>
+			<!-- Show relate article -->
+				<!-- end -->
+		<div class="article_note">
+		<!-- Add tags use metakey, and show OSSF Newsletter tag: OSSFNL+NUM-->
+		<br><br> <hr style='border: 1px dashed #D2DADB;'><b>自由軟體鑄造場電子報&nbsp;:</b>&nbsp;<a href='../../../previous-issue%3Ftask=view&amp;id=541.html'>第 132 期 找個合用的開放源碼心智圖軟體</a><br>				<!-- End -->
+					<br>
+					<b>分類: </b><a href="../../foss-news.html">				源碼新聞					</a>				</div>
+			 <!-- AddThis Button BEGIN ID 3001 is the front page article -->
+     			<br><br>
+       <div class="addthis_toolbox addthis_default_style addthis_32x32_style">
+       <a class="addthis_button_preferred_1"></a>
+       <a class="addthis_button_preferred_2"></a>
+       <a class="addthis_button_preferred_3"></a>
+       <a class="addthis_button_preferred_4"></a>
+       <a class="addthis_button_compact"></a>
+       <a class="addthis_counter addthis_bubble_style"></a>
+       </div>
+       <script type="text/javascript">var addthis_config = {"data_track_clickback":true};</script>
+       <script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js#pubid=openfoundry"></script>
+       <!-- AddThis Button END -->
+     <br>
+		<div class="totop" ><a class="rt-totop" href="2131%3Ftask=view.html#" style="outline: medium none;">↑ Top</a></div>
+            <!-- AddThis Button END -->
+
+			</div>
+</div>
+
+		                            </div>
+									<div class="clear"></div>
+								</div>
+								<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+							</div>
+							</div>
+                                                    </div>
+                                            </div>
+                                        <div class="clear"></div>
+                </div>
+            </div>
+																													</div>
+										<div id="rt-copyright">
+						<div class="rt-grid-12 rt-alpha rt-omega">
+                        <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<div id="desktop-mobile-version-switch"><span id="mobile-version" class="version-switch"><a href="2131%3Ftask=view.html#">行動版</a></span></div>
+自由軟體鑄造場 製作 最佳瀏覽狀態：IE7或Firefox2.0以上 (建議使用Firefox) ‧ 解析度1024*768 <br /> <strong>E-Mail</strong>：<a href="mailto:contact@openfoundry.org">contact@openfoundry.org</a> <strong>Address</strong>：台北市南港區研究院路2段128號 中央研究院資訊科學研究所 . <a href="../../../privacy-policy.html">隱私權條款</a>. <a href="../../../terms-of-use.html">使用條款</a><span style="position: relative; top: 8px; margin-top: -8px;"> <a href="../../../about/8101.html"><img src="../../../images/M_images/rss-feed-all.png" border="0" /></a></span>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+        	
+</div>
+						<div class="clear"></div>
+					</div>
+					<div class="rt-footer-bottom-wrap"><div class="rt-footer-bottom"><div class="rt-footer-bottom2"><div class="rt-footer-bottom3"></div></div></div></div>
+									</div></div></div>
+				<div class="rt-surround-bottom"><div class="rt-surround-bottom2"><div class="rt-surround-bottom3"></div></div></div>
+							</div>
+		</div>
+		<!--
+		<script id="aptureScript">
+						(function (){var a=document.createElement("script");a.defer="true";a.src="http://www.apture.com/js/apture.js?siteToken=vsJttrn";document.getElementsByTagName("head")[0].appendChild(a);})();
+     </script>
+-->
+
+<!-- Piwik -->
+<!-- 			<script type="text/javascript">
+			  var _paq = _paq || [];
+		  _paq.push(["trackPageView"]);
+		  _paq.push(["enableLinkTracking"]);
+
+		    (function() {
+			        var u=(("https:" == document.location.protocol) ? "https" : "https") + "://www.openfoundry.org/piwik/";
+				    _paq.push(["setTrackerUrl", u+"piwik.php"]);
+				    _paq.push(["setSiteId", "1"]);
+				        var d=document, g=d.createElement("script"), s=d.getElementsByTagName("script")[0]; g.type="text/javascript";
+				        g.defer=true; g.async=true; g.src=u+"piwik.js"; s.parentNode.insertBefore(g,s);
+					  })();
+		  </script> -->
+<!-- End Piwik Code -->
+	</body>
+</html>

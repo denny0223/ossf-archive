@@ -1,0 +1,448 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="zh-tw" lang="zh-tw" >
+<head>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<link rel="shortcut icon" href="../../../images/favicon.ico" />
+	  <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+  <meta name="robots" content="index, follow" />
+  <meta name="keywords" content="OSSFNL553" />
+  <meta name="title" content="淺嚐 rsync" />
+  <meta name="description" content="※ 前言 備份規劃是資訊系統建置中佔有相當大比重的一環，往往也是資訊人員最不敢掉以輕心的重要項目！相信從事資訊人員的朋友都知道，備份是令人又愛又恨的工作內容。愛的是只要規劃得宜，就可以高枕無憂，輕輕鬆鬆完成備份；恨的是規劃不當，三天兩頭就給你出狀況，令人頭痛萬分啊！本文所介紹的" />
+  <meta name="generator" content="" />
+  <title>淺嚐 rsync - OpenFoundry</title>
+  <link href="../../../favicon.ico" rel="shortcut icon" type="image/x-icon" />
+  <link rel="stylesheet" href="../../../components/com_gantry/css/gantry.css" type="text/css" />
+  <link rel="stylesheet" href="../../../components/com_gantry/css/grid-12.css" type="text/css" />
+  <link rel="stylesheet" href="../../../components/com_gantry/css/joomla.css" type="text/css" />
+  <link rel="stylesheet" href="../../../templates/rt_quantive_j15/css/joomla.css" type="text/css" />
+  <link rel="stylesheet" href="../../../templates/rt_quantive_j15/css/style1.css" type="text/css" />
+  <link rel="stylesheet" href="../../../templates/rt_quantive_j15/css/light-body.css" type="text/css" />
+  <link rel="stylesheet" href="../../../templates/rt_quantive_j15/css/demo-styles.css" type="text/css" />
+  <link rel="stylesheet" href="../../../templates/rt_quantive_j15/css/template.css" type="text/css" />
+  <link rel="stylesheet" href="../../../templates/rt_quantive_j15/css/typography.css" type="text/css" />
+  <link rel="stylesheet" href="../../../templates/rt_quantive_j15/css/fusionmenu.css" type="text/css" />
+  <style type="text/css">
+    <!--
+#rt-main-surround ul.menu li.active > a, #rt-main-surround ul.menu li.active > .separator, #rt-main-surround ul.menu li.active > .item, #rt-main-surround .square4 ul.menu li:hover > a, #rt-main-surround .square4 ul.menu li:hover > .item, #rt-main-surround .square4 ul.menu li:hover > .separator, .roktabs-links ul li.active span {color:#0088B5;}
+a, #rt-main-surround ul.menu a:hover, #rt-main-surround ul.menu .separator:hover, #rt-main-surround ul.menu .item:hover {color:#0088B5;}
+    -->
+  </style>
+  <script type="text/javascript" src="../../../components/com_jcomments/js/jcomments-v2.1.js%3Fv=2"></script>
+  <script type="text/javascript" src="../../../components/com_jcomments/libraries/joomlatune/ajax.js"></script>
+  <script type="text/javascript" src="../../../media/system/js/mootools.js"></script>
+  <script type="text/javascript" src="../../../media/system/js/caption.js"></script>
+  <script type="text/javascript" src="../../../components/com_gantry/js/gantry-buildspans.js"></script>
+  <script type="text/javascript" src="../../../components/com_gantry/js/gantry-inputs.js"></script>
+  <script type="text/javascript" src="../../../templates/rt_quantive_j15/js/jquery.cookie.js"></script>
+  <script type="text/javascript" src="../../../modules/mod_roknavmenu/themes/fusion/js/fusion.js"></script>
+  <script type="text/javascript" src="../../../modules/mod_ofssologin/js/ofssologin.js"></script>
+  <script type="text/javascript">
+
+			window.addEvent('domready', function() {
+				var modules = ['rt-block'];
+				var header = ['h3','h2','h1'];
+				GantryBuildSpans(modules, header);
+			});
+		InputsExclusion.push('.content_vote','#rt-popup')
+		        window.addEvent('load', function() {
+					new Fusion('ul.menutop', {
+						pill: 0,
+						effect: 'slide and fade',
+						opacity: 1,
+						hideDelay: 500,
+						centered: 0,
+						tweakInitial: {'x': -2, 'y': 0},
+        				tweakSubsequent: {'x': 0, 'y': -14},
+						menuFx: {duration: 200, transition: Fx.Transitions.Sine.easeOut},
+						pillFx: {duration: 400, transition: Fx.Transitions.Back.easeOut}
+					});
+	            });
+  </script>
+<!-- <script type="text/javascript" src="/sso/javascripts/langsync.js"></script> -->
+<!-- <script src="/templates/rt_quantive_j15/js/ossf.js"></script> -->
+<script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-4136519-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
+</head>
+	<body  class="backgroundlevel-low backgroundstyle-style8 bodylevel-med bodystyle-light cssstyle-style1 logostyle-dark font-family-helvetica font-size-is-default menu-type-fusionmenu col12">
+		<div id="rt-main-background">
+			<div class="rt-container">
+																<div id="rt-header">
+					<div class="rt-grid-7 rt-alpha">
+    			<div class="rt-block">
+    	    	<a href="../../../index.html" id="rt-logo"></a>
+    		</div>
+	    
+</div>
+<div class="rt-grid-5 rt-omega">
+                    <div class="square9">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<div class="ofssologin_square9"><a href="../../../index.html">登入</a>&nbsp;&nbsp|&nbsp;&nbsp;<span><a href="https://www.openfoundry.org/en/component/content/2184/2184?task=view" ><span lang="en" xml:lang="en">English</span></a></li></ul></span><!--Joom!fish V2.0.4 (Lightning)-->
+<!-- &copy; 2003-2009 Think Network, released under the GPL. -->
+<!-- More information: at http://www.joomfish.net -->
+<div class="ofssologin_search_square9">
+  <form id="of_search" action="https://www.openfoundry.org/of/openfoundry/search" method="get" onsubmit="of_search(); return false;">
+    <select id="of_search_type">
+      <option value="Projects"> 專案 </option>
+      <option value="Content"> 文章 </option>
+      <option value="People"> 人才 </option>
+    </select>
+    <input id="query" name="query" id="mod_search_searchword" maxlength="50" alt="search" class="inputbox" type="text" size="28" value="search..."  onblur="if(this.value=='') this.value='search...';" onfocus="if(this.value=='search...') this.value='';" />
+    <input type="hidden" name="commit" value="search" />
+  </form>
+</div></div>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		
+</div>
+					<div class="clear"></div>
+				</div>
+																<div id="rt-navigation"><div id="rt-navigation2"><div id="rt-navigation3">
+					
+<div class="nopill">
+	<ul class="menutop level1 " >
+						<li class="item1 root" >
+					<a class="orphan item bullet" href="../../../index.html"  >
+				<span>
+			    				首頁				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item32 root" >
+					<a class="orphan item bullet" href="../../../archived.html"  >
+				<span>
+			    				專案				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item186 root" >
+					<a class="orphan item bullet" href="../../community.html"  >
+				<span>
+			    				Who&#039;s Who				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item4 root" >
+					<a class="orphan item bullet" href="../../news.html"  >
+				<span>
+			    				新聞				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item5 root" >
+					<a class="orphan item bullet" href="../../law-and-licensing.html"  >
+				<span>
+			    				法律源地				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item3 root" >
+					<a class="orphan item bullet" href="../../activities.html"  >
+				<span>
+			    				活動				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item2 root" >
+					<a class="orphan item bullet" href="../../resourcecatalog%3FName=Value.html"  >
+				<span>
+			    				資源表列				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item45 root" >
+					<a class="orphan item bullet" href="../../about.html"  >
+				<span>
+			    				關於				   
+				</span>
+			</a>
+			
+			
+	</li>	
+				</ul>
+</div>
+
+				    <div class="clear"></div>
+				</div></div></div>
+								<div class="rt-surround"><div class="rt-surround2"><div class="rt-surround3">
+										<div id="rt-showcase-section">
+												<div id="rt-showcase">
+							<div class="rt-grid-12 rt-alpha rt-omega">
+    		<div class="clear"></div>
+		
+		
+                <div class="close-note">
+                    <div class="rt-block">
+               					<div class="module-content">
+                	<div style="font-size:medium; background-image:linear-gradient(120deg,#159957,#4298b2);color:white;padding:20px;margin:-10px -18px;">感謝您對「自由軟體鑄造場」的支持與愛護，十多年來「自由軟體鑄造場」受中央研究院支持，並在資訊科學研究所以及資訊科技創新研究中心執行，現已完成階段性的任務。 本網站預計持續維運至 2021年底，網站內容基本上不會再更動。<br />也紀念我們永遠的朋友 李士傑先生（Shih-Chieh Ilya Li）。</div>				</div>
+            </div>
+                </div>
+		
+</div>
+							<div class="clear"></div>
+						</div>
+																	</div>
+															<div id="rt-main-surround">
+																							              <div id="rt-main" class="mb12">
+                <div class="rt-main-inner">
+                    <div class="rt-grid-12 ">
+                                                <div class="rt-block">
+                            							<div class="square1">
+							<div class="rt-module-surround">
+								<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+								<div class="rt-module-inner">
+		                            <div id="rt-mainbody">
+		                                
+<div class="rt-joomla ">
+	<div class="rt-article">
+		
+				<div class="rt-headline"><h1 class="rt-article-title">淺嚐 rsync</h1>		</div>
+		<div class="clear"></div>
+		
+		
+		
+				<div class="rt-articleinfo">
+						<div class="rt-article-icons">
+								<a href="https://www.openfoundry.org/tw/component/content/article/2184?tmpl=component&amp;print=1&amp;page=" title="列印" onclick="window.open(this.href,'win2','status=no,toolbar=no,scrollbars=yes,titlebar=no,menubar=no,resizable=yes,width=640,height=480,directories=no,location=no'); return false;" rel="nofollow"><span class="icon print"></span></a>																</div>
+			
+			<span class="rt-date-posted">
+						建立日期			2009-10-22 08:00						&nbsp;&nbsp;&nbsp;&nbsp;						最近更新在 2009-11-10 17:40						</span>
+
+						<span class="rt-author">
+				作者是 邱健雄			</span>
+				
+					</div>
+		
+		
+		<p><strong>※ 前言</strong></p>
+<p>備份規劃是資訊系統建置中佔有相當大比重的一環，往往也是資訊人員最不敢掉以輕心的重要項目！相信從事資訊人員的朋友都知道，備份是令人又愛又恨的工作內容。愛的是只要規劃得宜，就可以高枕無憂，輕輕鬆鬆完成備份；恨的是規劃不當，三天兩頭就給你出狀況，令人頭痛萬分啊！本文所介紹的 rsync，是非常好用的備份工具，其簡便的操作加上強大的功能，廣受喜愛與被採用。最重要的是它是免費的開放源碼工具！相信可以成為您在挑選備份工具的選擇之一。<br /></p><p><strong><br />※ 關於 rsync</strong></p>
+<p>rsync 採用 GPL 授權，是 <a href="https://www.samba.org/">www.samba.org</a> 下的專案之一，目前由 Wayne Davison 維護。它原本是被發展來取代 rcp 的一個工具，採用所謂的「rsync 演算法」，提供檔案在本地端或遠端電腦間快速同步的功能，而且只傳送異動的部份，而非整份都傳送。這提升了檔案同步的效率，進而達到快速同步遠端檔案的目的。</p>
+<p>因為 rsync 具備了差異性快速遠端同步的特性，並可完整保存所有的檔案資訊、目錄結構、檔案權限等資訊，更支援了匿名同步功能及多種傳輸方式 (rsh, ssh, socket)，因此 rsync 常被採用做為備份 (backup) 或鏡象 (mirror) 的工具。</p>
+<p>除此之外，rsync 的安裝相當簡便，不需要特定權限即可安裝，且支援多種作業系統。這讓 rsync 更容易佈署至各種備份計劃之中。</p>
+<p><br /><strong>※ 佈署架構</strong></p>
+<p>rsync 採用主從式架構，在應用上可分為 PUSH 及 PULL 兩種主要模式，以因應不同的環境因素而達到佈署的目的。</p>
+<p><strong>PULL 模式</strong></p>
+<p>在同一網段的環境下，由備份主機向伺服器進行同步並將資料備份過來以完成備份工作。這種模式是最被普遍採用的佈署方式。</p>
+<p><img hspace="5" height="125" width="264" vspace="5" border="0" align="absbottom" alt="" src="../../../images/091027/01.png" /></p>
+<p>如上圖所示，由備份主機啟動備份工作，向被備份端要求備份。可將備份時的負載大部份由備份主機承受。當然，PULL 模式也支援跨網段或遠端進行同步備份工作，如下圖：</p>
+<p><img hspace="5" height="144" width="405" vspace="5" border="0" align="absbottom" alt="" src="../../../images/091027/02.png" /></p>
+<p><strong>PUSH 模式</strong><br />&nbsp;<br /><img hspace="5" height="125" width="265" vspace="5" border="0" align="absbottom" alt="" src="../../../images/091027/03.png" /></p>
+<p>PUSH 模式的執行方式剛好和 PULL 模式恰恰相反。如上圖所示，在同一網段的環境下，由伺服器主動發出同步要求並將資料同步至備份主機上以完成備份的工作。</p>
+<p>在實務上，這種模式通常被採用於較特殊的環境下，例如：伺服器被佈署在防火牆內且無法由外部連入。因此，必須改由伺服器主動將資料送至備份主機上。（如下圖）</p>
+<p><img hspace="5" height="143" width="388" vspace="5" border="0" align="absbottom" alt="" src="../../../images/091027/04.png" /></p>
+<p>這並不表示 PUSH 模式只能用在特定情況下，只是在一般的情況下用 PULL 模式會比 PUSH 模式來得有效率且較不影響伺服器的執行效能。</p>
+<p><br /><strong>※ 實際操作</strong></p>
+<p>在認識了 rsync 的基本佈署概念後，我們不妨來實際演練一下，讓讀者有更深刻的體會。</p>
+<p>本篇文章採用典型的 PULL 模式做為示範佈署架構。因此，我們需要在伺服器上安裝並設定 rsync 的 daemon (server)，而備份主機上則只需安裝及設定 rsync 的 client 即可。詳述如下：</p>
+<ul>
+    <li>檔案傳輸伺服器（被備份對象） </li>
+    <li>備份主機（執行備份者) </li>
+    <li>作業系統均為 GNU Debian/Linux 5 </li>
+    <li>在同一網路區段下 (192.168.20/24) </li>
+</ul>
+<p><strong>安裝 rsync</strong></p>
+<p>rsync 的安裝方法在不同的作業系統上略有不同，但其使用方式卻無二致，故在此略過不同版本的安裝說明，請讀者自行參考所使用系統的套件管理方式來進行安裝。</p>
+<p>由於 Debian 的套件管理系統相當的方便、易用，且會自動處理套件的相依性，因此只須執行下述指令即可完成 rsync 的安裝。</p>
+<p># apt-get install rsync</p>
+<p><strong>設定 rsync</strong></p>
+<blockquote dir="ltr" style="margin-right: 0px;">
+<p><strong><u>伺服器</u></strong></p>
+<p>在安裝完成 rsync 後，請編輯 /etc/rsyncd.conf 並修改對應設定。基本上，需要注意的是自行定義的部份，請讀者參考下述設定內容並改成符合您需求的設定值。</p>
+<p># sample rsyncd.conf configuration file</p>
+<p># GLOBAL OPTIONS</p>
+<p>#motd file=/etc/motd<br />#log file=/var/log/rsyncd<br /># for pid file, do not use /var/run/rsync.pid if<br /># you are going to run rsync out of the init.d script.<br />pid file=/var/run/rsyncd.pid<br />#syslog facility=daemon<br />#socket options=</p>
+<p># MODULE OPTIONS</p>
+<p>[ftp]</p>
+<p>comment = FTP archive<br />path = /home/ftp<br />use chroot = no<br /># max connections=2<br />lock file = /var/lock/rsyncd<br /># the default for read only is yes...<br />read only = yes<br />list = yes<br /># uid = nobody<br /># gid = nogroup<br />uid = root<br />gid = root<br /># exclude =<br /># exclude from =<br /># include =<br /># include from =<br /># auth users = backup<br /># secrets file = /etc/rsyncd.secrets<br />strict modes = yes<br /># hosts allow =<br /># hosts deny =<br />ignore errors = no<br />ignore nonreadable = yes<br />transfer logging = no<br /># log format = timeout = 600<br />refuse options = checksum dry-run<br />dont compress = *.gz *.tgz *.zip *.z *.rpm *.deb *.iso *.bz2 *.tbz</p>
+<p>修改後，請存檔離開。</p>
+<p>請注意！rsync 預設為允許匿名登入進行同步。如果要取消匿名登入的話，讀者可以設定下述項目並指定使用者及其密碼。</p>
+<p>auth users = backup<br />secrets file = /etc/rsyncd.secrets<br />並在 /etc 建立 rsyncd.secrets 檔案，其格式如下：</p>
+<p>account:password<br />完成後，啟動 rsyncd 即可。</p>
+<p># /etc/init.d/rsyncd start<br />若有變更任何設定，也請重新啟動 rsyncd。</p>
+<p># /etc/init.d/rsyncd restart</p>
+<p><strong><u>備份主機</u></strong></p>
+<p>備份主機上完成 rsync 安裝後，要做的動作就很簡單了！只需要在系統中加入 cron job，指定時間執行備份指令即可。</p>
+<p>30 0,12 * * * rsync -avHS --delete 
+ <script language='JavaScript' type='text/javascript'>
+ <!--
+ var prefix = 'm&#97;&#105;lt&#111;:';
+ var suffix = '';
+ var attribs = '';
+ var path = 'hr' + 'ef' + '=';
+ var addy78151 = '&#117;s&#101;r' + '&#64;';
+ addy78151 = addy78151 + '192' + '&#46;' + '168' + '&#46;' + '20';
+ document.write( '<a ' + path + '\'' + prefix + addy78151 + suffix + '\'' + attribs + '>' );
+ document.write( addy78151 );
+ document.write( '<\/a>' );
+ //-->
+ </script> <script language='JavaScript' type='text/javascript'>
+ <!--
+ document.write( '<span style=\'display: none;\'>' );
+ //-->
+ </script>這個 E-mail 地址已經被防止灌水惡意程式保護，您需要啟用 Java Script 才能觀看
+ <script language='JavaScript' type='text/javascript'>
+ <!--
+ document.write( '</' );
+ document.write( 'span>' );
+ //-->
+ </script>.2::ftp srv/storage 2&gt;&amp;1 &gt; /dev/null/</p>
+<p>相關參數如下：</p>
+<ul>
+    <li>-a：歸檔模式，相當於-rlptgoD（但不含-H, -A, -X） </li>
+    <li>-v：顯示執行記錄 </li>
+    <li>-H：保留檔案的連結 (hard link) </li>
+    <li>-S：採有效率方式處理較鬆散的檔案 </li>
+    <li>-delete：從備份目的資料夾中刪除多餘或已不存在的檔案 </li>
+</ul>
+<p>詳細參數請參考 rsync 的 man page 或直接在網路上查詢即可獲得詳盡的說明，限於篇幅，本文不再贅述。</p>
+</blockquote>
+<p><strong>進階使用</strong></p>
+<p>如果讀者所採用的伺服器俱備 sshd 的服務，則可以用更簡單的方式來完成備份工作。</p>
+<p>由於 rsync 本身支援 rsh、ssh 及 socket 等方式進行連線。因此，只要在伺服器上有提供 ssh 連線服務（通常是 UNIX-like 作業系統），便不需要安裝 rsync daemon，直接透過 ssh 連線及現有使用者帳號（當然可以另外建立給備份專用的帳號更好）即可完成備份設定。</p>
+<p>首先，在備份主機上產生一組認證金鑰，其目的在做為伺服器上使用者認證之用。</p>
+<p># cd /.ssh<br /># ssh-keygen -t rsa -b 2048<br /><br />這樣會在使用者家目錄下的 .ssh 資料夾中產生一 id rsa.pub 的認證金鑰。然後，將該金鑰檔案傳送至伺服器上的使用者帳號目錄下的 .ssh 資料夾中，並更名為 authorized keys2。請確認其存取權限為該使用者可讀、可寫，或者執行下述指令來設定檔案存取權限。</p>
+<p># chmod 600 /.ssh/authorized keys2<br /><br />這樣就完成了使用者免密碼登入的特殊設定。然後，我們一樣再在備份主機上加入 cron job，並加入下列命令：</p>
+<p>30 0,12 * * * rsync -avHS --delete --rsh=&quot;ssh -l user&quot; 192.168.20.2:home/ftp /srv/storage 2&gt;&amp;1 &gt; /dev/null/<br /><br />如此便完成透過 ssh 連線進行同步備份的設定。這樣是否更為簡單、方便呢？</p>
+<p><br /><strong>※ 結語</strong></p>
+<p>rsync 的兩種主要佈署模式孰優孰劣，並不能一概而論，主要是要看有沒有符合佈署的條件或需求而已。而這個輕巧、容易上手的開放源碼工具，雖然提供的佈署模式看起來很簡單，但，只要稍加規劃、運用，其實就可以很輕鬆的做出二代、甚至是三代的本地備份或是異地備份的架構。</p>
+<hr /><br />本文智慧財產權屬於作者，採用創用 CC「姓名標示－禁止改作－非商業性」授權條款台灣 2.5 版授權散布，歡迎在不變更內容的前提下，以任何形式重製與散布本報，但必須遵守下列義務：
+<p>不得為商業目的之利用； <br />必須標明本文智慧財產權屬於作者； <br />完整引用本著作權說明。 <br />授權條款全文請見：<a href="https://creativecommons.org/licenses/by-nc-nd/2.5/tw/legalcode" target="_blank">https://creativecommons.org/licenses/by-nc-nd/2.5/tw/legalcode</a><br />授權條款簡介請見：<a href="https://creativecommons.org/licenses/by-nc-nd/2.5/tw/deed.zh_TW" target="_blank">https://creativecommons.org/licenses/by-nc-nd/2.5/tw/deed.zh_TW</a><br />若欲為上述授權範圍以外之利用，請與
+ <script language='JavaScript' type='text/javascript'>
+ <!--
+ var prefix = 'm&#97;&#105;lt&#111;:';
+ var suffix = '';
+ var attribs = '';
+ var path = 'hr' + 'ef' + '=';
+ var addy63331 = 'sh&#97;wn.ch&#105;&#111;&#117;' + '&#64;';
+ addy63331 = addy63331 + 'c&#105;t&#105;' + '&#46;' + 's&#105;n&#105;c&#97;' + '&#46;' + '&#101;d&#117;' + '&#46;' + 'tw';
+ var addy_text63331 = '作者';
+ document.write( '<a ' + path + '\'' + prefix + addy63331 + suffix + '\'' + attribs + '>' );
+ document.write( addy_text63331 );
+ document.write( '<\/a>' );
+ //-->
+ </script> <script language='JavaScript' type='text/javascript'>
+ <!--
+ document.write( '<span style=\'display: none;\'>' );
+ //-->
+ </script>這個 E-mail 地址已經被防止灌水惡意程式保護，您需要啟用 Java Script 才能觀看
+ <script language='JavaScript' type='text/javascript'>
+ <!--
+ document.write( '</' );
+ document.write( 'span>' );
+ //-->
+ </script>聯絡。</p>
+			<!-- Show relate article -->
+				<!-- end -->
+		<div class="article_note">
+		<!-- Add tags use metakey, and show OSSF Newsletter tag: OSSFNL+NUM-->
+		<br><br> <hr style='border: 1px dashed #D2DADB;'><b>自由軟體鑄造場電子報&nbsp;:</b>&nbsp;<a href='../../../previous-issue%3Ftask=view&amp;id=553.html'>第 137 期 淺談開放硬體及其授權方式</a><br>				<!-- End -->
+					<br>
+					<b>分類: </b><a href="../../tech-column.html">				技術專欄					</a>				</div>
+			 <!-- AddThis Button BEGIN ID 3001 is the front page article -->
+     			<br><br>
+       <div class="addthis_toolbox addthis_default_style addthis_32x32_style">
+       <a class="addthis_button_preferred_1"></a>
+       <a class="addthis_button_preferred_2"></a>
+       <a class="addthis_button_preferred_3"></a>
+       <a class="addthis_button_preferred_4"></a>
+       <a class="addthis_button_compact"></a>
+       <a class="addthis_counter addthis_bubble_style"></a>
+       </div>
+       <script type="text/javascript">var addthis_config = {"data_track_clickback":true};</script>
+       <script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js#pubid=openfoundry"></script>
+       <!-- AddThis Button END -->
+     <br>
+		<div class="totop" ><a class="rt-totop" href="2184%3Ftask=view.html#" style="outline: medium none;">↑ Top</a></div>
+            <!-- AddThis Button END -->
+
+			</div>
+</div>
+
+		                            </div>
+									<div class="clear"></div>
+								</div>
+								<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+							</div>
+							</div>
+                                                    </div>
+                                            </div>
+                                        <div class="clear"></div>
+                </div>
+            </div>
+																													</div>
+										<div id="rt-copyright">
+						<div class="rt-grid-12 rt-alpha rt-omega">
+                        <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<div id="desktop-mobile-version-switch"><span id="mobile-version" class="version-switch"><a href="2184%3Ftask=view.html#">行動版</a></span></div>
+自由軟體鑄造場 製作 最佳瀏覽狀態：IE7或Firefox2.0以上 (建議使用Firefox) ‧ 解析度1024*768 <br /> <strong>E-Mail</strong>：<a href="mailto:contact@openfoundry.org">contact@openfoundry.org</a> <strong>Address</strong>：台北市南港區研究院路2段128號 中央研究院資訊科學研究所 . <a href="../../../privacy-policy.html">隱私權條款</a>. <a href="../../../terms-of-use.html">使用條款</a><span style="position: relative; top: 8px; margin-top: -8px;"> <a href="../../../about/8101.html"><img src="../../../images/M_images/rss-feed-all.png" border="0" /></a></span>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+        	
+</div>
+						<div class="clear"></div>
+					</div>
+					<div class="rt-footer-bottom-wrap"><div class="rt-footer-bottom"><div class="rt-footer-bottom2"><div class="rt-footer-bottom3"></div></div></div></div>
+									</div></div></div>
+				<div class="rt-surround-bottom"><div class="rt-surround-bottom2"><div class="rt-surround-bottom3"></div></div></div>
+							</div>
+		</div>
+		<!--
+		<script id="aptureScript">
+						(function (){var a=document.createElement("script");a.defer="true";a.src="http://www.apture.com/js/apture.js?siteToken=vsJttrn";document.getElementsByTagName("head")[0].appendChild(a);})();
+     </script>
+-->
+
+<!-- Piwik -->
+<!-- 			<script type="text/javascript">
+			  var _paq = _paq || [];
+		  _paq.push(["trackPageView"]);
+		  _paq.push(["enableLinkTracking"]);
+
+		    (function() {
+			        var u=(("https:" == document.location.protocol) ? "https" : "https") + "://www.openfoundry.org/piwik/";
+				    _paq.push(["setTrackerUrl", u+"piwik.php"]);
+				    _paq.push(["setSiteId", "1"]);
+				        var d=document, g=d.createElement("script"), s=d.getElementsByTagName("script")[0]; g.type="text/javascript";
+				        g.defer=true; g.async=true; g.src=u+"piwik.js"; s.parentNode.insertBefore(g,s);
+					  })();
+		  </script> -->
+<!-- End Piwik Code -->
+	</body>
+</html>

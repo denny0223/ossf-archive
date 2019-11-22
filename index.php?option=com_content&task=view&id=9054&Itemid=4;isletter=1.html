@@ -1,0 +1,527 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-gb" lang="en-gb" >
+<head>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<link rel="shortcut icon" href="images/favicon.ico" />
+	  <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+  <meta name="robots" content="index, follow" />
+  <meta name="keywords" content="OSSFNL834" />
+  <meta name="title" content="Android 應用程式開發：如何錄製影片" />
+  <meta name="description" content="許多 Android 裝置的相機也有錄影功能，不過程式碼會稍微複雜一點。MediaRecorder API 針對聲音和影像提供了錄製控制功能，因此是你在 Android 上所有錄影功能的基礎。查看其 API 文件以了解其狀態機的完整示意圖。雖然 MediaRecorder 幫你做了許多工作，為了使其正常運作，有許多你得按照一定順序進行的步驟，此一教學稍後將加以解說。我們會使用預覽 XML" />
+  <meta name="generator" content="" />
+  <title>Android 應用程式開發：如何錄製影片 - OpenFoundry</title>
+  <link href="favicon.ico" rel="shortcut icon" type="image/x-icon" />
+  <link rel="stylesheet" href="components/com_gantry/css/gantry.css" type="text/css" />
+  <link rel="stylesheet" href="components/com_gantry/css/grid-12.css" type="text/css" />
+  <link rel="stylesheet" href="components/com_gantry/css/joomla.css" type="text/css" />
+  <link rel="stylesheet" href="templates/rt_quantive_j15/css/joomla.css" type="text/css" />
+  <link rel="stylesheet" href="templates/rt_quantive_j15/css/style1.css" type="text/css" />
+  <link rel="stylesheet" href="templates/rt_quantive_j15/css/light-body.css" type="text/css" />
+  <link rel="stylesheet" href="templates/rt_quantive_j15/css/demo-styles.css" type="text/css" />
+  <link rel="stylesheet" href="templates/rt_quantive_j15/css/template.css" type="text/css" />
+  <link rel="stylesheet" href="templates/rt_quantive_j15/css/typography.css" type="text/css" />
+  <link rel="stylesheet" href="templates/rt_quantive_j15/css/fusionmenu.css" type="text/css" />
+  <style type="text/css">
+    <!--
+#rt-main-surround ul.menu li.active > a, #rt-main-surround ul.menu li.active > .separator, #rt-main-surround ul.menu li.active > .item, #rt-main-surround .square4 ul.menu li:hover > a, #rt-main-surround .square4 ul.menu li:hover > .item, #rt-main-surround .square4 ul.menu li:hover > .separator, .roktabs-links ul li.active span {color:#0088B5;}
+a, #rt-main-surround ul.menu a:hover, #rt-main-surround ul.menu .separator:hover, #rt-main-surround ul.menu .item:hover {color:#0088B5;}
+    -->
+  </style>
+  <script type="text/javascript" src="components/com_jcomments/js/jcomments-v2.1.js%3Fv=2"></script>
+  <script type="text/javascript" src="components/com_jcomments/libraries/joomlatune/ajax.js"></script>
+  <script type="text/javascript" src="media/system/js/mootools.js"></script>
+  <script type="text/javascript" src="media/system/js/caption.js"></script>
+  <script type="text/javascript" src="components/com_gantry/js/gantry-buildspans.js"></script>
+  <script type="text/javascript" src="components/com_gantry/js/gantry-inputs.js"></script>
+  <script type="text/javascript" src="templates/rt_quantive_j15/js/jquery.cookie.js"></script>
+  <script type="text/javascript" src="modules/mod_roknavmenu/themes/fusion/js/fusion.js"></script>
+  <script type="text/javascript" src="modules/mod_ofssologin/js/ofssologin.js"></script>
+  <script type="text/javascript">
+
+			window.addEvent('domready', function() {
+				var modules = ['rt-block'];
+				var header = ['h3','h2','h1'];
+				GantryBuildSpans(modules, header);
+			});
+		InputsExclusion.push('.content_vote','#rt-popup')
+		        window.addEvent('load', function() {
+					new Fusion('ul.menutop', {
+						pill: 0,
+						effect: 'slide and fade',
+						opacity: 1,
+						hideDelay: 500,
+						centered: 0,
+						tweakInitial: {'x': -2, 'y': 0},
+        				tweakSubsequent: {'x': 0, 'y': -14},
+						menuFx: {duration: 200, transition: Fx.Transitions.Sine.easeOut},
+						pillFx: {duration: 400, transition: Fx.Transitions.Back.easeOut}
+					});
+	            });
+  </script>
+<!-- <script type="text/javascript" src="/sso/javascripts/langsync.js"></script> -->
+<!-- <script src="/templates/rt_quantive_j15/js/ossf.js"></script> -->
+<script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-4136519-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
+</head>
+	<body  class="backgroundlevel-low backgroundstyle-style8 bodylevel-med bodystyle-light cssstyle-style1 logostyle-dark font-family-helvetica font-size-is-default menu-type-fusionmenu col12 ">
+		<div id="rt-main-background">
+			<div class="rt-container">
+																<div id="rt-header">
+					<div class="rt-grid-7 rt-alpha">
+    			<div class="rt-block">
+    	    	<a href="index.html" id="rt-logo"></a>
+    		</div>
+	    
+</div>
+<div class="rt-grid-5 rt-omega">
+                    <div class="square9">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<div class="ofssologin_square9"><a href="index.html">Login</a>&nbsp;&nbsp|&nbsp;&nbsp;<span><a href="tw/news/9054%3Ftask=view.html" ><span lang="tw" xml:lang="tw">繁體中文</span></a></li></ul></span><!--Joom!fish V2.0.4 (Lightning)-->
+<!-- &copy; 2003-2009 Think Network, released under the GPL. -->
+<!-- More information: at http://www.joomfish.net -->
+<div class="ofssologin_search_square9">
+  <form id="of_search" action="https://www.openfoundry.org/of/openfoundry/search" method="get" onsubmit="of_search(); return false;">
+    <select id="of_search_type">
+      <option value="Projects"> Projects </option>
+      <option value="Content"> Content </option>
+      <option value="People"> People </option>
+    </select>
+    <input id="query" name="query" id="mod_search_searchword" maxlength="50" alt="search" class="inputbox" type="text" size="28" value="search..."  onblur="if(this.value=='') this.value='search...';" onfocus="if(this.value=='search...') this.value='';" />
+    <input type="hidden" name="commit" value="search" />
+  </form>
+</div></div>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		
+</div>
+					<div class="clear"></div>
+				</div>
+																<div id="rt-navigation"><div id="rt-navigation2"><div id="rt-navigation3">
+					
+<div class="nopill">
+	<ul class="menutop level1 " >
+						<li class="item1 root" >
+					<a class="orphan item bullet" href="index.html"  >
+				<span>
+			    				Home				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item32 root" >
+					<a class="orphan item bullet" href="archived.html"  >
+				<span>
+			    				Projects				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item186 root" >
+					<a class="orphan item bullet" href="en/community.html"  >
+				<span>
+			    				Who&#039;s Who				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item4 active root" >
+					<a class="orphan item bullet" href="en/news.html"  >
+				<span>
+			    				News				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item5 root" >
+					<a class="orphan item bullet" href="en/law-and-licensing.html"  >
+				<span>
+			    				Law &amp; Licensing				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item3 root" >
+					<a class="orphan item bullet" href="en/activities.html"  >
+				<span>
+			    				Activities				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item2 root" >
+					<a class="orphan item bullet" href="en/resourcecatalog.html"  >
+				<span>
+			    				Resource Catalog				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item45 root" >
+					<a class="orphan item bullet" href="en/about.html"  >
+				<span>
+			    				About				   
+				</span>
+			</a>
+			
+			
+	</li>	
+				</ul>
+</div>
+
+				    <div class="clear"></div>
+				</div></div></div>
+								<div class="rt-surround"><div class="rt-surround2"><div class="rt-surround3">
+										<div id="rt-showcase-section">
+												<div id="rt-showcase">
+							<div class="rt-grid-12 rt-alpha rt-omega">
+    		<div class="clear"></div>
+		
+		
+                <div class="close-note">
+                    <div class="rt-block">
+               					<div class="module-content">
+                	<div style="font-size:medium; background-image:linear-gradient(120deg,#159957,#4298b2);color:white;padding:20px;margin:-10px -18px;">感謝您對「自由軟體鑄造場」的支持與愛護，十多年來「自由軟體鑄造場」受中央研究院支持，並在資訊科學研究所以及資訊科技創新研究中心執行，現已完成階段性的任務。 本網站預計持續維運至 2021年底，網站內容基本上不會再更動。<br />也紀念我們永遠的朋友 李士傑先生（Shih-Chieh Ilya Li）。</div>				</div>
+            </div>
+                </div>
+		
+</div>
+							<div class="clear"></div>
+						</div>
+																	</div>
+															<div id="rt-main-surround">
+												<div id="rt-breadcrumbs">
+								<div class="rt-breadcrumb-surround">
+		<a href="index.html" id="breadcrumbs-home"></a>
+		<span class="breadcrumbs pathway">
+<span class="no-link">News</span></span>
+	</div>
+	
+							<div class="clear"></div>
+						</div>
+																							              <div id="rt-main" class="sa3-mb9">
+                <div class="rt-main-inner">
+                    <div class="rt-grid-9 rt-push-3">
+                                                <div class="rt-block">
+                            							<div class="square1">
+							<div class="rt-module-surround">
+								<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+								<div class="rt-module-inner">
+		                            <div id="rt-mainbody">
+		                                
+<div class="rt-joomla ">
+	<div class="rt-article">
+		
+				<div class="rt-headline"><h1 class="rt-article-title">Android 應用程式開發：如何錄製影片</h1>		</div>
+		<div class="clear"></div>
+		
+		
+		
+				<div class="rt-articleinfo">
+						<div class="rt-article-icons">
+								<a href="en/news/9054-android-%3Ftmpl=component&amp;print=1&amp;page=.html" title="Print" onclick="window.open(this.href,'win2','status=no,toolbar=no,scrollbars=yes,titlebar=no,menubar=no,resizable=yes,width=640,height=480,directories=no,location=no'); return false;" rel="nofollow"><span class="icon print"></span></a>																</div>
+			
+			<span class="rt-date-posted">
+						 Created at			Tuesday, 27 August 2013 09:05						&nbsp;&nbsp;&nbsp;&nbsp;						Last Updated on Tuesday, 24 December 2013 14:22						</span>
+
+						<span class="rt-author">
+				Written by 謝良奇／編譯			</span>
+				
+					</div>
+		
+		
+		<p>許多 Android 裝置的相機也有錄影功能，不過程式碼會稍微複雜一點。MediaRecorder API 針對聲音和影像提供了錄製控制功能，因此是你在 Android 上所有錄影功能的基礎。查看其 API 文件以了解其狀態機的完整示意圖。雖然 MediaRecorder 幫你做了許多工作，為了使其正常運作，有許多你得按照一定順序進行的步驟，此一教學稍後將加以解說。我們會使用預覽 XML 和來自先前教學的基本應用程式結構。</p>
+
+<p>設定 MediaRecorder</p>
+<p>首先，開啓 AndroidManifest.xml，在之前教學中設定的相機權限上，增加錄音權限：</p>
+<pre>＜manifest .... ＞
+  ＜uses-permission android:name="android.permission.CAMERA" /＞
+  ＜uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" /＞
+  ＜uses-permission android:name="android.permission.RECORD_AUDIO" /＞
+  ＜uses-feature android:name="android.hardware.camera" /＞
+</pre>
+<br />
+<p>我們會在 MyCameraActivity.java 中撰寫獨立的方法來處理影片。第一步是為相機解鎖，接著建立新的 MediaRecorder。我們讓這個方法傳回真假布林值，好讓稍後我們要開始錄影前，可以檢查一切是否設定妥當，因此可避免不少可能的錯誤：</p>
+<pre>private MediaRecorder mr;
+protected boolean prepareForVideoRecording() {
+  camera.unlock();
+  mr = new MediaRecorder();
+  mr.setCamera(camera);
+}
+</pre>
+<br />
+<p>為相機解鎖這一步是必須的，可以讓 media 程序存取到相機。如果你只是拍照，Camera API 會自動幫你處理好，你只需要在錄影時做這件事。</p>
+<p>接著，我們必須對 MediaRecorder 做各種設定：聲音與影像來源、配置 (profile)、輸出檔案、預覽顯示。</p>
+<pre>private static final int MEDIA_TYPE_VIDEO = 1;
+protected boolean prepareForVideoRecording() {
+  camera.unlock();
+  mr = new MediaRecorder();
+  mr.setCamera(camera);
+  mr.setAudioSource(MediaRecorder.AudioSource.CAMCORDER);
+  mr.setVideoSource(MediaRecorder.VideoSource.CAMERA);
+  mr.setProfile(CamcorderProfile.get(CamcorderProfile.QUALITY_HIGH));
+  mr.setOutputFile(getOutputMediaFile(MEDIA_TYPE_VIDEO).toString());
+  mr.setPreviewDisplay(preview.getHolder().getSurface());
+}
+</pre>
+<br />
+<p>AudioSource 與 VideoSource 就如名稱所示。聲音部分有許多選項，包含 VOICE_CALL 與 MIC，在此我們用 CAMCORDER。在影像上你只有 CAMERA 與 DEFAULT 可以選擇。</p>
+<p>setProfile() 是個快捷功能（從 API 8 開始提供），可以讓你一次設定好一連串的錄影與錄音編碼和格式資訊。如果你想手動進行，不管是使用了之前的 API，或是你想要更為細緻的控制，以下是設定範例程式：</p>
+<pre>mr.setOutputFormat(MediaRecorder.OutputFormat.DEFAULT);
+mr.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB);
+mr.setVideoEncoder(MediaRecorder.VideoEncoder.H264);
+</pre>
+<br />
+<p>更多選項請查看 MediaRecorder API 文件。有關哪些選項會被自動設定請見 CamcorderProfile API 文件。</p>
+<p>你可以看到呼叫 getOutputMediaFile() 指定了影片輸出檔案類型，目前我們的方法沒有加以處理，以下是額外的程式碼：</p>
+<pre>private File getOutputMediaFile(int type) {
+// Get directory and timestamp as before
+  if (type == MEDIA_TYPE_IMAGE) {
+    return new File(dir.getPath() + File.separator + "IMG_"  
+                    + timeStamp + ".jpg");
+  } else if (type == MEDIA_TYPE_VIDEO) {
+    return new File(dir.getPath() + File.separator + "VID_"  
+                    + timeStamp + ".3gp");
+  } else {
+    return null;
+  }
+}
+</pre>
+<br />
+<p>如果你使用了不同的編碼，你可能得更改結尾的檔案類型。最後，預覽就如之前我們所設定的一樣，我們只需呼叫適當方法以便取得所使用的 surface，好讓 MediaRecorder 與其溝通。</p>
+<p>錄影</p>
+<p>錄影前最後要做的事是準備好 MediaRecorder：</p>
+<pre>protected boolean prepareForVideoRecording() {
+  // as above
+  try {
+	mr.prepare();
+  } catch (IllegalStateException e) {
+	Log.e(TAG, "IllegalStateException when preparing MediaRecorder "
+          + e.getMessage());
+	e.getStackTrace();
+	releaseMediaRecorder();
+	return false;
+  } catch (IOException e) {
+    Log.e(TAG, "IOException when preparing MediaRecorder "
+          + e.getMessage());
+    e.getStackTrace();
+	releaseMediaRecorder();
+	return false;
+  }
+  return true;
+}
+private void releaseMediaRecorder() {
+  if (mr != null) {
+    mr.reset();
+    mr.release();
+    mr = null;
+    camera.lock();
+  }
+}
+</pre>
+<br />
+<p>很簡單，我們只是在我們的 MediaRecorder 上呼叫 API 的 prepare() 方法，並處理例外狀況。重要的是記得在任何例外發生時，釋放 MediaRecorder 並回傳 false。在重置並釋放 MediaRecorder 後，我們必須重新鎖住相機，好讓應用程式保留其控制權。記得你必須在暫停時釋放相機，我們在之前教學中已經示範過。</p>
+<p>在開始錄影前，我們要在預覽面板 (preview pane) 上加入按鈕，並設定該按鈕來停止或開始錄影：</p>
+<pre>private Button recordVideoButton;
+private boolean isRecording = false;
+private void setUpLayout() {
+  // as in previous tutorials
+  setUpVideoButton();
+}
+private void setUpVideoButton() {
+  Button recordVideoButton = (Button) findViewById(R.id.button_video);
+  setUpButton(recordVideoButton, "Start video");
+  recordVideoButton.setOnClickListener(
+    new View.OnClickListener() {
+      public void onClick(View v) {
+        if (isRecording) {
+          mr.stop();
+          releaseMediaRecorder();
+          camera.lock();
+          recordVideoButton.setText("Start video");
+          isRecording = false;
+        } else {
+          if (prepareForVideoRecording()) {
+             mr.start();
+             recordVideoButton.setText("Stop video");
+             isRecording = true;
+          } else {
+             // Something has gone wrong! Release the camera
+             releaseMediaRecorder();
+             Toast.makeText(MyCameraActivity.this,
+                            "Sorry: couldn't start video",
+                            Toast.LENGTH_LONG).show();
+          }
+        }
+      }
+    }
+  );	
+}
+</pre>
+<br />
+<p>你也必須把按鈕加到 XML 中。上面的程式碼讓我們用同一個按鈕來開始與停止錄影。這表示不管是否正在錄影中，該按鈕都會顯示出來，這是個最大化用戶資訊，同時最小化螢幕空間使用的便利方式。如果應用程式已經在錄影，當按鈕被點選，表示用戶希望停止錄影。於是我們停止並釋放 MediaRecorder，重新鎖定相機，改變按鈕文字並重置 isRecording。</p>
+<p>如果應用程式沒在錄影，我們希望開始錄影。假如設定方法傳回的是 true，也就是 MediaRecorder 已準備妥當，我們就開始錄影，改變按鈕文字並重設 isRecording。如果 MediaRecorder 沒設定好，我們再次將其釋放，顯示一個 Toast 訊息讓用戶得知問題所在。</p>
+<p>和 Camera 相片儲存有所不同的是，對於 MediaRecorder，傳入儲存的檔案名稱就會自動處理好影片的儲存，你不需要自行處理儲存功能。不過，它所做的只是存入你所提供的檔名中。如果你希望對影片做其他處理，像是秀給用戶看或讓他們編輯，你必須進一步擴展應用程式以達成這些功能。</p>
+<br />
+<h3>原文網址：<a href="https://www.linux.com/learn/tutorials/729988-android-app-development-how-to-capture-video" target="_blank">https://www.linux.com/learn/tutorials/729988-android-app-development-how-to-capture-video</a></h3>
+			<!-- Show relate article -->
+		<br><br><h4>You may be interested in the following articles:</h4><ul><li><a href='tech-column/9055.html'>Android 應用程式開發：處理更多的相機功能</a> - <span class='date-posted'>2013-09-02</span></li></ul>		<!-- end -->
+		<div class="article_note">
+		<!-- Add tags use metakey, and show OSSF Newsletter tag: OSSFNL+NUM-->
+		<br><br> <hr style='border: 1px dashed #D2DADB;'><b>OSSF Newsletter&nbsp;:</b>&nbsp;<a href='previous-issue%3Ftask=view&amp;id=834.html'>第 225 期 Android 應用程式開發：如何錄製影片</a><br>				<!-- End -->
+					<br>
+					<b>Category: </b><a href="en/tech-column.html">				Tech Column					</a>				</div>
+			 <!-- AddThis Button BEGIN ID 3001 is the front page article -->
+     			<br><br>
+       <div class="addthis_toolbox addthis_default_style addthis_32x32_style">
+       <a class="addthis_button_preferred_1"></a>
+       <a class="addthis_button_preferred_2"></a>
+       <a class="addthis_button_preferred_3"></a>
+       <a class="addthis_button_preferred_4"></a>
+       <a class="addthis_button_compact"></a>
+       <a class="addthis_counter addthis_bubble_style"></a>
+       </div>
+       <script type="text/javascript">var addthis_config = {"data_track_clickback":true};</script>
+       <script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js#pubid=openfoundry"></script>
+       <!-- AddThis Button END -->
+     <br>
+		<div class="totop" ><a class="rt-totop" href="index.php%3Foption=com_content&amp;task=view&amp;id=9054&amp;Itemid=4%3Bisletter=1.html#" style="outline: medium none;">↑ Top</a></div>
+            <!-- AddThis Button END -->
+
+			</div>
+</div>
+
+		                            </div>
+									<div class="clear"></div>
+								</div>
+								<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+							</div>
+							</div>
+                                                    </div>
+                                            </div>
+                                <div class="rt-grid-3 rt-pull-9">
+                <div id="rt-sidebar-a">
+                                    <div class="square4">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<ul class="menu"><li class="item56"><a href="en/previous-issue.html"><span>Previous Issue</span></a></li><li class="item55"><a href="en/about-newsletter.html"><span>About Newsletter</span></a></li></ul>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<ul class="menu"><li class="item115"><a href="en/foss-news.html"><span>FOSS News</span></a></li><li class="item141"><a href="en/case-job.html"><span>Case and Jobs</span></a></li></ul>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+        	                <div class="square1">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-title"><h2 class="title">Special</h2></div>
+						<div class="clear"></div>
+		                						<div class="module-content">
+		                	<ul class="menu"><li class="item37"><a href="en/tech-column.html"><span>Tech Column</span></a></li><li class="item40"><a href="en/foss-programs.html"><span>FOSS Programs</span></a></li><li class="item35"><a href="en/legal-column.html"><span>Legal Column</span></a></li><li class="item154"><a href="en/foss-forum.html"><span>FOSS Forum</span></a></li><li class="item162"><a href="en/enterprise-application.html"><span>Enterprise Application</span></a></li><li class="item44"><a href="en/foss-projects.html"><span>FOSS Projects</span></a></li></ul>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		                <div class="square1">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<p style="text-align: center;"><a href="news%3Fformat=feed&amp;type=rss" target="_black"><img src="images/M_images/news-rss-feed.png" border="0" /></a><br /><a href="https://www.openfoundry.org/rss-feed/Newsletter" target="_black"><img src="images/M_images/newsletter-rss-feed.png" border="0" /></a></p>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		
+                </div>
+            </div>
+
+                    <div class="clear"></div>
+                </div>
+            </div>
+																													</div>
+										<div id="rt-copyright">
+						<div class="rt-grid-12 rt-alpha rt-omega">
+                        <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<span class="nowrap">Open Source Software Foundry</span><span class="nowrap">‧</span><span class="nowrap"> </span><span class="nowrap">Best  Viewed with IE7.0 or Firefox2.0 above, 1024x768 Resolution. </span><strong>E-Mail</strong>：<a href="mailto:contact@openfoundry.org">contact@openfoundry.org</a> <br /><strong>Address</strong>：No.128, Sec.2, Academia Rd., Institute of Information Science, Academia Sinica, Nangang District, Taipei City 11529, Taiwan (R.O.C). <br /><a href="en/privacy-policy.html">Privacy Policy</a>. <a href="en/terms-of-use.html">Terms-of-use</a> <span style="position: relative; top: 8px; margin-top: -8px;"> <a href="about/8101.html"><img src="images/M_images/rss-feed-all.png" border="0" /></a></span>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+        	
+</div>
+						<div class="clear"></div>
+					</div>
+					<div class="rt-footer-bottom-wrap"><div class="rt-footer-bottom"><div class="rt-footer-bottom2"><div class="rt-footer-bottom3"></div></div></div></div>
+									</div></div></div>
+				<div class="rt-surround-bottom"><div class="rt-surround-bottom2"><div class="rt-surround-bottom3"></div></div></div>
+							</div>
+		</div>
+		<!--
+		<script id="aptureScript">
+						(function (){var a=document.createElement("script");a.defer="true";a.src="http://www.apture.com/js/apture.js?siteToken=vsJttrn";document.getElementsByTagName("head")[0].appendChild(a);})();
+     </script>
+-->
+
+<!-- Piwik -->
+<!-- 			<script type="text/javascript">
+			  var _paq = _paq || [];
+		  _paq.push(["trackPageView"]);
+		  _paq.push(["enableLinkTracking"]);
+
+		    (function() {
+			        var u=(("https:" == document.location.protocol) ? "https" : "https") + "://www.openfoundry.org/piwik/";
+				    _paq.push(["setTrackerUrl", u+"piwik.php"]);
+				    _paq.push(["setSiteId", "1"]);
+				        var d=document, g=d.createElement("script"), s=d.getElementsByTagName("script")[0]; g.type="text/javascript";
+				        g.defer=true; g.async=true; g.src=u+"piwik.js"; s.parentNode.insertBefore(g,s);
+					  })();
+		  </script> -->
+<!-- End Piwik Code -->
+	</body>
+</html>

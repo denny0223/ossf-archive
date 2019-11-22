@@ -1,0 +1,630 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-gb" lang="en-gb" >
+<head>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<link rel="shortcut icon" href="../../images/favicon.ico" />
+	  <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+  <meta name="robots" content="index, follow" />
+  <meta name="keywords" content="Podcast, Miro, Media aggregator, rss, Miro Guide,OSSFNL762" />
+  <meta name="title" content="如何使用開源 Podcast 播放器訂閱開放內容" />
+  <meta name="description" content="提供 Podcast 訂閱功能的播放軟體很多，但是兼具播放器功能的並不多，遑論能夠跨平台運作，Miro 正是其中一款。點選左方工具列最上方的〔Miro〕，可以在窗格內瀏覽 Podcast 列表；如果你習慣以網頁方式瀏覽，可以直接連線至網站 https://www.miroguide.com。Miro 提供多種分類方式，包括點閱率、語言、類別等，並可在右上方搜尋窗格輸入關鍵字進行搜尋。 在" />
+  <meta name="generator" content="" />
+  <title>如何使用開源 Podcast 播放器訂閱開放內容 - OpenFoundry</title>
+  <link href="../../favicon.ico" rel="shortcut icon" type="image/x-icon" />
+  <link rel="stylesheet" href="../../components/com_gantry/css/gantry.css" type="text/css" />
+  <link rel="stylesheet" href="../../components/com_gantry/css/grid-12.css" type="text/css" />
+  <link rel="stylesheet" href="../../components/com_gantry/css/joomla.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/joomla.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/style1.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/light-body.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/demo-styles.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/template.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/typography.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/fusionmenu.css" type="text/css" />
+  <style type="text/css">
+    <!--
+#rt-main-surround ul.menu li.active > a, #rt-main-surround ul.menu li.active > .separator, #rt-main-surround ul.menu li.active > .item, #rt-main-surround .square4 ul.menu li:hover > a, #rt-main-surround .square4 ul.menu li:hover > .item, #rt-main-surround .square4 ul.menu li:hover > .separator, .roktabs-links ul li.active span {color:#0088B5;}
+a, #rt-main-surround ul.menu a:hover, #rt-main-surround ul.menu .separator:hover, #rt-main-surround ul.menu .item:hover {color:#0088B5;}
+    -->
+  </style>
+  <script type="text/javascript" src="../../components/com_jcomments/js/jcomments-v2.1.js%3Fv=2"></script>
+  <script type="text/javascript" src="../../components/com_jcomments/libraries/joomlatune/ajax.js"></script>
+  <script type="text/javascript" src="../../media/system/js/mootools.js"></script>
+  <script type="text/javascript" src="../../media/system/js/caption.js"></script>
+  <script type="text/javascript" src="../../components/com_gantry/js/gantry-buildspans.js"></script>
+  <script type="text/javascript" src="../../components/com_gantry/js/gantry-inputs.js"></script>
+  <script type="text/javascript" src="../../templates/rt_quantive_j15/js/jquery.cookie.js"></script>
+  <script type="text/javascript" src="../../modules/mod_roknavmenu/themes/fusion/js/fusion.js"></script>
+  <script type="text/javascript" src="../../modules/mod_ofssologin/js/ofssologin.js"></script>
+  <script type="text/javascript">
+
+			window.addEvent('domready', function() {
+				var modules = ['rt-block'];
+				var header = ['h3','h2','h1'];
+				GantryBuildSpans(modules, header);
+			});
+		InputsExclusion.push('.content_vote','#rt-popup')
+		        window.addEvent('load', function() {
+					new Fusion('ul.menutop', {
+						pill: 0,
+						effect: 'slide and fade',
+						opacity: 1,
+						hideDelay: 500,
+						centered: 0,
+						tweakInitial: {'x': -2, 'y': 0},
+        				tweakSubsequent: {'x': 0, 'y': -14},
+						menuFx: {duration: 200, transition: Fx.Transitions.Sine.easeOut},
+						pillFx: {duration: 400, transition: Fx.Transitions.Back.easeOut}
+					});
+	            });
+  </script>
+<!-- <script type="text/javascript" src="/sso/javascripts/langsync.js"></script> -->
+<!-- <script src="/templates/rt_quantive_j15/js/ossf.js"></script> -->
+<script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-4136519-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
+</head>
+	<body  class="backgroundlevel-low backgroundstyle-style8 bodylevel-med bodystyle-light cssstyle-style1 logostyle-dark font-family-helvetica font-size-is-default menu-type-fusionmenu col12 ">
+		<div id="rt-main-background">
+			<div class="rt-container">
+																<div id="rt-header">
+					<div class="rt-grid-7 rt-alpha">
+    			<div class="rt-block">
+    	    	<a href="../../index.html" id="rt-logo"></a>
+    		</div>
+	    
+</div>
+<div class="rt-grid-5 rt-omega">
+                    <div class="square9">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<div class="ofssologin_square9"><a href="../../index.html">Login</a>&nbsp;&nbsp|&nbsp;&nbsp;<span><a href="../../tw/foss-programs/8499-how-to-subscribe-open-content-by-open-source-podcast-client.html" ><span lang="tw" xml:lang="tw">繁體中文</span></a></li></ul></span><!--Joom!fish V2.0.4 (Lightning)-->
+<!-- &copy; 2003-2009 Think Network, released under the GPL. -->
+<!-- More information: at http://www.joomfish.net -->
+<div class="ofssologin_search_square9">
+  <form id="of_search" action="https://www.openfoundry.org/of/openfoundry/search" method="get" onsubmit="of_search(); return false;">
+    <select id="of_search_type">
+      <option value="Projects"> Projects </option>
+      <option value="Content"> Content </option>
+      <option value="People"> People </option>
+    </select>
+    <input id="query" name="query" id="mod_search_searchword" maxlength="50" alt="search" class="inputbox" type="text" size="28" value="search..."  onblur="if(this.value=='') this.value='search...';" onfocus="if(this.value=='search...') this.value='';" />
+    <input type="hidden" name="commit" value="search" />
+  </form>
+</div></div>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		
+</div>
+					<div class="clear"></div>
+				</div>
+																<div id="rt-navigation"><div id="rt-navigation2"><div id="rt-navigation3">
+					
+<div class="nopill">
+	<ul class="menutop level1 " >
+						<li class="item1 root" >
+					<a class="orphan item bullet" href="../../index.html"  >
+				<span>
+			    				Home				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item32 root" >
+					<a class="orphan item bullet" href="../../archived.html"  >
+				<span>
+			    				Projects				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item186 root" >
+					<a class="orphan item bullet" href="../community.html"  >
+				<span>
+			    				Who&#039;s Who				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item4 root" >
+					<a class="orphan item bullet" href="../news.html"  >
+				<span>
+			    				News				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item5 root" >
+					<a class="orphan item bullet" href="../law-and-licensing.html"  >
+				<span>
+			    				Law &amp; Licensing				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item3 root" >
+					<a class="orphan item bullet" href="../activities.html"  >
+				<span>
+			    				Activities				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item2 root" >
+					<a class="orphan item bullet" href="../resourcecatalog.html"  >
+				<span>
+			    				Resource Catalog				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item45 root" >
+					<a class="orphan item bullet" href="../about.html"  >
+				<span>
+			    				About				   
+				</span>
+			</a>
+			
+			
+	</li>	
+				</ul>
+</div>
+
+				    <div class="clear"></div>
+				</div></div></div>
+								<div class="rt-surround"><div class="rt-surround2"><div class="rt-surround3">
+										<div id="rt-showcase-section">
+												<div id="rt-showcase">
+							<div class="rt-grid-12 rt-alpha rt-omega">
+    		<div class="clear"></div>
+		
+		
+                <div class="close-note">
+                    <div class="rt-block">
+               					<div class="module-content">
+                	<div style="font-size:medium; background-image:linear-gradient(120deg,#159957,#4298b2);color:white;padding:20px;margin:-10px -18px;">感謝您對「自由軟體鑄造場」的支持與愛護，十多年來「自由軟體鑄造場」受中央研究院支持，並在資訊科學研究所以及資訊科技創新研究中心執行，現已完成階段性的任務。 本網站預計持續維運至 2021年底，網站內容基本上不會再更動。<br />也紀念我們永遠的朋友 李士傑先生（Shih-Chieh Ilya Li）。</div>				</div>
+            </div>
+                </div>
+		
+</div>
+							<div class="clear"></div>
+						</div>
+																	</div>
+															<div id="rt-main-surround">
+												<div id="rt-breadcrumbs">
+								<div class="rt-breadcrumb-surround">
+		<a href="../../index.html" id="breadcrumbs-home"></a>
+		<span class="breadcrumbs pathway">
+<a href="../foss-programs.html" class="pathway">FOSS Programs</a> <img src="../../templates/rt_quantive_j15/images/arrow.png" alt=""  /> <span class="no-link">如何使用開源 Podcast 播放器訂閱開放內容</span></span>
+	</div>
+	
+							<div class="clear"></div>
+						</div>
+																							              <div id="rt-main" class="sa3-mb9">
+                <div class="rt-main-inner">
+                    <div class="rt-grid-9 rt-push-3">
+                                                <div class="rt-block">
+                            							<div class="square1">
+							<div class="rt-module-surround">
+								<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+								<div class="rt-module-inner">
+		                            <div id="rt-mainbody">
+		                                
+<div class="rt-joomla ">
+	<div class="rt-article">
+		
+				<div class="rt-headline"><h1 class="rt-article-title">如何使用開源 Podcast 播放器訂閱開放內容</h1>		</div>
+		<div class="clear"></div>
+		
+		
+		
+				<div class="rt-articleinfo">
+						<div class="rt-article-icons">
+								<a href="8499-how-to-subscribe-open-content-by-open-source-podcast-client%3Ftmpl=component&amp;print=1&amp;layout=default&amp;page=.html" title="Print" onclick="window.open(this.href,'win2','status=no,toolbar=no,scrollbars=yes,titlebar=no,menubar=no,resizable=yes,width=640,height=480,directories=no,location=no'); return false;" rel="nofollow"><span class="icon print"></span></a>																</div>
+			
+			<span class="rt-date-posted">
+						 Created at			Friday, 04 November 2011 10:28						&nbsp;&nbsp;&nbsp;&nbsp;						Last Updated on Friday, 18 November 2011 09:45						</span>
+
+						<span class="rt-author">
+				Written by 陳筱婷、陳瑞霖			</span>
+				
+					</div>
+		
+		
+		<p>提供 Podcast 訂閱功能的播放軟體很多，但是兼具播放器功能的並不多，遑論能夠跨平台運作，Miro 正是其中一款。點選左方工具列最上方的〔Miro〕，可以在窗格內瀏覽 Podcast 列表；如果你習慣以網頁方式瀏覽，可以直接連線至網站 <a href="https://www.miroguide.com" target="_blank"><code>https://www.miroguide.com</code></a>。Miro 提供多種分類方式，包括點閱率、語言、類別等，並可在右上方搜尋窗格輸入關鍵字進行搜尋。</p>
+
+<p>在 Miro 軟體的窗格中瀏覽時，若發現想訂閱的 Podcast，點選「Add Feed」之後，Miro便會將其自動加入訂閱清單；如果是在一般網頁瀏覽，請點選 RSS 之後複製其網址，再回到 Miro 中，點選上方工具列的【側面窗格】→【Add Podcast】，或按下快速鍵 Ctrl+N，將剛剛複製的網址貼上，按下「Create Podcast」加入訂閱清單。您可在 Miro 下方的欄位點選〔Auto-Download All〕，讓 Miro 自動下載頻道的新影片；點選〔設定〕進行管理，讓 Miro 定期刪除已看過的影片。</p>
+<a href="../../images/111108/Miro/miro_guide.png" target="_blank"><img src="../../images/111108/Miro/miro_guide.png" border="0" width="500" /></a><br />▲ 圖1：Miro Guide
+<h3>Open Source 相關頻道</h3>
+<ul>
+<strong>頻道名稱：Linux Journal</strong>
+<li>語言：英文</li>
+<li>格式：影片</li>
+<li>更新頻率：一個月以上</li>
+<li>評分：4.2顆星（220 人評分）</li>
+<li>網址：<a href="https://www.miroguide.com/feeds/5671">https://www.miroguide.com/feeds/5671</a></li>
+<li>簡介：主要為影片教學，由 Linux 社群所製作。每期邀請不同人主講，時間長度多在五分鐘之內。    
+<hr />
+</li>
+</ul>
+<ul>
+<strong>頻道名稱：Going Linux</strong>
+<li>語言：英文</li>
+<li>格式：音訊</li>
+<li>更新頻率：數天至兩週</li>
+<li>評分：3.9顆星（7 人評分）</li>
+<li>網址：<a href="https://www.miroguide.com/audio/12822" target="_blank">https://www.miroguide.com/audio/12822</a></li>
+<li>簡介：討論 Linux 的頻道，兩人對談，內容與主題較上個頻道 Linux Journal 輕鬆。更新的頻率相當穩定。</li>
+</ul>
+<a href="../../images/111108/Miro/going_linux.png" target="_blank"><img src="../../images/111108/Miro/going_linux.png" border="0" width="400" /></a><br />▲ 圖2：Going Linux    
+<hr />
+<br /> 
+<ul>
+<strong>頻道名稱：Meet the GIMP!</strong>
+<li>語言：英文</li>
+<li>格式：影片</li>
+<li>更新頻率：一週至兩週</li>
+<li>評分：4.3 顆星（191 人評分）</li>
+<li>網址：<a href="https://www.miroguide.com/feeds/3134" target="_blank">https://www.miroguide.com/feeds/3134</a></li>
+<li>簡介：Gimp 教學頻道。Gimp 是一套可以在 GNU/Linux、Windows、Mac Os上運行的開源影像處理軟體，功能媲美 Adobe 的 Photoshop。Meet the GIMP! 每期以不同主題作實務教學，包括影像去背、編修、照片合成等。    
+<hr />
+</li>
+</ul>
+<ul>
+<strong>頻道名稱：JoomStew Radio</strong>
+<li>語言：英文</li>
+<li>格式：音訊</li>
+<li>更新頻率：一週至數週</li>
+<li>評分：尚無人評分</li>
+<li>網址：<a href="https://www.miroguide.com/audio/14109" target="_blank">https://www.miroguide.com/audio/14109</a></li>
+<li>簡介：以對談為主。介紹 Joomla 的新版本、活動、社群消息，以及訪問網站開發者。    
+<hr />
+</li>
+</ul>
+<ul>
+<strong>頻道名稱：OnOpenSource (Video)</strong>
+<li>語言：英文</li>
+<li>格式：影片</li>
+<li>更新頻率：不定期</li>
+<li>評分：4.1 顆星（20 人評分）</li>
+<li>網址：<a href="https://www.miroguide.com/feeds/4535" target="_blank">https://www.miroguide.com/feeds/4535</a></li>
+<li>簡介：邀請自由軟體領域的專家進行主講、對談、教學，影片長度從數分鐘到二十分鐘不等。主題涵蓋Linux、IT 新聞、Puby、Python、PHP 等，主題多元而深入，可惜近期較少更新。    
+<hr />
+</li>
+</ul>
+<ul>
+<strong>頻道名稱：Drupal Easy</strong>
+<li>語言：英文</li>
+<li>格式：音訊</li>
+<li>更新頻率：不定期，約一個月一次</li>
+<li>網址：<a href="https://drupaleasy.com/podcast" target="_blank">https://drupaleasy.com/podcast</a></li>
+<li>簡介：主題涵蓋 Drupal 開發訊息以及社群動態。    
+<hr />
+</li>
+</ul>
+<ul>
+<strong>頻道名稱：Software Freedom Law Show</strong>
+<li>語言：英文</li>
+<li>格式：音訊</li>
+<li>更新頻率：不定期</li>
+<li>網址：<a href="https://www.softwarefreedom.org/podcast/" target="_blank">https://www.softwarefreedom.org/podcast/</a></li>
+<li>簡介：介紹有關軟體自由牽涉到的法律概念。    
+<hr />
+</li>
+</ul>
+<ul>
+<strong>頻道名稱：Linux Outlaws</strong>
+<li>語言：英文</li>
+<li>格式：音訊</li>
+<li>更新頻率：一週</li>
+<li>評分：4.1 顆星（19 人評分）</li>
+<li>網址：<a href="https://www.miroguide.com/audio/12099" target="_blank">https://www.miroguide.com/audio/12099</a></li>
+<li>簡介：兩位務實的技客主持的節目，主題包括 Linux、自由軟體以及開放科技。有時候會跳脫上述主題，談論主持人感興趣的話題，像是曲棍球以及其他人沒聽過的樂團。    
+<hr />
+</li>
+</ul>
+<ul>
+<strong>頻道名稱：FLOSS Weekly</strong>
+<li>語言：英文</li>
+<li>格式：影片</li>
+<li>更新頻率：一週</li>
+<li>評分：3.9 顆星（15 人評分）</li>
+<li>網址：<a href="https://www.miroguide.com/audio/5790" target="_blank">https://www.miroguide.com/audio/5790</a></li>
+<li>簡介：以訪談為主，常會請來著名專案的開發者上節目。    
+<hr />
+</li>
+</ul>
+<ul>
+<strong>頻道名稱：Ubuntu Linux Tutorials by gotbletu</strong>
+<li>語言：英文</li>
+<li>格式：影片</li>
+<li>更新頻率：每天</li>
+<li>評分：4.1 顆星（18 人評分）</li>
+<li>網址：<a href="https://www.miroguide.com/feeds/10728" target="_blank">https://www.miroguide.com/feeds/10728</a></li>
+<li>簡介：gotbletu 所做的 Ubuntu Linux 教學短片。</li>
+</ul>
+<a href="../../images/111108/Miro/linuxtutorialsbygotbletu.png" target="_blank"><img src="../../images/111108/Miro/linuxtutorialsbygotbletu.png" border="0" width="400" /></a><br />▲ 圖3：Linux Tutorials by gotbletu    
+<hr />
+<br /> 
+<ul>
+<strong>頻道名稱：Railscasts</strong>
+<li>語言：英文</li>
+<li>格式：影片</li>
+<li>更新頻率：一週</li>
+<li>評分：4.1 顆星（17 人評分）</li>
+<li>網址：<a href="https://www.miroguide.com/feeds/2905" target="_blank">https://www.miroguide.com/feeds/2905</a></li>
+<li>簡介：以營幕錄影方式呈現 Ruby on Rails 的教學短片，包含基本教學以及奇技展示。    
+<hr />
+</li>
+</ul>
+<ul>
+<strong>頻道名稱：DistroWatch Podcast</strong>
+<li>語言：英文</li>
+<li>格式：音訊</li>
+<li>更新頻率：一週</li>
+<li>網址：<a href="https://distrowatch.com/news/podcast.xml" target="_blank">https://distrowatch.com/news/podcast.xml</a></li>
+<li>簡介：播報內容主要包括 DistroWatch 的網站內容，除了念網站內容外還包括客座主持人的個人意見。    
+<hr />
+</li>
+</ul>
+<ul>
+<strong>頻道名稱：mintCast</strong>
+<li>語言：英文</li>
+<li>格式：音訊</li>
+<li>更新頻率：一週</li>
+<li>評分：4 顆星（7 人評分）</li>
+<li>網址：<a href="https://www.miroguide.com/audio/12356" target="_blank">https://www.miroguide.com/audio/12356</a></li>
+<li>簡介：由 Linux Mint 社群製播的 Podcast。    
+<hr />
+</li>
+</ul>
+<ul>
+<strong>頻道名稱：The Linux Link Tech Show</strong>
+<li>語言：英文</li>
+<li>格式：音訊</li>
+<li>更新頻率：一週</li>
+<li>評分：3.4 顆星（15 人評分）</li>
+<li>網址：<a href="https://www.miroguide.com/audio/12245" target="_blank">https://www.miroguide.com/audio/12245</a></li>
+<li>簡介：播報內容主要涵蓋 GNU/Linux 以及 FOOS，有時候會請來業界朋友上節目。    
+<hr />
+</li>
+</ul>
+<ul>
+<strong>頻道名稱：Ubuntu UK Podcast</strong>
+<li>語言：英文</li>
+<li>格式：音訊</li>
+<li>更新頻率：兩週</li>
+<li>評分：4.5 顆星（4 人評分）</li>
+<li>網址：<a href="https://www.miroguide.com/audio/5950" target="_blank">https://www.miroguide.com/audio/5950</a></li>
+<li>簡介：圍繞 Ubuntu 為中心的訪談、討論、以及新聞，並且帶有英國觀點。    
+<hr />
+</li>
+</ul>
+<ul>
+<strong>頻道名稱：Android Atlas Weekly (SD)</strong>
+<li>語言：英文</li>
+<li>格式：影片</li>
+<li>更新頻率：一週</li>
+<li>評分：尚無人評分</li>
+<li>網址：<a href="https://www.miroguide.com/feeds/13760" target="_blank">https://www.miroguide.com/feeds/13760</a></li>
+<li>簡介：Cnet 的 Android Podcast。    
+<hr />
+</li>
+</ul>
+<ul>
+<strong>頻道名稱：This Week in Fedora</strong>
+<li>語言：英文</li>
+<li>格式：音訊</li>
+<li>更新頻率：兩週</li>
+<li>評分：3 顆星（1 人評分）</li>
+<li>網址：<a href="https://www.miroguide.com/audio/14040" target="_blank">https://www.miroguide.com/audio/14040</a></li>
+<li>簡介：主要內容為訪問 Fedora 社群的貢獻者。有時候也談論關於 Fedora 的新聞。    
+<hr />
+</li>
+</ul>
+<ul>
+<strong>頻道名稱：The Ruby Show</strong>
+<li>語言：英文</li>
+<li>格式：音訊</li>
+<li>更新頻率：一週</li>
+<li>網址：<a href="https://rubyshow.com/" target="_blank">https://rubyshow.com/</a></li>
+<li>簡介：Ruby 相關的 Podcast，談最新 Ruby 以及 Rails 相關新聞，討論社群中熱門話題。    
+<hr />
+</li>
+</ul>
+<ul>
+<strong>頻道名稱：TuxRadar Podcast</strong>
+<li>語言：英文</li>
+<li>格式：音訊</li>
+<li>更新頻率：兩週</li>
+<li>評分：尚無人評分</li>
+<li>網址：<a href="https://www.miroguide.com/audio/13468" target="_blank">https://www.miroguide.com/audio/13468</a></li>
+<li>簡介：談論 Linux 以及自由軟體相關訊息的節目。    
+<hr />
+</li>
+</ul>
+<ul>
+<strong>頻道名稱：Linux Game Cast</strong>
+<li>語言：英文</li>
+<li>格式：影片</li>
+<li>更新頻率：一週</li>
+<li>評分：尚無人評分</li>
+<li>網址：<a href="https://www.miroguide.com/feeds/14926" target="_blank">https://www.miroguide.com/feeds/14926</a></li>
+<li>簡介：提供 Linux 下遊戲評論。    
+<hr />
+</li>
+</ul>
+<p>目前 Miro 提供的 Podcast 以英文為主，德文次之，中文及其它語言的頻道較少。Miro 的 Podcast 數量相當豐富，也提供訂閱熱門的頻道如 TED。然而頻道數量不及 iTunes 卻是不爭的事實，接下來，我們就要示範如何在 Miro 上訂閱來自其它網站，以及 iTunes 上的 Podcast。</p>
+<h3>加入其它網站 Podcast</h3>
+<p>網路上的 Podcast 種類五花八門，數量也讓人眼花撩亂。有些網站只提供特定技術相關的 Podcast，例如 <a href="https://ruby5.envylabs.com/" target="_blank">Ruby 5</a>、<a href="https://advocacy.python.org/podcasts/" target="_blank">Python</a> ，也有的網站整合了許多 Podcast，科技與程式技術類比較豐富的平台有 <a href="https://www.cnet.com/podcasts" target="_blank">CNET</a>、<a href="https://www.techpodcasts.com" target="_blank">TECHPOCASTS</a>、<a href="https://www.podnutz.com" target="_blank">Podnutz</a>。進入網站找尋自己想訂閱的頻道，將 RSS 網址複製，回到 Miro 內點選【側面窗格】→【Add Podcast】，將訂閱網址貼上以完成訂閱。</p>
+<p>如果不知道要去那裡找想追蹤的 Podcast，可以去專門的 Podcast 入口網站。這些 Podcast 入口網站，分門別類收集不同類型的 Podcast 節目，像是 <a href="https://www.podcastalley.com/index.php" target="_blank">Podcast Ally</a>、<a href="https://www.podcast.com/" target="_blank">Podcast.com</a>。提供 Linux 發行版本訊息以及排名的網站 <a href="https://distrowatch.com/" target="_blank">DistroWatch</a>，除了整理相關的自由軟體 Podcast 連結外，自己網站也有發行 Podcast。臺灣也有 <a href="https://latest.myaudiocast.appspot.com/podcasts/" target="_blank">myaudiocast</a>，提供免費 Podcast 服務，只要是非商業性 Podcast，提供上傳空間，以及產生 Podcast feed。</p>
+<h3>從 iTunes 加入 Podcast</h3>
+<p>如果本身已經有 iTunes 帳號，可打開 iTunes，點選一個有興趣的 Podcast 加入訂閱，再至左方資料庫列表的〔Podcast〕查詢訂閱網址。在資料庫內的該 Podcast 上按下右鍵，點選【複製 Podcast URL】，再如同前述方法，點選上方工具列的【側面窗格】→【Add Podcast】即完成。</p>
+<p><a href="../../images/111108/Miro/itunes_podcast.png" target="_blank"><img src="../../images/111108/Miro/itunes_podcast.png" border="0" width="500" /></a></p>
+<p>▲ 圖4：iTunes 裡也有 Podcast 目錄，可供用戶選擇想訂閱的節目</p>
+<p>如果想從 iTunes 轉移到 Miro，若每個頻道都要手動複製訂閱網址過於麻煩，此時我們可使用輸出 / 輸入功能將所有的訂閱頻道轉移過來。開啟 iTunes，在左方窗格中的〔Podcast〕按右鍵，點選【匯出】，選擇存檔類型為 OPML 並存檔。在 Miro 上方工具列選擇【Import Podcasts (OPML)】，選擇剛剛儲存下來的檔案，便將所有的訂閱清單輸入至 Miro 了。</p>
+<p><a href="../../images/111108/Miro/itunes_win2.png" target="_blank"><img src="../../images/111108/Miro/itunes_win2.png" border="0" width="500" /></a></p>
+<p>▲ 圖5：iTunes 裡訂閱 Podcast 的對話視窗</p>
+<p>Miro 是跨平台的開源軟體，可在 Linux、Windows、Mac OS 上執行。如果您常看 Youtube 影片、需要同步 iPhone / Android / PSP 等裝置、喜歡訂閱 Podcast，或是正在找一個結合轉檔功能的播放器，那麼多功能的 Miro 絕對符合您的需求。</p>
+<strong></strong>
+<p> </p>
+			<!-- Show relate article -->
+				<!-- end -->
+		<div class="article_note">
+		<!-- Add tags use metakey, and show OSSF Newsletter tag: OSSFNL+NUM-->
+		<br><br> <hr style='border: 1px dashed #D2DADB;'><b>OSSF Newsletter&nbsp;:</b>&nbsp;<a href='../../previous-issue%3Ftask=view&amp;id=762.html'>第 184 期 以開源播放器訂閱開放內容</a><br><b>Tags:</b>&nbsp;<a href='../../index.php%3Foption=com_search&amp;Itemid=58&amp;searchphrase=exact_meta&amp;ordering=newest&amp;searchword=Podcast.html'>Podcast</a>,&nbsp;&nbsp;<a href='../../index.php%3Foption=com_search&amp;Itemid=58&amp;searchphrase=exact_meta&amp;ordering=newest&amp;searchword=&#32;Miro.html'> Miro</a>,&nbsp;&nbsp;<a href='../../index.php%3Foption=com_search&amp;Itemid=58&amp;searchphrase=exact_meta&amp;ordering=newest&amp;searchword=&#32;Media&#32;aggregator.html'> Media aggregator</a>,&nbsp;&nbsp;<a href='../../index.php%3Foption=com_search&amp;Itemid=58&amp;searchphrase=exact_meta&amp;ordering=newest&amp;searchword=&#32;rss.html'> rss</a>,&nbsp;&nbsp;<a href='../../index.php%3Foption=com_search&amp;Itemid=58&amp;searchphrase=exact_meta&amp;ordering=newest&amp;searchword=&#32;Miro&#32;Guide.html'> Miro Guide</a>,&nbsp;&nbsp;				<!-- End -->
+					<br>
+					<b>Category: </b><a href="../foss-programs.html">				FOSS Programs					</a>				</div>
+			 <!-- AddThis Button BEGIN ID 3001 is the front page article -->
+     			<br><br>
+       <div class="addthis_toolbox addthis_default_style addthis_32x32_style">
+       <a class="addthis_button_preferred_1"></a>
+       <a class="addthis_button_preferred_2"></a>
+       <a class="addthis_button_preferred_3"></a>
+       <a class="addthis_button_preferred_4"></a>
+       <a class="addthis_button_compact"></a>
+       <a class="addthis_counter addthis_bubble_style"></a>
+       </div>
+       <script type="text/javascript">var addthis_config = {"data_track_clickback":true};</script>
+       <script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js#pubid=openfoundry"></script>
+       <!-- AddThis Button END -->
+     <br>
+		<div class="totop" ><a class="rt-totop" href="8499-how-to-subscribe-open-content-by-open-source-podcast-client.html#" style="outline: medium none;">↑ Top</a></div>
+            <!-- AddThis Button END -->
+
+			</div>
+</div>
+
+		                            </div>
+									<div class="clear"></div>
+								</div>
+								<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+							</div>
+							</div>
+                                                    </div>
+                                            </div>
+                                <div class="rt-grid-3 rt-pull-9">
+                <div id="rt-sidebar-a">
+                                    <div class="square4">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<ul class="menu"><li class="item56"><a href="../previous-issue.html"><span>Previous Issue</span></a></li><li class="item55"><a href="../about-newsletter.html"><span>About Newsletter</span></a></li></ul>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<ul class="menu"><li class="item115"><a href="../foss-news.html"><span>FOSS News</span></a></li><li class="item141"><a href="../case-job.html"><span>Case and Jobs</span></a></li></ul>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+        	                <div class="square1">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-title"><h2 class="title">Special</h2></div>
+						<div class="clear"></div>
+		                						<div class="module-content">
+		                	<ul class="menu"><li class="item37"><a href="../tech-column.html"><span>Tech Column</span></a></li><li id="current" class="active item40"><a href="../foss-programs.html"><span>FOSS Programs</span></a></li><li class="item35"><a href="../legal-column.html"><span>Legal Column</span></a></li><li class="item154"><a href="../foss-forum.html"><span>FOSS Forum</span></a></li><li class="item162"><a href="../enterprise-application.html"><span>Enterprise Application</span></a></li><li class="item44"><a href="../foss-projects.html"><span>FOSS Projects</span></a></li></ul>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		                <div class="square1">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<p style="text-align: center;"><a href="../../news%3Fformat=feed&amp;type=rss" target="_black"><img src="../../images/M_images/news-rss-feed.png" border="0" /></a><br /><a href="https://www.openfoundry.org/rss-feed/Newsletter" target="_black"><img src="../../images/M_images/newsletter-rss-feed.png" border="0" /></a></p>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		
+                </div>
+            </div>
+
+                    <div class="clear"></div>
+                </div>
+            </div>
+																													</div>
+										<div id="rt-copyright">
+						<div class="rt-grid-12 rt-alpha rt-omega">
+                        <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<span class="nowrap">Open Source Software Foundry</span><span class="nowrap">‧</span><span class="nowrap"> </span><span class="nowrap">Best  Viewed with IE7.0 or Firefox2.0 above, 1024x768 Resolution. </span><strong>E-Mail</strong>：<a href="mailto:contact@openfoundry.org">contact@openfoundry.org</a> <br /><strong>Address</strong>：No.128, Sec.2, Academia Rd., Institute of Information Science, Academia Sinica, Nangang District, Taipei City 11529, Taiwan (R.O.C). <br /><a href="../privacy-policy.html">Privacy Policy</a>. <a href="../terms-of-use.html">Terms-of-use</a> <span style="position: relative; top: 8px; margin-top: -8px;"> <a href="../../about/8101.html"><img src="../../images/M_images/rss-feed-all.png" border="0" /></a></span>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+        	
+</div>
+						<div class="clear"></div>
+					</div>
+					<div class="rt-footer-bottom-wrap"><div class="rt-footer-bottom"><div class="rt-footer-bottom2"><div class="rt-footer-bottom3"></div></div></div></div>
+									</div></div></div>
+				<div class="rt-surround-bottom"><div class="rt-surround-bottom2"><div class="rt-surround-bottom3"></div></div></div>
+							</div>
+		</div>
+		<!--
+		<script id="aptureScript">
+						(function (){var a=document.createElement("script");a.defer="true";a.src="http://www.apture.com/js/apture.js?siteToken=vsJttrn";document.getElementsByTagName("head")[0].appendChild(a);})();
+     </script>
+-->
+
+<!-- Piwik -->
+<!-- 			<script type="text/javascript">
+			  var _paq = _paq || [];
+		  _paq.push(["trackPageView"]);
+		  _paq.push(["enableLinkTracking"]);
+
+		    (function() {
+			        var u=(("https:" == document.location.protocol) ? "https" : "https") + "://www.openfoundry.org/piwik/";
+				    _paq.push(["setTrackerUrl", u+"piwik.php"]);
+				    _paq.push(["setSiteId", "1"]);
+				        var d=document, g=d.createElement("script"), s=d.getElementsByTagName("script")[0]; g.type="text/javascript";
+				        g.defer=true; g.async=true; g.src=u+"piwik.js"; s.parentNode.insertBefore(g,s);
+					  })();
+		  </script> -->
+<!-- End Piwik Code -->
+	</body>
+</html>

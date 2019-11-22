@@ -1,0 +1,525 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="zh-tw" lang="zh-tw" >
+<head>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<link rel="shortcut icon" href="../images/favicon.ico" />
+	  <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+  <meta name="robots" content="index, follow" />
+  <meta name="keywords" content="FreeNAS, nas, network-attached storage, failover,OSSFNL765" />
+  <meta name="title" content="利用 FreeNAS 打造儲存設備 (7)─Failover（故障轉移）" />
+  <meta name="description" content="前言 本文將實作建立 lagg 虛擬網路介面，以達到 FreeNAS 主機網路發生故障時的轉移功能，並且分別解說由 Console 或由 GUI 圖形介面進行的修改方式，設定完成後會進行 Lagg 故障轉移機制測試。 實作環境 - 作業系統：FreeNAS-8.0.2-RELEASE（32 位元版本） - 網路卡：em0、em1 - 區域網路 IP 網段：10.10.75.0 /" />
+  <meta name="generator" content="" />
+  <title>利用 FreeNAS 打造儲存設備 (7)─Failover（故障轉移） - OpenFoundry</title>
+  <link href="../favicon.ico" rel="shortcut icon" type="image/x-icon" />
+  <link rel="stylesheet" href="../components/com_gantry/css/gantry.css" type="text/css" />
+  <link rel="stylesheet" href="../components/com_gantry/css/grid-12.css" type="text/css" />
+  <link rel="stylesheet" href="../components/com_gantry/css/joomla.css" type="text/css" />
+  <link rel="stylesheet" href="../templates/rt_quantive_j15/css/joomla.css" type="text/css" />
+  <link rel="stylesheet" href="../templates/rt_quantive_j15/css/style1.css" type="text/css" />
+  <link rel="stylesheet" href="../templates/rt_quantive_j15/css/light-body.css" type="text/css" />
+  <link rel="stylesheet" href="../templates/rt_quantive_j15/css/demo-styles.css" type="text/css" />
+  <link rel="stylesheet" href="../templates/rt_quantive_j15/css/template.css" type="text/css" />
+  <link rel="stylesheet" href="../templates/rt_quantive_j15/css/typography.css" type="text/css" />
+  <link rel="stylesheet" href="../templates/rt_quantive_j15/css/fusionmenu.css" type="text/css" />
+  <style type="text/css">
+    <!--
+#rt-main-surround ul.menu li.active > a, #rt-main-surround ul.menu li.active > .separator, #rt-main-surround ul.menu li.active > .item, #rt-main-surround .square4 ul.menu li:hover > a, #rt-main-surround .square4 ul.menu li:hover > .item, #rt-main-surround .square4 ul.menu li:hover > .separator, .roktabs-links ul li.active span {color:#0088B5;}
+a, #rt-main-surround ul.menu a:hover, #rt-main-surround ul.menu .separator:hover, #rt-main-surround ul.menu .item:hover {color:#0088B5;}
+    -->
+  </style>
+  <script type="text/javascript" src="../components/com_jcomments/js/jcomments-v2.1.js%3Fv=2"></script>
+  <script type="text/javascript" src="../components/com_jcomments/libraries/joomlatune/ajax.js"></script>
+  <script type="text/javascript" src="../media/system/js/mootools.js"></script>
+  <script type="text/javascript" src="../media/system/js/caption.js"></script>
+  <script type="text/javascript" src="../components/com_gantry/js/gantry-buildspans.js"></script>
+  <script type="text/javascript" src="../components/com_gantry/js/gantry-inputs.js"></script>
+  <script type="text/javascript" src="../templates/rt_quantive_j15/js/jquery.cookie.js"></script>
+  <script type="text/javascript" src="../modules/mod_roknavmenu/themes/fusion/js/fusion.js"></script>
+  <script type="text/javascript" src="../modules/mod_ofssologin/js/ofssologin.js"></script>
+  <script type="text/javascript">
+
+			window.addEvent('domready', function() {
+				var modules = ['rt-block'];
+				var header = ['h3','h2','h1'];
+				GantryBuildSpans(modules, header);
+			});
+		InputsExclusion.push('.content_vote','#rt-popup')
+		        window.addEvent('load', function() {
+					new Fusion('ul.menutop', {
+						pill: 0,
+						effect: 'slide and fade',
+						opacity: 1,
+						hideDelay: 500,
+						centered: 0,
+						tweakInitial: {'x': -2, 'y': 0},
+        				tweakSubsequent: {'x': 0, 'y': -14},
+						menuFx: {duration: 200, transition: Fx.Transitions.Sine.easeOut},
+						pillFx: {duration: 400, transition: Fx.Transitions.Back.easeOut}
+					});
+	            });
+  </script>
+<!-- <script type="text/javascript" src="/sso/javascripts/langsync.js"></script> -->
+<!-- <script src="/templates/rt_quantive_j15/js/ossf.js"></script> -->
+<script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-4136519-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
+</head>
+	<body  class="backgroundlevel-low backgroundstyle-style8 bodylevel-med bodystyle-light cssstyle-style1 logostyle-dark font-family-helvetica font-size-is-default menu-type-fusionmenu col12 ">
+		<div id="rt-main-background">
+			<div class="rt-container">
+																<div id="rt-header">
+					<div class="rt-grid-7 rt-alpha">
+    			<div class="rt-block">
+    	    	<a href="../index.html" id="rt-logo"></a>
+    		</div>
+	    
+</div>
+<div class="rt-grid-5 rt-omega">
+                    <div class="square9">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<div class="ofssologin_square9"><a href="../index.html">登入</a>&nbsp;&nbsp|&nbsp;&nbsp;<span><a href="https://www.openfoundry.org/en/tech-column/8529" ><span lang="en" xml:lang="en">English</span></a></li></ul></span><!--Joom!fish V2.0.4 (Lightning)-->
+<!-- &copy; 2003-2009 Think Network, released under the GPL. -->
+<!-- More information: at http://www.joomfish.net -->
+<div class="ofssologin_search_square9">
+  <form id="of_search" action="https://www.openfoundry.org/of/openfoundry/search" method="get" onsubmit="of_search(); return false;">
+    <select id="of_search_type">
+      <option value="Projects"> 專案 </option>
+      <option value="Content"> 文章 </option>
+      <option value="People"> 人才 </option>
+    </select>
+    <input id="query" name="query" id="mod_search_searchword" maxlength="50" alt="search" class="inputbox" type="text" size="28" value="search..."  onblur="if(this.value=='') this.value='search...';" onfocus="if(this.value=='search...') this.value='';" />
+    <input type="hidden" name="commit" value="search" />
+  </form>
+</div></div>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		
+</div>
+					<div class="clear"></div>
+				</div>
+																<div id="rt-navigation"><div id="rt-navigation2"><div id="rt-navigation3">
+					
+<div class="nopill">
+	<ul class="menutop level1 " >
+						<li class="item1 root" >
+					<a class="orphan item bullet" href="../index.html"  >
+				<span>
+			    				首頁				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item32 root" >
+					<a class="orphan item bullet" href="../archived.html"  >
+				<span>
+			    				專案				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item186 root" >
+					<a class="orphan item bullet" href="../tw/community.html"  >
+				<span>
+			    				Who&#039;s Who				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item4 root" >
+					<a class="orphan item bullet" href="../tw/news.html"  >
+				<span>
+			    				新聞				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item5 root" >
+					<a class="orphan item bullet" href="../tw/law-and-licensing.html"  >
+				<span>
+			    				法律源地				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item3 root" >
+					<a class="orphan item bullet" href="../tw/activities.html"  >
+				<span>
+			    				活動				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item2 root" >
+					<a class="orphan item bullet" href="../tw/resourcecatalog%3FName=Value.html"  >
+				<span>
+			    				資源表列				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item45 root" >
+					<a class="orphan item bullet" href="../tw/about.html"  >
+				<span>
+			    				關於				   
+				</span>
+			</a>
+			
+			
+	</li>	
+				</ul>
+</div>
+
+				    <div class="clear"></div>
+				</div></div></div>
+								<div class="rt-surround"><div class="rt-surround2"><div class="rt-surround3">
+										<div id="rt-showcase-section">
+												<div id="rt-showcase">
+							<div class="rt-grid-12 rt-alpha rt-omega">
+    		<div class="clear"></div>
+		
+		
+                <div class="close-note">
+                    <div class="rt-block">
+               					<div class="module-content">
+                	<div style="font-size:medium; background-image:linear-gradient(120deg,#159957,#4298b2);color:white;padding:20px;margin:-10px -18px;">感謝您對「自由軟體鑄造場」的支持與愛護，十多年來「自由軟體鑄造場」受中央研究院支持，並在資訊科學研究所以及資訊科技創新研究中心執行，現已完成階段性的任務。 本網站預計持續維運至 2021年底，網站內容基本上不會再更動。<br />也紀念我們永遠的朋友 李士傑先生（Shih-Chieh Ilya Li）。</div>				</div>
+            </div>
+                </div>
+		
+</div>
+							<div class="clear"></div>
+						</div>
+																	</div>
+															<div id="rt-main-surround">
+												<div id="rt-breadcrumbs">
+								<div class="rt-breadcrumb-surround">
+		<a href="../index.html" id="breadcrumbs-home"></a>
+		<span class="breadcrumbs pathway">
+<a href="../tw/tech-column.html" class="pathway">技術專欄</a> <img src="../templates/rt_quantive_j15/images/arrow.png" alt=""  /> <span class="no-link">利用 FreeNAS 打造儲存設備 (7)─Failover（故障轉移）</span></span>
+	</div>
+	
+							<div class="clear"></div>
+						</div>
+																							              <div id="rt-main" class="sa3-mb9">
+                <div class="rt-main-inner">
+                    <div class="rt-grid-9 rt-push-3">
+                                                <div class="rt-block">
+                            							<div class="square1">
+							<div class="rt-module-surround">
+								<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+								<div class="rt-module-inner">
+		                            <div id="rt-mainbody">
+		                                
+<div class="rt-joomla ">
+	<div class="rt-article">
+		
+				<div class="rt-headline"><h1 class="rt-article-title">利用 FreeNAS 打造儲存設備 (7)─Failover（故障轉移）</h1>		</div>
+		<div class="clear"></div>
+		
+		
+		
+				<div class="rt-articleinfo">
+						<div class="rt-article-icons">
+								<a href="../tw/tech-column/8529-freenas-7-failover%3Ftmpl=component&amp;print=1&amp;layout=default&amp;page=.html" title="列印" onclick="window.open(this.href,'win2','status=no,toolbar=no,scrollbars=yes,titlebar=no,menubar=no,resizable=yes,width=640,height=480,directories=no,location=no'); return false;" rel="nofollow"><span class="icon print"></span></a>																</div>
+			
+			<span class="rt-date-posted">
+						建立日期			2011-11-28 16:35						&nbsp;&nbsp;&nbsp;&nbsp;						最近更新在 2012-02-03 14:51						</span>
+
+						<span class="rt-author">
+				作者是 Weithenn ( https://www.weithenn.org/ )			</span>
+				
+					</div>
+		
+		
+		<h3>前言</h3>
+<p>本文將實作建立 lagg 虛擬網路介面，以達到 FreeNAS 主機網路發生故障時的轉移功能，並且分別解說由 Console 或由 GUI 圖形介面進行的修改方式，設定完成後會進行 Lagg 故障轉移機制測試。</p>
+
+<p> </p>
+<h3>實作環境</h3>
+<pre><code>- 作業系統：FreeNAS-8.0.2-RELEASE（32 位元版本）
+- 網路卡：em0、em1
+- 區域網路 IP 網段：10.10.75.0 / 255.255.255.0
+- Default Gateway：10.10.75.254
+</code></pre>
+<h3>Lagg 虛擬網路卡</h3>
+<p><a href="https://www.freebsd.org/cgi/man.cgi?query=lagg&amp;sektion=4" target="_blank">Lagg </a>是將 FreeNAS 主機上多片實體網路卡群組之後所產生的一片虛擬網路卡，它可以讓實體網路卡具備故障轉移 (Failover)，以及頻寬合併 (LACP、FEC) 或流量均衡負載 (Loadbalance, Round-robin) 的能力，若設定為 None 模式則會禁止任何網路流量，但不會禁止 lagg 介面的建立。</p>
+<h3>Console 設定 Lagg 故障轉移功能</h3>
+<p>要設定 FreeNAS 主機 Lagg 故障轉移功能以前，請先將網卡上的網路線拔除，以避免主機一開機就尋找區網內 DHCP Server 干擾設定。Console 介面手動設定固定 IP 位址的步驟如下：</p>
+<div id="輸入2進入configure-link-aggregation設定-lagg-故障轉移功能">
+<h5>01. 輸入「2」進入「Configure Link Aggregation」：設定 Lagg 故障轉移功能</h5>
+<ul>
+<li>Select a lagg protocol (q to quit)：顯示 Lagg 故障轉移功能支援的六種模式(failover, fec, lacp, loadbalance, roundrobin, none)，輸入「1」選擇「failover」機制。</li>
+<li>Select an interface (q to quit)：顯示於開機流程中偵測到的網路卡清單，請選擇要加入 Lagg 功能的實體網路卡編號，此例輸入「1」先選擇「em0」網卡，再次選擇「1」選擇「em1」網卡，選取二片網卡後輸入「q」離開。</li>
+<li>回到 Console 畫面後，選擇「10」重新啟動 FreeNAS 主機。</li>
+</ul>
+</div>
+<div id="輸入1-進入configure-network-interfaces設定網卡-ip-位址">
+<h5>02. 輸入「1」 進入「Configure Network Interfaces」：設定網卡 IP 位址</h5>
+<ul>
+<li>Select an interface (q to quit)：請選擇要設定固定 IP 位址的實體網路卡編號，輸入「1」選擇剛才建立的「lagg0」網路卡。</li>
+<li>Delete existing config? (y/n)：是否要刪除已經存在的 IP 位址設定內容，輸入「n」表示 No。</li>
+<li>Configure Interface for DHCP? (y/n)：是否要啟用此網路卡的 DHCP Client 功能，輸入「n」表示 No。</li>
+<li>Configure IPv4? (y/n)：是否要設定此網路卡的 IPv4 位址資訊，輸入「y」表示 Yes。</li>
+<li>Interface name [lagg0]：您可以輸入此網路卡的別名，若直接按下 Enter 則套用網路卡編號 lagg0。</li>
+<li>IPv4 Address：請輸入 IPv4 位址格式，其中網路遮罩設定支援 Subnet mask 表示方式 255.255.255.0 以及 CIDR 表示方式 /24，輸入「10.10.75.10/24」設定固定 IP 位址。</li>
+<li>Configure IPv6? (y/n)：是否要設定此網路卡的 IPv6 位址資訊，輸入「n」表示 No。</li>
+<li>Restarting network ok：設定完成後 FreeNAS 會重新啟動網路服務，並回到 Console 畫面。</li>
+</ul>
+</div>
+<div id="輸入4進入configure-default-route設定主機預設閘道-ip-位址">
+<h5>03. 輸入「4」進入「Configure Default Route」：設定主機預設閘道 IP 位址</h5>
+<ul>
+<li>Configure IPv4 Default Route? (y/n)：是否設定 IPv4 預設閘道資訊，輸入「y」表示 Yes。</li>
+<li>IPv4 Default Route：請輸入區域網路中預設閘道的 IP 位址，輸入「10.10.75.254」。</li>
+<li>Configure Ipv6 Default Route? (y/n)：是否設定 Ipv6 預設閘道資訊，輸入「n」表示 No。</li>
+<li>Restarting routing ok：設定完成後 FreeNAS 會重新啟動路由服務，並回到 Console 畫面。</li>
+</ul>
+</div>
+<div id="輸入6進入configure-dns設定主機使用名稱解析伺服器-ip-位址">
+<h5>04. 輸入「6」進入「Configure DNS」：設定主機使用名稱解析伺服器 IP 位址</h5>
+<ul>
+<li>DNS Domain [local]：請輸入主機的網域名稱（DNS 尾碼），此例輸入「weithenn.org」。</li>
+<li>DNS Nameserver 1：請輸入主機使用的第一台 DNS 名稱解析伺服器 IP 位址，輸入「8.8.8.8」。</li>
+<li>DNS Nameserver 2：請輸入主機使用的第二台 DNS 名稱解析伺服器 IP 位址，輸入「168.95.1.1」。</li>
+<li>DNS Nameserver 3：請輸入主機使用的第三台 DNS 名稱解析伺服器 IP 位址，輸入「168.95.192.1」。</li>
+<li>Reloading network config ok：設定完成後 FreeNAS 會重新載入網路設定，並回到 Console 畫面。</li>
+</ul>
+</div>
+<div id="輸入10進入reboot選項重新啟動主機">
+<h5>05. 輸入「10」進入「Reboot」選項重新啟動主機</h5>
+<ul>
+<li>Confirm reboot (y/n)：是否確定要重新啟動主機，輸入「y」表示 Yes。</li>
+</ul>
+</div>
+<div id="重新啟動主機的同時請將主機網路卡-em0em1-與網路交換器之間的網路線插上">
+<h5>06.重新啟動主機的同時，請將主機網路卡 (em0、em1) 與網路交換器之間的網路線插上。</h5>
+<a href="../images/111213/FreeNAS/freenas_07_01.jpg" target="_blank"><img src="../images/111213/FreeNAS/freenas_07_01.jpg" border="0" alt="建立 Lagg 虛擬網路介面" width="500" /></a>
+<p>▲ 圖1：建立 Lagg 虛擬網路介面</p>
+<a href="../images/111213/FreeNAS/freenas_07_02.jpg" target="_blank"><img src="../images/111213/FreeNAS/freenas_07_02.jpg" border="0" alt="設定固定 IP 位址至 Lagg 網路介面" width="500" /></a>
+<p>▲ 圖2：設定固定 IP 位址至 Lagg 網路介面</p>
+<a href="../images/111213/FreeNAS/freenas_07_03.jpg" target="_blank"><img src="../images/111213/FreeNAS/freenas_07_03.jpg" border="0" alt="設定 Default Gateway 至 Lagg 網路介面" width="500" /></a>
+<p>▲ 圖3：設定 Default Gateway 至 Lagg 網路介面</p>
+<a href="../images/111213/FreeNAS/freenas_07_04.jpg" target="_blank"><img src="../images/111213/FreeNAS/freenas_07_04.jpg" border="0" alt="設定 Domain 及 DNS 至 Lagg 網路介面" width="500" /></a>
+<p>▲ 圖4：設定 Domain 及 DNS 至 Lagg 網路介面</p>
+<h3>GUI 設定 Lagg 故障轉移功能</h3>
+</div>
+<div id="先將-freenas-主機其中一片網路卡接上網路線只插-em0區域網路中已有架設-dhcp-伺服器主機由-em0-網路卡取得-ip-位址-10.10.75.52">
+<h5>01. 先將 FreeNAS 主機其中一片網路卡接上網路線（只插 em0），區域網路中已有架設 DHCP 伺服器，主機由 em0 網路卡取得 IP 位址 10.10.75.52。</h5>
+</div>
+<div id="開啟瀏覽器後於網址列輸入-freenas-主機暫時的-ip-位址https:10.10.75.52此時將自動登入-freenas-gui-圖形介面ie-browser-已可正常操作">
+<h5>02. 開啟瀏覽器後於網址列輸入 FreeNAS 主機暫時的 IP 位址「https://10.10.75.52」，此時將自動登入 FreeNAS GUI 圖形介面（IE Browser 已可正常操作）。</h5>
+</div>
+<div id="切換至network-link-aggregations-create-link-aggregation-選擇及輸入相關資訊">
+<h5>03. 切換至「Network &gt; Link Aggregations &gt; Create Link Aggregation 」，選擇及輸入相關資訊：</h5>
+<ul>
+<li>Lagg protocol：顯示 Lagg 故障轉移功能支援的六種模式，選擇「Failover」。</li>
+<li>Physical NICs in the LAGG：顯示於開機流程中偵測到的網路卡清單，請選擇要加入 Lagg 功能的實體網路卡編號，選擇「em0、em1」後按下「OK」鍵。</li>
+</ul>
+</div>
+<div id="切換至view-all-link-aggregations按下lagg0項目的edit-interface鈕輸入-ip-位址資訊">
+<h5>04. 切換至「View All Link Aggregations」按下「lagg0」項目的「Edit Interface」鈕，輸入 IP 位址資訊：</h5>
+<ul>
+<li>Interface Name：請輸入此網路卡的別名（此為必填欄位無法忽略！），採用預設值「lagg0」即可。- IPv4 Address：請輸入設定於此網路卡上的固定 IP 位址，此例輸入「10.10.75.10」。</li>
+<li>IPv4 Netmask：請於下拉選單中選擇適合的網路遮罩值，此例選擇「/24 (255.255.255.0)」。</li>
+<li>Save：當上述設定確認無誤按下「Save」鈕確定套用設定值。</li>
+<li>切換到 FreeNAS Console，輸入「10」進入「Reboot」選項，重新啟動主機。</li>
+</ul>
+<a href="../images/111213/FreeNAS/freenas_07_05.jpg" target="_blank"><img src="../images/111213/FreeNAS/freenas_07_05.jpg" border="0" alt="建立 Lagg 虛擬網路介面及選取成員網卡" width="500" /></a>
+<p>▲ 圖5：建立 Lagg 虛擬網路介面及選取成員網卡</p>
+<a href="../images/111213/FreeNAS/freenas_07_06.jpg" target="_blank"><img src="../images/111213/FreeNAS/freenas_07_06.jpg" border="0" alt="設定固定 IP 位址至 Lagg 網路介面" width="500" /></a>
+<p>▲ 圖6：設定固定 IP 位址至 Lagg 網路介面</p>
+<a href="../images/111213/FreeNAS/freenas_07_07.jpg" target="_blank"><img src="../images/111213/FreeNAS/freenas_07_07.jpg" border="0" alt="設定主機名稱、網域、Default Gateway、DNS 至 Lagg 網路介面" width="500" /></a>
+<p>▲ 圖7：設定主機名稱、網域、Default Gateway、DNS 至 Lagg 網路介面</p>
+<a href="../images/111213/FreeNAS/freenas_07_08.jpg" target="_target"><img src="../images/111213/FreeNAS/freenas_07_08.jpg" border="0" alt="重新啟動 FreeNAS 主機" width="500" /></a>
+<p>▲ 圖8：重新啟動 FreeNAS 主機</p>
+<h3>測試 Lagg 故障轉移機制</h3>
+<p>故障轉移 (Failover) 功能啟用時，會將第一片加入 Lagg 的實體網卡視為「主要 (Master)」網卡，而此網卡的 MTU 設定值也將會是 Lagg 虛擬網卡的預設 MTU 值，之後加入的網卡則皆為故障轉移的備用網卡（之後加入的網卡 MTU 值須配合 Master 網卡，以免影響網路功能運作）。</p>
+<p>只有當 Master 網卡不可用時才會啟用另一個備用網卡，唯有具有「Active」的備用網卡才會發送及接收封包。此外，FreeNAS 的故障轉移具有「Failback 機制」，也就是當 Master 網卡故障時備用網卡會接手流量，但是當 Master 網卡復原時會把「Active」控制權搶回來進行封包的發送及接收，那麼該如何在 Console 及 GUI 查看哪一片網卡是 Master？</p>
+<ul>
+<li>Console：輸入「9」進入 Shell 後執行「ifconfig lagg0」指令即可得知。</li>
+<li>GUI：切換到 Network &gt; Link Aggregations &gt; View All Link Aggregations 後點選「Edit Members」，其中 Priority 為「0」者即為 Master。</li>
+</ul>
+<a href="../images/111213/FreeNAS/freenas_07_09.jpg" target="_blank"><img src="../images/111213/FreeNAS/freenas_07_09.jpg" border="0" alt="Console 查看 Lagg 網卡成員狀態" width="500" /></a>
+<p>▲ 圖9：Console 查看 Lagg 網卡成員狀態</p>
+<a href="../images/111213/FreeNAS/freenas_07_10.jpg" target="_blank"><img src="../images/111213/FreeNAS/freenas_07_10.jpg" border="0" alt="GUI 查看 Lagg 網卡成員狀態" width="500" /></a>
+<p>▲ 圖10：GUI 查看 Lagg 網卡成員狀態</p>
+<p>可以在 Console 中進入 Shell 模式後，輸入「systat -ifstat 1」指令即時查看網卡流量，此時 Master/Active 為 em0 網卡，若 em1 網卡故障當然不影響整體運作，在本例將查看 em0 網卡故障時（以拔除網路線為測試方式），Failover 及 Failback 影響網路流量的時間。</p>
+<a href="../images/111213/FreeNAS/freenas_07_11.jpg" target="_blank"><img src="../images/111213/FreeNAS/freenas_07_11.jpg" border="0" alt="即時查看網卡流量" width="500" /></a>
+<p>▲ 圖11：即時查看網卡流量</p>
+<p>利用持續 ping 的方式來查看 FreeNAS 主機的流量，經實測當 em0 網卡故障後，整個故障轉移的 Failover 過程大約掉了 2～3 個 ping 封包，而當 em0 網卡恢復後將主控權搶回的 Failback 過程大約也掉了 4～5 個 ping 封包。</p>
+<p>如果您覺得這樣的反應時間太長，還可以透過調整「net.link.lagg.failover_rx_all」參數值改善情況，其預設值為「0」，使用指令「sysctl net.link.lagg.failover_rx_all=1」調整參數值後，經實測 Failover 及 Failback 過程皆「不會掉封包」。</p>
+<p>如果您希望該參數值在 FreeNAS 重新啟動後仍能生效，則可以透過修改「/conf/base/etc/sysctl.conf」設定檔達成，不過 FreeNAS 是嵌入式設計，所以要先把根目錄設定為「非唯讀」狀態，操作步驟如下：</p>
+<pre><code># mount | grep read-only
+/dev/ufs/FreeNASs1a on / (ufs, local, read-only, soft-updates)
+
+# mount -uw /
+# mount | grep s4
+/dev/ufs/FreeNASs4 on /data (ufs, local, noatime, soft-updates)
+
+# echo 'net.link.lagg.failover_rx_all=1'  &gt;&gt; /conf/base/etc/sysctl.conf
+
+</code></pre>
+<h3>結語</h3>
+<p>至此 FreeNAS 的網卡故障轉移功能已設定完成，並且通過災難測試。FreeNAS 官方有錄製教學影片 FreeNAS™ 8: LAGG and VLAN (<a href="https://www.youtube.com/watch?v=F1Y9vWCVdHk" target="_blank">https://www.youtube.com/watch?v=F1Y9vWCVdHk</a>)，有興趣的朋友不妨參考看看。</p>
+<iframe src="https://www.youtube.com/embed/F1Y9vWCVdHk" width="560" height="315" frameborder="0"></iframe></div>
+			<!-- Show relate article -->
+		<br><br><h4>您也許有興趣閱讀以下文章:</h4><ul><li><a href='8580.html'>利用 FreeNAS 打造儲存設備 (8)──網路設定篇之頻寬合併</a> - <span class='date-posted'>2012-01-13</span></li><li><a href='8480.html'>利用 FreeNAS 打造儲存設備 (6) 網路設定篇─基礎設定</a> - <span class='date-posted'>2011-10-14</span></li><li><a href='8473.html'>利用 FreeNAS 打造儲存設備(5)安裝篇（嵌入式 USB）</a> - <span class='date-posted'>2011-10-04</span></li><li><a href='8444.html'>利用 FreeNAS 打造儲存設備(4)─安裝篇（由 GUI 升級）</a> - <span class='date-posted'>2011-09-13</span></li><li><a href='8431.html'>利用 FreeNAS 打造儲存設備(3)─安裝篇（由光碟升級）</a> - <span class='date-posted'>2011-09-01</span></li><li><a href='8423.html'>利用 FreeNAS 打造儲存設備(2)－安裝篇</a> - <span class='date-posted'>2011-08-18</span></li><li><a href='8408.html'>利用 FreeNAS 打造儲存設備(1)－歷史篇</a> - <span class='date-posted'>2011-08-03</span></li></ul>		<!-- end -->
+		<div class="article_note">
+		<!-- Add tags use metakey, and show OSSF Newsletter tag: OSSFNL+NUM-->
+		<br><br> <hr style='border: 1px dashed #D2DADB;'><b>自由軟體鑄造場電子報&nbsp;:</b>&nbsp;<a href='../previous-issue%3Ftask=view&amp;id=765.html'>第 186 期 程式語言延伸模組管理系統</a><br><b>標籤:</b>&nbsp;<a href='../index.php%3Foption=com_search&amp;Itemid=58&amp;searchphrase=exact_meta&amp;ordering=newest&amp;searchword=FreeNAS.html'>FreeNAS</a>,&nbsp;&nbsp;<a href='../index.php%3Foption=com_search&amp;Itemid=58&amp;searchphrase=exact_meta&amp;ordering=newest&amp;searchword=&#32;nas.html'> nas</a>,&nbsp;&nbsp;<a href='../index.php%3Foption=com_search&amp;Itemid=58&amp;searchphrase=exact_meta&amp;ordering=newest&amp;searchword=&#32;network-attached&#32;storage.html'> network-attached storage</a>,&nbsp;&nbsp;<a href='../index.php%3Foption=com_search&amp;Itemid=58&amp;searchphrase=exact_meta&amp;ordering=newest&amp;searchword=&#32;failover.html'> failover</a>,&nbsp;&nbsp;				<!-- End -->
+					<br>
+					<b>分類: </b><a href="../tw/tech-column.html">				技術專欄					</a>				</div>
+			 <!-- AddThis Button BEGIN ID 3001 is the front page article -->
+     			<br><br>
+       <div class="addthis_toolbox addthis_default_style addthis_32x32_style">
+       <a class="addthis_button_preferred_1"></a>
+       <a class="addthis_button_preferred_2"></a>
+       <a class="addthis_button_preferred_3"></a>
+       <a class="addthis_button_preferred_4"></a>
+       <a class="addthis_button_compact"></a>
+       <a class="addthis_counter addthis_bubble_style"></a>
+       </div>
+       <script type="text/javascript">var addthis_config = {"data_track_clickback":true};</script>
+       <script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js#pubid=openfoundry"></script>
+       <!-- AddThis Button END -->
+     <br>
+		<div class="totop" ><a class="rt-totop" href="8529.html#" style="outline: medium none;">↑ Top</a></div>
+            <!-- AddThis Button END -->
+
+			</div>
+</div>
+
+		                            </div>
+									<div class="clear"></div>
+								</div>
+								<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+							</div>
+							</div>
+                                                    </div>
+                                            </div>
+                                <div class="rt-grid-3 rt-pull-9">
+                <div id="rt-sidebar-a">
+                                    <div class="square4">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<ul class="menu"><li class="item56"><a href="../tw/previous-issue.html"><span>電子報總覽</span></a></li><li class="item55"><a href="../tw/about-newsletter.html"><span>關於本報</span></a></li></ul>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<ul class="menu"><li class="item115"><a href="../tw/foss-news.html"><span>源碼新聞</span></a></li><li class="item141"><a href="../tw/case-job.html"><span>接案 / 工作</span></a></li></ul>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+        	                <div class="square1">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-title"><h2 class="title">專欄總覽</h2></div>
+						<div class="clear"></div>
+		                						<div class="module-content">
+		                	<ul class="menu"><li id="current" class="active item37"><a href="../tw/tech-column.html"><span>技術專欄</span></a></li><li class="item40"><a href="../tw/foss-programs.html"><span>源碼秘技</span></a></li><li class="item35"><a href="../tw/legal-article-.html"><span>法律專欄</span></a></li><li class="item154"><a href="../tw/foss-forum.html"><span>自由專欄</span></a></li><li class="item162"><a href="../tw/enterprise-application.html"><span>企業應用</span></a></li><li class="item44"><a href="../tw/foss-projects.html"><span>源碼專案</span></a></li></ul>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		                <div class="square1">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<p style="text-align: center;"><a href="../news%3Fformat=feed&amp;type=rss" target="_black"><img src="../images/M_images/news-rss-feed.png" border="0" /></a><br /><a href="https://www.openfoundry.org/rss-feed/Newsletter" target="_black"><img src="../images/M_images/newsletter-rss-feed.png" border="0" /></a></p>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		
+                </div>
+            </div>
+
+                    <div class="clear"></div>
+                </div>
+            </div>
+																													</div>
+										<div id="rt-copyright">
+						<div class="rt-grid-12 rt-alpha rt-omega">
+                        <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<div id="desktop-mobile-version-switch"><span id="mobile-version" class="version-switch"><a href="8529.html#">行動版</a></span></div>
+自由軟體鑄造場 製作 最佳瀏覽狀態：IE7或Firefox2.0以上 (建議使用Firefox) ‧ 解析度1024*768 <br /> <strong>E-Mail</strong>：<a href="mailto:contact@openfoundry.org">contact@openfoundry.org</a> <strong>Address</strong>：台北市南港區研究院路2段128號 中央研究院資訊科學研究所 . <a href="../privacy-policy.html">隱私權條款</a>. <a href="../terms-of-use.html">使用條款</a><span style="position: relative; top: 8px; margin-top: -8px;"> <a href="../about/8101.html"><img src="../images/M_images/rss-feed-all.png" border="0" /></a></span>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+        	
+</div>
+						<div class="clear"></div>
+					</div>
+					<div class="rt-footer-bottom-wrap"><div class="rt-footer-bottom"><div class="rt-footer-bottom2"><div class="rt-footer-bottom3"></div></div></div></div>
+									</div></div></div>
+				<div class="rt-surround-bottom"><div class="rt-surround-bottom2"><div class="rt-surround-bottom3"></div></div></div>
+							</div>
+		</div>
+		<!--
+		<script id="aptureScript">
+						(function (){var a=document.createElement("script");a.defer="true";a.src="http://www.apture.com/js/apture.js?siteToken=vsJttrn";document.getElementsByTagName("head")[0].appendChild(a);})();
+     </script>
+-->
+
+<!-- Piwik -->
+<!-- 			<script type="text/javascript">
+			  var _paq = _paq || [];
+		  _paq.push(["trackPageView"]);
+		  _paq.push(["enableLinkTracking"]);
+
+		    (function() {
+			        var u=(("https:" == document.location.protocol) ? "https" : "https") + "://www.openfoundry.org/piwik/";
+				    _paq.push(["setTrackerUrl", u+"piwik.php"]);
+				    _paq.push(["setSiteId", "1"]);
+				        var d=document, g=d.createElement("script"), s=d.getElementsByTagName("script")[0]; g.type="text/javascript";
+				        g.defer=true; g.async=true; g.src=u+"piwik.js"; s.parentNode.insertBefore(g,s);
+					  })();
+		  </script> -->
+<!-- End Piwik Code -->
+	</body>
+</html>

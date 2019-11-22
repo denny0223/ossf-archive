@@ -1,0 +1,977 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="zh-tw" lang="zh-tw" >
+<head>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<link rel="shortcut icon" href="../images/favicon.ico" />
+	  <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+  <meta name="robots" content="index, follow" />
+  <meta name="keywords" content="Re:GPL 條款對於衍生程式的判定 -- 動態載入的Kernel Module需要釋出原始碼嗎?, 法政討論區, Forum, OpenFoundry" />
+  <meta name="description" content="OpenFoundry provides essential tools and services through its service platform for users to develop Open Source Software Projects, the operating funds comes from the National Science Council and the Research Center for Information Technology Innovation of Academia Sinica Taiwan.. GPL 條款對於衍生程式的判定 -- 動態載入的Kernel Module需要釋出原始碼嗎? - 法政討論區 - 授權條款相關 - Forum. Re:GPL 條款對於衍生程式的判定 -- 動態載入的Kernel Module需要釋出原始碼嗎? - 法政討論區 - 授權條款相關 - Forum. Re:GPL 條款對於衍生程式的判定 -- 動態載入的Kernel Module需要釋出原始碼嗎? - 法政討論區 - 授權條款相關 - Forum. Re:GPL 條款對於衍生程式的判定 -- 動態載入的Kernel Module需要釋出原始碼嗎? - 法政討論區 - 授權條款相關 - Forum" />
+  <meta name="generator" content="" />
+  <title>Re:GPL 條款對於衍生程式的判定 -- 動態載入的Kernel Module需要釋出原始碼嗎? - Forum - OpenFoundry</title>
+  <link href="../favicon.ico" rel="shortcut icon" type="image/x-icon" />
+  <link rel="stylesheet" href="../components/com_gantry/css/gantry.css" type="text/css" />
+  <link rel="stylesheet" href="../components/com_gantry/css/grid-12.css" type="text/css" />
+  <link rel="stylesheet" href="../components/com_gantry/css/joomla.css" type="text/css" />
+  <link rel="stylesheet" href="../templates/rt_quantive_j15/css/joomla.css" type="text/css" />
+  <link rel="stylesheet" href="../templates/rt_quantive_j15/css/style1.css" type="text/css" />
+  <link rel="stylesheet" href="../templates/rt_quantive_j15/css/light-body.css" type="text/css" />
+  <link rel="stylesheet" href="../templates/rt_quantive_j15/css/demo-styles.css" type="text/css" />
+  <link rel="stylesheet" href="../templates/rt_quantive_j15/css/template.css" type="text/css" />
+  <link rel="stylesheet" href="../templates/rt_quantive_j15/css/typography.css" type="text/css" />
+  <link rel="stylesheet" href="../templates/rt_quantive_j15/css/fusionmenu.css" type="text/css" />
+  <style type="text/css">
+    <!--
+#rt-main-surround ul.menu li.active > a, #rt-main-surround ul.menu li.active > .separator, #rt-main-surround ul.menu li.active > .item, #rt-main-surround .square4 ul.menu li:hover > a, #rt-main-surround .square4 ul.menu li:hover > .item, #rt-main-surround .square4 ul.menu li:hover > .separator, .roktabs-links ul li.active span {color:#0088B5;}
+a, #rt-main-surround ul.menu a:hover, #rt-main-surround ul.menu .separator:hover, #rt-main-surround ul.menu .item:hover {color:#0088B5;}
+    -->
+  </style>
+  <script type="text/javascript" src="../components/com_jcomments/js/jcomments-v2.1.js%3Fv=2"></script>
+  <script type="text/javascript" src="../components/com_jcomments/libraries/joomlatune/ajax.js"></script>
+  <script type="text/javascript" src="../media/system/js/mootools.js"></script>
+  <script type="text/javascript" src="../components/com_gantry/js/gantry-buildspans.js"></script>
+  <script type="text/javascript" src="../components/com_gantry/js/gantry-inputs.js"></script>
+  <script type="text/javascript" src="../templates/rt_quantive_j15/js/jquery.cookie.js"></script>
+  <script type="text/javascript" src="../modules/mod_roknavmenu/themes/fusion/js/fusion.js"></script>
+  <script type="text/javascript" src="../modules/mod_ofssologin/js/ofssologin.js"></script>
+  <script type="text/javascript">
+
+			window.addEvent('domready', function() {
+				var modules = ['rt-block'];
+				var header = ['h3','h2','h1'];
+				GantryBuildSpans(modules, header);
+			});
+		InputsExclusion.push('.content_vote','#rt-popup')
+		        window.addEvent('load', function() {
+					new Fusion('ul.menutop', {
+						pill: 0,
+						effect: 'slide and fade',
+						opacity: 1,
+						hideDelay: 500,
+						centered: 0,
+						tweakInitial: {'x': -2, 'y': 0},
+        				tweakSubsequent: {'x': 0, 'y': -14},
+						menuFx: {duration: 200, transition: Fx.Transitions.Sine.easeOut},
+						pillFx: {duration: 400, transition: Fx.Transitions.Back.easeOut}
+					});
+	            });
+  </script>
+  <script type="text/javascript" src="../components/com_fireboard/template/default/js/jquery-latest.pack.js"></script>
+  <script type="text/javascript">
+// modify by aeil 
+// http://www.seongyupyoo.com/index.php?option=com_content&task=view&id=10&Itemid=29
+jQuery.noConflict();
+
+
+//1: show, 0 : hide
+jr_expandImg_url = "https://www.openfoundry.org/components/com_fireboard/template/default/images/english/";</script>
+  <script type="text/javascript" src="../components/com_fireboard/template/default/js/bojForumCore.js"></script>
+  <link type="text/css" rel="stylesheet" href="../components/com_fireboard/template/default_ex/forum.css" />
+  <script type="text/javascript" src="../components/com_fireboard/template/default/plugin/chili/jquery.chili.pack.js"></script>
+	<script id="setup" type="text/javascript">
+	ChiliBook.recipeFolder     = "https://www.openfoundry.org/components/com_fireboard/template/default/plugin/chili/";
+	ChiliBook.stylesheetFolder     = "https://www.openfoundry.org/components/com_fireboard/template/default/plugin/chili/";
+	</script>
+  <link rel="alternate" type="application/rss+xml" title="get the latest posts directly to your desktop" href="forum%3Ffunc=fb_rss&amp;no_html=1")/>
+<!-- <script type="text/javascript" src="/sso/javascripts/langsync.js"></script> -->
+<!-- <script src="/templates/rt_quantive_j15/js/ossf.js"></script> -->
+<script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-4136519-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
+</head>
+	<body  class="backgroundlevel-low backgroundstyle-style8 bodylevel-med bodystyle-light cssstyle-style1 logostyle-dark font-family-helvetica font-size-is-default menu-type-fusionmenu col12 ">
+		<div id="rt-main-background">
+			<div class="rt-container">
+																<div id="rt-header">
+					<div class="rt-grid-7 rt-alpha">
+    			<div class="rt-block">
+    	    	<a href="../index.html" id="rt-logo"></a>
+    		</div>
+	    
+</div>
+<div class="rt-grid-5 rt-omega">
+                    <div class="square9">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<div class="ofssologin_square9"><a href="../index.html">登入</a>&nbsp;&nbsp|&nbsp;&nbsp;<span><a href="../en/forum%3Ffunc=view&amp;catid=8&amp;id=735.html" ><span lang="en" xml:lang="en">English</span></a></li></ul></span><!--Joom!fish V2.0.4 (Lightning)-->
+<!-- &copy; 2003-2009 Think Network, released under the GPL. -->
+<!-- More information: at http://www.joomfish.net -->
+<div class="ofssologin_search_square9">
+  <form id="of_search" action="https://www.openfoundry.org/of/openfoundry/search" method="get" onsubmit="of_search(); return false;">
+    <select id="of_search_type">
+      <option value="Projects"> 專案 </option>
+      <option value="Content"> 文章 </option>
+      <option value="People"> 人才 </option>
+    </select>
+    <input id="query" name="query" id="mod_search_searchword" maxlength="50" alt="search" class="inputbox" type="text" size="28" value="search..."  onblur="if(this.value=='') this.value='search...';" onfocus="if(this.value=='search...') this.value='';" />
+    <input type="hidden" name="commit" value="search" />
+  </form>
+</div></div>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		
+</div>
+					<div class="clear"></div>
+				</div>
+																<div id="rt-navigation"><div id="rt-navigation2"><div id="rt-navigation3">
+					
+<div class="nopill">
+	<ul class="menutop level1 " >
+						<li class="item1 root" >
+					<a class="orphan item bullet" href="../index.html"  >
+				<span>
+			    				首頁				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item32 root" >
+					<a class="orphan item bullet" href="../archived.html"  >
+				<span>
+			    				專案				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item186 root" >
+					<a class="orphan item bullet" href="community.html"  >
+				<span>
+			    				Who&#039;s Who				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item4 root" >
+					<a class="orphan item bullet" href="news.html"  >
+				<span>
+			    				新聞				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item5 root" >
+					<a class="orphan item bullet" href="law-and-licensing.html"  >
+				<span>
+			    				法律源地				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item3 root" >
+					<a class="orphan item bullet" href="activities.html"  >
+				<span>
+			    				活動				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item2 root" >
+					<a class="orphan item bullet" href="resourcecatalog%3FName=Value.html"  >
+				<span>
+			    				資源表列				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item45 root" >
+					<a class="orphan item bullet" href="about.html"  >
+				<span>
+			    				關於				   
+				</span>
+			</a>
+			
+			
+	</li>	
+				</ul>
+</div>
+
+				    <div class="clear"></div>
+				</div></div></div>
+								<div class="rt-surround"><div class="rt-surround2"><div class="rt-surround3">
+										<div id="rt-showcase-section">
+												<div id="rt-showcase">
+							<div class="rt-grid-12 rt-alpha rt-omega">
+    		<div class="clear"></div>
+		
+		
+                <div class="close-note">
+                    <div class="rt-block">
+               					<div class="module-content">
+                	<div style="font-size:medium; background-image:linear-gradient(120deg,#159957,#4298b2);color:white;padding:20px;margin:-10px -18px;">感謝您對「自由軟體鑄造場」的支持與愛護，十多年來「自由軟體鑄造場」受中央研究院支持，並在資訊科學研究所以及資訊科技創新研究中心執行，現已完成階段性的任務。 本網站預計持續維運至 2021年底，網站內容基本上不會再更動。<br />也紀念我們永遠的朋友 李士傑先生（Shih-Chieh Ilya Li）。</div>				</div>
+            </div>
+                </div>
+		
+</div>
+							<div class="clear"></div>
+						</div>
+																	</div>
+															<div id="rt-main-surround">
+												<div id="rt-breadcrumbs">
+								<div class="rt-breadcrumb-surround">
+		<a href="../index.html" id="breadcrumbs-home"></a>
+		<span class="breadcrumbs pathway">
+<span class="no-link">討論區</span></span>
+	</div>
+	
+							<div class="clear"></div>
+						</div>
+																							              <div id="rt-main" class="mb12">
+                <div class="rt-main-inner">
+                    <div class="rt-grid-12 ">
+                                                <div class="rt-block">
+                            							<div class="square1">
+							<div class="rt-module-surround">
+								<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+								<div class="rt-module-inner">
+		                            <div id="rt-mainbody">
+		                                
+<!-- closed in footer.html -->
+<div id="fireboard">
+
+
+
+
+
+
+<table width="100%" border="0" cellspacing="0" cellpadding="0" id="fireboard_top">
+  <tr>
+    <td align="left"nowrap="nowrap"><div id="fb_topmenu" ><div id="fireboard_tab"><ul> <li  ><a href="forum%3Ffunc=latest.html" title="" rel="follow"><span>最新話題</span></a></li><li  ><a href="forum%3Ffunc=listcat.html" title="" rel="follow"><span>所有討論版</span></a></li><li><a href="https://www.openfoundry.org/tw/forum?func=view&amp;id=735&amp;view=threaded&amp;catid=8" title="" rel="nofollow"><span>樹狀瀏覽</span></a></li></ul></div></div></td>
+    <td align="right" width="5%"><div id="fb_searchbox"><form action="https://www.openfoundry.org/tw/forum?func=search" name="searchFB" method="post"><input class="fb_search_inputbox fbs" type="text" name="searchword" size="15" value="搜尋話題" onblur="if(this.value=='') this.value='搜尋話題';" onfocus="if(this.value=='搜尋話題') this.value='';" /> <input type="submit" value="Go" name="submit" class="fb_search_button fbs"/></form></div></td>
+     <td align="right" width="1%" ><img id="BoxSwitch_topprofilebox__topprofilebox_tbody"  class="hideshow"  src="../components/com_fireboard/template/default/images/english/shrink.gif" alt="" /></td>
+  </tr>
+</table> 
+
+
+
+        <script type = "text/javascript">
+        jQuery(function()
+        {
+            jQuery(".fb_qr_fire").click(function()
+            {
+                jQuery("#sc" + (jQuery(this).attr("id").split("__")[1])).toggle();
+            });
+            jQuery(".fb_qm_cncl_btn").click(function()
+            {
+                jQuery("#sc" + (jQuery(this).attr("id").split("__")[1])).toggle();
+            });
+
+        });
+        </script>
+
+        <div>
+            <!-- Pathway -->
+
+    <div class = "fb_forum-pathway">
+        <div class="forum-pathway-1"><a href="forum.html" title="" rel="follow">Forum</a>  <img src="../templates/rt_quantive_j15/images/arrow.png" alt="" /><img src="../templates/rt_quantive_j15/images/arrow.png" alt="" /> <a href="forum%3Ffunc=showcat&amp;catid=1.html" title="" rel="follow">法政討論區</a>  <img src="../templates/rt_quantive_j15/images/arrow.png" alt="" /><img src="../templates/rt_quantive_j15/images/arrow.png" alt="" /> <a href="forum%3Ffunc=showcat&amp;catid=8.html" title="" rel="follow">授權條款相關</a> </div><div class="forum-pathway-2">GPL 條款對於衍生程式的判定 -- 動態載入的Kernel Module需要釋出原始碼嗎?  (1 位瀏覽者)&nbsp;<small style="font-weight:normal;" >(1) Guest</small>    </div>
+
+    </div>
+
+<!-- / Pathway -->
+        </div>
+                <!-- top nav -->
+        <table border = "0" cellspacing = "0" class = "jr-topnav" cellpadding = "0" width="100%">
+            <tr>
+                <td class = "jr-topnav-left">
+                    <a name="forumtop" /> <a href="forum%3Ffunc=view&amp;catid=8&amp;id=735.html#forumbottom" title="" rel="nofollow"><img src="../components/com_fireboard/template/default/images/english/icons/bottom_arrow.gif" border="0" alt="Go to bottom" title="Go to bottom"/></a>                    <!-- Begin: Total Favorite -->
+                    <span class="fb_totalfavorite">Favoured:  1</span>                <!-- Finish: Total Favorite -->
+                                    </td>
+            </tr>
+        </table>
+        <!-- /top nav -->
+        <!-- <table border = "0" cellspacing = "0" cellpadding = "0" width = "100%" align = "center"> -->
+
+            <table class = "fb_blocktable"  id="fb_views" cellpadding = "0" cellspacing = "0" border = "0" width = "100%">
+                <thead>
+                    <tr>
+                        <th align="left">
+                             <div class = "fb_title_cover  fbm">
+                                <span class = "fb_title fbl"><b>TOPIC: </b> GPL 條款對於衍生程式的判定 -- 動態載入的Kernel Module需要釋出原始碼嗎?</span>
+                            </div>
+                            <!-- FORUM TOOLS -->
+
+                            
+<script type = "text/javascript">
+    jQuery(document).ready(function()
+    {
+        jQuery("#jrftsw").click(function()
+        {
+            jQuery(".forumtools_contentBox").slideToggle("fast");
+            return false;
+        });
+    });
+</script>
+
+<div id = "fb_ft-cover">
+    <div id = "forumtools_control">
+        <a href = "forum%3Ffunc=view&amp;catid=8&amp;id=740.html#" id = "jrftsw" class = "forumtools">工具</a>
+    </div>
+
+    <div class = "forumtools_contentBox" id = "box1">
+        <div class = "forumtools_content" id = "subBox1">
+            <ul>
+                <li>
+                <a href="forum%3Ffunc=post&amp;do=reply&amp;catid=8.html">發表新話題</a>
+                </li>
+
+                
+                <li>
+                
+                </li>
+
+                
+                <li>
+                 <a href="forum%3Ffunc=latest.html" >顯示最新發表</a>
+                </li>
+
+                            </ul>
+        </div>
+    </div>
+</div>                        <!-- /FORUM TOOLS -->
+                        </th>
+                    </tr>
+                </thead>
+
+                <tr>
+                    <td>
+                        
+<table width = "100%" border = "0" cellspacing = "0" cellpadding = "0">
+    <caption>
+        <a name = "735"/>
+    </caption>
+
+    <tbody>
+        <tr class = "fb_sth">
+            <th colspan = "2" class = "view-th fb_sectiontableheader">
+<a href="forum%3Ffunc=view&amp;catid=8&amp;id=735.html#735" title="" rel="nofollow">#735</a>            </th>
+        </tr>
+
+        <tr> <!-- -->
+
+        <td class = "fb-msgview-right">
+                <table width = "100%" border = "0" cellspacing = "0" cellpadding = "0">
+                    <tr>
+                        <td align = "left">
+                                                        <span class = "msgtitle">GPL 條款對於衍生程式的判定 -- 動態載入的Kernel Module需要釋出原始碼嗎? </span> <span class = "msgdate" title="2012/01/12 17:55">2012/01/12 17:55&nbsp;&nbsp;(7 Years, 10 Months ago)</span>
+                        </td>
+
+                        <td align = "right">
+                            <span class = "msgkarma">
+
+                            <strong>Karma:</strong> 0&nbsp;&nbsp; 
+                            </span>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td colspan = "2" valign = "top">
+                            <div class = "msgtext">依據林誠夏顧問的大作，｢GPL 條款對於衍生程式的判定標準與其授權拘束性的擴散範圍｣ ( <a href="legal-column-list/8447-the-license-inheritance-bounds-of-gnu-gpl-02.html" target="_blank" rel="nofollow">www.openfoundry.org/tw/legal-column-list/8447-the-license-inheritance-bounds-of-gnu-gpl-02</a>)，動態連結的Linux Kernel Module要進入最後一階段的判斷：GPL 授權元件是否在專案中扮演重要的角色。多數的Kernel Module都有使用Linux Kernel提供的API (memory management, process management, or io processing等等)，會算是符合"GPL 授權元件在專案中扮演重要的角色"嗎?<br />
+<br />
+Kernel Module多是增強Linux Kernel的功能，像是增加對硬體的支援，增加一種檔案系統，或是增加一種演算法，本身有獨立性，但卻又是附屬於Kernel的部分，到底如何判定其獨立性或衍生性？是否過去有案例可參考？<br />
+<br />
+底下複製自<a href="https://en.wikipedia.org/wiki/GNU_General_Public_License" target="_blank" rel="nofollow">en.wikipedia.org/wiki/GNU_General_Public_License</a>，關於獨立性的說明，以供參考：<br />
+<br />
+Where&#039;s the line between two separate programs, and one program with two parts? This is a legal question, which ultimately judges will decide. We believe that a proper criterion depends both on the mechanism of communication (exec, pipes, rpc, function calls within a shared address space, etc.) and the semantics of the communication (what kinds of information are interchanged).<br />
+<br />
+If the modules are included in the same executable file, they are definitely combined in one program. If modules are designed to run linked together in a shared address space, that almost surely means combining them into one program.<br />
+<br />
+By contrast, pipes, sockets and command-line arguments are communication mechanisms normally used between two separate programs. So when they are used for communication, the modules normally are separate programs. <span style='color: #FF0000'>But if the semantics of the communication are intimate enough, exchanging complex internal data structures, that too could be a basis to consider the two parts as combined into a larger program</span>.<br />
+<br />
+依上述紅字部分定義，Kernel Module是否可能落入與Kernel相依性過高，而不被視為"獨立"？<br />
+<br />
+感謝解惑!!</div>
+
+                            
+
+                        </td>
+                    </tr>
+
+
+                </table>
+            </td>
+
+              <td class = "fb-msgview-left">
+                <div class = "fb-msgview-l-cover">
+                    <span class = "view-username">
+<a href="component/comprofiler/userprofile/paulchu.html" title="" rel="nofollow">paulchu</a>                    </span> <span class = "msgusertype">(User)</span>
+                    <br/>
+<a href="component/comprofiler/userprofile/paulchu.html" title="" rel="nofollow"><span class="fb_avatar"><img src="https://www.openfoundry.org/sso/user/image?name=paulchu&amp;size=medium" alt="" /></span></a>
+				
+				                <div class = "viewcover">
+                    Fresh Boarder                </div>
+
+                <div class = "viewcover">
+                    <img src="../components/com_fireboard/template/default/images/english/ranks/rank1.gif" alt="" />                </div>
+
+                    
+                    <div class="viewcover"><strong>Posts: 2</strong></div><div class="viewcover"><table  border="0" cellspacing="0" cellpadding="0" align="center"><tr><td width="64"><img src="../components/com_fireboard/template/default/images/english/graph/col9m.png" height="4" width="1" alt="graph" style="border: 0px solid #333333" /><img src="../components/com_fireboard/template/default/images/english/emoticons/graph.gif" height="4" width="59" alt="graph" style="border: 0px solid #333333" /></td></tr></table></div>
+
+
+                    <img src="../components/com_fireboard/template/default/images/english/icons/offline.gif" border="0" alt="User Offline" />
+                    
+                    <a href="component/comprofiler/userprofile/paulchu.html">                                              <img src="../components/com_fireboard/template/default/images/english/icons/profile.gif" alt="Click here to see the profile of this user" border="0" title="Click here to see the profile of this user" /></a>                    <br />
+ 					                                                                                                                         					                                        
+                </div>
+            </td>
+<!-- -->
+
+        </tr>
+
+  <tr><td class = "fb-msgview-right-c" >
+                         <div class="fb_smalltext" >
+                   
+                            <img src="../components/com_fireboard/template/default/images/english/icons/ip.gif" border="0" alt="Logged" /> <span class="fb_smalltext"> Logged</span>
+                            &nbsp;                            </div>
+       </td>
+            <td class = "fb-msgview-left-c">&nbsp;
+            </td>
+
+        </tr>
+
+
+        <tr><td class = "fb-msgview-right-b" align = "right">
+                <span id = "fb_qr_sc__735" class = "fb_qr_fire" style = "cursor:hand; cursor:pointer">
+
+                                </span>
+
+                The administrator has disabled public write access.
+            </td>
+            <td class = "fb-msgview-left-b">&nbsp;
+
+            </td>
+
+
+        </tr>
+    </tbody>
+</table>
+<!-- Begin: Message Module Positions -->
+
+
+
+
+<!-- Finish: Message Module Positions -->
+
+<table width = "100%" border = "0" cellspacing = "0" cellpadding = "0">
+    <caption>
+        <a name = "736"/>
+    </caption>
+
+    <tbody>
+        <tr class = "fb_sth">
+            <th colspan = "2" class = "view-th fb_sectiontableheader">
+<a href="forum%3Ffunc=view&amp;catid=8&amp;id=735.html#736" title="" rel="nofollow">#736</a>            </th>
+        </tr>
+
+        <tr> <!-- -->
+
+        <td class = "fb-msgview-right">
+                <table width = "100%" border = "0" cellspacing = "0" cellpadding = "0">
+                    <tr>
+                        <td align = "left">
+                                                        <span class = "msgtitle">Re:GPL 條款對於衍生程式的判定 -- 動態載入的Kernel Module需要釋出原始碼嗎? </span> <span class = "msgdate" title="2012/01/13 14:37">2012/01/13 14:37&nbsp;&nbsp;(7 Years, 10 Months ago)</span>
+                        </td>
+
+                        <td align = "right">
+                            <span class = "msgkarma">
+
+                            <strong>Karma:</strong> 10&nbsp;&nbsp; 
+                            </span>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td colspan = "2" valign = "top">
+                            <div class = "msgtext">Hi paulchu,<br />
+<br />
+「大作」兩個字愧不敢當，希望對大家了解這些議題有所幫助就是了。<br />
+<br />
+你所引述的wiki條目說的很到位：「<span style='color: #0000FF'>But if the semantics of the communication are intimate enough, exchanging complex internal data structures, that too could be a basis to consider the two parts as combined into a larger program.</span>」確實很多自由開源專案的開發者，是用這樣的態度來解釋「原生程式」與「衍生程式」的關係。<br />
+<br />
+而如果你詢問的對象，直接指的就是一般所謂Linux Kernel下「<span style='color: #0000FF'>dynamically loaded kernel modules</span>」的話，那麼依照Richard Stallman與Linus Torvalds的看法，原則上都必須受到GPL-2.0授權條款的拘束，而必須在釋出時提供此一模組的相關程式源碼。<br />
+<br />
+直接可參考的文件便是我在「GPL 條款對於衍生程式的判定標準與其授權拘束性的擴散範圍（下）」一文末，所提供的第一篇參考文件：<a href='https://linuxmafia.com/faq/Kernel/proprietary-kernel-modules.html' rel="nofollow" target="_blank">https://linuxmafia.com/faq/Kernel/proprietary-kernel-modules.html</a><br />
+<br />
+在這個討論串的內容裡，Linus Torvalds就他個人的立場，表達了相關的重要態度，而這些態度也被其他不少的Linux Kernel開發者所依循著。<br />
+<br />
+以下綱要式的分析這個討論串的相關內容（Linus Torvalds對於Linux Kernel Module在授權拘束性方面的觀點）：<br />
+<br />
+1、只要這個Module是針對Linux Kernel在做設計，並且在設計架構與互動關係上有緊密關聯的話，那這個Module就是Linux Kernel的衍生著作，而在後續散布上、就必須依照GPL-2.0的授權規定一併提供該Module的程式源碼。這樣的解讀觀點來自Linus Torvalds對美國著作權法對衍生著作(derivative work)相關定義，Torvalds並特別表示、這樣的認知並非GPL條款的額外規定，而是他認為衍生著作本來就是這樣定義的。<br />
+<br />
+####<br />
+<br />
+    * anything that was written with Linux in mind (whether it then also works on other operating systems or not) is clearly partially a derived work.<br />
+    * anything that has knowledge of and plays with fundamental internal Linux behaviour is clearly a derived work. If you need to muck around with core code, you&#039;re derived, no question about it. <br />
+<br />
+####<br />
+<br />
+2、有幾個例外狀況，Torvalds認為是可以個案式的認定該Module不是Linux Kernel的衍生著作，例如：A、該Module先於Linux Kernel之前就存在(<span style='color: #0000FF'>the Andrew Filesystem, AFS</span>)，或是B、本來是針對其他作業環境來寫就(<span style='color: #0000FF'>NVIDIA driver</span>)，之後為了應用上的方便，才porting到Linux Kernel上成為Kernel Module。<br />
+<br />
+####<br />
+<br />
+A、It would be rather preposterous to call the Andrew FileSystem a "derived work" of Linux, for example, so I think it&#039;s perfectly OK to have a AFS module, for example.<br />
+<br />
+B、In contrast, these days it would be hard to argue that a new driver or filesystem was developed without any thought of Linux. I think the NVidia people can probably reasonably honestly say that the code they ported had no Linux origin. But quite frankly, I&#039;d be less inclined to believe that for some other projects out there.<br />
+<br />
+####<br />
+<br />
+3、但是要主張例外性的除外，Linus Torvalds認為這部份的主張就要釋出non-GPL kernel module的廠商來說理與闡明了。<br />
+<br />
+####<br />
+<br />
+There is nothing in the kernel license that allows modules to be non-GPLd.<br />
+<br />
+The only thing that allows for non-GPL modules is copyright law, and in particular the "derived work" issue. A vendor who distributes non-GPL modules is not protected by the module interface per se, and <span style='color: #0000FF'>should feel very confident that they can show in a court of law that the code is not derived</span>.<br />
+<br />
+####<br />
+<br />
+希望上述的資訊有助於你釐清這個議題！<br />
+<br />
+<img src="../components/com_fireboard/template/default/images/english/emoticons/smile.png" alt="" style="vertical-align: middle;border:0px;" /><br />
+<br />
+20120113 1435 LUCIEN C.H. LIN</div>
+
+                            
+
+                        </td>
+                    </tr>
+
+
+                </table>
+            </td>
+
+              <td class = "fb-msgview-left">
+                <div class = "fb-msgview-l-cover">
+                    <span class = "view-username">
+<a href="component/comprofiler/userprofile/lucien.html" title="" rel="nofollow">lucien</a>                    </span> <span class = "msgusertype">(Admin)</span>
+                    <br/>
+<a href="component/comprofiler/userprofile/lucien.html" title="" rel="nofollow"><span class="fb_avatar"><img src="https://www.openfoundry.org/sso/user/image?name=lucien&amp;size=medium" alt="" /></span></a>
+				
+				                <div class = "viewcover">
+                    Moderator                </div>
+
+                <div class = "viewcover">
+                    <img src="../components/com_fireboard/template/default/images/english/ranks/rankmod.gif" alt="" />                </div>
+
+                    
+                    <div class="viewcover"><strong>Posts: 157</strong></div><div class="viewcover"><table  border="0" cellspacing="0" cellpadding="0" align="center"><tr><td width="64"><img src="../components/com_fireboard/template/default/images/english/graph/col9m.png" height="4" width="64" alt="graph" style="border: 0px solid #333333" /></td></tr></table></div>
+
+
+                    <img src="../components/com_fireboard/template/default/images/english/icons/offline.gif" border="0" alt="User Offline" />
+                    
+                    <a href="component/comprofiler/userprofile/lucien.html">                                              <img src="../components/com_fireboard/template/default/images/english/icons/profile.gif" alt="Click here to see the profile of this user" border="0" title="Click here to see the profile of this user" /></a>                    <br />
+ 					                                                                                                                         					                                        
+                </div>
+            </td>
+<!-- -->
+
+        </tr>
+
+  <tr><td class = "fb-msgview-right-c" >
+                         <div class="fb_smalltext" >
+                   
+                            <img src="../components/com_fireboard/template/default/images/english/icons/ip.gif" border="0" alt="Logged" /> <span class="fb_smalltext"> Logged</span>
+                            &nbsp;                            </div>
+       </td>
+            <td class = "fb-msgview-left-c">&nbsp;
+            </td>
+
+        </tr>
+
+
+        <tr><td class = "fb-msgview-right-b" align = "right">
+                <span id = "fb_qr_sc__736" class = "fb_qr_fire" style = "cursor:hand; cursor:pointer">
+
+                                </span>
+
+                The administrator has disabled public write access.
+            </td>
+            <td class = "fb-msgview-left-b">&nbsp;
+
+            </td>
+
+
+        </tr>
+    </tbody>
+</table>
+<!-- Begin: Message Module Positions -->
+
+
+
+
+<!-- Finish: Message Module Positions -->
+
+<table width = "100%" border = "0" cellspacing = "0" cellpadding = "0">
+    <caption>
+        <a name = "737"/>
+    </caption>
+
+    <tbody>
+        <tr class = "fb_sth">
+            <th colspan = "2" class = "view-th fb_sectiontableheader">
+<a href="forum%3Ffunc=view&amp;catid=8&amp;id=735.html#737" title="" rel="nofollow">#737</a>            </th>
+        </tr>
+
+        <tr> <!-- -->
+
+        <td class = "fb-msgview-right">
+                <table width = "100%" border = "0" cellspacing = "0" cellpadding = "0">
+                    <tr>
+                        <td align = "left">
+                                                        <span class = "msgtitle">Re:GPL 條款對於衍生程式的判定 -- 動態載入的Kernel Module需要釋出原始碼嗎? </span> <span class = "msgdate" title="2012/01/13 23:18">2012/01/13 23:18&nbsp;&nbsp;(7 Years, 10 Months ago)</span>
+                        </td>
+
+                        <td align = "right">
+                            <span class = "msgkarma">
+
+                            <strong>Karma:</strong> 0&nbsp;&nbsp; 
+                            </span>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td colspan = "2" valign = "top">
+                            <div class = "msgtext">感謝您這麼清楚的說明！<br />
+<br />
+這麼說來，只要能證明我的軟體曾是獨立於Linux而存在與運作(或是在別的平台上存在與運作)，並不是專為Linux而設計的，在當我將它porting進Linux kernel後，就可以不用GPL。<br />
+<br />
+又或者，如你文章所述，類似Android的做法，先建立一個middleware與Linux kernel銜接，設計自己的程式時，就針對該middleware去設計程式，透過該middleware去存取kernel內的資源，而不要直接使用linux kernel內的任何API，避免落入communication are intimate enough, exchanging complex internal data structures，就也可明白的規避GPL的要求。<br />
+<br />
+我另外注意到這篇文章：<a href="https://tldp.org/HOWTO/Module-HOWTO/copyright.html" target="_blank" rel="nofollow">tldp.org/HOWTO/Module-HOWTO/copyright.html</a>，也有很詳盡的說明，其中有一段：<span style='color: #FF0000'>But if you need to make a practical decision, consider that there have been well-known binary LKMs (drivers for Nvidia video adapters seem to be the most famous) for years and no one has sued for copyright infringement. Also, Linus Torvalds, influential for reasons other than legal, has said binary-only LKMs are OK with him</span>.似乎是告訴大家，binary-only的kernel module其實也不會怎樣。<br />
+<br />
+這裡有另一篇：Legal Risks of Open Source – GPL/Linux Loadable Kernel Modules (<a href="https://sourceauditor.com/blog/legal-risks-of-open-source-gpllinux-loadable-kernel-modules/" target="_blank" rel="nofollow">sourceauditor.com/blog/legal-risks-of-open-source-gpllinux-loadable-kernel-modules/</a>)。其中提到：the commercial software developer has to accept the strong possibility that their LKMs will need to be open sourced under GPL。也就是說：到時候上法院就知道了。<br />
+<br />
+真是有趣的議題！</div>
+
+                            
+
+                        </td>
+                    </tr>
+
+
+                </table>
+            </td>
+
+              <td class = "fb-msgview-left">
+                <div class = "fb-msgview-l-cover">
+                    <span class = "view-username">
+<a href="component/comprofiler/userprofile/paulchu.html" title="" rel="nofollow">paulchu</a>                    </span> <span class = "msgusertype">(User)</span>
+                    <br/>
+<a href="component/comprofiler/userprofile/paulchu.html" title="" rel="nofollow"><span class="fb_avatar"><img src="https://www.openfoundry.org/sso/user/image?name=paulchu&amp;size=medium" alt="" /></span></a>
+				
+				                <div class = "viewcover">
+                    Fresh Boarder                </div>
+
+                <div class = "viewcover">
+                    <img src="../components/com_fireboard/template/default/images/english/ranks/rank1.gif" alt="" />                </div>
+
+                    
+                    <div class="viewcover"><strong>Posts: 2</strong></div><div class="viewcover"><table  border="0" cellspacing="0" cellpadding="0" align="center"><tr><td width="64"><img src="../components/com_fireboard/template/default/images/english/graph/col9m.png" height="4" width="1" alt="graph" style="border: 0px solid #333333" /><img src="../components/com_fireboard/template/default/images/english/emoticons/graph.gif" height="4" width="59" alt="graph" style="border: 0px solid #333333" /></td></tr></table></div>
+
+
+                    <img src="../components/com_fireboard/template/default/images/english/icons/offline.gif" border="0" alt="User Offline" />
+                    
+                    <a href="component/comprofiler/userprofile/paulchu.html">                                              <img src="../components/com_fireboard/template/default/images/english/icons/profile.gif" alt="Click here to see the profile of this user" border="0" title="Click here to see the profile of this user" /></a>                    <br />
+ 					                                                                                                                         					                                        
+                </div>
+            </td>
+<!-- -->
+
+        </tr>
+
+  <tr><td class = "fb-msgview-right-c" >
+                         <div class="fb_smalltext" >
+                   
+                            <img src="../components/com_fireboard/template/default/images/english/icons/ip.gif" border="0" alt="Logged" /> <span class="fb_smalltext"> Logged</span>
+                            &nbsp;                            </div>
+       </td>
+            <td class = "fb-msgview-left-c">&nbsp;
+            </td>
+
+        </tr>
+
+
+        <tr><td class = "fb-msgview-right-b" align = "right">
+                <span id = "fb_qr_sc__737" class = "fb_qr_fire" style = "cursor:hand; cursor:pointer">
+
+                                </span>
+
+                The administrator has disabled public write access.
+            </td>
+            <td class = "fb-msgview-left-b">&nbsp;
+
+            </td>
+
+
+        </tr>
+    </tbody>
+</table>
+<!-- Begin: Message Module Positions -->
+
+
+
+
+<!-- Finish: Message Module Positions -->
+
+<table width = "100%" border = "0" cellspacing = "0" cellpadding = "0">
+    <caption>
+        <a name = "740"/>
+    </caption>
+
+    <tbody>
+        <tr class = "fb_sth">
+            <th colspan = "2" class = "view-th fb_sectiontableheader">
+<a href="forum%3Ffunc=view&amp;catid=8&amp;id=735.html#740" title="" rel="nofollow">#740</a>            </th>
+        </tr>
+
+        <tr> <!-- -->
+
+        <td class = "fb-msgview-right">
+                <table width = "100%" border = "0" cellspacing = "0" cellpadding = "0">
+                    <tr>
+                        <td align = "left">
+                                                        <span class = "msgtitle">Re:GPL 條款對於衍生程式的判定 -- 動態載入的Kernel Module需要釋出原始碼嗎? </span> <span class = "msgdate" title="2012/01/16 17:14">2012/01/16 17:14&nbsp;&nbsp;(7 Years, 10 Months ago)</span>
+                        </td>
+
+                        <td align = "right">
+                            <span class = "msgkarma">
+
+                            <strong>Karma:</strong> 10&nbsp;&nbsp; 
+                            </span>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td colspan = "2" valign = "top">
+                            <div class = "msgtext">Hi paulchu,<br />
+<br />
+其實這個主題在自由開源領域裡就是大家都詳知的灰色地帶(gray area)，雖然大家都知道，但短期之內因為還是沒有任何一個司法判決，所以討論的文章有很多，但實際的判準還是有很多不同的標準。<br />
+<br />
+不過我相信隨著商業化的進程愈來愈久，再加上各個推動組織裡不斷的對話，漸漸會有共識與公定標準產生的。<br />
+<br />
+<img src="../components/com_fireboard/template/default/images/english/emoticons/smile.png" alt="" style="vertical-align: middle;border:0px;" /><br />
+<br />
+敬祝 順心、健康<br />
+<br />
+20120116 1715 LUCIEN C.H. LIN</div>
+
+                            
+
+                        </td>
+                    </tr>
+
+
+                </table>
+            </td>
+
+              <td class = "fb-msgview-left">
+                <div class = "fb-msgview-l-cover">
+                    <span class = "view-username">
+<a href="component/comprofiler/userprofile/lucien.html" title="" rel="nofollow">lucien</a>                    </span> <span class = "msgusertype">(Admin)</span>
+                    <br/>
+<a href="component/comprofiler/userprofile/lucien.html" title="" rel="nofollow"><span class="fb_avatar"><img src="https://www.openfoundry.org/sso/user/image?name=lucien&amp;size=medium" alt="" /></span></a>
+				
+				                <div class = "viewcover">
+                    Moderator                </div>
+
+                <div class = "viewcover">
+                    <img src="../components/com_fireboard/template/default/images/english/ranks/rankmod.gif" alt="" />                </div>
+
+                    
+                    <div class="viewcover"><strong>Posts: 157</strong></div><div class="viewcover"><table  border="0" cellspacing="0" cellpadding="0" align="center"><tr><td width="64"><img src="../components/com_fireboard/template/default/images/english/graph/col9m.png" height="4" width="64" alt="graph" style="border: 0px solid #333333" /></td></tr></table></div>
+
+
+                    <img src="../components/com_fireboard/template/default/images/english/icons/offline.gif" border="0" alt="User Offline" />
+                    
+                    <a href="component/comprofiler/userprofile/lucien.html">                                              <img src="../components/com_fireboard/template/default/images/english/icons/profile.gif" alt="Click here to see the profile of this user" border="0" title="Click here to see the profile of this user" /></a>                    <br />
+ 					                                                                                                                         					                                        
+                </div>
+            </td>
+<!-- -->
+
+        </tr>
+
+  <tr><td class = "fb-msgview-right-c" >
+                         <div class="fb_smalltext" >
+                   
+                            <img src="../components/com_fireboard/template/default/images/english/icons/ip.gif" border="0" alt="Logged" /> <span class="fb_smalltext"> Logged</span>
+                            &nbsp;                            </div>
+       </td>
+            <td class = "fb-msgview-left-c">&nbsp;
+            </td>
+
+        </tr>
+
+
+        <tr><td class = "fb-msgview-right-b" align = "right">
+                <span id = "fb_qr_sc__740" class = "fb_qr_fire" style = "cursor:hand; cursor:pointer">
+
+                                </span>
+
+                The administrator has disabled public write access.
+            </td>
+            <td class = "fb-msgview-left-b">&nbsp;
+
+            </td>
+
+
+        </tr>
+    </tbody>
+</table>
+<!-- Begin: Message Module Positions -->
+
+
+
+
+<!-- Finish: Message Module Positions -->
+                    </td>
+                </tr>
+
+                            </table>
+
+
+            <!-- bottom nav -->
+            <table border = "0" cellspacing = "0" class = "jr-topnav" cellpadding = "0" width="100%">
+                <tr>
+                    <td class = "jr-topnav-left">
+                        <a name="forumbottom" /> <a href="forum%3Ffunc=view&amp;catid=8&amp;id=735.html#forumtop" title="" rel="nofollow"><img src="../components/com_fireboard/template/default/images/english/icons/top_arrow.gif" border="0" alt="Go to top" title="Go to top"/></a>                                            </td>
+                </tr>
+            </table>
+            <!-- /bottom nav -->
+            <table width = "100%" border = "0" cellspacing = "0" cellpadding = "0"  class="fb_bottom_pathway">
+                <tr>
+                    <td>
+                        <div id="fb_bottom_pathway">
+                            <a href = "forum.html">
+    Forum List </a>
+
+                             <img src="../templates/rt_quantive_j15/images/arrow.png" alt="" /> 
+                            <a href = "forum%3Ffunc=listcat&amp;catid=1.html" rel="nofollow"> 法政討論區 </a>
+
+                             <img src="../templates/rt_quantive_j15/images/arrow.png" alt="" /> 
+                            <a href = "forum%3Ffunc=showcat&amp;catid=8.html" rel="nofollow"> 授權條款相關 </a>
+                        </div>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>
+                    </td>
+                </tr>
+            </table>
+            <!-- Begin: Forum Jump -->
+            <div class="fb__bt_cvr1">
+<div class="fb__bt_cvr2">
+<div class="fb__bt_cvr3">
+<div class="fb__bt_cvr4">
+<div class="fb__bt_cvr5">
+            <table class = "fb_blocktable" id="fb_bottomarea"  border = "0" cellspacing = "0" cellpadding = "0" width="100%">
+                <thead>
+                    <tr>
+                        <th  class = "th-right">
+                            
+<form id = "jumpto" name = "jumpto" method = "get" target = "_self" action = "https://www.openfoundry.org/tw/index.php" onsubmit = "if(document.jumpto.catid.value &lt; 2){return false;}">
+    <div align = "right" style = "width: 100%;">
+        <input type = "hidden" name = "Itemid" value = "146"/>
+
+        <input type = "hidden" name = "option" value = "com_fireboard"/>
+
+        <input type = "hidden" name = "func" value = "showcat"/>
+
+        <input type = "submit" name = "Go"  class="fbjumpgo fbs" value = "Go"/>
+<select name="catid" id="catid" class="inputbox fbs" size="1"  onchange = "if(this.options[this.selectedIndex].value > 0){ forms['jumpto'].submit() }"><option value="0" >跳轉討論版</option><option value="1" >法政討論區</option><option value="10" >...&nbsp;商業模式相關</option><option value="58" >活動討論區</option><option value="59" >...&nbsp;我有新議題發表！</option><option value="60" >...&nbsp;問題與建議</option><option value="65" >OpenFoundry 討論區</option><option value="48" >...&nbsp;操作問題</option><option value="66" >...&nbsp;移置安裝</option><option value="67" >...&nbsp;功能建議</option></select>    </div>
+</form>                        </th>
+                    </tr>
+                </thead>
+                <tbody><tr><td></td></tr></tbody>
+            </table>
+            </div>
+</div>
+</div>
+</div>
+</div>
+                <!-- Finish: Forum Jump -->
+
+<div class="fb_credits"> <a href="forum%3Ffunc=credits&amp;catid=8.html" title="" rel="follow">Powered by </a> <a href="http://www.bestofjoomla.com" title="FireBoard" rel="follow">FireBoard</a><a href="forum%3Ffunc=fb_rss&amp;no_html=1" title="" rel="follow" target="_blank"><img class="rsslink" src="../components/com_fireboard/template/default/images/english/emoticons/rss.gif" border="0" alt="get the latest posts directly to your desktop" title="get the latest posts directly to your desktop" /></a></div>
+<div class="fb_footer">	 
+</div>
+</div> <!-- closes fireboard div -->
+
+		                            </div>
+									<div class="clear"></div>
+								</div>
+								<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+							</div>
+							</div>
+                                                    </div>
+                                            </div>
+                                        <div class="clear"></div>
+                </div>
+            </div>
+																													</div>
+										<div id="rt-copyright">
+						<div class="rt-grid-12 rt-alpha rt-omega">
+                        <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<div id="desktop-mobile-version-switch"><span id="mobile-version" class="version-switch"><a href="forum%3Ffunc=view&amp;catid=8&amp;id=740.html#">行動版</a></span></div>
+自由軟體鑄造場 製作 最佳瀏覽狀態：IE7或Firefox2.0以上 (建議使用Firefox) ‧ 解析度1024*768 <br /> <strong>E-Mail</strong>：<a href="mailto:contact@openfoundry.org">contact@openfoundry.org</a> <strong>Address</strong>：台北市南港區研究院路2段128號 中央研究院資訊科學研究所 . <a href="../privacy-policy.html">隱私權條款</a>. <a href="../terms-of-use.html">使用條款</a><span style="position: relative; top: 8px; margin-top: -8px;"> <a href="../about/8101.html"><img src="../images/M_images/rss-feed-all.png" border="0" /></a></span>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+        	
+</div>
+						<div class="clear"></div>
+					</div>
+					<div class="rt-footer-bottom-wrap"><div class="rt-footer-bottom"><div class="rt-footer-bottom2"><div class="rt-footer-bottom3"></div></div></div></div>
+									</div></div></div>
+				<div class="rt-surround-bottom"><div class="rt-surround-bottom2"><div class="rt-surround-bottom3"></div></div></div>
+							</div>
+		</div>
+		<!--
+		<script id="aptureScript">
+						(function (){var a=document.createElement("script");a.defer="true";a.src="http://www.apture.com/js/apture.js?siteToken=vsJttrn";document.getElementsByTagName("head")[0].appendChild(a);})();
+     </script>
+-->
+
+<!-- Piwik -->
+<!-- 			<script type="text/javascript">
+			  var _paq = _paq || [];
+		  _paq.push(["trackPageView"]);
+		  _paq.push(["enableLinkTracking"]);
+
+		    (function() {
+			        var u=(("https:" == document.location.protocol) ? "https" : "https") + "://www.openfoundry.org/piwik/";
+				    _paq.push(["setTrackerUrl", u+"piwik.php"]);
+				    _paq.push(["setSiteId", "1"]);
+				        var d=document, g=d.createElement("script"), s=d.getElementsByTagName("script")[0]; g.type="text/javascript";
+				        g.defer=true; g.async=true; g.src=u+"piwik.js"; s.parentNode.insertBefore(g,s);
+					  })();
+		  </script> -->
+<!-- End Piwik Code -->
+	</body>
+</html>

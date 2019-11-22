@@ -1,0 +1,107 @@
+	<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+	<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-gb" lang="en-gb" >
+		<head>
+			  <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+  <meta name="robots" content="noindex, nofollow" />
+  <meta name="keywords" content="busybox,kernel,configuration,linux,product,extra,config,build,provide,source,drivers,modules,later,version,called,depending,earlier" />
+  <meta name="title" content="Useful tips for releasing Open Source code with commercial products" />
+  <meta name="description" content="1. BusyBox configuration You need to provide the configuration that was used to build BusyBox as part of the source code. Depending on the version of BusyBox this is a file called Config. h (BusyBox" />
+  <meta name="generator" content="" />
+  <title>Useful tips for releasing Open Source code with commercial products</title>
+  <link href="../../favicon.ico" rel="shortcut icon" type="image/x-icon" />
+  <link rel="stylesheet" href="../../components/com_gantry/css/gantry.css" type="text/css" />
+  <link rel="stylesheet" href="../../components/com_gantry/css/grid-12.css" type="text/css" />
+  <link rel="stylesheet" href="../../components/com_gantry/css/joomla.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/joomla.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/style1.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/light-body.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/demo-styles.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/template.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/typography.css" type="text/css" />
+  <style type="text/css">
+    <!--
+#rt-main-surround ul.menu li.active > a, #rt-main-surround ul.menu li.active > .separator, #rt-main-surround ul.menu li.active > .item, #rt-main-surround .square4 ul.menu li:hover > a, #rt-main-surround .square4 ul.menu li:hover > .item, #rt-main-surround .square4 ul.menu li:hover > .separator, .roktabs-links ul li.active span {color:#0088B5;}
+a, #rt-main-surround ul.menu a:hover, #rt-main-surround ul.menu .separator:hover, #rt-main-surround ul.menu .item:hover {color:#0088B5;}
+    -->
+  </style>
+  <script type="text/javascript" src="../../components/com_jcomments/js/jcomments-v2.1.js%3Fv=2"></script>
+  <script type="text/javascript" src="../../components/com_jcomments/libraries/joomlatune/ajax.js"></script>
+  <script type="text/javascript" src="../../media/system/js/mootools.js"></script>
+  <script type="text/javascript" src="../../media/system/js/caption.js"></script>
+  <script type="text/javascript" src="../../components/com_gantry/js/gantry-buildspans.js"></script>
+  <script type="text/javascript" src="../../components/com_gantry/js/gantry-inputs.js"></script>
+  <script type="text/javascript">
+
+			window.addEvent('domready', function() {
+				var modules = ['rt-block'];
+				var header = ['h3','h2','h1'];
+				GantryBuildSpans(modules, header);
+			});
+		InputsExclusion.push('.content_vote','#rt-popup')
+  </script>
+		</head>
+		<body  class="backgroundlevel-low backgroundstyle-style8 bodylevel-med bodystyle-light cssstyle-style1 logostyle-dark font-family-helvetica font-size-is-default menu-type-fusionmenu col12 ">
+			<div id="rt-main-surround">
+				<div class="rt-container">
+					<div class="rt-block">
+						<div id="rt-mainbody">
+					    	
+<div class="rt-joomla ">
+	<div class="rt-article">
+		
+				<div class="rt-headline"><h1 class="rt-article-title">Useful tips for releasing Open Source code with commercial products</h1>		</div>
+		<div class="clear"></div>
+		
+		
+		
+				<div class="rt-articleinfo">
+						<div class="rt-article-icons">
+				<a href="8127-2010-08-30-15-14-41%3Ftmpl=component&amp;print=1&amp;layout=default&amp;page=.html#" onclick="window.print();return false;"><span class="icon print"></span></a>									<span class="icon printscreen">
+						<a href="8127-2010-08-30-15-14-41%3Ftmpl=component&amp;print=1&amp;layout=default&amp;page=.html#" onclick="window.print();return false;"><img src="../../images/M_images/printButton.png" alt="Print"  /></a>					</span>
+							</div>
+			
+			<span class="rt-date-posted">
+						 Created at			Monday, 30 August 2010 22:48						&nbsp;&nbsp;&nbsp;&nbsp;						Last Updated on Monday, 18 March 2013 10:49						</span>
+
+						<span class="rt-author">
+				Written by Armijn Hemel 葛冬梅/翻譯			</span>
+				
+					</div>
+		
+		
+		1. BusyBox configuration <br /><br />You need to provide the configuration that was used to build BusyBox as part of the source code. Depending on the version of BusyBox this is a file called Config.h (BusyBox 0.60.5 and earlier) or .config (1.00-pre1 and later). 
+
+<br /><br />2. Linux kernel configuration <br /><br />If your product uses the Linux kernel you have to provide the configuration that was used to build it as part of the source code. <br /><br />3. Extra Linux kernel modules <br /><br />If your product uses extra kernel drivers you may have to provide their source code.  You should check their license terms carefully. <br /><br />4. C library <br /><br />If your product uses glibc or uClibc you have to provide sources. If the software development kit (SDK) received from your supplier only has binaries, you need to request the source from the supplier. <br /><br />5. Object files <br /><br />If you have a program that links non-Open Source code to code licensed under LGPL 2.1, then you need to provide the object files and build configuration.  That means including the Makefile and so on. <br /><br />Example: <br /><br />liborz-0.11 is LGPL 2.1 licensed. It is linked with foo.o into a program called bar. To fulfill the LGPL requirements you have to provide the sources for liborz-0.11, the object file foo.o and the Makefile to combine these two. <br /><br />6. Bootloader <br /><br />Many devices are shipped with a GPL licensed bootloader, such as ARMboot, PPCboot, RedBoot or u-boot.  If the bootloader is GPL licensed you will have to provide source code to your customers.  If the bootloader is provided by the supplier then they must give you the source code. <br /><br />7. Toolchain <br /><br />If you distribute a binary toolchain (compiler, binutils, C library) licensed under GPL/LGPL with a device or on the Internet then you need to make the source code available too. The toolchain often comes as part of the software development kit (SDK) from your supplier and you can ask them for the source code. <br /><br />8. Firmware <br /><br />Firmware often contains leftover programs from other devices because many different products are made from a single source tree.  If these programs are licensed under GPL or LGPL then source code must be provided for them when the firmware is distributed. There are two solutions: supply the source code or remove any unused programs from the source tree. <br /><br />9. Source archives <br /><br />Source archives often contain leftover programs from other devices because many different products are made from a single source tree.  If these programs are licensed under GPL or LGPL then source code must be provided for them when the firmware is distributed. There are two solutions: supply the source code or remove any unused programs from the source tree.<br /><br /><br />Copyright © 2010 Armijn Hemel, gpl-violations.org, <br />This work is available under the <a href="https://creativecommons.org/licenses/by-nd/3.0/">Creative Commons Attribution-No Derivative Works 3.0 Unported license</a>.<br /><br />
+			<!-- Show relate article -->
+				<!-- end -->
+		<div class="article_note">
+		<!-- Add tags use metakey, and show OSSF Newsletter tag: OSSFNL+NUM-->
+		<br><br> <hr style='border: 1px dashed #D2DADB;'>		<!-- End -->
+					<br>
+					<b>Category: </b><a href="../for-developers.html">				For Developers					</a>				</div>
+			 <!-- AddThis Button BEGIN ID 3001 is the front page article -->
+     			<br><br>
+       <div class="addthis_toolbox addthis_default_style addthis_32x32_style">
+       <a class="addthis_button_preferred_1"></a>
+       <a class="addthis_button_preferred_2"></a>
+       <a class="addthis_button_preferred_3"></a>
+       <a class="addthis_button_preferred_4"></a>
+       <a class="addthis_button_compact"></a>
+       <a class="addthis_counter addthis_bubble_style"></a>
+       </div>
+       <script type="text/javascript">var addthis_config = {"data_track_clickback":true};</script>
+       <script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js#pubid=openfoundry"></script>
+       <!-- AddThis Button END -->
+     <br>
+		<div class="totop" ><a class="rt-totop" href="8127-2010-08-30-15-14-41%3Ftmpl=component&amp;print=1&amp;layout=default&amp;page=.html#" style="outline: medium none;">↑ Top</a></div>
+            <!-- AddThis Button END -->
+
+			</div>
+</div>
+
+						</div>
+					</div>
+				</div>
+			</div>
+		</body>
+	</html>

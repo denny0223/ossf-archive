@@ -1,0 +1,478 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-gb" lang="en-gb" >
+<head>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<link rel="shortcut icon" href="../../images/favicon.ico" />
+	  <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+  <meta name="robots" content="index, follow" />
+  <meta name="keywords" content="OSSFNL721" />
+  <meta name="title" content="用自由軟體 Plone 來架設網站 (2)— 內容管理" />
+  <meta name="description" content="在前篇文章裡，我們提到安裝 Plone 系統的方法，並練習基本的內容管理操作，這是傾向於把 Plone 當作產品的角度來說明。接著，我們將依序從前台、檔案系統、後台，深入管理介面，認識更多技術名詞和系統管理的細節，作為拆解和組合系統模組的準備。 Python 以 egg 檔案做為軟體元件的管理單位，Plone 則以「擴充模組」做為擴充功能時的管理單位，一個擴充模組可能包含一個或數個 egg" />
+  <meta name="generator" content="" />
+  <title>用自由軟體 Plone 來架設網站 (2)— 內容管理 - OpenFoundry</title>
+  <link href="../../favicon.ico" rel="shortcut icon" type="image/x-icon" />
+  <link rel="stylesheet" href="../../components/com_jcomments/tpl/default/style.css%3Fv=10.css" type="text/css" />
+  <link rel="stylesheet" href="../../components/com_gantry/css/gantry.css" type="text/css" />
+  <link rel="stylesheet" href="../../components/com_gantry/css/grid-12.css" type="text/css" />
+  <link rel="stylesheet" href="../../components/com_gantry/css/joomla.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/joomla.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/style1.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/light-body.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/demo-styles.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/template.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/typography.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/fusionmenu.css" type="text/css" />
+  <style type="text/css">
+    <!--
+#rt-main-surround ul.menu li.active > a, #rt-main-surround ul.menu li.active > .separator, #rt-main-surround ul.menu li.active > .item, #rt-main-surround .square4 ul.menu li:hover > a, #rt-main-surround .square4 ul.menu li:hover > .item, #rt-main-surround .square4 ul.menu li:hover > .separator, .roktabs-links ul li.active span {color:#0088B5;}
+a, #rt-main-surround ul.menu a:hover, #rt-main-surround ul.menu .separator:hover, #rt-main-surround ul.menu .item:hover {color:#0088B5;}
+    -->
+  </style>
+  <script type="text/javascript" src="../../components/com_jcomments/js/jcomments-v2.1.js%3Fv=2"></script>
+  <script type="text/javascript" src="../../components/com_jcomments/libraries/joomlatune/ajax.js"></script>
+  <script type="text/javascript" src="../../media/system/js/mootools.js"></script>
+  <script type="text/javascript" src="../../media/system/js/caption.js"></script>
+  <script type="text/javascript" src="../../components/com_gantry/js/gantry-buildspans.js"></script>
+  <script type="text/javascript" src="../../components/com_gantry/js/gantry-inputs.js"></script>
+  <script type="text/javascript" src="../../templates/rt_quantive_j15/js/jquery.cookie.js"></script>
+  <script type="text/javascript" src="../../modules/mod_roknavmenu/themes/fusion/js/fusion.js"></script>
+  <script type="text/javascript" src="../../modules/mod_ofssologin/js/ofssologin.js"></script>
+  <script type="text/javascript">
+
+			window.addEvent('domready', function() {
+				var modules = ['rt-block'];
+				var header = ['h3','h2','h1'];
+				GantryBuildSpans(modules, header);
+			});
+		InputsExclusion.push('.content_vote','#rt-popup')
+		        window.addEvent('load', function() {
+					new Fusion('ul.menutop', {
+						pill: 0,
+						effect: 'slide and fade',
+						opacity: 1,
+						hideDelay: 500,
+						centered: 0,
+						tweakInitial: {'x': -2, 'y': 0},
+        				tweakSubsequent: {'x': 0, 'y': -14},
+						menuFx: {duration: 200, transition: Fx.Transitions.Sine.easeOut},
+						pillFx: {duration: 400, transition: Fx.Transitions.Back.easeOut}
+					});
+	            });
+  </script>
+<!-- <script type="text/javascript" src="/sso/javascripts/langsync.js"></script> -->
+<!-- <script src="/templates/rt_quantive_j15/js/ossf.js"></script> -->
+<script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-4136519-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
+</head>
+	<body  class="backgroundlevel-low backgroundstyle-style8 bodylevel-med bodystyle-light cssstyle-style1 logostyle-dark font-family-helvetica font-size-is-default menu-type-fusionmenu col12 ">
+		<div id="rt-main-background">
+			<div class="rt-container">
+																<div id="rt-header">
+					<div class="rt-grid-7 rt-alpha">
+    			<div class="rt-block">
+    	    	<a href="../../index.html" id="rt-logo"></a>
+    		</div>
+	    
+</div>
+<div class="rt-grid-5 rt-omega">
+                    <div class="square9">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<div class="ofssologin_square9"><a href="../../index.html">Login</a>&nbsp;&nbsp|&nbsp;&nbsp;<span><a href="https://www.openfoundry.org/tw/news/8294?task=view" ><span lang="tw" xml:lang="tw">繁體中文</span></a></li></ul></span><!--Joom!fish V2.0.4 (Lightning)-->
+<!-- &copy; 2003-2009 Think Network, released under the GPL. -->
+<!-- More information: at http://www.joomfish.net -->
+<div class="ofssologin_search_square9">
+  <form id="of_search" action="https://www.openfoundry.org/of/openfoundry/search" method="get" onsubmit="of_search(); return false;">
+    <select id="of_search_type">
+      <option value="Projects"> Projects </option>
+      <option value="Content"> Content </option>
+      <option value="People"> People </option>
+    </select>
+    <input id="query" name="query" id="mod_search_searchword" maxlength="50" alt="search" class="inputbox" type="text" size="28" value="search..."  onblur="if(this.value=='') this.value='search...';" onfocus="if(this.value=='search...') this.value='';" />
+    <input type="hidden" name="commit" value="search" />
+  </form>
+</div></div>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		
+</div>
+					<div class="clear"></div>
+				</div>
+																<div id="rt-navigation"><div id="rt-navigation2"><div id="rt-navigation3">
+					
+<div class="nopill">
+	<ul class="menutop level1 " >
+						<li class="item1 root" >
+					<a class="orphan item bullet" href="../../index.html"  >
+				<span>
+			    				Home				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item32 root" >
+					<a class="orphan item bullet" href="../../archived.html"  >
+				<span>
+			    				Projects				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item186 root" >
+					<a class="orphan item bullet" href="../community.html"  >
+				<span>
+			    				Who&#039;s Who				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item4 root" >
+					<a class="orphan item bullet" href="../news.html"  >
+				<span>
+			    				News				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item5 root" >
+					<a class="orphan item bullet" href="../law-and-licensing.html"  >
+				<span>
+			    				Law &amp; Licensing				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item3 root" >
+					<a class="orphan item bullet" href="../activities.html"  >
+				<span>
+			    				Activities				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item2 root" >
+					<a class="orphan item bullet" href="../resourcecatalog.html"  >
+				<span>
+			    				Resource Catalog				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item45 root" >
+					<a class="orphan item bullet" href="../about.html"  >
+				<span>
+			    				About				   
+				</span>
+			</a>
+			
+			
+	</li>	
+				</ul>
+</div>
+
+				    <div class="clear"></div>
+				</div></div></div>
+								<div class="rt-surround"><div class="rt-surround2"><div class="rt-surround3">
+										<div id="rt-showcase-section">
+												<div id="rt-showcase">
+							<div class="rt-grid-12 rt-alpha rt-omega">
+    		<div class="clear"></div>
+		
+		
+                <div class="close-note">
+                    <div class="rt-block">
+               					<div class="module-content">
+                	<div style="font-size:medium; background-image:linear-gradient(120deg,#159957,#4298b2);color:white;padding:20px;margin:-10px -18px;">感謝您對「自由軟體鑄造場」的支持與愛護，十多年來「自由軟體鑄造場」受中央研究院支持，並在資訊科學研究所以及資訊科技創新研究中心執行，現已完成階段性的任務。 本網站預計持續維運至 2021年底，網站內容基本上不會再更動。<br />也紀念我們永遠的朋友 李士傑先生（Shih-Chieh Ilya Li）。</div>				</div>
+            </div>
+                </div>
+		
+</div>
+							<div class="clear"></div>
+						</div>
+																	</div>
+															<div id="rt-main-surround">
+												<div id="rt-breadcrumbs">
+								<div class="rt-breadcrumb-surround">
+		<a href="../../index.html" id="breadcrumbs-home"></a>
+		<span class="breadcrumbs pathway">
+<span class="no-link">News</span></span>
+	</div>
+	
+							<div class="clear"></div>
+						</div>
+																							              <div id="rt-main" class="sa3-mb9">
+                <div class="rt-main-inner">
+                    <div class="rt-grid-9 rt-push-3">
+                                                <div class="rt-block">
+                            							<div class="square1">
+							<div class="rt-module-surround">
+								<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+								<div class="rt-module-inner">
+		                            <div id="rt-mainbody">
+		                                
+<div class="rt-joomla ">
+	<div class="rt-article">
+		
+				<div class="rt-headline"><h1 class="rt-article-title">用自由軟體 Plone 來架設網站 (2)— 內容管理</h1>		</div>
+		<div class="clear"></div>
+		
+		
+		
+				<div class="rt-articleinfo">
+						<div class="rt-article-icons">
+								<a href="https://www.openfoundry.org/en/news/8294--plone-2-?tmpl=component&amp;print=1&amp;page=" title="Print" onclick="window.open(this.href,'win2','status=no,toolbar=no,scrollbars=yes,titlebar=no,menubar=no,resizable=yes,width=640,height=480,directories=no,location=no'); return false;" rel="nofollow"><span class="icon print"></span></a>																</div>
+			
+			<span class="rt-date-posted">
+						 Created at			Monday, 11 April 2011 11:09						&nbsp;&nbsp;&nbsp;&nbsp;						Last Updated on Wednesday, 12 October 2011 11:34						</span>
+
+						<span class="rt-author">
+				Written by marr			</span>
+				
+					</div>
+		
+		
+		在前篇文章裡，我們提到安裝 Plone 系統的方法，並練習基本的內容管理操作，這是傾向於把 Plone 當作產品的角度來說明。接著，我們將依序從前台、檔案系統、後台，深入管理介面，認識更多技術名詞和系統管理的細節，作為拆解和組合系統模組的準備。 <br /><br />Python 以 egg 檔案做為軟體元件的管理單位，Plone 則以「擴充模組」做為擴充功能時的管理單位，一個擴充模組可能包含一個或數個 egg 檔案。本篇文章裡，我們將以地圖功能為範例，介紹擴充內容管理功能的方法，並且進一步認識 buildout 的操作細節。        
+
+<br />
+<h3>前台管理擴充模組</h3>
+<br />先從 Site Setup 管理前台開始，這裡的 Add-ons 列出了「擴充模組」的清單，並分成「可用的擴充模組」(available add-ons) 和「啟用的擴充模組」(activated add-ons) 兩類。也就是說，剛安裝好的擴充模組，會被系統先放在可用模組的清單裡，由管理員勾選啟用後，才會真正生效。 <br /><br /><a href="../../images/110412/plone2/plone2_01.png" target="_blank"><img src="../../images/110412/plone2/plone2_01.png" border="0" width="400" /></a><br />▲圖1 擴充模組的清單畫面 <br /><br />Add-on 有時候被稱為 Third Party Product，或直接稱為 Product，原則上就是提供特定功能服務的一組軟體。舉例來說，想要為 Plone 網站新增 OpenID 服務支援，只要勾選 OpenID Authentication Support 項目，點擊 Activate 按鈕即可。想要停用 OpenID 服務的話，同樣是勾選後點擊 Deactivate 按鈕，此功能相當直覺。 <br /><br />那麼，該去哪兒尋找更多的擴充模組呢？ <br /><br />
+<h3>擴充模組集散地</h3>
+<br />Plone 官網的 Downloads 頁面，分門別類地整理了許多擴充模組，是專屬的集散地，欲找尋擴充模組時，應優先到這裡查詢。 <br /><br /><a href="../../images/110412/plone2/plone2_02.png" target="_blank"><img src="../../images/110412/plone2/plone2_02.png" border="0" width="500" /></a><br />▲圖2 Plone 官網下載頁面 <br /><br />除了閱讀擴充模組的摘要說明之外，通常我們最關心它的支援版本，例如是否能夠支援 Plone 4 版本。 <br /><br /><a href="../../images/110412/plone2/plone2_03.png" target="_blank"><img src="../../images/110412/plone2/plone2_03.png" border="0" width="500" /></a><br />▲圖3 擴充模組版本相容資訊 <br /><br />如果在 <a href="https://plone.org/products" target="_blank">https://plone.org/products</a> 沒有找到想要的擴充模組，請再到 <a href="https://pypi.python.org/" target="_blank">https://pypi.python.org/</a> 網址查詢，這裡被稱為 Python Package Index，縮寫是 PyPI，有時直接用 Cheese Shop 當暱稱，是 Python 軟體的集散地。 <br /><br /><a href="../../images/110412/plone2/plone2_04.png" target="_blank"><img src="../../images/110412/plone2/plone2_04.png" border="0" width="500" /></a><br />▲圖4 Python Package Index 網站 <br /><br />使用關鍵字在 PyPI 找各式軟體元件，它會依照分數 (score) 排序，列出所有相關的元件。元件的網頁內容主要包括版本號碼、摘要資訊、下載網址、詮釋資料......等。 <br /><br />一般的 Python 軟體元件，如果單純只是一個 egg 檔案，通常是使用 setuptools 裡的 easy_install 工具來安裝。以軟體元件 docutils 為例，可以仿照圖 5 的執行指令，將 docutils 安裝至系統裡。 <br /><br /><a href="../../images/110412/plone2/plone2_05.png" target="_blank"><img src="../../images/110412/plone2/plone2_05.png" border="0" width="300" /></a><br />▲圖5 使用 easy_install 安裝 docutils <br /><br /><br />
+<h3>安裝擴充模組</h3>
+<br />透過 egg 來安裝軟體元件，雖然很方便，但 setuptools 預設只會找元件的最新版本，有時反而會造成困擾。因為管理一個專案時，可能不需要用到元件的最新版本；另一方面，安裝元件只是專案開發的環節之一，通常還需要進行軟體設定，結合自製的元件，反覆測試，最後才能選出相容性最高且最穩定的元件版本。這時候，如果搭配合適的專案管理工具，開發專案的負擔就有機會減輕。 <br /><br />buildout 就是這樣的工具。只要管理 buildout.cfg 之類的設定檔，就可以自動下載 egg 檔案，安裝並設定想要的 Plone 系統，有效處理軟體相依或版本混亂的問題，也可以同時管理多種開發環境。 <br /><br />下列以 Collective Geo 為例子，示範安裝擴充模組的步驟。這個模組能新增地圖欄位，讓內容項目加入地理資訊。請到 <a href="https://plone.org/products/collective.geo" target="_blank">https://plone.org/products/collective.geo</a> 閱讀它的詳細描述，包括安裝說明。 <br /><br />buildout 搭配的設定檔，以 .cfg 為副檔名，最重要的是 buildout.cfg 這個檔案，我們要修改它的內容，加入擴充模組 Collective Geo 的資訊。 <br /><br /><a href="../../images/110412/plone2/plone2_06.png" target="_blank"><img src="../../images/110412/plone2/plone2_06.png" border="0" width="500" /></a><br />▲圖6 buildout 搭配的設定檔 <br /><br />首先，可以用「eggs =」當關鍵字，搜尋 eggs 的參數設定，預設會看到 Plone 與 PIL 的設定值，前面有四個空白字元。這是 Python 設定檔的標準格式。我們想要新增安裝 Collective Geo，設定方式是在新的一行，輸入四個空白，再把 collective.geo.bundle 加上去。 <br /><br /><a href="../../images/110412/plone2/plone2_07.png" target="_blank"><img src="../../images/110412/plone2/plone2_07.png" border="0" width="500" /></a><br />▲圖7 編輯 eggs 參數設定 <br /><br />由於 collective.geo 在安裝過程有許多軟體相依關係需要維護，其中相依的 plone.app.z3cform，還要額外指定對應的軟體版本清單。這類的對應清單，平常由 Plone 開發人員維護，稱為 Known Good Versions 或 Known Good Sets，有時也簡稱為 KGS，網站 <a href="https://good-py.appspot.com/">https://good-py.appspot.com/</a> 是維護 KGS 的集散地。 <br /><br />指定 KGS 的方式，是用「extends =」當關鍵字，搜尋 extends 的參數設定，把 <a href="https://good-py.appspot.com/release/plone.app.z3cform/0.5.3-1" target="_blank">https://good-py.appspot.com/release/plone.app.z3cform/0.5.3-1</a> 的網址加入。 <br /><br /><a href="../../images/110412/plone2/plone2_08.png" target="_blank"><img src="../../images/110412/plone2/plone2_08.png" border="0" width="500" /></a><br />▲圖8 編輯 extends 參數設定 <br /><br />編輯 buildout.cfg 後完成存檔，執行 bin/buildout 讓設定值生效。執行 bin/plonectl 啟動系統後，再到 Site Setup 裡的 Add-ons 啟用擴充模組，勾選「Plone Maps (collective.geo)」並點擊［Activate］按鈕。它會自動啟用其他相依的模組項目。 <br /><br /><a href="../../images/110412/plone2/plone2_09.png" target="_blank"><img src="../../images/110412/plone2/plone2_09.png" border="0" width="400" /></a><br />▲圖9 啟用 Plone Maps 擴充模組 <br /><br />
+<h3>設定擴充模組</h3>
+<br />以 Collective Geo 為例，真正使用它之前，還要到 Add-on Configuration 設定軟體預設值，請點擊［Collective Geo］項目，進入它的設定畫面。 <br /><br /><a href="../../images/110412/plone2/plone2_10.png" target="_blank"><img src="../../images/110412/plone2/plone2_10.png" border="0" width="200" height="67" /></a><br />▲圖10 Add-on Configuration 設定畫面 <br /><br />首先，要決定地圖的預設經緯度和放大的級數，預設的地圖是 <a href="../../tw/resourcecatalog/GIS/Map-Data/openstreetmap/visit.html" target="_blank">OpenStreetMap</a> 的畫面。 <br /><br /><a href="../../images/110412/plone2/plone2_11.png" target="_blank"><img src="../../images/110412/plone2/plone2_11.png" border="0" width="500" /></a><br />▲圖11 Base Geo Settings 設定畫面 <br /><br />接著，要決定哪些內容類型搭配這項地圖功能，具備地圖功能的類型稱為 Georeferenceable Content Type，把想要的項目從左邊方框移到右邊方框，點擊 ［Apply］ 按鈕完成設定。 <br /><br /><a href="../../images/110412/plone2/plone2_12.png" target="_blank"><img src="../../images/110412/plone2/plone2_12.png" border="0" width="400" /></a><br />▲圖12 Advanced Geo Settings 設定畫面 <br /><br />
+<h3>使用地圖功能</h3>
+<br />地圖功能生效後，原本【View】頁籤的右方，會出現新增的【Coordinates】頁籤。點選後可以看到 Base Layer 的地圖畫面，利用方向和放大縮小按鈕，可以決定可視區域的畫面。接著，依照想要標示的形狀種類，例如［點座標］、［線座標］、［面座標］等，再從地圖右上方分別點選［筆按鈕］、［線按鈕］、［面按鈕］。點座標的決定，只需要在地圖上按一下，線和面座標是由數個點所構成，要在地圖上將最後一點按兩下，才能做確認。地圖下方會顯示選定的座標值，使用 WKT (Well Known Text) 格式來記錄。 <br /><br /><a href="../../images/110412/plone2/plone2_13.png" target="_blank"><img src="../../images/110412/plone2/plone2_13.png" border="0" width="400" /></a><br />▲圖13 地圖功能編輯畫面 <br /><br />想要切換 Base Layer 的話，可以點擊地圖右上方的［藍底十字符號］，預設是在 OpenStreetMap 和 Google　Maps 之間進行初換。如果有其他「Overlay」選項的話，也可以進行勾選。 <br /><br /><a href="../../images/110412/plone2/plone2_14.png" target="_blank"><img src="../../images/110412/plone2/plone2_14.png" border="0" width="200" /></a><br />▲圖14 切換 Base Layer 和 Overlay <br /><br />完成地圖編輯後，顯示內容項目即包含地圖畫面，且同樣可以執行地圖的顯示操作，包括切換 Base Layer 與 Overlay 等。 <br /><br /><a href="../../images/110412/plone2/plone2_15.png" target="_blank"><img src="../../images/110412/plone2/plone2_15.png" border="0" width="500" /></a><br />▲圖15 內容項目與地圖搭配呈現 <br /><br />以上內容看起來似乎不錯，那麼，背後的運作原理是什麼呢？<br /><br />
+<h3>內容型別框架</h3>
+<br />Plone 4.0 預設使用 Archetypes 做為內容型別框架。什麼是內容型別呢？之前提過的 Page、News Item 等，稱為「內容項目」，它們就是「內容型別」的具體呈現。拿 Python 的物件體系做比擬，可以想像內容型別是 class，內容項目就是 instance。 <br /><br /><a href="../../images/110412/plone2/plone2_16.png" target="_blank"><img src="../../images/110412/plone2/plone2_16.png" border="0" width="400" /></a><br />▲圖16 內容項目與內容型別的對應範例 <br /><br />我們可以在檔案系統裡，找到 Archetypes 相對應的程式碼內容，請到 Plone/buildout-cache/eggs/Products.Archetypes-1.6.4-py2.6.egg 的目錄，查看它的檔案細節。關於內容型別，最基本的技術細節在於 Field、Widget 和 Schema。 <br /><br />Schema 姑且可以譯為「基模」。它是一個 container 物件，定義了項目物件的結構，特別是內容項目的屬性值，例如欄位、編輯方式、儲存方式、顯示方式等。每個欄位的屬性值，是由 Field class 來定義，同時，每個欄位又搭配一個 Widget，它負責具體呈現 Field 的工作。詳細的 Field 和 Widget 說明，可以參考 <a href="https://plone.org/documentation/manual/developer-manual/archetypes/fields" target="_blank">https://plone.org/documentation/manual/developer-manual/archetypes/fields</a> 內容。 <br /><br />一個 Schema 還可以有數個 Schemata，目的是將欄位進行分組，例如編輯內容項目時，分成 Default、Categorization、Settings 等編輯頁籤。 <br /><br /><a href="../../images/110412/plone2/plone2_17.png" target="_blank"><img src="../../images/110412/plone2/plone2_17.png" border="0" width="400" /></a><br />▲圖17 Schema Field Widget 的關係示意圖 <br /><br />
+<h3>預設型別定義</h3>
+<br />Archetypes 框架提供三個基本的 Schema 定義值： <br /><br /> 
+<ul>
+<li>BaseSchema </li>
+<li>BaseFolderSchema </li>
+<li>BaseBTreeFolderSchema </li>
+</ul>
+<br />根據這些 Schema，也預設提供四個基本內容類別： <br /><br /> 
+<ul>
+<li>BaseContent </li>
+<li>BaseFolder </li>
+<li>OrderedBaseFolder </li>
+<li>BaseBTreeFolder </li>
+</ul>
+<br />Folder 屬於 container 物件，可以包含其他內容型別。另外，Ordered 物件可以指定排序，但存取效能較差，只適於項目數量不多的目錄。相反的，BTree 物件在系統內部的存取效能較好，但不能指定排序。開發者可視需要選擇合適的預設型別，才是聰明的作法。 <br /><br />由於 Archetypes 是 Plone 的預設型別框架，預設的內容項目模組，稱為 ATContentTypes，其中的 AT 就是 Archetypes 的縮寫。ATContentTypes 的實作沿用了上述的基本內容類別，並提供開發者擴充內容型別的基礎。 <br /><br />
+<h3>範例程式碼</h3>
+<br />我們擷取 Plone/buildout-cache/eggs/Products.ATContentTypes-2.0.6-py2.6.egg/Products/ATContentTypes/content/newsitem.py 當作範例，並簡化程式碼內容片斷如下，藉此可以一窺 Archetypes 的實作方式： <br /><br />
+<pre><code><br />from Products.Archetypes.atapi import Schema <br />from Products.Archetypes.atapi import TextField <br />from Products.Archetypes.atapi import ImageField <br />from Products.Archetypes.atapi import ImageWidget <br />from Products.Archetypes.atapi import RichWidget <br />from Products.ATContentTypes.content.schemata import ATContentTypeSchema <br /><br />ATNewsItemSchema = ATContentTypeSchema.copy() + Schema(( <br /> TextField('text', <br /> required = False, <br /> widget = RichWidget( <br /> description = '', <br /> label = _(u'label_body_text', u'Body Text'), <br /> ) <br /> ), <br /> ImageField('image', <br /> required = False, <br /> widget = ImageWidget( <br /> description = _(u'help_news_image', <br /> default=u'Image will be scaled to a sensible size.'), <br /> label= _(u'label_news_image', default=u'Image'), <br /> ) <br /> ), <br /> ) <br /> ) <br />finalizeATCTSchema(ATNewsItemSchema) <br /><br /></code></pre>
+<br />透過 ATContentTypeSchema.copy()，我們複製了基本 Schema 的定義值。像 Title 或 Summary 欄位就直接繼承沿用，不必從頭造輪子，只要再加上需要的擴充定義。例子裡的 'text' 和 'image' 分別是 TextField 和 ImageField，它們搭配 RichWidget 和 ImageWidget 來呈現，比對圖 18 的畫面，可以看到呈現效果。 <br /><br /><a href="../../images/110412/plone2/plone2_18.png" target="_blank"><img src="../../images/110412/plone2/plone2_18.png" border="0" width="500" /></a><br />▲圖18 RichWidget 和 ImageWidget 呈現效果 <br /><br /><br />
+<h3>從後台管理介面觀察</h3>
+<br />Plone 系統的後台稱為 Zope Management Interface，簡稱為 ZMI，透過 https://localhost:8080/manage 之類的網址，可以進入 ZMI 後台管理介面。 <br /><br /><a href="../../images/110412/plone2/plone2_19.png" target="_blank"><img src="../../images/110412/plone2/plone2_19.png" border="0" width="500" /></a><br />▲圖19 ZMI 管理介面 <br /><br />上述程式碼，除了存放在檔案系統外，它們的定義值也可以從 ZMI 觀察，甚至進行修改，修改的結果會記錄在 ZODB 裡。進入 ZMI 的 portal_types 裡，可以看到預設內容型別的屬性定義值。 <br /><br /><a href="../../images/110412/plone2/plone2_20.png" target="_blank"><img src="../../images/110412/plone2/plone2_20.png" border="0" width="500" /></a><br />▲圖20 portal_types 畫面 <br /><br />以 News Item 為例，它的操作行為包括代表圖示、新增時呼叫的函式、顯示時呼叫的函式等，都能藉由網頁方式來觀察或修改。 <br /><br /><a href="../../images/110412/plone2/plone2_21.png" target="_blank"><img src="../../images/110412/plone2/plone2_21.png" border="0" width="400" /></a><br />▲圖21 News Item 的屬性值 <br /><br />
+<h3>結論</h3>
+<br />從 Plone 4 開始，另一個稱為 Dexterity 的框架，正在積極發展，它結合新版 CMF、Zope 3 的技術與功能，希望有一天能正式取代 Archetypes。 <br /><br />Dexterity 具備下列幾項改良之處： <br /><br />* Dexterity 具備更高的模組化程度，更容易整合 SQL 資料庫。 <br />* Archetypes 使用 accessor 與 mutator 來處理設定值，Dexterity 則使用 attribute notation 方式來處理，因此 Archetypes 的寫法類似 context.getFirstName()，而 Dexterity 是 context.first_name 這樣的寫法。 <br />* Archetypes 自有的 field 和 widget 要配合內容物件的脈絡來運作，並不容易被應用在獨立表單上，Dexterity 則使用 z3c.form 函式庫，這是表單運作的標準工具。 <br />* Dexterity 透過 z3c.form 來支援表單新增的功能，這代表它不需要用到 portal_factory，執行效率能夠改善。 <br /><br />不過，Archetypes 是一個成熟的內容型別框架，支援許多 Widget 類型，並且被廣為應用，一般的開發場合，使用 Archetypes 仍是最穩健的方案。預計在 Plone 5 問世的時候，Dexterity 會成為預設的內容型別框架。
+			<!-- Show relate article -->
+		<br><br><h4>You may be interested in the following articles:</h4><ul><li><a href='../../foss-programs/8411.html'>用自由軟體 Plone 來架設網站(10)－連接資料庫</a> - <span class='date-posted'>2011-08-05</span></li><li><a href='../../foss-programs/8402.html'>用自由軟體 Plone 來架設網站(9)－多媒體結合</a> - <span class='date-posted'>2011-07-25</span></li><li><a href='../../foss-programs/8392.html'>用自由軟體 Plone 來架設網站(8)－內容查詢</a> - <span class='date-posted'>2011-07-12</span></li><li><a href='../../foss-programs/8380.html'>用自由軟體 Plone 來架設網站(7)－版型調整</a> - <span class='date-posted'>2011-06-28</span></li><li><a href='../../foss-programs/8353.html'>用自由軟體 Plone 來架設網站 (6)－動態網頁</a> - <span class='date-posted'>2011-06-09</span></li><li><a href='../../foss-programs/8346.html'>用自由軟體 Plone 來架設網站 (5)－元件架構</a> - <span class='date-posted'>2011-05-20</span></li><li><a href='../../foss-programs/8320.html'>用自由軟體 Plone 來架設網站 (4)－建立專案</a> - <span class='date-posted'>2011-05-04</span></li><li><a href='../../foss-programs/8318.html'>用自由軟體 Plone 來架設網站 (3)— 內部設定</a> - <span class='date-posted'>2011-04-25</span></li><li><a href='../../foss-programs/8288.html'>用自由軟體 Plone 來架設網站 (1)— 基礎安裝</a> - <span class='date-posted'>2011-03-21</span></li></ul>		<!-- end -->
+		<div class="article_note">
+		<!-- Add tags use metakey, and show OSSF Newsletter tag: OSSFNL+NUM-->
+		<br><br> <hr style='border: 1px dashed #D2DADB;'><b>OSSF Newsletter&nbsp;:</b>&nbsp;<a href='../../previous-issue%3Ftask=view&amp;id=721.html'>第 170 期 不做 NoSQL 的 CouchDB</a><br>				<!-- End -->
+					<br>
+					<b>Category: </b><a href="../foss-programs.html">				FOSS Programs					</a>				</div>
+			 <!-- AddThis Button BEGIN ID 3001 is the front page article -->
+     			<br><br>
+       <div class="addthis_toolbox addthis_default_style addthis_32x32_style">
+       <a class="addthis_button_preferred_1"></a>
+       <a class="addthis_button_preferred_2"></a>
+       <a class="addthis_button_preferred_3"></a>
+       <a class="addthis_button_preferred_4"></a>
+       <a class="addthis_button_compact"></a>
+       <a class="addthis_counter addthis_bubble_style"></a>
+       </div>
+       <script type="text/javascript">var addthis_config = {"data_track_clickback":true};</script>
+       <script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js#pubid=openfoundry"></script>
+       <!-- AddThis Button END -->
+     <br>
+		<div class="totop" ><a class="rt-totop" href="8294%3Ftask=view.html#" style="outline: medium none;">↑ Top</a></div>
+            <!-- AddThis Button END -->
+
+		<script type="text/javascript">
+var jcomments=new JComments(8294, 'com_content','https://openfoundry.org/index.php?option=com_jcomments&amp;tmpl=component&amp;lang=');
+jcomments.setList('comments-list');
+</script>
+<div id="jc">
+<div id="comments"><h4>Comments<a class="refresh" href="8294%3Ftask=view.html#" title="Refresh comments list" onclick="jcomments.showPage(8294,'com_content',0);return false;">&nbsp;</a></h4>
+<div id="comments-list" class="comments-list">
+        <div class="even" id="comment-item-329"><div class="rbox"><div class="rbox_tr"><div class="rbox_tl"><div class="rbox_t">&nbsp;</div></div></div><div class="rbox_m">
+<div class="comment-avatar"><img src="http://www.gravatar.com/avatar.php?gravatar_id=cd27668d3195b4786970617c6b0cab72&amp;default=https%3A%2F%2Fwww.openfoundry.org%2Fcomponents%2Fcom_jcomments%2Fimages%2Fno_avatar.png" alt="" /></div>
+<div class="comment-box avatar-indent">
+<span class="comments-vote">
+	<span id="comment-vote-holder-329">
+<a href="8294%3Ftask=view.html#" class="vote-good" title="Good comment!" onclick="jcomments.voteComment(329, 1);return false;"></a><a href="8294%3Ftask=view.html#" class="vote-poor" title="Poor comment!" onclick="jcomments.voteComment(329, -1);return false;"></a>
+<span class="vote-none">0</span>
+	</span>
+</span>
+<a class="comment-anchor" href="../foss-programs/8294--plone-2-.html#comment-329" id="comment-329">#1</a>
+<span class="comment-author">Jeff</span>
+<span class="comment-date">2012-11-07 02:21</span>
+<div class="comment-body" id="comment-body-329">您好! 我依照plone網站的指示安裝<span style="font-size:0px;padding:0;margin:0;"> </span>addons時候，執行 bin\instance.exe 時，出現 Error: Zope is not installed as windows service.. 我該如何是好?</div>
+</div><div class="clear"></div>
+</div><div class="rbox_br"><div class="rbox_bl"><div class="rbox_b">&nbsp;</div></div></div></div>
+</div>
+        <div class="odd" id="comment-item-330"><div class="rbox"><div class="rbox_tr"><div class="rbox_tl"><div class="rbox_t">&nbsp;</div></div></div><div class="rbox_m">
+<div class="comment-avatar"><img src="http://www.gravatar.com/avatar.php?gravatar_id=fa893e8e206fa871dcd9148cb1191c84&amp;default=https%3A%2F%2Fwww.openfoundry.org%2Fcomponents%2Fcom_jcomments%2Fimages%2Fno_avatar.png" alt="" /></div>
+<div class="comment-box avatar-indent">
+<span class="comments-vote">
+	<span id="comment-vote-holder-330">
+<a href="8294%3Ftask=view.html#" class="vote-good" title="Good comment!" onclick="jcomments.voteComment(330, 1);return false;"></a><a href="8294%3Ftask=view.html#" class="vote-poor" title="Poor comment!" onclick="jcomments.voteComment(330, -1);return false;"></a>
+<span class="vote-none">0</span>
+	</span>
+</span>
+<a class="comment-anchor" href="../foss-programs/8294--plone-2-.html#comment-330" id="comment-330">#2</a>
+<a class="author-homepage" href="https://marrtw.blogspot.tw/" rel="nofollow" title="marr">marr</a>
+<span class="comment-date">2012-11-07 10:35</span>
+<div class="comment-body" id="comment-body-330">到 var 目錄裡，有看到 *.lock 或 *.pid 檔案的話，例如 instance.lock 或 instance.pid，就把它們刪掉，再重新執<span style="font-size:0px;padding:0;margin:0;"> </span>行 bin\instance start 試看看。<br /><br />另外，在 Windows 環境下，如果 addon 需要 C compiler，還得額外安裝 Visual Studio 或 MingW 之類的東西，可能是一項挑戰。<br /><br />簡言之，安裝複雜的 addon 時，使用 Ubuntu Linux 可能較單純，或是請參考 <a href="https://plone.org/documentation/kb/using-buildout-on-windows" target="_blank" rel="external nofollow">plone.org/.../...</a> 的說明。</div>
+</div><div class="clear"></div>
+</div><div class="rbox_br"><div class="rbox_bl"><div class="rbox_b">&nbsp;</div></div></div></div>
+</div>
+</div>
+<div id="comments-list-footer"><a class="refresh" href="8294%3Ftask=view.html#" title="Refresh comments list" onclick="jcomments.showPage(8294,'com_content',0);return false;">Refresh comments list</a></div>
+</div>
+<div id="comments-footer" align="center"><a href="http://www.joomlatune.com" title="JComments" target="_blank">JComments</a></div>
+<script type="text/javascript">
+jcomments.setAntiCache(1,0,0);
+</script> 
+</div>	</div>
+</div>
+
+		                            </div>
+									<div class="clear"></div>
+								</div>
+								<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+							</div>
+							</div>
+                                                    </div>
+                                            </div>
+                                <div class="rt-grid-3 rt-pull-9">
+                <div id="rt-sidebar-a">
+                                    <div class="square4">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<ul class="menu"><li class="item56"><a href="../previous-issue.html"><span>Previous Issue</span></a></li><li class="item55"><a href="../about-newsletter.html"><span>About Newsletter</span></a></li></ul>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<ul class="menu"><li class="item115"><a href="../foss-news.html"><span>FOSS News</span></a></li><li class="item141"><a href="../case-job.html"><span>Case and Jobs</span></a></li></ul>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+        	                <div class="square1">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-title"><h2 class="title">Special</h2></div>
+						<div class="clear"></div>
+		                						<div class="module-content">
+		                	<ul class="menu"><li class="item37"><a href="../tech-column.html"><span>Tech Column</span></a></li><li class="item40"><a href="../foss-programs.html"><span>FOSS Programs</span></a></li><li class="item35"><a href="../legal-column.html"><span>Legal Column</span></a></li><li class="item154"><a href="../foss-forum.html"><span>FOSS Forum</span></a></li><li class="item162"><a href="../enterprise-application.html"><span>Enterprise Application</span></a></li><li class="item44"><a href="../foss-projects.html"><span>FOSS Projects</span></a></li></ul>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		                <div class="square1">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<p style="text-align: center;"><a href="../../news%3Fformat=feed&amp;type=rss" target="_black"><img src="../../images/M_images/news-rss-feed.png" border="0" /></a><br /><a href="https://www.openfoundry.org/rss-feed/Newsletter" target="_black"><img src="../../images/M_images/newsletter-rss-feed.png" border="0" /></a></p>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		
+                </div>
+            </div>
+
+                    <div class="clear"></div>
+                </div>
+            </div>
+																													</div>
+										<div id="rt-copyright">
+						<div class="rt-grid-12 rt-alpha rt-omega">
+                        <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<span class="nowrap">Open Source Software Foundry</span><span class="nowrap">‧</span><span class="nowrap"> </span><span class="nowrap">Best  Viewed with IE7.0 or Firefox2.0 above, 1024x768 Resolution. </span><strong>E-Mail</strong>：<a href="mailto:contact@openfoundry.org">contact@openfoundry.org</a> <br /><strong>Address</strong>：No.128, Sec.2, Academia Rd., Institute of Information Science, Academia Sinica, Nangang District, Taipei City 11529, Taiwan (R.O.C). <br /><a href="../privacy-policy.html">Privacy Policy</a>. <a href="../terms-of-use.html">Terms-of-use</a> <span style="position: relative; top: 8px; margin-top: -8px;"> <a href="../../about/8101.html"><img src="../../images/M_images/rss-feed-all.png" border="0" /></a></span>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+        	
+</div>
+						<div class="clear"></div>
+					</div>
+					<div class="rt-footer-bottom-wrap"><div class="rt-footer-bottom"><div class="rt-footer-bottom2"><div class="rt-footer-bottom3"></div></div></div></div>
+									</div></div></div>
+				<div class="rt-surround-bottom"><div class="rt-surround-bottom2"><div class="rt-surround-bottom3"></div></div></div>
+							</div>
+		</div>
+		<!--
+		<script id="aptureScript">
+						(function (){var a=document.createElement("script");a.defer="true";a.src="http://www.apture.com/js/apture.js?siteToken=vsJttrn";document.getElementsByTagName("head")[0].appendChild(a);})();
+     </script>
+-->
+
+<!-- Piwik -->
+<!-- 			<script type="text/javascript">
+			  var _paq = _paq || [];
+		  _paq.push(["trackPageView"]);
+		  _paq.push(["enableLinkTracking"]);
+
+		    (function() {
+			        var u=(("https:" == document.location.protocol) ? "https" : "https") + "://www.openfoundry.org/piwik/";
+				    _paq.push(["setTrackerUrl", u+"piwik.php"]);
+				    _paq.push(["setSiteId", "1"]);
+				        var d=document, g=d.createElement("script"), s=d.getElementsByTagName("script")[0]; g.type="text/javascript";
+				        g.defer=true; g.async=true; g.src=u+"piwik.js"; s.parentNode.insertBefore(g,s);
+					  })();
+		  </script> -->
+<!-- End Piwik Code -->
+	</body>
+</html>

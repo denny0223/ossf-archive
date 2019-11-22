@@ -1,0 +1,265 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" >
+<head>
+    <title>License Wizard 3.3</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />       
+    <META NAME="keywords" CONTENT="LicenseWizard, 授權精靈, LicenseWizard 3.3, 授權精靈 3.3, 自由軟體鑄造場, OSSF" />
+    <META NAME="description" CONTENT="License Wizard, 內容涵蓋最廣為使用的十幾種自由軟體授權條款，讓程式設計者按步驟回答幾個簡單的問題，就可以得到最合其用的一自由軟體授權條款。" />
+    <META HTTP-EQUIV="Content-Language" CONTENT="ZH-TW" />
+    <META NAME="author" CONTENT="wangaguo, lcamel, ally, florence, alan, yihsuan, i989, OSSF" />
+    <META NAME="content-author" CONTENT="florence, alan, yihsuan, i989, OSSF" />
+    <META NAME="code-author" CONTENT="wangaguo, lcamel, ally, OSSF" />
+    <META NAME="distribution" CONTENT="Global" />
+    <META NAME="robots" CONTENT="FOLLOW,INDEX" />
+    <META NAME="content-license" CONTENT="MIT" />
+    <META NAME="code-license" CONTENT="MIT" />          
+    <script type="text/javascript">
+        var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+        document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/java cript'%3E%3C/script%3E"));
+    </script>
+    <script type="text/javascript">
+        var pageTracker = _gat._getTracker("UA-4136519-6");
+            pageTracker._trackPageview();
+    </script>
+
+    <script language="javascript 1.5" type="text/javascript">
+        
+        function myIndexOf(item)
+        {
+            for (var j = 0; j < this.length; j++)
+                if (this[j] == item)
+                    return j
+            return -1;
+        }       
+        Array.prototype.indexOf = myIndexOf;
+            //License Data
+            var licenses = ["Apache 1.1", "Apache 2.0", "Artistic", "BSD", "CPL", "GPL", "LGPL" , "MIT" , "MPL", "zlib/libpng"];
+            var questions = new Array();
+            questions["zh-tw"] = 
+            {
+                Q1: {Q: "<span>1.</span>再次散布程式必須提供原始碼", A: ["Artistic", "CPL", "MPL", "LGPL", "GPL"]},
+                Q2: {Q: "<span>2.</span>允許再授權", A: ["MIT", "Apache 2.0", "CPL", "MPL"]},
+                Q3: {Q: "<span>3.</span>授權他人使用程式中的專利", A: ["Apache 2.0", "CPL", "MPL"]},
+                Q4: {Q: "<span>4.</span>原始程式與修改程式均必須採用相同的授權條款", A:["CPL", "GPL", "LGPL"]},
+                Q5: {Q: "<span>5.</span>原始程式採用相同授權條款，特定程式碼可以採用授權人所限定的其他授權條款", A:["MPL"]},
+                Q6: {Q: "<span>6.</span>允許使用者自由採用其他授權條款，只要這些條款不與原有授權條款相衝突", A:["Apache 2.0", "BSD", "MIT", "zlib/libpng", "Apache 1.1", "Artistic"]},
+                Q7: {Q: "<span>7.</span>修改程式時必須附加修改說明文件", A:["zlib/libpng", "Apache 1.1", "Apache 2.0", "Artistic", "MPL", "LGPL", "GPL"]}
+            }
+            questions["en"] = 
+            {
+                Q1: {Q: "<span>1.</span>When distributing the program, the source code must be provided.", A: ["Artistic", "CPL", "MPL", "LGPL", "GPL"]},
+                Q2: {Q: "<span>2.</span>Allowing the program to be relicensed.", A: ["MIT", "Apache 2.0", "CPL", "MPL"]},
+                Q3: {Q: "<span>3.</span>The patents involved in the program are authorized to the general public.", A: ["Apache 2.0", "CPL", "MPL"]},
+                Q4: {Q: "<span>4.</span>The modification must apply the same license as the original program.", A:["CPL", "GPL", "LGPL"]},
+                Q5: {Q: "<span>5.</span>The designated source code could apply the specified licenses.", A:["MPL"]},
+                Q6: {Q: "<span>6.</span>Any other license could be applied as long as it is not conflict with the original one.", A:["Apache 2.0", "BSD", "MIT", "zlib/libpng", "Apache 1.1", "Artistic"]},
+                Q7: {Q: "<span>7.</span>The documentations of the modification must come along with the modified program.", A:["zlib/libpng", "Apache 1.1", "Apache 2.0", "Artistic", "MPL", "LGPL", "GPL"]}
+            }
+    
+            //Generate License Wizard Table
+            var goodAns;
+            function Start()
+            {
+                goodAns = {};
+                for (var QQ in questions)
+                        goodAns[QQ] = {};
+                
+                var matrix = document.getElementById("Matrix");
+                var A;
+                var matrixTable;
+                
+                //table start
+                matrixTable = '<table id="LwTable">';
+
+                //table col
+                matrixTable += '<col id="LwTableQuestion"><col id="LwTableAnswer">';
+                for (i=0; i<licenses.length; i++)
+                        matrixTable += '<col id="' + licenses[i] + '" class="' + licenses[i] + '"/>';       
+                
+                //table head Licenses
+                        matrixTable += '<thead><td></td><td></td>';
+                for (i=0; i<licenses.length; i++)
+                        matrixTable += '<td><input type="radio" name="License" onclick="showGoodAnswer(' + i + ')"/><br/>' + licenses[i] + '</td>';
+                        matrixTable += '</thead>';
+                
+                //table Question
+                for (var QQ in questions)
+                {
+                    matrixTable += '<tr id="Tr' + QQ + '">';
+                    matrixTable += '<th>'+questions[QQ].Q +'</th><td>' +
+                    '<input type="radio" name="' + QQ + '" onclick="QClick(this, true);"><span id="' + QQ + 'true" class="LwRadioBadAnswer">Y</span>' +
+                    '<input type="radio" name="' + QQ + '" onclick="QClick(this, false);"><span id="' + QQ + 'false" class="LwRadioBadAnswer">N</span></td>';
+                    
+                    A = questions[QQ].A;
+                    for(i=0; i<licenses.length; i++)
+                    {
+                    matrixTable += '<td>';
+                        matrixTable += '</td>';
+                    }
+                    matrixTable += '</tr>';
+                }
+                
+                //table end
+                matrixTable += '</table>';
+                
+                matrix.innerHTML = matrixTable;
+                
+            }
+            
+            //Question Click
+            function QClick(Q, YN)
+            {
+                for (var i = 0; i < licenses.length; i++)
+                {
+                    goodAns[Q.name][i] = goodAnswer(Q.name, i, YN);
+                    getCell(Q.name, i).innerHTML = goodAns[Q.name][i]   ? '●' : '';
+                    getColumn(i).className = licensePasses(i) ? "LwColHighlight" : "LwColNoHighlight";
+                }
+
+            }
+            function getCell(questionName, licenseIndex)
+            {
+                return document.getElementById("Tr" + questionName).childNodes[licenseIndex + 2];
+            }
+            
+            function getColumn(licenseIndex)
+            {
+                return document.getElementById(licenses[licenseIndex]);
+            }
+            
+            function goodAnswer(questionName, licenseIndex, YN)
+            {
+                return (questions[questionName].A.indexOf(licenses[licenseIndex]) != -1) == YN;
+            }
+            
+            function licensePasses(licenseIndex)
+            {
+                for (var QQ in questions)
+                    if (goodAns[QQ][licenseIndex] == false)
+                        return false;
+                return true;
+            }
+
+            function showGoodAnswer(licenseIndex)                               
+            {                                                                   
+                for (var QQ in questions)                                          
+                    for (var TF in { 'true':'', 'false':'' })               
+                        document.getElementById(QQ + TF).className =
+                            goodAnswer(QQ, licenseIndex, eval(TF)) ? "LwRadioGoodAnswer" : "LwRadioBadAnswer";                  
+            }
+        
+        //Multi-Lang
+        function MultiLang()
+        {
+            //checking lang
+            var LangArg = location.search.match(/\?([a-zA-Z-_]*)/)
+            var Lang = 'zh-tw';
+            if(LangArg != null)
+                if(questions[LangArg[1]]!=null)
+                    Lang = LangArg[1];
+                    
+            //setting questions lang
+            questions = questions[Lang];
+            
+            //setting display lang
+            var LangTags = getElementsByClass(Lang);
+            for(i=0; i<LangTags.length; i++)
+            {
+                LangTags[i].style.display = "block";
+            }
+        }
+        
+        //getElementsByClass by Dustin Diaz
+        function getElementsByClass(searchClass,node,tag) {
+            var classElements = new Array();
+            if ( node == null )
+                node = document;
+            if ( tag == null )
+                tag = '*';
+            var els = node.getElementsByTagName(tag);
+            var elsLen = els.length;
+            var pattern = new RegExp('(^|\\s)'+searchClass+'(\\s|$)');
+            for (i = 0, j = 0; i < elsLen; i++) {
+                if ( pattern.test(els[i].className) ) {
+                    classElements[j] = els[i];
+                    j++;
+                }
+            }
+            return classElements;
+        }
+    </script>
+    <style type="text/css">
+            * { font-size:12px; font-family:Arial; }
+            a { color:dimgray; }
+            h2 { font-size:18px; font-weight:bold; text-align:center; margin:10px 0px; }
+            #LwTable { border:solid 1px #999898; border-collapse:collapse; width:100%; }
+            #LwTable td { border:solid 1px #999898; }
+            #LwTable tr td { text-align:center; }
+            #LwTable tr th { border:solid 1px #999898; text-align:left;font-weight:normal; background-color:#DEDBDB; vertical-align:middle; }
+            #LwTable tr th span { font-weight:bold; float:left; font-size:10px; width:0em; padding:1em; background:#E8E8E8; margin:0 auto; }
+            #LwTable thead { background-color:#DEDBDB; text-align:center; }
+            #LwTableQuestion { width:275px; }
+            #LwTableAnswer { width:80px; }
+            .LwColHighlight { background-color:lightblue; }
+            .LwColNoHighlight {}            
+            .LwRadioGoodAnswer { background-color:lightblue; padding:2px; }
+            .LwRadioBadAnswer { padding:2px; }
+            .out { background:#ccc; border:1px solid #ddd; width:100%; }
+            .in { background:#fff; border:2px solid #555; position:relative; padding:5px; width:98% !important; width:100%; left:-5px; top:-5px; } 
+            #wrapper { width: 90%; position: relative; left: 50%; margin-left: -45%; }
+            .lang { display:none; }
+            #LangSel { position:absolute; right:5px; top:5px;  }
+    </style>    
+</head>
+
+<body onload="MultiLang(); Start();">
+    <div id="wrapper">
+        <form>
+            <div class="out">
+                <div class="in">
+                    <h2 class="lang zh-tw">授權精靈 V3.3</h2><h2 class="lang en">LicenseWizard V3.3</h2>
+                    <div id="LangSel" style=""><a href="index.htm%3Fen.html">English</a> / <a href="index.htm%3Fzh-tw.html">中文</a></div>
+                    <div id="Matrix">顯示不正常</div>
+                </div>
+            </div>
+            <div>
+            <input type="button" onclick="Start()" value="Reset" />
+        
+                <ul class="lang zh-tw">
+                    <li>
+                        <b>使用說明</b><br/>
+                        (1)為篩選出最接近您需求之授權條款，我們建議您回答所有問題。<br/>
+                        (2)請注意！當按下左下方之Reset，所有您做的選擇將被清除，恢復原始狀態。<br/>
+                        (3)當點選左側"問題"之Y/N選鈕，我們將以黑點在相對應欄位標示出符合之授權條款，並以藍色填滿顯示符合您目前所有答案之授權條款。<br/>&nbsp;&nbsp;&nbsp;&nbsp;若點選多個答案後無藍色填滿出現，則代表無符合您需求之授權條款。<br/>
+                        (4)當您點選上方之"條款"，我們將於左方以藍色填滿標示出每一題目之相對應答案。<br/>
+                        (5)以上(3)、(4)之操作並不互相衝突，您可自行交互運用，以篩選出最接近需求之授權條款。<br/>
+                    </li>
+                    <li>
+                            LW 3.2 的程式碼與內容採用<a href="http://www.opensource.org/licenses/mit-license.php" target="_black">MIT</a>授權，原始碼可以<a href="http://rt.openfoundry.org/Foundry/Project/Download/?Queue=139" target="_black">在此</a>下載。<br/>                    
+                    </li>
+                    <li>
+                            若對於授權精靈有任何意見，歡迎您至<a href="http://rt.openfoundry.org/Foundry/Project/Tracker/?Queue=139&Action-New=1&Type=defect" target="_black">這裡留言</a>。
+                    </li>
+                </ul>
+                <ul class="lang en">
+                    <li>
+                        <b>Direction</b><br/>
+                        (1) Answer all questions to get the appropriate license.<br/>
+                        (2) Be aware that click on the “Reset” button will erase all selections you made.<br/>
+                        (3) The selected options Y/N will appear as black spots. The highlighted columns are the best choices that meet your needs. Nothing will be highlighted when no license meets your requirements.<br/>
+                        (4) After selecting the license of the top, the corresponding principles will appear in blue.<br/>
+                        (5) The functions of (3) and (4) are not conflict with each other. To select the most appropriate license, you may consider different ones at your discretion.<br/>
+                    </li>
+                    <li>
+                        The code and content of LW 3.2 is licensed under <a href="http://www.opensource.org/licenses/mit-license.php" target="_black">MIT</a>.
+                        Source code is available <a href="http://rt.openfoundry.org/Foundry/Project/Download/?Queue=139" target="_black">here</a>.<br/>
+                    </li>
+                    <li>
+                        Please leave your message in the <a href="http://rt.openfoundry.org/Foundry/Project/Tracker/?Queue=139&Action-New=1&Type=defect" target="_black">LW forum</a> if you have any comments or suggestions.
+                    </li>
+                </ul>
+            </div>
+        </form>
+    </div>
+</body>
+</html>

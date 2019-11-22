@@ -1,0 +1,195 @@
+	<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+	<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-gb" lang="en-gb" >
+		<head>
+			  <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+  <meta name="robots" content="noindex, nofollow" />
+  <meta name="keywords" content="Rails, Ruby, Scaffold, OSSFNL755" />
+  <meta name="title" content="麥克阿忠的 Ruby on Rails 特快車－Scaffold 篇" />
+  <meta name="description" content="前言 快速網站開發是 Ruby on Rails 的最大特色。雖為網站開發的後起之秀，但在短時間內已被國內外許多知名網站所採用，例如台灣的 T客邦及 Registrano 等。於前篇文章，筆者介紹 Ruby on Rails 初步環境建置後，本篇將說明如何快速建立擁有新增／刪除／修改基礎功能的範例網站。 快速建立網站基礎模板 讀者可以使用 Ruby on Rails 提供的 'rails'" />
+  <meta name="generator" content="" />
+  <title>麥克阿忠的 Ruby on Rails 特快車－Scaffold 篇</title>
+  <link href="../../favicon.ico" rel="shortcut icon" type="image/x-icon" />
+  <link rel="stylesheet" href="../../components/com_gantry/css/gantry.css" type="text/css" />
+  <link rel="stylesheet" href="../../components/com_gantry/css/grid-12.css" type="text/css" />
+  <link rel="stylesheet" href="../../components/com_gantry/css/joomla.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/joomla.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/style1.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/light-body.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/demo-styles.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/template.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/typography.css" type="text/css" />
+  <style type="text/css">
+    <!--
+#rt-main-surround ul.menu li.active > a, #rt-main-surround ul.menu li.active > .separator, #rt-main-surround ul.menu li.active > .item, #rt-main-surround .square4 ul.menu li:hover > a, #rt-main-surround .square4 ul.menu li:hover > .item, #rt-main-surround .square4 ul.menu li:hover > .separator, .roktabs-links ul li.active span {color:#0088B5;}
+a, #rt-main-surround ul.menu a:hover, #rt-main-surround ul.menu .separator:hover, #rt-main-surround ul.menu .item:hover {color:#0088B5;}
+    -->
+  </style>
+  <script type="text/javascript" src="../../components/com_jcomments/js/jcomments-v2.1.js%3Fv=2"></script>
+  <script type="text/javascript" src="../../components/com_jcomments/libraries/joomlatune/ajax.js"></script>
+  <script type="text/javascript" src="../../media/system/js/mootools.js"></script>
+  <script type="text/javascript" src="../../media/system/js/caption.js"></script>
+  <script type="text/javascript" src="../../components/com_gantry/js/gantry-buildspans.js"></script>
+  <script type="text/javascript" src="../../components/com_gantry/js/gantry-inputs.js"></script>
+  <script type="text/javascript">
+
+			window.addEvent('domready', function() {
+				var modules = ['rt-block'];
+				var header = ['h3','h2','h1'];
+				GantryBuildSpans(modules, header);
+			});
+		InputsExclusion.push('.content_vote','#rt-popup')
+  </script>
+		</head>
+		<body  class="backgroundlevel-low backgroundstyle-style8 bodylevel-med bodystyle-light cssstyle-style1 logostyle-dark font-family-helvetica font-size-is-default menu-type-fusionmenu col12 ">
+			<div id="rt-main-surround">
+				<div class="rt-container">
+					<div class="rt-block">
+						<div id="rt-mainbody">
+					    	
+<div class="rt-joomla ">
+	<div class="rt-article">
+		
+				<div class="rt-headline"><h1 class="rt-article-title">麥克阿忠的 Ruby on Rails 特快車－Scaffold 篇</h1>		</div>
+		<div class="clear"></div>
+		
+		
+		
+				<div class="rt-articleinfo">
+						<div class="rt-article-icons">
+				<a href="8440-ruby-on-rails-scaffold-%3Ftmpl=component&amp;print=1&amp;layout=default&amp;page=.html#" onclick="window.print();return false;"><span class="icon print"></span></a>									<span class="icon printscreen">
+						<a href="8440-ruby-on-rails-scaffold-%3Ftmpl=component&amp;print=1&amp;layout=default&amp;page=.html#" onclick="window.print();return false;"><img src="../../images/M_images/printButton.png" alt="Print"  /></a>					</span>
+							</div>
+			
+			<span class="rt-date-posted">
+						 Created at			Monday, 05 September 2011 17:10						&nbsp;&nbsp;&nbsp;&nbsp;						Last Updated on Friday, 27 April 2012 16:56						</span>
+
+						<span class="rt-author">
+				Written by 麥克阿忠			</span>
+				
+					</div>
+		
+		
+		<h3>前言</h3>
+<p>快速網站開發是 Ruby on Rails 的最大特色。雖為網站開發的後起之秀，但在短時間內已被國內外許多知名網站所採用，例如台灣的 T客邦及 Registrano 等。<br /><br />於<a href="../../tw/tech-column/8407-ruby-on-rails-&#32;.html" target="_blank">前篇文章</a>，筆者介紹 Ruby on Rails 初步環境建置後，本篇將說明如何快速建立擁有新增／刪除／修改基礎功能的範例網站。<br /><br /></p>
+
+<h3>快速建立網站基礎模板</h3>
+<p>讀者可以使用 Ruby on Rails 提供的 "rails" 指令快速建立網站基礎模板。下列指令將建立名為 "demo" 的模板。 <br /> <br /> $ rails new demo <br /> create <br /> create README <br /> create app/models <br /> create app/views/layouts/application.html.erb <br /> create config <br /> create config/routes.rb <br /> ...... <br /> ...... <br /> <br />成功後，切換至上一步驟所產生的 demo 目錄下。 <br /> <br /> $ cd demo <br /> <br />接下來我們可以使用 Ruby on Rails 提供的 "bundle" 指令，檢查 Rails 的 Gemfile 是否已具備運作基礎環境所需的條件。 <br /> <br /> $ bundle <br /> <br />如果有發現缺少的套件，" bundle" 會提醒讀者安裝。如下列情形， <br /> <br /> Could not find gem 'sqlite3 (&gt;= 0)' in any of the gem sources listed in your Gemfile. <br /> Run `bundle install` to install missing gems. <br /> <br />然後輸入 "bundle install" 開始自動安裝這些缺少的相依性套件。 <br /> <br /> $bundle install <br /> Fetching source index for https://rubygems.org/ <br /> Using rake (0.9.2) <br /> Using abstract (1.0.0) <br /> Using activesupport (3.0.9) <br /> Using builder (2.1.2) <br /> Using i18n (0.5.0) <br /> Installing rack-test (0.5.3) from .gem files at /Users/mikel/Code/app/vendor/cache <br /> Installing rails (3.0.0.beta) from .gem files at /Users/mikel/Code/app/vendor/cache <br /> Using activemodel (3.0.9) <br /> Using erubis (2.6.6) <br /> ... <br /> ... <br /> ... <br /> Using rack (1.2.3) <br /> Using rack-mount (0.6.14) <br /> Your bundle is complete!</p>
+<p>&nbsp;</p>
+<h3>使用 "scaffold" 快速建立 CRUD 模板</h3>
+<p>本篇操作將以「訪客留言板」為範例，利用 "scoffold" 指令快速建構名為 "guestbook" 的模板，且該模板具有兩個資料庫欄位的設計，一為 string 型態的 "name"，另一為 string 型態的 "content"。 <br /> <br /> $ rails generate scaffold guestbook name:string content:string <br /> invoke active_record <br /> create db/migrate/20110830102544_create_guestbooks.rb <br /> create app/models/guestbook.rb <br /> invoke test_unit <br /> create test/unit/guestbook_test.rb <br /> create test/fixtures/guestbooks.yml <br /> route resources :guestbooks <br /> invoke scaffold_controller <br /> create app/controllers/guestbooks_controller.rb <br /> invoke erb <br /> create app/views/guestbooks <br /> create app/views/guestbooks/index.html.erb <br /> create app/views/guestbooks/edit.html.erb <br /> create app/views/guestbooks/show.html.erb <br /> create app/views/guestbooks/new.html.erb <br /> create app/views/guestbooks/_form.html.erb <br /> invoke test_unit <br /> create test/functional/guestbooks_controller_test.rb <br /> invoke helper <br /> create app/helpers/guestbooks_helper.rb <br /> invoke test_unit <br /> create test/unit/helpers/guestbooks_helper_test.rb <br /> invoke stylesheets <br /> create public/stylesheets/scaffold.css <br /> <br />接著可以使用 "rake" 指令來建立對應的資料庫設計。下列步驟會自動在資料庫中建立名為 "guestbooks" 的資料表，並且包含名為 "name" 的 string 型態欄位，以及名為 "content" 的 string 型態欄位。 <br /> <br /> $ rake db:migrate <br /> (in /home/myhome/project/demo) <br /> == CreateGuestbooks: migrating =============================================== <br /> -- create_table(:guestbooks) <br /> -&gt; 0.0009s <br /> == CreateGuestbooks: migrated (0.0010s) ====================================== <br /> <br />最後，啟動 Rails 網頁應用伺服器。 <br /> <br /> $ rails server <br /> <br />成功之後，即可開啟瀏覽器，並瀏覽 "https://localhost:3000/guestbooks"。類似的結果如下圖。 <br /> <br /><a href="../../images/110906/RailsII/rails01.png" target="_blank"><img src="../../images/110906/RailsII/rails01.png" alt="rails01" border="0" height="340" width="500" /></a><br />▲&nbsp;圖1 guestbooks 的網頁呈現 <br /> <br />至此已快速完成訪客留言板的基礎功能，並可以嘗試點選網頁中的 "New Guestbook" 來新增資料。 <br /> <br /><a href="../../images/110906/RailsII/rails02.png" target="_blank"><img src="../../images/110906/RailsII/rails02.png" alt="rails02" border="0" height="420" width="500" /></a><br />▲&nbsp;圖2 在 guestbooks 中新增資料 <br /> <br />此外，讀者也可以試著操作 "Show" / "Edit" / "Destroy" 等功能。 <br /> <br />"Scaffold" 使得 Rails 能夠快速完成基礎的新增／修改／刪除功能，所以接下來讀者只需要專注於呈現樣式的修改即可。</p>
+<p>&nbsp;</p>
+<h3>延伸補充</h3>
+<h4>Scaffold 使用的時機</h4>
+<p>Scaffold 提供自動產生 Model、Views 和 Controller 程式碼的功能，得以快速完成簡易的 CRUD 功能的模板。雖然如此，但是建立後的程式碼不一定符合各種專案的需求，這也是有經驗的 Rails 程式設計師盡量少用 "scaffold" 的原因。所以並不是任何功能都需要藉助 "scaffold"，讀者仍需視專案需求來活用 "scaffold"。</p>
+<p>&nbsp;</p>
+<h4>CRUD</h4>
+<p>CRUD 指的是 Create、Read、Update、Destroy 四項資料庫基本操作。這些操作分別為： <br /> <br />* Create - 新增資料。 <br />* Read - 讀取資料。 <br />* Update - 更新資料。 <br />* Destroy - 刪除資料。<br /><br /></p>
+<h4>Rails 的 MCV 架構</h4>
+<p>Rails MCV 架構如下圖： <br /> <a href="../../images/110906/RailsII/rails03.png" target="_blank"><img src="../../images/110906/RailsII/rails03.png" alt="rails03" border="0" height="230" width="500" /></a> <br />▲&nbsp;圖3 Rails MVC 架構（圖片來源：https://www.ils.unc.edu/~uskala/MVC.htm；作者為 uskala）<br /> <br />MVC 設計模式是現今網站開發常見的基礎架構。此架構分成三個部分： <br /> <br />* Model：資料與程式功能邏輯層。例如資料庫操作。 <br />* View ：網站頁面呈現層。 <br />* Controller：負責 Model 與 View 的協調與溝通。例如接收到瀏覽器的要求後，可先向 Model 取得資料，再由 View 來整合輸出樣式。 <br /> <br />當然，除了 Rails 外，也有許多網站開發框架 (Web Framework) 採用，例如 PHP 的 CakePHP，Python 的 Django。<br /><br /></p>
+<h4>Rails 的目錄結構</h4>
+<p>Rails 的目錄結構如下圖： <br /> <br /><a href="../../images/110906/RailsII/rails04.png" target="_blank"><img src="../../images/110906/RailsII/rails04.png" alt="rails04" border="0" height="225" width="200" /></a><br />▲&nbsp;圖4 Rails 目錄結構 <br /> <br />Rails 會遵循 MCV 的架構來分別管理程式碼與資料的存放位置，並搭配 URL Routing 的概念處理網頁請求。這樣的目錄要求，使得不同功能的程式碼可以依功能分別置於不同的目錄下，而不同的網站元素，如 CSS 及 Javascript，也得以分別管理。如此，整個網站的專案結構將更清晰、更容易掌控。 <br /><br />檔案目錄與用途如下表：</p>
+<table border="0">
+<thead>
+<tr><th style="width: 88px;" scope="col">檔案/目錄</th><th style="width: 478px;" scope="col">用途</th></tr>
+</thead>
+<tbody>
+<tr>
+<td style="width: 88px;">app/</td>
+<td style="width: 478px;">放置 Rails 一些 MCV 架構的目錄，底下會有 Controllers、models 和 views 目錄，未來所編寫的程式都會在這個目錄下編輯。</td>
+</tr>
+<tr class="odd">
+<td style="width: 88px;">config/</td>
+<td style="width: 478px;">整個專案的運作設定檔、網址列的路由規則、資料庫帳號密碼的設定等等。</td>
+</tr>
+<tr>
+<td style="width: 88px;">db/</td>
+<td style="width: 478px;">資料庫的結構概要，未來在多人開發的資料庫編修方面，在這裡就會變得很重要。</td>
+</tr>
+<tr class="odd">
+<td style="width: 88px;">doc/</td>
+<td style="width: 478px;">說明文件放置處。</td>
+</tr>
+<tr>
+<td style="width: 88px;">lib/</td>
+<td style="width: 478px;">若有自定的 Module 和類別檔案，放在這裡可以讓每個 controller 都用得到，不必再另外指定路徑 include file。</td>
+</tr>
+<tr class="odd">
+<td style="width: 88px;">log/</td>
+<td style="width: 478px;">應用程式記錄檔。</td>
+</tr>
+<tr>
+<td style="width: 88px;">public/</td>
+<td style="width: 478px;">圖檔、JavaScript、CSS 和其他靜態檔案擺放的地方。</td>
+</tr>
+<tr class="odd">
+<td style="width: 88px;">script/</td>
+<td style="width: 478px;">執行 Rails 的指令。</td>
+</tr>
+<tr>
+<td style="width: 88px;">test/</td>
+<td style="width: 478px;">用來執行臨時測試一些邏輯資料並不影響專案運行。</td>
+</tr>
+<tr class="odd">
+<td style="width: 88px;">tmp/</td>
+<td style="width: 478px;">放置暫時性的檔案。</td>
+</tr>
+<tr>
+<td style="width: 88px;">vendor/</td>
+<td style="width: 478px;">存放第三方外掛的目錄。</td>
+</tr>
+<tr class="odd">
+<td style="width: 88px;">Gemfile</td>
+<td style="width: 478px;">設定 Rails 運作時會使用哪些 Gems 套件，用 bundle install 會依照裡頭的設置來安裝套件。</td>
+</tr>
+<tr>
+<td style="width: 88px;">README</td>
+<td style="width: 478px;">讀我檔，一般簡要的說明安裝方法。</td>
+</tr>
+<tr class="odd">
+<td style="width: 88px;">Rakefile</td>
+<td style="width: 478px;">載入一些 Rake 自動化處理的任務。</td>
+</tr>
+<tr>
+<td style="width: 88px;">config.ru</td>
+<td style="width: 478px;">啟動伺服器設定。</td>
+</tr>
+</tbody>
+</table>
+<p>&nbsp;</p>
+<h3>結語</h3>
+<p>本篇文章希望讀者對於 Rails 能有初步的認識，而下一篇專文也將為讀者介紹更多 Ruby on Rails 提供的功能。<br /><br /></p>
+<h3>作者簡介</h3>
+<p>麥克阿忠，資深網站程式開發者，興趣是攝影。目前擔任 Ruby on Rails 網站開發員，主要使用 Ubuntu Server 進行 Web 應用程式開發。<br /><br />作者部落格 <a href="https://about.me/MichaelChen520" target="_blank">https://about.me/MichaelChen520</a><br /> 歡迎對 Ruby 有興趣的同好前來交流指教。</p>
+			<!-- Show relate article -->
+		<br><br><h4>You may be interested in the following articles:</h4><ul><li><a href='../../tech-column/8530.html'>麥克阿忠的 Ruby on Rails 實務─熟悉 MVC</a> - <span class='date-posted'>2011-11-29</span></li><li><a href='../../tech-column/8478.html'>麥克阿忠的 Ruby on Rails 真功夫─手刻 CRUD</a> - <span class='date-posted'>2011-10-13</span></li><li><a href='../../tech-column/8407.html'>麥克阿忠的 Ruby on Rails 初探</a> - <span class='date-posted'>2011-08-03</span></li></ul>		<!-- end -->
+		<div class="article_note">
+		<!-- Add tags use metakey, and show OSSF Newsletter tag: OSSFNL+NUM-->
+		<br><br> <hr style='border: 1px dashed #D2DADB;'><b>OSSF Newsletter&nbsp;:</b>&nbsp;<a href='../../previous-issue%3Ftask=view&amp;id=755.html'>第 180 期 一百年度自由軟體鑄造場作業暨智財權說明會</a><br><b>Tags:</b>&nbsp;<a href='../../index.php%3Foption=com_search&amp;Itemid=58&amp;searchphrase=exact_meta&amp;ordering=newest&amp;searchword=Rails.html'>Rails</a>,&nbsp;&nbsp;<a href='../../index.php%3Foption=com_search&amp;Itemid=58&amp;searchphrase=exact_meta&amp;ordering=newest&amp;searchword=&#32;Ruby.html'> Ruby</a>,&nbsp;&nbsp;<a href='../../index.php%3Foption=com_search&amp;Itemid=58&amp;searchphrase=exact_meta&amp;ordering=newest&amp;searchword=&#32;Scaffold.html'> Scaffold</a>,&nbsp;&nbsp;				<!-- End -->
+					<br>
+					<b>Category: </b><a href="../tech-column.html">				Tech Column					</a>				</div>
+			 <!-- AddThis Button BEGIN ID 3001 is the front page article -->
+     			<br><br>
+       <div class="addthis_toolbox addthis_default_style addthis_32x32_style">
+       <a class="addthis_button_preferred_1"></a>
+       <a class="addthis_button_preferred_2"></a>
+       <a class="addthis_button_preferred_3"></a>
+       <a class="addthis_button_preferred_4"></a>
+       <a class="addthis_button_compact"></a>
+       <a class="addthis_counter addthis_bubble_style"></a>
+       </div>
+       <script type="text/javascript">var addthis_config = {"data_track_clickback":true};</script>
+       <script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js#pubid=openfoundry"></script>
+       <!-- AddThis Button END -->
+     <br>
+		<div class="totop" ><a class="rt-totop" href="8440-ruby-on-rails-scaffold-%3Ftmpl=component&amp;print=1&amp;layout=default&amp;page=.html#" style="outline: medium none;">↑ Top</a></div>
+            <!-- AddThis Button END -->
+
+			</div>
+</div>
+
+						</div>
+					</div>
+				</div>
+			</div>
+		</body>
+	</html>

@@ -1,0 +1,399 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="zh-tw" lang="zh-tw" >
+<head>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<link rel="shortcut icon" href="images/favicon.ico" />
+	  <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+  <meta name="robots" content="index, follow" />
+  <meta name="keywords" content="OSSFNL714" />
+  <meta name="title" content="大家都看不見 世界就很安全？談 Security by Obscurity 的資訊安全觀" />
+  <meta name="description" content="◎ 本篇文章傳達筆者意見，不代表自由軟體鑄造場電子報立場，回覆意見請見部落格原文網址：https://blog.ofset.org/ckhung/index.php?post/111c趨勢科技張明正董事長日前接受彭博社訪問時表示：Android 系統因為開放原始碼，所以沒有蘋果下  iPho ne 平台來得安全。這和幾年前李" />
+  <meta name="generator" content="" />
+  <title>大家都看不見 世界就很安全？談 Security by Obscurity 的資訊安全觀 - OpenFoundry</title>
+  <link href="favicon.ico" rel="shortcut icon" type="image/x-icon" />
+  <link rel="stylesheet" href="components/com_gantry/css/gantry.css" type="text/css" />
+  <link rel="stylesheet" href="components/com_gantry/css/grid-12.css" type="text/css" />
+  <link rel="stylesheet" href="components/com_gantry/css/joomla.css" type="text/css" />
+  <link rel="stylesheet" href="templates/rt_quantive_j15/css/joomla.css" type="text/css" />
+  <link rel="stylesheet" href="templates/rt_quantive_j15/css/style1.css" type="text/css" />
+  <link rel="stylesheet" href="templates/rt_quantive_j15/css/light-body.css" type="text/css" />
+  <link rel="stylesheet" href="templates/rt_quantive_j15/css/demo-styles.css" type="text/css" />
+  <link rel="stylesheet" href="templates/rt_quantive_j15/css/template.css" type="text/css" />
+  <link rel="stylesheet" href="templates/rt_quantive_j15/css/typography.css" type="text/css" />
+  <link rel="stylesheet" href="templates/rt_quantive_j15/css/fusionmenu.css" type="text/css" />
+  <style type="text/css">
+    <!--
+#rt-main-surround ul.menu li.active > a, #rt-main-surround ul.menu li.active > .separator, #rt-main-surround ul.menu li.active > .item, #rt-main-surround .square4 ul.menu li:hover > a, #rt-main-surround .square4 ul.menu li:hover > .item, #rt-main-surround .square4 ul.menu li:hover > .separator, .roktabs-links ul li.active span {color:#0088B5;}
+a, #rt-main-surround ul.menu a:hover, #rt-main-surround ul.menu .separator:hover, #rt-main-surround ul.menu .item:hover {color:#0088B5;}
+    -->
+  </style>
+  <script type="text/javascript" src="components/com_jcomments/js/jcomments-v2.1.js%3Fv=2"></script>
+  <script type="text/javascript" src="components/com_jcomments/libraries/joomlatune/ajax.js"></script>
+  <script type="text/javascript" src="media/system/js/mootools.js"></script>
+  <script type="text/javascript" src="media/system/js/caption.js"></script>
+  <script type="text/javascript" src="components/com_gantry/js/gantry-buildspans.js"></script>
+  <script type="text/javascript" src="components/com_gantry/js/gantry-inputs.js"></script>
+  <script type="text/javascript" src="templates/rt_quantive_j15/js/jquery.cookie.js"></script>
+  <script type="text/javascript" src="modules/mod_roknavmenu/themes/fusion/js/fusion.js"></script>
+  <script type="text/javascript" src="modules/mod_ofssologin/js/ofssologin.js"></script>
+  <script type="text/javascript">
+
+			window.addEvent('domready', function() {
+				var modules = ['rt-block'];
+				var header = ['h3','h2','h1'];
+				GantryBuildSpans(modules, header);
+			});
+		InputsExclusion.push('.content_vote','#rt-popup')
+		        window.addEvent('load', function() {
+					new Fusion('ul.menutop', {
+						pill: 0,
+						effect: 'slide and fade',
+						opacity: 1,
+						hideDelay: 500,
+						centered: 0,
+						tweakInitial: {'x': -2, 'y': 0},
+        				tweakSubsequent: {'x': 0, 'y': -14},
+						menuFx: {duration: 200, transition: Fx.Transitions.Sine.easeOut},
+						pillFx: {duration: 400, transition: Fx.Transitions.Back.easeOut}
+					});
+	            });
+  </script>
+<!-- <script type="text/javascript" src="/sso/javascripts/langsync.js"></script> -->
+<!-- <script src="/templates/rt_quantive_j15/js/ossf.js"></script> -->
+<script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-4136519-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
+</head>
+	<body  class="backgroundlevel-low backgroundstyle-style8 bodylevel-med bodystyle-light cssstyle-style1 logostyle-dark font-family-helvetica font-size-is-default menu-type-fusionmenu col12 ">
+		<div id="rt-main-background">
+			<div class="rt-container">
+																<div id="rt-header">
+					<div class="rt-grid-7 rt-alpha">
+    			<div class="rt-block">
+    	    	<a href="index.html" id="rt-logo"></a>
+    		</div>
+	    
+</div>
+<div class="rt-grid-5 rt-omega">
+                    <div class="square9">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<div class="ofssologin_square9"><a href="index.html">登入</a>&nbsp;&nbsp|&nbsp;&nbsp;<span><a href="en/news/8266%3Ftask=view.html" ><span lang="en" xml:lang="en">English</span></a></li></ul></span><!--Joom!fish V2.0.4 (Lightning)-->
+<!-- &copy; 2003-2009 Think Network, released under the GPL. -->
+<!-- More information: at http://www.joomfish.net -->
+<div class="ofssologin_search_square9">
+  <form id="of_search" action="https://www.openfoundry.org/of/openfoundry/search" method="get" onsubmit="of_search(); return false;">
+    <select id="of_search_type">
+      <option value="Projects"> 專案 </option>
+      <option value="Content"> 文章 </option>
+      <option value="People"> 人才 </option>
+    </select>
+    <input id="query" name="query" id="mod_search_searchword" maxlength="50" alt="search" class="inputbox" type="text" size="28" value="search..."  onblur="if(this.value=='') this.value='search...';" onfocus="if(this.value=='search...') this.value='';" />
+    <input type="hidden" name="commit" value="search" />
+  </form>
+</div></div>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		
+</div>
+					<div class="clear"></div>
+				</div>
+																<div id="rt-navigation"><div id="rt-navigation2"><div id="rt-navigation3">
+					
+<div class="nopill">
+	<ul class="menutop level1 " >
+						<li class="item1 root" >
+					<a class="orphan item bullet" href="index.html"  >
+				<span>
+			    				首頁				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item32 root" >
+					<a class="orphan item bullet" href="archived.html"  >
+				<span>
+			    				專案				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item186 root" >
+					<a class="orphan item bullet" href="tw/community.html"  >
+				<span>
+			    				Who&#039;s Who				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item4 active root" >
+					<a class="orphan item bullet" href="tw/news.html"  >
+				<span>
+			    				新聞				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item5 root" >
+					<a class="orphan item bullet" href="tw/law-and-licensing.html"  >
+				<span>
+			    				法律源地				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item3 root" >
+					<a class="orphan item bullet" href="tw/activities.html"  >
+				<span>
+			    				活動				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item2 root" >
+					<a class="orphan item bullet" href="tw/resourcecatalog%3FName=Value.html"  >
+				<span>
+			    				資源表列				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item45 root" >
+					<a class="orphan item bullet" href="tw/about.html"  >
+				<span>
+			    				關於				   
+				</span>
+			</a>
+			
+			
+	</li>	
+				</ul>
+</div>
+
+				    <div class="clear"></div>
+				</div></div></div>
+								<div class="rt-surround"><div class="rt-surround2"><div class="rt-surround3">
+										<div id="rt-showcase-section">
+												<div id="rt-showcase">
+							<div class="rt-grid-12 rt-alpha rt-omega">
+    		<div class="clear"></div>
+		
+		
+                <div class="close-note">
+                    <div class="rt-block">
+               					<div class="module-content">
+                	<div style="font-size:medium; background-image:linear-gradient(120deg,#159957,#4298b2);color:white;padding:20px;margin:-10px -18px;">感謝您對「自由軟體鑄造場」的支持與愛護，十多年來「自由軟體鑄造場」受中央研究院支持，並在資訊科學研究所以及資訊科技創新研究中心執行，現已完成階段性的任務。 本網站預計持續維運至 2021年底，網站內容基本上不會再更動。<br />也紀念我們永遠的朋友 李士傑先生（Shih-Chieh Ilya Li）。</div>				</div>
+            </div>
+                </div>
+		
+</div>
+							<div class="clear"></div>
+						</div>
+																	</div>
+															<div id="rt-main-surround">
+												<div id="rt-breadcrumbs">
+								<div class="rt-breadcrumb-surround">
+		<a href="index.html" id="breadcrumbs-home"></a>
+		<span class="breadcrumbs pathway">
+<span class="no-link">新聞</span></span>
+	</div>
+	
+							<div class="clear"></div>
+						</div>
+																							              <div id="rt-main" class="sa3-mb9">
+                <div class="rt-main-inner">
+                    <div class="rt-grid-9 rt-push-3">
+                                                <div class="rt-block">
+                            							<div class="square1">
+							<div class="rt-module-surround">
+								<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+								<div class="rt-module-inner">
+		                            <div id="rt-mainbody">
+		                                
+<div class="rt-joomla ">
+	<div class="rt-article">
+		
+				<div class="rt-headline"><h1 class="rt-article-title">大家都看不見 世界就很安全？談 Security by Obscurity 的資訊安全觀</h1>		</div>
+		<div class="clear"></div>
+		
+		
+		
+				<div class="rt-articleinfo">
+						<div class="rt-article-icons">
+								<a href="tw/news/8266--security-by-obscurity-windows-%3Ftmpl=component&amp;print=1&amp;page=.html" title="列印" onclick="window.open(this.href,'win2','status=no,toolbar=no,scrollbars=yes,titlebar=no,menubar=no,resizable=yes,width=640,height=480,directories=no,location=no'); return false;" rel="nofollow"><span class="icon print"></span></a>																</div>
+			
+			<span class="rt-date-posted">
+						建立日期			2011-03-03 23:26						&nbsp;&nbsp;&nbsp;&nbsp;						最近更新在 2011-05-19 17:03						</span>
+
+						<span class="rt-author">
+				作者是 洪朝貴			</span>
+				
+					</div>
+		
+		
+		◎ 本篇文章傳達筆者意見，不代表自由軟體鑄造場電子報立場，回覆意見請見部落格原文網址：<a href="https://blog.ofset.org/ckhung/index.php?post/111c" target="_blank">https://blog.ofset.org/ckhung/index.php?post/111c</a><br /><br />趨勢科技張明正董事長日前接受彭博社訪問時<a href="https://www.epochtimes.com/b5/11/1/12/n3140154.htm" target="_blank">表示</a>：Android 系統因為開放原始碼，所以沒有蘋果下 iPhone 平台來得安全。這和幾年前<a href="https://www.epochtimes.com/b5/6/11/26/n1262684.htm" target="_blank">李家同校長發表的看法</a>類似：「開放型的操作系統雖然有很多優點，但極容易被人不法侵入，而且侵入以後，常可以通行無阻，如入無人之境。」這種「security by obscurity」的資訊安全觀，不僅挑戰著資訊安全專家和美國白宮的智慧，也挑戰著事實。<br /> 
+
+<br />國際資訊安全專家的看法，與臺灣資訊界兩位大老正好相反。他們認為：好的演算法，應該攤在陽光下，讓所有資訊專家檢驗。如果沒有專家看得出漏洞，被檢驗的演算法才比較可能是安全的。上述資訊安全的基本原則，叫做 <a href="https://en.wikipedia.org/wiki/Kerckhoffs%27s_Principle" target="_blank">Kerckhoffs' principle</a>。我在<a href="https://blog.ofset.org/ckhung/index.php?post/09ae" target="_blank">「見不得人的 DRM 演算法」</a>一文當中，列舉過一些電腦高手對於這個議題的觀點。這裡再補充一個：近年來活躍於密碼學舞臺的世界知名資訊安全專家 Bruce Schneier 曾經<a href="https://www.schneier.com/crypto-gram-9909.html#OpenSourceandSecurity" target="_blank">說過</a>：<br /><br />
+<blockquote>身為密碼與資安專家，我一直搞不懂開放原始碼議題為什麼會引起這麼大的騷動。在密碼學界，開放原始碼是資訊安全的先決條件；過去數十年來一直都是如此。公開的安全當然比私密的安全更安全：不論是加解密演算法、安全協訂、資安原始碼皆然。對我們來說，開放原始碼不只是一種商業模式，它根本就是工程師應有的聰明態度。</blockquote>
+<br />如果資安專家談的太抽象、太理論，那就讓我們談談真實世界所發生的資安問題吧。資訊界兩位大老談的都是作業系統；不過對於一般使用者而言，更需要謹慎守護的第一道防線，可能是雲端年代最重要的代步工具－瀏覽器。去年年初 Google 中國被入侵，<a href="https://blog.ofset.org/ckhung/index.php?post/102a" target="_blank">臺灣多數大學基於其對瀏覽器的宗教狂熱，一直不敢公開談論這個資訊安全問題</a>。到了去年年底，IE 瀏覽器的零時差攻擊，而中韓潰客很可能用到這個漏洞，導致<a href="https://blog.ofset.org/ckhung/index.php?post/10bb" target="_blank">行政院網站遭到惡意攻繫</a>，再次突顯 IE 瀏覽器的資安問題。關心資訊安全的兩位大老，只批評「目前仍處於小眾的作業系統」的資訊安全；但對於 IE 所造成的這兩個影響既深且廣的資訊安全事件、對於眾多強迫用戶使用破敗舊版 IE 的<a href="https://people.ofset.org/~ckhung/g/tag.php?q=%E7%B6%B2%E7%AB%99%E8%87%AA%E6%AE%98" target="_blank">自殘網站</a>、對於至今沒有具體因應作為的資訊學界與資訊產業，卻反而沒有提出任何建議，這令人十分失望。<br /><br />「還好我的電腦沒有被入侵。」那可能是你的感覺。今日最大規模的資安問題－<a href="https://192.83.193.18/dorm/know-botnet.html" target="_blank">botnet 殭屍網路</a>－最可怕的地方，在於被入侵的受害用戶仍舊能夠繼續正常使用電腦，因而經常完全不自覺。操作殭屍網路的<a href="https://antbsd.twbbs.org/~ant/wordpress/?p=148" target="_blank"><span style="text-decoration: line-through;">駭客</span>潰客</a>入侵你的電腦，用意多半不在你的資料，而在徵召你的電腦參與大規模的集體攻擊。他當然不希望驚動「電腦被徵召」的受害者，這樣那部電腦才會持續留在線上隨時待命－等待他發動攻擊金融機構或政府機關的命令。<br /><br /><a href="https://www.csoonline.com/article/491615/usa-and-ie-number-1-for-botnet-mayhem" target="_blank">殭屍網路的最重要傳染途徑，就是 IE 了</a>。不過，IE 的用戶人口最多，所以光看這個數字還不足以說明 IE 比較不安全。Firefox 用戶的電腦當然也有機會被徵召進殭屍網路。拿上面連結的數據和 <a href="https://cybernetnews.com/browser-os-stats-for-january-2009-whats-going-on-microsoft/" target="_blank">2009 年瀏覽器市佔率</a>對照並相除，會發現：<strong>IE 與 Firefox 的中鏢率比值為 5:3。</strong>真的嗎？大家都看不見 IE 的原始碼，所以封閉原始碼的 IE 真的就比開放原始碼的 Firefox 更安全嗎？<br /><br />當然，挑戰 Kerckhoffs 原理的資訊界兩位大老，談的都是作業系統，而不是瀏覽器。那更好，就來談談作業系統的中鏢率吧。「IE 助長殭屍網路」那篇文章裡面，沒有作業系統相關數據，無法定量分析。搜尋 Linux botnet，發現 2009 年出現首宗（似乎也是唯一的一宗）Linux 殭屍網路事件。被入侵的，並不是一般用戶的電腦。一般 Linux 用戶的電腦，<a href="https://www.itworld.com/security/77499/first-linux-botnet" target="_blank">需要以個案方式手動入侵</a>，對於經營殭屍網路的潰客來說，不符合經濟效益。<a href="https://www.eweek.com/c/a/Security/The-First-Linux-Botnet-626424/" target="_blank">被入侵的，是沒有設定密碼的某些網路分享器</a> 。<strong>不管 Windows 桌機的中鏢率是否真的高達<a href="https://arstechnica.com/old/content/2007/01/8707.ars" target="_blank"> 25%</a>，至少可以確定 linux 桌機的中鏢率，是零</strong>。也就是說，我在 Linux 下生活了 15 年，到目前為止，我的電腦還沒有榮幸被徵召加入殭屍網路。<br /><br />這個例子除了說明使用開放原始碼的 Linux 遠比使用封閉原始碼的 Windows 安全之外，還提醒我們三件事。第一，大多數諸如網路分享器之類的裝置，之所以採用開放原始碼的 Linux，而不是採用封閉原始碼的 Windows，資訊安全當然也是重要的考量之一。如果 Linux 不安全，資訊廠商當然寧可花錢取得授權，改用「比較安全的 Windows」。第二，系統再怎麼安全，產品再怎麼優，如果用戶沒有資訊安全意識－例如連密碼都沒設定－那麼一樣會曝露在風險當中。一位負責任的資訊安全專家，會提醒大眾要提高資訊安全意識，不要仰賴任何產品－防毒軟體也好、Linux 也好－而不是淡化嚴重的資安問題，甚至扭曲事實，找不相關（甚至正好顛倒是非）的藉口來搪塞。第三，在這個案例裡面，只有特定型號的分享器受害。這再次驗證了資安專家早就提出的建議：<strong>類似生物多樣性的「作業系統/瀏覽器多元化」，有助於提升網路社會整體的資訊安全。</strong>詳見 <a href="https://www.computerworld.com/s/article/87470/Improved_Security_Through_IT_Diversity" target="_blank">Schneier 的專訪</a>與 <a href="https://portal.acm.org/citation.cfm?id=1030101" target="_blank">O'Donnell 與 Sethu</a> 的學術論文摘要。一位真正關心社會整體資訊安全的專家，必須要關心這個議題。<br /><br />李校長的專長是演算法，而不是資訊安全。當然，一位學術成就遠低於李校長的部落客，讀者也不需要將他的話照單全收。問問搜尋引擎吧：請看看「李家同 演算法」和「李家同 資訊安全」，會搜出什麼樣的天壤之別。相較於他令人敬佩的學術成就，和許多技術文章的高水準，李校長那篇文章的專業程度，令向來敬佩他的我訝異得說不出話來。以他對於資訊教育界及對於社會整體龐大的影響力，卻對大眾提出違背事實的資訊安全建議，非但沒有協助自由軟體界<a href="https://people.ofset.org/~ckhung/s/wall.php" target="_blank">讓數位高牆倒下</a>，反而協助微軟強化數位高牆，令人感到多重的不安與十分的不解。讓數位高牆倒下<br /><br />至於張董顛倒黑白的動機，就很容易理解了；甚至可以得到一點點諒解。張董的任務是賺錢，而不是拯救世界。這不是在指責趨勢科技，而是要請消費者認清資本主義社會的現實－不論你喜不喜歡。2005 年 Sony 藉由音樂光碟入侵消費者電腦的時候（請搜尋 Sony rootkit），部落客於 10 月底揭露其劣行，一開始主流媒體都不願意報導；而資訊安全界則只有 F-Secure 與 Sysinternals 兩家小的防毒軟體公司積極回應。諸如 McAfee 與 Symantec 一開始都不願意真的移除入侵的程式碼；他們甚至還替 Sony 的行為辯解，誤導消費者。至於趨勢科技，則<a href="https://www.zdnet.com/blog/security/trend-micro-ships-free-rootkit-buster/14" target="_blank">遲至 2006 年才低調推出反安裝工具</a>。難怪 Sneier <a href="https://www.schneier.com/blog/archives/2005/11/sonys_drm_rootk.html" target="_blank">這樣評論</a>這些資訊安全大廠：「Sony rootkit 事件突顯了什麼呢？說得好聽一點，這些公司無能；說得不客氣一點，那是欠缺專業倫理呀。」回到這次張董發言事件，難怪部落客們會立即<a href="https://digitizor.com/2011/01/14/trend-micro-open-source" target="_blank">反駁</a>，會調侃張董是<a href="https://m.techeye.net/security/trend-micro-attacks-open-source" target="_blank">資訊不安全專家</a>，認為他可能只是<a href="https://www.muktware.com/b/35/344/14/2011/670" target="_blank">害怕將來 Windows 退流行，就沒生意可做</a>，才會出此下策。詢問報 (the Inquirer) <a href="https://www.theinquirer.net/inquirer/news/1937109/trend-micro-chief-claims-source-software-insecure" target="_blank">倒是打趣地指出</a>，趨勢科技不用太擔心自由軟體用戶的批評－趨勢科技不會「失去」這些客戶，因為他們從來就不需要買防毒軟體。<br /><br />但是 Sony 事件對我們的啟發還不僅止於此。如果 Sony 會在你的電腦開設後門，那麼微軟與蘋果會不會？如果按照張董和李校長的建議，大家都把頭埋到沙子裡，反而只剩下微軟和蘋果可以看得見一切，那麼這個社會將會更加安全，還是更加危險？這不是假設性的問題，這是發生過很多次，甚至現在還存在於你的（以及可能存在於兩位資訊大老的）電腦、手機、隨身聽裡面的事實。請搜尋「Windows phone home」、「Windows stealthy update」、「Windows 盜版警察」、「Apple secret url」、「MobileMe secretly」。這裡的重點已經不是潰客入侵。這裡的重點是：<strong>如果「收你錢、不給你看原始碼、告訴你把頭埋在沙子裡比較安全」的資訊廠商，恰恰就是入侵你電腦的潰客呢？</strong>封閉原始碼真的比較安全嗎？到底對誰比較安全呢？<br /><br />最後，提醒消費大眾幾件事。第一，請不要為了合理化自己的「選擇」，而強迫自己「相信」謊言。我選擇使用 Ubuntu，Slax，與 SimplyMEPIS，是因為這些版本的 Linux 方便性等等諸多考量；但並不會因此而天真地認為我的選擇，就一定也比其他版本的 Linux 或比 BSD 更安全。<a href="https://blog.ofset.org/ckhung/index.php?post/10ab" target="_blank">盲目的品牌忠誠，只會讓你變成任人宰割的肥羊</a>。「我可以繼續使用封閉原始碼的 Windows 嗎？」如果因為環境的現實因素不配合，身旁找不到<a href="https://blog.ofset.org/ckhung/index.php?post/101c" target="_blank">熱心的小學三年級 Linux 玩家</a>可以幫忙你解決問題，那當然也只好繼續用 Windows。哦，要記得安裝防毒軟體。如果我必須用 Windows, 會比較相信開放原始碼的 <a href="https://www.clamwin.com/" target="_blank">ClamWin</a>；但是請不要因為繼續用 Windows, 就跟著催眠自己相信那些「自身利益與社會利益」衝突的公司。「提出有利於社會整體資訊安全的建議－例如丟棄 IE－會不會與我自身的利益衝突呢？」一家以營利為目的的公司會怎麼做？消費者應該要有智慧判斷。如果我是防毒軟體公司的董事長，我也不敢保證我的表現會比張董事長展現更高的道德良知與社會責任。第二，沒有任何「產品」是完全安全的；重點是「態度與習慣」。（Schneier 的原文是：<a href="https://www.schneier.com/crypto-gram-0005.html" target="_blank">Security is a process, not a product. </a>。不過在此處，「態度與習慣」可能比較能夠抓住其原意。）第三，請不要盡信主流媒體－特別是臺灣的資訊媒體。當然，部落客也可能有自己的偏見、利害關係、甚至被收買（請搜尋「國光部落客」）；不過，至少從很多部落客的不同意見裡面，你可以看到比較全面的、未經言論管制的多元觀點。這個年代，網路搜尋的能力很重要。請搜尋比較「白宮 Drupal」和「White House Drupal」、請新聞搜尋比較「俄國 Linux」和「Russia Linux」、你不僅會看到外國改用開放原始碼的自由軟體的趨勢，也會同時看到臺灣多數主流資訊媒體對於這一塊重要趨勢的噤聲。<br /><br />美國許多政府部門諸如國防部、能源部、健康部、國安部、交通部等等單位<a href="https://www.prweb.com/releases/2011/01/prweb4969554.htm" target="_blank">改用自由軟體的趨勢</a>是否值得學習？ARM 與 Linux 是否真的將<a href="https://www.guardian.co.uk/technology/2011/jan/07/microsoft-arm-deal-for-windows-analysis" target="_blank">終結</a>微軟與 Intel 的壟斷？<a href="https://www.zdnet.com.tw/news/ce/0,2000085674,20148638,00.htm" target="_blank">Android</a> 會不會就是未來的大勢所趨？<a href="https://people.ofset.org/~ckhung/g/tag.php?q=%E5%BE%AE%E8%BB%9F%E6%BD%B0%E5%A0%A4" target="_blank">微軟真的就要潰堤了嗎？</a>不論這些問題的答案是肯定或否定的，至少在看過這些文章以及用您自己智慧搜尋到的結果之後，你會更清楚地確認：<strong>眾人－包含具有實戰經驗的真正資安專家－的智慧認為：採用看得見原始碼的自由軟體，比較有利於資訊安全。</strong>Security by obscurity is no security.<br />
+			<!-- Show relate article -->
+				<!-- end -->
+		<div class="article_note">
+		<!-- Add tags use metakey, and show OSSF Newsletter tag: OSSFNL+NUM-->
+		<br><br> <hr style='border: 1px dashed #D2DADB;'><b>自由軟體鑄造場電子報&nbsp;:</b>&nbsp;<a href='previous-issue%3Ftask=view&amp;id=714.html'>第 168 期 以 Snort 實作入侵偵測系統</a><br>				<!-- End -->
+					<br>
+					<b>分類: </b><a href="tw/foss-forum.html">				自由專欄					</a>				</div>
+			 <!-- AddThis Button BEGIN ID 3001 is the front page article -->
+     			<br><br>
+       <div class="addthis_toolbox addthis_default_style addthis_32x32_style">
+       <a class="addthis_button_preferred_1"></a>
+       <a class="addthis_button_preferred_2"></a>
+       <a class="addthis_button_preferred_3"></a>
+       <a class="addthis_button_preferred_4"></a>
+       <a class="addthis_button_compact"></a>
+       <a class="addthis_counter addthis_bubble_style"></a>
+       </div>
+       <script type="text/javascript">var addthis_config = {"data_track_clickback":true};</script>
+       <script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js#pubid=openfoundry"></script>
+       <!-- AddThis Button END -->
+     <br>
+		<div class="totop" ><a class="rt-totop" href="index.php%3Foption=com_content&amp;task=view&amp;id=8266&amp;Itemid=4%3Bisletter=1.html#" style="outline: medium none;">↑ Top</a></div>
+            <!-- AddThis Button END -->
+
+			</div>
+</div>
+
+		                            </div>
+									<div class="clear"></div>
+								</div>
+								<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+							</div>
+							</div>
+                                                    </div>
+                                            </div>
+                                <div class="rt-grid-3 rt-pull-9">
+                <div id="rt-sidebar-a">
+                                    <div class="square4">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<ul class="menu"><li class="item56"><a href="tw/previous-issue.html"><span>電子報總覽</span></a></li><li class="item55"><a href="tw/about-newsletter.html"><span>關於本報</span></a></li></ul>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<ul class="menu"><li class="item115"><a href="tw/foss-news.html"><span>源碼新聞</span></a></li><li class="item141"><a href="tw/case-job.html"><span>接案 / 工作</span></a></li></ul>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+        	                <div class="square1">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-title"><h2 class="title">專欄總覽</h2></div>
+						<div class="clear"></div>
+		                						<div class="module-content">
+		                	<ul class="menu"><li class="item37"><a href="tw/tech-column.html"><span>技術專欄</span></a></li><li class="item40"><a href="tw/foss-programs.html"><span>源碼秘技</span></a></li><li class="item35"><a href="tw/legal-article-.html"><span>法律專欄</span></a></li><li class="item154"><a href="tw/foss-forum.html"><span>自由專欄</span></a></li><li class="item162"><a href="tw/enterprise-application.html"><span>企業應用</span></a></li><li class="item44"><a href="tw/foss-projects.html"><span>源碼專案</span></a></li></ul>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		                <div class="square1">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<p style="text-align: center;"><a href="news%3Fformat=feed&amp;type=rss" target="_black"><img src="images/M_images/news-rss-feed.png" border="0" /></a><br /><a href="https://www.openfoundry.org/rss-feed/Newsletter" target="_black"><img src="images/M_images/newsletter-rss-feed.png" border="0" /></a></p>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		
+                </div>
+            </div>
+
+                    <div class="clear"></div>
+                </div>
+            </div>
+																													</div>
+										<div id="rt-copyright">
+						<div class="rt-grid-12 rt-alpha rt-omega">
+                        <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<div id="desktop-mobile-version-switch"><span id="mobile-version" class="version-switch"><a href="index.php%3Foption=com_content&amp;task=view&amp;id=8266&amp;Itemid=4%3Bisletter=1.html#">行動版</a></span></div>
+自由軟體鑄造場 製作 最佳瀏覽狀態：IE7或Firefox2.0以上 (建議使用Firefox) ‧ 解析度1024*768 <br /> <strong>E-Mail</strong>：<a href="mailto:contact@openfoundry.org">contact@openfoundry.org</a> <strong>Address</strong>：台北市南港區研究院路2段128號 中央研究院資訊科學研究所 . <a href="privacy-policy.html">隱私權條款</a>. <a href="terms-of-use.html">使用條款</a><span style="position: relative; top: 8px; margin-top: -8px;"> <a href="about/8101.html"><img src="images/M_images/rss-feed-all.png" border="0" /></a></span>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+        	
+</div>
+						<div class="clear"></div>
+					</div>
+					<div class="rt-footer-bottom-wrap"><div class="rt-footer-bottom"><div class="rt-footer-bottom2"><div class="rt-footer-bottom3"></div></div></div></div>
+									</div></div></div>
+				<div class="rt-surround-bottom"><div class="rt-surround-bottom2"><div class="rt-surround-bottom3"></div></div></div>
+							</div>
+		</div>
+		<!--
+		<script id="aptureScript">
+						(function (){var a=document.createElement("script");a.defer="true";a.src="http://www.apture.com/js/apture.js?siteToken=vsJttrn";document.getElementsByTagName("head")[0].appendChild(a);})();
+     </script>
+-->
+
+<!-- Piwik -->
+<!-- 			<script type="text/javascript">
+			  var _paq = _paq || [];
+		  _paq.push(["trackPageView"]);
+		  _paq.push(["enableLinkTracking"]);
+
+		    (function() {
+			        var u=(("https:" == document.location.protocol) ? "https" : "https") + "://www.openfoundry.org/piwik/";
+				    _paq.push(["setTrackerUrl", u+"piwik.php"]);
+				    _paq.push(["setSiteId", "1"]);
+				        var d=document, g=d.createElement("script"), s=d.getElementsByTagName("script")[0]; g.type="text/javascript";
+				        g.defer=true; g.async=true; g.src=u+"piwik.js"; s.parentNode.insertBefore(g,s);
+					  })();
+		  </script> -->
+<!-- End Piwik Code -->
+	</body>
+</html>

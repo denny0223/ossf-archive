@@ -1,0 +1,113 @@
+	<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+	<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-gb" lang="en-gb" >
+		<head>
+			  <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+  <meta name="robots" content="noindex, nofollow" />
+  <meta name="keywords" content="OSSFNL847" />
+  <meta name="title" content="臭蟲不一定隨機出現" />
+  <meta name="description" content="◎本文翻譯自 Dr. Dobb's bloggers，原作者為 Andrew Koenig：https://www.drdobbs.com/cpp/not-all- bugs-ar e-random/240165035 上星期我開始討論起白箱測試 (white-box testing)，由於有時候從外面很難一眼看出軟體是如何出錯的，因此這個方法有其重要性。" />
+  <meta name="generator" content="" />
+  <title>臭蟲不一定隨機出現</title>
+  <link href="../../favicon.ico" rel="shortcut icon" type="image/x-icon" />
+  <link rel="stylesheet" href="../../components/com_gantry/css/gantry.css" type="text/css" />
+  <link rel="stylesheet" href="../../components/com_gantry/css/grid-12.css" type="text/css" />
+  <link rel="stylesheet" href="../../components/com_gantry/css/joomla.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/joomla.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/style1.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/light-body.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/demo-styles.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/template.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/typography.css" type="text/css" />
+  <style type="text/css">
+    <!--
+#rt-main-surround ul.menu li.active > a, #rt-main-surround ul.menu li.active > .separator, #rt-main-surround ul.menu li.active > .item, #rt-main-surround .square4 ul.menu li:hover > a, #rt-main-surround .square4 ul.menu li:hover > .item, #rt-main-surround .square4 ul.menu li:hover > .separator, .roktabs-links ul li.active span {color:#0088B5;}
+a, #rt-main-surround ul.menu a:hover, #rt-main-surround ul.menu .separator:hover, #rt-main-surround ul.menu .item:hover {color:#0088B5;}
+    -->
+  </style>
+  <script type="text/javascript" src="../../components/com_jcomments/js/jcomments-v2.1.js%3Fv=2"></script>
+  <script type="text/javascript" src="../../components/com_jcomments/libraries/joomlatune/ajax.js"></script>
+  <script type="text/javascript" src="../../media/system/js/mootools.js"></script>
+  <script type="text/javascript" src="../../media/system/js/caption.js"></script>
+  <script type="text/javascript" src="../../components/com_gantry/js/gantry-buildspans.js"></script>
+  <script type="text/javascript" src="../../components/com_gantry/js/gantry-inputs.js"></script>
+  <script type="text/javascript">
+
+			window.addEvent('domready', function() {
+				var modules = ['rt-block'];
+				var header = ['h3','h2','h1'];
+				GantryBuildSpans(modules, header);
+			});
+		InputsExclusion.push('.content_vote','#rt-popup')
+  </script>
+		</head>
+		<body  class="backgroundlevel-low backgroundstyle-style8 bodylevel-med bodystyle-light cssstyle-style1 logostyle-dark font-family-helvetica font-size-is-default menu-type-fusionmenu col12 ">
+			<div id="rt-main-surround">
+				<div class="rt-container">
+					<div class="rt-block">
+						<div id="rt-mainbody">
+					    	
+<div class="rt-joomla ">
+	<div class="rt-article">
+		
+				<div class="rt-headline"><h1 class="rt-article-title">臭蟲不一定隨機出現</h1>		</div>
+		<div class="clear"></div>
+		
+		
+		
+				<div class="rt-articleinfo">
+						<div class="rt-article-icons">
+				<a href="9187-2014-03-06-02-50-26%3Ftmpl=component&amp;print=1&amp;layout=default&amp;page=.html#" onclick="window.print();return false;"><span class="icon print"></span></a>									<span class="icon printscreen">
+						<a href="9187-2014-03-06-02-50-26%3Ftmpl=component&amp;print=1&amp;layout=default&amp;page=.html#" onclick="window.print();return false;"><img src="../../images/M_images/printButton.png" alt="Print"  /></a>					</span>
+							</div>
+			
+			<span class="rt-date-posted">
+						 Created at			Thursday, 06 March 2014 10:42						&nbsp;&nbsp;&nbsp;&nbsp;						Last Updated on Thursday, 06 March 2014 10:51						</span>
+
+						<span class="rt-author">
+				Written by 謝良奇／編譯			</span>
+				
+					</div>
+		
+		
+		<p>◎本文翻譯自 Dr. Dobb's bloggers，原作者為 Andrew Koenig：<br /><a target="_blank" href="https://www.drdobbs.com/cpp/not-all-bugs-are-random/240165035">https://www.drdobbs.com/cpp/not-all-bugs-are-random/240165035</a></p>
+<p>上星期我開始討論起白箱測試 (white-box testing)，由於有時候從外面很難一眼看出軟體是如何出錯的，因此這個方法有其重要性。</p>
+<p>白箱測試之所以重要還有另一個理由：透過觀察程式的結構，我們有時能預測出可能發生錯誤的情況。只看程式的外部行為也許不能發現這些情況。也就是說，我們可能忽略了檢查程式在這些特定情況下的行為是否正確。</p>
+
+<p>當然，這種狀況有某些容易預測。舉例來說，假如有個程式處理 n 個項目的集合，兩種顯而易見要測試的狀況就是 n = 0 與 n = 1。不過，其他類似狀況也許需要檢查程式內部。像是，只要程式依據程式輸入的某些面向，例如大小，來決定使用一種或多種演算法時，我們都應該確認這支程式在接近決策邊界雙邊時能順利運作。我看過相當多程式會對輸入資料行大小或姓名長度，設定長度的限制。在遇上與限制等長，或長度比限制多（或少）一個單位的輸入時，有太多這類程式就會出錯。如果你藉由查看程式碼了解有哪些限制，會讓測試接近這些限制的案例簡單許多。</p>
+<p>當程式偵測到發生問題並嘗試重複其作業時，是另一種可以加以預測的錯誤。例如說，如果發生的是永久性的故障時，該怎麼辦？程式會無限制重試下去嗎？我記得在到處都有網路的時代之前，有一支程式，會透過電話線把資料傳給另一台電腦。如果接收端的電腦回報錯誤，發送端電腦會結束連線，等一下，然後再次嘗試傳送資料。</p>
+<p>這套方式看來有效且穩固，足以應對傳輸錯誤。不過，程式作者不知道的是，為了節省資源，之後釋出的作業系統會對檔案大小設加上限。這個限制是可以設定的，不過其預設值太小，所以許多情況下用戶傳送的檔案會大於此預設值。如果發送端的檔案大於接收端的檔案大小限制，當檔案內容超過限制時，接收程式就會出錯，並以為發生 I/O 錯誤，然後回報給發送電腦。接著，發送端會關閉連線，等待，然後重試。接收端會建立暫存檔案收下這些資料，然後整件事會不斷重演。</p>
+<p>換句話說，增加限制檔案長度的作業系統功能，反而耗用更多資源。嘗試把一個檔案傳送到有小檔案大小限制的電腦，會造成傳送失敗的無限迴圈，阻礙兩台機器間的進一步通訊，同時緩慢地接收端的磁碟空間。</p>
+<p>雖然這些問題很嚴重，之所以進行白箱測試還有一個更為重要的理由：安全性。安全性臭蟲比起效能臭蟲，更難以在測試中發現的原因是，事先假設安全性臭蟲會被惡意利用。許多安全性臭蟲事實上是沒能正確實作“不論該程式輸入為何，都不應該做某件事”這種形式的需求。黑箱測試 (Black-box testing) 一般只能驗證程式會做什麼，而不是程式不會做什麼。不過，經由適當結合白箱測試與插碼測試 (instrumentation)，我們可以更有自信地宣稱，至少沒有某些特定類型的安全臭蟲存在。</p>
+			<!-- Show relate article -->
+				<!-- end -->
+		<div class="article_note">
+		<!-- Add tags use metakey, and show OSSF Newsletter tag: OSSFNL+NUM-->
+		<br><br> <hr style='border: 1px dashed #D2DADB;'><b>OSSF Newsletter&nbsp;:</b>&nbsp;<a href='../../previous-issue%3Ftask=view&amp;id=847.html'>第 237 期 Gnome、KDE 與 Cinnamon 的平鋪視窗控制</a><br>				<!-- End -->
+					<br>
+					<b>Category: </b><a href="../foss-forum.html">				FOSS Forum					</a>				</div>
+			 <!-- AddThis Button BEGIN ID 3001 is the front page article -->
+     			<br><br>
+       <div class="addthis_toolbox addthis_default_style addthis_32x32_style">
+       <a class="addthis_button_preferred_1"></a>
+       <a class="addthis_button_preferred_2"></a>
+       <a class="addthis_button_preferred_3"></a>
+       <a class="addthis_button_preferred_4"></a>
+       <a class="addthis_button_compact"></a>
+       <a class="addthis_counter addthis_bubble_style"></a>
+       </div>
+       <script type="text/javascript">var addthis_config = {"data_track_clickback":true};</script>
+       <script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js#pubid=openfoundry"></script>
+       <!-- AddThis Button END -->
+     <br>
+		<div class="totop" ><a class="rt-totop" href="9187-2014-03-06-02-50-26%3Ftmpl=component&amp;print=1&amp;layout=default&amp;page=.html#" style="outline: medium none;">↑ Top</a></div>
+            <!-- AddThis Button END -->
+
+			</div>
+</div>
+
+						</div>
+					</div>
+				</div>
+			</div>
+		</body>
+	</html>

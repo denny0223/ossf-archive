@@ -1,0 +1,616 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-gb" lang="en-gb" >
+<head>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<link rel="shortcut icon" href="../../images/favicon.ico" />
+	  <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+  <meta name="robots" content="index, follow" />
+  <meta name="keywords" content="GAE, Google App Engine, Google, PaaS, platform as a service, 雲端, python,OSSFNL766" />
+  <meta name="title" content="國民雲端－當 Python 遇上 GAE" />
+  <meta name="description" content="簡介 講到 PaaS (platform as a service)，我們很難忽略 Google 的 GAE (Google App Engine)，這個由近 10 年來的網路巨人在 2008 年推出的雲端平台，雖然在技術的定位與根本上和 Amazon 的 AWS 有著本質上的不同，在坊間卻常常被拿來討論比較。雖然對 GAE 的評價毀譽參半（請參考下列的「優缺點」部分），但 GAE" />
+  <meta name="generator" content="" />
+  <title>國民雲端－當 Python 遇上 GAE - OpenFoundry</title>
+  <link href="../../favicon.ico" rel="shortcut icon" type="image/x-icon" />
+  <link rel="stylesheet" href="../../components/com_jcomments/tpl/default/style.css%3Fv=10.css" type="text/css" />
+  <link rel="stylesheet" href="../../components/com_gantry/css/gantry.css" type="text/css" />
+  <link rel="stylesheet" href="../../components/com_gantry/css/grid-12.css" type="text/css" />
+  <link rel="stylesheet" href="../../components/com_gantry/css/joomla.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/joomla.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/style1.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/light-body.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/demo-styles.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/template.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/typography.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/fusionmenu.css" type="text/css" />
+  <style type="text/css">
+    <!--
+#rt-main-surround ul.menu li.active > a, #rt-main-surround ul.menu li.active > .separator, #rt-main-surround ul.menu li.active > .item, #rt-main-surround .square4 ul.menu li:hover > a, #rt-main-surround .square4 ul.menu li:hover > .item, #rt-main-surround .square4 ul.menu li:hover > .separator, .roktabs-links ul li.active span {color:#0088B5;}
+a, #rt-main-surround ul.menu a:hover, #rt-main-surround ul.menu .separator:hover, #rt-main-surround ul.menu .item:hover {color:#0088B5;}
+    -->
+  </style>
+  <script type="text/javascript" src="../../components/com_jcomments/js/jcomments-v2.1.js%3Fv=2"></script>
+  <script type="text/javascript" src="../../components/com_jcomments/libraries/joomlatune/ajax.js"></script>
+  <script type="text/javascript" src="../../media/system/js/mootools.js"></script>
+  <script type="text/javascript" src="../../media/system/js/caption.js"></script>
+  <script type="text/javascript" src="../../components/com_gantry/js/gantry-buildspans.js"></script>
+  <script type="text/javascript" src="../../components/com_gantry/js/gantry-inputs.js"></script>
+  <script type="text/javascript" src="../../templates/rt_quantive_j15/js/jquery.cookie.js"></script>
+  <script type="text/javascript" src="../../modules/mod_roknavmenu/themes/fusion/js/fusion.js"></script>
+  <script type="text/javascript" src="../../modules/mod_ofssologin/js/ofssologin.js"></script>
+  <script type="text/javascript">
+
+			window.addEvent('domready', function() {
+				var modules = ['rt-block'];
+				var header = ['h3','h2','h1'];
+				GantryBuildSpans(modules, header);
+			});
+		InputsExclusion.push('.content_vote','#rt-popup')
+		        window.addEvent('load', function() {
+					new Fusion('ul.menutop', {
+						pill: 0,
+						effect: 'slide and fade',
+						opacity: 1,
+						hideDelay: 500,
+						centered: 0,
+						tweakInitial: {'x': -2, 'y': 0},
+        				tweakSubsequent: {'x': 0, 'y': -14},
+						menuFx: {duration: 200, transition: Fx.Transitions.Sine.easeOut},
+						pillFx: {duration: 400, transition: Fx.Transitions.Back.easeOut}
+					});
+	            });
+  </script>
+<!-- <script type="text/javascript" src="/sso/javascripts/langsync.js"></script> -->
+<!-- <script src="/templates/rt_quantive_j15/js/ossf.js"></script> -->
+<script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-4136519-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
+</head>
+	<body  class="backgroundlevel-low backgroundstyle-style8 bodylevel-med bodystyle-light cssstyle-style1 logostyle-dark font-family-helvetica font-size-is-default menu-type-fusionmenu col12 ">
+		<div id="rt-main-background">
+			<div class="rt-container">
+																<div id="rt-header">
+					<div class="rt-grid-7 rt-alpha">
+    			<div class="rt-block">
+    	    	<a href="../../index.html" id="rt-logo"></a>
+    		</div>
+	    
+</div>
+<div class="rt-grid-5 rt-omega">
+                    <div class="square9">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<div class="ofssologin_square9"><a href="../../index.html">Login</a>&nbsp;&nbsp|&nbsp;&nbsp;<span><a href="../../tw/tech-column/8555-peoples-cloud-service-when-python-meets-gae.html" ><span lang="tw" xml:lang="tw">繁體中文</span></a></li></ul></span><!--Joom!fish V2.0.4 (Lightning)-->
+<!-- &copy; 2003-2009 Think Network, released under the GPL. -->
+<!-- More information: at http://www.joomfish.net -->
+<div class="ofssologin_search_square9">
+  <form id="of_search" action="https://www.openfoundry.org/of/openfoundry/search" method="get" onsubmit="of_search(); return false;">
+    <select id="of_search_type">
+      <option value="Projects"> Projects </option>
+      <option value="Content"> Content </option>
+      <option value="People"> People </option>
+    </select>
+    <input id="query" name="query" id="mod_search_searchword" maxlength="50" alt="search" class="inputbox" type="text" size="28" value="search..."  onblur="if(this.value=='') this.value='search...';" onfocus="if(this.value=='search...') this.value='';" />
+    <input type="hidden" name="commit" value="search" />
+  </form>
+</div></div>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		
+</div>
+					<div class="clear"></div>
+				</div>
+																<div id="rt-navigation"><div id="rt-navigation2"><div id="rt-navigation3">
+					
+<div class="nopill">
+	<ul class="menutop level1 " >
+						<li class="item1 root" >
+					<a class="orphan item bullet" href="../../index.html"  >
+				<span>
+			    				Home				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item32 root" >
+					<a class="orphan item bullet" href="../../archived.html"  >
+				<span>
+			    				Projects				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item186 root" >
+					<a class="orphan item bullet" href="../community.html"  >
+				<span>
+			    				Who&#039;s Who				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item4 root" >
+					<a class="orphan item bullet" href="../news.html"  >
+				<span>
+			    				News				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item5 root" >
+					<a class="orphan item bullet" href="../law-and-licensing.html"  >
+				<span>
+			    				Law &amp; Licensing				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item3 root" >
+					<a class="orphan item bullet" href="../activities.html"  >
+				<span>
+			    				Activities				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item2 root" >
+					<a class="orphan item bullet" href="../resourcecatalog.html"  >
+				<span>
+			    				Resource Catalog				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item45 root" >
+					<a class="orphan item bullet" href="../about.html"  >
+				<span>
+			    				About				   
+				</span>
+			</a>
+			
+			
+	</li>	
+				</ul>
+</div>
+
+				    <div class="clear"></div>
+				</div></div></div>
+								<div class="rt-surround"><div class="rt-surround2"><div class="rt-surround3">
+										<div id="rt-showcase-section">
+												<div id="rt-showcase">
+							<div class="rt-grid-12 rt-alpha rt-omega">
+    		<div class="clear"></div>
+		
+		
+                <div class="close-note">
+                    <div class="rt-block">
+               					<div class="module-content">
+                	<div style="font-size:medium; background-image:linear-gradient(120deg,#159957,#4298b2);color:white;padding:20px;margin:-10px -18px;">感謝您對「自由軟體鑄造場」的支持與愛護，十多年來「自由軟體鑄造場」受中央研究院支持，並在資訊科學研究所以及資訊科技創新研究中心執行，現已完成階段性的任務。 本網站預計持續維運至 2021年底，網站內容基本上不會再更動。<br />也紀念我們永遠的朋友 李士傑先生（Shih-Chieh Ilya Li）。</div>				</div>
+            </div>
+                </div>
+		
+</div>
+							<div class="clear"></div>
+						</div>
+																	</div>
+															<div id="rt-main-surround">
+												<div id="rt-breadcrumbs">
+								<div class="rt-breadcrumb-surround">
+		<a href="../../index.html" id="breadcrumbs-home"></a>
+		<span class="breadcrumbs pathway">
+<a href="../tech-column.html" class="pathway">Tech Column</a> <img src="../../templates/rt_quantive_j15/images/arrow.png" alt=""  /> <span class="no-link">國民雲端－當 Python 遇上 GAE</span></span>
+	</div>
+	
+							<div class="clear"></div>
+						</div>
+																							              <div id="rt-main" class="sa3-mb9">
+                <div class="rt-main-inner">
+                    <div class="rt-grid-9 rt-push-3">
+                                                <div class="rt-block">
+                            							<div class="square1">
+							<div class="rt-module-surround">
+								<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+								<div class="rt-module-inner">
+		                            <div id="rt-mainbody">
+		                                
+<div class="rt-joomla ">
+	<div class="rt-article">
+		
+				<div class="rt-headline"><h1 class="rt-article-title">國民雲端－當 Python 遇上 GAE</h1>		</div>
+		<div class="clear"></div>
+		
+		
+		
+				<div class="rt-articleinfo">
+						<div class="rt-article-icons">
+								<a href="8555-peoples-cloud-service-when-python-meets-gae%3Ftmpl=component&amp;print=1&amp;layout=default&amp;page=.html" title="Print" onclick="window.open(this.href,'win2','status=no,toolbar=no,scrollbars=yes,titlebar=no,menubar=no,resizable=yes,width=640,height=480,directories=no,location=no'); return false;" rel="nofollow"><span class="icon print"></span></a>																</div>
+			
+			<span class="rt-date-posted">
+						 Created at			Wednesday, 21 December 2011 09:24						&nbsp;&nbsp;&nbsp;&nbsp;						Last Updated on Wednesday, 04 January 2012 12:03						</span>
+
+						<span class="rt-author">
+				Written by Winston			</span>
+				
+					</div>
+		
+		
+		<h3>簡介</h3>
+<p>講到 PaaS (platform as a service)，我們很難忽略 Google 的 GAE (Google App Engine)，這個由近 10 年來的網路巨人在 2008 年推出的雲端平台，雖然在技術的定位與根本上和 Amazon 的 AWS 有著本質上的不同，在坊間卻常常被拿來討論比較。雖然對 GAE 的評價毀譽參半（請參考下列的「優缺點」部分），但 GAE 在雲端平台中的重要性可見一斑。</p>
+<p>在 GAE 中，可以使用的語言有兩個：Java 與 Python，雖然社群中有很多專精其他語言的高手會用各種方式掛上其他語言（比如說用 jRuby 掛 RoR 上去），但這些畢竟在官方版本中沒有支援。跟 Java 相比，Python 的確是個較冷門的語言，在 GAE 上面的速度也相對比 GAE 上面的 JVM 慢了一些，但是除了筆者個人對 python 的熱愛以外，GAE 其實對 Python 下了不小的功夫。先別說 Guido van Rossum－Python 的發明人此刻就坐在 Google 的辦公室裡思考 GAE 與 Python 的未來，Python 這個快速開發的語言真的會讓它的駕馭者省掉非常非常多寫程式的時間，再說，連 Java 這麼複雜的語言都能學會了，Python 的上手對您來說絕對輕而易舉。</p>
+<p>筆者認為，目前 GAE 平台最適合以下幾種活動：</p>
+<ol style="list-style-type: decimal;">
+<li>新行動裝置 APP 的後端資料中心</li>
+<li>新 Web Start-up 團隊想要試試水溫</li>
+<li>中小企業的網站建置</li>
+</ol>
+<h3>建議應用範圍</h3>
+<h4>新行動裝置 APP 的後端資料中心</h4>
+<p>不管是 iOS，Android 還是 Windows Mobile，都可以用 GAE 作為行動裝置 App 的後端資料中心。</p>
+<p>以 LBS 服務來說，不管是要找餐廳、夜店，還是景點，我們都需要一個後端資料中心記錄地點資訊、使用者評論，甚至任何 App 社交所產生的資訊，並在適當的時候傳回行動裝置。如此一來，行動裝置才不會因為塞滿資料而變得肥大，不同使用者之間的資料也才能夠互動，達成社交服務的目的。</p>
+<p>用 GAE 作為行動裝置 APP 初期的資料中心真是再適合不過了。行動裝置 APP 服務最核心的地方，就是行動裝置 APP 的使用者經驗，一開始的時候，所有資源都會投入到行動裝置 APP 的使用經驗本身，沒有多餘的資源照料資料中心的主機建置、軟體維護，甚至安全性的問題。</p>
+<p>這時候，GAE 就提供了一個很完美的方案，主機建置、軟體維護、安全性都由 Google 一手包辦，我們只需要規劃我們服務的資料庫，並在 GAE 裡面實作出來，APP 就可以上路了！</p>
+<h4>新 web start-up 團隊想要試試水溫</h4>
+<p>創業是一件很辛苦的事情，與在大公司當RD非常不同的其中一項，就是我們常常面臨資源不足，必須在「完美的方案」與「堪用」之間作取捨，這時候，GAE 就變成了一個「堪用下的完美解決方案」。</p>
+<p>GAE 有個免費額度，在使用量沒有超出免費額度時，它都是免費的。新的 Web Start-up 缺乏資金和資源，可以先用 GAE 做出網站 prototype，試試看市場的反應，慢慢用 lean start-up 的方法與精神摸索調整。在這個過程中，只要您的網站沒有大量的數值運算、資料、流量，GAE 可以讓您在尋找 market-product-fit 的過程中以近乎零的成本運行。</p>
+<p>一旦找到 market-product-fit，衝破免費的界線怎麼辦？這時候我們有兩個處理方式：</p>
+<ol style="list-style-type: decimal;">
+<li>Google 情義相挺至今，在我們找到 market-product-fit後，我們一定非常願意付錢</li>
+<li>既然找到 market-product-fit，漸漸得到資源，我們有能力搬家了！</li>
+</ol>
+<p>筆者所在的團隊──好險網團隊，打的就是這個主意。</p>
+<h4>中小企業的網站建置</h4>
+<p>一般而言，如果不是網路業，中小企業網站的流量都不高，資源消耗也不大，因此在 GAE 上面的網頁寄存 (Hosting) 近乎免費（如果不是免費的話）。既然如此，又何必花錢花時間尋找其他的 Hosting 呢？不管其他家的寄存服務穩定性再高，也難以超越 Google。再者，跟中小企業主說：「我們用的是 Google 的雲端啦！」，印象分數馬上大增。</p>
+<p>如果再全面一點，帶入 Google Apps，從 Email 系統、文書處理系統、公司行事曆系統、公司知識分享系統到網站等等，都用 Google 打造完備，軟硬體成本增加不多，卻交出整套產品線，從此客戶的名片上不再印著 yahoo.com，而是 <strong>客戶公司.com</strong>，這種全方位的解決方案用 GAE 再適合不過了。</p>
+<h3>申請步驟</h3>
+<p>被稱為「國民雲端」當然有其原因，只要具備 Google 的帳號，就能夠使用這個國民雲端，而幾乎所有的工程師都有個 Google (Gmail) 帳號，意即我們已經可以開始使用 GAE 的服務了。既然這麼棒，那就來實際操作，弄個小的 web app 試試。</p>
+<ol style="list-style-type: decimal;">
+<li>首先，我們必須先申請一個 Google 的帳號，<a href="https://accounts.google.com/NewAccount?continue=http%3A%2F%2Fwww.google.com%2F&amp;hl=zh-TW" target="_blank">請點這裡申請</a>（如果已經有 Google 的帳號，請跳過這一步）</li>
+<li>有了自己的 Google 帳號以後，<a href="https://www.appspot.com" target="_blank">請到這裡啟用 GAE</a>，語言選擇請選擇 Python 喔。啟用的過程中會使用手機認證。</li>
+<li>認證完成後，<a href="https://appengine.google.com/start/createapp" target="_blank">我們到這裡</a>來開啟我們的第一個應用程式。</li>
+<li>填完表單送出以後，我們可以由以下連結 <code>https://appengine.google.com/dashboard/nonedeployed?app_id=s~</code> 進入此應用程式的管理介面。</li>
+</ol>
+<p>申請的步驟至此已經全部完成，快摩拳擦掌，進入應用程式建置的部份。</p>
+<h3>範例教學</h3>
+<p>要寫 GAE 的應用程式，不裝 Google 應用服務引擎 SDK 是難以為繼的，<a href="https://code.google.com/intl/zh-TW/appengine/downloads.html#Google_App_Engine_SDK_for_Python" target="_blank">請到這裡下載 Python 版本的 Google 應用服務引擎 SDK</a>，安裝到自己的機器上。</p>
+<h4>Hello World！</h4>
+<p>如果學過一些程式語言，我們一定懂得什麼叫做<strong>「那些年我們學過的 Hello World！」</strong>，沒錯，這個就是 Python 在 GAE 上面的 Hello World，請接招。</p>
+<p>請在我們喜歡的地方建立一個資料夾，就命名為 helloworld，然後在裡面新增兩個空白的檔案，分別叫作 helloworld.py 與 app.yaml，檔案架構看起來就像這樣：</p>
+<pre><code>[helloworld]-------- helloworld.py
+                |--- app.yaml
+
+</code></pre>
+<p>在 helloworld.py 內放入印出 Hello world, GAE! 的程式碼：</p>
+<pre><code>print 'Content-Type: text/plain'
+print ''
+print 'Hello world, GAE!'
+</code></pre>
+<p>app.yaml 是 GAE 平台會讀的設定檔，請寫入以下內容：</p>
+<pre><code>application: 我們應用程式的id
+version: 1
+runtime: python
+api_version: 1
+
+handlers:
+- url: /.*
+  script: helloworld.py
+</code></pre>
+<p>在 handlers 的設定中，我們指定把所有的 request 都交給 helloworld.py 這個 Python script 處理。</p>
+<p>我們在 local 上跑跑看吧，用 terminal或是「命令提示字元」到 helloworld 資料夾打入以下命令，local 的 GAE web server 就開始運行了：</p>
+<pre><code>google_appengine/dev_appserver.py helloworld/
+</code></pre>
+<p>接著用瀏覽器指到 <code>https://localhost:8080/</code> 位址，我們就看到 <code>Hello world, GAE!</code>了，成功！ （按下 Ctrl-C 可以把 local 的 GAE web server 停下來）</p>
+<h4>簡單的留言板系統</h4>
+<p>把 helloworld.py 的內容全部換成以下的程式碼，我們的 helloworld 就立刻變身成一個簡單的留言板系統了：</p>
+<pre><code>import cgi
+from google.appengine.api import users
+from google.appengine.ext import webapp
+from google.appengine.ext.webapp.util import run_wsgi_app
+from google.appengine.ext import db
+
+class Greeting(db.Model):
+    author = db.StringProperty(multiline=False)
+    content = db.StringProperty(multiline=True)
+    date = db.DateTimeProperty(auto_now_add=True)
+
+class MainPage(webapp.RequestHandler):
+    def get(self):
+        self.response.out.write('')
+        greetings = db.GqlQuery("SELECT * FROM Greeting ORDER BY date DESC LIMIT 10")
+        for greeting in greetings:
+            self.response.out.write('<strong>%s</strong> wrote:' % greeting.author)
+            self.response.out.write('<blockquote>%s</blockquote>' %
+                              cgi.escape(greeting.content))
+
+        # Write the submission form and the footer of the page
+        self.response.out.write("""
+＜form method="post"＞
+＜div＞＜input name="author" type="text" /＞＜/div＞
+＜div＞＜textarea cols="60" rows="3" name="content"＞＜/textarea＞＜/div＞
+＜div＞＜input type="submit" value="Sign Guestbook" /＞＜/div＞
+＜/form＞
+""")
+         
+    def post(self):
+        greeting = Greeting()
+        greeting.author = self.request.get('author')
+        greeting.content = self.request.get('content')
+        greeting.put()
+        self.redirect('/')
+
+application = webapp.WSGIApplication(
+                                 [('/', MainPage)],
+                                 debug=True)
+def main():
+    run_wsgi_app(application)
+
+if __name__ == "__main__":
+    main()
+</code></pre>
+<p>看起來很複雜，其實一點也不，這個程式可以分成以下四個部分來解釋：</p>
+<h5>控制單元 (Controller)</h5>
+<p>以下這段程式碼主導了 request 在 helloworld.py 中如何傳遞：</p>
+<pre><code>application = webapp.WSGIApplication(
+                                 [('/', MainPage)],
+                                 debug=True)
+</code></pre>
+<p><code>('/', MainPage)</code> 這裡指定了只要 request 的目的是根目錄，就用 <code>MainPage</code> 這個 class 裡面的程式碼來處理。</p>
+<p>當然，我們也可以擴充，只要把 <code>[('/', MainPage)]</code> 改成 <code>[('/', MainPage),('/sos_cool', SoSCool)]</code>，馬上就可以把目的是 <code>/sos_cool</code> 的 request 交由目前尚未實作的 SoSCool class 來處理。</p>
+<h5>資料單元 (Model)</h5>
+<p>資料單元包括下列程式碼：</p>
+<pre><code>class Greeting(db.Model):
+    author = db.StringProperty(multiline=False)
+    content = db.StringProperty(multiline=True)
+    date = db.DateTimeProperty(auto_now_add=True)
+
+</code></pre>
+<p><code>Greeting</code> 繼承了 <code>db.Model</code>，代表所有 <code>Greeting</code> 中定義的欄位都會對應到 Google Big Table 資料庫中的欄位。細節如下：</p>
+<ul>
+<li><code>author = db.StringProperty(multiline=False)</code> 定義 author 欄位，其資料型態是單行的字串，記錄留言人的身分。</li>
+<li><code>content = db.StringProperty(multiline=True)</code> 定義 content 欄位，其資料型態是可以分行的字串，記錄留言的內容。</li>
+<li><code>date = db.DateTimeProperty(auto_now_add=True)</code> 定義 date 欄位，其資料型態是日期，記錄留言的時間。</li>
+</ul>
+<p>如此一來，輕輕鬆鬆地就定義了留言板的資料表與細節。</p>
+<h5>HTTP Post 方法</h5>
+<p>request 進入 <code>MainPage</code> 後，如果是用 http post 方法送出，就會交由 <code>MainPage</code> 內的 <code>post</code> function 處理。</p>
+<pre><code>    def post(self):
+        greeting = Greeting()
+        greeting.author = self.request.get('author')
+        greeting.content = self.request.get('content')
+        greeting.put()
+        self.redirect('/')
+
+</code></pre>
+<p>在這個 function 中，我們新建一個 <code>Greeting</code> 物件來儲存新的留言，接下來，從 request 中讀出留言與作者，塞入 <code>Greeting</code> 物件中，再使用 <code>greeting.put()</code> 把整個物件寫到 Google Big Table 資料庫中。</p>
+<p>最後，我們用 get 方法重新導向到根目錄下。</p>
+<h5>HTTP Get 方法</h5>
+<p>Get 方法在這裡主要用於呈現過去的 10 則留言，並提供 html 表單給使用者留言，我們不討論 html 的部分，但是我們要研究一下在 python GAE 的程式設計中，要如何把資料從資料庫中找出來：</p>
+<pre><code>    greetings = db.GqlQuery("SELECT * FROM Greeting ORDER BY date DESC LIMIT 10")
+    for greeting in greetings:
+        self.response.out.write('<strong>%s</strong> wrote:' % greeting.author)
+        self.response.out.write('<blockquote>%s</blockquote>' %
+                          cgi.escape(greeting.content))
+
+</code></pre>
+<p>學過 SQL 的人對 GAE 的 GQL 格式一定不陌生，在這裡，我們用 GAE 的 GQL 語法 <code>SELECT * FROM Greeting ORDER BY date DESC LIMIT 10</code> 把最新 10 筆留言從 big table 找出來。</p>
+<p>然後，我們用 for 迴圈把每一筆資料都寫到 http 的 response 中，這樣就大功告成了。</p>
+<h3>如何部署</h3>
+<p>大功告成，但是如何上傳到 GAE 上面，讓全世界都可以使用呢？</p>
+<p>GAE 把部署這件事情弄得超級簡單，只要 terminal 或是｢命令提示字元」到 helloworld 上層目錄中，下達以下命令，一步步地跟著作，部署程式即可輕鬆完成：</p>
+<pre><code>appcfg.py update helloworld/
+</code></pre>
+<p>現在您可以用瀏覽器看：</p>
+<pre><code>https://我們應用程式的id.appspot.com
+</code></pre>
+<p>我們的應用程式正在 GAE 上面運作著。</p>
+<h3>優缺點</h3>
+<p>終於要開始討論 GAE 的優劣了，因為所有的語言與平台設計都有其目的與邏輯，當然也有它們擅長的地方，與非常不拿手的領域，以下是筆者認為 GAE 的正與負。</p>
+<h4>優點</h4>
+<p>GAE 的優點有以下三點：</p>
+<ol style="list-style-type: decimal;">
+<li>介面容易：只要上 Google 就可以申請與管理了，得來全不費功夫。</li>
+<li>服務穩定：Google 的穩定性不容質疑！</li>
+<li>服務擴張容易：只要拿錢來，多少要求都幫您辦到，scale up 超容易──只是要很多錢。</li>
+</ol>
+<h4>缺點</h4>
+<p>缺點？我最愛說缺點了，各位看倌們請看了：</p>
+<ol style="list-style-type: decimal;">
+<li>系統封閉：因為安全性問題，語言與 Python SDK 的很多地方都被閹割，需要繞道解決，更別說有太多現成的 opensource 專案裝不上去了。而且因為系統封閉，照 GAE 寫成的程式就只能在 GAE 上面使用，非常沒有彈性。</li>
+<li>資料庫難用：不僅難用，備份與搬動資料還異常困難。沒關係，反正 CloudSQL 應該快出來了。</li>
+<li>真的太貴了：新的收費機制上線了以後，真的太貴了，好多人都因為費用的因素搬家了。</li>
+</ol>
+<h3>結語</h3>
+<p>GAE 出來的時候大家都寄予厚望，可是幾乎所有我遇到的 GAE 使用者都只把它當作玩具，沒有非常認真得用它建置大型應用程式，其主要原因就是因為上述缺點的第一與第二點。</p>
+<p>但是不可諱言的，GAE 這些特性非常適合某些小型系統，如果您有以下三種系統要設計實作，不妨考慮 GAE，說不定您也會愛上這樣用它：</p>
+<ol style="list-style-type: decimal;">
+<li>新行動裝置 APP 的後端資料中心</li>
+<li>新 Web Start-up 團隊想要試試水溫</li>
+<li>中小企業的網站建置</li>
+</ol>
+			<!-- Show relate article -->
+				<!-- end -->
+		<div class="article_note">
+		<!-- Add tags use metakey, and show OSSF Newsletter tag: OSSFNL+NUM-->
+		<br><br> <hr style='border: 1px dashed #D2DADB;'><b>OSSF Newsletter&nbsp;:</b>&nbsp;<a href='../../previous-issue%3Ftask=view&amp;id=766.html'>第 187 期 PaaS：程式語言開發在雲端「Programming in Paas」（上）</a><br><b>Tags:</b>&nbsp;<a href='../../index.php%3Foption=com_search&amp;Itemid=58&amp;searchphrase=exact_meta&amp;ordering=newest&amp;searchword=GAE.html'>GAE</a>,&nbsp;&nbsp;<a href='../../index.php%3Foption=com_search&amp;Itemid=58&amp;searchphrase=exact_meta&amp;ordering=newest&amp;searchword=&#32;Google&#32;App&#32;Engine.html'> Google App Engine</a>,&nbsp;&nbsp;<a href='../../index.php%3Foption=com_search&amp;Itemid=58&amp;searchphrase=exact_meta&amp;ordering=newest&amp;searchword=&#32;Google.html'> Google</a>,&nbsp;&nbsp;<a href='../../index.php%3Foption=com_search&amp;Itemid=58&amp;searchphrase=exact_meta&amp;ordering=newest&amp;searchword=&#32;PaaS.html'> PaaS</a>,&nbsp;&nbsp;<a href='../../index.php%3Foption=com_search&amp;Itemid=58&amp;searchphrase=exact_meta&amp;ordering=newest&amp;searchword=&#32;platform&#32;as&#32;a&#32;service.html'> platform as a service</a>,&nbsp;&nbsp;<a href='../../index.php%3Foption=com_search&amp;Itemid=58&amp;searchphrase=exact_meta&amp;ordering=newest&amp;searchword=&#32;雲端.html'> 雲端</a>,&nbsp;&nbsp;<a href='../../index.php%3Foption=com_search&amp;Itemid=58&amp;searchphrase=exact_meta&amp;ordering=newest&amp;searchword=&#32;python.html'> python</a>,&nbsp;&nbsp;				<!-- End -->
+					<br>
+					<b>Category: </b><a href="../tech-column.html">				Tech Column					</a>				</div>
+			 <!-- AddThis Button BEGIN ID 3001 is the front page article -->
+     			<br><br>
+       <div class="addthis_toolbox addthis_default_style addthis_32x32_style">
+       <a class="addthis_button_preferred_1"></a>
+       <a class="addthis_button_preferred_2"></a>
+       <a class="addthis_button_preferred_3"></a>
+       <a class="addthis_button_preferred_4"></a>
+       <a class="addthis_button_compact"></a>
+       <a class="addthis_counter addthis_bubble_style"></a>
+       </div>
+       <script type="text/javascript">var addthis_config = {"data_track_clickback":true};</script>
+       <script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js#pubid=openfoundry"></script>
+       <!-- AddThis Button END -->
+     <br>
+		<div class="totop" ><a class="rt-totop" href="8555-peoples-cloud-service-when-python-meets-gae.html#" style="outline: medium none;">↑ Top</a></div>
+            <!-- AddThis Button END -->
+
+		<script type="text/javascript">
+var jcomments=new JComments(8555, 'com_content','https://openfoundry.org/index.php?option=com_jcomments&amp;tmpl=component&amp;lang=');
+jcomments.setList('comments-list');
+</script>
+<div id="jc">
+<div id="comments"><h4>Comments<a class="refresh" href="8555-peoples-cloud-service-when-python-meets-gae.html#" title="Refresh comments list" onclick="jcomments.showPage(8555,'com_content',0);return false;">&nbsp;</a></h4>
+<div id="comments-list" class="comments-list">
+        <div class="even" id="comment-item-483"><div class="rbox"><div class="rbox_tr"><div class="rbox_tl"><div class="rbox_t">&nbsp;</div></div></div><div class="rbox_m">
+<div class="comment-avatar"><img src="http://www.gravatar.com/avatar.php?gravatar_id=470ac209a9a4cd491252da208d31fa74&amp;default=https%3A%2F%2Fwww.openfoundry.org%2Fcomponents%2Fcom_jcomments%2Fimages%2Fno_avatar.png" alt="" /></div>
+<div class="comment-box avatar-indent">
+<span class="comments-vote">
+	<span id="comment-vote-holder-483">
+<a href="8555-peoples-cloud-service-when-python-meets-gae.html#" class="vote-good" title="Good comment!" onclick="jcomments.voteComment(483, 1);return false;"></a><a href="8555-peoples-cloud-service-when-python-meets-gae.html#" class="vote-poor" title="Poor comment!" onclick="jcomments.voteComment(483, -1);return false;"></a>
+<span class="vote-none">0</span>
+	</span>
+</span>
+<a class="comment-anchor" href="8555-peoples-cloud-service-when-python-meets-gae.html#comment-483" id="comment-483">#1</a>
+<span class="comment-author">BLUE</span>
+<span class="comment-date">2014-05-31 10:52</span>
+<div class="comment-body" id="comment-body-483">您好 請問一下 GAE 是否夠使用android app 做存取呢?</div>
+</div><div class="clear"></div>
+</div><div class="rbox_br"><div class="rbox_bl"><div class="rbox_b">&nbsp;</div></div></div></div>
+</div>
+</div>
+<div id="comments-list-footer"><a class="refresh" href="8555-peoples-cloud-service-when-python-meets-gae.html#" title="Refresh comments list" onclick="jcomments.showPage(8555,'com_content',0);return false;">Refresh comments list</a></div>
+</div>
+<div id="comments-footer" align="center"><a href="http://www.joomlatune.com" title="JComments" target="_blank">JComments</a></div>
+<script type="text/javascript">
+jcomments.setAntiCache(1,0,0);
+</script> 
+</div>	</div>
+</div>
+
+		                            </div>
+									<div class="clear"></div>
+								</div>
+								<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+							</div>
+							</div>
+                                                    </div>
+                                            </div>
+                                <div class="rt-grid-3 rt-pull-9">
+                <div id="rt-sidebar-a">
+                                    <div class="square4">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<ul class="menu"><li class="item56"><a href="../previous-issue.html"><span>Previous Issue</span></a></li><li class="item55"><a href="../about-newsletter.html"><span>About Newsletter</span></a></li></ul>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<ul class="menu"><li class="item115"><a href="../foss-news.html"><span>FOSS News</span></a></li><li class="item141"><a href="../case-job.html"><span>Case and Jobs</span></a></li></ul>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+        	                <div class="square1">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-title"><h2 class="title">Special</h2></div>
+						<div class="clear"></div>
+		                						<div class="module-content">
+		                	<ul class="menu"><li id="current" class="active item37"><a href="../tech-column.html"><span>Tech Column</span></a></li><li class="item40"><a href="../foss-programs.html"><span>FOSS Programs</span></a></li><li class="item35"><a href="../legal-column.html"><span>Legal Column</span></a></li><li class="item154"><a href="../foss-forum.html"><span>FOSS Forum</span></a></li><li class="item162"><a href="../enterprise-application.html"><span>Enterprise Application</span></a></li><li class="item44"><a href="../foss-projects.html"><span>FOSS Projects</span></a></li></ul>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		                <div class="square1">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<p style="text-align: center;"><a href="../../news%3Fformat=feed&amp;type=rss" target="_black"><img src="../../images/M_images/news-rss-feed.png" border="0" /></a><br /><a href="https://www.openfoundry.org/rss-feed/Newsletter" target="_black"><img src="../../images/M_images/newsletter-rss-feed.png" border="0" /></a></p>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		
+                </div>
+            </div>
+
+                    <div class="clear"></div>
+                </div>
+            </div>
+																													</div>
+										<div id="rt-copyright">
+						<div class="rt-grid-12 rt-alpha rt-omega">
+                        <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<span class="nowrap">Open Source Software Foundry</span><span class="nowrap">‧</span><span class="nowrap"> </span><span class="nowrap">Best  Viewed with IE7.0 or Firefox2.0 above, 1024x768 Resolution. </span><strong>E-Mail</strong>：<a href="mailto:contact@openfoundry.org">contact@openfoundry.org</a> <br /><strong>Address</strong>：No.128, Sec.2, Academia Rd., Institute of Information Science, Academia Sinica, Nangang District, Taipei City 11529, Taiwan (R.O.C). <br /><a href="../privacy-policy.html">Privacy Policy</a>. <a href="../terms-of-use.html">Terms-of-use</a> <span style="position: relative; top: 8px; margin-top: -8px;"> <a href="../../about/8101.html"><img src="../../images/M_images/rss-feed-all.png" border="0" /></a></span>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+        	
+</div>
+						<div class="clear"></div>
+					</div>
+					<div class="rt-footer-bottom-wrap"><div class="rt-footer-bottom"><div class="rt-footer-bottom2"><div class="rt-footer-bottom3"></div></div></div></div>
+									</div></div></div>
+				<div class="rt-surround-bottom"><div class="rt-surround-bottom2"><div class="rt-surround-bottom3"></div></div></div>
+							</div>
+		</div>
+		<!--
+		<script id="aptureScript">
+						(function (){var a=document.createElement("script");a.defer="true";a.src="http://www.apture.com/js/apture.js?siteToken=vsJttrn";document.getElementsByTagName("head")[0].appendChild(a);})();
+     </script>
+-->
+
+<!-- Piwik -->
+<!-- 			<script type="text/javascript">
+			  var _paq = _paq || [];
+		  _paq.push(["trackPageView"]);
+		  _paq.push(["enableLinkTracking"]);
+
+		    (function() {
+			        var u=(("https:" == document.location.protocol) ? "https" : "https") + "://www.openfoundry.org/piwik/";
+				    _paq.push(["setTrackerUrl", u+"piwik.php"]);
+				    _paq.push(["setSiteId", "1"]);
+				        var d=document, g=d.createElement("script"), s=d.getElementsByTagName("script")[0]; g.type="text/javascript";
+				        g.defer=true; g.async=true; g.src=u+"piwik.js"; s.parentNode.insertBefore(g,s);
+					  })();
+		  </script> -->
+<!-- End Piwik Code -->
+	</body>
+</html>

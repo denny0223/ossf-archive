@@ -1,0 +1,179 @@
+	<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+	<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="zh-tw" lang="zh-tw" >
+		<head>
+			  <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+  <meta name="robots" content="noindex, nofollow" />
+  <meta name="keywords" content="KVM, Debian, libvert, OSSFNL786" />
+  <meta name="title" content="使用 Debian 與 KVM＋libvirt 架設虛擬化叢集－線上移轉與其他工具" />
+  <meta name="description" content="線上移轉 (Live Migration) 在系統管理的工作中，若發生可預知的硬體問題時，往往需要停機方可進行修復，相對地服務也必須停止運作。如果是透過虛擬技術來建置服務環境時，即可以減少因硬體維修所造成的停機時間 (service down time)。 在前幾篇文章中： 基於 KVM 與 libvirt 的虛擬化叢集系統－Debian 篇 基於 KVM 與 libvirt" />
+  <meta name="generator" content="" />
+  <title>使用 Debian 與 KVM＋libvirt 架設虛擬化叢集－線上移轉與其他工具</title>
+  <link href="../../favicon.ico" rel="shortcut icon" type="image/x-icon" />
+  <link rel="stylesheet" href="../../components/com_gantry/css/gantry.css" type="text/css" />
+  <link rel="stylesheet" href="../../components/com_gantry/css/grid-12.css" type="text/css" />
+  <link rel="stylesheet" href="../../components/com_gantry/css/joomla.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/joomla.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/style1.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/light-body.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/demo-styles.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/template.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/typography.css" type="text/css" />
+  <style type="text/css">
+    <!--
+#rt-main-surround ul.menu li.active > a, #rt-main-surround ul.menu li.active > .separator, #rt-main-surround ul.menu li.active > .item, #rt-main-surround .square4 ul.menu li:hover > a, #rt-main-surround .square4 ul.menu li:hover > .item, #rt-main-surround .square4 ul.menu li:hover > .separator, .roktabs-links ul li.active span {color:#0088B5;}
+a, #rt-main-surround ul.menu a:hover, #rt-main-surround ul.menu .separator:hover, #rt-main-surround ul.menu .item:hover {color:#0088B5;}
+    -->
+  </style>
+  <script type="text/javascript" src="../../components/com_jcomments/js/jcomments-v2.1.js%3Fv=2"></script>
+  <script type="text/javascript" src="../../components/com_jcomments/libraries/joomlatune/ajax.js"></script>
+  <script type="text/javascript" src="../../media/system/js/mootools.js"></script>
+  <script type="text/javascript" src="../../media/system/js/caption.js"></script>
+  <script type="text/javascript" src="../../components/com_gantry/js/gantry-buildspans.js"></script>
+  <script type="text/javascript" src="../../components/com_gantry/js/gantry-inputs.js"></script>
+  <script type="text/javascript">
+
+			window.addEvent('domready', function() {
+				var modules = ['rt-block'];
+				var header = ['h3','h2','h1'];
+				GantryBuildSpans(modules, header);
+			});
+		InputsExclusion.push('.content_vote','#rt-popup')
+  </script>
+		</head>
+		<body  class="backgroundlevel-low backgroundstyle-style8 bodylevel-med bodystyle-light cssstyle-style1 logostyle-dark font-family-helvetica font-size-is-default menu-type-fusionmenu col12 ">
+			<div id="rt-main-surround">
+				<div class="rt-container">
+					<div class="rt-block">
+						<div id="rt-mainbody">
+					    	
+<div class="rt-joomla ">
+	<div class="rt-article">
+		
+				<div class="rt-headline"><h1 class="rt-article-title">使用 Debian 與 KVM＋libvirt 架設虛擬化叢集－線上移轉與其他工具</h1>		</div>
+		<div class="clear"></div>
+		
+		
+		
+				<div class="rt-articleinfo">
+						<div class="rt-article-icons">
+				<a href="8667--debian-kvmlibvirt-%3Ftmpl=component&amp;print=1&amp;page=.html#" onclick="window.print();return false;"><span class="icon print"></span></a>									<span class="icon printscreen">
+						<a href="8667--debian-kvmlibvirt-%3Ftmpl=component&amp;print=1&amp;page=.html#" onclick="window.print();return false;"><img src="../../images/M_images/printButton.png" alt="列印"  /></a>					</span>
+							</div>
+			
+			<span class="rt-date-posted">
+						建立日期			2012-04-08 09:40						&nbsp;&nbsp;&nbsp;&nbsp;						最近更新在 2012-04-17 14:26						</span>
+
+						<span class="rt-author">
+				作者是 魏藥			</span>
+				
+					</div>
+		
+		
+		<h2>線上移轉 (Live Migration)</h2>
+<p>在系統管理的工作中，若發生可預知的硬體問題時，往往需要停機方可進行修復，相對地服務也必須停止運作。如果是透過虛擬技術來建置服務環境時，即可以減少因硬體維修所造成的停機時間 (service down time)。</p>
+
+<p>在前幾篇文章中：</p>
+<ol>
+<li><a href="../../tech-column/8448.html" target="_blank">基於 KVM 與 libvirt 的虛擬化叢集系統－Debian 篇</a></li>
+<li><a href="../tech-column/8539-the-clustered-virtualization-system-based-on-kvm-and-libvirt-chapter-of-debian-storage-allocation.html" target="_blank">基於 KVM 與 libvirt 的虛擬化叢集系統－儲存空間的配置</a></li>
+</ol><br />
+<p>我們曾經介紹過如何架設虛擬機器的儲存池，這樣就會建立起共同的儲存空間，如此一來，當有一台實體主機需要停機維護時，就可以利用線上移轉的功能將虛擬機器移至另一台實體主機中繼續執行，而且中間切換只需極短的停機時間（service down time）。</p>
+<p>要使用線上移轉功能有兩個必要前提：</p>
+<ol>
+<li>兩台虛擬主機必須要有共同的儲存池；</li>
+<li>兩台虛擬主機必須要在相同的網段。</li>
+</ol><br />
+<p>在先前的文章中所架設的網路拓樸環境，即符合上述兩個條件。符合這些前提後，我們就可以使用 virt-manager (Virtual Machine Manager) 來進行以下操作：</p>
+<p>請在您需要轉移的虛擬機器上點右鍵，並點選「Migrate」。</p>
+<p><a href="../../images/120410/debiankvm/debian_kvm_03_01.png" target="_blank"><img src="../../images/120410/debiankvm/debian_kvm_03_01.png" border="0" /></a></p>
+<p>▲ 圖1：於虛擬機器管理員中選擇「Migrate」</p>
+<p>接著，再選取您要移轉虛擬機器的目標主機，最後再按下「Migrate」確認即可。</p>
+<p><a href="../../images/120410/debiankvm/debian_kvm_03_02.png" target="_blank"><img src="../../images/120410/debiankvm/debian_kvm_03_02.png" border="0" /></a></p>
+<p>▲ 圖2：確認「Migrate」</p>
+<p>當移轉工作完成後，我們就可以看到剛才被移轉的虛擬機器已經被轉到另一台實體主機上繼續運作了。</p>
+<p><a href="../../images/120410/debiankvm/debian_kvm_03_03.png" target="_blank"><img src="../../images/120410/debiankvm/debian_kvm_03_03.png" border="0" /></a></p>
+<p>▲ 圖3：於虛擬機器管理員中移轉完成</p>
+<br />
+<h2>命令列工具 virsh</h2>
+<p>相對於 virt-manager 這個圖形化前端介面，virsh 是一個透過命令列來控制虛擬機器的文字模式客戶端程式，也是 libvirt 工具組內建提供的管理工具。</p>
+<p>當我們要透過 virsh 進行操作時，請先打開終端機並輸入 virsh 以進入互動模式。接下來，為了連接伺服器上面的虛擬機器，請輸入以下指令：</p>
+<pre>    connect qemu+ssh://[位置]/system</pre>
+<p>如果使用 virsh 的位置跟連接的虛擬機器伺服器同一台，也可以使用以下指令來運到本機操作。</p>
+<pre>    connect qemu:///system</pre>
+<p>這樣就可以連上伺服器，並可透過其內建提供的各種指令來進行管理及操作。以下是常見的指令與說明：</p>
+<ul>
+<li>start [虛擬機器名稱]：啟動指定名稱的虛擬機器</li>
+<li>shutdown [虛擬機器名稱]：對指定的虛擬機器進行 ACPI 關機</li>
+<li>reboot [虛擬機器名稱]：對指定的虛擬機器進行 ACPI 關機後重新開機</li>
+<li>destroy [虛擬機器名稱]：對指定的虛擬機器進行強制關機</li>
+<li>reset [虛擬機器名稱]：對指定的虛擬機器進行強制重新啟動</li>
+<li>list：列出已經開機的虛擬機器</li>
+<li>list --all：列出所有虛擬機器</li>
+<li>edit：使用 XML 編輯虛擬機器配置，可以手動配置網路設定、儲存裝置設定等。</li>
+</ul>
+<br />
+<p>值得一提的是，這套工具可以透過 XML 檔案建立虛擬機器，能夠進行儲存空間管理、網路管理。它也能透過「qcow」格式建立快照 (snapshot)。但限於篇幅關係，本篇將不詳述。</p>
+<br />
+<h2>命令列的虛擬機器安裝工具 virt-install</h2>
+<p>virt-install 是「libvirt」工具組所提供的另一個文字模式工具，可以讓使用者在命令列裡面新增一個虛擬機器並進行安裝動作。舉例來說，如果您需要透過 virt-manager 在目前的目錄裡面建立一個映像檔，並使用放在同一個目錄底下的「ubuntu-11.10-alternate-amd64.iso」進行安裝，虛擬機器規格為 512 MiB 的記憶體，可以使用以下指令：</p>
+<pre>    virt-install --connect=qemu:///system -n ubuntu-11.10 -r 512 --os-type='linux' \<br />    --os-variant='ubuntuoneric' -c ubuntu-11.10-alternate-amd64.iso \<br />    --disk path=ubuntu-11.10.img,size=5</pre>
+<p>其實，如果您只需要網路安裝，也可以直接指定安裝時使用的 URL，不但不需要下載 ISO 來裝 (也要看頻寬是否適合網路安裝)，而且不用指定安裝的作業系統類型，virt-install 會自動幫您偵測。例如：</p>
+<pre>    virt-install --connect=qemu:///system -n ubuntu-11.10 -r 512 \<br />    -l https://ftp.tw.debian.org/debian/dists/squeeze/main/installer-amd64/ \<br />    --disk pool=default,size=5</pre>
+<p>以上僅介紹常用的操作方式及其參數，詳情則請參考 man virt-install。</p>
+<br />
+<h2>直接使用 QEMU/KVM</h2>
+<p>如果在不需要「libvirt」工具組的情況下（像是只需要一個環境來執行 Live CD 映像檔），或者沒有「libvirt」工具組的環境下，我們可以直接使用 kvm 或是 qemu 指令來執行、操作虛擬機器。</p>
+<p>透過這樣的使用方式，磁碟映像檔可以利用前一篇講過的 qemu-img 來建立，也可以使用來自 VMware 以及 VirtualBox 的映像檔，也可以是實體裝置（/dev/sdb 之類，但請在沒在使用的狀況下啟動，以免硬碟內容出現問題）。</p>
+<p>QEMU 的基本選項羅列如下：</p>
+<ul>
+<li>-m：記憶體大小 (MiB)</li>
+<li>-smp：核心數</li>
+<li>-hda, -hdb, -hdc, -hdd：指定硬碟</li>
+<li>-cdrom：指定光碟（無法與 -hdc 同時使用）</li>
+<li>-boot menu=on：開機時顯示開機選單（預設是硬碟開機，詳細開機方式請參考 man qemu）</li>
+</ul>
+<br />
+<p>舉例來說，如果我今天要建立一個「qcow2」映像檔，並準備要安裝 Ubuntu 11.10，機器的參數設成雙核心，512 MiB 記憶體，可以使用以下指令：</p>
+<pre>    qemu-img create -f qcow2 ubuntu-11.10.img 10G<br />    kvm -m 512 -smp 2 -cdrom ubuntu-11.10-alternative.iso -boot order=d ubuntu-11.10.img</pre>
+<br />
+<h2>QEMU 使用網路</h2>
+<p>QEMU 使用網路，除了需要建立虛擬網路卡以外，還需要建立網路的連結方式，例如：</p>
+<pre>    kvm -net nic,vlan=0 -net user,vlan=0（後略）</pre>
+<p>這樣的操作是，建立一張網路卡及一個 user mode 的網路（QEMU 會自動分配 DHCP 給虛擬機器，並與外部的網路連接。它相當於 virt-manager 預設的 NAT 模式），並將網路卡接在那個網路上（同一個 vlan 的意思）。其實若不指定網路型態，預設也會是自動分配的形式。</p>
+<p>此外，QEMU 也可以將封包倒 (dump) 出來，格式與 tcpdump 和 Wireshark 的 libpcap 格式共通：</p>
+<pre>kvm -net nic,vlan=0 -net user,vlan=0 -net dump,vlan=0（後略）</pre>
+<p>在不指定檔名的情況下，預設會倒在工作目錄的「qemu-vlan0.pcap」這個檔案底下。</p>
+<p>若要與主機的網路裝置橋接在一起的話，設定上會比較繁雜，在此就不詳述了。所以，如果要架設對外提供服務的伺服器，筆者會強烈建議使用「libvirt」工具組來解決這個問題，同時也可以簡化管理的工作。</p>
+			<!-- Show relate article -->
+				<!-- end -->
+		<div class="article_note">
+		<!-- Add tags use metakey, and show OSSF Newsletter tag: OSSFNL+NUM-->
+		<br><br> <hr style='border: 1px dashed #D2DADB;'><b>自由軟體鑄造場電子報&nbsp;:</b>&nbsp;<a href='../../previous-issue%3Ftask=view&amp;id=786.html'>第 193 期 使用 Debian 與 KVM＋libvirt 架設虛擬化叢集－線上移轉與其他工具</a><br><b>標籤:</b>&nbsp;<a href='../../index.php%3Foption=com_search&amp;Itemid=58&amp;searchphrase=exact_meta&amp;ordering=newest&amp;searchword=KVM.html'>KVM</a>,&nbsp;&nbsp;<a href='../../index.php%3Foption=com_search&amp;Itemid=58&amp;searchphrase=exact_meta&amp;ordering=newest&amp;searchword=&#32;Debian.html'> Debian</a>,&nbsp;&nbsp;<a href='../../index.php%3Foption=com_search&amp;Itemid=58&amp;searchphrase=exact_meta&amp;ordering=newest&amp;searchword=&#32;libvert.html'> libvert</a>,&nbsp;&nbsp;				<!-- End -->
+					<br>
+					<b>分類: </b><a href="../tech-column.html">				技術專欄					</a>				</div>
+			 <!-- AddThis Button BEGIN ID 3001 is the front page article -->
+     			<br><br>
+       <div class="addthis_toolbox addthis_default_style addthis_32x32_style">
+       <a class="addthis_button_preferred_1"></a>
+       <a class="addthis_button_preferred_2"></a>
+       <a class="addthis_button_preferred_3"></a>
+       <a class="addthis_button_preferred_4"></a>
+       <a class="addthis_button_compact"></a>
+       <a class="addthis_counter addthis_bubble_style"></a>
+       </div>
+       <script type="text/javascript">var addthis_config = {"data_track_clickback":true};</script>
+       <script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js#pubid=openfoundry"></script>
+       <!-- AddThis Button END -->
+     <br>
+		<div class="totop" ><a class="rt-totop" href="8667--debian-kvmlibvirt-%3Ftmpl=component&amp;print=1&amp;page=.html#" style="outline: medium none;">↑ Top</a></div>
+            <!-- AddThis Button END -->
+
+			</div>
+</div>
+
+						</div>
+					</div>
+				</div>
+			</div>
+		</body>
+	</html>

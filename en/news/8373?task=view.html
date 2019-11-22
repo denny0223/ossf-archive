@@ -1,0 +1,443 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-gb" lang="en-gb" >
+<head>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<link rel="shortcut icon" href="../../images/favicon.ico" />
+	  <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+  <meta name="robots" content="index, follow" />
+  <meta name="keywords" content="OSSFNL737" />
+  <meta name="title" content="CentOS 基礎設定（上）" />
+  <meta name="description" content="前言 Red Hat Enterprise Linux 為 Red Hat 公司推薦使用於企業伺服器網路服務上的 Linux 發行版本，通常大多數的人會將此 Linux 發行版本簡稱為 RHEL（雖然 Red Hat 公司官方並不建議這樣簡稱）。在正常的情況下 RHEL 大約以每 18 ~ 24 個月的頻率，發佈下一版的作業系統。但是實際運作上 RHEL 作業系統版本的發行頻率，取決於" />
+  <meta name="generator" content="" />
+  <title>CentOS 基礎設定（上） - OpenFoundry</title>
+  <link href="../../favicon.ico" rel="shortcut icon" type="image/x-icon" />
+  <link rel="stylesheet" href="../../components/com_gantry/css/gantry.css" type="text/css" />
+  <link rel="stylesheet" href="../../components/com_gantry/css/grid-12.css" type="text/css" />
+  <link rel="stylesheet" href="../../components/com_gantry/css/joomla.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/joomla.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/style1.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/light-body.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/demo-styles.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/template.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/typography.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/fusionmenu.css" type="text/css" />
+  <style type="text/css">
+    <!--
+#rt-main-surround ul.menu li.active > a, #rt-main-surround ul.menu li.active > .separator, #rt-main-surround ul.menu li.active > .item, #rt-main-surround .square4 ul.menu li:hover > a, #rt-main-surround .square4 ul.menu li:hover > .item, #rt-main-surround .square4 ul.menu li:hover > .separator, .roktabs-links ul li.active span {color:#0088B5;}
+a, #rt-main-surround ul.menu a:hover, #rt-main-surround ul.menu .separator:hover, #rt-main-surround ul.menu .item:hover {color:#0088B5;}
+    -->
+  </style>
+  <script type="text/javascript" src="../../components/com_jcomments/js/jcomments-v2.1.js%3Fv=2"></script>
+  <script type="text/javascript" src="../../components/com_jcomments/libraries/joomlatune/ajax.js"></script>
+  <script type="text/javascript" src="../../media/system/js/mootools.js"></script>
+  <script type="text/javascript" src="../../media/system/js/caption.js"></script>
+  <script type="text/javascript" src="../../components/com_gantry/js/gantry-buildspans.js"></script>
+  <script type="text/javascript" src="../../components/com_gantry/js/gantry-inputs.js"></script>
+  <script type="text/javascript" src="../../templates/rt_quantive_j15/js/jquery.cookie.js"></script>
+  <script type="text/javascript" src="../../modules/mod_roknavmenu/themes/fusion/js/fusion.js"></script>
+  <script type="text/javascript" src="../../modules/mod_ofssologin/js/ofssologin.js"></script>
+  <script type="text/javascript">
+
+			window.addEvent('domready', function() {
+				var modules = ['rt-block'];
+				var header = ['h3','h2','h1'];
+				GantryBuildSpans(modules, header);
+			});
+		InputsExclusion.push('.content_vote','#rt-popup')
+		        window.addEvent('load', function() {
+					new Fusion('ul.menutop', {
+						pill: 0,
+						effect: 'slide and fade',
+						opacity: 1,
+						hideDelay: 500,
+						centered: 0,
+						tweakInitial: {'x': -2, 'y': 0},
+        				tweakSubsequent: {'x': 0, 'y': -14},
+						menuFx: {duration: 200, transition: Fx.Transitions.Sine.easeOut},
+						pillFx: {duration: 400, transition: Fx.Transitions.Back.easeOut}
+					});
+	            });
+  </script>
+<!-- <script type="text/javascript" src="/sso/javascripts/langsync.js"></script> -->
+<!-- <script src="/templates/rt_quantive_j15/js/ossf.js"></script> -->
+<script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-4136519-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
+</head>
+	<body  class="backgroundlevel-low backgroundstyle-style8 bodylevel-med bodystyle-light cssstyle-style1 logostyle-dark font-family-helvetica font-size-is-default menu-type-fusionmenu col12 ">
+		<div id="rt-main-background">
+			<div class="rt-container">
+																<div id="rt-header">
+					<div class="rt-grid-7 rt-alpha">
+    			<div class="rt-block">
+    	    	<a href="../../index.html" id="rt-logo"></a>
+    		</div>
+	    
+</div>
+<div class="rt-grid-5 rt-omega">
+                    <div class="square9">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<div class="ofssologin_square9"><a href="../../index.html">Login</a>&nbsp;&nbsp|&nbsp;&nbsp;<span><a href="https://www.openfoundry.org/tw/news/8373?task=view" ><span lang="tw" xml:lang="tw">繁體中文</span></a></li></ul></span><!--Joom!fish V2.0.4 (Lightning)-->
+<!-- &copy; 2003-2009 Think Network, released under the GPL. -->
+<!-- More information: at http://www.joomfish.net -->
+<div class="ofssologin_search_square9">
+  <form id="of_search" action="https://www.openfoundry.org/of/openfoundry/search" method="get" onsubmit="of_search(); return false;">
+    <select id="of_search_type">
+      <option value="Projects"> Projects </option>
+      <option value="Content"> Content </option>
+      <option value="People"> People </option>
+    </select>
+    <input id="query" name="query" id="mod_search_searchword" maxlength="50" alt="search" class="inputbox" type="text" size="28" value="search..."  onblur="if(this.value=='') this.value='search...';" onfocus="if(this.value=='search...') this.value='';" />
+    <input type="hidden" name="commit" value="search" />
+  </form>
+</div></div>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		
+</div>
+					<div class="clear"></div>
+				</div>
+																<div id="rt-navigation"><div id="rt-navigation2"><div id="rt-navigation3">
+					
+<div class="nopill">
+	<ul class="menutop level1 " >
+						<li class="item1 root" >
+					<a class="orphan item bullet" href="../../index.html"  >
+				<span>
+			    				Home				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item32 root" >
+					<a class="orphan item bullet" href="../../archived.html"  >
+				<span>
+			    				Projects				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item186 root" >
+					<a class="orphan item bullet" href="../community.html"  >
+				<span>
+			    				Who&#039;s Who				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item4 root" >
+					<a class="orphan item bullet" href="../news.html"  >
+				<span>
+			    				News				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item5 root" >
+					<a class="orphan item bullet" href="../law-and-licensing.html"  >
+				<span>
+			    				Law &amp; Licensing				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item3 root" >
+					<a class="orphan item bullet" href="../activities.html"  >
+				<span>
+			    				Activities				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item2 root" >
+					<a class="orphan item bullet" href="../resourcecatalog.html"  >
+				<span>
+			    				Resource Catalog				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item45 root" >
+					<a class="orphan item bullet" href="../about.html"  >
+				<span>
+			    				About				   
+				</span>
+			</a>
+			
+			
+	</li>	
+				</ul>
+</div>
+
+				    <div class="clear"></div>
+				</div></div></div>
+								<div class="rt-surround"><div class="rt-surround2"><div class="rt-surround3">
+										<div id="rt-showcase-section">
+												<div id="rt-showcase">
+							<div class="rt-grid-12 rt-alpha rt-omega">
+    		<div class="clear"></div>
+		
+		
+                <div class="close-note">
+                    <div class="rt-block">
+               					<div class="module-content">
+                	<div style="font-size:medium; background-image:linear-gradient(120deg,#159957,#4298b2);color:white;padding:20px;margin:-10px -18px;">感謝您對「自由軟體鑄造場」的支持與愛護，十多年來「自由軟體鑄造場」受中央研究院支持，並在資訊科學研究所以及資訊科技創新研究中心執行，現已完成階段性的任務。 本網站預計持續維運至 2021年底，網站內容基本上不會再更動。<br />也紀念我們永遠的朋友 李士傑先生（Shih-Chieh Ilya Li）。</div>				</div>
+            </div>
+                </div>
+		
+</div>
+							<div class="clear"></div>
+						</div>
+																	</div>
+															<div id="rt-main-surround">
+												<div id="rt-breadcrumbs">
+								<div class="rt-breadcrumb-surround">
+		<a href="../../index.html" id="breadcrumbs-home"></a>
+		<span class="breadcrumbs pathway">
+<span class="no-link">News</span></span>
+	</div>
+	
+							<div class="clear"></div>
+						</div>
+																							              <div id="rt-main" class="sa3-mb9">
+                <div class="rt-main-inner">
+                    <div class="rt-grid-9 rt-push-3">
+                                                <div class="rt-block">
+                            							<div class="square1">
+							<div class="rt-module-surround">
+								<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+								<div class="rt-module-inner">
+		                            <div id="rt-mainbody">
+		                                
+<div class="rt-joomla ">
+	<div class="rt-article">
+		
+				<div class="rt-headline"><h1 class="rt-article-title">CentOS 基礎設定（上）</h1>		</div>
+		<div class="clear"></div>
+		
+		
+		
+				<div class="rt-articleinfo">
+						<div class="rt-article-icons">
+								<a href="https://www.openfoundry.org/en/news/8373-centos-?tmpl=component&amp;print=1&amp;page=" title="Print" onclick="window.open(this.href,'win2','status=no,toolbar=no,scrollbars=yes,titlebar=no,menubar=no,resizable=yes,width=640,height=480,directories=no,location=no'); return false;" rel="nofollow"><span class="icon print"></span></a>																</div>
+			
+			<span class="rt-date-posted">
+						 Created at			Saturday, 25 June 2011 13:14						&nbsp;&nbsp;&nbsp;&nbsp;						Last Updated on Wednesday, 12 October 2011 10:02						</span>
+
+						<span class="rt-author">
+				Written by Weithenn (https://www.weithenn.org/)			</span>
+				
+					</div>
+		
+		
+		<h3>前言</h3>
+<p>Red Hat Enterprise Linux 為 <a href="https://www.redhat.com" target="_blank">Red Hat 公司</a>推薦使用於企業伺服器網路服務上的 Linux 發行版本，通常大多數的人會將此 Linux 發行版本簡稱為 RHEL（雖然 Red Hat 公司官方並不建議這樣簡稱）。在正常的情況下 RHEL 大約以每 18 ~ 24 個月的頻率，發佈下一版的作業系統。但是實際運作上 RHEL 作業系統版本的發行頻率，取決於 Fedora Linux 的更新。Fedora Linux 為 Red Hat 公司贊助的知名開放原始碼計畫，Red Hat 公司會將許多新技術先行導入至 Fedora Linux 發行版本中，待經過一段時間測試至穩定階段而且符合企業需求後，便會將該技術加入至下一個發行的 RHEL 版本中。每當 Fedora Linux 發行 3 個版本後大約就會發佈 1 個 RHEL 新版本</p>
+<p>而本文所要介紹的 <a href="https://www.centos.org" target="_blank">CentOS</a> (Community ENTerprise Operating System) 為眾多 Linux 發行版本之一。CentOS 其源碼來自 RHEL 作業系統的開放原始碼，將其源碼重新編譯而成的，移除了無法自由使用的商標及 Red Hat 所擁有的封閉原始碼軟體。由於 CentOS Linux 與 Red Hat Enterprise Linux 具有大量相同的原始碼內容，因此也適合在需要高度穩定性的企業營運環境。</p>
+
+<p>目前有些中小企業的 IT 人員為了建置預算上面的考量使用 CentOS Linux 發行版本來替代 RedHat Linux 企業版本。但是相對來說使用 CentOS Linux 發行版本除了得不到商業支援以外，當然也不包含 Red Hat 公司所擁有的封閉原始碼軟體。因此建議 IT 人員在使用 CentOS Linux 發行版本來建置企業網路服務以前，除了要先了解所使用的硬體伺服器是否支援 CentOS Linux 之外，更要了解所架設的商業服務是否會使用到 Red Hat 公司封閉原始碼軟體。</p>
+<p>CentOS Linux 作業系統版本命名規則分為二個部份，分別是主要版本及次要版本來進行版本表示。其中主要及次要版本號碼，則是相對應於紅帽公司所發行的 RHEL 作業系統主要版本與更新版本號碼，例如 CentOS 5.5 版本便是相對應於 RHEL 5 update 5 版本。</p>
+<p> </p>
+<h3>實作環境</h3>
+<p>* CentOS 5.5 32bit (Kernel 2.6.18-194.el5)</p>
+<p> </p>
+<h3>建立一般使用者帳號</h3>
+<p>為了減少不必要的篇幅內容，本文並不會說明如何從頭開始安裝 CentOS Linux 作業系統，建議有興趣的讀者可以參考官方使用者手冊 <a href="https://www.centos.org/docs/5/" target="_blank">CentOS-5 Documentation</a>，相信具備基本知識的使用者一定能夠順利無誤將 CentOS  作業系統安裝起來。筆者只有一點安裝建議，那就是在安裝過程中，/var 此掛載點的使用空間不要給太少，以免後續維護時發生問題。原因在於 /var 掛載點除了為預設所有記錄檔存放處以外，更重要的是當後續系統執行更新相關套件時，其暫存的資料便是存放於 /var/cache/yum 內。因此 /var 掛載點空間太小將可能導致套件更新失敗的情況發生。</p>
+<p>在安裝 CentOS 作業系統過程中會要求您順便設定 root 管理者帳號，作業系統安裝完成後請使用 root 管理者帳號登入系統。Linux 系統管理者應該具備如同管理 Microsoft Windows 主機時同樣的作業系統安全性觀念，也就是要先建立一般使用者帳號來登入系統進行操作，待需要執行的動作需要提升至管理者權限時，才著手轉換將權限提升。因此持同樣的安全觀念當您首次登入 CentOS 作業系統後，建議您先為管理者建立一般使用者帳號後，再將該使用者帳號加入管理者群組當中。下列操作動作為先建立使用者家目錄資料夾，因為筆者習慣將使用者家目錄都集中於一個目錄內以便後續方便管理（預設使用者家目錄為存放至 /home 下）之後透過指令 adduser 建立一般使用者帳號 weithenn（-d 參數為指定該使用者家目錄位置），接著使用指令 passwd 設定使用者密碼，最後則是設定將該使用者加入管理者群組 wheel 當中。</p>
+<p><a href="../../images/110628/CentOS/CentOS_Basic_Configuration_01.jpg" target="_blank"><img src="../../images/110628/CentOS/CentOS_Basic_Configuration_01.jpg" border="0" width="500" /></a><br />▲ 圖1 新增使用者帳號、設定使用者密碼並加入 wheel 群組</p>
+<p> </p>
+<h3>設定網路功能</h3>
+<p>建立好使用者帳號後接下來便是設定 CentOS 的網路功能，在本文設定中網路功能是以設定固定 IP 位址來進行說明。可以透過二種方式設定固定 IP 位址，一為使用指令 system-config-network 來進行互動設定，另外一種方式則為手動將固定 IP 位址、網路遮罩等相關資訊寫入 “ifcfg-eth0” 網卡設定檔中，而預設閘道及主機名稱則是寫入 “network” 設定檔中，最後則是將 DNS 名稱解析資訊寫入 “resolve.conf” 設定檔中。下列操作步驟先以 system-config-network 指令進行互動設定，之後再解釋如何手動將網路資訊寫入設定檔的方式：</p>
+<p>1. 執行 system-config-network指令使系統進入互動設定視窗中，如圖2<br />2. 選擇【Edit Devices】 後此時會顯示安裝於此主機的網路卡清單，本例為選擇唯一的一張網路卡【eth0 （eth0） – VMware VMXNET3 Ethernet Controller】，如圖3<br />3. 將「Use DHCP」勾選項目取消並且將固定 IP 位址、網路遮罩、預設閘道等資訊填入後按下【OK】（如圖4）<br />4. 此時畫面回到剛才選擇網卡的視窗（以便您要設定多片網路卡設定），接著按下【Save】回到原始互動設定視窗中<br />5. 接著選擇【Edit DNS configuration】來進入設定 DNS 視窗，請填入主機名稱、DNS 伺服器 IP 位址等資訊後按下【OK】，如圖5<br />6. 最後則是按下【Save&Quit】確定儲存剛才的設定後離開互動設定視窗</p>
+<p><a href="../../images/110628/CentOS/CentOS_Basic_Configuration_02.jpg" target="_blank"><img src="../../images/110628/CentOS/CentOS_Basic_Configuration_02.jpg" border="0" alt="CentOS_Basic_Configuration_02" width="500" height="341" /></a><br />▲ 圖2 使用指令 system-config-network 進入互動設定視窗</p>
+<p><a href="../../images/110628/CentOS/CentOS_Basic_Configuration_03.jpg" target="_blank"><img src="../../images/110628/CentOS/CentOS_Basic_Configuration_03.jpg" border="0" alt="CentOS_Basic_Configuration_03" width="500" height="339" /></a><br />▲ 圖3 選擇要設定網路資訊的實體網路卡，此例為 eth0</p>
+<p><a href="../../images/110628/CentOS/CentOS_Basic_Configuration_04.jpg" target="_blank"><img src="../../images/110628/CentOS/CentOS_Basic_Configuration_04.jpg" border="0" alt="CentOS_Basic_Configuration_04" width="500" /></a><br />▲ 圖4 設定固定 IP 位址、網路遮罩、預設閘道等資訊</p>
+<p><a href="../../images/110628/CentOS/CentOS_Basic_Configuration_05.jpg" target="_blank"><img src="../../images/110628/CentOS/CentOS_Basic_Configuration_05.jpg" border="0" alt="CentOS_Basic_Configuration_05" width="500" height="342" /></a><br />▲ 圖5 設定主機名稱及 DNS 名稱解析資訊</p>
+<p>透過上述互動設定將網路資訊設定完成後,　作業系統會將相關網路設定值寫入相對應的設定檔中，例如固定 IP 位址、網路遮罩、預設閘道資訊寫入至 “/etc/sysconfig/network-scripts/ifcfg-eth0” 網卡設定檔中，而主機名稱則寫入 “/etc/sysconfig/network” 設定檔內，而 DNS 名稱解析的網路資訊則是寫入 “/etc/resolv.conf” 設定檔內。筆者建議若您的主機安裝多片網路卡時，請將預設閘道資訊寫入至 “/etc/sysconfig/network” 設定檔內為比較洽當的設定。</p>
+<p>所以我們可以在互動設定完畢後，查看相關網路設定檔內容時可以看到相關網路資訊均已寫入。因此您可以依個人喜好來決定要如何設定網路資訊至 CentOS 作業系統中，看您是要使用指令 system-config-network 以互動方式來設定網路資訊，或者將相關網路設定值寫入相關設定檔內也是可行的方法。就筆者個人習慣來說，會使用互動設定來設定相關資訊，並且於設定完成後查看相關設定檔內容，確定無誤即可（可以省去記憶相關設定檔內容中參數名稱）。</p>
+<p><a href="../../images/110628/CentOS/CentOS_Basic_Configuration_06.jpg" target="_blank"><img src="../../images/110628/CentOS/CentOS_Basic_Configuration_06.jpg" border="0" alt="CentOS_Basic_Configuration_06" width="500" height="260" /></a><br />▲ 圖6 查看網路設定檔及 DNS 名稱解析設定檔內容</p>
+<p>當上述設定完成後可能會發現 CentOS 主機仍然無法連上網際網路。雖然透過互動設定已經設定好相關網路資訊，但作業系統目前仍未套用變更相關設定（例如套用預設閘道設定值）。建議您可以執行指令 reboot，重新啟動主機來自動套用剛才設定的相關網路資訊。</p>
+<p>當您將 CentOS 主機重新啟動完成之後，您可以使用 ping 指令來判斷主機是否能順利連上網際網路及進行名稱解析的動作，或者藉此判斷此台主機的網路通訊是卡在哪個環節上以便除錯。</p>
+<p><a href="../../images/110628/CentOS/CentOS_Basic_Configuration_07.jpg" target="_blank"><img src="../../images/110628/CentOS/CentOS_Basic_Configuration_07.jpg" border="0" alt="CentOS_Basic_Configuration_07" width="450" height="170" /></a><br />▲ 圖7 測試主機能否順利與網際網路主機進行通訊</p>
+<p> </p>
+<h3>修改 SELinux 安全增強機制</h3>
+<p>Linux 作業系統從核心 2.6 版本開始預設會自動載入安全增強機制 <a href="https://www.nsa.gov/research/selinux/index.shtml" target="_blank">SELinux</a> ( Security-Enhanced Linux) 核心模組。SELinux 是由美國國家安全局 NSA (National Security Agency) 所開發，並且在 2000 年 12 月時將此核心模組發行給開放原始碼的開發社群，以便有效加強 Linux 整體安全性。</p>
+<p>SELinux 為基於保護原則、作業系統中檔案結構及檔案權限的完整性原則所設計，此完整性原則可以有效針對入侵行為，以及企圖跨越系統安全架構等設計不良的應用程式對作業系統所造成的破壞，因此可以提供更安全的強制存取控制架構，來與作業系統的核心和主要子系統協同運作。在這樣的架構下相關的服務 (Daemon) 只能存取屬於該服務帳號所能存取的資料夾及檔案權限，若是超過所能存取的權限範圍則 SELinux 便會阻擋該服務的存取行為。所以若主機所架設的服務出現安全性漏洞導致被攻擊時 SELinux 能夠有效將攻擊所造成的損失降到最低。</p>
+<p>簡單來說啟用了 SELinux 安全增強機制後的 Linux 作業系統，其檔案權限便不僅僅是傳統上的三種權限－讀取 r、寫入 w、執行 x－，及身份－擁有者 Owner、群組 Group、其它人 Others，而是整個主機內的檔案系統，將會套用更細微的權限及身份設定並且具有完整性架構。然而也因為 SELinux 安全增強機制及完整性原則，常常會造成 Linux 初學者因為不了解檔案系統及相關概念，進而導致設定相關網路服務時，因為違反了 SELinux 安全機制或者完整性原則，而導致網路服務無法啟動，或者無法存取系統資料（因為被 SELinux 安全機制給阻擋住了）。因此筆者通常會建議初學者可以先將此增強安全機制設定為警告通知，或者暫時關閉。等以後對於 CentOS 作業系統有更深的認識後再將此功能啟用。當然這樣的情況是自行測試或學習時，使用者若是用於企業營運時則強烈建議一定要開啟 SELinux 安全增強機制來提升及保護主機安全性。</p>
+<p>要修改 SELinux 安全增強機制的設定，您可以透過修改 “/etc/sysconfig/selinux” 設定檔，或者使用指令 system-config-securitylevel 進入互動設定視窗進行設定之後再將主機重新啟動即可套用變更，SELinux 安全增強機制共有三種運作模式說明如下：</p>
+<p>1.        enforcing：啟動模式，SELinux 安全增強機制啟動將會阻擋不當的存取行為。<br />2.        permissive：寬容模式，當系統發生違反 SELinux 安全增強機制時僅僅顯示警告訊息而不會實際進行阻擋的動作，此模式很適合有心學習 SELinux 機制的學習者。<br />3.        disabled：禁用模式，完全將 SELinux 安全增強機制禁用。</p>
+<p>筆者建議您可以將設定值修改為寬容模式 (permissive)，因為當您的操作行為違反 SELinux 安全增強機制時會顯示警告通知您，因此您可以有效學習到哪些操作或者哪些動作是會被 SELinux 阻擋哪些不會，這樣可以讓您日後真正開啟 SELinux 安全增強機制時，不致被卡住並且早日提升您所管理的主機系統整體安全性。您可以透過 sestatus 指令來判斷目前主機中 SELinux 的運作模式及狀態，此設定值變更後必須要將主機重新啟動才能套用變更，當重新啟動後請記得再次使用 sestatus 指令以便確認您的修改正確有效。</p>
+<p><a href="../../images/110628/CentOS/CentOS_Basic_Configuration_08.jpg" target="_blank"><img src="../../images/110628/CentOS/CentOS_Basic_Configuration_08.jpg" border="0" alt="CentOS_Basic_Configuration_08" width="450" height="76" /></a><br />▲ 圖8 修改 SELinux 設定檔以變更運作模式</p>
+<p><a href="../../images/110628/CentOS/CentOS_Basic_Configuration_09.jpg" target="_blank"><img src="../../images/110628/CentOS/CentOS_Basic_Configuration_09.jpg" border="0" alt="CentOS_Basic_Configuration_09" width="500" height="266" /></a><br />▲ 圖9 互動設定修改 SELinux 運作模式</p>
+<p> </p>
+<h3>禁止 root 管理帳號遠端登入</h3>
+<p>在預設的情況下您可以直接使用 root 管理帳號來遠端登入 Linux 作業系統進行管理，然而在管理作業系統上通常安全性與便利性是相對的二個拉扯點。當您所管理的作業系統其操作便利性愈高則安全性通常會相對的降低。筆者在此建議您關閉 Linux 預設允許 root 管理者帳號可以遠端登入管理系統，原因有三：</p>
+<p>1.    首先是您的主機將增加了被入侵的機會。在管理者帳號已知情形下，剩下就是嘗試登入密碼了，如此一來很容易遭受暴力猜測密碼攻擊。<br />2.    當一台主機有眾多管理者時大家皆使用 root 管理者帳號登入系統進行管理動作，則誰修改了某個檔案內容或執行了哪些動作均無法稽核，因為記錄的資料都是 root。<br />3.    最後則是直接使用 root 管理者帳號登入系統進行管理，若是在操作過程中不慎下錯指令時有極大的可能會把系統給毀掉。例如原本是想刪除根目錄下的 test 資料夾 rm –rf /test 若不慎在操作時不小心多個空格 rm –rf / test，則對於作業系統來說是要刪除根目錄 （/） 及目前所在的 test 資料夾。</p>
+<p>要將 CentOS 主機預設允許 root 管理者帳號遠端登入的功能關閉，可以透過修改 “sshd_config” 設定檔後再重新載入 SSH 服務即可套用變更，套用完成後您可以測試是否無法使用 root 管理帳號遠端登入主機以便確定修改是否生效。</p>
+<p><a href="../../images/110628/CentOS/CentOS_Basic_Configuration_10.jpg" target="_blank"><img src="../../images/110628/CentOS/CentOS_Basic_Configuration_10.jpg" border="0" alt="CentOS_Basic_Configuration_10" width="400" height="73" /></a><br />▲ 圖10 修改 SSH 設定檔及重新載入 SSH 服務</p>
+<p>讀者可能覺得很奇怪，遠端登入主機時輸入帳號後怎麼要等很久才能輸入密碼？會有這樣的狀況發生是因為 CentOS 在啟動 SSH 服務時預設會配合使用名稱解析所導致，若您主機運作的網路環境中名稱解析服務已經運作正常則不會有此問題發生。若發生這樣的問題請檢查 DNS 名稱解析中反向解析對於此主機的解析情況，若此台主機所在的網路環境中並沒有反向名稱解析的機制，您可取消 SSH 服務中預設會使用到名稱解析的動作即可解決此一問題。</p>
+<p><a href="../../images/110628/CentOS/CentOS_Basic_Configuration_11.jpg" target="_blank"><img src="../../images/110628/CentOS/CentOS_Basic_Configuration_11.jpg" border="0" alt="CentOS_Basic_Configuration_11" width="400" height="68" /></a><br />▲ 圖11 取消 SSH 服務使用名稱解析服務</p>
+<p> </p>
+<h3>結語</h3>
+<p>本文進行至此已經建立好一般使用者帳號並將其加入管理者群組，並且設定好 CentOS 主機的網路連通資訊（固定 IP 位址、網路遮罩、預設閘道、DNS 名稱解析、主機名稱），並且確認主機可連結至網際網路上的機器，其網路功能運作無誤。再來則是將 SELinux 安全增加機制設定為寬容或禁用模式，以免在您剛開始學習 CentOS 作業系統時遭遇困難，最後則是關閉 root 管理者帳號，關閉遠端登入系統的權限以及關閉 SSH 服務反向解析的機制。此時的 CentOS 主機已經具備網路連通能力而主機的管理者也可以遠端管理主機了。</p>
+<p>在下一篇基礎設定文章中，首先會探討如何透過 RunLevel 建立良好的使用者操作 Shell 環境。接下來則是建立良好的編輯檔案環境及設定 sudo 來限制及記錄管理者帳號 root 的使用記錄。最後則是談到設定套件管理工具 YUM ，將下載套件的來源指向至台灣本地鏡像網站，以加快軟體套件下載時間。</p>
+			<!-- Show relate article -->
+		<br><br><h4>You may be interested in the following articles:</h4><ul><li><a href='../../tech-column/8395.html'>CentOS 基礎設定（下）</a> - <span class='date-posted'>2011-07-20</span></li><li><a href='../../tech-column/8386.html'>CentOS 基礎設定（中）</a> - <span class='date-posted'>2011-07-11</span></li></ul>		<!-- end -->
+		<div class="article_note">
+		<!-- Add tags use metakey, and show OSSF Newsletter tag: OSSFNL+NUM-->
+		<br><br> <hr style='border: 1px dashed #D2DADB;'><b>OSSF Newsletter&nbsp;:</b>&nbsp;<a href='../../previous-issue%3Ftask=view&amp;id=737.html'>第 175 期 淺談著作財產權讓與適用於 copyleft 開源軟體所產生的問題及因應之道</a><br>				<!-- End -->
+					<br>
+					<b>Category: </b><a href="../tech-column.html">				Tech Column					</a>				</div>
+			 <!-- AddThis Button BEGIN ID 3001 is the front page article -->
+     			<br><br>
+       <div class="addthis_toolbox addthis_default_style addthis_32x32_style">
+       <a class="addthis_button_preferred_1"></a>
+       <a class="addthis_button_preferred_2"></a>
+       <a class="addthis_button_preferred_3"></a>
+       <a class="addthis_button_preferred_4"></a>
+       <a class="addthis_button_compact"></a>
+       <a class="addthis_counter addthis_bubble_style"></a>
+       </div>
+       <script type="text/javascript">var addthis_config = {"data_track_clickback":true};</script>
+       <script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js#pubid=openfoundry"></script>
+       <!-- AddThis Button END -->
+     <br>
+		<div class="totop" ><a class="rt-totop" href="8373%3Ftask=view.html#" style="outline: medium none;">↑ Top</a></div>
+            <!-- AddThis Button END -->
+
+			</div>
+</div>
+
+		                            </div>
+									<div class="clear"></div>
+								</div>
+								<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+							</div>
+							</div>
+                                                    </div>
+                                            </div>
+                                <div class="rt-grid-3 rt-pull-9">
+                <div id="rt-sidebar-a">
+                                    <div class="square4">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<ul class="menu"><li class="item56"><a href="../previous-issue.html"><span>Previous Issue</span></a></li><li class="item55"><a href="../about-newsletter.html"><span>About Newsletter</span></a></li></ul>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<ul class="menu"><li class="item115"><a href="../foss-news.html"><span>FOSS News</span></a></li><li class="item141"><a href="../case-job.html"><span>Case and Jobs</span></a></li></ul>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+        	                <div class="square1">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-title"><h2 class="title">Special</h2></div>
+						<div class="clear"></div>
+		                						<div class="module-content">
+		                	<ul class="menu"><li class="item37"><a href="../tech-column.html"><span>Tech Column</span></a></li><li class="item40"><a href="../foss-programs.html"><span>FOSS Programs</span></a></li><li class="item35"><a href="../legal-column.html"><span>Legal Column</span></a></li><li class="item154"><a href="../foss-forum.html"><span>FOSS Forum</span></a></li><li class="item162"><a href="../enterprise-application.html"><span>Enterprise Application</span></a></li><li class="item44"><a href="../foss-projects.html"><span>FOSS Projects</span></a></li></ul>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		                <div class="square1">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<p style="text-align: center;"><a href="../../news%3Fformat=feed&amp;type=rss" target="_black"><img src="../../images/M_images/news-rss-feed.png" border="0" /></a><br /><a href="https://www.openfoundry.org/rss-feed/Newsletter" target="_black"><img src="../../images/M_images/newsletter-rss-feed.png" border="0" /></a></p>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		
+                </div>
+            </div>
+
+                    <div class="clear"></div>
+                </div>
+            </div>
+																													</div>
+										<div id="rt-copyright">
+						<div class="rt-grid-12 rt-alpha rt-omega">
+                        <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<span class="nowrap">Open Source Software Foundry</span><span class="nowrap">‧</span><span class="nowrap"> </span><span class="nowrap">Best  Viewed with IE7.0 or Firefox2.0 above, 1024x768 Resolution. </span><strong>E-Mail</strong>：<a href="mailto:contact@openfoundry.org">contact@openfoundry.org</a> <br /><strong>Address</strong>：No.128, Sec.2, Academia Rd., Institute of Information Science, Academia Sinica, Nangang District, Taipei City 11529, Taiwan (R.O.C). <br /><a href="../privacy-policy.html">Privacy Policy</a>. <a href="../terms-of-use.html">Terms-of-use</a> <span style="position: relative; top: 8px; margin-top: -8px;"> <a href="../../about/8101.html"><img src="../../images/M_images/rss-feed-all.png" border="0" /></a></span>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+        	
+</div>
+						<div class="clear"></div>
+					</div>
+					<div class="rt-footer-bottom-wrap"><div class="rt-footer-bottom"><div class="rt-footer-bottom2"><div class="rt-footer-bottom3"></div></div></div></div>
+									</div></div></div>
+				<div class="rt-surround-bottom"><div class="rt-surround-bottom2"><div class="rt-surround-bottom3"></div></div></div>
+							</div>
+		</div>
+		<!--
+		<script id="aptureScript">
+						(function (){var a=document.createElement("script");a.defer="true";a.src="http://www.apture.com/js/apture.js?siteToken=vsJttrn";document.getElementsByTagName("head")[0].appendChild(a);})();
+     </script>
+-->
+
+<!-- Piwik -->
+<!-- 			<script type="text/javascript">
+			  var _paq = _paq || [];
+		  _paq.push(["trackPageView"]);
+		  _paq.push(["enableLinkTracking"]);
+
+		    (function() {
+			        var u=(("https:" == document.location.protocol) ? "https" : "https") + "://www.openfoundry.org/piwik/";
+				    _paq.push(["setTrackerUrl", u+"piwik.php"]);
+				    _paq.push(["setSiteId", "1"]);
+				        var d=document, g=d.createElement("script"), s=d.getElementsByTagName("script")[0]; g.type="text/javascript";
+				        g.defer=true; g.async=true; g.src=u+"piwik.js"; s.parentNode.insertBefore(g,s);
+					  })();
+		  </script> -->
+<!-- End Piwik Code -->
+	</body>
+</html>

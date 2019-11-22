@@ -1,0 +1,267 @@
+	<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+	<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-gb" lang="en-gb" >
+		<head>
+			  <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+  <meta name="robots" content="noindex, nofollow" />
+  <meta name="keywords" content="FreeNAS, nas, network-attached storage, failover,OSSFNL772" />
+  <meta name="title" content="利用 FreeNAS 打造儲存設備 (8)──網路設定篇之頻寬合併" />
+  <meta name="description" content="前言 本文將實作如何建立 Lagg 虛擬網路介面，並採用 LACP 方式，讓 FreeNAS 主機啟用網路卡頻寬合併功能 (Link Aggregation)，也就是 IEEE 802.3ad (Link Aggregation Control Protocol, LACP)，同時也將設定 FreeNAS 主機網路卡啟用 Jumbo Frame 功能， 以便在 FreeNAS" />
+  <meta name="generator" content="" />
+  <title>利用 FreeNAS 打造儲存設備 (8)──網路設定篇之頻寬合併</title>
+  <link href="../../favicon.ico" rel="shortcut icon" type="image/x-icon" />
+  <link rel="stylesheet" href="../../components/com_gantry/css/gantry.css" type="text/css" />
+  <link rel="stylesheet" href="../../components/com_gantry/css/grid-12.css" type="text/css" />
+  <link rel="stylesheet" href="../../components/com_gantry/css/joomla.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/joomla.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/style1.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/light-body.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/demo-styles.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/template.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/typography.css" type="text/css" />
+  <style type="text/css">
+    <!--
+#rt-main-surround ul.menu li.active > a, #rt-main-surround ul.menu li.active > .separator, #rt-main-surround ul.menu li.active > .item, #rt-main-surround .square4 ul.menu li:hover > a, #rt-main-surround .square4 ul.menu li:hover > .item, #rt-main-surround .square4 ul.menu li:hover > .separator, .roktabs-links ul li.active span {color:#0088B5;}
+a, #rt-main-surround ul.menu a:hover, #rt-main-surround ul.menu .separator:hover, #rt-main-surround ul.menu .item:hover {color:#0088B5;}
+    -->
+  </style>
+  <script type="text/javascript" src="../../components/com_jcomments/js/jcomments-v2.1.js%3Fv=2"></script>
+  <script type="text/javascript" src="../../components/com_jcomments/libraries/joomlatune/ajax.js"></script>
+  <script type="text/javascript" src="../../media/system/js/mootools.js"></script>
+  <script type="text/javascript" src="../../media/system/js/caption.js"></script>
+  <script type="text/javascript" src="../../components/com_gantry/js/gantry-buildspans.js"></script>
+  <script type="text/javascript" src="../../components/com_gantry/js/gantry-inputs.js"></script>
+  <script type="text/javascript">
+
+			window.addEvent('domready', function() {
+				var modules = ['rt-block'];
+				var header = ['h3','h2','h1'];
+				GantryBuildSpans(modules, header);
+			});
+		InputsExclusion.push('.content_vote','#rt-popup')
+  </script>
+		</head>
+		<body  class="backgroundlevel-low backgroundstyle-style8 bodylevel-med bodystyle-light cssstyle-style1 logostyle-dark font-family-helvetica font-size-is-default menu-type-fusionmenu col12 ">
+			<div id="rt-main-surround">
+				<div class="rt-container">
+					<div class="rt-block">
+						<div id="rt-mainbody">
+					    	
+<div class="rt-joomla ">
+	<div class="rt-article">
+		
+				<div class="rt-headline"><h1 class="rt-article-title">利用 FreeNAS 打造儲存設備 (8)──網路設定篇之頻寬合併</h1>		</div>
+		<div class="clear"></div>
+		
+		
+		
+				<div class="rt-articleinfo">
+						<div class="rt-article-icons">
+				<a href="8580-freenas-8-internet-setting-link-aggregation%3Ftmpl=component&amp;print=1&amp;layout=default&amp;page=.html#" onclick="window.print();return false;"><span class="icon print"></span></a>									<span class="icon printscreen">
+						<a href="8580-freenas-8-internet-setting-link-aggregation%3Ftmpl=component&amp;print=1&amp;layout=default&amp;page=.html#" onclick="window.print();return false;"><img src="../../images/M_images/printButton.png" alt="Print"  /></a>					</span>
+							</div>
+			
+			<span class="rt-date-posted">
+						 Created at			Friday, 13 January 2012 10:26						&nbsp;&nbsp;&nbsp;&nbsp;						Last Updated on Friday, 03 February 2012 14:51						</span>
+
+						<span class="rt-author">
+				Written by Weithenn ( https://www.weithenn.org/ )			</span>
+				
+					</div>
+		
+		
+		<h3>前言</h3>
+<p>本文將實作如何建立 Lagg 虛擬網路介面，並採用 LACP 方式，讓 FreeNAS 主機啟用網路卡頻寬合併功能 (<a href="https://en.wikipedia.org/wiki/Link_aggregation" target="_blank">Link Aggregation</a>)，也就是 IEEE 802.3ad (Link Aggregation Control Protocol, LACP)，同時也將設定 FreeNAS 主機網路卡啟用 <a href="https://en.wikipedia.org/wiki/Jumbo_frame" target="_blank">Jumbo Frame </a>功能，以便在 FreeNAS 主機進行大檔案（例如影音檔）傳輸時，能減少主機運算負載並加快傳輸時間，且於相關功能設定完畢後進行成員網卡故障及 Jumbo Frame 大封包測試。</p>
+
+<h3>實作環境</h3>
+<ul>
+<li>作業系統：FreeNAS-8.0.2-RELEASE-amd64 (8288) 
+<ul>
+<li>網路卡：em0、em1</li>
+<li>區域網路 IP 網段：10.10.25.0 / 255.255.255.0</li>
+<li>網路交換器：D-Link DGS-3100-24</li>
+</ul>
+</li>
+</ul>
+<h3>GUI 設定 Lagg 頻寬合併及 Jumbo Frame 功能</h3>
+<p><a href="https://www.freebsd.org/cgi/man.cgi?query=lagg&amp;sektion=4" target="_blank">Lagg</a> 是將 FreeNAS 主機上多片實體網路卡群組起來所產生的一片虛擬網路卡，我們設定它以提供實體網路卡進行頻寬合併 (LACP) 的能力。</p>
+<p>另外此次實作環境中所使用的網路卡為 Intel PRO/1000 PT Dual Port Server Adapter，根據 <a href="https://downloadmirror.intel.com/17509/eng/README.txt" target="_blank">Intel 文件</a>的內容可知，正確的 MTU Size 設定值應設定為「9216」bytes，這個數值稍後會被設定至 Lagg 網路介面中，所以請您務必確定 FreeNAS 主機上網路卡的正確 MTU 數值，以免影響後續功能運作。</p>
+<ol style="list-style-type: decimal;">
+<li>僅將 FreeNAS 主機中的單一片網路卡接上網路線（只插 em0）。區域網路中已架設 DHCP 伺服器，主機由 em0 網路卡取得區網 IP 位址 10.10.25.45。</li>
+<li>開啟瀏覽器後於網址列輸入 FreeNAS 主機暫時的 IP 位址「https://10.10.25.45」，此時將自動登入 FreeNAS GUI 圖形介面（不需輸入管理帳號及密碼）。</li>
+<li>切換至「Network &gt; Link Aggregations &gt; Create Link Aggregation 」，選擇及輸入相關資訊：<ol style="list-style-type: lower-alpha;">
+<li>Lagg protocol：顯示 Lagg 故障轉移功能支援的六種模式，請選擇「LACP」類型。</li>
+<li>Physical NICs in the LAGG：顯示於開機流程中偵測到的網路卡清單，請選擇要加入 Lagg 功能的實體網路卡編號，選擇「em0」、「em1」後按下「OK」鍵。</li>
+<li>切換至「View All Link Aggregations」項目後按下「lagg0」項目的「Edit Interface」鈕，輸入 IP 位址資訊：<ol style="list-style-type: lower-alpha;">
+<li>Interface Name：請輸入此網路卡的別名（此為必填欄位不可忽略！），此例採用預設值「lagg0」即可。</li>
+<li>IPv4 Address：請輸入此網路卡上的固定 IP 位址，此例輸入「10.10.25.110」。</li>
+<li>IPv4 Netmask：請於下拉選單中選擇適合的網路遮罩值，此例選擇「/24 (255.255.255.0)」。</li>
+<li>Options： 請輸入適合此網路卡的 MTU 數值，此例輸入「mtu 9216」。</li>
+<li>OK： 當上述設定確認無誤按下「OK」鍵確定套用設定值。</li>
+<li>切換到 FreeNAS Console，輸入「10」進入「Reboot」選項，重新啟動主機並將連接於 em1 網路卡的線材插上。</li>
+</ol></li>
+</ol></li>
+</ol>
+<p><a href="../../images/120117/FreeNAS/FreeNAS08_01.jpg" target="_blank"><img src="../../images/120117/FreeNAS/FreeNAS08_01.jpg" border="0" alt="建立 Lagg 虛擬網路介面及選取成員網卡 em0、em1" width="500" /></a></p>
+<p>▲ 圖1：建立 Lagg 虛擬網路介面及選取成員網卡 em0、em1</p>
+<p><a href="../../images/120117/FreeNAS/FreeNAS08_02.jpg" target="_blank"><img src="../../images/120117/FreeNAS/FreeNAS08_02.jpg" border="0" alt="準備編輯 Lagg 虛擬網路介面內容" width="500" /></a></p>
+<p>▲ 圖2：準備編輯 Lagg 虛擬網路介面內容</p>
+<p><a href="../../images/120117/FreeNAS/FreeNAS08_03.jpg" target="_blank"><img src="../../images/120117/FreeNAS/FreeNAS08_03.jpg" border="0" alt="設定固定 IP 位址至 Lagg 網路介面" width="500" /></a></p>
+<p>▲ 圖3：設定固定 IP 位址至 Lagg 網路介面</p>
+<p><a href="../../images/120117/FreeNAS/FreeNAS08_04.jpg" target="_blank"><img src="../../images/120117/FreeNAS/FreeNAS08_04.jpg" border="0" alt="檢查網路設定是否存入 Lagg 網路介面中" width="500" /></a></p>
+<p>▲ 圖4：檢查網路設定是否存入 Lagg 網路介面中</p>
+<h3>交換器設定頻寬合併及 Jumbo Frame 功能</h3>
+<p>此次測試環境中採用的網路交換器為 D-Link DGS-3100-24，其中 FreeNAS 主機上的 em0 網卡接於 Port 16 而 em1 網卡則接於 Port 17，請輸入如下指令將 Port 16、17 合併（以配合 FreeNAS LACP 設定），設定完成後可使用指令「show link_aggregation」確認運作狀態。</p>
+<pre><code>DGS3100# create link_aggregation group_id 1 type lacp
+DGS3100# config link_aggregation group_id 1 ports 1:(16-17) state enable
+DGS3100# show link_aggregation
+ Group ID      : 1
+ Member Port  : 1:(16-17)
+ Active Port    : 1:(16-17)
+ Status        : enable</code></pre>
+<p>接著啟用交換器的 Jumbo Frame 功能，請注意：此款網路交換器於啟用 Jumbo Frame 功能後，必須進行「存檔 save」以及「重新啟動 reboot」才能使功能套用生效。</p>
+<pre><code>DGS3100# enable jumbo_frame
+Jumbo frames will be enabled after save and restart.
+DGS3100# save
+DGS3100# reboot
+Are you sure you want to proceed with system reboot now? (Y/N)[N] Y
+This action may take a few minutes</code></pre>
+<p>交換器重新啟動完成後使用指令「show configuration running」，再次確認剛才的設定是否套用生效。</p>
+<pre><code>DGS3100# show configuration running
+enable jumbo_frame
+create link_aggregation group_id 1 type lacp
+config link_aggregation group_id 1 ports 1:(16-17)</code></pre>
+<p>此時可以回頭查看 FreeNAS 主機的 Lagg0 網路介面狀態。</p>
+<pre><code>[root@freenas] ~# ifconfig lagg0
+lagg0: flags=8843 metric 0 mtu 9216
+options=19b
+        ether 00:15:17:8e:eb:14
+        inet 10.10.25.110 netmask 0xffffff00 broadcast 10.10.25.255
+        media: Ethernet autoselect
+        status: active
+        laggproto lacp
+        laggport: em1 flags=1c
+        laggport: em0 flags=1c</code></pre>
+<h3>成員網卡故障測試</h3>
+<p>設定「頻寬合併」的好處在於平時可將成員網卡群組起來以增加整體網路傳輸流量（使傳輸瓶頸不致於卡在網路頻寬上！），而當成員網卡損壞時也具備故障容錯功能（只是整體網路傳輸流量下降而已）缺點在於 FreeNAS 主機與網路交換器二端，都必須支援相關協定（如此例的 IEEE802.3ad）才可運作。</p>
+<p>上述準備作業完成後，我們便可以模擬成員網卡故障的情況，請先於 FreeNAS 主機 Console 畫面進入 Shell 模式，輸入「systat -ifstat 1」指令來即時查看網卡流量，以確認目前二片成員網路卡 (em0、em1) 同時均有網路流量。</p>
+<p><a href="../../images/120117/FreeNAS/FreeNAS08_05.jpg" target="_blank"><img src="../../images/120117/FreeNAS/FreeNAS08_05.jpg" border="0" alt="即時查看網卡流量" width="500" /></a></p>
+<p>▲ 圖5：即時查看網卡流量</p>
+<p>採用持續 ping Lagg 網路介面 IP 位址 (10.10.25.110) 的方式來查看 FreeNAS 主機的流量，經實測當 em0 或 em1 成員網卡故障後，並不會遺失任何 ping 封包。下列為模擬 em0 成員網卡故障後在 FreeNAS 主機以及網路交換器上所看到的情況。</p>
+<pre><code>[root@freenas] ~# ifconfig lagg0
+lagg0: flags=8843 metric 0 mtu 9216
+        ether 00:15:17:8e:eb:14
+        inet 10.10.25.110 netmask 0xffffff00 broadcast 10.10.25.255
+        media: Ethernet autoselect
+        status: active
+        laggproto lacp
+        laggport: em1 flags=1c
+        laggport: em0 flags=0
+
+DGS3100# show link_aggregation
+Group ID     : 1
+Member Port  : 1:(16-17)
+Active Port    : 1:17
+Status        : enable</code></pre>
+<h3>Jumbo Frame 測試</h3>
+<p>最後測試能否使用 ping 指令，並搭配參數進行一般及大封包的測試，下列指令中「-c2」參數表示 ping 兩次後便停止，而「-s9216」參數則為指定 ping 封包大小以測試是否正確支援 Jumbo Frame 大封包。</p>
+<pre><code>[root@freenas] ~# ping -c2 10.10.25.111
+PING 10.10.25.111 (10.10.25.111): 56 data bytes
+64 bytes from 10.10.25.111: icmp_seq=0 ttl=64 time=0.147 ms
+64 bytes from 10.10.25.111: icmp_seq=1 ttl=64 time=0.144 ms
+--- 10.10.25.111 ping statistics ---
+2 packets transmitted, 2 packets received, 0.0% packet loss
+round-trip min/avg/max/stddev = 0.144/0.146/0.147/0.001 ms
+
+[root@freenas] ~# ping -c2 -s9216 10.10.25.111
+PING 10.10.25.111 (10.10.25.111): 9216 data bytes
+9224 bytes from 10.10.25.111: icmp_seq=0 ttl=64 time=2.147 ms
+9224 bytes from 10.10.25.111: icmp_seq=1 ttl=64 time=2.144 ms
+--- 10.10.25.111 ping statistics ---
+2 packets transmitted, 2 packets received, 0.0% packet loss
+round-trip min/avg/max/stddev = 2.144/2.146/2.147/0.001 ms</code></pre>
+<h3>補充</h3>
+<h4>一、Junper EX3200 交換器設定？</h4>
+<p>市面上網路交換器品牌眾多，無法一一舉例，筆者用手上能取得的另一款交換器測試 LACP 與 Jumbo Frame 功能，設定內容如下：</p>
+<pre><code># set chassis aggregated-devices ethernet device-count 1
+# set interfaces ae0 aggregated-ether-options lacp active
+# set interfaces ae0 unit 0 family inet address 10.10.25.112/24
+# delete interfaces ge-0/0/16 unit 0
+# delete interfaces ge-0/0/17 unit 0
+# set interfaces ge-0/0/16 ether-options 802.3ad ae0
+# set interfaces ge-0/0/17 ether-options 802.3ad ae0
+# set interfaces ae0 mtu 9216
+# commit</code></pre>
+<p>設定完成後查看 LACP 設定是否生效。</p>
+<pre><code>root&gt; show lacp interfaces ae0
+Aggregated interface: ae0
+    LACP state:       Role   Exp   Def  Dist  Col  Syn  Aggr  Timeout  Activity
+      ge-0/0/16      Actor    No    No   Yes  Yes  Yes   Yes     Fast    Active
+      ge-0/0/16    Partner    No    No   Yes  Yes  Yes   Yes     Slow    Active
+      ge-0/0/17      Actor    No    No   Yes  Yes  Yes   Yes     Fast    Active
+      ge-0/0/17    Partner    No    No   Yes  Yes  Yes   Yes     Slow    Active
+    LACP protocol:        Receive State  Transmit State          Mux State
+      ge-0/0/16                 Current   Slow periodic Collecting distributing
+      ge-0/0/17                 Current   Slow periodic Collecting distributing</code></pre>
+<p>此款 Switch 支援 ping 指令以及指定大封包 size，因此可以直接由交換器端 ping FreeNAS 主機。</p>
+<pre><code>root&gt; ping count 2 size 9216 10.10.25.110
+PING 10.10.25.110 (10.10.25.110): 9216 data bytes
+9224 bytes from 10.10.25.110: icmp_seq=0 ttl=64 time=3.220 ms
+9224 bytes from 10.10.25.110: icmp_seq=1 ttl=64 time=1.626 ms
+--- 10.10.25.112 ping statistics ---
+2 packets transmitted, 2 packets received, 0% packet loss
+round-trip min/avg/max/stddev = 1.626/2.423/3.220/0.797 ms</code></pre>
+<h4>二、Jumbo Frame 功能無法運作？</h4>
+<p>以筆者此次測試的伺服器 IBM x3250 為例，其內建的 Broadcom 網卡（FreeNAS 網卡代號 bge）便無法將 MTU 數值設定超過「1500」，原因是此版本 FreeNAS 所採用的作業系統為 FreeBSD 8.2，對於此網路卡的驅動剛好有點問題（MTU 數值可往下調整卻無法上調），詳細說明請參考 <a href="https://www.freebsd.org/cgi/query-pr.cgi?pr=155192" target="_blank">FreeBSD - kern/155192: bge1 mtu problem</a>。</p>
+<p>那麼該如何判斷安裝於 FreeNAS 主機上的網路卡能否支援 Jumbo Frame？簡單的判斷方式為進入 FreeNAS Console 使用指令手動指定網卡 MTU 數值。如果得到的回應訊息為「Invalid argument」，便表示該網卡不支援 Jumbo Frame 功能；或者是您設定的 MTU 數值錯誤，例如該網路卡 MTU 支援為 9014 而您卻設定為 9216，超出支援範圍。輸入後若直接得到「提示符號 #」則表示有支援，接著使用 ifconfig 指令配合網卡，即可確認 MTU 數值是否套用生效。</p>
+<pre><code>[root@freenas] ~# ifconfig bge0 mtu 9000     //指定 MTU為 9000
+ifconfig: ioctl (set mtu): Invalid argument  //設定失敗
+[root@freenas] ~# ifconfig bge0              //目前 MTU 仍為 1500
+bge0: flags=8843 ＜UP,BROADCAST,RUNNING,SIMPLEX,MULTICAST＞ metric 0 mtu 1500
+        ether 00:1a:64:6e:0e:69
+        inet 10.10.25.45 netmask 0xffffff00 broadcast 10.10.25.255
+        media: Ethernet autoselect (100baseTX ＜full-duplex,flowcontrol,rxpause,txpause＞)
+        status: active
+
+[root@freenas] ~# ifconfig bge0 mtu 1200     //指定 MTU 為 1200
+[root@freenas] ~# ifconfig bge0              //目前 MTU 為 1200
+bge0: flags=8843 ＜UP,BROADCAST,RUNNING,SIMPLEX,MULTICAST＞ metric 0 mtu 1200
+        ether 00:1a:64:6e:0e:69
+        inet 10.10.25.45 netmask 0xffffff00 broadcast 10.10.25.255
+        media: Ethernet autoselect (100baseTX ＜full-duplex,flowcontrol,rxpause,txpause＞)
+        status: active</code></pre>
+<p>還有一種導致 Jumbo Frame 功能無法運作的可能，是網路交換器不支援 Jumbo Frame！以筆者手邊的 Cisco Catalyst 2950 為例，該交換器的 MTU 數值預設為 1500，但是最高也僅支援至 1530（詳細說明資訊請參考 <a href="https://www.cisco.com/en/US/products/hw/switches/ps700/products_configuration_example09186a008010edab.shtml#c5" target="_blank">Cisco – Jumbo/Giant Frame Support on Catalyst Switchs Configuration Example</a>），所以當發生問題時請務必確定二端（FreeNAS 主機上網路卡及網路交換器）皆支援相關設定。</p>
+<h3>結語</h3>
+<p>至此 FreeNAS 的網卡頻寬合併及 Jumbo Frame 功能已設定完成，並且順利通過成員網卡故障及 Jumbo Frame 大封包測試，在下一篇文章中將會實作如何於 FreeNAS 主機上設定靜態路由 (Static Route) 及虛擬網路 (VLAN) 功能。</p>
+			<!-- Show relate article -->
+		<br><br><h4>You may be interested in the following articles:</h4><ul><li><a href='../../tech-column/8529.html'>利用 FreeNAS 打造儲存設備 (7)─Failover（故障轉移）</a> - <span class='date-posted'>2011-11-28</span></li><li><a href='../../tech-column/8480.html'>利用 FreeNAS 打造儲存設備 (6) 網路設定篇─基礎設定</a> - <span class='date-posted'>2011-10-14</span></li><li><a href='../../tech-column/8473.html'>利用 FreeNAS 打造儲存設備(5)安裝篇（嵌入式 USB）</a> - <span class='date-posted'>2011-10-04</span></li><li><a href='../../tech-column/8444.html'>利用 FreeNAS 打造儲存設備(4)─安裝篇（由 GUI 升級）</a> - <span class='date-posted'>2011-09-13</span></li><li><a href='../../tech-column/8431.html'>利用 FreeNAS 打造儲存設備(3)─安裝篇（由光碟升級）</a> - <span class='date-posted'>2011-09-01</span></li><li><a href='../../tech-column/8423.html'>利用 FreeNAS 打造儲存設備(2)－安裝篇</a> - <span class='date-posted'>2011-08-18</span></li><li><a href='../../tech-column/8408.html'>利用 FreeNAS 打造儲存設備(1)－歷史篇</a> - <span class='date-posted'>2011-08-03</span></li></ul>		<!-- end -->
+		<div class="article_note">
+		<!-- Add tags use metakey, and show OSSF Newsletter tag: OSSFNL+NUM-->
+		<br><br> <hr style='border: 1px dashed #D2DADB;'><b>OSSF Newsletter&nbsp;:</b>&nbsp;<a href='../../previous-issue%3Ftask=view&amp;id=772.html'>第 188 期 PaaS：程式語言開發在雲端「Programming in Paas」（下）</a><br><b>Tags:</b>&nbsp;<a href='../../index.php%3Foption=com_search&amp;Itemid=58&amp;searchphrase=exact_meta&amp;ordering=newest&amp;searchword=FreeNAS.html'>FreeNAS</a>,&nbsp;&nbsp;<a href='../../index.php%3Foption=com_search&amp;Itemid=58&amp;searchphrase=exact_meta&amp;ordering=newest&amp;searchword=&#32;nas.html'> nas</a>,&nbsp;&nbsp;<a href='../../index.php%3Foption=com_search&amp;Itemid=58&amp;searchphrase=exact_meta&amp;ordering=newest&amp;searchword=&#32;network-attached&#32;storage.html'> network-attached storage</a>,&nbsp;&nbsp;<a href='../../index.php%3Foption=com_search&amp;Itemid=58&amp;searchphrase=exact_meta&amp;ordering=newest&amp;searchword=&#32;failover.html'> failover</a>,&nbsp;&nbsp;				<!-- End -->
+					<br>
+					<b>Category: </b><a href="../tech-column.html">				Tech Column					</a>				</div>
+			 <!-- AddThis Button BEGIN ID 3001 is the front page article -->
+     			<br><br>
+       <div class="addthis_toolbox addthis_default_style addthis_32x32_style">
+       <a class="addthis_button_preferred_1"></a>
+       <a class="addthis_button_preferred_2"></a>
+       <a class="addthis_button_preferred_3"></a>
+       <a class="addthis_button_preferred_4"></a>
+       <a class="addthis_button_compact"></a>
+       <a class="addthis_counter addthis_bubble_style"></a>
+       </div>
+       <script type="text/javascript">var addthis_config = {"data_track_clickback":true};</script>
+       <script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js#pubid=openfoundry"></script>
+       <!-- AddThis Button END -->
+     <br>
+		<div class="totop" ><a class="rt-totop" href="8580-freenas-8-internet-setting-link-aggregation%3Ftmpl=component&amp;print=1&amp;layout=default&amp;page=.html#" style="outline: medium none;">↑ Top</a></div>
+            <!-- AddThis Button END -->
+
+			</div>
+</div>
+
+						</div>
+					</div>
+				</div>
+			</div>
+		</body>
+	</html>

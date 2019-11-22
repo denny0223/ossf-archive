@@ -1,0 +1,499 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-gb" lang="en-gb" >
+<head>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<link rel="shortcut icon" href="images/favicon.ico" />
+	  <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+  <meta name="robots" content="index, follow" />
+  <meta name="keywords" content="OSSFNL556" />
+  <meta name="title" content="Vim - CPAN 模組搜尋之整合　可程式化編輯器所帶來的好處 (一)" />
+  <meta name="description" content="※ 前言 接觸 Unix-like 系統的朋友們應該都知道 Vi / Vim 以及 Emacs 這兩套赫赫有名的編輯器。這兩套編輯器之為何有名，是因為這兩者都為使用者帶來可程式化 (Programmable)的便利性。使用者可為自己撰寫常用功能的指令稿，可以將一連串複雜的編輯動作或甚至系統呼叫簡化成一組簡單的組合鍵。 但在概念上來說，Vim 的概念較為不同，Vim" />
+  <meta name="generator" content="" />
+  <title>Vim - CPAN 模組搜尋之整合　可程式化編輯器所帶來的好處 (一) - OpenFoundry</title>
+  <link href="favicon.ico" rel="shortcut icon" type="image/x-icon" />
+  <link rel="stylesheet" href="components/com_gantry/css/gantry.css" type="text/css" />
+  <link rel="stylesheet" href="components/com_gantry/css/grid-12.css" type="text/css" />
+  <link rel="stylesheet" href="components/com_gantry/css/joomla.css" type="text/css" />
+  <link rel="stylesheet" href="templates/rt_quantive_j15/css/joomla.css" type="text/css" />
+  <link rel="stylesheet" href="templates/rt_quantive_j15/css/style1.css" type="text/css" />
+  <link rel="stylesheet" href="templates/rt_quantive_j15/css/light-body.css" type="text/css" />
+  <link rel="stylesheet" href="templates/rt_quantive_j15/css/demo-styles.css" type="text/css" />
+  <link rel="stylesheet" href="templates/rt_quantive_j15/css/template.css" type="text/css" />
+  <link rel="stylesheet" href="templates/rt_quantive_j15/css/typography.css" type="text/css" />
+  <link rel="stylesheet" href="templates/rt_quantive_j15/css/fusionmenu.css" type="text/css" />
+  <style type="text/css">
+    <!--
+#rt-main-surround ul.menu li.active > a, #rt-main-surround ul.menu li.active > .separator, #rt-main-surround ul.menu li.active > .item, #rt-main-surround .square4 ul.menu li:hover > a, #rt-main-surround .square4 ul.menu li:hover > .item, #rt-main-surround .square4 ul.menu li:hover > .separator, .roktabs-links ul li.active span {color:#0088B5;}
+a, #rt-main-surround ul.menu a:hover, #rt-main-surround ul.menu .separator:hover, #rt-main-surround ul.menu .item:hover {color:#0088B5;}
+    -->
+  </style>
+  <script type="text/javascript" src="components/com_jcomments/js/jcomments-v2.1.js%3Fv=2"></script>
+  <script type="text/javascript" src="components/com_jcomments/libraries/joomlatune/ajax.js"></script>
+  <script type="text/javascript" src="media/system/js/mootools.js"></script>
+  <script type="text/javascript" src="media/system/js/caption.js"></script>
+  <script type="text/javascript" src="components/com_gantry/js/gantry-buildspans.js"></script>
+  <script type="text/javascript" src="components/com_gantry/js/gantry-inputs.js"></script>
+  <script type="text/javascript" src="templates/rt_quantive_j15/js/jquery.cookie.js"></script>
+  <script type="text/javascript" src="modules/mod_roknavmenu/themes/fusion/js/fusion.js"></script>
+  <script type="text/javascript" src="modules/mod_ofssologin/js/ofssologin.js"></script>
+  <script type="text/javascript">
+
+			window.addEvent('domready', function() {
+				var modules = ['rt-block'];
+				var header = ['h3','h2','h1'];
+				GantryBuildSpans(modules, header);
+			});
+		InputsExclusion.push('.content_vote','#rt-popup')
+		        window.addEvent('load', function() {
+					new Fusion('ul.menutop', {
+						pill: 0,
+						effect: 'slide and fade',
+						opacity: 1,
+						hideDelay: 500,
+						centered: 0,
+						tweakInitial: {'x': -2, 'y': 0},
+        				tweakSubsequent: {'x': 0, 'y': -14},
+						menuFx: {duration: 200, transition: Fx.Transitions.Sine.easeOut},
+						pillFx: {duration: 400, transition: Fx.Transitions.Back.easeOut}
+					});
+	            });
+  </script>
+<!-- <script type="text/javascript" src="/sso/javascripts/langsync.js"></script> -->
+<!-- <script src="/templates/rt_quantive_j15/js/ossf.js"></script> -->
+<script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-4136519-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
+</head>
+	<body  class="backgroundlevel-low backgroundstyle-style8 bodylevel-med bodystyle-light cssstyle-style1 logostyle-dark font-family-helvetica font-size-is-default menu-type-fusionmenu col12 ">
+		<div id="rt-main-background">
+			<div class="rt-container">
+																<div id="rt-header">
+					<div class="rt-grid-7 rt-alpha">
+    			<div class="rt-block">
+    	    	<a href="index.html" id="rt-logo"></a>
+    		</div>
+	    
+</div>
+<div class="rt-grid-5 rt-omega">
+                    <div class="square9">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<div class="ofssologin_square9"><a href="index.html">Login</a>&nbsp;&nbsp|&nbsp;&nbsp;<span><a href="tw/component/content/2206%3Ftask=view.html" ><span lang="tw" xml:lang="tw">繁體中文</span></a></li></ul></span><!--Joom!fish V2.0.4 (Lightning)-->
+<!-- &copy; 2003-2009 Think Network, released under the GPL. -->
+<!-- More information: at http://www.joomfish.net -->
+<div class="ofssologin_search_square9">
+  <form id="of_search" action="https://www.openfoundry.org/of/openfoundry/search" method="get" onsubmit="of_search(); return false;">
+    <select id="of_search_type">
+      <option value="Projects"> Projects </option>
+      <option value="Content"> Content </option>
+      <option value="People"> People </option>
+    </select>
+    <input id="query" name="query" id="mod_search_searchword" maxlength="50" alt="search" class="inputbox" type="text" size="28" value="search..."  onblur="if(this.value=='') this.value='search...';" onfocus="if(this.value=='search...') this.value='';" />
+    <input type="hidden" name="commit" value="search" />
+  </form>
+</div></div>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		
+</div>
+					<div class="clear"></div>
+				</div>
+																<div id="rt-navigation"><div id="rt-navigation2"><div id="rt-navigation3">
+					
+<div class="nopill">
+	<ul class="menutop level1 " >
+						<li class="item1 root" >
+					<a class="orphan item bullet" href="index.html"  >
+				<span>
+			    				Home				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item32 root" >
+					<a class="orphan item bullet" href="archived.html"  >
+				<span>
+			    				Projects				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item186 root" >
+					<a class="orphan item bullet" href="en/community.html"  >
+				<span>
+			    				Who&#039;s Who				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item4 root" >
+					<a class="orphan item bullet" href="en/news.html"  >
+				<span>
+			    				News				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item5 root" >
+					<a class="orphan item bullet" href="en/law-and-licensing.html"  >
+				<span>
+			    				Law &amp; Licensing				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item3 root" >
+					<a class="orphan item bullet" href="en/activities.html"  >
+				<span>
+			    				Activities				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item2 root" >
+					<a class="orphan item bullet" href="en/resourcecatalog.html"  >
+				<span>
+			    				Resource Catalog				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item45 root" >
+					<a class="orphan item bullet" href="en/about.html"  >
+				<span>
+			    				About				   
+				</span>
+			</a>
+			
+			
+	</li>	
+				</ul>
+</div>
+
+				    <div class="clear"></div>
+				</div></div></div>
+								<div class="rt-surround"><div class="rt-surround2"><div class="rt-surround3">
+										<div id="rt-showcase-section">
+												<div id="rt-showcase">
+							<div class="rt-grid-12 rt-alpha rt-omega">
+    		<div class="clear"></div>
+		
+		
+                <div class="close-note">
+                    <div class="rt-block">
+               					<div class="module-content">
+                	<div style="font-size:medium; background-image:linear-gradient(120deg,#159957,#4298b2);color:white;padding:20px;margin:-10px -18px;">感謝您對「自由軟體鑄造場」的支持與愛護，十多年來「自由軟體鑄造場」受中央研究院支持，並在資訊科學研究所以及資訊科技創新研究中心執行，現已完成階段性的任務。 本網站預計持續維運至 2021年底，網站內容基本上不會再更動。<br />也紀念我們永遠的朋友 李士傑先生（Shih-Chieh Ilya Li）。</div>				</div>
+            </div>
+                </div>
+		
+</div>
+							<div class="clear"></div>
+						</div>
+																	</div>
+															<div id="rt-main-surround">
+												<div id="rt-breadcrumbs">
+								<div class="rt-breadcrumb-surround">
+		<a href="index.html" id="breadcrumbs-home"></a>
+		<span class="breadcrumbs pathway">
+<span class="no-link">Previous Issue</span></span>
+	</div>
+	
+							<div class="clear"></div>
+						</div>
+																							              <div id="rt-main" class="sa3-mb9">
+                <div class="rt-main-inner">
+                    <div class="rt-grid-9 rt-push-3">
+                                                <div class="rt-block">
+                            							<div class="square1">
+							<div class="rt-module-surround">
+								<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+								<div class="rt-module-inner">
+		                            <div id="rt-mainbody">
+		                                
+<div class="rt-joomla ">
+	<div class="rt-article">
+		
+				<div class="rt-headline"><h1 class="rt-article-title">Vim - CPAN 模組搜尋之整合　可程式化編輯器所帶來的好處 (一)</h1>		</div>
+		<div class="clear"></div>
+		
+		
+		
+				<div class="rt-articleinfo">
+						<div class="rt-article-icons">
+								<a href="https://www.openfoundry.org/en/component/content/2206?tmpl=component&amp;print=1&amp;page=" title="Print" onclick="window.open(this.href,'win2','status=no,toolbar=no,scrollbars=yes,titlebar=no,menubar=no,resizable=yes,width=640,height=480,directories=no,location=no'); return false;" rel="nofollow"><span class="icon print"></span></a>																</div>
+			
+			<span class="rt-date-posted">
+						 Created at			Monday, 23 November 2009 09:14						&nbsp;&nbsp;&nbsp;&nbsp;						Last Updated on Tuesday, 24 November 2009 08:36						</span>
+
+						<span class="rt-author">
+				Written by Cornelius			</span>
+				
+					</div>
+		
+		
+		<p><strong>※ 前言</strong></p>
+<p>接觸 Unix-like 系統的朋友們應該都知道 Vi / Vim 以及 Emacs 這兩套赫赫有名的編輯器。這兩套編輯器之為何有名，是因為這兩者都為使用者帶來可程式化 (Programmable)的便利性。使用者可為自己撰寫常用功能的指令稿，可以將一連串複雜的編輯動作或甚至系統呼叫簡化成一組簡單的組合鍵。<br /></p><p>但在概念上來說，Vim 的概念較為不同，Vim 將撰寫文字這個動作切割出來成文字的插入模式 (Insert Mode) 而另外獨立出一個一般模式 (Normal Mode)。在一般模式裡頭， Vim 接收使用者輸入的一序列的鍵碼，並在決策樹 (Decision Tree)中，建立路徑來找出對應命令並且執行。</p>
+<p>另一個特點則是，Vim 將所有文字都視為文字物件 (Text Object)，每一個段落、字串、一句話、一個章節、一個字、一個程式碼區塊，任何可辨別出範圍的文字都是文字物件。使用者可以將在一般模式 (Normal Mode) 所定義的命令來選取、操作該物件，除了剪下、複製、貼下等基本命令外，使用者還可自訂其他命令，譬如說，對該文字物件來做程式碼的重新排列，做字元轉換，或做縮排調整，或將文字物件傳送給瀏覽器做搜尋、張貼等等。</p>
+<p>此外，使用者可以輕易的將編輯器與外部程式做整合，任何外部程式皆可由 Vim 內呼叫，並且再對這些指令產生的結果做特定的處理。使用者可以撰寫自己的指令稿(script) ，再由 Vim 裡頭呼叫該指令稿來做事情。 除此，使用者還可直接在 Vim Script 內直接嵌入 Perl , Ruby , Python 或是 MzScheme 等程式語言，並且透過 Vim 本身提供的 API 來對 Vim 編輯器本身做操作。</p>
+<p><br /><strong>※ 與 CPAN 整合之應用</strong></p>
+<p>什麼是 CPAN？CPAN (Comprehensive Perl Archive Network) 為 Perl 綜合典藏網，集世界 Perl 模組作者所撰寫的大量的模組，包含影像處理、生物資訊、字串處理、數學運算等等用途的模組，包羅萬象。而透過 Perl 提供的 CPAN Shell 可以用來搜尋、安裝或查詢 CPAN 上的模組。</p>
+<p>不過每次在搜尋 CPAN 時，我們都必須要從編輯器上切換到終端機，接著輸入 cpan 命令來做模組搜尋，cpan 則要在另外花上 3-4 秒載入模組索引來做搜尋，所以這一直是很耗費時間的一件事情。</p>
+<p>事情若是能夠做的更有效率，那麼我們就更該用有效率的方式來做。</p>
+<p>所以筆者試著利用 Vim 這樣的特性來實現這樣一個用於操作 CPAN 模組的 Vim Plugin。讓在 Vim 裡可以啟用一個搜尋視窗，載入索引快取索引，然後利用第一列來輸入搜尋樣式 (Pattern)。每當樣式更新，便隨即更新搜尋結果。使用者可選擇模組，並針對該模組查詢文件、作者、版本，或直接編輯原始碼，讓 CPAN 模組相關操作可以更便利易用。（相關的展示參見註 1）<br /></p>
+<div>
+<p dir="ltr" style="MARGIN-RIGHT: 0px"><strong>※ 模組索引檔</strong></p>
+<p dir="ltr" style="MARGIN-RIGHT: 0px">要能夠搜尋模組，那麼得先有模組索引檔才行。 CPAN Shell 或是 CPANPLUS Shell 各有存放索引的位置。CPAN Shell 通常是放於家目錄底下的 .cpan 資料夾內，實際路徑為 $HOME/.cpan/sources/modules/02packages.details.txt.gz ，CPANPLUS 則是放置於&nbsp; $HOME/.cpanplus/02packages.details.txt.gz 。使用 zcat 命令可將該索引顯示出來，如下:</p>
+<p>&nbsp;</p>
+<pre>&nbsp;&nbsp;&nbsp; $ zcat ~/.cpan/sources/modules/02packages.details.txt.gz </pre>
+<p>&nbsp;</p>
+<pre>&nbsp;&nbsp;&nbsp; File:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 02packages.details.txt<br />&nbsp;&nbsp;&nbsp; URL:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <a href="https://www.perl.com/CPAN/modules/02packages.details.txt">https://www.perl.com/CPAN/modules/02packages.details.txt</a><br />&nbsp;&nbsp;&nbsp; Description:&nbsp; Package names found in directory $CPAN/authors/id/<br />&nbsp;&nbsp;&nbsp; Columns:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; package name, version, path<br />&nbsp;&nbsp;&nbsp; Intended-For: Automated fetch routines, namespace documentation.<br />&nbsp;&nbsp;&nbsp; Written-By:&nbsp;&nbsp; Id<br />&nbsp;&nbsp;&nbsp; Line-Count:&nbsp;&nbsp; 71007<br />&nbsp;&nbsp;&nbsp; Last-Updated: Wed, 04 Nov 2009 03:27:58 GMT</pre>
+<pre>&nbsp;&nbsp;&nbsp; A&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 0.01&nbsp; A/AD/ADAMK/Module-Install-0.80.tar.gz<br />&nbsp;&nbsp;&nbsp; AAA::Demo&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; undef&nbsp; J/JW/JWACH/Apache-FastForward-1.1.tar.gz<br />&nbsp;&nbsp;&nbsp; AAA::eBay&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; undef&nbsp; J/JW/JWACH/Apache-FastForward-1.1.tar.gz<br />&nbsp;&nbsp;&nbsp; AAC::Pvoice&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 0.91&nbsp; J/JO/JOUKE/AAC-Pvoice-0.91.tar.gz<br />&nbsp;&nbsp;&nbsp; AAC::Pvoice::Bitmap&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 1.12&nbsp; J/JO/JOUKE/AAC-Pvoice-0.91.tar.gz<br />&nbsp;&nbsp;&nbsp; AAC::Pvoice::Dialog&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 1.01&nbsp; J/JO/JOUKE/AAC-Pvoice-0.91.tar.gz<br />&nbsp;&nbsp;&nbsp; ... 略</pre>
+<p>開頭幾行所列舉的為該索引檔的相關資訊，包含最後更新時間、來源網址、敘述等等。接下來其他行則是所有 CPAN 模組的索引資料，基本上我們只需要第一欄即可，可利用 將此檔案導給 (pipe) cut 命令來做切割，並利用 grep -v 命令將開頭那幾行額外的資訊濾除:</p>
+<pre>&nbsp;&nbsp;&nbsp; $ zcat ~/.cpan/sources/modules/02packages.details.txt.gz \<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; | grep -v '^[0-9a-zA-Z-]*: '&nbsp; \<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; | cut -d' ' -f1</pre>
+<p>有了將模組名稱過濾出來的指令，便能夠開始將結果導入至 Vim 來做整合了。</p>
+<p><strong><br />※ Vim Script</strong></p>
+<p>要撰寫 Vim Script ，首先就得了解 Vim 在執行期間載入 Vim Script 的步驟。在啟動 Vim 時，Vim 會先載入家目錄底下的 .vimrc 檔案，接著去載入 $VIMRUNTIME（註 2）路徑底下的所有資料夾裡頭副檔名為 .vim 的檔案。</p>
+<p>基本上，我們所要實做的 Vim Script 必須放在 $VIMRUNTIME/plugin/ 底下，另外我們也需在 $VIMRUNTIME/autoload/ 底下放置共用的 (common) 函式。</p>
+<p>為了要讓索引檔讀取的函式可以共用，所以可以放置在 $VIMRUNTIME 路徑底下的 autoload 資料夾內，取名為 perl.vim 用以存放 Perl 相關的 Vim 函式。</p>
+<p>autoload 基本上是為了提供像函式庫之類的功能，讓常用、通用的函式可以放在一起，重複使用。要撰寫函式用於 autoload ，則我們需要在每個函式名稱前加上檔名。舉例來說，我們撰寫 $VIMRUNTIME/autoload/libperl.vim 時，則函式的定義必須為:</p>
+<pre>&nbsp;&nbsp;&nbsp; fun libperl#function_name()</pre>
+<pre>&nbsp;&nbsp;&nbsp; endf</pre>
+<p>那麼在呼叫定義在 autoload 內的函式時，則需要寫:</p>
+<pre>&nbsp;&nbsp;&nbsp; cal libperl#function_name()</pre>
+<p>Vim 便會自動去呼叫 libperl.vim 內所定義的函式。（事實上放在 autoload/ 裡頭的腳本 (Script) 都會先被預先載入，而非在叫用時才去載入。）</p>
+<p>接下來可以設計一管理視窗的物件，來管理顯示搜尋結果所使用的 Buffer 以及視窗分割。</p>
+<p>由於 Vim 沒有提供原生的物件導向機制，所以是用 Dictionary 的變數類型來做物件的模擬，並將函式的參照儲存於 Dictionary 內。Dictionary 基本上就是我們常用的雜湊&nbsp; (Hash)。</p>
+<p>而 Vim 裡頭物件的定義是像這樣寫的:</p>
+<pre>&nbsp;&nbsp;&nbsp; let obj = { 'property': 123 , 'foo':'bar' }</pre>
+<p>在 obj 變數定義函式的方式如下:</p>
+<pre>&nbsp;&nbsp;&nbsp; function obj.func1(arg1,arg2)</pre>
+<pre>&nbsp;&nbsp;&nbsp; endf </pre>
+<pre>&nbsp;&nbsp;&nbsp; function obj.func2()</pre>
+<pre>&nbsp;&nbsp;&nbsp; endf</pre>
+<p>所以我們先定義好搜尋視窗物件，並且針對用於搜尋的 Buffer 做一些特定的初始化。</p>
+<pre>&nbsp;&nbsp;&nbsp; let swindow#class = {<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; \'buf_nr' : -1 ,<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; \'mode' : 0 ,&nbsp; <br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; \'predefined_index': [] ,<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; \'max_result': 100<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; \}<br />&nbsp;&nbsp;&nbsp; let swindow#class.version = 0.3</pre>
+<pre>&nbsp;&nbsp;&nbsp; fun! swindow#class.split( ... )<br />&nbsp;&nbsp;&nbsp; .... 略</pre>
+<p>接著在 swindow#class.split 函式內，使用簡單的檢查來決定是否建立新的 Buffer 或是將已有的 Buffer 載回，或是若已有視窗開啟那麼直接切換到該視窗:</p>
+<pre>&nbsp;&nbsp;&nbsp; if ! bufexists( self.buf_nr )&nbsp; <br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &quot; 該 Buffer 不存在時<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; let self.buf_nr = bufnr('%')</pre>
+<pre>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &quot; 接著做 Buffer 的初始化動作<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &quot; ... 略</pre>
+<pre>&nbsp;&nbsp;&nbsp; elseif bufwinnr(self.buf_nr) == -1<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &quot; 該 Buffer 已經存在<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &quot; 載回該 Buffer<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; execute self.buf_nr . 'buffer'</pre>
+<pre>&nbsp;&nbsp;&nbsp; elseif bufwinnr(self.buf_nr) != bufwinnr('%')<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &quot; 該 Buffer 已經在某視窗內，但目前視窗非此視窗<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &quot; 切換到該視窗<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; execute bufwinnr(self.buf_nr) . 'wincmd w'</pre>
+<pre>&nbsp;&nbsp;&nbsp; endif</pre>
+<p>而初始化 Buffer 的一些設定如下:</p>
+<pre>&nbsp;&nbsp;&nbsp; setlocal noswapfile&nbsp; buftype=nofile bufhidden=hide<br />&nbsp;&nbsp;&nbsp; setlocal nobuflisted nowrap cursorline nonumber fdc=0</pre>
+<p>需要注意的是使用 setlocal 命令來指定該設定只對 Buffer 生效。</p>
+<p>其他設定之說明如下:</p>
+<pre>&nbsp;&nbsp;&nbsp; * noswapfile&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 指不將 Buffer 放置到 swap 檔案內<br />&nbsp;&nbsp;&nbsp; * buftype=nofile&nbsp;&nbsp; 指 Buffer 類型非檔案<br />&nbsp;&nbsp;&nbsp; * bufhidden=hide&nbsp;&nbsp; 隱藏 Buffer<br />&nbsp;&nbsp;&nbsp; * nobuflisted&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 在使用者使用 :buffers 指令時，不列出該 Buffer<br />&nbsp;&nbsp;&nbsp; * nowrap&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 文字超過欄寬時不換行<br />&nbsp;&nbsp;&nbsp; * nonumber&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 不使用行號<br />&nbsp;&nbsp;&nbsp; * fdc=0&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 折疊(Fold) 欄寬為 0</pre>
+<p>接著對 swindow#class 物件定義其他函式如:</p>
+<pre>&nbsp;&nbsp;&nbsp; swindow#class.init_basic_mapping()&nbsp;&nbsp; &quot; 初始化快速鍵<br />&nbsp;&nbsp;&nbsp; swindow#class.init_syntax()&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &quot; 初始化語法標記 (Syntax Highlighting)<br />&nbsp;&nbsp;&nbsp; swindow#class.render(lines)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &quot; 產生結果至畫面<br />&nbsp;&nbsp;&nbsp; swindow#class.get_pattern()&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &quot; 取得搜尋樣式<br />&nbsp;&nbsp;&nbsp; swindow#class.close()&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &quot; 關閉視窗<br />&nbsp;&nbsp;&nbsp; &quot; ... 略</pre>
+<pre>在 init_basic_mapping() 裡頭，我們必須對每一種快捷鍵 (mapping) <br />皆使用 &quot;&lt;buffer&gt;&quot; 的選項來限制該快捷鍵只於此 Buffer:</pre>
+<pre>&nbsp;&nbsp;&nbsp; fun! swindow#class.init_basic_mapping()<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; imap &lt;buffer&gt;&nbsp;&nbsp;&nbsp;&nbsp; &lt;Enter&gt; &lt;ESC&gt;j&lt;Enter&gt;<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; imap &lt;buffer&gt;&nbsp;&nbsp;&nbsp;&nbsp; &lt;C-a&gt;&nbsp;&nbsp; &lt;Esc&gt;0i<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; imap &lt;buffer&gt;&nbsp;&nbsp;&nbsp;&nbsp; &lt;C-e&gt;&nbsp;&nbsp; &lt;Esc&gt;A<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; imap &lt;buffer&gt;&nbsp;&nbsp;&nbsp;&nbsp; &lt;C-b&gt;&nbsp;&nbsp; &lt;Esc&gt;i<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; imap &lt;buffer&gt;&nbsp;&nbsp;&nbsp;&nbsp; &lt;C-f&gt;&nbsp;&nbsp; &lt;Esc&gt;a<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; inoremap &lt;buffer&gt; &lt;C-n&gt; &lt;ESC&gt;j<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; nnoremap &lt;buffer&gt; &lt;C-n&gt; j<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; nnoremap &lt;buffer&gt; &lt;C-p&gt; k<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &quot; ... 略<br />&nbsp;&nbsp;&nbsp; endf</pre>
+<p>以及用來更新畫面的 render() 函式:</p>
+<pre>&nbsp;&nbsp;&nbsp; fun! swindow#class.render(lines)<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &quot; 儲存原有游標位置<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; let old = getpos('.')
+<p>&nbsp;</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &quot; 取得最尾行行號，如果超過兩行便將第二行開始到尾端 ($) 都刪除<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; if line('$') &gt; 2<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; silent 2,$delete _<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; endif</p>
+</pre>
+<pre>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &quot; 最後將要顯示的串列 (List) 繪製到 Buffer 上<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; let r=join( a:lines , &quot;\n&quot; )<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; silent put=r
+<p>&nbsp;</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &quot; 重設游標<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; cal setpos('.',old)<br />&nbsp;&nbsp;&nbsp; endf</p>
+</pre>
+<p>定義 update() 函式，這個函式是更新搜尋樣式所對應的事件處理函式:</p>
+<pre>&nbsp;&nbsp;&nbsp; fun! swindow#class.update()<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; cal self.update_search()<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; cal self.update_highlight()<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; startinsert<br />&nbsp;&nbsp;&nbsp; endfunc</pre>
+<p>基本上 update() 函式是呼叫 update_search() 來更新搜尋結果，並且呼叫 <br />update_highlight() 來更新色彩標示。</p>
+<p>接著定義搜尋函式 update_search()，取得搜尋樣式，並且從索引中過濾符合項目，<br />最後更新到 Buffer 上。</p>
+<pre>&nbsp;&nbsp;&nbsp; fun! swindow#class.update_search()<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; let pattern = self.get_pattern()<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; let lines = self.filter_result( pattern , self.predefined_index )<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; if len(lines) &gt; self.max_result<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; let lines = remove( lines , 0 , self.max_result )<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; endif<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; cal self.render( lines )<br />&nbsp;&nbsp;&nbsp; endf</pre>
+<p>其他部份在這裡就不在闡述。<br />詳細程式碼在 Github 上可以取得。 ( <a href="https://github.com/c9s/search-window.vim">https://github.com/c9s/search-window.vim</a> )</p>
+<p><strong><br />※ 定義 CPAN Search Window</strong></p>
+<p>有了基本的搜尋視窗物件，那麼就可以繼承它來實做延伸功能。由於 Vim 不支援原生的物件導向，所以對於繼承一機制採用的作法是將父類別的 Dictionary 變數複製至子類別。</p>
+<pre>&nbsp;&nbsp;&nbsp; let s:CPANWindow = copy( swindow#class )</pre>
+<p>接著定義索引函式:</p>
+<pre>&nbsp;&nbsp;&nbsp; fun! s:CPANWindow.index()<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; if self.search_mode == g:CPAN.Mode.Installed<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; cal PrepareInstalledCPANModuleCache()<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; return g:cpan_installed_pkgs<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; elseif self.search_mode == g:CPAN.Mode.All<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; cal PrepareCPANModuleCache()<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; return g:cpan_pkgs<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; elseif self.search_mode == g:CPAN.Mode.CurrentLib<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; cal PrepareCurrentLibCPANModuleCache()<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; return g:cpan_curlib_pkgs<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; else<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; return [ ]<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; endif<br />&nbsp;&nbsp;&nbsp; endf</pre>
+<p>在上面這個部份，針對了不同的模式，做不同索引的搜尋。其中 PrepareCPANModuleCache 便是將 CPAN Package Index 取回的函式。而 PrepareCurrentLibCPANModuleCache 函式用來搜尋當前目錄下的 lib/ 底下所有的模組名稱。PrepareInstalledCPANModuleCache 所作的則是搜尋在系統的 Perl 模組安裝路徑下所有的模組名稱。</p>
+<p>而像 PrepareCPANModuleCache 便是用於取得我們前面所提到的指令的結果，而為了避免重複執行 grep 以及 gunzip ，我將結果存至一個快取中，裡頭只存放模組名稱。</p>
+<pre>&nbsp;&nbsp;&nbsp; let cmd = 'zcat '.path.&quot;| grep -v '^[0-9a-zA-Z-]*: ' | cut -d' ' -f1 &gt; &quot; . g:cpan_source_cache<br />&nbsp;&nbsp;&nbsp; call system( cmd )</pre>
+<p>所以之後只需要利用內建函數 readfile() 來載入模組清單就可以了。</p>
+<pre>&nbsp;&nbsp;&nbsp; let pkgs = readfile( g:cpan_source_cache )</pre>
+<pre>&nbsp;</pre>
+<p>接著，為了要讓每輸入一個字，便更新搜尋結果，需要利用 autocmd 來設定事件處理函式 (Event Handler)。而 autocmd 提供了 &quot;CursorMovedI&quot; 這個事件，該事件是指，在插入模式 (Insert Mode) 時，游標移動所觸發的事件。因此我們定義:</p>
+<pre>&nbsp;&nbsp;&nbsp; autocmd CursorMovedI &lt;buffer&gt;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; call s:CPANWindow.update()</pre>
+<p>指定呼叫 update() 函式，以更新搜尋結果以及色彩標示。 ( update() 函式是從<br />&nbsp;swindow#class 繼承來的。 )</p>
+<p>我們還需要另外定義一些快捷鍵，讓搜尋的項目可以有其他功能，所以我們可在 <br />init_buffer() 函式中定義以下對應:</p>
+<pre>&nbsp;&nbsp;&nbsp; &quot; $ 鍵用以呼叫 perldoc 視窗，將該模組文件載入。<br />&nbsp;&nbsp;&nbsp; nnoremap &lt;silent&gt; &lt;buffer&gt; $&nbsp; :call&nbsp; perldoc#window.open(expand('&lt;cWORD&gt;'),'')&lt;CR&gt;</pre>
+<pre>&nbsp;&nbsp;&nbsp; &quot; f 鍵使用 cpanf 來安裝該 Perl 模組的最新版本<br />&nbsp;&nbsp;&nbsp; nnoremap &lt;silent&gt; &lt;buffer&gt; f&nbsp;&nbsp; :exec '!sudo cpanf ' . expand('&lt;cWORD&gt;')&lt;CR&gt;</pre>
+<pre>&nbsp;&nbsp;&nbsp; &quot; Enter 鍵開啟該模組原始檔<br />&nbsp;&nbsp;&nbsp; nnoremap &lt;silent&gt; &lt;buffer&gt; &lt;Enter&gt; :call libperl#open_module()&lt;CR&gt;</pre>
+<pre>&nbsp;&nbsp;&nbsp; &quot; 安裝該 Perl 模組<br />&nbsp;&nbsp;&nbsp; nnoremap &lt;silent&gt; &lt;buffer&gt; I&nbsp; :exec '!'.g:cpan_install_command.' '.getline('.')&lt;CR&gt;</pre>
+<pre>&nbsp;&nbsp;&nbsp; &quot; 將搜尋樣式傳給瀏覽器，使用 CPAN Website 搜尋<br />&nbsp;&nbsp;&nbsp; inoremap &lt;silent&gt; &lt;buffer&gt; @&nbsp;&nbsp; &lt;ESC&gt;:exec '!' .g:cpan_browser_command .<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ' https://search.cpan.org/search?query=' . getline(1) . '&amp;mode=all'&lt;CR&gt;</pre>
+<p>該寫的都差不多了，最後一步只需要將快速鍵對應到 CPAN 搜尋視窗的 open() 函式即可，於是：</p>
+<pre>&nbsp;&nbsp;&nbsp; com! OpenCPANWindowS&nbsp;&nbsp; :call s:CPANWindow.open('topleft', 'split',g:cpan_win_height)<br />&nbsp;&nbsp;&nbsp; nnoremap &lt;silent&gt; &lt;C-c&gt;&lt;C-m&gt;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; :OpenCPANWindowS&lt;CR&gt;</pre>
+<p>便可以利用 Ctrl-C Ctrl-m 來呼叫 CPAN 模組搜尋視窗。</p>
+<p>Enjoy!</p>
+</div>
+<p>&nbsp;</p>
+<p>註 1.&nbsp; 完整程式碼可於 <a href="https://github.com/c9s/cpan.vim" target="_blank">Github</a> 取得以及 <a href="https://www.youtube.com/watch?v=erF0NWUIbr4" target="_blank">Screencast</a> </p>
+<p>註 2. $VIMRUNTIME , 在 Unix 底下通常為家目錄底下的 .vim 資料夾。</p>
+<p>&nbsp;&nbsp;&nbsp; 對於不同平台，Vim 說明文件的 &quot;initialization&quot; 項目，對各種平台讀取 <br />&nbsp;&nbsp;&nbsp; Vim 設定檔的格式如下:</p>
+<pre>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &quot;$HOME/.vimrc&quot;&nbsp;(for Unix and OS/2) (*)<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &quot;s:.vimrc&quot;&nbsp;&nbsp;(for Amiga) (*)<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &quot;home:.vimrc&quot;&nbsp;(for Amiga) (*)<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &quot;$VIM/.vimrc&quot;&nbsp;(for OS/2 and Amiga) (*)<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &quot;$HOME/_vimrc&quot;&nbsp;(for MS-DOS and Win32) (*)<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &quot;$VIM/_vimrc&quot;&nbsp;(for MS-DOS and Win32) (*)</pre>
+<p>&nbsp;&nbsp;&nbsp; 相關其他的啟動步驟也可在 starting.txt 章節找到。可使用 :help starting.txt <br />&nbsp;&nbsp;&nbsp; 或者 :tab help starting.txt 查看。</p>
+<blockquote dir="ltr" style="MARGIN-RIGHT: 0px">
+<p><br /><u><strong>作者簡介<br /></strong></u><br />Cornelius，目前在 AIINK（愛印網），以 Perl 語言開發的 Jifty web framework 從事網站開發相關工作。於 CPAN - Perl 模組典藏網維護多個 Perl 模組，參與 Jifty, SD 等 Perl 相關開放原始碼專案 。主要以 Vim 做為開發工具，著有 cpan.vim , perl-completion.vim , perldoc.vim 等多個 vim 相關 Plugin。<br />&nbsp;<br />&nbsp;Github: <a href="https://www.github.com/c9s" target="_blank">https://www.github.com/c9s</a><br />&nbsp;Twitter: <a href="https://twitter.com/c9s" target="_blank">https://twitter.com/c9s</a><br />&nbsp;Plurk: <a href="https://www.plurk.com/c9s" target="_blank">https://www.plurk.com/c9s</a><br />&nbsp;Blog:&nbsp; <a href="https://c9s.blogspot.com/" target="_blank">https://c9s.blogspot.com/</a><br />&nbsp;Google group: <a href="https://groups.google.com/group/vim-taiwan" target="_blank">https://groups.google.com/group/vim-taiwan</a></p>
+</blockquote>
+			<!-- Show relate article -->
+				<!-- end -->
+		<div class="article_note">
+		<!-- Add tags use metakey, and show OSSF Newsletter tag: OSSFNL+NUM-->
+		<br><br> <hr style='border: 1px dashed #D2DADB;'><b>OSSF Newsletter&nbsp;:</b>&nbsp;<a href='previous-issue%3Ftask=view&amp;id=556.html'>第 139 期 Vim - CPAN 模組搜尋之整合</a><br>				<!-- End -->
+					<br>
+					<b>Category: </b><a href="en/tech-column.html">				Tech Column					</a>				</div>
+			 <!-- AddThis Button BEGIN ID 3001 is the front page article -->
+     			<br><br>
+       <div class="addthis_toolbox addthis_default_style addthis_32x32_style">
+       <a class="addthis_button_preferred_1"></a>
+       <a class="addthis_button_preferred_2"></a>
+       <a class="addthis_button_preferred_3"></a>
+       <a class="addthis_button_preferred_4"></a>
+       <a class="addthis_button_compact"></a>
+       <a class="addthis_counter addthis_bubble_style"></a>
+       </div>
+       <script type="text/javascript">var addthis_config = {"data_track_clickback":true};</script>
+       <script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js#pubid=openfoundry"></script>
+       <!-- AddThis Button END -->
+     <br>
+		<div class="totop" ><a class="rt-totop" href="index.php%3Foption=com_content&amp;task=view&amp;id=2206&amp;Itemid=56%3Bisletter=1.html#" style="outline: medium none;">↑ Top</a></div>
+            <!-- AddThis Button END -->
+
+			</div>
+</div>
+
+		                            </div>
+									<div class="clear"></div>
+								</div>
+								<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+							</div>
+							</div>
+                                                    </div>
+                                            </div>
+                                <div class="rt-grid-3 rt-pull-9">
+                <div id="rt-sidebar-a">
+                                    <div class="square4">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<ul class="menu"><li id="current" class="active item56"><a href="en/previous-issue.html"><span>Previous Issue</span></a></li><li class="item55"><a href="en/about-newsletter.html"><span>About Newsletter</span></a></li></ul>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<ul class="menu"><li class="item115"><a href="en/foss-news.html"><span>FOSS News</span></a></li><li class="item141"><a href="en/case-job.html"><span>Case and Jobs</span></a></li></ul>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+        	                <div class="square1">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-title"><h2 class="title">Special</h2></div>
+						<div class="clear"></div>
+		                						<div class="module-content">
+		                	<ul class="menu"><li class="item37"><a href="en/tech-column.html"><span>Tech Column</span></a></li><li class="item40"><a href="en/foss-programs.html"><span>FOSS Programs</span></a></li><li class="item35"><a href="en/legal-column.html"><span>Legal Column</span></a></li><li class="item154"><a href="en/foss-forum.html"><span>FOSS Forum</span></a></li><li class="item162"><a href="en/enterprise-application.html"><span>Enterprise Application</span></a></li><li class="item44"><a href="en/foss-projects.html"><span>FOSS Projects</span></a></li></ul>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		                <div class="square1">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<p style="text-align: center;"><a href="news%3Fformat=feed&amp;type=rss" target="_black"><img src="images/M_images/news-rss-feed.png" border="0" /></a><br /><a href="https://www.openfoundry.org/rss-feed/Newsletter" target="_black"><img src="images/M_images/newsletter-rss-feed.png" border="0" /></a></p>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		
+                </div>
+            </div>
+
+                    <div class="clear"></div>
+                </div>
+            </div>
+																													</div>
+										<div id="rt-copyright">
+						<div class="rt-grid-12 rt-alpha rt-omega">
+                        <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<span class="nowrap">Open Source Software Foundry</span><span class="nowrap">‧</span><span class="nowrap"> </span><span class="nowrap">Best  Viewed with IE7.0 or Firefox2.0 above, 1024x768 Resolution. </span><strong>E-Mail</strong>：<a href="mailto:contact@openfoundry.org">contact@openfoundry.org</a> <br /><strong>Address</strong>：No.128, Sec.2, Academia Rd., Institute of Information Science, Academia Sinica, Nangang District, Taipei City 11529, Taiwan (R.O.C). <br /><a href="en/privacy-policy.html">Privacy Policy</a>. <a href="en/terms-of-use.html">Terms-of-use</a> <span style="position: relative; top: 8px; margin-top: -8px;"> <a href="about/8101.html"><img src="images/M_images/rss-feed-all.png" border="0" /></a></span>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+        	
+</div>
+						<div class="clear"></div>
+					</div>
+					<div class="rt-footer-bottom-wrap"><div class="rt-footer-bottom"><div class="rt-footer-bottom2"><div class="rt-footer-bottom3"></div></div></div></div>
+									</div></div></div>
+				<div class="rt-surround-bottom"><div class="rt-surround-bottom2"><div class="rt-surround-bottom3"></div></div></div>
+							</div>
+		</div>
+		<!--
+		<script id="aptureScript">
+						(function (){var a=document.createElement("script");a.defer="true";a.src="http://www.apture.com/js/apture.js?siteToken=vsJttrn";document.getElementsByTagName("head")[0].appendChild(a);})();
+     </script>
+-->
+
+<!-- Piwik -->
+<!-- 			<script type="text/javascript">
+			  var _paq = _paq || [];
+		  _paq.push(["trackPageView"]);
+		  _paq.push(["enableLinkTracking"]);
+
+		    (function() {
+			        var u=(("https:" == document.location.protocol) ? "https" : "https") + "://www.openfoundry.org/piwik/";
+				    _paq.push(["setTrackerUrl", u+"piwik.php"]);
+				    _paq.push(["setSiteId", "1"]);
+				        var d=document, g=d.createElement("script"), s=d.getElementsByTagName("script")[0]; g.type="text/javascript";
+				        g.defer=true; g.async=true; g.src=u+"piwik.js"; s.parentNode.insertBefore(g,s);
+					  })();
+		  </script> -->
+<!-- End Piwik Code -->
+	</body>
+</html>

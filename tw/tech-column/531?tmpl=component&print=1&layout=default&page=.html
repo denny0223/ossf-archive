@@ -1,0 +1,105 @@
+	<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+	<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="zh-tw" lang="zh-tw" >
+		<head>
+			  <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+  <meta name="robots" content="noindex, nofollow" />
+  <meta name="keywords" content="OSSFNL228" />
+  <meta name="title" content="自動產生程式碼" />
+  <meta name="description" content=" Java Opensources for Web Development Part I：嘗試使用來自 Opensource 的小工具(1) Lession 4 : 自動產生程式碼 有時候，我們會不斷地撰寫重複的程式碼，例如在撰寫 EJB2.x 的版本，又要處理一些有的沒有 Callback methods，我們除了使用 IDE 工具讓我們專注於 Business Logic" />
+  <meta name="generator" content="" />
+  <title>自動產生程式碼</title>
+  <link href="../../favicon.ico" rel="shortcut icon" type="image/x-icon" />
+  <link rel="stylesheet" href="../../components/com_gantry/css/gantry.css" type="text/css" />
+  <link rel="stylesheet" href="../../components/com_gantry/css/grid-12.css" type="text/css" />
+  <link rel="stylesheet" href="../../components/com_gantry/css/joomla.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/joomla.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/style1.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/light-body.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/demo-styles.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/template.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/typography.css" type="text/css" />
+  <style type="text/css">
+    <!--
+#rt-main-surround ul.menu li.active > a, #rt-main-surround ul.menu li.active > .separator, #rt-main-surround ul.menu li.active > .item, #rt-main-surround .square4 ul.menu li:hover > a, #rt-main-surround .square4 ul.menu li:hover > .item, #rt-main-surround .square4 ul.menu li:hover > .separator, .roktabs-links ul li.active span {color:#0088B5;}
+a, #rt-main-surround ul.menu a:hover, #rt-main-surround ul.menu .separator:hover, #rt-main-surround ul.menu .item:hover {color:#0088B5;}
+    -->
+  </style>
+  <script type="text/javascript" src="../../components/com_jcomments/js/jcomments-v2.1.js%3Fv=2"></script>
+  <script type="text/javascript" src="../../components/com_jcomments/libraries/joomlatune/ajax.js"></script>
+  <script type="text/javascript" src="../../media/system/js/mootools.js"></script>
+  <script type="text/javascript" src="../../media/system/js/caption.js"></script>
+  <script type="text/javascript" src="../../components/com_gantry/js/gantry-buildspans.js"></script>
+  <script type="text/javascript" src="../../components/com_gantry/js/gantry-inputs.js"></script>
+  <script type="text/javascript">
+
+			window.addEvent('domready', function() {
+				var modules = ['rt-block'];
+				var header = ['h3','h2','h1'];
+				GantryBuildSpans(modules, header);
+			});
+		InputsExclusion.push('.content_vote','#rt-popup')
+  </script>
+		</head>
+		<body  class="backgroundlevel-low backgroundstyle-style8 bodylevel-med bodystyle-light cssstyle-style1 logostyle-dark font-family-helvetica font-size-is-default menu-type-fusionmenu col12 ">
+			<div id="rt-main-surround">
+				<div class="rt-container">
+					<div class="rt-block">
+						<div id="rt-mainbody">
+					    	
+<div class="rt-joomla ">
+	<div class="rt-article">
+		
+				<div class="rt-headline"><h1 class="rt-article-title">自動產生程式碼</h1>		</div>
+		<div class="clear"></div>
+		
+		
+		
+				<div class="rt-articleinfo">
+						<div class="rt-article-icons">
+				<a href="531%3Ftmpl=component&amp;print=1&amp;layout=default&amp;page=.html#" onclick="window.print();return false;"><span class="icon print"></span></a>									<span class="icon printscreen">
+						<a href="531%3Ftmpl=component&amp;print=1&amp;layout=default&amp;page=.html#" onclick="window.print();return false;"><img src="../../images/M_images/printButton.png" alt="列印"  /></a>					</span>
+							</div>
+			
+			<span class="rt-date-posted">
+						建立日期			2006-07-21 08:00						&nbsp;&nbsp;&nbsp;&nbsp;						最近更新在 2007-03-09 18:27						</span>
+
+						<span class="rt-author">
+				作者是 李日貴			</span>
+				
+					</div>
+		
+		
+		<p> Java Opensources for Web Development Part I：嘗試使用來自 Opensource 的小工具(1)<br /> Lession 4 : 自動產生程式碼 </p><p> 有時候，我們會不斷地撰寫重複的程式碼，例如在撰寫 EJB2.x 的版本，又要處理一些有的沒有 Callback methods，我們除了使用 IDE 工具讓我們專注於 Business Logic 的開發之外，還有沒有其他方法來簡化我們的工作呢？很高興地，我們有 XDoclet 這個小工具來輔助我們開發 EJB、Web 以及處理一些重複性的工作。</p>首先，讓我們先思考一下，什麼是可以產生的程式碼。基本上就是，具有規則性的轉檔處理，我們將一個已經存在的原始資料，經過程式碼產生器，可以幫忙完成剩 餘的部份，或是產生更多的輔助檔案。然而，我們的原始資料，可以分為 UML 的 Model 資料、 基本的 Data 檔案如 XML 或是 CSV 等等、或是程式的原始碼。不過，我們今天所要探討的是 XDoclet 來協助我們開發原始碼，他的特徵是利用 Annotation，類似 &ldquo;註解&rdquo; 的方式，撰寫一些基本的元素，讓程式產生器可以根據 Annotations 與 Ant Task 的工作項目，來取代你重複的工作項目。 <p> XDoclet 的網址為 :<a href="https://xdoclet.sourceforge.net/xdoclet/index.html">https://xdoclet.sourceforge.net/xdoclet/index.html</a>可 以下載到最新的版本，當你完成下載解壓縮到一個暫存目錄之後，你必須要建立一個你的工作區域。另外，XDoclet 必須倚靠 Apache Ant 進行執行的動作，所以你必須另外下載 ant（請參閱 Lession2 Ant），並且設定 %ANT_HOME%\bin; 在 PATH 的系統環境變數之中。 </p><p>假設你建立了一個名為 xdoclettest 的工作目錄，接著建立 /src, /lib, /xdocletlib 等，並且把 xdoclet 你想用的一些 jars 檔複製到 /xdoclettest/lib 目錄之下。接著讓我們來先製作一個有效的 Ant build.xml for Xdoclet. </p><p> &lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;<br /> &lt;project name=&quot;build1&quot; default=&quot;todo&quot; basedir=&quot;.&quot;&gt;<br /> &nbsp;&nbsp; &nbsp;&lt;property name=&quot;lib.dir&quot; location=&quot;lib&quot; /&gt;<br /> &nbsp;&nbsp; &nbsp;&lt;property name=&quot;xdoclet.lib.dir&quot; location=&quot;xdocletlib&quot; /&gt;<br /> &nbsp;&nbsp; &nbsp;&lt;property name=&quot;src.dir&quot; location=&quot;src&quot; /&gt;<br /> &nbsp;&nbsp; &nbsp;&lt;property name=&quot;todo.dir&quot; location=&quot;todo&quot; /&gt;<br /> &nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <br /> &nbsp;&nbsp; &nbsp;&lt;path id=&quot;xdoclet.lib.path&quot;&gt;<br /> &nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &lt;fileset dir=&quot;${lib.dir}&quot; includes=&quot;*.jar&quot; /&gt;<br /> &nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &lt;fileset dir=&quot;${xdoclet.lib.dir}&quot; includes=&quot;*.jar&quot; /&gt;<br /> &nbsp;&nbsp; &nbsp;&lt;/path&gt;<br /> <br /> <br /> &nbsp;&nbsp; &nbsp;<br /> &nbsp;&nbsp; &nbsp;&lt;target name=&quot;init&quot; description=&quot;initialize&quot;&gt;<br /> &nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &lt;mkdir dir=&quot;${todo.dir}&quot;&gt;&lt;/mkdir&gt;<br /> &nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &lt;taskdef name=&quot;documentdoclet&quot;<br /> &nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; classname=&quot;xdoclet.modules.doc.DocumentDocletTask&quot;<br /> &nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; classpathref=&quot;xdoclet.lib.path&quot; /&gt;<br /> &nbsp;&nbsp; &nbsp;&lt;/target&gt;<br /> &nbsp;&nbsp; &nbsp;&lt;target name=&quot;todo&quot; depends=&quot;init&quot;&gt;<br /> &nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &lt;documentdoclet destdir=&quot;todo&quot;&gt;<br /> &nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &lt;fileset dir=&quot;${src.dir}&quot;&gt;<br /> &nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &lt;include name=&quot;**/*.java&quot; /&gt;<br /> &nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &lt;/fileset&gt;<br /> &nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &lt;info /&gt;<br /> &nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &lt;/documentdoclet&gt;<br /> &nbsp;&nbsp; &nbsp;&lt;/target&gt;<br /> &lt;/project&gt; </p><p>這是一個很基本的 build.xml ，可以看到，我們在 init Target 之中，定義了一個名為 documentdoclet 的工作項目。而在 todo 的 Target 之中，他真正利用 documentdoclet 去執行 xdoclet.modules.doc.DocumentDocletTask，在執行後，就會產生出所有src 目錄之下有撰寫 /**@todo **/ 的程式碼，並且產生出 HTML 讓你檢測。 </p><p> 範例: MyApp1.java </p><p> public class MyApp1 {<br /> &nbsp;&nbsp; &nbsp;/** @todo welcome xdoclet world **/<br /> &nbsp;&nbsp; &nbsp;public void test() {<br /> &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;<br /> &nbsp;&nbsp; &nbsp;}<br /> } </p><p>很明顯的，我們是利用 &ldquo;註解&rdquo; /** &hellip;.. */ 的方式，加上 @todo 這個特殊的 Annotation，配合 ant 的 task 呼叫 xdoclet 的模組進行 Code-Generation，如果按照這個思考邏輯， 我們可以利用更多現成或自制的 @Annotation 來取代我們很多的程式碼開發動作。 </p><p> 利用 XDoclet 必須了解你想要做的項目，是否已經有現成的模組，例如使用  就可以輕易的產生 Web Application 所需的 Servlet, Filter, configurations 等，非常的方便， </p><p> &lt;target name=&quot;generate-web&quot;&gt;<br /> &nbsp; &lt;taskdef name=&quot;webdoclet&quot; <br /> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; classname=&quot;xdoclet.modules.web.WebDocletTask&quot;<br /> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; classpathref=&quot;xdoclet.lib.path&quot;/&gt;&nbsp;&nbsp; &nbsp;<br /> &nbsp; &lt;webdoclet destdir=&quot;${gen.src.dir}&quot; mergeDir=&quot;${merge.dir}&quot;&gt;<br /> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;fileset dir=&quot;${src.dir}&quot;&gt;<br /> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;include name=&quot;**/*Servlet.java&quot; /&gt;<br /> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;include name=&quot;**/*Filter.java&quot; /&gt;<br /> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;include name=&quot;**/*Listener.java&quot; /&gt;<br /> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;include name=&quot;**/*Tag.java&quot; /&gt;<br /> &nbsp;&nbsp;&nbsp; &lt;/fileset&gt;<br /> &nbsp;&nbsp;&nbsp; &lt;deploymentdescriptor <br /> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; destdir=&quot;${web.deployment.dir}&quot; <br /> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; distributable=&quot;false&quot; /&gt;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;<br /> &nbsp; &lt;/webdoclet&gt;<br /> &lt;/target&gt;&nbsp; </p><p> 所以善用 XDoclet，可以讓我們在 J2EE 的開發之中，找到更快速的開發模式。</p>
+			<!-- Show relate article -->
+				<!-- end -->
+		<div class="article_note">
+		<!-- Add tags use metakey, and show OSSF Newsletter tag: OSSFNL+NUM-->
+		<br><br> <hr style='border: 1px dashed #D2DADB;'><b>自由軟體鑄造場電子報&nbsp;:</b>&nbsp;<a href='../../previous-issue%3Ftask=view&amp;id=228.html'>第 62 期 自由軟體校園推廣</a><br>				<!-- End -->
+					<br>
+					<b>分類: </b><a href="../tech-column.html">				技術專欄					</a>				</div>
+			 <!-- AddThis Button BEGIN ID 3001 is the front page article -->
+     			<br><br>
+       <div class="addthis_toolbox addthis_default_style addthis_32x32_style">
+       <a class="addthis_button_preferred_1"></a>
+       <a class="addthis_button_preferred_2"></a>
+       <a class="addthis_button_preferred_3"></a>
+       <a class="addthis_button_preferred_4"></a>
+       <a class="addthis_button_compact"></a>
+       <a class="addthis_counter addthis_bubble_style"></a>
+       </div>
+       <script type="text/javascript">var addthis_config = {"data_track_clickback":true};</script>
+       <script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js#pubid=openfoundry"></script>
+       <!-- AddThis Button END -->
+     <br>
+		<div class="totop" ><a class="rt-totop" href="531%3Ftmpl=component&amp;print=1&amp;layout=default&amp;page=.html#" style="outline: medium none;">↑ Top</a></div>
+            <!-- AddThis Button END -->
+
+			</div>
+</div>
+
+						</div>
+					</div>
+				</div>
+			</div>
+		</body>
+	</html>

@@ -1,0 +1,565 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="zh-tw" lang="zh-tw" >
+<head>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<link rel="shortcut icon" href="images/favicon.ico" />
+	  <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+  <meta name="robots" content="index, follow" />
+  <meta name="keywords" content="OSSFNL714" />
+  <meta name="title" content="以 Snort 實作入侵偵測系統" />
+  <meta name="description" content="前言 在一般企業中通常會設置防火牆作為防止駭客入侵的第一道防線，有些企業甚至認為防火牆即是唯一需要的資安設備，但在實務上，防火牆並無法有效阻擋所有種類的網路攻擊行為。也因此有所謂的入侵偵測系統設備（既然無法阻擋攻擊，那就記錄攻擊行為，以便事後追查，當然目前也有所謂的入侵預防系統 (Intrusion Prevention System," />
+  <meta name="generator" content="" />
+  <title>以 Snort 實作入侵偵測系統 - OpenFoundry</title>
+  <link href="favicon.ico" rel="shortcut icon" type="image/x-icon" />
+  <link rel="stylesheet" href="components/com_jcomments/tpl/default/style.css%3Fv=10.css" type="text/css" />
+  <link rel="stylesheet" href="components/com_gantry/css/gantry.css" type="text/css" />
+  <link rel="stylesheet" href="components/com_gantry/css/grid-12.css" type="text/css" />
+  <link rel="stylesheet" href="components/com_gantry/css/joomla.css" type="text/css" />
+  <link rel="stylesheet" href="templates/rt_quantive_j15/css/joomla.css" type="text/css" />
+  <link rel="stylesheet" href="templates/rt_quantive_j15/css/style1.css" type="text/css" />
+  <link rel="stylesheet" href="templates/rt_quantive_j15/css/light-body.css" type="text/css" />
+  <link rel="stylesheet" href="templates/rt_quantive_j15/css/demo-styles.css" type="text/css" />
+  <link rel="stylesheet" href="templates/rt_quantive_j15/css/template.css" type="text/css" />
+  <link rel="stylesheet" href="templates/rt_quantive_j15/css/typography.css" type="text/css" />
+  <link rel="stylesheet" href="templates/rt_quantive_j15/css/fusionmenu.css" type="text/css" />
+  <style type="text/css">
+    <!--
+#rt-main-surround ul.menu li.active > a, #rt-main-surround ul.menu li.active > .separator, #rt-main-surround ul.menu li.active > .item, #rt-main-surround .square4 ul.menu li:hover > a, #rt-main-surround .square4 ul.menu li:hover > .item, #rt-main-surround .square4 ul.menu li:hover > .separator, .roktabs-links ul li.active span {color:#0088B5;}
+a, #rt-main-surround ul.menu a:hover, #rt-main-surround ul.menu .separator:hover, #rt-main-surround ul.menu .item:hover {color:#0088B5;}
+    -->
+  </style>
+  <script type="text/javascript" src="components/com_jcomments/js/jcomments-v2.1.js%3Fv=2"></script>
+  <script type="text/javascript" src="components/com_jcomments/libraries/joomlatune/ajax.js"></script>
+  <script type="text/javascript" src="media/system/js/mootools.js"></script>
+  <script type="text/javascript" src="media/system/js/caption.js"></script>
+  <script type="text/javascript" src="components/com_gantry/js/gantry-buildspans.js"></script>
+  <script type="text/javascript" src="components/com_gantry/js/gantry-inputs.js"></script>
+  <script type="text/javascript" src="templates/rt_quantive_j15/js/jquery.cookie.js"></script>
+  <script type="text/javascript" src="modules/mod_roknavmenu/themes/fusion/js/fusion.js"></script>
+  <script type="text/javascript" src="modules/mod_ofssologin/js/ofssologin.js"></script>
+  <script type="text/javascript">
+
+			window.addEvent('domready', function() {
+				var modules = ['rt-block'];
+				var header = ['h3','h2','h1'];
+				GantryBuildSpans(modules, header);
+			});
+		InputsExclusion.push('.content_vote','#rt-popup')
+		        window.addEvent('load', function() {
+					new Fusion('ul.menutop', {
+						pill: 0,
+						effect: 'slide and fade',
+						opacity: 1,
+						hideDelay: 500,
+						centered: 0,
+						tweakInitial: {'x': -2, 'y': 0},
+        				tweakSubsequent: {'x': 0, 'y': -14},
+						menuFx: {duration: 200, transition: Fx.Transitions.Sine.easeOut},
+						pillFx: {duration: 400, transition: Fx.Transitions.Back.easeOut}
+					});
+	            });
+  </script>
+<!-- <script type="text/javascript" src="/sso/javascripts/langsync.js"></script> -->
+<!-- <script src="/templates/rt_quantive_j15/js/ossf.js"></script> -->
+<script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-4136519-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
+</head>
+	<body  class="backgroundlevel-low backgroundstyle-style8 bodylevel-med bodystyle-light cssstyle-style1 logostyle-dark font-family-helvetica font-size-is-default menu-type-fusionmenu col12 ">
+		<div id="rt-main-background">
+			<div class="rt-container">
+																<div id="rt-header">
+					<div class="rt-grid-7 rt-alpha">
+    			<div class="rt-block">
+    	    	<a href="index.html" id="rt-logo"></a>
+    		</div>
+	    
+</div>
+<div class="rt-grid-5 rt-omega">
+                    <div class="square9">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<div class="ofssologin_square9"><a href="index.html">登入</a>&nbsp;&nbsp|&nbsp;&nbsp;<span><a href="en/news/8265%3Ftask=view.html" ><span lang="en" xml:lang="en">English</span></a></li></ul></span><!--Joom!fish V2.0.4 (Lightning)-->
+<!-- &copy; 2003-2009 Think Network, released under the GPL. -->
+<!-- More information: at http://www.joomfish.net -->
+<div class="ofssologin_search_square9">
+  <form id="of_search" action="https://www.openfoundry.org/of/openfoundry/search" method="get" onsubmit="of_search(); return false;">
+    <select id="of_search_type">
+      <option value="Projects"> 專案 </option>
+      <option value="Content"> 文章 </option>
+      <option value="People"> 人才 </option>
+    </select>
+    <input id="query" name="query" id="mod_search_searchword" maxlength="50" alt="search" class="inputbox" type="text" size="28" value="search..."  onblur="if(this.value=='') this.value='search...';" onfocus="if(this.value=='search...') this.value='';" />
+    <input type="hidden" name="commit" value="search" />
+  </form>
+</div></div>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		
+</div>
+					<div class="clear"></div>
+				</div>
+																<div id="rt-navigation"><div id="rt-navigation2"><div id="rt-navigation3">
+					
+<div class="nopill">
+	<ul class="menutop level1 " >
+						<li class="item1 root" >
+					<a class="orphan item bullet" href="index.html"  >
+				<span>
+			    				首頁				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item32 root" >
+					<a class="orphan item bullet" href="archived.html"  >
+				<span>
+			    				專案				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item186 root" >
+					<a class="orphan item bullet" href="tw/community.html"  >
+				<span>
+			    				Who&#039;s Who				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item4 active root" >
+					<a class="orphan item bullet" href="tw/news.html"  >
+				<span>
+			    				新聞				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item5 root" >
+					<a class="orphan item bullet" href="tw/law-and-licensing.html"  >
+				<span>
+			    				法律源地				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item3 root" >
+					<a class="orphan item bullet" href="tw/activities.html"  >
+				<span>
+			    				活動				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item2 root" >
+					<a class="orphan item bullet" href="tw/resourcecatalog%3FName=Value.html"  >
+				<span>
+			    				資源表列				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item45 root" >
+					<a class="orphan item bullet" href="tw/about.html"  >
+				<span>
+			    				關於				   
+				</span>
+			</a>
+			
+			
+	</li>	
+				</ul>
+</div>
+
+				    <div class="clear"></div>
+				</div></div></div>
+								<div class="rt-surround"><div class="rt-surround2"><div class="rt-surround3">
+										<div id="rt-showcase-section">
+												<div id="rt-showcase">
+							<div class="rt-grid-12 rt-alpha rt-omega">
+    		<div class="clear"></div>
+		
+		
+                <div class="close-note">
+                    <div class="rt-block">
+               					<div class="module-content">
+                	<div style="font-size:medium; background-image:linear-gradient(120deg,#159957,#4298b2);color:white;padding:20px;margin:-10px -18px;">感謝您對「自由軟體鑄造場」的支持與愛護，十多年來「自由軟體鑄造場」受中央研究院支持，並在資訊科學研究所以及資訊科技創新研究中心執行，現已完成階段性的任務。 本網站預計持續維運至 2021年底，網站內容基本上不會再更動。<br />也紀念我們永遠的朋友 李士傑先生（Shih-Chieh Ilya Li）。</div>				</div>
+            </div>
+                </div>
+		
+</div>
+							<div class="clear"></div>
+						</div>
+																	</div>
+															<div id="rt-main-surround">
+												<div id="rt-breadcrumbs">
+								<div class="rt-breadcrumb-surround">
+		<a href="index.html" id="breadcrumbs-home"></a>
+		<span class="breadcrumbs pathway">
+<span class="no-link">新聞</span></span>
+	</div>
+	
+							<div class="clear"></div>
+						</div>
+																							              <div id="rt-main" class="sa3-mb9">
+                <div class="rt-main-inner">
+                    <div class="rt-grid-9 rt-push-3">
+                                                <div class="rt-block">
+                            							<div class="square1">
+							<div class="rt-module-surround">
+								<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+								<div class="rt-module-inner">
+		                            <div id="rt-mainbody">
+		                                
+<div class="rt-joomla ">
+	<div class="rt-article">
+		
+				<div class="rt-headline"><h1 class="rt-article-title">以 Snort 實作入侵偵測系統</h1>		</div>
+		<div class="clear"></div>
+		
+		
+		
+				<div class="rt-articleinfo">
+						<div class="rt-article-icons">
+								<a href="tw/news/8265--snort-%3Ftmpl=component&amp;print=1&amp;page=.html" title="列印" onclick="window.open(this.href,'win2','status=no,toolbar=no,scrollbars=yes,titlebar=no,menubar=no,resizable=yes,width=640,height=480,directories=no,location=no'); return false;" rel="nofollow"><span class="icon print"></span></a>																</div>
+			
+			<span class="rt-date-posted">
+						建立日期			2011-03-03 05:10						&nbsp;&nbsp;&nbsp;&nbsp;						最近更新在 2011-03-25 14:50						</span>
+
+						<span class="rt-author">
+				作者是 老薯條(https://vulscan.wynetech.com.tw)			</span>
+				
+					</div>
+		
+		
+		<h2>前言</h2>
+在一般企業中通常會設置防火牆作為防止駭客入侵的第一道防線，有些企業甚至認為防火牆即是唯一需要的資安設備，但在實務上，防火牆並無法有效阻擋所有種類的網路攻擊行為。也因此有所謂的入侵偵測系統設備（既然無法阻擋攻擊，那就記錄攻擊行為，以便事後追查，當然目前也有所謂的入侵預防系統 (Intrusion Prevention System, IPS)，除了可記錄惡意行為外還可直接阻擋正在進行中的惡意行為）。在本篇文章中，筆者將結合開源碼社群中最有名的入侵偵測軟體 (Snort) 與 Web 介面的管理軟體 (BASE) 實作一個網頁型的入侵偵測系統。<br /> 
+
+<br />本系統所需套件如下表：<br /> 
+<table border="2">
+<tbody>
+<tr>
+<td>軟體名稱</td>
+<td>網址</td>
+<td>說明</td>
+</tr>
+<tr>
+<td>Fedora 11</td>
+<td><a href="https://fedoraproject.org/" target="_blank">https://fedoraproject.org/</a></td>
+<td>Linux 作業系統</td>
+</tr>
+<tr>
+<td>Libpcap</td>
+<td><a href="https://www.tcpdump.org/" target="_blank">https://www.tcpdump.org/</a></td>
+<td>擷取網路封包的程式庫</td>
+</tr>
+<tr>
+<td>PCRE</td>
+<td><a href="https://www.pcre.org/" target="_blank">https://www.pcre.org/</a></td>
+<td>正規化表示法的程式庫</td>
+</tr>
+<tr>
+<td>Snort</td>
+<td><a href="https://www.snort.org" target="_blank">https://www.snort.org</a></td>
+<td>網路型入侵偵測系統</td>
+</tr>
+<tr>
+<td>PHP</td>
+<td><a href="https://www.php.net" target="_blank">https://www.php.net</a></td>
+<td>網頁程式語言</td>
+</tr>
+<tr>
+<td>Apache</td>
+<td><a href="en/resourcecatalog/Enterprise/General-Info/apache-software-foundation/visit.html" target="_blank">https://www.apache.org</a></td>
+<td>網站伺服器</td>
+</tr>
+<tr>
+<td>BASE (Basic Analysis and Security Engine)</td>
+<td><a href="https://base.secureideas.net" target="_blank">https://base.secureideas.net</a></td>
+<td>網頁式入侵偵測系統管理程式</td>
+</tr>
+<tr>
+<td>MySQL</td>
+<td><a href="https://www.mysql.com" target="_blank">https://www.mysql.com</a></td>
+<td>資料庫軟體</td>
+</tr>
+<tr>
+<td>ADOdb</td>
+<td><a href="https://adodb.sourceforge.net/" target="_blank">https://adodb.sourceforge.net/</a></td>
+<td>PHP 資料庫程式庫</td>
+</tr>
+</tbody>
+</table>
+▲表 1<br /><br />
+<h2>什麼是入侵偵測系統</h2>
+入侵偵測系統依偵測型式可分為網路型入侵偵測系統（Network-based Intrusion Detection System，以下簡稱為 NIDS）及主機型入侵偵測系統（Host-based Intrusion Detection System，在此我們不多加討論主機型入侵偵測系統）。<br /><br />
+<h2>NIDS</h2>
+網路型入侵偵測系統通常部署在網域閘道上 (gateway)，通過竊聽 (sniffer) 的方式，即時監測網路上的封包並比對攻擊模式，當發現有疑似入侵行為時能即時提出警告的防禦系統。一般而言 NIDS 網路部署如下圖示：<br /><br /><a href="images/110308/snort/001.png" target="_blank"><img src="images/110308/snort/001.png" border="0" width="500" height="279" /></a><br />▲圖 1<br /><br />NIDS 部署在網域閘道上 (gateway) 監控所有的封包並與攻擊模式資料庫比對，一旦發現有符合攻擊樣式的網路封包，即觸發相關事件來通知管理者，相信細心的讀者一定會發現上圖中的入侵偵測系統 (Snort) 是接在 switch 裝置前的 hub，而不是與 switch 裝置直接連接，這是因為封包在這兩種裝置上傳遞方式不同的緣故。在 hub 上，封包是採用廣播的方式，當封包進入到 hub 時，將會以廣播的方式將封包傳遞給 hub 上所有的主機，但只有目的主機會接收此封包，也就是說，在 hub 上連接的主機都會接收到封包，只是沒收下來而已，在這個情況下，如果我們讓網卡進入所謂的混亂 (promiscuous) 模式，那網卡就會強制的將同一 hub 上的所有封包資訊接收下來（這也是一些以竊取資料為目的木馬程式的特徵），所以有些網管人員會特別注意相關 log 檔案是否有類似 (promiscuous) 的字串，不過 Snort 在啟動後，也會強迫網卡進入混亂 (promiscuous) 模式，藉此取得其它主機的封包。以 Linux 系統為例；讀者可利用 ifconfig 指令查看目前網卡的狀況，如下圖為一個正常模式的網卡，在此模式下，網卡僅會處理與本身相關的封包。<br /><br /><a href="images/110308/snort/002.png" target="_blank"><img src="images/110308/snort/002.png" border="0" width="541" height="138" /></a><br />▲圖 2<br /><br />讀者可利用 ifconfig eth0 promisc 指令，讓網卡進入混亂 (promiscuous) 模式，如下圖即為一個進入混亂 (promiscuous) 模式的網卡，在此模式下，網卡會處理流經 hub 的所有封包，Snort 即是利用此特性處理網域內的所有封包並比對是否有惡意樣式的封包，所以 Snort 程式在執行時，會將網卡設定成混亂 (promiscuous) 模式。<br /><br /><a href="images/110308/snort/003.png" target="_blank"><img src="images/110308/snort/003.png" border="0" width="551" height="258" /></a><br />▲圖 3<br /><br />而在 switch 裝置上，則是會保存一張對應表，對應接在 switch 上的每台主機埠口（即 switch 裝置上的埠會對應連接此實體埠主機的 MAC 資訊），一旦封包流進此 switch 即會先查詢此對應表，並直接將封包直接傳遞給目的主機，而其他不相關的主機無法接收到封包。因此，若無經過特殊的處理，Snort 直接連在 switch 上是無法取得其它主機的封包。這也是為什麼 Snort 主機不能直接接在 switch 上來從事監控作業，而必須接在 hub 上的原因。除非 switch 有提供所謂的 mirror 功能，可將 switch 上其它埠所接收到的封包複製一份到 Snort 主機所在的埠口上，否則 Snort 接在 switch 上是無法取得其它主機的封包（僅可取得流經自己主機的封包）。<br /><br />NIDS 偵測的方式可分為特徵比對 (Signature-based) 方式與異常偵測 (Anomaly-based) 方式，如下所述：<br />
+<h4>特徵比對 (Signature-based)</h4>
+特徵比對 (Signature-based) 又稱為「不當行為偵測 (Misuse detection)」，系統會先針對入侵特徵建立一「異常特徵資料庫」，只要 NIDS 偵測到的封包內容與資料庫的某個特徵相符，系統即會判別為入侵。此種方式的優點是不易誤判，因為個別的攻擊行為通常擁有特殊的特徵符號。就如同病毒碼一般可精確比對出攻擊模式。但就如上所言，此種方式是否能完整的檢測出惡意的封包，取決於「異常特徵資料庫」的完整性，異常特徵資料庫越完整，檢測出惡意封包的機率就越大，所以此種方式並無法檢測出未知的攻擊方式，因為需要先有攻擊行為才會有攻擊特徵，「異常特徵資料庫」才能加入此種攻擊特徵，最後 NIDS 才可藉此掃描出惡意封包。Snort 所採用的偵測方式，即屬於特徴比對的方式。<br /><br />
+<h4>異常偵測 (Anomaly-based)</h4>
+運用統計分析的方式，先定義出正常的系統模式（以下簡稱正常模式），而後當 NIDS 檢測出不符合正常模式的流量時，即判別為異常，此種模式的優點在於可偵測未知的攻擊行為，因為攻擊行為常會造成系統偏離正常模式而被檢測出來，但缺點是很難界定所謂的「正常的系統模式」，所以經常會有誤判的情況，也因此大部份的入侵偵測系統大都採用特徵比對的方式。<br /><br />
+<h2>安裝 Snort</h2>
+Snort 是一種以攻擊特徵碼為基礎的入侵偵測系統，利用事先建立好的已知攻擊資料特徵碼，來比對接收到的封包內容是否含有攻擊行為。若符合特徵碼即觸發相對應的動作。相關架構圖如下所示：<br /><br /><a href="images/110308/snort/004.png" target="_blank"><img src="images/110308/snort/004.png" border="0" title="Original Resolution - 510x336px" width="470.41071428571433" height="299" style="border: 0.25em groove #551a8b; cursor: pointer;" /></a><br />▲圖 4<br /><br />
+<h4>Packet Decoder（封包解碼器）</h4>
+當 Snort 取得各種不同通訊協定的網路封包後，第一件事即將封包置入「封包解碼器」模組中做第一階段的封包處理與分析，以作為下一個階段（前處理器與偵測引擎）的資料來源。<br /><br />
+<h4>Preprocessors（前處理器）</h4>
+Snort 的前處理器為外掛程式 (plugin) 的架構，主要功能在於重新標準化網路流量（如重組封包、分段與重組 TCP stream、編碼的轉換等等)，以使得網路流量能精確的被偵測引擎 (Detection Engine) 解析及匹配特徵碼。<br /><br />
+<h4>Detection Engine（偵測模組）</h4>
+Detection Engine（偵測模組）主要功能在於規則分析與特徵偵測，Detection Engine（偵測模組）將 Snort 的規則文件引入，並按照規則文件中的規則，逐一比對並分析網路封包，一旦發現封包有符合規則文件中定義的行為，即觸發該規則文件中所定義的處理方式，當所有的規則都不符合時，即會丟棄該封包。Snort 的規則文件分為兩個部份：<br />１. 規則表頭 (Rule-Header)　規則表頭是規則中第一個圓括孤之前的部份，通常是用來決定封包比對來源範圍（如：限定比對那些範圍的 IP）及比對成功時的動作（如：用 log 或是直接丟棄）。<br />２. 規則選項 (Rule-Options)　規則選項主要利用一至多個關鍵字設定欲偵測的流量特徵，規則選項依功能可區分為下列四個部份：<br />(１) Meta-data　用來設定欲顯示的相關訊息，如當規則觸發時所要產生的訊息或弱點的相關參考訊息。<br />(２) Payload　用來比對封包內容的規則，如比對是否需區分大小寫或特定字串等等。<br />(３) Non-Payload　用來比對各種協定的欄位值。<br />(４) Post-Detection　當封包內容與規則符合時，除了在規則表頭 (Rule-Header) 所定義的動作外，另外會觸發的動作指令如下規則範例：<br />alert tcp any any → any 5432 (msg:"someone access PSQL command:SELECT"; content:"select";)<br />規則描述如下表：                                   
+<table border="1">
+<tbody>
+<tr>
+<td>alert【處理方式】</td>
+<td>產生警示的 log</td>
+</tr>
+<tr>
+<td>tcp【來源通訊協定】</td>
+<td>偵測 TCP 的封包</td>
+</tr>
+<tr>
+<td>any【來源 IP】</td>
+<td>偵測任何的來源 IP</td>
+</tr>
+<tr>
+<td>any【來源 port】</td>
+<td>偵測任何的來源埠</td>
+</tr>
+<tr>
+<td>any【目的 IP】</td>
+<td>偵測任何的目的 IP</td>
+</tr>
+<tr>
+<td>5432【目的 port】</td>
+<td>僅偵測 5432 埠的封包</td>
+</tr>
+<tr>
+<td>【進階處理內容】</td>
+<td>若符合內容含有「select」的字串，則將 msg 後的字串記錄起來。</td>
+</tr>
+</tbody>
+</table>
+▲表 2<br /><br />上述規則的意義為：<br />當主機上的 5432 埠，如果有接收到內含有 select 字串的封包，則記錄一筆警示記錄（記錄內容為「someone access PSQL command:SELECT」）。<br /><br />Logging and Alerting：當 Snort 偵測出惡意封包時，可以將該訊息記錄起來並觸發相關警告事件。<br />Output Modules：可將相關資訊輸出到檔案或資料庫等儲存媒介，在本解決方案中，我們會將相關的資訊儲存至資料庫中。<br /> <br />接下來，繼續安裝 Snort，假設讀者已安裝完成 Apache 與 MySQL，請讀者依序以下列步驟安裝相關套件：<br />1.   安裝 Libpcap 及 PCRE<br /> yum install libpcap*<br /> yum install libpcre*<br />2.   設定 ADOdb<br />至 <a href="https://adodb.sourceforge.net/" target="_blank">https://adodb.sourceforge.net/</a> 取得最新的版本，解開後，將相關檔案置於 /usr/local/adodb 目錄即可<br />3.   安裝 Snort 的資料庫<br />(1)  新建一個名稱為 snort 的資料庫<br />(2)  在 Snort 原始碼的 schemas 目錄下有一個 create_mysql 檔案<br />利用 mysql –u [USER] –p [Password] snort <br />（新建立 Snort 所需要的資料庫表格）<br />4.   安裝 Snort<br />(1)  至 <a href="https://www.snort.org/" target="_blank">www.snort.org</a> 取得最新版本的 Snort 解壓縮後，如下指令：<br />./configure && make && make install 即可安裝完成<br />(2)  接下來即為建立 Snort 所需的相關目錄：<br />mkdir –p  /opt/snort/etc   #放置 config 檔案目錄<br />mkdir –p  /opt/snort/rules   #放置規則檔的目錄<br />mkdir –p  /var/log/snort   #放置 log<br />(3)下一步即為取得 Snort 的規則集（目前 Snort 是必需付費方可取得最新的規則集，但讀者可至官方網站簡單註冊後，即可取得未註冊的版本）將相關的規則集檔案解壓縮後置於 /opt/snort/rules 即可。<br />(4)再來即為設定 Snort 的組態檔 (snort.conf)，基本上僅需設定下列選項即可：<br />var HOME_NET any    #設定欲監控的主機（any 表示任意的主機均符合)<br />var EXTERNAL_NET any #設定外部主機範圍<br />output database: log, mysql, user =【資料庫使用者帳號】<br />password =【資料庫密碼】 dbname=snort host=localhost<br />#MySQL 資料庫的支援<br /><br />在安裝完成後，即可開始測試 Snort，Snort 提供兩種工作模式：<br />(1)  監聽 (sniffer) 模式<br />在此模式下，Snort 僅是 sniffer（如 tcpdump）的功能，監聽所有來往的封包，但不會做攻擊模式的比對。<br />讀者以 snort –v 進入 sniffer 模式，如下圖示：<br /><br /><a href="images/110308/snort/005.png" target="_blank"><img src="images/110308/snort/005.png" border="0" /></a><br />▲圖 5<br /><br />(2)  NIDS（網路型入侵偵測系統）<br />在此模式下，Snort 不僅會監聽所有來往的封包，並會做攻擊模式的比對。<br /><br />4.   安裝 BASE 軟體<br />由於 BASE 軟體有繪圖及 Email 相關功能， 所以我們還必需安裝 PHP 相關的模組。<br />pear install Mail     #利用安裝 Email                             <br />pear install Image_Color-1.0.2.tgz  #安裝繪圖所需的模組<br />pear install Image_Canvas-0.3.0.tgz <br />pear install Image_Graph-0.7.2.tgz<br />安裝完成後，可利用 pear list 來檢查是否有安裝相關模組，如下圖示：<br /><br /><a href="images/110308/snort/006.png" target="_blank"><img src="images/110308/snort/006.png" border="0" /></a><br />▲圖 6<br /> <br />將 BASE 相關程式置於網站根目錄下的 base 目錄，（在此為 /usr/local/apache2/htdocs/base），後利用瀏覽器設定，如下步驟：<br />步驟１（檢查相關環境）：<br /><br /><a href="images/110308/snort/007.png" target="_blank"><img src="images/110308/snort/007.png" border="0" /></a><br />▲圖 7<br /><br />步驟２（設定 ADOdb 的所在目錄）：<br /><br /><a href="images/110308/snort/008.png" target="_blank"><img src="images/110308/snort/008.png" border="0" /></a><br />▲圖 8<br /><br />步驟３（設定資料庫相關的資訊）：<br /><br /><a href="images/110308/snort/009.png" target="_blank"><img src="images/110308/snort/009.png" border="0" title="Original Resolution - 494x484px" width="305.8388429752066" height="299" style="border: 0;" /></a><br />▲圖 9<br /><br />步驟４（設定從網站登入的帳號及密碼資訊）：<br /><br /><a href="images/110308/snort/010.png" target="_blank"><img src="images/110308/snort/010.png" border="0" /></a><br />▲圖 10<br /><br />步驟５（產生相關的資料庫表格）：<br /><br /><a href="images/110308/snort/011.png" target="_blank"><img src="images/110308/snort/011.png" border="0" width="678" height="97" /></a><br />▲圖 11<br /><br />當一切順利完成後，讀者可利用瀏覽器瀏覽 https://〈base IP〉/base/ 即可瀏覽 BASE 的相關頁面<br />接下來即請讀者啟動 Snort，如下指令：<br />/usr/local/snort/bin/snort -c /usr/local/snort/etc/snort.conf  -D<br />（以常駐程式方式啟動 Snort，並將網卡設定成 promiscuous，讀者可利用 dmesg 查看是否有類似下列的文字「device eth0 entered promiscuous mode」）。<br />下圖為 Snort 偵測到 Teardrop（一種拒絕服務攻擊的手法）攻擊的畫面：<br /><br /><a href="images/110308/snort/012.png" target="_blank"><img src="images/110308/snort/012.png" border="0" width="687" height="71" /></a><br />▲圖 12<br /><br />至此，讀者已成功建立網頁型入侵偵測系統。可由網頁介面來掌控入侵偵測系統的相關資訊。<br />
+			<!-- Show relate article -->
+				<!-- end -->
+		<div class="article_note">
+		<!-- Add tags use metakey, and show OSSF Newsletter tag: OSSFNL+NUM-->
+		<br><br> <hr style='border: 1px dashed #D2DADB;'><b>自由軟體鑄造場電子報&nbsp;:</b>&nbsp;<a href='previous-issue%3Ftask=view&amp;id=714.html'>第 168 期 以 Snort 實作入侵偵測系統</a><br>				<!-- End -->
+					<br>
+					<b>分類: </b><a href="tw/tech-column.html">				技術專欄					</a>				</div>
+			 <!-- AddThis Button BEGIN ID 3001 is the front page article -->
+     			<br><br>
+       <div class="addthis_toolbox addthis_default_style addthis_32x32_style">
+       <a class="addthis_button_preferred_1"></a>
+       <a class="addthis_button_preferred_2"></a>
+       <a class="addthis_button_preferred_3"></a>
+       <a class="addthis_button_preferred_4"></a>
+       <a class="addthis_button_compact"></a>
+       <a class="addthis_counter addthis_bubble_style"></a>
+       </div>
+       <script type="text/javascript">var addthis_config = {"data_track_clickback":true};</script>
+       <script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js#pubid=openfoundry"></script>
+       <!-- AddThis Button END -->
+     <br>
+		<div class="totop" ><a class="rt-totop" href="index.php%3Foption=com_content&amp;task=view&amp;id=8265&amp;Itemid=4%3Bisletter=1.html#" style="outline: medium none;">↑ Top</a></div>
+            <!-- AddThis Button END -->
+
+		<script type="text/javascript">
+var jcomments=new JComments(8265, 'com_content','https://openfoundry.org/index.php?option=com_jcomments&amp;tmpl=component&amp;lang=');
+jcomments.setList('comments-list');
+</script>
+<div id="jc">
+<div id="comments"><h4>評論<a class="refresh" href="index.php%3Foption=com_content&amp;task=view&amp;id=8265&amp;Itemid=4%3Bisletter=1.html#" title="重新整理評論列表" onclick="jcomments.showPage(8265,'com_content',0);return false;">&nbsp;</a></h4>
+<div id="comments-list" class="comments-list">
+        <div class="even" id="comment-item-132"><div class="rbox"><div class="rbox_tr"><div class="rbox_tl"><div class="rbox_t">&nbsp;</div></div></div><div class="rbox_m">
+<div class="comment-avatar"><img src="http://www.gravatar.com/avatar.php?gravatar_id=d41d8cd98f00b204e9800998ecf8427e&amp;default=https%3A%2F%2Fwww.openfoundry.org%2Fcomponents%2Fcom_jcomments%2Fimages%2Fno_avatar.png" alt="" /></div>
+<div class="comment-box avatar-indent">
+<span class="comments-vote">
+	<span id="comment-vote-holder-132">
+<a href="index.php%3Foption=com_content&amp;task=view&amp;id=8265&amp;Itemid=4%3Bisletter=1.html#" class="vote-good" title="優質的評論" onclick="jcomments.voteComment(132, 1);return false;"></a><a href="index.php%3Foption=com_content&amp;task=view&amp;id=8265&amp;Itemid=4%3Bisletter=1.html#" class="vote-poor" title="差勁的評論" onclick="jcomments.voteComment(132, -1);return false;"></a>
+<span class="vote-none">0</span>
+	</span>
+</span>
+<a class="comment-anchor" href="tw/tech-column/8265--snort-.html#comment-132" id="comment-132">#1</a>
+<a class="author-homepage" href="https://mypaper.pchome.com.tw/ltm0071" rel="nofollow" title="ltm0071">ltm0071</a>
+<span class="comment-date">2011-06-03 00:18</span>
+<div class="comment-body" id="comment-body-132">請教:如果是用電磁方式透過US<span style="font-size:0px;padding:0;margin:0;"> </span>B入侵,該如何防止或追蹤?謝謝<br /><br /><a href="https://mypaper.pchome.com.tw/ltm0071/post/1322167758" target="_blank" rel="external nofollow">mypaper.pchome.com.tw/.../...</a></div>
+</div><div class="clear"></div>
+</div><div class="rbox_br"><div class="rbox_bl"><div class="rbox_b">&nbsp;</div></div></div></div>
+</div>
+        <div class="odd" id="comment-item-135"><div class="rbox"><div class="rbox_tr"><div class="rbox_tl"><div class="rbox_t">&nbsp;</div></div></div><div class="rbox_m">
+<div class="comment-avatar"><img src="http://www.gravatar.com/avatar.php?gravatar_id=1f10c9ab6eff3d9cf932730ee825c41f&amp;default=https%3A%2F%2Fwww.openfoundry.org%2Fcomponents%2Fcom_jcomments%2Fimages%2Fno_avatar.png" alt="" /></div>
+<div class="comment-box avatar-indent">
+<span class="comments-vote">
+	<span id="comment-vote-holder-135">
+<a href="index.php%3Foption=com_content&amp;task=view&amp;id=8265&amp;Itemid=4%3Bisletter=1.html#" class="vote-good" title="優質的評論" onclick="jcomments.voteComment(135, 1);return false;"></a><a href="index.php%3Foption=com_content&amp;task=view&amp;id=8265&amp;Itemid=4%3Bisletter=1.html#" class="vote-poor" title="差勁的評論" onclick="jcomments.voteComment(135, -1);return false;"></a>
+<span class="vote-good">+2</span>
+	</span>
+</span>
+<a class="comment-anchor" href="tw/tech-column/8265--snort-.html#comment-135" id="comment-135">#2</a>
+<a class="author-homepage" href="https://vulscan.wynetech.com.tw" rel="nofollow" title="老薯條">老薯條</a>
+<span class="comment-date">2011-06-03 08:38</span>
+<div class="comment-body" id="comment-body-135">請問指的是無線網路的偵測嗎?如果是,在市面上有一本WINS<span style="font-size:0px;padding:0;margin:0;"> </span>NORT的書，裏面有一專章，在<span style="font-size:0px;padding:0;margin:0;"> </span>介紹如何偵測無線網路的攻擊，您<span style="font-size:0px;padding:0;margin:0;"> </span>可參考看看</div>
+</div><div class="clear"></div>
+</div><div class="rbox_br"><div class="rbox_bl"><div class="rbox_b">&nbsp;</div></div></div></div>
+</div>
+        <div class="even" id="comment-item-340"><div class="rbox"><div class="rbox_tr"><div class="rbox_tl"><div class="rbox_t">&nbsp;</div></div></div><div class="rbox_m">
+<div class="comment-avatar"><img src="http://www.gravatar.com/avatar.php?gravatar_id=14624441f6e944a6060b30210237158e&amp;default=https%3A%2F%2Fwww.openfoundry.org%2Fcomponents%2Fcom_jcomments%2Fimages%2Fno_avatar.png" alt="" /></div>
+<div class="comment-box avatar-indent">
+<span class="comments-vote">
+	<span id="comment-vote-holder-340">
+<a href="index.php%3Foption=com_content&amp;task=view&amp;id=8265&amp;Itemid=4%3Bisletter=1.html#" class="vote-good" title="優質的評論" onclick="jcomments.voteComment(340, 1);return false;"></a><a href="index.php%3Foption=com_content&amp;task=view&amp;id=8265&amp;Itemid=4%3Bisletter=1.html#" class="vote-poor" title="差勁的評論" onclick="jcomments.voteComment(340, -1);return false;"></a>
+<span class="vote-poor">-9</span>
+	</span>
+</span>
+<a class="comment-anchor" href="tw/tech-column/8265--snort-.html#comment-340" id="comment-340">#3</a>
+<span class="comment-author">test</span>
+<span class="comment-date">2012-12-07 14:07</span>
+<div class="comment-body" id="comment-body-340">能检测病毒和垃圾邮件？</div>
+</div><div class="clear"></div>
+</div><div class="rbox_br"><div class="rbox_bl"><div class="rbox_b">&nbsp;</div></div></div></div>
+</div>
+</div>
+<div id="comments-list-footer"><a class="refresh" href="index.php%3Foption=com_content&amp;task=view&amp;id=8265&amp;Itemid=4%3Bisletter=1.html#" title="重新整理評論列表" onclick="jcomments.showPage(8265,'com_content',0);return false;">重新整理評論列表</a></div>
+</div>
+<div id="comments-footer" align="center"><a href="http://www.joomlatune.com" title="JComments" target="_blank">JComments</a></div>
+<script type="text/javascript">
+jcomments.setAntiCache(1,0,0);
+</script> 
+</div>	</div>
+</div>
+
+		                            </div>
+									<div class="clear"></div>
+								</div>
+								<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+							</div>
+							</div>
+                                                    </div>
+                                            </div>
+                                <div class="rt-grid-3 rt-pull-9">
+                <div id="rt-sidebar-a">
+                                    <div class="square4">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<ul class="menu"><li class="item56"><a href="tw/previous-issue.html"><span>電子報總覽</span></a></li><li class="item55"><a href="tw/about-newsletter.html"><span>關於本報</span></a></li></ul>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<ul class="menu"><li class="item115"><a href="tw/foss-news.html"><span>源碼新聞</span></a></li><li class="item141"><a href="tw/case-job.html"><span>接案 / 工作</span></a></li></ul>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+        	                <div class="square1">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-title"><h2 class="title">專欄總覽</h2></div>
+						<div class="clear"></div>
+		                						<div class="module-content">
+		                	<ul class="menu"><li class="item37"><a href="tw/tech-column.html"><span>技術專欄</span></a></li><li class="item40"><a href="tw/foss-programs.html"><span>源碼秘技</span></a></li><li class="item35"><a href="tw/legal-article-.html"><span>法律專欄</span></a></li><li class="item154"><a href="tw/foss-forum.html"><span>自由專欄</span></a></li><li class="item162"><a href="tw/enterprise-application.html"><span>企業應用</span></a></li><li class="item44"><a href="tw/foss-projects.html"><span>源碼專案</span></a></li></ul>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		                <div class="square1">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<p style="text-align: center;"><a href="news%3Fformat=feed&amp;type=rss" target="_black"><img src="images/M_images/news-rss-feed.png" border="0" /></a><br /><a href="https://www.openfoundry.org/rss-feed/Newsletter" target="_black"><img src="images/M_images/newsletter-rss-feed.png" border="0" /></a></p>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		
+                </div>
+            </div>
+
+                    <div class="clear"></div>
+                </div>
+            </div>
+																													</div>
+										<div id="rt-copyright">
+						<div class="rt-grid-12 rt-alpha rt-omega">
+                        <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<div id="desktop-mobile-version-switch"><span id="mobile-version" class="version-switch"><a href="index.php%3Foption=com_content&amp;task=view&amp;id=8265&amp;Itemid=4%3Bisletter=1.html#">行動版</a></span></div>
+自由軟體鑄造場 製作 最佳瀏覽狀態：IE7或Firefox2.0以上 (建議使用Firefox) ‧ 解析度1024*768 <br /> <strong>E-Mail</strong>：<a href="mailto:contact@openfoundry.org">contact@openfoundry.org</a> <strong>Address</strong>：台北市南港區研究院路2段128號 中央研究院資訊科學研究所 . <a href="privacy-policy.html">隱私權條款</a>. <a href="terms-of-use.html">使用條款</a><span style="position: relative; top: 8px; margin-top: -8px;"> <a href="about/8101.html"><img src="images/M_images/rss-feed-all.png" border="0" /></a></span>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+        	
+</div>
+						<div class="clear"></div>
+					</div>
+					<div class="rt-footer-bottom-wrap"><div class="rt-footer-bottom"><div class="rt-footer-bottom2"><div class="rt-footer-bottom3"></div></div></div></div>
+									</div></div></div>
+				<div class="rt-surround-bottom"><div class="rt-surround-bottom2"><div class="rt-surround-bottom3"></div></div></div>
+							</div>
+		</div>
+		<!--
+		<script id="aptureScript">
+						(function (){var a=document.createElement("script");a.defer="true";a.src="http://www.apture.com/js/apture.js?siteToken=vsJttrn";document.getElementsByTagName("head")[0].appendChild(a);})();
+     </script>
+-->
+
+<!-- Piwik -->
+<!-- 			<script type="text/javascript">
+			  var _paq = _paq || [];
+		  _paq.push(["trackPageView"]);
+		  _paq.push(["enableLinkTracking"]);
+
+		    (function() {
+			        var u=(("https:" == document.location.protocol) ? "https" : "https") + "://www.openfoundry.org/piwik/";
+				    _paq.push(["setTrackerUrl", u+"piwik.php"]);
+				    _paq.push(["setSiteId", "1"]);
+				        var d=document, g=d.createElement("script"), s=d.getElementsByTagName("script")[0]; g.type="text/javascript";
+				        g.defer=true; g.async=true; g.src=u+"piwik.js"; s.parentNode.insertBefore(g,s);
+					  })();
+		  </script> -->
+<!-- End Piwik Code -->
+	</body>
+</html>

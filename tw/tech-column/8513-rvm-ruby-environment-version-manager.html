@@ -1,0 +1,698 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="zh-tw" lang="zh-tw" >
+<head>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<link rel="shortcut icon" href="../../images/favicon.ico" />
+	  <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+  <meta name="robots" content="index, follow" />
+  <meta name="keywords" content="ruby, rvm, version manager, environment manager, multiple version, installation management,OSSFNL763" />
+  <meta name="title" content="RVM - Ruby enVironment (Version) Manager" />
+  <meta name="description" content="前言 相信很多人學習 Ruby 是因為 Ruby on Rails（以下簡稱 Rails）的緣故，但 Rails 改版的速度很快，除了主要版本經常大幅度更新外，小版號之間的變動也不小，例如 Rails 3.0.x 與 3.1.x 架構上差異頗大。Ruby 程式語言目前主流的有 1.8.x 跟 1.9.x 兩個分支，在功能上也都有些差異。" />
+  <meta name="generator" content="" />
+  <title>RVM - Ruby enVironment (Version) Manager - OpenFoundry</title>
+  <link href="../../favicon.ico" rel="shortcut icon" type="image/x-icon" />
+  <link rel="stylesheet" href="../../components/com_gantry/css/gantry.css" type="text/css" />
+  <link rel="stylesheet" href="../../components/com_gantry/css/grid-12.css" type="text/css" />
+  <link rel="stylesheet" href="../../components/com_gantry/css/joomla.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/joomla.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/style1.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/light-body.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/demo-styles.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/template.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/typography.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/fusionmenu.css" type="text/css" />
+  <style type="text/css">
+    <!--
+#rt-main-surround ul.menu li.active > a, #rt-main-surround ul.menu li.active > .separator, #rt-main-surround ul.menu li.active > .item, #rt-main-surround .square4 ul.menu li:hover > a, #rt-main-surround .square4 ul.menu li:hover > .item, #rt-main-surround .square4 ul.menu li:hover > .separator, .roktabs-links ul li.active span {color:#0088B5;}
+a, #rt-main-surround ul.menu a:hover, #rt-main-surround ul.menu .separator:hover, #rt-main-surround ul.menu .item:hover {color:#0088B5;}
+    -->
+  </style>
+  <script type="text/javascript" src="../../components/com_jcomments/js/jcomments-v2.1.js%3Fv=2"></script>
+  <script type="text/javascript" src="../../components/com_jcomments/libraries/joomlatune/ajax.js"></script>
+  <script type="text/javascript" src="../../media/system/js/mootools.js"></script>
+  <script type="text/javascript" src="../../media/system/js/caption.js"></script>
+  <script type="text/javascript" src="../../components/com_gantry/js/gantry-buildspans.js"></script>
+  <script type="text/javascript" src="../../components/com_gantry/js/gantry-inputs.js"></script>
+  <script type="text/javascript" src="../../templates/rt_quantive_j15/js/jquery.cookie.js"></script>
+  <script type="text/javascript" src="../../modules/mod_roknavmenu/themes/fusion/js/fusion.js"></script>
+  <script type="text/javascript" src="../../modules/mod_ofssologin/js/ofssologin.js"></script>
+  <script type="text/javascript">
+
+			window.addEvent('domready', function() {
+				var modules = ['rt-block'];
+				var header = ['h3','h2','h1'];
+				GantryBuildSpans(modules, header);
+			});
+		InputsExclusion.push('.content_vote','#rt-popup')
+		        window.addEvent('load', function() {
+					new Fusion('ul.menutop', {
+						pill: 0,
+						effect: 'slide and fade',
+						opacity: 1,
+						hideDelay: 500,
+						centered: 0,
+						tweakInitial: {'x': -2, 'y': 0},
+        				tweakSubsequent: {'x': 0, 'y': -14},
+						menuFx: {duration: 200, transition: Fx.Transitions.Sine.easeOut},
+						pillFx: {duration: 400, transition: Fx.Transitions.Back.easeOut}
+					});
+	            });
+  </script>
+<!-- <script type="text/javascript" src="/sso/javascripts/langsync.js"></script> -->
+<!-- <script src="/templates/rt_quantive_j15/js/ossf.js"></script> -->
+<script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-4136519-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
+</head>
+	<body  class="backgroundlevel-low backgroundstyle-style8 bodylevel-med bodystyle-light cssstyle-style1 logostyle-dark font-family-helvetica font-size-is-default menu-type-fusionmenu col12 ">
+		<div id="rt-main-background">
+			<div class="rt-container">
+																<div id="rt-header">
+					<div class="rt-grid-7 rt-alpha">
+    			<div class="rt-block">
+    	    	<a href="../../index.html" id="rt-logo"></a>
+    		</div>
+	    
+</div>
+<div class="rt-grid-5 rt-omega">
+                    <div class="square9">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<div class="ofssologin_square9"><a href="../../index.html">登入</a>&nbsp;&nbsp|&nbsp;&nbsp;<span><a href="../../en/tech-column/8513-rvm-ruby-environment-version-manager.html" ><span lang="en" xml:lang="en">English</span></a></li></ul></span><!--Joom!fish V2.0.4 (Lightning)-->
+<!-- &copy; 2003-2009 Think Network, released under the GPL. -->
+<!-- More information: at http://www.joomfish.net -->
+<div class="ofssologin_search_square9">
+  <form id="of_search" action="https://www.openfoundry.org/of/openfoundry/search" method="get" onsubmit="of_search(); return false;">
+    <select id="of_search_type">
+      <option value="Projects"> 專案 </option>
+      <option value="Content"> 文章 </option>
+      <option value="People"> 人才 </option>
+    </select>
+    <input id="query" name="query" id="mod_search_searchword" maxlength="50" alt="search" class="inputbox" type="text" size="28" value="search..."  onblur="if(this.value=='') this.value='search...';" onfocus="if(this.value=='search...') this.value='';" />
+    <input type="hidden" name="commit" value="search" />
+  </form>
+</div></div>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		
+</div>
+					<div class="clear"></div>
+				</div>
+																<div id="rt-navigation"><div id="rt-navigation2"><div id="rt-navigation3">
+					
+<div class="nopill">
+	<ul class="menutop level1 " >
+						<li class="item1 root" >
+					<a class="orphan item bullet" href="../../index.html"  >
+				<span>
+			    				首頁				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item32 root" >
+					<a class="orphan item bullet" href="../../archived.html"  >
+				<span>
+			    				專案				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item186 root" >
+					<a class="orphan item bullet" href="../community.html"  >
+				<span>
+			    				Who&#039;s Who				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item4 root" >
+					<a class="orphan item bullet" href="../news.html"  >
+				<span>
+			    				新聞				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item5 root" >
+					<a class="orphan item bullet" href="../law-and-licensing.html"  >
+				<span>
+			    				法律源地				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item3 root" >
+					<a class="orphan item bullet" href="../activities.html"  >
+				<span>
+			    				活動				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item2 root" >
+					<a class="orphan item bullet" href="../resourcecatalog%3FName=Value.html"  >
+				<span>
+			    				資源表列				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item45 root" >
+					<a class="orphan item bullet" href="../about.html"  >
+				<span>
+			    				關於				   
+				</span>
+			</a>
+			
+			
+	</li>	
+				</ul>
+</div>
+
+				    <div class="clear"></div>
+				</div></div></div>
+								<div class="rt-surround"><div class="rt-surround2"><div class="rt-surround3">
+										<div id="rt-showcase-section">
+												<div id="rt-showcase">
+							<div class="rt-grid-12 rt-alpha rt-omega">
+    		<div class="clear"></div>
+		
+		
+                <div class="close-note">
+                    <div class="rt-block">
+               					<div class="module-content">
+                	<div style="font-size:medium; background-image:linear-gradient(120deg,#159957,#4298b2);color:white;padding:20px;margin:-10px -18px;">感謝您對「自由軟體鑄造場」的支持與愛護，十多年來「自由軟體鑄造場」受中央研究院支持，並在資訊科學研究所以及資訊科技創新研究中心執行，現已完成階段性的任務。 本網站預計持續維運至 2021年底，網站內容基本上不會再更動。<br />也紀念我們永遠的朋友 李士傑先生（Shih-Chieh Ilya Li）。</div>				</div>
+            </div>
+                </div>
+		
+</div>
+							<div class="clear"></div>
+						</div>
+																	</div>
+															<div id="rt-main-surround">
+												<div id="rt-breadcrumbs">
+								<div class="rt-breadcrumb-surround">
+		<a href="../../index.html" id="breadcrumbs-home"></a>
+		<span class="breadcrumbs pathway">
+<a href="../tech-column.html" class="pathway">技術專欄</a> <img src="../../templates/rt_quantive_j15/images/arrow.png" alt=""  /> <span class="no-link">RVM - Ruby enVironment (Version) Manager</span></span>
+	</div>
+	
+							<div class="clear"></div>
+						</div>
+																							              <div id="rt-main" class="sa3-mb9">
+                <div class="rt-main-inner">
+                    <div class="rt-grid-9 rt-push-3">
+                                                <div class="rt-block">
+                            							<div class="square1">
+							<div class="rt-module-surround">
+								<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+								<div class="rt-module-inner">
+		                            <div id="rt-mainbody">
+		                                
+<div class="rt-joomla ">
+	<div class="rt-article">
+		
+				<div class="rt-headline"><h1 class="rt-article-title">RVM - Ruby enVironment (Version) Manager</h1>		</div>
+		<div class="clear"></div>
+		
+		
+		
+				<div class="rt-articleinfo">
+						<div class="rt-article-icons">
+								<a href="8513-rvm-ruby-environment-version-manager%3Ftmpl=component&amp;print=1&amp;layout=default&amp;page=.html" title="列印" onclick="window.open(this.href,'win2','status=no,toolbar=no,scrollbars=yes,titlebar=no,menubar=no,resizable=yes,width=640,height=480,directories=no,location=no'); return false;" rel="nofollow"><span class="icon print"></span></a>																</div>
+			
+			<span class="rt-date-posted">
+						建立日期			2011-11-16 13:00						&nbsp;&nbsp;&nbsp;&nbsp;						最近更新在 2011-11-24 15:00						</span>
+
+						<span class="rt-author">
+				作者是 高見龍 (Eddie)			</span>
+				
+					</div>
+		
+		
+		<h3>前言</h3>
+<p><img src="../../images/111122/rvm_logo.gif" border="0" alt="RVM Logo" title="RVM Logo" width="133" height="133" style="border: 0; float: left;" />相信很多人學習 <a href="https://www.ruby-lang.org/" target="_blank">Ruby</a> 是因為 <a href="https://rubyonrails.org/" target="_blank">Ruby on Rails</a>（以下簡稱 Rails）的緣故，但 Rails 改版的速度很快，除了主要版本經常大幅度更新外，小版號之間的變動也不小，例如 Rails 3.0.x 與 3.1.x 架構上差異頗大。Ruby 程式語言目前主流的有 1.8.x 跟 1.9.x 兩個分支，在功能上也都有些差異。</p>
+<p>過去為了區分測試、開發環境，或檢查不同版本間的相容性，使用者需要使用不同的實體機器環境來操作；或是藉助虛擬化技術（如 <a href="https://www.virtualbox.org/" target="_blank">VirtualBox</a>）於相同的實體機器上模擬出不同的開發環境。無論是何種方式，都免不了安裝及管理上的麻煩。而本篇介紹的 <a href="https://beginrescueend.com/" target="_blank">RVM</a> (Ruby enVironment/Version Manager) 就是針對此問題的解決方案。</p>
+
+<p> </p>
+<p>RVM 提供在同一環境下安裝多個 Ruby 程式語言版本的機制，包括標準的 MRI（Matz's Ruby Interpreter）、REE（Ruby Enterprise Edition），甚至是 JRuby 與 MacRuby。使用者可於不同情況下進行環境切換。</p>
+<p>RVM 的安裝環境預設於個人帳號資料夾中，設計上與系統環境有區隔，因此憑一般使用者權限安裝即可，不需要系統最高使用者的權限。每個 Ruby 環境的 Gem 都是分別管理，甚至在同一個 Ruby 下也可以建立不同的 Gemset，彼此獨立互不影響。</p>
+<h3>安裝</h3>
+<p>以下提到的各項安裝指令均以 Ubuntu 作業系統為例。</p>
+<p>安裝 RVM 前，系統環境需要 <code>curl</code> 與 <code>git</code>。可於命令列模式中使用下列指令進行安裝：：</p>
+<pre><code>$ sudo apt-get install curl git
+</code></pre>
+<p>接著在命令列模式中輸入下列指令：</p>
+<pre><code>$ bash &lt; &lt;(curl -s https://raw.github.com/wayneeseguin/rvm/master/binscripts/rvm-installer)
+</code></pre>
+<p>輸入完成將會開始下載 RVM 並自動進行安裝及設定。</p>
+<p>安裝完成後，再依據系統提供的 Shell 進行設定。如果是 Bash Shell，可以在命令列模式下輸入下列指令：</p>
+<pre><code>$ echo '[[ -s "$HOME/.rvm/scripts/rvm" ]] &amp;&amp; . "$HOME/.rvm/scripts/rvm"' &gt;&gt; ~/.bash_profile
+</code></pre>
+<p>更詳細的安裝說明可以參考<a href="https://rvm.beginrescueend.com/rvm/install/" target="_blank">官方網站的安裝說明</a>。</p>
+<h3>使用範例</h3>
+<h4>01. 列出支援的版本列表</h4>
+<p>請於命令列模式下輸入下列指令：</p>
+<pre><code>$ rvm list known
+
+</code></pre>
+<p>輸出範例為：</p>
+<pre><code># MRI Rubies
+[ruby-]1.8.6[-p420]
+[ruby-]1.8.6-head
+[ruby-]1.8.7[-p352]
+[ruby-]1.8.7-head
+[ruby-]1.9.1-p378
+[ruby-]1.9.1[-p431]
+[ruby-]1.9.1-head
+[ruby-]1.9.2-p180
+[ruby-]1.9.2[-p290]
+[ruby-]1.9.2-head
+[ruby-]1.9.3-preview1
+[ruby-]1.9.3[-rc1]
+[ruby-]1.9.3-head
+ruby-head
+
+# GoRuby
+goruby
+
+# JRuby
+jruby-1.2.0
+jruby-1.3.1
+jruby-1.4.0
+jruby-1.6.1
+jruby-1.6.2
+jruby-1.6.3
+jruby[-1.6.4]
+jruby-head
+
+# Rubinius
+rbx-1.0.1
+rbx-1.1.1
+rbx-1.2.3
+rbx-1.2.4
+rbx[-head]
+rbx-2.0.0pre
+
+# Ruby Enterprise Edition
+ree-1.8.6
+ree[-1.8.7][-2011.03]
+ree-1.8.6-head
+ree-1.8.7-head
+
+# Kiji
+kiji
+
+# MagLev
+maglev[-26852]
+maglev-head
+
+# Mac OS X Snow Leopard Only
+macruby[-0.10]
+macruby-nightly
+macruby-head
+
+# IronRuby -- Not implemented yet.
+ironruby-0.9.3
+ironruby-1.0-rc2
+ironruby-head
+</code></pre>
+<p>從列表中可以發現 RVM 支援所有常見的 Ruby Interpreter。</p>
+<h4>02. 安裝指定的版本</h4>
+<p>列出的支援版本中，中括弧的部分是可以省略的，例如使用 RVM 安裝 ruby 1.8.7，可於命令列模式下輸入下列指令：</p>
+<pre><code>$ rvm install 1.8.7
+</code></pre>
+<p>此時 RVM 會自動符合 [ruby-]1.8.7[-p352]。</p>
+<p>如果要再安裝不同的版本，例如 ruby 1.9.2，可於命令列模式下輸入下列指令：</p>
+<pre><code>$ rvm install 1.9.2
+</code></pre>
+<h4>03. 列出目前安裝的版本</h4>
+<p>請於命令列模式下輸入下列指令：</p>
+<pre><code>$ rvm list
+</code></pre>
+<p>輸出範例為：</p>
+<pre><code>rvm rubies
+
+    ruby-1.9.2-p290 [ i686 ]
+    ruby-1.8.7-p352 [ i686 ]
+</code></pre>
+<p>顯示目前 RVM 環境中安裝了 2 個版本的 Ruby，分別為 1.8.7 跟 1.9.2。</p>
+<h4>04. 切換至指定的版本</h4>
+<p>切換前，可以使用下列指令檢查目前環境中使用的版本：</p>
+<pre><code>$ ruby -v
+ruby 1.8.7 (2010-06-23 patchlevel 299) [i686-linux]
+
+</code></pre>
+<p>輸出範例的結果顯示為 ruby-1.8.7-p299。</p>
+<p>接著使用下列指令切換至指定的版本，如 ruby 1.9.2：</p>
+<pre><code>$ rvm use 1.9.2
+Using /home/eddie/.rvm/gems/ruby-1.9.2-p290
+</code></pre>
+<p>指令裡的 "use" 可以省略，如：</p>
+<pre><code>$ rvm 1.9.2
+Using /home/eddie/.rvm/gems/ruby-1.9.2-p290
+</code></pre>
+<p>再檢查目前的 Ruby 版本：</p>
+<pre><code>$ ruby -v
+ruby 1.9.2p290 (2011-07-09 revision 32553) [i686-linux]
+</code></pre>
+<p>此時環境已切換至 Ruby 1.9.2。</p>
+<p>不過此環境設定僅於目前的命令列模式下發生作用，當開啟新的命令列模式時，Ruby 還是會回到原先預設的版本。如果希望每次開啟命令列模式都會切換到指定的版本，則使用下列指令：</p>
+<pre><code>$ rvm 1.9.2 --default
+</code></pre>
+<p>如果想切換回原本系統內建的版本，則使用下列指令：</p>
+<pre><code>$ rvm system
+</code></pre>
+<h4>05. 移除指定版本</h4>
+<p>如果想要移除 ruby 1.9.2，請於命令列模式下輸入下列指令：</p>
+<pre><code>$ rvm remove 1.9.2
+
+</code></pre>
+<h4>06. 移除 RVM</h4>
+<p>只要把個人帳號資料夾下的 "rvm" 整個移除，再將先前設定的 Shell 相關設定修改回來即可。</p>
+<h3>RVM 的運作原理</h3>
+<p>RVM 透過操作環境變數來切換版本，例如在 Ubuntu 中使用了 Shell 中的 PATH 變數。</p>
+<p>首先，可以使用下列指令查看目前 PATH 變數的值：</p>
+<pre><code>$ echo $PATH
+/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/home/eddie/.gem/ruby/1.8/bin:/usr/local/lib/python2.6/dist-packages/django/bin:/home/eddie/.rvm/bin:/home/eddie/.rvm/bin
+</code></pre>
+<p>顯示目前環境使用的 ruby 程式位置：</p>
+<pre><code>$ which ruby
+/usr/bin/ruby
+</code></pre>
+<p>顯示目前環境使用的 ruby 版本：</p>
+<pre><code>$ ruby -v
+ruby 1.8.7 (2010-06-23 patchlevel 299) [i686-linux]
+</code></pre>
+<p>接著，藉由下列指令將 RVM 切換到 ruby 1.9.2：</p>
+<pre><code>$ rvm 1.9.2
+Using /home/eddie/.rvm/gems/ruby-1.9.2-p290
+</code></pre>
+<p>此時顯示目前 PATH 變數的值：</p>
+<pre><code>$ echo $PATH
+/home/eddie/.rvm/gems/ruby-1.9.2-p290/bin:/home/eddie/.rvm/gems/ruby-1.9.2-p290@global/bin:/home/eddie/.rvm/rubies/ruby-1.9.2-p290/bin:/home/eddie/.rvm/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/home/eddie/.gem/ruby/1.8/bin:/usr/local/lib/python2.6/dist-packages/django/bin
+
+</code></pre>
+<p>再次顯示目前環境的 Ruby 程式位置：</p>
+<pre><code>$ which ruby
+/home/eddie/.rvm/rubies/ruby-1.9.2-p290/bin/ruby
+</code></pre>
+<p>再次顯示目前環境的 Ruby 版本：</p>
+<pre><code>$ ruby -v
+ruby 1.9.2p290 (2011-07-09 revision 32553) [i686-linux]
+</code></pre>
+<p>RVM 會於環境變數 PATH 的最前面安排指定版本的相關執行路徑。使得在命令列模式下執行 ruby 指令時，會因 PATH 排列的權重，優先取得「.rvm」下的指定版本，而非系統原本的 /usr/bin/ruby。</p>
+<h3>RVM 與 Gem</h3>
+<p>在 RVM 裡，不同版本的 Ruby 的 gem 各別獨立。</p>
+<pre><code>&gt; gem list
+
+*** LOCAL GEMS ***
+
+bundler (1.0.0.rc.5)
+json (1.6.1 ruby)
+rake (0.9.2 ruby)
+rdoc (3.10 ruby)
+</code></pre>
+<p>再來我們切換到 1.8.7安裝 Rails：</p>
+<pre><code>&gt; rvm 1.8.7
+&gt; gem install rails
+</code></pre>
+<p>我們看看 gem 的安裝情形：</p>
+<pre><code>&gt; gem list
+
+*** LOCAL GEMS ***
+
+actionmailer (3.1.1)
+actionpack (3.1.1)
+activemodel (3.1.1)
+activerecord (3.1.1)
+.. 略 ..
+rails (3.1.1)
+railties (3.1.1)
+rake (0.9.2 ruby)
+rdoc (3.10 ruby)
+sprockets (2.0.2)
+thor (0.14.6)
+tilt (1.3.3)
+treetop (1.4.10)
+tzinfo (0.3.30)
+
+</code></pre>
+<p>安裝了最新版本的 Rails 3.1.1，這時候切回 Ruby 1.9.2 看到原來的 <code>gem list</code> 並未改變，表示 gem 是跟著不同版本的 Ruby 獨立安裝的。</p>
+<p>要注意的是，我們在 RVM 安裝的任何 Ruby 版本都跟系統的 Ruby 無關，即使版本編號相同也是不同的 Ruby，gem 也不會安裝到系統的 Ruby 裡。</p>
+<h3>RVM 與 Gemset</h3>
+<p>Ruby/Rails 的世界進步很快，套件的版本一直更新，所以很常看到這種狀況：</p>
+<pre><code>&gt; gem list
+.. 略 ..
+rails (3.1.1, 3.1.0, 3.0.9, 3.0.7)
+.. 略 ..
+</code></pre>
+<p>同一個套件就裝了二、三個以上的版本，你可以選擇把不用的版本移除，不過我會建議你用不同的 gemset 來管理。例如我想在 Ruby 1.9.2 底下同時安裝 Rails 2.3.9 跟 3.1.1 版本。</p>
+<p>先切換到 Ruby 1.9.2，建立一個預備安裝 Rails 2.3.9 的 gemset：</p>
+<pre><code>&gt; rvm gemset create rails-2.3.9
+'rails-2.3.9' gemset created (/home/eddie/.rvm/gems/ruby-1.9.2-p290@rails-2.3.9).
+</code></pre>
+<p>不一定要用 <code>rails-2.3.9</code>，gemset 可以自行命名。接著建立給 Rails 3.1.1 版的　 gemset：</p>
+<pre><code>&gt; rvm gemset create rails-3.1.1
+'rails-3.1.1' gemset created (/home/eddie/.rvm/gems/ruby-1.9.2-p290@rails-3.1.1).
+
+</code></pre>
+<p>看一下目前已建立的 gemset：</p>
+<pre><code>&gt; rvm gemset list
+
+gemsets for ruby-1.9.2-p290 (found in /home/eddie/.rvm/gems/ruby-1.9.2-p290)
+    global
+    rails-2.3.9
+    rails-3.1.1
+</code></pre>
+<p>有 2 個剛剛建好的 gemset，而 global 是整個 Ruby 預設的 gemset，如果沒特別指定的話，gem 都是安裝到 <code>global</code> 裡。再來我們切換到 rails-2.3.9：</p>
+<pre><code>&gt; rvm gemset use rails-2.3.9
+</code></pre>
+<p>安裝 Rails 2.3.9 版：</p>
+<pre><code>&gt; gem install rails -v='2.3.9' --no-rdoc --no-ri
+Fetching： activesupport-2.3.9.gem (100%)
+Fetching： activerecord-2.3.9.gem (100%)
+.. 略 ..
+Successfully installed activeresource-2.3.9
+Successfully installed rails-2.3.9
+7 gems installed
+</code></pre>
+<p>完成後，再切換到 rails-3.1.1：</p>
+<pre><code>&gt; rvm gemset use rails-3.1.1
+</code></pre>
+<p>接著重複同樣的步驟，只是版本編號改成 3.1.1。兩個 gemset 都裝好之後來看看結果：</p>
+<pre><code>&gt; rvm gemset use rails-2.3.9
+
+&gt; rails -v
+Rails 2.3.9
+
+&gt; rvm gemset use rails-3.1.1
+&gt; rails -v
+Rails 3.1.1
+</code></pre>
+<p>如果要從其他版本的 Ruby 切換到指定的 gemset，則：</p>
+<pre><code>&gt; rvm 1.9.2@rails-3.1.1
+</code></pre>
+<p>因此，可以依需求建立、切換 gemset，而且每個 gemset 都是獨立的。如果不需要了，也可以清除。例如想清除 rails-2.3.9 這個 gemset 的話：</p>
+<pre><code>&gt; rvm gemset empty rails-2.3.9
+WARN： Are you SURE you wish to remove the installed gems for gemset 'ruby-1.9.2-p290@global' (/home/eddie/.rvm/gems/ruby-1.9.2-p290@global)?
+(anything other than 'yes' will cancel) &gt; yes
+</code></pre>
+<p>清除只會把安裝的 gem 砍掉，gemset 的名字仍會保留；如果想把整個 gemset 刪掉：</p>
+<pre><code>&gt; rvm gemset delete rails-2.3.9
+WARN： Are you SURE you wish to remove the entire gemset directory 'rails-2.3.9' (/home/eddie/.rvm/gems/ruby-1.9.2-p290@rails-2.3.9)?
+(anything other than 'yes' will cancel) &gt; yes
+
+</code></pre>
+<h3>各別專案設定</h3>
+<p>有時候我們會遇到專案 A 用 Ruby 1.8.7，專案 B 用 Ruby 1.9.2的情況，雖然 RVM 可以迅速切換，但若忘了換回來也會造成困擾。這時候可以在該專案的資料夾底下放一個 <code>.rvmrc</code> 檔案，只要簡單的一行設定：</p>
+<pre><code>rvm use 1.9.2@rails-3.1.1
+</code></pre>
+<p>如果後面沒特別指定的話，預設會使用 global 的 gemset。在你第一次進到該資料夾時會出現提示訊息：</p>
+<pre><code>&gt; cd project1
+==============================================================================
+= NOTICE                                                                     =
+==============================================================================
+= RVM has encountered a new or modified .rvmrc file in the current directory =
+= This is a shell script and therefore may contain any shell commands.       =
+=                                                                            =
+= Examine the contents of this file carefully to be sure the contents are    =
+= safe before trusting it! ( Choose v[iew] below to view the contents )      =
+==============================================================================
+Do you wish to trust this .rvmrc file? (/tmp/project1/.rvmrc)
+y[es], n[o], v[iew], c[ancel]&gt; yes
+Using /home/eddie/.rvm/gems/ruby-1.9.2-p290 with gemset rails-3.1.1
+</code></pre>
+<p>這樣當你下次再用 <code>cd</code> 指令進到該資料夾的時候，RVM 就會自動切換成你指定的 Ruby + gemset 版本。</p>
+<h3>可能會遇到的問題</h3>
+<p>安裝 RVM 時，有些 package 的安裝需要另外處理，像 <code>OpenSSL</code> 就是其中一例。就算用系統的 <code>apt-get install</code> 安裝，RVM 仍會出現 <code>LoadError</code>。需要用以下方式來安裝：</p>
+<pre><code>&gt; rvm pkg install openssl
+
+&gt; rvm remove 1.9.2
+&gt; rvm install 1.9.2 --with-openssl-dir=$rvm_path/usr
+</code></pre>
+<p>除了 <code>OpenSSL</code> 之外，<code>Readline</code> 也有類似的狀況，使用 RVM 在 Ubuntu 上練習寫 Rails 的時候特別容易遇到，這點還請多留意。更多詳細內容可參考<a href="https://beginrescueend.com/packages/" target="_blank">這裡</a>。</p>
+<h3>結語</h3>
+<p>RVM 可以快速地在各個 Ruby 版本間切換，而且與系統原本的環境進行區隔，管理與操作上都不會影響到原本的系統設定。對於喜歡嚐鮮、試新玩具又怕破壞原系統的人來說，真是一大福音。</p>
+			<!-- Show relate article -->
+				<!-- end -->
+		<div class="article_note">
+		<!-- Add tags use metakey, and show OSSF Newsletter tag: OSSFNL+NUM-->
+		<br><br> <hr style='border: 1px dashed #D2DADB;'><b>自由軟體鑄造場電子報&nbsp;:</b>&nbsp;<a href='../../previous-issue%3Ftask=view&amp;id=763.html'>第 185 期 程式語言版本管理系統</a><br><b>標籤:</b>&nbsp;<a href='../../index.php%3Foption=com_search&amp;Itemid=58&amp;searchphrase=exact_meta&amp;ordering=newest&amp;searchword=ruby.html'>ruby</a>,&nbsp;&nbsp;<a href='../../index.php%3Foption=com_search&amp;Itemid=58&amp;searchphrase=exact_meta&amp;ordering=newest&amp;searchword=&#32;rvm.html'> rvm</a>,&nbsp;&nbsp;<a href='../../index.php%3Foption=com_search&amp;Itemid=58&amp;searchphrase=exact_meta&amp;ordering=newest&amp;searchword=&#32;version&#32;manager.html'> version manager</a>,&nbsp;&nbsp;<a href='../../index.php%3Foption=com_search&amp;Itemid=58&amp;searchphrase=exact_meta&amp;ordering=newest&amp;searchword=&#32;environment&#32;manager.html'> environment manager</a>,&nbsp;&nbsp;<a href='../../index.php%3Foption=com_search&amp;Itemid=58&amp;searchphrase=exact_meta&amp;ordering=newest&amp;searchword=&#32;multiple&#32;version.html'> multiple version</a>,&nbsp;&nbsp;<a href='../../index.php%3Foption=com_search&amp;Itemid=58&amp;searchphrase=exact_meta&amp;ordering=newest&amp;searchword=&#32;installation&#32;management.html'> installation management</a>,&nbsp;&nbsp;				<!-- End -->
+					<br>
+					<b>分類: </b><a href="../tech-column.html">				技術專欄					</a>				</div>
+			 <!-- AddThis Button BEGIN ID 3001 is the front page article -->
+     			<br><br>
+       <div class="addthis_toolbox addthis_default_style addthis_32x32_style">
+       <a class="addthis_button_preferred_1"></a>
+       <a class="addthis_button_preferred_2"></a>
+       <a class="addthis_button_preferred_3"></a>
+       <a class="addthis_button_preferred_4"></a>
+       <a class="addthis_button_compact"></a>
+       <a class="addthis_counter addthis_bubble_style"></a>
+       </div>
+       <script type="text/javascript">var addthis_config = {"data_track_clickback":true};</script>
+       <script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js#pubid=openfoundry"></script>
+       <!-- AddThis Button END -->
+     <br>
+		<div class="totop" ><a class="rt-totop" href="8513-rvm-ruby-environment-version-manager.html#" style="outline: medium none;">↑ Top</a></div>
+            <!-- AddThis Button END -->
+
+			</div>
+</div>
+
+		                            </div>
+									<div class="clear"></div>
+								</div>
+								<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+							</div>
+							</div>
+                                                    </div>
+                                            </div>
+                                <div class="rt-grid-3 rt-pull-9">
+                <div id="rt-sidebar-a">
+                                    <div class="square4">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<ul class="menu"><li class="item56"><a href="../previous-issue.html"><span>電子報總覽</span></a></li><li class="item55"><a href="../about-newsletter.html"><span>關於本報</span></a></li></ul>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<ul class="menu"><li class="item115"><a href="../foss-news.html"><span>源碼新聞</span></a></li><li class="item141"><a href="../case-job.html"><span>接案 / 工作</span></a></li></ul>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+        	                <div class="square1">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-title"><h2 class="title">專欄總覽</h2></div>
+						<div class="clear"></div>
+		                						<div class="module-content">
+		                	<ul class="menu"><li id="current" class="active item37"><a href="../tech-column.html"><span>技術專欄</span></a></li><li class="item40"><a href="../foss-programs.html"><span>源碼秘技</span></a></li><li class="item35"><a href="../legal-article-.html"><span>法律專欄</span></a></li><li class="item154"><a href="../foss-forum.html"><span>自由專欄</span></a></li><li class="item162"><a href="../enterprise-application.html"><span>企業應用</span></a></li><li class="item44"><a href="../foss-projects.html"><span>源碼專案</span></a></li></ul>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		                <div class="square1">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<p style="text-align: center;"><a href="../../news%3Fformat=feed&amp;type=rss" target="_black"><img src="../../images/M_images/news-rss-feed.png" border="0" /></a><br /><a href="https://www.openfoundry.org/rss-feed/Newsletter" target="_black"><img src="../../images/M_images/newsletter-rss-feed.png" border="0" /></a></p>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		
+                </div>
+            </div>
+
+                    <div class="clear"></div>
+                </div>
+            </div>
+																													</div>
+										<div id="rt-copyright">
+						<div class="rt-grid-12 rt-alpha rt-omega">
+                        <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<div id="desktop-mobile-version-switch"><span id="mobile-version" class="version-switch"><a href="8513-rvm-ruby-environment-version-manager.html#">行動版</a></span></div>
+自由軟體鑄造場 製作 最佳瀏覽狀態：IE7或Firefox2.0以上 (建議使用Firefox) ‧ 解析度1024*768 <br /> <strong>E-Mail</strong>：<a href="mailto:contact@openfoundry.org">contact@openfoundry.org</a> <strong>Address</strong>：台北市南港區研究院路2段128號 中央研究院資訊科學研究所 . <a href="../../privacy-policy.html">隱私權條款</a>. <a href="../../terms-of-use.html">使用條款</a><span style="position: relative; top: 8px; margin-top: -8px;"> <a href="../../about/8101.html"><img src="../../images/M_images/rss-feed-all.png" border="0" /></a></span>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+        	
+</div>
+						<div class="clear"></div>
+					</div>
+					<div class="rt-footer-bottom-wrap"><div class="rt-footer-bottom"><div class="rt-footer-bottom2"><div class="rt-footer-bottom3"></div></div></div></div>
+									</div></div></div>
+				<div class="rt-surround-bottom"><div class="rt-surround-bottom2"><div class="rt-surround-bottom3"></div></div></div>
+							</div>
+		</div>
+		<!--
+		<script id="aptureScript">
+						(function (){var a=document.createElement("script");a.defer="true";a.src="http://www.apture.com/js/apture.js?siteToken=vsJttrn";document.getElementsByTagName("head")[0].appendChild(a);})();
+     </script>
+-->
+
+<!-- Piwik -->
+<!-- 			<script type="text/javascript">
+			  var _paq = _paq || [];
+		  _paq.push(["trackPageView"]);
+		  _paq.push(["enableLinkTracking"]);
+
+		    (function() {
+			        var u=(("https:" == document.location.protocol) ? "https" : "https") + "://www.openfoundry.org/piwik/";
+				    _paq.push(["setTrackerUrl", u+"piwik.php"]);
+				    _paq.push(["setSiteId", "1"]);
+				        var d=document, g=d.createElement("script"), s=d.getElementsByTagName("script")[0]; g.type="text/javascript";
+				        g.defer=true; g.async=true; g.src=u+"piwik.js"; s.parentNode.insertBefore(g,s);
+					  })();
+		  </script> -->
+<!-- End Piwik Code -->
+	</body>
+</html>

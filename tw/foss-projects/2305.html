@@ -1,0 +1,418 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="zh-tw" lang="zh-tw" >
+<head>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<link rel="shortcut icon" href="../../images/favicon.ico" />
+	  <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+  <meta name="robots" content="index, follow" />
+  <meta name="keywords" content="OSSFNL590" />
+  <meta name="title" content="WiMAX 無線通訊系統軟體與工具開發" />
+  <meta name="description" content="※ 什麼是 WiMAX WiMAX 的英文全名為W orldwide Interoperability for Microwave Access，中文翻譯為「全球互通微波存取」，是以 IEEE 802.16 系列標準為基礎的一種點對多點寬頻無線存取技術， 2001 年 6 月由 WiMAX Forum 提出並開始推動 。 WiMAX 傳輸速度最高可達 70Mbps，是一般 ADSL" />
+  <meta name="generator" content="" />
+  <title>WiMAX 無線通訊系統軟體與工具開發 - OpenFoundry</title>
+  <link href="../../favicon.ico" rel="shortcut icon" type="image/x-icon" />
+  <link rel="stylesheet" href="../../components/com_gantry/css/gantry.css" type="text/css" />
+  <link rel="stylesheet" href="../../components/com_gantry/css/grid-12.css" type="text/css" />
+  <link rel="stylesheet" href="../../components/com_gantry/css/joomla.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/joomla.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/style1.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/light-body.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/demo-styles.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/template.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/typography.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/fusionmenu.css" type="text/css" />
+  <style type="text/css">
+    <!--
+#rt-main-surround ul.menu li.active > a, #rt-main-surround ul.menu li.active > .separator, #rt-main-surround ul.menu li.active > .item, #rt-main-surround .square4 ul.menu li:hover > a, #rt-main-surround .square4 ul.menu li:hover > .item, #rt-main-surround .square4 ul.menu li:hover > .separator, .roktabs-links ul li.active span {color:#0088B5;}
+a, #rt-main-surround ul.menu a:hover, #rt-main-surround ul.menu .separator:hover, #rt-main-surround ul.menu .item:hover {color:#0088B5;}
+    -->
+  </style>
+  <script type="text/javascript" src="../../components/com_jcomments/js/jcomments-v2.1.js%3Fv=2"></script>
+  <script type="text/javascript" src="../../components/com_jcomments/libraries/joomlatune/ajax.js"></script>
+  <script type="text/javascript" src="../../media/system/js/mootools.js"></script>
+  <script type="text/javascript" src="../../media/system/js/caption.js"></script>
+  <script type="text/javascript" src="../../components/com_gantry/js/gantry-buildspans.js"></script>
+  <script type="text/javascript" src="../../components/com_gantry/js/gantry-inputs.js"></script>
+  <script type="text/javascript" src="../../templates/rt_quantive_j15/js/jquery.cookie.js"></script>
+  <script type="text/javascript" src="../../modules/mod_roknavmenu/themes/fusion/js/fusion.js"></script>
+  <script type="text/javascript" src="../../modules/mod_ofssologin/js/ofssologin.js"></script>
+  <script type="text/javascript">
+
+			window.addEvent('domready', function() {
+				var modules = ['rt-block'];
+				var header = ['h3','h2','h1'];
+				GantryBuildSpans(modules, header);
+			});
+		InputsExclusion.push('.content_vote','#rt-popup')
+		        window.addEvent('load', function() {
+					new Fusion('ul.menutop', {
+						pill: 0,
+						effect: 'slide and fade',
+						opacity: 1,
+						hideDelay: 500,
+						centered: 0,
+						tweakInitial: {'x': -2, 'y': 0},
+        				tweakSubsequent: {'x': 0, 'y': -14},
+						menuFx: {duration: 200, transition: Fx.Transitions.Sine.easeOut},
+						pillFx: {duration: 400, transition: Fx.Transitions.Back.easeOut}
+					});
+	            });
+  </script>
+<!-- <script type="text/javascript" src="/sso/javascripts/langsync.js"></script> -->
+<!-- <script src="/templates/rt_quantive_j15/js/ossf.js"></script> -->
+<script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-4136519-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
+</head>
+	<body  class="backgroundlevel-low backgroundstyle-style8 bodylevel-med bodystyle-light cssstyle-style1 logostyle-dark font-family-helvetica font-size-is-default menu-type-fusionmenu col12 ">
+		<div id="rt-main-background">
+			<div class="rt-container">
+																<div id="rt-header">
+					<div class="rt-grid-7 rt-alpha">
+    			<div class="rt-block">
+    	    	<a href="../../index.html" id="rt-logo"></a>
+    		</div>
+	    
+</div>
+<div class="rt-grid-5 rt-omega">
+                    <div class="square9">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<div class="ofssologin_square9"><a href="../../index.html">登入</a>&nbsp;&nbsp|&nbsp;&nbsp;<span><a href="../../en/foss-projects/2305.html" ><span lang="en" xml:lang="en">English</span></a></li></ul></span><!--Joom!fish V2.0.4 (Lightning)-->
+<!-- &copy; 2003-2009 Think Network, released under the GPL. -->
+<!-- More information: at http://www.joomfish.net -->
+<div class="ofssologin_search_square9">
+  <form id="of_search" action="https://www.openfoundry.org/of/openfoundry/search" method="get" onsubmit="of_search(); return false;">
+    <select id="of_search_type">
+      <option value="Projects"> 專案 </option>
+      <option value="Content"> 文章 </option>
+      <option value="People"> 人才 </option>
+    </select>
+    <input id="query" name="query" id="mod_search_searchword" maxlength="50" alt="search" class="inputbox" type="text" size="28" value="search..."  onblur="if(this.value=='') this.value='search...';" onfocus="if(this.value=='search...') this.value='';" />
+    <input type="hidden" name="commit" value="search" />
+  </form>
+</div></div>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		
+</div>
+					<div class="clear"></div>
+				</div>
+																<div id="rt-navigation"><div id="rt-navigation2"><div id="rt-navigation3">
+					
+<div class="nopill">
+	<ul class="menutop level1 " >
+						<li class="item1 root" >
+					<a class="orphan item bullet" href="../../index.html"  >
+				<span>
+			    				首頁				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item32 root" >
+					<a class="orphan item bullet" href="../../archived.html"  >
+				<span>
+			    				專案				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item186 root" >
+					<a class="orphan item bullet" href="../community.html"  >
+				<span>
+			    				Who&#039;s Who				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item4 root" >
+					<a class="orphan item bullet" href="../news.html"  >
+				<span>
+			    				新聞				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item5 root" >
+					<a class="orphan item bullet" href="../law-and-licensing.html"  >
+				<span>
+			    				法律源地				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item3 root" >
+					<a class="orphan item bullet" href="../activities.html"  >
+				<span>
+			    				活動				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item2 root" >
+					<a class="orphan item bullet" href="../resourcecatalog%3FName=Value.html"  >
+				<span>
+			    				資源表列				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item45 root" >
+					<a class="orphan item bullet" href="../about.html"  >
+				<span>
+			    				關於				   
+				</span>
+			</a>
+			
+			
+	</li>	
+				</ul>
+</div>
+
+				    <div class="clear"></div>
+				</div></div></div>
+								<div class="rt-surround"><div class="rt-surround2"><div class="rt-surround3">
+										<div id="rt-showcase-section">
+												<div id="rt-showcase">
+							<div class="rt-grid-12 rt-alpha rt-omega">
+    		<div class="clear"></div>
+		
+		
+                <div class="close-note">
+                    <div class="rt-block">
+               					<div class="module-content">
+                	<div style="font-size:medium; background-image:linear-gradient(120deg,#159957,#4298b2);color:white;padding:20px;margin:-10px -18px;">感謝您對「自由軟體鑄造場」的支持與愛護，十多年來「自由軟體鑄造場」受中央研究院支持，並在資訊科學研究所以及資訊科技創新研究中心執行，現已完成階段性的任務。 本網站預計持續維運至 2021年底，網站內容基本上不會再更動。<br />也紀念我們永遠的朋友 李士傑先生（Shih-Chieh Ilya Li）。</div>				</div>
+            </div>
+                </div>
+		
+</div>
+							<div class="clear"></div>
+						</div>
+																	</div>
+															<div id="rt-main-surround">
+												<div id="rt-breadcrumbs">
+								<div class="rt-breadcrumb-surround">
+		<a href="../../index.html" id="breadcrumbs-home"></a>
+		<span class="breadcrumbs pathway">
+<a href="../foss-projects.html" class="pathway">源碼專案</a> <img src="../../templates/rt_quantive_j15/images/arrow.png" alt=""  /> <span class="no-link">WiMAX 無線通訊系統軟體與工具開發</span></span>
+	</div>
+	
+							<div class="clear"></div>
+						</div>
+																							              <div id="rt-main" class="sa3-mb9">
+                <div class="rt-main-inner">
+                    <div class="rt-grid-9 rt-push-3">
+                                                <div class="rt-block">
+                            							<div class="square1">
+							<div class="rt-module-surround">
+								<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+								<div class="rt-module-inner">
+		                            <div id="rt-mainbody">
+		                                
+<div class="rt-joomla ">
+	<div class="rt-article">
+		
+				<div class="rt-headline"><h1 class="rt-article-title">WiMAX 無線通訊系統軟體與工具開發</h1>		</div>
+		<div class="clear"></div>
+		
+		
+		
+				<div class="rt-articleinfo">
+						<div class="rt-article-icons">
+								<a href="2305%3Ftmpl=component&amp;print=1&amp;layout=default&amp;page=.html" title="列印" onclick="window.open(this.href,'win2','status=no,toolbar=no,scrollbars=yes,titlebar=no,menubar=no,resizable=yes,width=640,height=480,directories=no,location=no'); return false;" rel="nofollow"><span class="icon print"></span></a>																</div>
+			
+			<span class="rt-date-posted">
+						建立日期			2010-04-26 11:04						&nbsp;&nbsp;&nbsp;&nbsp;						最近更新在 2010-05-07 01:04						</span>
+
+						<span class="rt-author">
+				作者是 李貞臻			</span>
+				
+					</div>
+		
+		
+		<p><strong>※ 什麼是&nbsp; WiMAX</strong> </p>
+<p>WiMAX 的英文全名為W orldwide Interoperability for Microwave Access，中文翻譯為「全球互通微波存取」，是以 IEEE 802.16 系列標準為基礎的一種點對多點寬頻無線存取技術， 2001 年 6 月由 WiMAX Forum 提出並開始推動。 WiMAX 傳輸速度最高可達 70Mbps，是一般 ADSL 用戶頻寬的十多倍，而傳輸範圍最遠可達 50 公里，相較於 Wi-Fi，它的訊號涵蓋範圍更廣、傳遞速度更快，而且提供服務品質保障 (QoS) 與多重安全機制，讓網路傳輸的品質更加穩定安全，也被稱為第四世代 (4G) 無線行動寬頻技術。 <br /></p><p>WiMAX 被視為是可以將目前的最後一哩有線網路（例如 ADSL）無線化的接取技術，其應用領域非常廣泛，包括：最後一哩網路建置、偏遠地區寬頻上網、住宅與企業網路的網路行動化及多媒體通訊等運用。&nbsp; </p>
+<p><br /><strong>※ 研究緣起</strong></p>
+<p>WiMAX 技術暨應用是目前政府加速實現「行動台灣計畫」 (M-Taiwan)的重點工作項目，目標是讓台取得在 WiMAX 產業發展上的全球領先優勢，帶動兆元通訊產業的發展，預估台灣 WiMAX 產業將可突破 1 億美元產值，因此，其未來發展，從政府到業界皆有高度的期待。 </p>
+<p>有鑒於業界對於 WiMAX 技術殷切的需求，2006 年臺北科技大學成立軟體發展研究中心，並由中心主任陳偉凱教授帶領國科會嵌入式系統暨自由軟體專案下的 「WiMAX 無線通訊系統軟體與工具開發」整合型計畫(以下簡稱此計畫)，此計畫以自由軟體的方式，依據 WiMAX 的規格，實作出一套模擬 WiMAX 網路環境所需的軟體，範圍涵蓋應用層、媒體層、實體層及通道層，以便完整的模擬應用軟體於 WiMAX 無線網路環境的實際運作情形，作為業界開發 WiMAX 相關軟硬體的參考模型。 </p>
+<p><br /><strong>※ 系統架構</strong> </p>
+<p>此計畫所選擇的系統架構是分散式代理人 (Distributed Agent) 架構。圖一是系統架構圖，由圖中可以看出，各行動台 (Mobile Station)、基地台 (Base Station)、閘道器 (Gateway)、主控台 (Console) 分別各自使用一部電腦負責模擬或執行，透過實體網路（圖中藍色部分）連結成一套完整的 WiMAX 模擬系統，因此模擬時，運算是分散到不同的電腦上執行的。另外，為提高模擬的便利性，除了主控台，我們在每一部電腦上都部署一支代理人 (Agent) 程式（圖中綠色標示 Agent 的部份）與 WiMAX 虛擬網路卡驅動程式，由主控台指揮代理人，依模擬的需求扮演行動台、基地台、閘道器等角色，以便進行模擬。&nbsp;<br />&nbsp;<br /><img hspace="5" height="400" border="0" align="absBottom" width="322" vspace="5" alt="" src="../../images/100427/wimax/image001.png" />&nbsp;<br />圖一 WiMAX Simulator System Architecture </p>
+<p>當使用者想要模擬 WiMAX 網路時，首先透過主控台的使用者介面（圖二），設定欲模擬的網路環境，包含地形（都市、市郊、山區等）、基地台的特性 (Properties)、數量與距離、行動用戶端的特性、數量、移動速度及與基地台的距離等，然後啟動模擬。啟動時，主控台會先進行初始化的工作，依使用者指定的模擬環境，透過控制埠 (Control Socket) 送出命令，設定代理人應該扮演的角色（行動台、基地台或單層模擬），待初始化完成後，行動台的應用程式便可以使用（虛擬）WiMAX 網路環境。 </p>
+<p>例如，當某甲行動台的應用程式（例如FTP）與某乙行動台的應用程式（例如FTP server）互通時，某甲的應用程式即透過 Linux 的 Socket API（圖中的Socket over virtual IP）建立連線，使應用程式的封包 (packet) 透過 WiMAX Virtual Driver 送給代理人，此時代理人模擬 WiMAX 行動台，因此，代理人將封包依 WiMAX 的規格，經 MAC、SECU、PHY 等通訊層處理，產生實體的 WiMAX 電波訊號，然後，經過通道效應 (CHN) 模擬訊號於空氣中傳遞所造成的失真，然後透過實體網路 (Data Socket) 傳至基地台，由基地台轉傳送至某乙行動台。換句話說，WiMAX 的各通訊層模擬由代理人負責，而多個代理人同時進行模擬時，則構成分散式的 WiMAX 模擬系統。 </p>
+<p><img hspace="5" height="302" border="0" align="absBottom" width="400" vspace="5" alt="" src="../../images/100427/wimax/image003.png" /><br />圖二 模擬環境設定畫面 </p>
+<p>分散式代理人的架構將整個模擬系統拆解成幾個子系統。而在個別子系統中，為了解決其他問題，此計畫又搭配使用其他小型的系統架構。例如，為了讓 WiMAX 各層通訊模組能於執行期間動態地被載入、組合與卸除，在代理人程式內部使用「Pipe &amp; Filter」架構，每一層網路模組均為一個 Filter，透過 Filter一致的標準化介面，代理人程式在收到主控台的命令後，就可以用組合積木的方式，選擇若干個 Filter，形成一個處理網路封包的 Pipe，而封包就像水一樣，流經 Pipe中的 Filter，由各個 Filter 對封包進行一連串的模擬工作。</p>
+<p>在模擬的過程中，代理人每一層的 WiMAX 通訊模組 (MAC、SECU、PHY、CHN) 都會產生資料流與控制流，其中資料流由資料埠傳送到另一個代理人，而控制流則傳送到主控台。控制流的資料是為了讓使用者可以監控模擬過程而特別收集的，這些原始資料 (Raw Data) 有各種不同的呈現方式，為了讓主控台能彈性呈現各種監控資料，主控台使用 Plugable 的架構，監控的畫面由 SPMT 外掛 (Plug-in) 負責，如圖三。當主控台啟動時，會檢查系統路徑下可載入的外掛，並自動載入外掛。即使沒有 SPMT 外掛時，主控台還是能運行並控制代理人，若想增加新的資料呈現方式，只需提供新的外掛並加到系統路徑下即可。外掛與外掛之間則是透過服務 (Service) 溝通，所有外掛在被載入時，會登錄外掛提供的所有服務，任何外掛皆可以用「名稱」向主控台請求服務，例如：想取得監控資料的外掛，可向主控台請求「Register Monitor Data Listener」服務，該服務由核心外掛所提供，會將外掛註冊到清單中，當有新的監控資料抵達時，便會通知所有已註冊的外掛。 </p>
+<p><img hspace="5" height="302" border="0" align="absBottom" width="400" vspace="5" alt="" src="../../images/100427/wimax/image005.png" /><br />圖三&nbsp; SPMT Plug-in提供監控圖表 </p>
+<p>除了上述的「分散式代理人」、「Pipe &amp; Filter」及「Plugable」等架構外，此計畫也要求所有主控台的外掛採用MVC (Model-View-Controller) 架構。這些架構確實讓系統的模組與分工更加明確。</p>
+<p><br /><strong>※ 技術成果</strong> </p>
+<p>此計畫整合跨領域的知識，共同合作，建構出一套完整的WiMAX系統模擬軟體，完成移動式 WiMAX 網路 (802.16e)、雙向、多點對多點服務的模擬系統。並在執行過程中導入 CMMI ML2 所要求的軟體開發流程，減少不同領域間共同開發的困難，使用的輔助工具也大大減少系統開發階段及系統整合階段所花費的時間。整個開發成果及相關經驗，能提供業界作為開發 WiMAX 相關產品的參考模型。目前這個計畫產出的軟體已經釋出 3.0 版，主要功能均開發完畢並進入維護階段。 </p>
+<p><br />◎ <a href="https://of.openfoundry.org/projects/837 " target="_blank">下載程式原始碼</a></p>
+<p><br /><strong>※ 團隊介紹</strong></p>
+<p>計畫主持人陳偉凱老師，為國立台北科技大學資訊工程系副教授兼軟體發展研究中心主任，主要研究領域為軟體工程。其他參與開發的老師及成員如下： </p>
+<p><br />軟體中心：</p>
+<p>陳偉凱教授、楊士萱教授、林丁丙教授、林信標教授、劉玉蓀教授、李文達教授、鄭有進教授、柯開維教授、吳和庭教授、尤信程教授、劉傳銘教授、劉建宏教授 </p>
+<p>主要開發者：</p>
+<p>杜秉穎、陳佑竹、陳柏霖、潘相輔、朱曉晏、辜毓球、倪旻暄、黃琮聖、李宗翰、蔡佳成、顏仁暉、簡伯松、張家毓、陳弘升、陳正憲、蘇大智、蘇英啟、楊啟鋒、曾致皓、陳思翰、孫易緯、嚴雷、葉昭松、陳燕仁、李安特、陳勇銘、蕭勝文、蔡燿宇、莊恆毅、吳崇熙、林彥龍、呂芳旭、童子倫、柯凱元、陳凱育、呂坤展、王繻賢、陳雋凱、謝鎮遠、賴建中、廖怡楨、林振暘、陳建村、吳家豪、佘翠瑱、歐伯浩、徐天送、陳奕仁、林蔚儒、張勝雄、王熙鈞、趙耘、李國清、張家豪、王詠瑞、廖光勳、林天佑、朱偉綸、黃騰毅、凃又禎、陳威諭 </p>
+<p><br />（本文謝謝陳偉凱老師、杜秉穎同學、江宜芳小姐提供非常詳盡的技術與背景資料）</p>
+			<!-- Show relate article -->
+				<!-- end -->
+		<div class="article_note">
+		<!-- Add tags use metakey, and show OSSF Newsletter tag: OSSFNL+NUM-->
+		<br><br> <hr style='border: 1px dashed #D2DADB;'><b>自由軟體鑄造場電子報&nbsp;:</b>&nbsp;<a href='../../previous-issue%3Ftask=view&amp;id=590.html'>第 148 期 WiMAX 無線通訊系統軟體與工具開發</a><br>				<!-- End -->
+					<br>
+					<b>分類: </b><a href="../foss-projects.html">				源碼專案					</a>				</div>
+			 <!-- AddThis Button BEGIN ID 3001 is the front page article -->
+     			<br><br>
+       <div class="addthis_toolbox addthis_default_style addthis_32x32_style">
+       <a class="addthis_button_preferred_1"></a>
+       <a class="addthis_button_preferred_2"></a>
+       <a class="addthis_button_preferred_3"></a>
+       <a class="addthis_button_preferred_4"></a>
+       <a class="addthis_button_compact"></a>
+       <a class="addthis_counter addthis_bubble_style"></a>
+       </div>
+       <script type="text/javascript">var addthis_config = {"data_track_clickback":true};</script>
+       <script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js#pubid=openfoundry"></script>
+       <!-- AddThis Button END -->
+     <br>
+		<div class="totop" ><a class="rt-totop" href="2305.html#" style="outline: medium none;">↑ Top</a></div>
+            <!-- AddThis Button END -->
+
+			</div>
+</div>
+
+		                            </div>
+									<div class="clear"></div>
+								</div>
+								<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+							</div>
+							</div>
+                                                    </div>
+                                            </div>
+                                <div class="rt-grid-3 rt-pull-9">
+                <div id="rt-sidebar-a">
+                                    <div class="square4">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<ul class="menu"><li class="item56"><a href="../previous-issue.html"><span>電子報總覽</span></a></li><li class="item55"><a href="../about-newsletter.html"><span>關於本報</span></a></li></ul>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<ul class="menu"><li class="item115"><a href="../foss-news.html"><span>源碼新聞</span></a></li><li class="item141"><a href="../case-job.html"><span>接案 / 工作</span></a></li></ul>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+        	                <div class="square1">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-title"><h2 class="title">專欄總覽</h2></div>
+						<div class="clear"></div>
+		                						<div class="module-content">
+		                	<ul class="menu"><li class="item37"><a href="../tech-column.html"><span>技術專欄</span></a></li><li class="item40"><a href="../foss-programs.html"><span>源碼秘技</span></a></li><li class="item35"><a href="../legal-article-.html"><span>法律專欄</span></a></li><li class="item154"><a href="../foss-forum.html"><span>自由專欄</span></a></li><li class="item162"><a href="../enterprise-application.html"><span>企業應用</span></a></li><li id="current" class="active item44"><a href="../foss-projects.html"><span>源碼專案</span></a></li></ul>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		                <div class="square1">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<p style="text-align: center;"><a href="../../news%3Fformat=feed&amp;type=rss" target="_black"><img src="../../images/M_images/news-rss-feed.png" border="0" /></a><br /><a href="https://www.openfoundry.org/rss-feed/Newsletter" target="_black"><img src="../../images/M_images/newsletter-rss-feed.png" border="0" /></a></p>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		
+                </div>
+            </div>
+
+                    <div class="clear"></div>
+                </div>
+            </div>
+																													</div>
+										<div id="rt-copyright">
+						<div class="rt-grid-12 rt-alpha rt-omega">
+                        <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<div id="desktop-mobile-version-switch"><span id="mobile-version" class="version-switch"><a href="2305.html#">行動版</a></span></div>
+自由軟體鑄造場 製作 最佳瀏覽狀態：IE7或Firefox2.0以上 (建議使用Firefox) ‧ 解析度1024*768 <br /> <strong>E-Mail</strong>：<a href="mailto:contact@openfoundry.org">contact@openfoundry.org</a> <strong>Address</strong>：台北市南港區研究院路2段128號 中央研究院資訊科學研究所 . <a href="../../privacy-policy.html">隱私權條款</a>. <a href="../../terms-of-use.html">使用條款</a><span style="position: relative; top: 8px; margin-top: -8px;"> <a href="../../about/8101.html"><img src="../../images/M_images/rss-feed-all.png" border="0" /></a></span>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+        	
+</div>
+						<div class="clear"></div>
+					</div>
+					<div class="rt-footer-bottom-wrap"><div class="rt-footer-bottom"><div class="rt-footer-bottom2"><div class="rt-footer-bottom3"></div></div></div></div>
+									</div></div></div>
+				<div class="rt-surround-bottom"><div class="rt-surround-bottom2"><div class="rt-surround-bottom3"></div></div></div>
+							</div>
+		</div>
+		<!--
+		<script id="aptureScript">
+						(function (){var a=document.createElement("script");a.defer="true";a.src="http://www.apture.com/js/apture.js?siteToken=vsJttrn";document.getElementsByTagName("head")[0].appendChild(a);})();
+     </script>
+-->
+
+<!-- Piwik -->
+<!-- 			<script type="text/javascript">
+			  var _paq = _paq || [];
+		  _paq.push(["trackPageView"]);
+		  _paq.push(["enableLinkTracking"]);
+
+		    (function() {
+			        var u=(("https:" == document.location.protocol) ? "https" : "https") + "://www.openfoundry.org/piwik/";
+				    _paq.push(["setTrackerUrl", u+"piwik.php"]);
+				    _paq.push(["setSiteId", "1"]);
+				        var d=document, g=d.createElement("script"), s=d.getElementsByTagName("script")[0]; g.type="text/javascript";
+				        g.defer=true; g.async=true; g.src=u+"piwik.js"; s.parentNode.insertBefore(g,s);
+					  })();
+		  </script> -->
+<!-- End Piwik Code -->
+	</body>
+</html>

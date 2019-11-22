@@ -1,0 +1,409 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-gb" lang="en-gb" >
+<head>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<link rel="shortcut icon" href="images/favicon.ico" />
+	  <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+  <meta name="robots" content="index, follow" />
+  <meta name="keywords" content="OSSFNL192" />
+  <meta name="title" content="醫療資訊系統的新基石—治療成效開放式架（OIO）構建置經驗" />
+  <meta name="description" content="長期以來，醫療資訊系統面臨的挑戰，主要來自下列三個面向：一、 如何讓資訊系統提供令人滿意的服務功能，以取代將醫療記錄登載在 紙張上的傳統方式。二、資訊系統的需求經常會改變，如何快速因應 系統的改變需求。三、如何與其他醫療團隊夥伴，共同分享資料與工 具。難以避免地，醫療資訊系統的建置維護需要花費成本及投入資源， 但傳統的專屬系統開發模式（proprietary development" />
+  <meta name="generator" content="" />
+  <title>醫療資訊系統的新基石—治療成效開放式架（OIO）構建置經驗 - OpenFoundry</title>
+  <link href="favicon.ico" rel="shortcut icon" type="image/x-icon" />
+  <link rel="stylesheet" href="components/com_gantry/css/gantry.css" type="text/css" />
+  <link rel="stylesheet" href="components/com_gantry/css/grid-12.css" type="text/css" />
+  <link rel="stylesheet" href="components/com_gantry/css/joomla.css" type="text/css" />
+  <link rel="stylesheet" href="templates/rt_quantive_j15/css/joomla.css" type="text/css" />
+  <link rel="stylesheet" href="templates/rt_quantive_j15/css/style1.css" type="text/css" />
+  <link rel="stylesheet" href="templates/rt_quantive_j15/css/light-body.css" type="text/css" />
+  <link rel="stylesheet" href="templates/rt_quantive_j15/css/demo-styles.css" type="text/css" />
+  <link rel="stylesheet" href="templates/rt_quantive_j15/css/template.css" type="text/css" />
+  <link rel="stylesheet" href="templates/rt_quantive_j15/css/typography.css" type="text/css" />
+  <link rel="stylesheet" href="templates/rt_quantive_j15/css/fusionmenu.css" type="text/css" />
+  <style type="text/css">
+    <!--
+#rt-main-surround ul.menu li.active > a, #rt-main-surround ul.menu li.active > .separator, #rt-main-surround ul.menu li.active > .item, #rt-main-surround .square4 ul.menu li:hover > a, #rt-main-surround .square4 ul.menu li:hover > .item, #rt-main-surround .square4 ul.menu li:hover > .separator, .roktabs-links ul li.active span {color:#0088B5;}
+a, #rt-main-surround ul.menu a:hover, #rt-main-surround ul.menu .separator:hover, #rt-main-surround ul.menu .item:hover {color:#0088B5;}
+    -->
+  </style>
+  <script type="text/javascript" src="components/com_jcomments/js/jcomments-v2.1.js%3Fv=2"></script>
+  <script type="text/javascript" src="components/com_jcomments/libraries/joomlatune/ajax.js"></script>
+  <script type="text/javascript" src="media/system/js/mootools.js"></script>
+  <script type="text/javascript" src="media/system/js/caption.js"></script>
+  <script type="text/javascript" src="components/com_gantry/js/gantry-buildspans.js"></script>
+  <script type="text/javascript" src="components/com_gantry/js/gantry-inputs.js"></script>
+  <script type="text/javascript" src="templates/rt_quantive_j15/js/jquery.cookie.js"></script>
+  <script type="text/javascript" src="modules/mod_roknavmenu/themes/fusion/js/fusion.js"></script>
+  <script type="text/javascript" src="modules/mod_ofssologin/js/ofssologin.js"></script>
+  <script type="text/javascript">
+
+			window.addEvent('domready', function() {
+				var modules = ['rt-block'];
+				var header = ['h3','h2','h1'];
+				GantryBuildSpans(modules, header);
+			});
+		InputsExclusion.push('.content_vote','#rt-popup')
+		        window.addEvent('load', function() {
+					new Fusion('ul.menutop', {
+						pill: 0,
+						effect: 'slide and fade',
+						opacity: 1,
+						hideDelay: 500,
+						centered: 0,
+						tweakInitial: {'x': -2, 'y': 0},
+        				tweakSubsequent: {'x': 0, 'y': -14},
+						menuFx: {duration: 200, transition: Fx.Transitions.Sine.easeOut},
+						pillFx: {duration: 400, transition: Fx.Transitions.Back.easeOut}
+					});
+	            });
+  </script>
+<!-- <script type="text/javascript" src="/sso/javascripts/langsync.js"></script> -->
+<!-- <script src="/templates/rt_quantive_j15/js/ossf.js"></script> -->
+<script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-4136519-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
+</head>
+	<body  class="backgroundlevel-low backgroundstyle-style8 bodylevel-med bodystyle-light cssstyle-style1 logostyle-dark font-family-helvetica font-size-is-default menu-type-fusionmenu col12 ">
+		<div id="rt-main-background">
+			<div class="rt-container">
+																<div id="rt-header">
+					<div class="rt-grid-7 rt-alpha">
+    			<div class="rt-block">
+    	    	<a href="index.html" id="rt-logo"></a>
+    		</div>
+	    
+</div>
+<div class="rt-grid-5 rt-omega">
+                    <div class="square9">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<div class="ofssologin_square9"><a href="index.html">Login</a>&nbsp;&nbsp|&nbsp;&nbsp;<span><a href="tw/component/content/219%3Ftask=view.html" ><span lang="tw" xml:lang="tw">繁體中文</span></a></li></ul></span><!--Joom!fish V2.0.4 (Lightning)-->
+<!-- &copy; 2003-2009 Think Network, released under the GPL. -->
+<!-- More information: at http://www.joomfish.net -->
+<div class="ofssologin_search_square9">
+  <form id="of_search" action="https://www.openfoundry.org/of/openfoundry/search" method="get" onsubmit="of_search(); return false;">
+    <select id="of_search_type">
+      <option value="Projects"> Projects </option>
+      <option value="Content"> Content </option>
+      <option value="People"> People </option>
+    </select>
+    <input id="query" name="query" id="mod_search_searchword" maxlength="50" alt="search" class="inputbox" type="text" size="28" value="search..."  onblur="if(this.value=='') this.value='search...';" onfocus="if(this.value=='search...') this.value='';" />
+    <input type="hidden" name="commit" value="search" />
+  </form>
+</div></div>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		
+</div>
+					<div class="clear"></div>
+				</div>
+																<div id="rt-navigation"><div id="rt-navigation2"><div id="rt-navigation3">
+					
+<div class="nopill">
+	<ul class="menutop level1 " >
+						<li class="item1 root" >
+					<a class="orphan item bullet" href="index.html"  >
+				<span>
+			    				Home				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item32 root" >
+					<a class="orphan item bullet" href="archived.html"  >
+				<span>
+			    				Projects				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item186 root" >
+					<a class="orphan item bullet" href="en/community.html"  >
+				<span>
+			    				Who&#039;s Who				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item4 root" >
+					<a class="orphan item bullet" href="en/news.html"  >
+				<span>
+			    				News				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item5 root" >
+					<a class="orphan item bullet" href="en/law-and-licensing.html"  >
+				<span>
+			    				Law &amp; Licensing				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item3 root" >
+					<a class="orphan item bullet" href="en/activities.html"  >
+				<span>
+			    				Activities				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item2 root" >
+					<a class="orphan item bullet" href="en/resourcecatalog.html"  >
+				<span>
+			    				Resource Catalog				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item45 root" >
+					<a class="orphan item bullet" href="en/about.html"  >
+				<span>
+			    				About				   
+				</span>
+			</a>
+			
+			
+	</li>	
+				</ul>
+</div>
+
+				    <div class="clear"></div>
+				</div></div></div>
+								<div class="rt-surround"><div class="rt-surround2"><div class="rt-surround3">
+										<div id="rt-showcase-section">
+												<div id="rt-showcase">
+							<div class="rt-grid-12 rt-alpha rt-omega">
+    		<div class="clear"></div>
+		
+		
+                <div class="close-note">
+                    <div class="rt-block">
+               					<div class="module-content">
+                	<div style="font-size:medium; background-image:linear-gradient(120deg,#159957,#4298b2);color:white;padding:20px;margin:-10px -18px;">感謝您對「自由軟體鑄造場」的支持與愛護，十多年來「自由軟體鑄造場」受中央研究院支持，並在資訊科學研究所以及資訊科技創新研究中心執行，現已完成階段性的任務。 本網站預計持續維運至 2021年底，網站內容基本上不會再更動。<br />也紀念我們永遠的朋友 李士傑先生（Shih-Chieh Ilya Li）。</div>				</div>
+            </div>
+                </div>
+		
+</div>
+							<div class="clear"></div>
+						</div>
+																	</div>
+															<div id="rt-main-surround">
+												<div id="rt-breadcrumbs">
+								<div class="rt-breadcrumb-surround">
+		<a href="index.html" id="breadcrumbs-home"></a>
+		<span class="breadcrumbs pathway">
+<span class="no-link">Previous Issue</span></span>
+	</div>
+	
+							<div class="clear"></div>
+						</div>
+																							              <div id="rt-main" class="sa3-mb9">
+                <div class="rt-main-inner">
+                    <div class="rt-grid-9 rt-push-3">
+                                                <div class="rt-block">
+                            							<div class="square1">
+							<div class="rt-module-surround">
+								<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+								<div class="rt-module-inner">
+		                            <div id="rt-mainbody">
+		                                
+<div class="rt-joomla ">
+	<div class="rt-article">
+		
+				<div class="rt-headline"><h1 class="rt-article-title">醫療資訊系統的新基石—治療成效開放式架（OIO）構建置經驗</h1>		</div>
+		<div class="clear"></div>
+		
+		
+		
+				<div class="rt-articleinfo">
+						<div class="rt-article-icons">
+								<a href="https://www.openfoundry.org/en/component/content/219-oio?tmpl=component&amp;print=1&amp;page=" title="Print" onclick="window.open(this.href,'win2','status=no,toolbar=no,scrollbars=yes,titlebar=no,menubar=no,resizable=yes,width=640,height=480,directories=no,location=no'); return false;" rel="nofollow"><span class="icon print"></span></a>																</div>
+			
+			<span class="rt-date-posted">
+						 Created at			Wednesday, 16 February 2005 08:00						&nbsp;&nbsp;&nbsp;&nbsp;						Last Updated on Wednesday, 12 January 2011 19:11						</span>
+
+						<span class="rt-author">
+				Written by 何伯容			</span>
+				
+					</div>
+		
+		
+		長期以來，醫療資訊系統面臨的挑戰，主要來自下列三個面向：一、 如何讓資訊系統提供令人滿意的服務功能，以取代將醫療記錄登載在 紙張上的傳統方式。二、資訊系統的需求經常會改變，如何快速因應 系統的改變需求。三、如何與其他醫療團隊夥伴，共同分享資料與工 具。難以避免地，醫療資訊系統的建置維護需要花費成本及投入資源， 但傳統的專屬系統開發模式（proprietary development model)，並 沒有帶來令人滿意的成本效益，致使出資單位、醫療專家、系統開發 商、以及使用者之間，各方處於長期角力的不平衡狀態，一旦出現新 的需求，系統開發商所能提供的改進方案往往是相當有限。那麼，是 否有其他的發展模式能夠提供更好的成本效益？在美國加州大學洛杉 磯分校（UCLA）醫學中心，一項稱為「治療成效開放式架構」（OIO,  Open Infrastructure for Outcomes）的計畫，已構築起未來醫療資 訊系統的新基石。
+
+◎ 資訊分享創造多贏價值
+<p>治療成效的統計分析，是醫療研究中的關鍵項目，其應用的領域包括 醫療品質維護、醫療成效評估、糾紛調解規劃，以及醫療行政管理。 病患若能取得自身的醫療資訊，也有助於他們了解病症及建立理性預 期，並在診療過程中更能主動配合。僅管各界對於獲得醫療資訊的需 求日益昇高，但是有效的工具與服務仍然普遍缺乏，導致在一般的診 療環境中，病歷資料的收集是件耗時耗力的工作。另一方面，檢測設 備的普遍安裝，也是建構醫療保健服務研究體系的重要環節，長期而 有系統的觀測資料收集，對於病程與療程的判斷，是不可或缺的項目。 上述的描述，在在說明醫療保健研究的建置工程，所耗費的資源是極 其龐大。</p>
+<p>從1998年開始，UCLA 醫學中心開始以「開放式架構」（Open Infra- structure）來建置資訊系統，其計畫主要目的，就是要讓治療成效 的資訊，能在一個共通的平台架構上進行資源分享，而促成此一目標 的方式，就是提供使用者一個盡可能低成本的平台系統，並鼓勵使用 者社群在平台上開發及分享各種管理工具，包括有表格、資料分析方 式、教育訓練、研究流程設計等。</p>
+<p>值得注意的是，開放式架構計畫的主要目的，並不是用來要求臨床工 作者與醫療研究中心分享病歷資料，而是提供一個分享管理工具的機 制，讓使用者能夠利用這些管理工具，進行資料的收集與分析，並和 特定的診療研究人員進行溝通，而透過系統安全的機制，在過程當中 並不會讓其他人得知資料內容。不過，如果有人想要進行管理工具或 資料的進一步加值利用，僅需額外投入相當小的成本。</p>
+<p>◎ 開放源碼化理想為方案</p>
+<p>開放式架構計畫的設計極具彈性，除了目前所專注的治療成效資訊統 計之外，其系統概念也可以用來管理客戶資訊、進銷存資訊、會計資 訊等。整個系統開發環境，是針對使用者而設計，而非程式人員，並 且以網頁應用程式來實作，力求操作的便利性，目的之一是讓使用者 能夠動手創造出自己所需的表格資料。另一方面，設計上也面對來自 於法律與技術層面的挑戰，例如取得病患的同意及對系統的信任感， 促使這套系統在實作時，必須能夠提供高度的修改彈性與安全性。</p>
+<p>為了治療成效開放式架構的實作，以一套稱為Zope的開放源碼伺服器 軟體當作基礎，開發團隊分別針對表格、工作流程、報表等資源，提 供管理工具，並進行版本控制的管理，確保系統更新的過程並不會導 致系統毀損。Zope 系統是一套網頁應用程式伺服器（Web Application  Server）軟體，除了內建有物件導向式資料庫之外，也允許使用者搭 配 Oracle、MySQL、PostgreSQL 等關連式資料庫，由於 Zope 已提 供不少基本服務，因此 OIO 的開發人員可以多關注心力在資料維護 與流程改善上。</p>
+<p>系統的開發過程可分成三個階段：第一階段是提供後設資料（metadata） 的產生工具，利用網頁表格編輯器（web-forms editor）建立出網頁 表格及其資料的類型，第二階段則是利用網頁表格之後設資料，建置 報表工具分析網頁表格收集之資料，第三階段則是提供工作流程 （workflows）及預定日程表（schedules）的產生工具。</p>
+<p>開發團隊利用線上平台 SourceForge.net 進行專案管理工作，將完 整的系統文件、使用手冊、安裝檔案，以及系統原始碼，按部就班地 整理並提供下載。將一個稱為 LiveOIO 的光碟檔案燒錄成開機光碟 後，使用者就可以輕鬆體驗OIO系統，方便更多人來評估及推廣這套系 統。在開發成果方面，有一個<a href="https://www.txoutcome.org/">公開服務的網站</a>，提供線上示範及最新發展資訊。</p>
+<p>◎ 應用現況及未來發展</p>
+<p>由於 OIO 在設計上，包含低成本、高效益、使用者導向、架構具有 彈性等特色，並以開放源碼開發模式來鼓勵使用者測試及提供回饋意 見，目前的應用效果持續擴大中。根據 <a href="https://www.openfoundry.org/SourceForge.net">SourceForge.net</a> 的專案統 計資訊來看，已經有超過2000人次的下載試用記錄（分別包括 Live OIO 光碟映像檔及 OIO 獨立檔案的下載數）。應用OIO系統的單位包 括有，美國境內的大學（例如賓州大學、加州大學洛杉磯分校、西北 大學）及各地的醫療研究單位（例如俄羅斯、斯里蘭卡、菲律賓、土 耳其等地），應用的場合涵蓋電子病歷、醫療記錄、診療研究及品質 改善等。</p>
+<p>目前 OIO 已具備多項功能特色，而且不斷地改善當中，包括網頁式 表格能夠以 XML 格式進行交換，內建資料分析工具以進行自動統計， 例如結合 R 統計語言，多國語文及在地化編輯器（Local Text  editor）支援，以及圖表產生工具，例如 SVG（Scalable Vector  Graphics）的支援等。</p>
+<p>在OIO開放架構下，允許多方的領域專家，包括醫生、醫務管理人員、 研究人員等，能夠快速將他們的領域知識直接轉換成資訊模型，進而 成為可執行的資料庫應用程式，整個過程中，讓應用程式的維護成本 盡可能降低，並讓應用程式元件模組的重覆使用率達到最高。另一方 面，藉由支援系統之間標準化的後設資料（meta data）交換，能讓上 述的領域專家有效地獲得即時醫療資訊。OIO 的設計架構與應用實例 不但讓醫療與研究人員享受到利益，在結合工作流程（workflow）及 商業邏輯（business logic）之後，其更大的發展潛力及商業機會， 正等待更多人去發掘，舉例來說，<a href="https://www.erp5.org/">ERP5</a>就 是類似的企業級應用，值得參考。</p>
+<p>（編按：何伯容為加州聖地牙哥大學醫學博士、加州爾灣大學教育技 術中心軟體研究、加州爾灣大學腦圖像研究中心博士後研究。專長為 網際網路軟體工程、精神病治療成效、語義互換系統、資料庫安全等。 曾擔任過加州爾灣大學助理教授，現任加州洛杉磯大學副教授，OIO  研究計劃創建人。）</p>
+			<!-- Show relate article -->
+				<!-- end -->
+		<div class="article_note">
+		<!-- Add tags use metakey, and show OSSF Newsletter tag: OSSFNL+NUM-->
+		<br><br> <hr style='border: 1px dashed #D2DADB;'><b>OSSF Newsletter&nbsp;:</b>&nbsp;<a href='previous-issue%3Ftask=view&amp;id=192.html'>第 26 期 開放源碼資訊家電(IA)(上)</a><br>				<!-- End -->
+					<br>
+					<b>Category: </b><a href="en/foss-forum.html">				FOSS Forum					</a>				</div>
+			 <!-- AddThis Button BEGIN ID 3001 is the front page article -->
+     			<br><br>
+       <div class="addthis_toolbox addthis_default_style addthis_32x32_style">
+       <a class="addthis_button_preferred_1"></a>
+       <a class="addthis_button_preferred_2"></a>
+       <a class="addthis_button_preferred_3"></a>
+       <a class="addthis_button_preferred_4"></a>
+       <a class="addthis_button_compact"></a>
+       <a class="addthis_counter addthis_bubble_style"></a>
+       </div>
+       <script type="text/javascript">var addthis_config = {"data_track_clickback":true};</script>
+       <script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js#pubid=openfoundry"></script>
+       <!-- AddThis Button END -->
+     <br>
+		<div class="totop" ><a class="rt-totop" href="index.php%3Foption=com_content&amp;task=view&amp;id=219&amp;Itemid=56.html#" style="outline: medium none;">↑ Top</a></div>
+            <!-- AddThis Button END -->
+
+			</div>
+</div>
+
+		                            </div>
+									<div class="clear"></div>
+								</div>
+								<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+							</div>
+							</div>
+                                                    </div>
+                                            </div>
+                                <div class="rt-grid-3 rt-pull-9">
+                <div id="rt-sidebar-a">
+                                    <div class="square4">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<ul class="menu"><li id="current" class="active item56"><a href="en/previous-issue.html"><span>Previous Issue</span></a></li><li class="item55"><a href="en/about-newsletter.html"><span>About Newsletter</span></a></li></ul>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<ul class="menu"><li class="item115"><a href="en/foss-news.html"><span>FOSS News</span></a></li><li class="item141"><a href="en/case-job.html"><span>Case and Jobs</span></a></li></ul>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+        	                <div class="square1">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-title"><h2 class="title">Special</h2></div>
+						<div class="clear"></div>
+		                						<div class="module-content">
+		                	<ul class="menu"><li class="item37"><a href="en/tech-column.html"><span>Tech Column</span></a></li><li class="item40"><a href="en/foss-programs.html"><span>FOSS Programs</span></a></li><li class="item35"><a href="en/legal-column.html"><span>Legal Column</span></a></li><li class="item154"><a href="en/foss-forum.html"><span>FOSS Forum</span></a></li><li class="item162"><a href="en/enterprise-application.html"><span>Enterprise Application</span></a></li><li class="item44"><a href="en/foss-projects.html"><span>FOSS Projects</span></a></li></ul>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		                <div class="square1">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<p style="text-align: center;"><a href="news%3Fformat=feed&amp;type=rss" target="_black"><img src="images/M_images/news-rss-feed.png" border="0" /></a><br /><a href="https://www.openfoundry.org/rss-feed/Newsletter" target="_black"><img src="images/M_images/newsletter-rss-feed.png" border="0" /></a></p>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		
+                </div>
+            </div>
+
+                    <div class="clear"></div>
+                </div>
+            </div>
+																													</div>
+										<div id="rt-copyright">
+						<div class="rt-grid-12 rt-alpha rt-omega">
+                        <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<span class="nowrap">Open Source Software Foundry</span><span class="nowrap">‧</span><span class="nowrap"> </span><span class="nowrap">Best  Viewed with IE7.0 or Firefox2.0 above, 1024x768 Resolution. </span><strong>E-Mail</strong>：<a href="mailto:contact@openfoundry.org">contact@openfoundry.org</a> <br /><strong>Address</strong>：No.128, Sec.2, Academia Rd., Institute of Information Science, Academia Sinica, Nangang District, Taipei City 11529, Taiwan (R.O.C). <br /><a href="en/privacy-policy.html">Privacy Policy</a>. <a href="en/terms-of-use.html">Terms-of-use</a> <span style="position: relative; top: 8px; margin-top: -8px;"> <a href="about/8101.html"><img src="images/M_images/rss-feed-all.png" border="0" /></a></span>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+        	
+</div>
+						<div class="clear"></div>
+					</div>
+					<div class="rt-footer-bottom-wrap"><div class="rt-footer-bottom"><div class="rt-footer-bottom2"><div class="rt-footer-bottom3"></div></div></div></div>
+									</div></div></div>
+				<div class="rt-surround-bottom"><div class="rt-surround-bottom2"><div class="rt-surround-bottom3"></div></div></div>
+							</div>
+		</div>
+		<!--
+		<script id="aptureScript">
+						(function (){var a=document.createElement("script");a.defer="true";a.src="http://www.apture.com/js/apture.js?siteToken=vsJttrn";document.getElementsByTagName("head")[0].appendChild(a);})();
+     </script>
+-->
+
+<!-- Piwik -->
+<!-- 			<script type="text/javascript">
+			  var _paq = _paq || [];
+		  _paq.push(["trackPageView"]);
+		  _paq.push(["enableLinkTracking"]);
+
+		    (function() {
+			        var u=(("https:" == document.location.protocol) ? "https" : "https") + "://www.openfoundry.org/piwik/";
+				    _paq.push(["setTrackerUrl", u+"piwik.php"]);
+				    _paq.push(["setSiteId", "1"]);
+				        var d=document, g=d.createElement("script"), s=d.getElementsByTagName("script")[0]; g.type="text/javascript";
+				        g.defer=true; g.async=true; g.src=u+"piwik.js"; s.parentNode.insertBefore(g,s);
+					  })();
+		  </script> -->
+<!-- End Piwik Code -->
+	</body>
+</html>

@@ -1,0 +1,516 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-gb" lang="en-gb" >
+<head>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<link rel="shortcut icon" href="../../images/favicon.ico" />
+	  <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+  <meta name="robots" content="index, follow" />
+  <meta name="keywords" content="FreeNAS, nas, network-attached storage, network config,OSSFNL759" />
+  <meta name="title" content="利用 FreeNAS 打造儲存設備 (6) 網路設定篇─基礎設定" />
+  <meta name="description" content="前言 本文主題為 FreeNAS 基礎網路設定。教學涵蓋主機名稱、IP 位址、網路遮罩、預設閘道、網域名稱解析伺服器等，並且分別以 Console 及 GUI 圖形介面進行說明。 實作環境: 實體伺服器：IBM System x3250 (MT 4365) 作業系統：FreeNAS-8.0.1-RC1 (64位元版本) 網路卡：內建 Broadcom 5721／加裝 Intel Pro 1000" />
+  <meta name="generator" content="" />
+  <title>利用 FreeNAS 打造儲存設備 (6) 網路設定篇─基礎設定 - OpenFoundry</title>
+  <link href="../../favicon.ico" rel="shortcut icon" type="image/x-icon" />
+  <link rel="stylesheet" href="../../components/com_gantry/css/gantry.css" type="text/css" />
+  <link rel="stylesheet" href="../../components/com_gantry/css/grid-12.css" type="text/css" />
+  <link rel="stylesheet" href="../../components/com_gantry/css/joomla.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/joomla.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/style1.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/light-body.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/demo-styles.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/template.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/typography.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/fusionmenu.css" type="text/css" />
+  <style type="text/css">
+    <!--
+#rt-main-surround ul.menu li.active > a, #rt-main-surround ul.menu li.active > .separator, #rt-main-surround ul.menu li.active > .item, #rt-main-surround .square4 ul.menu li:hover > a, #rt-main-surround .square4 ul.menu li:hover > .item, #rt-main-surround .square4 ul.menu li:hover > .separator, .roktabs-links ul li.active span {color:#0088B5;}
+a, #rt-main-surround ul.menu a:hover, #rt-main-surround ul.menu .separator:hover, #rt-main-surround ul.menu .item:hover {color:#0088B5;}
+    -->
+  </style>
+  <script type="text/javascript" src="../../components/com_jcomments/js/jcomments-v2.1.js%3Fv=2"></script>
+  <script type="text/javascript" src="../../components/com_jcomments/libraries/joomlatune/ajax.js"></script>
+  <script type="text/javascript" src="../../media/system/js/mootools.js"></script>
+  <script type="text/javascript" src="../../media/system/js/caption.js"></script>
+  <script type="text/javascript" src="../../components/com_gantry/js/gantry-buildspans.js"></script>
+  <script type="text/javascript" src="../../components/com_gantry/js/gantry-inputs.js"></script>
+  <script type="text/javascript" src="../../templates/rt_quantive_j15/js/jquery.cookie.js"></script>
+  <script type="text/javascript" src="../../modules/mod_roknavmenu/themes/fusion/js/fusion.js"></script>
+  <script type="text/javascript" src="../../modules/mod_ofssologin/js/ofssologin.js"></script>
+  <script type="text/javascript">
+
+			window.addEvent('domready', function() {
+				var modules = ['rt-block'];
+				var header = ['h3','h2','h1'];
+				GantryBuildSpans(modules, header);
+			});
+		InputsExclusion.push('.content_vote','#rt-popup')
+		        window.addEvent('load', function() {
+					new Fusion('ul.menutop', {
+						pill: 0,
+						effect: 'slide and fade',
+						opacity: 1,
+						hideDelay: 500,
+						centered: 0,
+						tweakInitial: {'x': -2, 'y': 0},
+        				tweakSubsequent: {'x': 0, 'y': -14},
+						menuFx: {duration: 200, transition: Fx.Transitions.Sine.easeOut},
+						pillFx: {duration: 400, transition: Fx.Transitions.Back.easeOut}
+					});
+	            });
+  </script>
+<!-- <script type="text/javascript" src="/sso/javascripts/langsync.js"></script> -->
+<!-- <script src="/templates/rt_quantive_j15/js/ossf.js"></script> -->
+<script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-4136519-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
+</head>
+	<body  class="backgroundlevel-low backgroundstyle-style8 bodylevel-med bodystyle-light cssstyle-style1 logostyle-dark font-family-helvetica font-size-is-default menu-type-fusionmenu col12 ">
+		<div id="rt-main-background">
+			<div class="rt-container">
+																<div id="rt-header">
+					<div class="rt-grid-7 rt-alpha">
+    			<div class="rt-block">
+    	    	<a href="../../index.html" id="rt-logo"></a>
+    		</div>
+	    
+</div>
+<div class="rt-grid-5 rt-omega">
+                    <div class="square9">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<div class="ofssologin_square9"><a href="../../index.html">Login</a>&nbsp;&nbsp|&nbsp;&nbsp;<span><a href="../../tw/tech-column/8480-freenas-6-net-config-basic-setting.html" ><span lang="tw" xml:lang="tw">繁體中文</span></a></li></ul></span><!--Joom!fish V2.0.4 (Lightning)-->
+<!-- &copy; 2003-2009 Think Network, released under the GPL. -->
+<!-- More information: at http://www.joomfish.net -->
+<div class="ofssologin_search_square9">
+  <form id="of_search" action="https://www.openfoundry.org/of/openfoundry/search" method="get" onsubmit="of_search(); return false;">
+    <select id="of_search_type">
+      <option value="Projects"> Projects </option>
+      <option value="Content"> Content </option>
+      <option value="People"> People </option>
+    </select>
+    <input id="query" name="query" id="mod_search_searchword" maxlength="50" alt="search" class="inputbox" type="text" size="28" value="search..."  onblur="if(this.value=='') this.value='search...';" onfocus="if(this.value=='search...') this.value='';" />
+    <input type="hidden" name="commit" value="search" />
+  </form>
+</div></div>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		
+</div>
+					<div class="clear"></div>
+				</div>
+																<div id="rt-navigation"><div id="rt-navigation2"><div id="rt-navigation3">
+					
+<div class="nopill">
+	<ul class="menutop level1 " >
+						<li class="item1 root" >
+					<a class="orphan item bullet" href="../../index.html"  >
+				<span>
+			    				Home				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item32 root" >
+					<a class="orphan item bullet" href="../../archived.html"  >
+				<span>
+			    				Projects				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item186 root" >
+					<a class="orphan item bullet" href="../community.html"  >
+				<span>
+			    				Who&#039;s Who				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item4 root" >
+					<a class="orphan item bullet" href="../news.html"  >
+				<span>
+			    				News				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item5 root" >
+					<a class="orphan item bullet" href="../law-and-licensing.html"  >
+				<span>
+			    				Law &amp; Licensing				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item3 root" >
+					<a class="orphan item bullet" href="../activities.html"  >
+				<span>
+			    				Activities				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item2 root" >
+					<a class="orphan item bullet" href="../resourcecatalog.html"  >
+				<span>
+			    				Resource Catalog				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item45 root" >
+					<a class="orphan item bullet" href="../about.html"  >
+				<span>
+			    				About				   
+				</span>
+			</a>
+			
+			
+	</li>	
+				</ul>
+</div>
+
+				    <div class="clear"></div>
+				</div></div></div>
+								<div class="rt-surround"><div class="rt-surround2"><div class="rt-surround3">
+										<div id="rt-showcase-section">
+												<div id="rt-showcase">
+							<div class="rt-grid-12 rt-alpha rt-omega">
+    		<div class="clear"></div>
+		
+		
+                <div class="close-note">
+                    <div class="rt-block">
+               					<div class="module-content">
+                	<div style="font-size:medium; background-image:linear-gradient(120deg,#159957,#4298b2);color:white;padding:20px;margin:-10px -18px;">感謝您對「自由軟體鑄造場」的支持與愛護，十多年來「自由軟體鑄造場」受中央研究院支持，並在資訊科學研究所以及資訊科技創新研究中心執行，現已完成階段性的任務。 本網站預計持續維運至 2021年底，網站內容基本上不會再更動。<br />也紀念我們永遠的朋友 李士傑先生（Shih-Chieh Ilya Li）。</div>				</div>
+            </div>
+                </div>
+		
+</div>
+							<div class="clear"></div>
+						</div>
+																	</div>
+															<div id="rt-main-surround">
+												<div id="rt-breadcrumbs">
+								<div class="rt-breadcrumb-surround">
+		<a href="../../index.html" id="breadcrumbs-home"></a>
+		<span class="breadcrumbs pathway">
+<a href="../tech-column.html" class="pathway">Tech Column</a> <img src="../../templates/rt_quantive_j15/images/arrow.png" alt=""  /> <span class="no-link">利用 FreeNAS 打造儲存設備 (6) 網路設定篇─基礎設定</span></span>
+	</div>
+	
+							<div class="clear"></div>
+						</div>
+																							              <div id="rt-main" class="sa3-mb9">
+                <div class="rt-main-inner">
+                    <div class="rt-grid-9 rt-push-3">
+                                                <div class="rt-block">
+                            							<div class="square1">
+							<div class="rt-module-surround">
+								<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+								<div class="rt-module-inner">
+		                            <div id="rt-mainbody">
+		                                
+<div class="rt-joomla ">
+	<div class="rt-article">
+		
+				<div class="rt-headline"><h1 class="rt-article-title">利用 FreeNAS 打造儲存設備 (6) 網路設定篇─基礎設定</h1>		</div>
+		<div class="clear"></div>
+		
+		
+		
+				<div class="rt-articleinfo">
+						<div class="rt-article-icons">
+								<a href="8480-freenas-6-net-config-basic-setting%3Ftmpl=component&amp;print=1&amp;layout=default&amp;page=.html" title="Print" onclick="window.open(this.href,'win2','status=no,toolbar=no,scrollbars=yes,titlebar=no,menubar=no,resizable=yes,width=640,height=480,directories=no,location=no'); return false;" rel="nofollow"><span class="icon print"></span></a>																</div>
+			
+			<span class="rt-date-posted">
+						 Created at			Friday, 14 October 2011 11:14						&nbsp;&nbsp;&nbsp;&nbsp;						Last Updated on Friday, 03 February 2012 14:51						</span>
+
+						<span class="rt-author">
+				Written by Weithenn (https://www.weithenn.org/)			</span>
+				
+					</div>
+		
+		
+		<h3>前言</h3>
+<p>本文主題為 FreeNAS 基礎網路設定。教學涵蓋主機名稱、IP 位址、網路遮罩、預設閘道、網域名稱解析伺服器等，並且分別以 Console 及 GUI 圖形介面進行說明。</p>
+<p>實作環境:</p>
+<ul>
+<li>實體伺服器：IBM System x3250 (MT 4365)           
+<ul>
+<li>作業系統：FreeNAS-8.0.1-RC1 (64位元版本)</li>
+<li>網路卡：內建 Broadcom 5721／加裝 Intel Pro 1000 PT Dual Port Server Adapter</li>
+</ul>
+</li>
+<li>區域網路 IP 網段：10.10.25.0 / 255.255.255.0           
+<ul>
+<li>預設閘道：10.10.25.254</li>
+<li>DHCP 伺服器：10.10.25.198</li>
+<li>網域範圍：10.10.25.1 ~ 10.10.25.100 </li>
+</ul>
+</li>
+</ul>
+
+<h3>Console 設定篇</h3>
+<h4>Console：DHCP 伺服器環境下的網路設定</h4>
+<p>FreeNAS 主機開機後預設會自動啟用 DHCP Client 服務，尋找區域網路中的 DHCP 伺服器並試圖取得自動配置的 IP 資訊。</p>
+<p>如下圖所示，FreeNAS 開機流程至網路卡時（如本篇網路卡為 em0），因為順利啟用 DHCP Client 服務且網路連線正常，所以在畫面中可以找到主機與 DHCP 伺服器的溝通，如 Discover、DHCP Offer、DHCP Request、DHCP Ack 的四個流程。</p>
+<p><a href="../../images/111018/FreeNAS/freenas_06_01.jpg" target="_blank"><img src="../../images/111018/FreeNAS/freenas_06_01.jpg" border="0" alt="圖1：開機過程中發出 DHCP Discover 封包" title="開機過程中發出 DHCP Discover 封包" width="450" height="319" /></a></p>
+<p>▲ 圖1：開機過程中發出 DHCP Discover 封包</p>
+<p>當順利取得 IP 位址（如本篇的環境為 10.10.25.36），您可以使用瀏覽器開啟 https://10.10.25.36 以登入 FreeNAS 圖形化管理操作介面。如下圖</p>
+<p><a href="../../images/111018/FreeNAS/freenas_06_02.jpg" target="_blank"><img src="../../images/111018/FreeNAS/freenas_06_02.jpg" border="0" alt="圖2：順利租用 DHCP 伺服器發出的 IP 資訊" title="順利租用 DHCP 伺服器發出的 IP 資訊" width="450" height="303" /></a></p>
+<p>▲ 圖2：順利租用 DHCP 伺服器發出的 IP 資訊</p>
+<h4>Console：自行指定網路設定</h4>
+<p>若區域網路中沒有配置 DHCP 伺服器，也可以透過 Console 介面來設定 IP 位址、預設閘道、網域名稱解析伺服器。</p>
+<p>您可以參考隨後的圖例，以進行接下來的設定步驟：</p>
+<ol style="list-style-type: decimal;">
+<li>輸入「1」進入「Configure Network Interfaces」：設定網卡 IP 位址<ol style="list-style-type: lower-alpha;">
+<li>Select an interface (q to quit)：系統會顯示於開機流程中偵測到的網路卡清單，請選擇要設定固定 IP 位址的實體網路卡編號，此例輸入「1」選擇「em0」網路卡。</li>
+<li>Delete existing config? (y/n)。是否要刪除已存在的 IP 位址設定內容，此例輸入「n」表示 No。</li>
+<li>Configure Interface for DHCP? (y/n)。是否要啟用此網路卡的 DHCP Client 功能，此例輸入「n」表示 No。</li>
+<li>Configure IPv4? (y/n)。是否要設定此網路卡的 IPv4 位址資訊，此例輸入「y」表示 Yes。</li>
+<li>Interface name：您可以輸入此網路卡的別名，若直接按下 Enter 則套用網路卡編號，此例輸入「lan」作為此網路卡的別名。</li>
+<li>IPv4 Address：請輸入 IPv4 位址格式，其中網路遮罩設定支援 Subnet mask 表示方式「 255.255.255.0」 以及「CIDR 表示方式／24」，此例輸入「10.10.25.115/24」設定固定 IP 位址。</li>
+<li>Configure IPv6?(y/n)。是否要設定此網路卡的 IPv6 位址資訊，此例輸入「n」表示 No。</li>
+<li>Restarting network：ok。設定完成後 FreeNAS 會重新啟動網路服務，並回到 Console 畫面</li>
+</ol></li>
+<li>輸入「4」進入「Configure Default Route」：設定主機預設閘道 IP 位址<ol style="list-style-type: lower-alpha;">
+<li>Configure IPv4 Default Route? (y/n)。是否設定 IPv4 預設閘道資訊，此例輸入「y」表示 Yes。</li>
+<li>IPv4 Default Route：請輸入區域網路中預設閘道的 IP 位址，此例輸入「10.10.25.254」。</li>
+<li>Configure Ipv6 Default Route? (y/n)。是否設定 Ipv6 預設閘道資訊，此例輸入「n」表示 No。</li>
+<li>Restarting routing：ok。設定完成後 FreeNAS 會重新啟動路由服務，並回到 Console 畫面</li>
+</ol></li>
+<li>輸入「6」進入「Configure DNS」：設定主機使用網域名稱解析伺服器 IP 位址<ol style="list-style-type: lower-alpha;">
+<li>DNS Domain [local]：請輸入主機的網域名稱，如本篇使用「weithenn.org」。</li>
+<li>DNS Nameserver 1：請輸入主機使用的第一台 DNS 網域名稱解析伺服器 IP 位址，本篇為「8.8.8.8」。</li>
+<li>DNS Nameserver 2：請輸入主機使用的第二台 DNS 網域名稱解析伺服器 IP 位址，本篇為「168.95.192.1」。</li>
+<li>DNS Nameserver 3：請輸入主機使用的第三台 DNS 網域名稱解析伺服器 IP 位址，本篇為「168.95.1.1」。</li>
+<li>Reloading network config: ok。設定完成後 FreeNAS 會重新載入網路設定，並回到 Console 畫面。</li>
+</ol></li>
+<li>輸入「10」進入「Reboot」選項，準備重新啟動主機<ol style="list-style-type: lower-alpha;">
+<li>Confirm reboot (y/n)：是否確定要將主機重新啟動，此例輸入「y」表示 Yes。</li>
+</ol></li>
+</ol>
+<p><a href="../../images/111018/FreeNAS/freenas_06_03.jpg" target="_blank"><img src="../../images/111018/FreeNAS/freenas_06_03.jpg" border="0" alt="圖3：" title="設定 em0 網卡固定 IP 位址" width="450" height="625" /></a></p>
+<p>▲ 圖3：設定 em0 網卡固定 IP 位址</p>
+<p><a href="../../images/111018/FreeNAS/freenas_06_04.jpg" target="_blank"><img src="../../images/111018/FreeNAS/freenas_06_04.jpg" border="0" alt="圖4：" title="設定主機預設閘道 IP 位址" width="450" height="401" /></a></p>
+<p>▲ 圖4：設定主機預設閘道 IP 位址</p>
+<p><a href="../../images/111018/FreeNAS/freenas_06_05.jpg" target="_blank"><img src="../../images/111018/FreeNAS/freenas_06_05.jpg" border="0" alt="圖5：" title="設定主機使用網域名稱解析伺服器 IP 位址" width="450" height="427" /></a></p>
+<p>▲ 圖5：設定主機使用網域名稱解析伺服器 IP 位址</p>
+<p><a href="../../images/111018/FreeNAS/freenas_06_06.jpg" target="_blank"><img src="../../images/111018/FreeNAS/freenas_06_06.jpg" border="0" alt="圖6：" title="重新啟動 FreeNAS 主機" width="450" height="348" /></a></p>
+<p>▲ 圖6：重新啟動 FreeNAS 主機</p>
+<h3>GUI 設定篇</h3>
+<h4>GUI：DHCP 伺服器環境下的網路設定</h4>
+<p>您需要先由 Console 介面中設定 DHCP 自動取得或設定固定 IP 位址，才能連結至 GUI 圖形介面，若您想要在圖形介面中設定網卡取得 DHCP 伺服器分配資訊請依如下步驟：</p>
+<ol style="list-style-type: decimal;">
+<li>區域網路中已有架設 DHCP 伺服器，主機由 em0 網路卡取得 IP 位址 10.10.25.36。</li>
+<li>開啟瀏覽器後於網址列輸入「https://10.10.25.36」，自動登入 FreeNAS GUI 圖形介面。</li>
+<li>切換至「Network &gt; Interfaces」項目後按下「Add Interface」鈕，於 Interface Name 欄位填入網路卡別名，此例為「lan」（此為必填欄位不能忽略！），接著勾選「DHCP」項目後按下「OK」鈕即可。</li>
+<li>您可切換至「Network &gt; Network Summary」查看由 DHCP 伺服器所得到的 IP 位址、預設閘道、網域名稱解析主機資訊。</li>
+</ol>
+<p><a href="../../images/111018/FreeNAS/freenas_06_07.jpg" target="_blank"><img src="../../images/111018/FreeNAS/freenas_06_07.jpg" border="0" alt="圖7：" title="GUI 圖形介面設定 em0 網卡啟用 DHCP 功能" width="450" height="357" /></a></p>
+<p>▲ 圖7：GUI 圖形介面設定 em0 網卡啟用 DHCP 功能</p>
+<p><a href="../../images/111018/FreeNAS/freenas_06_08.jpg" target="_blank"><img src="../../images/111018/FreeNAS/freenas_06_08.jpg" border="0" alt="圖8：" title="em0 網卡啟用 DHCP 功能成功" width="450" height="358" /></a></p>
+<p>▲ 圖8：em0 網卡啟用 DHCP 功能成功</p>
+<p><a href="../../images/111018/FreeNAS/freenas_06_09.jpg" target="_blank"><img src="../../images/111018/FreeNAS/freenas_06_09.jpg" border="0" alt="圖9：" title="查看 DHCP 自動取得 IP 位址資訊" width="450" height="356" /></a></p>
+<p>▲ 圖9：查看 DHCP 自動取得 IP 位址資訊</p>
+<h4>GUI: 自行指定網路設定</h4>
+<p>若想要在 GUI 圖形介面下設定網路卡中自行指定 IP 位址請依如下步驟：</p>
+<ol style="list-style-type: decimal;">
+<li>區域網路中已有架設 DHCP 伺服器，由 em0 網路卡取得 IP 位址 10.10.25.36，或者由 Console 介面自行設定區域網路中的固定 IP 位址。</li>
+<li>開啟瀏覽器後於網址列輸入 FreeNAS 主機暫時的 IP 位址「https://10.10.25.36」，此時將自動登入 FreeNAS GUI 圖形介面。</li>
+<li>切換至「Network &gt; Interfaces」項目後按下「Add Interface」鈕，選填相關資訊：<ol style="list-style-type: lower-alpha;">
+<li>NIC：請於下拉選單中選擇欲設定固定 IP 位址的網路卡，此例選擇「em0」網路卡。</li>
+<li>Interface Name：請輸入此網路卡的別名（此為必填欄位不能忽略！），此例輸入「lan」作為此網路卡的別名。</li>
+<li>IPv4 Address：請輸入設定於此網路卡上的固定 IP 位址，此例輸入「10.10.25.115」</li>
+<li>IPv4 Netmask：請於下拉選單中選擇適合的網路遮罩值，此例選擇「/24(255.255.255.0)」</li>
+<li>確認上述設定無誤後按下「OK」鈕，套用後於 Console 會跳出訊息，顯示刪除原先 DHCP Client 服務所取得的 IP 資訊，此時您會發現瀏覽器無法控制 GUI 圖形介面，因為 IP 位址已經改變了！請於網址列輸入剛才設定的固定 IP 位址「https://10.10.25.115」即可。</li>
+</ol></li>
+<li>切換至「Network &gt; Global Configuration」項目，選填相關資訊：<ol style="list-style-type: lower-alpha;">
+<li>Hostname：輸入此台 FreeNAS 的主機名稱，此例為輸入「nas」。</li>
+<li>Domain：請輸入主機的網域名稱 (DNS 尾碼)，此例輸入「weithenn.org」。</li>
+<li>IPv4 Default Gateway：請輸入區域網路中預設閘道的 IP 位址，此例輸入「10.10.25.254」。</li>
+<li>Nameserver 1：請輸入主機使用的第一台 DNS 網域名稱解析伺服器 IP 位址，此例輸入「8.8.8.8」。</li>
+<li>Nameserver 2：請輸入主機使用的第二台 DNS 網域名稱解析伺服器 IP 位址，此例輸入「168.95.192.1」。</li>
+<li>Nameserver 3：請輸入主機使用的第三台 DNS 網域名稱解析伺服器 IP 位址，此例輸入「168.95.1.1」。</li>
+<li>Save：確認上述設定無誤後按下「Save」鈕確定套用設定值。</li>
+</ol></li>
+<li>切換至「Reboot」項目，並按下「Reboot」鍵，重新啟動 FreeNAS 主機。</li>
+<li>主機重新啟動完成後請切換至「Network &gt; Network Summary」項目，查看所設定的固定 IP 位址、預設閘道、網域名稱解析主機資訊是否正確。</li>
+</ol>
+<p><a href="../../images/111018/FreeNAS/freenas_06_10.jpg" target="_blank"><img src="../../images/111018/FreeNAS/freenas_06_10.jpg" border="0" alt="圖10：" title="設定 em0 網卡固定 IP 位址" width="450" height="358" /></a></p>
+<p>▲ 圖10：設定 em0 網卡固定 IP 位址</p>
+<p><a href="../../images/111018/FreeNAS/freenas_06_11.jpg" target="_blank"><img src="../../images/111018/FreeNAS/freenas_06_11.jpg" border="0" alt="圖11" title="設定主機名稱、預設閘道及網域名稱解析伺服器 IP 位址" width="450" style="border: 0;" /></a></p>
+<p>▲ 圖11：設定主機名稱、預設閘道及網域名稱解析伺服器 IP 位址</p>
+<p><a href="../../images/111018/FreeNAS/freenas_06_12.jpg" target="_blank"><img src="../../images/111018/FreeNAS/freenas_06_12.jpg" border="0" alt="圖12：" title="重新啟動 FreeNAS 主機" width="450" height="357" /></a></p>
+<p>▲ 圖12：重新啟動 FreeNAS 主機</p>
+<p><a href="../../images/111018/FreeNAS/freenas_06_13.jpg" target="_blank"><img src="../../images/111018/FreeNAS/freenas_06_13.jpg" border="0" alt="圖13：" title="查看固定 IP 及相關資訊是否正確套用" width="450" height="359" /></a></p>
+<p>▲ 圖13：查看固定 IP 及相關資訊是否正確套用</p>
+<h3>測試主機網路連通狀態</h3>
+<p>請於 Console 介面輸入「9」進入「Shell」指令模式，接著利用「ping」指令配合參數「-c2」─也就是 ping 2 次（預設動作為持續 ping）─及相關 IP 位址，以了解主機的網路連通狀態，或者是主機卡在哪個環節上，以下以主機設定固定 IP 10.10.25.115 為例：</p>
+<pre><code># ping -c2 127.0.0.1     // 檢查 Loopback IP Address<br /># ping -c2 10.10.25.115  // 檢查設定的 IP Address<br /># ping -c2 10.10.25.254  // 檢查主機與預設閘道間的通訊<br /># ping -c2 8.8.8.8       // 檢查主機與網域名稱解析器的通訊<br /># ping -c2 tw.yahoo.com  // 檢查主機是否能夠正常解析網域名稱<br /><br /></code></pre>
+<p><a href="../../images/111018/FreeNAS/freenas_06_14.jpg" target="_blank"><img src="../../images/111018/FreeNAS/freenas_06_14.jpg" border="0" alt="圖14：" title="測試主機網路連通狀態(1)" width="450" height="366" /></a></p>
+<p>▲ 圖14：測試主機網路連通狀態(1)</p>
+<p><a href="../../images/111018/FreeNAS/freenas_06_15.jpg" target="_blank"><img src="../../images/111018/FreeNAS/freenas_06_15.jpg" border="0" alt="圖15：" title="測試主機網路連通狀態(2)" width="450" height="366" /></a></p>
+<p>▲ 圖15：測試主機網路連通狀態(2)</p>
+<h3>結語</h3>
+<p>本文主要介紹 FreeNAS 主機的基礎網路設定。在下一篇文章中將分享如何實作 FreeNAS 的進階網路功能「網卡容錯 (Failover)」。</p>
+			<!-- Show relate article -->
+		<br><br><h4>You may be interested in the following articles:</h4><ul><li><a href='../../tech-column/8580.html'>利用 FreeNAS 打造儲存設備 (8)──網路設定篇之頻寬合併</a> - <span class='date-posted'>2012-01-13</span></li><li><a href='../../tech-column/8529.html'>利用 FreeNAS 打造儲存設備 (7)─Failover（故障轉移）</a> - <span class='date-posted'>2011-11-28</span></li><li><a href='../../tech-column/8473.html'>利用 FreeNAS 打造儲存設備(5)安裝篇（嵌入式 USB）</a> - <span class='date-posted'>2011-10-04</span></li><li><a href='../../tech-column/8444.html'>利用 FreeNAS 打造儲存設備(4)─安裝篇（由 GUI 升級）</a> - <span class='date-posted'>2011-09-13</span></li><li><a href='../../tech-column/8431.html'>利用 FreeNAS 打造儲存設備(3)─安裝篇（由光碟升級）</a> - <span class='date-posted'>2011-09-01</span></li><li><a href='../../tech-column/8423.html'>利用 FreeNAS 打造儲存設備(2)－安裝篇</a> - <span class='date-posted'>2011-08-18</span></li><li><a href='../../tech-column/8408.html'>利用 FreeNAS 打造儲存設備(1)－歷史篇</a> - <span class='date-posted'>2011-08-03</span></li></ul>		<!-- end -->
+		<div class="article_note">
+		<!-- Add tags use metakey, and show OSSF Newsletter tag: OSSFNL+NUM-->
+		<br><br> <hr style='border: 1px dashed #D2DADB;'><b>OSSF Newsletter&nbsp;:</b>&nbsp;<a href='../../previous-issue%3Ftask=view&amp;id=759.html'>第 183 期 GPL 條款對於衍生程式的判定標準與其授權拘束性的擴散範圍（下）</a><br><b>Tags:</b>&nbsp;<a href='../../index.php%3Foption=com_search&amp;Itemid=58&amp;searchphrase=exact_meta&amp;ordering=newest&amp;searchword=FreeNAS.html'>FreeNAS</a>,&nbsp;&nbsp;<a href='../../index.php%3Foption=com_search&amp;Itemid=58&amp;searchphrase=exact_meta&amp;ordering=newest&amp;searchword=&#32;nas.html'> nas</a>,&nbsp;&nbsp;<a href='../../index.php%3Foption=com_search&amp;Itemid=58&amp;searchphrase=exact_meta&amp;ordering=newest&amp;searchword=&#32;network-attached&#32;storage.html'> network-attached storage</a>,&nbsp;&nbsp;<a href='../../index.php%3Foption=com_search&amp;Itemid=58&amp;searchphrase=exact_meta&amp;ordering=newest&amp;searchword=&#32;network&#32;config.html'> network config</a>,&nbsp;&nbsp;				<!-- End -->
+					<br>
+					<b>Category: </b><a href="../tech-column.html">				Tech Column					</a>				</div>
+			 <!-- AddThis Button BEGIN ID 3001 is the front page article -->
+     			<br><br>
+       <div class="addthis_toolbox addthis_default_style addthis_32x32_style">
+       <a class="addthis_button_preferred_1"></a>
+       <a class="addthis_button_preferred_2"></a>
+       <a class="addthis_button_preferred_3"></a>
+       <a class="addthis_button_preferred_4"></a>
+       <a class="addthis_button_compact"></a>
+       <a class="addthis_counter addthis_bubble_style"></a>
+       </div>
+       <script type="text/javascript">var addthis_config = {"data_track_clickback":true};</script>
+       <script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js#pubid=openfoundry"></script>
+       <!-- AddThis Button END -->
+     <br>
+		<div class="totop" ><a class="rt-totop" href="8480-freenas-6-net-config-basic-setting.html#" style="outline: medium none;">↑ Top</a></div>
+            <!-- AddThis Button END -->
+
+			</div>
+</div>
+
+		                            </div>
+									<div class="clear"></div>
+								</div>
+								<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+							</div>
+							</div>
+                                                    </div>
+                                            </div>
+                                <div class="rt-grid-3 rt-pull-9">
+                <div id="rt-sidebar-a">
+                                    <div class="square4">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<ul class="menu"><li class="item56"><a href="../previous-issue.html"><span>Previous Issue</span></a></li><li class="item55"><a href="../about-newsletter.html"><span>About Newsletter</span></a></li></ul>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<ul class="menu"><li class="item115"><a href="../foss-news.html"><span>FOSS News</span></a></li><li class="item141"><a href="../case-job.html"><span>Case and Jobs</span></a></li></ul>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+        	                <div class="square1">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-title"><h2 class="title">Special</h2></div>
+						<div class="clear"></div>
+		                						<div class="module-content">
+		                	<ul class="menu"><li id="current" class="active item37"><a href="../tech-column.html"><span>Tech Column</span></a></li><li class="item40"><a href="../foss-programs.html"><span>FOSS Programs</span></a></li><li class="item35"><a href="../legal-column.html"><span>Legal Column</span></a></li><li class="item154"><a href="../foss-forum.html"><span>FOSS Forum</span></a></li><li class="item162"><a href="../enterprise-application.html"><span>Enterprise Application</span></a></li><li class="item44"><a href="../foss-projects.html"><span>FOSS Projects</span></a></li></ul>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		                <div class="square1">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<p style="text-align: center;"><a href="../../news%3Fformat=feed&amp;type=rss" target="_black"><img src="../../images/M_images/news-rss-feed.png" border="0" /></a><br /><a href="https://www.openfoundry.org/rss-feed/Newsletter" target="_black"><img src="../../images/M_images/newsletter-rss-feed.png" border="0" /></a></p>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		
+                </div>
+            </div>
+
+                    <div class="clear"></div>
+                </div>
+            </div>
+																													</div>
+										<div id="rt-copyright">
+						<div class="rt-grid-12 rt-alpha rt-omega">
+                        <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<span class="nowrap">Open Source Software Foundry</span><span class="nowrap">‧</span><span class="nowrap"> </span><span class="nowrap">Best  Viewed with IE7.0 or Firefox2.0 above, 1024x768 Resolution. </span><strong>E-Mail</strong>：<a href="mailto:contact@openfoundry.org">contact@openfoundry.org</a> <br /><strong>Address</strong>：No.128, Sec.2, Academia Rd., Institute of Information Science, Academia Sinica, Nangang District, Taipei City 11529, Taiwan (R.O.C). <br /><a href="../privacy-policy.html">Privacy Policy</a>. <a href="../terms-of-use.html">Terms-of-use</a> <span style="position: relative; top: 8px; margin-top: -8px;"> <a href="../../about/8101.html"><img src="../../images/M_images/rss-feed-all.png" border="0" /></a></span>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+        	
+</div>
+						<div class="clear"></div>
+					</div>
+					<div class="rt-footer-bottom-wrap"><div class="rt-footer-bottom"><div class="rt-footer-bottom2"><div class="rt-footer-bottom3"></div></div></div></div>
+									</div></div></div>
+				<div class="rt-surround-bottom"><div class="rt-surround-bottom2"><div class="rt-surround-bottom3"></div></div></div>
+							</div>
+		</div>
+		<!--
+		<script id="aptureScript">
+						(function (){var a=document.createElement("script");a.defer="true";a.src="http://www.apture.com/js/apture.js?siteToken=vsJttrn";document.getElementsByTagName("head")[0].appendChild(a);})();
+     </script>
+-->
+
+<!-- Piwik -->
+<!-- 			<script type="text/javascript">
+			  var _paq = _paq || [];
+		  _paq.push(["trackPageView"]);
+		  _paq.push(["enableLinkTracking"]);
+
+		    (function() {
+			        var u=(("https:" == document.location.protocol) ? "https" : "https") + "://www.openfoundry.org/piwik/";
+				    _paq.push(["setTrackerUrl", u+"piwik.php"]);
+				    _paq.push(["setSiteId", "1"]);
+				        var d=document, g=d.createElement("script"), s=d.getElementsByTagName("script")[0]; g.type="text/javascript";
+				        g.defer=true; g.async=true; g.src=u+"piwik.js"; s.parentNode.insertBefore(g,s);
+					  })();
+		  </script> -->
+<!-- End Piwik Code -->
+	</body>
+</html>

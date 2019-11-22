@@ -1,0 +1,410 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="zh-tw" lang="zh-tw" >
+<head>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<link rel="shortcut icon" href="../../../../../images/favicon.ico" />
+	  <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+  <meta name="robots" content="index, follow" />
+  <meta name="keywords" content="有時我們會遇到這樣的狀況,每當我們存檔時,最常見的操作就是,原始檔案的內容就被新的內容蓋過了,上週被刪掉那段的內容才是正確的,的方式找回來,對於更久之前的修改通常是無法這樣救回的,為了避免將來無法,要怎麼救回來,如果是幾小時內的修改,或許還有機會在編輯器關掉前用,當我們編輯檔案時,在這些情境下對檔案處理有哪些需求,在關機與開機之間想要保留先前的內容,第一個想到的也是存成檔案,最常見的保存方式就是檔案,工作成果還是照片音樂,都有成千上萬個檔案,不論是心得筆記,如何處理檔案" />
+  <meta name="title" content="1.版本控制系統想要解決的問題" />
+  <meta name="description" content="每個人的電腦裡，都有成千上萬個檔案。不論是心得筆記，工作成果還是照片音樂，最常見的保存方式就是檔案。在關機與開機之間想要保留先前的內容，第一個想到的也是存成檔案。然而，'如何處理檔案' 這個問題常比我們直覺所想的複雜許多。以下我們將從 '一個人/一台電腦/一個檔案' 開始逐步介紹到" />
+  <meta name="generator" content="" />
+  <title>1.版本控制系統想要解決的問題 - OpenFoundry</title>
+  <link href="../../../../../favicon.ico" rel="shortcut icon" type="image/x-icon" />
+  <link rel="stylesheet" href="../../../../../components/com_gantry/css/gantry.css" type="text/css" />
+  <link rel="stylesheet" href="../../../../../components/com_gantry/css/grid-12.css" type="text/css" />
+  <link rel="stylesheet" href="../../../../../components/com_gantry/css/joomla.css" type="text/css" />
+  <link rel="stylesheet" href="../../../../../templates/rt_quantive_j15/css/joomla.css" type="text/css" />
+  <link rel="stylesheet" href="../../../../../templates/rt_quantive_j15/css/style1.css" type="text/css" />
+  <link rel="stylesheet" href="../../../../../templates/rt_quantive_j15/css/light-body.css" type="text/css" />
+  <link rel="stylesheet" href="../../../../../templates/rt_quantive_j15/css/demo-styles.css" type="text/css" />
+  <link rel="stylesheet" href="../../../../../templates/rt_quantive_j15/css/template.css" type="text/css" />
+  <link rel="stylesheet" href="../../../../../templates/rt_quantive_j15/css/typography.css" type="text/css" />
+  <link rel="stylesheet" href="../../../../../templates/rt_quantive_j15/css/fusionmenu.css" type="text/css" />
+  <style type="text/css">
+    <!--
+#rt-main-surround ul.menu li.active > a, #rt-main-surround ul.menu li.active > .separator, #rt-main-surround ul.menu li.active > .item, #rt-main-surround .square4 ul.menu li:hover > a, #rt-main-surround .square4 ul.menu li:hover > .item, #rt-main-surround .square4 ul.menu li:hover > .separator, .roktabs-links ul li.active span {color:#0088B5;}
+a, #rt-main-surround ul.menu a:hover, #rt-main-surround ul.menu .separator:hover, #rt-main-surround ul.menu .item:hover {color:#0088B5;}
+    -->
+  </style>
+  <script type="text/javascript" src="../../../../../components/com_jcomments/js/jcomments-v2.1.js%3Fv=2"></script>
+  <script type="text/javascript" src="../../../../../components/com_jcomments/libraries/joomlatune/ajax.js"></script>
+  <script type="text/javascript" src="../../../../../media/system/js/mootools.js"></script>
+  <script type="text/javascript" src="../../../../../media/system/js/caption.js"></script>
+  <script type="text/javascript" src="../../../../../components/com_gantry/js/gantry-buildspans.js"></script>
+  <script type="text/javascript" src="../../../../../components/com_gantry/js/gantry-inputs.js"></script>
+  <script type="text/javascript" src="../../../../../templates/rt_quantive_j15/js/jquery.cookie.js"></script>
+  <script type="text/javascript" src="../../../../../modules/mod_roknavmenu/themes/fusion/js/fusion.js"></script>
+  <script type="text/javascript" src="../../../../../modules/mod_ofssologin/js/ofssologin.js"></script>
+  <script type="text/javascript">
+
+			window.addEvent('domready', function() {
+				var modules = ['rt-block'];
+				var header = ['h3','h2','h1'];
+				GantryBuildSpans(modules, header);
+			});
+		InputsExclusion.push('.content_vote','#rt-popup')
+		        window.addEvent('load', function() {
+					new Fusion('ul.menutop', {
+						pill: 0,
+						effect: 'slide and fade',
+						opacity: 1,
+						hideDelay: 500,
+						centered: 0,
+						tweakInitial: {'x': -2, 'y': 0},
+        				tweakSubsequent: {'x': 0, 'y': -14},
+						menuFx: {duration: 200, transition: Fx.Transitions.Sine.easeOut},
+						pillFx: {duration: 400, transition: Fx.Transitions.Back.easeOut}
+					});
+	            });
+  </script>
+<!-- <script type="text/javascript" src="/sso/javascripts/langsync.js"></script> -->
+<!-- <script src="/templates/rt_quantive_j15/js/ossf.js"></script> -->
+<script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-4136519-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
+</head>
+	<body  class="backgroundlevel-low backgroundstyle-style8 bodylevel-med bodystyle-light cssstyle-style1 logostyle-dark font-family-helvetica font-size-is-default menu-type-fusionmenu col12">
+		<div id="rt-main-background">
+			<div class="rt-container">
+																<div id="rt-header">
+					<div class="rt-grid-7 rt-alpha">
+    			<div class="rt-block">
+    	    	<a href="../../../../../index.html" id="rt-logo"></a>
+    		</div>
+	    
+</div>
+<div class="rt-grid-5 rt-omega">
+                    <div class="square9">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<div class="ofssologin_square9"><a href="../../../../../index.html">登入</a>&nbsp;&nbsp|&nbsp;&nbsp;<span><a href="https://www.openfoundry.org/en/component/content/article/2357" ><span lang="en" xml:lang="en">English</span></a></li></ul></span><!--Joom!fish V2.0.4 (Lightning)-->
+<!-- &copy; 2003-2009 Think Network, released under the GPL. -->
+<!-- More information: at http://www.joomfish.net -->
+<div class="ofssologin_search_square9">
+  <form id="of_search" action="https://www.openfoundry.org/of/openfoundry/search" method="get" onsubmit="of_search(); return false;">
+    <select id="of_search_type">
+      <option value="Projects"> 專案 </option>
+      <option value="Content"> 文章 </option>
+      <option value="People"> 人才 </option>
+    </select>
+    <input id="query" name="query" id="mod_search_searchword" maxlength="50" alt="search" class="inputbox" type="text" size="28" value="search..."  onblur="if(this.value=='') this.value='search...';" onfocus="if(this.value=='search...') this.value='';" />
+    <input type="hidden" name="commit" value="search" />
+  </form>
+</div></div>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		
+</div>
+					<div class="clear"></div>
+				</div>
+																<div id="rt-navigation"><div id="rt-navigation2"><div id="rt-navigation3">
+					
+<div class="nopill">
+	<ul class="menutop level1 " >
+						<li class="item1 root" >
+					<a class="orphan item bullet" href="../../../../../index.html"  >
+				<span>
+			    				首頁				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item32 root" >
+					<a class="orphan item bullet" href="../../../../../archived.html"  >
+				<span>
+			    				專案				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item186 root" >
+					<a class="orphan item bullet" href="../../../../community.html"  >
+				<span>
+			    				Who&#039;s Who				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item4 root" >
+					<a class="orphan item bullet" href="../../../../news.html"  >
+				<span>
+			    				新聞				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item5 root" >
+					<a class="orphan item bullet" href="../../../../law-and-licensing.html"  >
+				<span>
+			    				法律源地				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item3 root" >
+					<a class="orphan item bullet" href="../../../../activities.html"  >
+				<span>
+			    				活動				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item2 root" >
+					<a class="orphan item bullet" href="../../../../resourcecatalog%3FName=Value.html"  >
+				<span>
+			    				資源表列				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item45 root" >
+					<a class="orphan item bullet" href="../../../../about.html"  >
+				<span>
+			    				關於				   
+				</span>
+			</a>
+			
+			
+	</li>	
+				</ul>
+</div>
+
+				    <div class="clear"></div>
+				</div></div></div>
+								<div class="rt-surround"><div class="rt-surround2"><div class="rt-surround3">
+										<div id="rt-showcase-section">
+												<div id="rt-showcase">
+							<div class="rt-grid-12 rt-alpha rt-omega">
+    		<div class="clear"></div>
+		
+		
+                <div class="close-note">
+                    <div class="rt-block">
+               					<div class="module-content">
+                	<div style="font-size:medium; background-image:linear-gradient(120deg,#159957,#4298b2);color:white;padding:20px;margin:-10px -18px;">感謝您對「自由軟體鑄造場」的支持與愛護，十多年來「自由軟體鑄造場」受中央研究院支持，並在資訊科學研究所以及資訊科技創新研究中心執行，現已完成階段性的任務。 本網站預計持續維運至 2021年底，網站內容基本上不會再更動。<br />也紀念我們永遠的朋友 李士傑先生（Shih-Chieh Ilya Li）。</div>				</div>
+            </div>
+                </div>
+		
+</div>
+							<div class="clear"></div>
+						</div>
+																	</div>
+															<div id="rt-main-surround">
+																							              <div id="rt-main" class="mb12">
+                <div class="rt-main-inner">
+                    <div class="rt-grid-12 ">
+                                                <div class="rt-block">
+                            							<div class="square1">
+							<div class="rt-module-surround">
+								<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+								<div class="rt-module-inner">
+		                            <div id="rt-mainbody">
+		                                
+<div class="rt-joomla ">
+	<div class="rt-article">
+		
+				<div class="rt-headline"><h1 class="rt-article-title">1.版本控制系統想要解決的問題</h1>		</div>
+		<div class="clear"></div>
+		
+		
+		
+				<div class="rt-articleinfo">
+						<div class="rt-article-icons">
+								<a href="https://www.openfoundry.org/tw/component/content/article/2357?tmpl=component&amp;print=1&amp;page=" title="列印" onclick="window.open(this.href,'win2','status=no,toolbar=no,scrollbars=yes,titlebar=no,menubar=no,resizable=yes,width=640,height=480,directories=no,location=no'); return false;" rel="nofollow"><span class="icon print"></span></a>																</div>
+			
+			<span class="rt-date-posted">
+						建立日期			2010-05-28 23:34						&nbsp;&nbsp;&nbsp;&nbsp;						最近更新在 2010-05-29 00:42						</span>
+
+						<span class="rt-author">
+				作者是 webmaster			</span>
+				
+					</div>
+		
+		
+		每個人的電腦裡，都有成千上萬個檔案。<br />不論是心得筆記，工作成果還是照片音樂，最常見的保存方式就是檔案。<br />在關機與開機之間想要保留先前的內容，第一個想到的也是存成檔案。<br />然而，&quot;如何處理檔案&quot; 這個問題常比我們直覺所想的複雜許多。<br />以下我們將從 &quot;一個人/一台電腦/一個檔案&quot; 開始逐步介紹到 &quot;多個人/多台電腦/多台檔案&quot;，<br />在這些情境下對檔案處理有哪些需求，傳統的方法在試圖滿足這些需求時又留下了哪些問題，<br />並在後面的章節中提出版本控制系統對這些需求與問題的解法。<h3><font color="#0000ff">&nbsp;一個人 一台電腦 一個檔案</font></h3>
+<p>當我們編輯檔案時，最常見的操作就是：<br />修改 -&gt; 存檔 -&gt; 修改 -&gt; 存檔 -&gt; 修改 ...。<br />每當我們存檔時，原始檔案的內容就被新的內容蓋過了。有時我們會遇到這樣的狀況：&quot;啊! 上週被刪掉那段的內容才是正確的! 要怎麼救回來?&quot; 如果是幾小時內的修改，或許還有機會在編輯器關掉前用 &quot;復原/Undo&quot; 的方式找回來。對於更久之前的修改通常是無法這樣救回的。<br />為了避免將來無法找到現在的版本，最常見的解決方式就是：另存新檔。每當編輯告一個段落，覺得現在的內容值得保存，或者是要作不確定是否正確的修改時，便透過&quot;另存新檔&quot;的方式留下備份。</p>
+舉例來說，如果正在編輯的檔案是 &quot;work.txt&quot; 的話，我們可能會：<br />save work.txt to work_old.txt<br />save work.txt to work2.txt<br />save work.txt to work_02.txt<br />save work.txt to work_20070628.txt<br />save work.txt to work_20070628_04_44.txt<br />save work.txt to work_20070628_04_44_some_short_description.txt<br />這樣的作法相當自然。不過也有些問題：<br />
+<ul>
+    <li>檔案多，可能為了備份一個檔案而生出數十個檔案</li>
+</ul>
+<ul>
+    <li>如果想要能夠照編輯的先後順序排列以便搜尋，可能的作法有</li>
+</ul>
+<blockquote>
+<ul>
+    <li>&nbsp;依賴檔案的儲存時間。問題：時間資訊可能會在複製檔案時不小心遺失。</li>
+</ul>
+</blockquote><blockquote>
+<ul>
+    <li>&nbsp;在檔名加上序號。問題：雖然保留了先後順序，但仍可能失去重要的時間資訊。</li>
+</ul>
+<ul>
+    <li>在檔名加上日期時間。問題：可以穩當的用檔名中的時間排序及幫助搜尋，但仍缺少為何修改為何存檔的資訊。</li>
+</ul>
+</blockquote><blockquote>
+<ul>
+    <li>在檔名加上日期時間和描述。問題：檔名的空間不適合放太詳細的描述，時間久了對喚起記憶的幫助有限。</li>
+</ul>
+</blockquote>
+<ul>
+    <li>&nbsp;如果想要從 work.txt 改名成 report.txt，得一次改數十個檔案</li>
+</ul>
+<ul>
+    <li>&nbsp;因為操作複雜，降低了常常另存新檔的意願，往往導致想要的版本沒被存到。<br /></li>
+</ul>
+<p>以上是單一檔案的狀況，接著來看多檔案時的狀況。<br /></p>
+<h3><font color="#0000ff">&nbsp;一個人 一台電腦 多個檔案</font></h3>
+當工作項目有相當的複雜度時，我們常需要多個檔案來儲存工作。這些檔案之間有時會彼此關連，舉例來說：<br />
+<ul>
+    <li>文件的總目錄/索引/參考資料與各章節</li>
+</ul>
+<ul>
+    <li>網頁的 HTML 與其 CSS 樣式表</li>
+</ul>
+<ul>
+    <li>文件的文字描述與附圖的內容</li>
+</ul>
+<ul>
+    <li>程式中函數的呼叫者/被呼叫者，標頭檔/常數/設定檔與程式本文<br /></li>
+</ul>
+<p>當檔案彼此間有關連時，我們需要拿出彼此匹配的版本以避免不一致的狀況發生。然而隨著時間過去，要從一堆檔案的一大串過往版本間找到彼此匹配的版本並不容易。面對這種需求，常見的方法就是：每當跨檔案的修改告一段落，便把整個目錄複製一份或存成壓縮檔。<br />這種方式也帶來了一些問題：<br /></p>
+<ul>
+    <li>常常連沒有改動的檔案也一併包進去了，浪費空間。</li>
+</ul>
+<ul>
+    <li>除非另外安裝工具，否則很難從兩份目錄樹中知道修改了哪些檔案的哪些地方。</li>
+</ul>
+<ul>
+    <li>前面單一檔案時會遇到的所有問題，這邊也都會遇到。</li>
+</ul>
+<p> </p>
+<h3><font color="#0000ff">&nbsp;一個人 多台電腦 多個檔案</font></h3>
+<p>隨著電腦的普及化，一個人使用多台電腦的機會也越來越多。在學校與工作的地方有電腦，家裡也有電腦，隨身還帶著筆記型電腦。如果想在一台電腦上接續另外一台電腦上的工作，要如何取得最新的檔案呢？<br />可能的作法有：</p>
+<ul>
+    <li>檔案只有唯一一份在其中一台機器上，其他台只是透過網路存取同一份檔案。這種作法的優點是在於只有一份檔案，所以每一台看到的都是最新的修改結果。但缺點是這台電腦必須一直在線上，而其他台電腦也要在有網路連線的地方才能存取資料，載入速度也受到網路的限制。</li>
+</ul>
+<ul>
+    <li>檔案在每一台都有一份，更新後將檔案複製到其他台電腦，或是下次到別台電腦時再去最後更新的電腦上將檔案複製過來。這種作法因為檔案在本地端有一份，載入儲存較快，也可以在離線時繼續更新本地的檔案，待上線時再互傳檔案。缺點是有時擁有最新更動的電腦離線而無法取得更動，或者是誤以為手上的舊版是新版而修改出重複或分岔的版本，甚至會發生不小心用舊版蓋掉新版的慘狀。</li>
+</ul>
+<ul>
+    <li>檔案只有唯一一份在隨身碟上。優點是內容一直保持最新，也不受網路的影響。缺點則是隨身碟往往空間有限，大容量的隨身碟則易損壞或較為昂貴。遺失的機會雖然不大，但是忘在家裡以致無法工作的情形也是偶爾會發生。</li>
+</ul>
+<p> </p>
+<h3><font color="#0000ff">多個人 多台電腦 多個檔案</font> </h3>
+當一份工作需要多人完成時，常會編修同一組檔案。要如何讓每個人取得正確的版本？不止一個人同時修改同一個檔案時又要如何協調？<br />可能的作法有：
+<ul>
+    <li>每個人互相 copy / email 檔案。這種作法除了和前面所說的一樣不小心把舊版本的當成新的或新的當成舊的之外，還得時時彼此詢問是否有更動，或將更動傳給原本沒有必要知道的人，花去了許多額外的溝通成本。</li>
+</ul>
+<ul>
+    <li>放在一個共用的伺服器。這種作法得時時注意伺服器上的變更，並小心地從伺服器上複製檔案下來，以免蓋過了本地的更動。上傳時更要注意是否蓋過了別人的修改。</li>
+</ul>
+<p>由於在多人協同合作的情境下，會一再地面臨到上述的種種問題。因此，許多體會到這些問題的程式設計師便開發了程式來抒解這種困境，這些解決問題的程式，就是我們所要介紹的 &quot;版本控制系統&quot;。 </p>
+<p><br /></p>
+			<!-- Show relate article -->
+				<!-- end -->
+		<div class="article_note">
+		<!-- Add tags use metakey, and show OSSF Newsletter tag: OSSFNL+NUM-->
+		<br><br> <hr style='border: 1px dashed #D2DADB;'>		<!-- End -->
+					<br>
+					<b>分類: </b><a href="https://www.openfoundry.org/tw/component/content/category/502-subversion">				Subversion					</a>				</div>
+			 <!-- AddThis Button BEGIN ID 3001 is the front page article -->
+     			<br><br>
+       <div class="addthis_toolbox addthis_default_style addthis_32x32_style">
+       <a class="addthis_button_preferred_1"></a>
+       <a class="addthis_button_preferred_2"></a>
+       <a class="addthis_button_preferred_3"></a>
+       <a class="addthis_button_preferred_4"></a>
+       <a class="addthis_button_compact"></a>
+       <a class="addthis_counter addthis_bubble_style"></a>
+       </div>
+       <script type="text/javascript">var addthis_config = {"data_track_clickback":true};</script>
+       <script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js#pubid=openfoundry"></script>
+       <!-- AddThis Button END -->
+     <br>
+		<div class="totop" ><a class="rt-totop" href="2357.html#" style="outline: medium none;">↑ Top</a></div>
+            <!-- AddThis Button END -->
+
+			</div>
+</div>
+
+		                            </div>
+									<div class="clear"></div>
+								</div>
+								<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+							</div>
+							</div>
+                                                    </div>
+                                            </div>
+                                        <div class="clear"></div>
+                </div>
+            </div>
+																													</div>
+										<div id="rt-copyright">
+						<div class="rt-grid-12 rt-alpha rt-omega">
+                        <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<div id="desktop-mobile-version-switch"><span id="mobile-version" class="version-switch"><a href="2357.html#">行動版</a></span></div>
+自由軟體鑄造場 製作 最佳瀏覽狀態：IE7或Firefox2.0以上 (建議使用Firefox) ‧ 解析度1024*768 <br /> <strong>E-Mail</strong>：<a href="mailto:contact@openfoundry.org">contact@openfoundry.org</a> <strong>Address</strong>：台北市南港區研究院路2段128號 中央研究院資訊科學研究所 . <a href="../../../../../privacy-policy.html">隱私權條款</a>. <a href="../../../../../terms-of-use.html">使用條款</a><span style="position: relative; top: 8px; margin-top: -8px;"> <a href="../../../../../about/8101.html"><img src="../../../../../images/M_images/rss-feed-all.png" border="0" /></a></span>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+        	
+</div>
+						<div class="clear"></div>
+					</div>
+					<div class="rt-footer-bottom-wrap"><div class="rt-footer-bottom"><div class="rt-footer-bottom2"><div class="rt-footer-bottom3"></div></div></div></div>
+									</div></div></div>
+				<div class="rt-surround-bottom"><div class="rt-surround-bottom2"><div class="rt-surround-bottom3"></div></div></div>
+							</div>
+		</div>
+		<!--
+		<script id="aptureScript">
+						(function (){var a=document.createElement("script");a.defer="true";a.src="http://www.apture.com/js/apture.js?siteToken=vsJttrn";document.getElementsByTagName("head")[0].appendChild(a);})();
+     </script>
+-->
+
+<!-- Piwik -->
+<!-- 			<script type="text/javascript">
+			  var _paq = _paq || [];
+		  _paq.push(["trackPageView"]);
+		  _paq.push(["enableLinkTracking"]);
+
+		    (function() {
+			        var u=(("https:" == document.location.protocol) ? "https" : "https") + "://www.openfoundry.org/piwik/";
+				    _paq.push(["setTrackerUrl", u+"piwik.php"]);
+				    _paq.push(["setSiteId", "1"]);
+				        var d=document, g=d.createElement("script"), s=d.getElementsByTagName("script")[0]; g.type="text/javascript";
+				        g.defer=true; g.async=true; g.src=u+"piwik.js"; s.parentNode.insertBefore(g,s);
+					  })();
+		  </script> -->
+<!-- End Piwik Code -->
+	</body>
+</html>

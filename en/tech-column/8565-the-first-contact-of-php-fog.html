@@ -1,0 +1,618 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-gb" lang="en-gb" >
+<head>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<link rel="shortcut icon" href="../../images/favicon.ico" />
+	  <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+  <meta name="robots" content="index, follow" />
+  <meta name="keywords" content="PHP Fog, PaaS, platform as a service, PHP, Programming on PaaS,OSSFNL772" />
+  <meta name="title" content="與 PHP Fog 的第一次親密接觸" />
+  <meta name="description" content="前言 相信許多人都有開發 PHP 的相關經驗，豐富的資源及其便利性皆為不可忽視的優點，程式本身撰寫起來也相對容易，相較之下環境建置及部署反而成為許多開發者的困擾。PHP Fog 透過 PaaS 的方式減輕了開發者在這方面的負擔，透過幾個簡單的步驟便將開發時所需的環境及資料庫設定完成，並且提供許多 Framework 可直接選用，讓開發者能更專注於程式開發。以下將透過 PHP Fog 平台簡易實做" />
+  <meta name="generator" content="" />
+  <title>與 PHP Fog 的第一次親密接觸 - OpenFoundry</title>
+  <link href="../../favicon.ico" rel="shortcut icon" type="image/x-icon" />
+  <link rel="stylesheet" href="../../components/com_gantry/css/gantry.css" type="text/css" />
+  <link rel="stylesheet" href="../../components/com_gantry/css/grid-12.css" type="text/css" />
+  <link rel="stylesheet" href="../../components/com_gantry/css/joomla.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/joomla.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/style1.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/light-body.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/demo-styles.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/template.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/typography.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/fusionmenu.css" type="text/css" />
+  <style type="text/css">
+    <!--
+#rt-main-surround ul.menu li.active > a, #rt-main-surround ul.menu li.active > .separator, #rt-main-surround ul.menu li.active > .item, #rt-main-surround .square4 ul.menu li:hover > a, #rt-main-surround .square4 ul.menu li:hover > .item, #rt-main-surround .square4 ul.menu li:hover > .separator, .roktabs-links ul li.active span {color:#0088B5;}
+a, #rt-main-surround ul.menu a:hover, #rt-main-surround ul.menu .separator:hover, #rt-main-surround ul.menu .item:hover {color:#0088B5;}
+    -->
+  </style>
+  <script type="text/javascript" src="../../components/com_jcomments/js/jcomments-v2.1.js%3Fv=2"></script>
+  <script type="text/javascript" src="../../components/com_jcomments/libraries/joomlatune/ajax.js"></script>
+  <script type="text/javascript" src="../../media/system/js/mootools.js"></script>
+  <script type="text/javascript" src="../../media/system/js/caption.js"></script>
+  <script type="text/javascript" src="../../components/com_gantry/js/gantry-buildspans.js"></script>
+  <script type="text/javascript" src="../../components/com_gantry/js/gantry-inputs.js"></script>
+  <script type="text/javascript" src="../../templates/rt_quantive_j15/js/jquery.cookie.js"></script>
+  <script type="text/javascript" src="../../modules/mod_roknavmenu/themes/fusion/js/fusion.js"></script>
+  <script type="text/javascript" src="../../modules/mod_ofssologin/js/ofssologin.js"></script>
+  <script type="text/javascript">
+
+			window.addEvent('domready', function() {
+				var modules = ['rt-block'];
+				var header = ['h3','h2','h1'];
+				GantryBuildSpans(modules, header);
+			});
+		InputsExclusion.push('.content_vote','#rt-popup')
+		        window.addEvent('load', function() {
+					new Fusion('ul.menutop', {
+						pill: 0,
+						effect: 'slide and fade',
+						opacity: 1,
+						hideDelay: 500,
+						centered: 0,
+						tweakInitial: {'x': -2, 'y': 0},
+        				tweakSubsequent: {'x': 0, 'y': -14},
+						menuFx: {duration: 200, transition: Fx.Transitions.Sine.easeOut},
+						pillFx: {duration: 400, transition: Fx.Transitions.Back.easeOut}
+					});
+	            });
+  </script>
+<!-- <script type="text/javascript" src="/sso/javascripts/langsync.js"></script> -->
+<!-- <script src="/templates/rt_quantive_j15/js/ossf.js"></script> -->
+<script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-4136519-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
+</head>
+	<body  class="backgroundlevel-low backgroundstyle-style8 bodylevel-med bodystyle-light cssstyle-style1 logostyle-dark font-family-helvetica font-size-is-default menu-type-fusionmenu col12 ">
+		<div id="rt-main-background">
+			<div class="rt-container">
+																<div id="rt-header">
+					<div class="rt-grid-7 rt-alpha">
+    			<div class="rt-block">
+    	    	<a href="../../index.html" id="rt-logo"></a>
+    		</div>
+	    
+</div>
+<div class="rt-grid-5 rt-omega">
+                    <div class="square9">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<div class="ofssologin_square9"><a href="../../index.html">Login</a>&nbsp;&nbsp|&nbsp;&nbsp;<span><a href="../../tw/tech-column/8565-the-first-contact-of-php-fog.html" ><span lang="tw" xml:lang="tw">繁體中文</span></a></li></ul></span><!--Joom!fish V2.0.4 (Lightning)-->
+<!-- &copy; 2003-2009 Think Network, released under the GPL. -->
+<!-- More information: at http://www.joomfish.net -->
+<div class="ofssologin_search_square9">
+  <form id="of_search" action="https://www.openfoundry.org/of/openfoundry/search" method="get" onsubmit="of_search(); return false;">
+    <select id="of_search_type">
+      <option value="Projects"> Projects </option>
+      <option value="Content"> Content </option>
+      <option value="People"> People </option>
+    </select>
+    <input id="query" name="query" id="mod_search_searchword" maxlength="50" alt="search" class="inputbox" type="text" size="28" value="search..."  onblur="if(this.value=='') this.value='search...';" onfocus="if(this.value=='search...') this.value='';" />
+    <input type="hidden" name="commit" value="search" />
+  </form>
+</div></div>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		
+</div>
+					<div class="clear"></div>
+				</div>
+																<div id="rt-navigation"><div id="rt-navigation2"><div id="rt-navigation3">
+					
+<div class="nopill">
+	<ul class="menutop level1 " >
+						<li class="item1 root" >
+					<a class="orphan item bullet" href="../../index.html"  >
+				<span>
+			    				Home				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item32 root" >
+					<a class="orphan item bullet" href="../../archived.html"  >
+				<span>
+			    				Projects				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item186 root" >
+					<a class="orphan item bullet" href="../community.html"  >
+				<span>
+			    				Who&#039;s Who				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item4 root" >
+					<a class="orphan item bullet" href="../news.html"  >
+				<span>
+			    				News				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item5 root" >
+					<a class="orphan item bullet" href="../law-and-licensing.html"  >
+				<span>
+			    				Law &amp; Licensing				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item3 root" >
+					<a class="orphan item bullet" href="../activities.html"  >
+				<span>
+			    				Activities				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item2 root" >
+					<a class="orphan item bullet" href="../resourcecatalog.html"  >
+				<span>
+			    				Resource Catalog				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item45 root" >
+					<a class="orphan item bullet" href="../about.html"  >
+				<span>
+			    				About				   
+				</span>
+			</a>
+			
+			
+	</li>	
+				</ul>
+</div>
+
+				    <div class="clear"></div>
+				</div></div></div>
+								<div class="rt-surround"><div class="rt-surround2"><div class="rt-surround3">
+										<div id="rt-showcase-section">
+												<div id="rt-showcase">
+							<div class="rt-grid-12 rt-alpha rt-omega">
+    		<div class="clear"></div>
+		
+		
+                <div class="close-note">
+                    <div class="rt-block">
+               					<div class="module-content">
+                	<div style="font-size:medium; background-image:linear-gradient(120deg,#159957,#4298b2);color:white;padding:20px;margin:-10px -18px;">感謝您對「自由軟體鑄造場」的支持與愛護，十多年來「自由軟體鑄造場」受中央研究院支持，並在資訊科學研究所以及資訊科技創新研究中心執行，現已完成階段性的任務。 本網站預計持續維運至 2021年底，網站內容基本上不會再更動。<br />也紀念我們永遠的朋友 李士傑先生（Shih-Chieh Ilya Li）。</div>				</div>
+            </div>
+                </div>
+		
+</div>
+							<div class="clear"></div>
+						</div>
+																	</div>
+															<div id="rt-main-surround">
+												<div id="rt-breadcrumbs">
+								<div class="rt-breadcrumb-surround">
+		<a href="../../index.html" id="breadcrumbs-home"></a>
+		<span class="breadcrumbs pathway">
+<a href="../tech-column.html" class="pathway">Tech Column</a> <img src="../../templates/rt_quantive_j15/images/arrow.png" alt=""  /> <span class="no-link">與 PHP Fog 的第一次親密接觸</span></span>
+	</div>
+	
+							<div class="clear"></div>
+						</div>
+																							              <div id="rt-main" class="sa3-mb9">
+                <div class="rt-main-inner">
+                    <div class="rt-grid-9 rt-push-3">
+                                                <div class="rt-block">
+                            							<div class="square1">
+							<div class="rt-module-surround">
+								<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+								<div class="rt-module-inner">
+		                            <div id="rt-mainbody">
+		                                
+<div class="rt-joomla ">
+	<div class="rt-article">
+		
+				<div class="rt-headline"><h1 class="rt-article-title">與 PHP Fog 的第一次親密接觸</h1>		</div>
+		<div class="clear"></div>
+		
+		
+		
+				<div class="rt-articleinfo">
+						<div class="rt-article-icons">
+								<a href="8565-the-first-contact-of-php-fog%3Ftmpl=component&amp;print=1&amp;layout=default&amp;page=.html" title="Print" onclick="window.open(this.href,'win2','status=no,toolbar=no,scrollbars=yes,titlebar=no,menubar=no,resizable=yes,width=640,height=480,directories=no,location=no'); return false;" rel="nofollow"><span class="icon print"></span></a>																</div>
+			
+			<span class="rt-date-posted">
+						 Created at			Wednesday, 04 January 2012 14:22						&nbsp;&nbsp;&nbsp;&nbsp;						Last Updated on Tuesday, 17 January 2012 11:10						</span>
+
+						<span class="rt-author">
+				Written by [NISRA] Loyo, Snake／文；[NISRA] Allen Own／技術指導			</span>
+				
+					</div>
+		
+		
+		<h3>前言</h3>
+<p>相信許多人都有開發 PHP 的相關經驗，豐富的資源及其便利性皆為不可忽視的優點，程式本身撰寫起來也相對容易，相較之下環境建置及部署反而成為許多開發者的困擾。PHP Fog 透過 PaaS 的方式減輕了開發者在這方面的負擔，透過幾個簡單的步驟便將開發時所需的環境及資料庫設定完成，並且提供許多 Framework 可直接選用，讓開發者能更專注於程式開發。以下將透過 PHP Fog 平台簡易實做 PHP 程式開發。</p>
+
+<h3>註冊</h3>
+<p>開始使用 PHP Fog 前，必須註冊帳號才能建置開發的程式。首先連至 <a href="https://www.phpfog.com/" target="_blank">PHP Fog 官方網頁</a>，在首頁就可以找到明顯的〔Get Started〕的字樣，簡單填寫信箱和設定密碼後即可直接註冊帳號。</p>
+<p><a href="../../images/120117/PHPFog/01_phpfog_php.png" target="_blank"><img src="../../images/120117/PHPFog/01_phpfog_php.png" alt="▲ 圖1: 註冊欄位" title="註冊欄位" height="359" border="0" width="505" /></a></p>
+<p class="caption">▲ 圖1：註冊欄位</p>
+<p>接著會要求選擇使用哪種類型的程式，分成 Applications 及 Frameworks 兩種類型，可依自己的需求選擇。本文將上傳自行撰寫之程式碼作為範例，故此處選擇 Frameworks 中的〔Custom App〕，若有疑問也可點選〔more info〕查看相關訊息及說明。</p>
+<p><a href="../../images/120117/PHPFog/02_phpfog_php.png" target="_blank"><img src="../../images/120117/PHPFog/02_phpfog_php.png" alt="▲ 圖2: applications 選擇" title="applications 選擇" border="0" width="505" /></a></p>
+<p class="caption">▲ 圖2：applications 選擇</p>
+<p>下一步需要填入 MySQL 密碼及對應的 Domain 位置，PHP Fog 預設會針對每個應用設定一個對應 Domain (*.phpfogapp.com)，此處依據自己之需求填寫即可。</p>
+<p><a href="../../images/120117/PHPFog/03_phpfog_php.png" target="_blank"><img src="../../images/120117/PHPFog/03_phpfog_php.png" alt="▲ 圖3: 密碼設定" title="密碼設定" border="0" width="505" /></a></p>
+<p class="caption">▲ 圖3：密碼設定</p>
+<p>到此已經完成基本的環境設定，還需要一些時間完成初始化，藉由畫面中的 Status 可確認是否部署完成，一般來說不會太久。</p>
+<p><a href="../../images/120117/PHPFog/04_phpfog_php.png" target="_blank"><img src="../../images/120117/PHPFog/04_phpfog_php.png" alt="▲ 圖4: status變化" title="status變化" border="0" /></a></p>
+<p class="caption">▲ 圖4：status變化</p>
+<h3>程式開發及上傳</h3>
+<p>完成前述設定後，便可進行程式開發上傳。首先必須先設定好本地端工作環境。PHP Fog 採用 <a href="https://git-scm.com/" target="_blank">Git</a> 管理程式碼，順便管控檔案版本。若不熟悉 Git，可參考官方網站提供的<a href="https://help.phpfog.com/faqs/git/what-git-is-and-how-to-use-it" target="_blank">說明教學</a>。使用 Git 操作檔案時必須透過 SSH 的方式進行，因為不同平台的設定方式會有些許差異，此處用 Linux (Ubuntu) 做介紹，其他平台建議可參考官方提供的<a href="https://docs.phpfog.com/index.php/features/article/generating_a_ssh_key" target="_blank">教學設定</a>。</p>
+<p>使用 Git 前必須先設定公鑰、私鑰，藉以辨別開發者身分和管理程式碼，接著會介紹如何設定公鑰及私鑰。</p>
+<p>可透過 ssh-keygen 指令產生公鑰、私鑰，此處選擇使用 RSA 加密演算法來產生需要的公鑰、私鑰。</p>
+<pre><code>$ ssh-keygen -t rsa
+Generating public/private rsa key pair.
+Enter file in which to save the key (/home/USER/.ssh/id_rsa):
+Enter passphrase (empty for no passphrase):
+Enter same passphrase again:
+
+Your identification has been saved in /home/USER/.ssh/id_rsa.
+Your public key has been saved in /home/USER/.ssh/id_rsa.pub.
+</code></pre>
+<p>在設定過程中會詢問公鑰、私鑰存放的路徑，此處可依個人需求設定，通常直接使用系統預設的路徑即可。另外需注意系統會詢問 passphrase 設定，此設定主要是為了確保金鑰的安全而建的第二道防線，在 Git 操作時會再度詢問。建議設定後記錄下來，每次操作時皆會詢問。</p>
+<p>完成後可於先前設定的路徑中找到公鑰 (id_rsa.pub)、私鑰 (id_rsa) 檔案，將公鑰內容複製起來，接著至 PHP Fog 設定 Public Key 的欄位貼上送出（Nickname 的地方可選擇不填，會依照貼上的公鑰內容設定顯示），完成後即可和 PHP Fog 同步程式碼進行編寫及修改。</p>
+<p><a href="../../images/120117/PHPFog/05_phpfog_php.png" target="_blank"><img src="../../images/120117/PHPFog/05_phpfog_php.png" alt="▲ 圖5: ssh key設定" title="ssh key設定" border="0" width="505" /></a></p>
+<p class="caption">▲ 圖5：ssh key設定</p>
+<p>設定完 SSH Public Key 之後，網頁會很貼心得顯示對應的 git clone 指令，將網頁內提供之 git clone 指令直接複製貼上到本機執行，即可將程式碼複製到對應的資料夾中。在操作時可能會要求輸入 passphrase，輸入產生公鑰、私鑰時設定的 passphrase 內容即可。</p>
+<pre><code>$ git clone 
+ <script language='JavaScript' type='text/javascript'>
+ <!--
+ var prefix = 'm&#97;&#105;lt&#111;:';
+ var suffix = '';
+ var attribs = '';
+ var path = 'hr' + 'ef' + '=';
+ var addy79755 = 'g&#105;t' + '&#64;';
+ addy79755 = addy79755 + 'g&#105;t01' + '&#46;' + 'phpf&#111;g' + '&#46;' + 'c&#111;m';
+ document.write( '<a ' + path + '\'' + prefix + addy79755 + suffix + '\'' + attribs + '>' );
+ document.write( addy79755 );
+ document.write( '<\/a>' );
+ //-->
+ </script> <script language='JavaScript' type='text/javascript'>
+ <!--
+ document.write( '<span style=\'display: none;\'>' );
+ //-->
+ </script>This e-mail address is being protected from spambots. You need JavaScript enabled to view it
+ <script language='JavaScript' type='text/javascript'>
+ <!--
+ document.write( '</' );
+ document.write( 'span>' );
+ //-->
+ </script>:your_domain_name.phpfogapp.com
+</code></pre>
+<p>一開始選擇不同的應用，複製下來的程式內容也不相同。本範例選擇的是 Custom App，在複製下程式碼後，資料夾中已經包含 index.php 檔案，在此處修改新增 phpinfo() 函式，檢查是否正確顯示出 PHP 相關資訊。</p>
+<pre><code>    ＜!?php
+    phpinfo();
+    ?＞
+</code></pre>
+<p>最後透過 <code>git push</code> 上傳修改過的程式碼。</p>
+<pre><code>$ git commit -a -m 'Add phpinfo() for test'
+$ git push
+</code></pre>
+<p>上傳完成後，可至網站中對應之「Share cloud」，點選「View live site」連結至先前設定的網站。 　　由網頁內容判斷確實已按照修改後的內容呈現，同時得知目前 PHP Fog 使用的 PHP 版本為 5.3.2。</p>
+<p><a href="../../images/120117/PHPFog/06_phpfog_php.png" target="_blank"><img src="../../images/120117/PHPFog/06_phpfog_php.png" alt="▲ 圖6: phpinfo 頁面" title="phpinfo 頁面" height="490" border="0" width="500" /></a></p>
+<p class="caption">▲ 圖6：phpinfo 頁面</p>
+<h3>MySQL 資料庫建置與使用</h3>
+<p>PHP Fog 中每個 app 都會配置 MySQL 供開發者使用，在設定 app 時，會一併要求設定 MySQL 的密碼。在網頁中可直接點選〔Launch phpMyAdmin〕，進入 phpMyAdmin 登入頁面後輸入帳號密碼，便可配置開發時所需要的資料庫環境。（註：phpMyAdmin 為一套用 PHP 為基礎，以 Web-Base 方式架構在主機上的 MySQL 資料庫管理工具。）</p>
+<p><a href="../../images/120117/PHPFog/07_phpfog_php.png" target="_blank"><img src="../../images/120117/PHPFog/07_phpfog_php.png" alt="▲ 圖7: phpMyAdmin" title="phpMyAdmin" height="359" border="0" width="505" /></a></p>
+<p class="caption">▲ 圖7：phpMyAdmin</p>
+<p>此處先利用 phpMyAdmin 建立一個測試資料表及測試資料。於 phpMyAdmin 介面中的左側選單可找到【建立資料表】的選項，點選進入後設定資料表名稱和其欄位設定，即可完成資料表的新增。此處建立一個資料表名稱──testable，以及兩個欄位──Column1 (int)、Column2 (text)。</p>
+<p><a href="../../images/120117/PHPFog/08_phpfog_php.png" target="_blank"><img src="../../images/120117/PHPFog/08_phpfog_php.png" alt="▲ 圖8: 資料表新增" title="資料表新增" height="310" border="0" width="506" /></a></p>
+<p class="caption">▲ 圖8：資料表新增</p>
+<p>若資料表順利建立，在 phpMyAdmin 介面的左側選單應可看見新增的資料表名稱，點選後可以看到資料表的細節設定。接著可選擇右側上方選單的【插入】選項新增資料，按照欄位設定填入設定值，點選〔執行〕即可完成測試資料的新增。</p>
+<p><a href="../../images/120117/PHPFog/09_phpfog_php.png" target="_blank"><img src="../../images/120117/PHPFog/09_phpfog_php.png" alt="▲ 圖9: 資料庫內容" title="資料庫內容" height="308" border="0" width="503" /></a></p>
+<p class="caption">▲ 圖9：資料庫內容</p>
+<p>建立完測試資料表及測試資料後，接著透過簡單的 PHP 程式範例操作 MySQL。PHP Fog 在網站中貼心得提供撰寫 PHP 時連線使用資料庫的程式範例。此處需注意，網站範例中會自動帶入 Server 名稱、username 等訊息，但是 password 的部分則需自己填入。</p>
+<p><a href="../../images/120117/PHPFog/10_phpfog_php.png" target="_blank"><img src="../../images/120117/PHPFog/10_phpfog_php.png" alt="▲ 圖10: code範例" title="code範例" height="359" border="0" width="505" /></a></p>
+<p class="caption">▲ 圖10：code範例</p>
+<p>按照範例撰寫，成功讀出資料庫中的測試資料。</p>
+<p> </p>
+<pre><code>＜?php
+$con = mysql_connect(
+        $server = "db01-share",
+        $username = "Custom App-*****",
+        $password = "your_password");
+mysql_select_db("yourDomainName_phpfogapp_com", $con);
+$result = mysql_query("SELECT * FROM table");
+echo "＜table border="1"＞
+</code><code>＜tr＞</code><code>
+＜th＞Column1</code><code>＜/th＞</code><code>
+</code><code>＜th＞</code><code>Column2</code><code>＜/th＞</code><code>
+</code><code>＜/tr＞</code><code>";
+while($row = mysql_fetch_array($result)) {
+        echo "</code><code>＜tr＞</code><code>";
+        echo "</code><code>＜td＞</code><code>" . $row['Column1'] . "</code><code>＜/td＞</code><code>";
+        echo "</code><code>＜td＞</code><code>" . $row['Column2'] . "</code><code>＜/td＞</code><code>";
+        echo "</code><code>＜/tr＞</code><code>";
+}
+echo "</code><code>＜/table＞</code><code>";
+mysql_close($con);
+?＞
+</code></pre>
+<p>此處需注意，網頁中提供的連線範例主要是透過 mysql_connect 函式做連線，PHP5 後建議使用 PDO 的方式連線至資料庫，以提升彈性及安全性。</p>
+<pre><code>＜?php<br />$dsn = "mysql:host=db01-share;dbname= yourDomainName_phpfogapp_com ";<br /></code><code>$dbh = new PDO($dsn,' Custom App-*****', 'your_password');<br />$result =  $dbh-＞query(' SELECT * FROM table ');
+
+echo "</code><code>＜table border='1'＞</code><code>";
+</code><code>＜tr＞</code><code><br /></code><code>＜/th＞Column1</code><code>＜/th＞</code><br /><code>＜/th＞Column2</code><code>＜/th＞<br /></code><code>＜/tr＞</code><code><br /><br /></code><code>while($row = $result->fetch()){
+        echo "</code><code>＜tr＞</code><code>";
+        echo "</code><code>＜td＞</code><code>"</code><code> . $row['Column1'] . "</code><code>＜/td＞</code><code>"</code><code>;
+        echo "</code><code>＜td＞</code><code>" . $row['Column2'] . </code><code>"</code><code>＜/td＞</code><code>"</code><code>;
+        echo "</code><code>＜/tr＞</code><code>";
+}
+echo "＜/table＞
+?>
+</code></pre>
+<p><a href="../../images/120117/PHPFog/11_phpfog_php.png" target="_blank"><img src="../../images/120117/PHPFog/11_phpfog_php.png" alt="▲ 圖11: 顯示網頁" title="顯示網頁" height="81" border="0" width="141" /></a></p>
+<p class="caption">▲ 圖11：顯示網頁</p>
+<h3>開發時需注意的地方</h3>
+<h4>I. error log 無法讀取</h4>
+<p>在開發 PHP 程式時難免需要查看 error log 檢查程式哪邊出了問題，目前 PHP Fog 平台尚未提供查看 error log 的功能，根據網站的說明，此功能正在實作中。</p>
+<p>若需要查看 PHP 的錯誤訊息，目前可以先使用這個方法。於程式碼中加上：</p>
+<pre><code>error_reporting(E_ALL);
+ini_set('display_errors', '1');
+</code></pre>
+<p>透過 display_errors 的設定直接將錯誤訊息顯示於網頁中，但上線時切記要移除，畢竟錯誤訊息只適合給開發者看到。</p>
+<h4>II. 部分 PHP 指令無法使用</h4>
+<p>PHP Fog 為了確保系統及開發者環境的安全，對 PHP 部分函式做出限制。例如：system()、exec() 一類的系統函式就無法使用，詳細的列表可參閱官方網頁的<a href="https://docs.phpfog.com/index.php/features/article/shared_vs_dedicated" target="_blank">說明</a>。</p>
+<h3>結語</h3>
+<p>PHP Fog 透過 PaaS 的方式幫助開發者快速部署需要的環境，減低以往部署的負擔。另外同時提供許多 Framework 讓開發者直接套用，無論是剛開始接觸的新手或是已有經驗的開發者都能受惠。透過 Git 上傳的方式同時兼顧了檔案的版本控管，這也是很不錯的地方，但對剛開始接觸的開發者而言，這可能是需要預先學習的課題。在這些便利的背後，也存在必須負擔的成本，例如環境及功能上的限制。對於大型專案的開發者，必須要考量 PHP Fog 是否能滿足各方面的需求。總的來說，若您對雲端有興趣，又選擇撰寫 PHP，PHP Fog 是個很好的選擇。</p>
+<h3>作者簡介</h3>
+<div>
+<div><strong>Loyo</strong></div>
+<div>
+ <script language='JavaScript' type='text/javascript'>
+ <!--
+ var prefix = 'm&#97;&#105;lt&#111;:';
+ var suffix = '';
+ var attribs = '';
+ var path = 'hr' + 'ef' + '=';
+ var addy88727 = 'l&#111;y&#111;' + '&#64;';
+ addy88727 = addy88727 + 'l&#111;y&#111;' + '&#46;' + 'tw';
+ document.write( '<a ' + path + '\'' + prefix + addy88727 + suffix + '\'' + attribs + '>' );
+ document.write( addy88727 );
+ document.write( '<\/a>' );
+ //-->
+ </script> <script language='JavaScript' type='text/javascript'>
+ <!--
+ document.write( '<span style=\'display: none;\'>' );
+ //-->
+ </script>This e-mail address is being protected from spambots. You need JavaScript enabled to view it
+ <script language='JavaScript' type='text/javascript'>
+ <!--
+ document.write( '</' );
+ document.write( 'span>' );
+ //-->
+ </script></div>
+<div>Plurk: fulamce</div>
+<div>目前於中華電信研發替代役服役中，同時為NISRA團隊成員。</div>
+<div><strong>Snake</strong></div>
+<div>
+ <script language='JavaScript' type='text/javascript'>
+ <!--
+ var prefix = 'm&#97;&#105;lt&#111;:';
+ var suffix = '';
+ var attribs = '';
+ var path = 'hr' + 'ef' + '=';
+ var addy40976 = 'Sn&#97;k&#101;' + '&#64;';
+ addy40976 = addy40976 + 'n&#105;sr&#97;' + '&#46;' + 'n&#101;t';
+ document.write( '<a ' + path + '\'' + prefix + addy40976 + suffix + '\'' + attribs + '>' );
+ document.write( addy40976 );
+ document.write( '<\/a>' );
+ //-->
+ </script> <script language='JavaScript' type='text/javascript'>
+ <!--
+ document.write( '<span style=\'display: none;\'>' );
+ //-->
+ </script>This e-mail address is being protected from spambots. You need JavaScript enabled to view it
+ <script language='JavaScript' type='text/javascript'>
+ <!--
+ document.write( '</' );
+ document.write( 'span>' );
+ //-->
+ </script></div>
+<div>Plurk: SiaoLynx</div>
+</div>
+<div>
+<div>目前就讀於輔仁大學資工系，同時為 NISRA 現任會長。</div>
+<div>充滿好奇心，喜歡體驗各式新奇有趣的事物。</div>
+</div>
+<div><strong>Allen Own</strong></div>
+<div>
+ <script language='JavaScript' type='text/javascript'>
+ <!--
+ var prefix = 'm&#97;&#105;lt&#111;:';
+ var suffix = '';
+ var attribs = '';
+ var path = 'hr' + 'ef' + '=';
+ var addy57806 = '&#97;ll&#101;n&#111;wn' + '&#64;';
+ addy57806 = addy57806 + 'n&#105;sr&#97;' + '&#46;' + 'n&#101;t';
+ document.write( '<a ' + path + '\'' + prefix + addy57806 + suffix + '\'' + attribs + '>' );
+ document.write( addy57806 );
+ document.write( '<\/a>' );
+ //-->
+ </script> <script language='JavaScript' type='text/javascript'>
+ <!--
+ document.write( '<span style=\'display: none;\'>' );
+ //-->
+ </script>This e-mail address is being protected from spambots. You need JavaScript enabled to view it
+ <script language='JavaScript' type='text/javascript'>
+ <!--
+ document.write( '</' );
+ document.write( 'span>' );
+ //-->
+ </script></div>
+<div>Plurk: allenown</div>
+<div>Facebook: allenown</div>
+<div>Twitter: allenown</div>
+<div>Blog: <a href="https://allenown.blogspot.com/" target="_blank">allenown.blogspot.com</a></div>
+<div>NISRA 創辦人</div>
+			<!-- Show relate article -->
+				<!-- end -->
+		<div class="article_note">
+		<!-- Add tags use metakey, and show OSSF Newsletter tag: OSSFNL+NUM-->
+		<br><br> <hr style='border: 1px dashed #D2DADB;'><b>OSSF Newsletter&nbsp;:</b>&nbsp;<a href='../../previous-issue%3Ftask=view&amp;id=772.html'>第 188 期 PaaS：程式語言開發在雲端「Programming in Paas」（下）</a><br><b>Tags:</b>&nbsp;<a href='../../index.php%3Foption=com_search&amp;Itemid=58&amp;searchphrase=exact_meta&amp;ordering=newest&amp;searchword=PHP&#32;Fog.html'>PHP Fog</a>,&nbsp;&nbsp;<a href='../../index.php%3Foption=com_search&amp;Itemid=58&amp;searchphrase=exact_meta&amp;ordering=newest&amp;searchword=&#32;PaaS.html'> PaaS</a>,&nbsp;&nbsp;<a href='../../index.php%3Foption=com_search&amp;Itemid=58&amp;searchphrase=exact_meta&amp;ordering=newest&amp;searchword=&#32;platform&#32;as&#32;a&#32;service.html'> platform as a service</a>,&nbsp;&nbsp;<a href='../../index.php%3Foption=com_search&amp;Itemid=58&amp;searchphrase=exact_meta&amp;ordering=newest&amp;searchword=&#32;PHP.html'> PHP</a>,&nbsp;&nbsp;<a href='../../index.php%3Foption=com_search&amp;Itemid=58&amp;searchphrase=exact_meta&amp;ordering=newest&amp;searchword=&#32;Programming&#32;on&#32;PaaS.html'> Programming on PaaS</a>,&nbsp;&nbsp;				<!-- End -->
+					<br>
+					<b>Category: </b><a href="../tech-column.html">				Tech Column					</a>				</div>
+			 <!-- AddThis Button BEGIN ID 3001 is the front page article -->
+     			<br><br>
+       <div class="addthis_toolbox addthis_default_style addthis_32x32_style">
+       <a class="addthis_button_preferred_1"></a>
+       <a class="addthis_button_preferred_2"></a>
+       <a class="addthis_button_preferred_3"></a>
+       <a class="addthis_button_preferred_4"></a>
+       <a class="addthis_button_compact"></a>
+       <a class="addthis_counter addthis_bubble_style"></a>
+       </div>
+       <script type="text/javascript">var addthis_config = {"data_track_clickback":true};</script>
+       <script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js#pubid=openfoundry"></script>
+       <!-- AddThis Button END -->
+     <br>
+		<div class="totop" ><a class="rt-totop" href="8565-the-first-contact-of-php-fog.html#" style="outline: medium none;">↑ Top</a></div>
+            <!-- AddThis Button END -->
+
+			</div>
+</div>
+
+		                            </div>
+									<div class="clear"></div>
+								</div>
+								<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+							</div>
+							</div>
+                                                    </div>
+                                            </div>
+                                <div class="rt-grid-3 rt-pull-9">
+                <div id="rt-sidebar-a">
+                                    <div class="square4">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<ul class="menu"><li class="item56"><a href="../previous-issue.html"><span>Previous Issue</span></a></li><li class="item55"><a href="../about-newsletter.html"><span>About Newsletter</span></a></li></ul>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<ul class="menu"><li class="item115"><a href="../foss-news.html"><span>FOSS News</span></a></li><li class="item141"><a href="../case-job.html"><span>Case and Jobs</span></a></li></ul>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+        	                <div class="square1">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-title"><h2 class="title">Special</h2></div>
+						<div class="clear"></div>
+		                						<div class="module-content">
+		                	<ul class="menu"><li id="current" class="active item37"><a href="../tech-column.html"><span>Tech Column</span></a></li><li class="item40"><a href="../foss-programs.html"><span>FOSS Programs</span></a></li><li class="item35"><a href="../legal-column.html"><span>Legal Column</span></a></li><li class="item154"><a href="../foss-forum.html"><span>FOSS Forum</span></a></li><li class="item162"><a href="../enterprise-application.html"><span>Enterprise Application</span></a></li><li class="item44"><a href="../foss-projects.html"><span>FOSS Projects</span></a></li></ul>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		                <div class="square1">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<p style="text-align: center;"><a href="../../news%3Fformat=feed&amp;type=rss" target="_black"><img src="../../images/M_images/news-rss-feed.png" border="0" /></a><br /><a href="https://www.openfoundry.org/rss-feed/Newsletter" target="_black"><img src="../../images/M_images/newsletter-rss-feed.png" border="0" /></a></p>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		
+                </div>
+            </div>
+
+                    <div class="clear"></div>
+                </div>
+            </div>
+																													</div>
+										<div id="rt-copyright">
+						<div class="rt-grid-12 rt-alpha rt-omega">
+                        <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<span class="nowrap">Open Source Software Foundry</span><span class="nowrap">‧</span><span class="nowrap"> </span><span class="nowrap">Best  Viewed with IE7.0 or Firefox2.0 above, 1024x768 Resolution. </span><strong>E-Mail</strong>：<a href="mailto:contact@openfoundry.org">contact@openfoundry.org</a> <br /><strong>Address</strong>：No.128, Sec.2, Academia Rd., Institute of Information Science, Academia Sinica, Nangang District, Taipei City 11529, Taiwan (R.O.C). <br /><a href="../privacy-policy.html">Privacy Policy</a>. <a href="../terms-of-use.html">Terms-of-use</a> <span style="position: relative; top: 8px; margin-top: -8px;"> <a href="../../about/8101.html"><img src="../../images/M_images/rss-feed-all.png" border="0" /></a></span>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+        	
+</div>
+						<div class="clear"></div>
+					</div>
+					<div class="rt-footer-bottom-wrap"><div class="rt-footer-bottom"><div class="rt-footer-bottom2"><div class="rt-footer-bottom3"></div></div></div></div>
+									</div></div></div>
+				<div class="rt-surround-bottom"><div class="rt-surround-bottom2"><div class="rt-surround-bottom3"></div></div></div>
+							</div>
+		</div>
+		<!--
+		<script id="aptureScript">
+						(function (){var a=document.createElement("script");a.defer="true";a.src="http://www.apture.com/js/apture.js?siteToken=vsJttrn";document.getElementsByTagName("head")[0].appendChild(a);})();
+     </script>
+-->
+
+<!-- Piwik -->
+<!-- 			<script type="text/javascript">
+			  var _paq = _paq || [];
+		  _paq.push(["trackPageView"]);
+		  _paq.push(["enableLinkTracking"]);
+
+		    (function() {
+			        var u=(("https:" == document.location.protocol) ? "https" : "https") + "://www.openfoundry.org/piwik/";
+				    _paq.push(["setTrackerUrl", u+"piwik.php"]);
+				    _paq.push(["setSiteId", "1"]);
+				        var d=document, g=d.createElement("script"), s=d.getElementsByTagName("script")[0]; g.type="text/javascript";
+				        g.defer=true; g.async=true; g.src=u+"piwik.js"; s.parentNode.insertBefore(g,s);
+					  })();
+		  </script> -->
+<!-- End Piwik Code -->
+	</body>
+</html>

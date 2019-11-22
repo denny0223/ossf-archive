@@ -1,0 +1,406 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="zh-tw" lang="zh-tw" >
+<head>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<link rel="shortcut icon" href="../../images/favicon.ico" />
+	  <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+  <meta name="robots" content="index, follow" />
+  <meta name="keywords" content="OSSFNL737" />
+  <meta name="title" content="Wine – 在 Linux 中使用 Windows 程式" />
+  <meta name="description" content="簡介 自從 Wine 1.0 在 2008  年 6 月釋出之後，便開始以兩、三周為週期，開始固定的釋出新版。Wine 是針對 POSIX 相容的作業系統所設計，目前 Wine 已經被移植到許多平臺上，除了 Linux 外，也可以在 Solaris，FreeBSD，x86 版本的 Mac OS 上使用。經過長期的開發與社群支援，目前在 Appdb 中已有超過一萬六千個軟體測試報告，其中有將近" />
+  <meta name="generator" content="" />
+  <title>Wine – 在 Linux 中使用 Windows 程式 - OpenFoundry</title>
+  <link href="../../favicon.ico" rel="shortcut icon" type="image/x-icon" />
+  <link rel="stylesheet" href="../../components/com_gantry/css/gantry.css" type="text/css" />
+  <link rel="stylesheet" href="../../components/com_gantry/css/grid-12.css" type="text/css" />
+  <link rel="stylesheet" href="../../components/com_gantry/css/joomla.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/joomla.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/style1.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/light-body.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/demo-styles.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/template.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/typography.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/fusionmenu.css" type="text/css" />
+  <style type="text/css">
+    <!--
+#rt-main-surround ul.menu li.active > a, #rt-main-surround ul.menu li.active > .separator, #rt-main-surround ul.menu li.active > .item, #rt-main-surround .square4 ul.menu li:hover > a, #rt-main-surround .square4 ul.menu li:hover > .item, #rt-main-surround .square4 ul.menu li:hover > .separator, .roktabs-links ul li.active span {color:#0088B5;}
+a, #rt-main-surround ul.menu a:hover, #rt-main-surround ul.menu .separator:hover, #rt-main-surround ul.menu .item:hover {color:#0088B5;}
+    -->
+  </style>
+  <script type="text/javascript" src="../../components/com_jcomments/js/jcomments-v2.1.js%3Fv=2"></script>
+  <script type="text/javascript" src="../../components/com_jcomments/libraries/joomlatune/ajax.js"></script>
+  <script type="text/javascript" src="../../media/system/js/mootools.js"></script>
+  <script type="text/javascript" src="../../media/system/js/caption.js"></script>
+  <script type="text/javascript" src="../../components/com_gantry/js/gantry-buildspans.js"></script>
+  <script type="text/javascript" src="../../components/com_gantry/js/gantry-inputs.js"></script>
+  <script type="text/javascript" src="../../templates/rt_quantive_j15/js/jquery.cookie.js"></script>
+  <script type="text/javascript" src="../../modules/mod_roknavmenu/themes/fusion/js/fusion.js"></script>
+  <script type="text/javascript" src="../../modules/mod_ofssologin/js/ofssologin.js"></script>
+  <script type="text/javascript">
+
+			window.addEvent('domready', function() {
+				var modules = ['rt-block'];
+				var header = ['h3','h2','h1'];
+				GantryBuildSpans(modules, header);
+			});
+		InputsExclusion.push('.content_vote','#rt-popup')
+		        window.addEvent('load', function() {
+					new Fusion('ul.menutop', {
+						pill: 0,
+						effect: 'slide and fade',
+						opacity: 1,
+						hideDelay: 500,
+						centered: 0,
+						tweakInitial: {'x': -2, 'y': 0},
+        				tweakSubsequent: {'x': 0, 'y': -14},
+						menuFx: {duration: 200, transition: Fx.Transitions.Sine.easeOut},
+						pillFx: {duration: 400, transition: Fx.Transitions.Back.easeOut}
+					});
+	            });
+  </script>
+<!-- <script type="text/javascript" src="/sso/javascripts/langsync.js"></script> -->
+<!-- <script src="/templates/rt_quantive_j15/js/ossf.js"></script> -->
+<script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-4136519-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
+</head>
+	<body  class="backgroundlevel-low backgroundstyle-style8 bodylevel-med bodystyle-light cssstyle-style1 logostyle-dark font-family-helvetica font-size-is-default menu-type-fusionmenu col12 ">
+		<div id="rt-main-background">
+			<div class="rt-container">
+																<div id="rt-header">
+					<div class="rt-grid-7 rt-alpha">
+    			<div class="rt-block">
+    	    	<a href="../../index.html" id="rt-logo"></a>
+    		</div>
+	    
+</div>
+<div class="rt-grid-5 rt-omega">
+                    <div class="square9">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<div class="ofssologin_square9"><a href="../../index.html">登入</a>&nbsp;&nbsp|&nbsp;&nbsp;<span><a href="../../en/foss-projects/8374-wine-linux-windows-.html" ><span lang="en" xml:lang="en">English</span></a></li></ul></span><!--Joom!fish V2.0.4 (Lightning)-->
+<!-- &copy; 2003-2009 Think Network, released under the GPL. -->
+<!-- More information: at http://www.joomfish.net -->
+<div class="ofssologin_search_square9">
+  <form id="of_search" action="https://www.openfoundry.org/of/openfoundry/search" method="get" onsubmit="of_search(); return false;">
+    <select id="of_search_type">
+      <option value="Projects"> 專案 </option>
+      <option value="Content"> 文章 </option>
+      <option value="People"> 人才 </option>
+    </select>
+    <input id="query" name="query" id="mod_search_searchword" maxlength="50" alt="search" class="inputbox" type="text" size="28" value="search..."  onblur="if(this.value=='') this.value='search...';" onfocus="if(this.value=='search...') this.value='';" />
+    <input type="hidden" name="commit" value="search" />
+  </form>
+</div></div>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		
+</div>
+					<div class="clear"></div>
+				</div>
+																<div id="rt-navigation"><div id="rt-navigation2"><div id="rt-navigation3">
+					
+<div class="nopill">
+	<ul class="menutop level1 " >
+						<li class="item1 root" >
+					<a class="orphan item bullet" href="../../index.html"  >
+				<span>
+			    				首頁				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item32 root" >
+					<a class="orphan item bullet" href="../../archived.html"  >
+				<span>
+			    				專案				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item186 root" >
+					<a class="orphan item bullet" href="../community.html"  >
+				<span>
+			    				Who&#039;s Who				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item4 root" >
+					<a class="orphan item bullet" href="../news.html"  >
+				<span>
+			    				新聞				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item5 root" >
+					<a class="orphan item bullet" href="../law-and-licensing.html"  >
+				<span>
+			    				法律源地				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item3 root" >
+					<a class="orphan item bullet" href="../activities.html"  >
+				<span>
+			    				活動				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item2 root" >
+					<a class="orphan item bullet" href="../resourcecatalog%3FName=Value.html"  >
+				<span>
+			    				資源表列				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item45 root" >
+					<a class="orphan item bullet" href="../about.html"  >
+				<span>
+			    				關於				   
+				</span>
+			</a>
+			
+			
+	</li>	
+				</ul>
+</div>
+
+				    <div class="clear"></div>
+				</div></div></div>
+								<div class="rt-surround"><div class="rt-surround2"><div class="rt-surround3">
+										<div id="rt-showcase-section">
+												<div id="rt-showcase">
+							<div class="rt-grid-12 rt-alpha rt-omega">
+    		<div class="clear"></div>
+		
+		
+                <div class="close-note">
+                    <div class="rt-block">
+               					<div class="module-content">
+                	<div style="font-size:medium; background-image:linear-gradient(120deg,#159957,#4298b2);color:white;padding:20px;margin:-10px -18px;">感謝您對「自由軟體鑄造場」的支持與愛護，十多年來「自由軟體鑄造場」受中央研究院支持，並在資訊科學研究所以及資訊科技創新研究中心執行，現已完成階段性的任務。 本網站預計持續維運至 2021年底，網站內容基本上不會再更動。<br />也紀念我們永遠的朋友 李士傑先生（Shih-Chieh Ilya Li）。</div>				</div>
+            </div>
+                </div>
+		
+</div>
+							<div class="clear"></div>
+						</div>
+																	</div>
+															<div id="rt-main-surround">
+												<div id="rt-breadcrumbs">
+								<div class="rt-breadcrumb-surround">
+		<a href="../../index.html" id="breadcrumbs-home"></a>
+		<span class="breadcrumbs pathway">
+<a href="../foss-projects.html" class="pathway">源碼專案</a> <img src="../../templates/rt_quantive_j15/images/arrow.png" alt=""  /> <span class="no-link">Wine – 在 Linux 中使用 Windows 程式</span></span>
+	</div>
+	
+							<div class="clear"></div>
+						</div>
+																							              <div id="rt-main" class="sa3-mb9">
+                <div class="rt-main-inner">
+                    <div class="rt-grid-9 rt-push-3">
+                                                <div class="rt-block">
+                            							<div class="square1">
+							<div class="rt-module-surround">
+								<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+								<div class="rt-module-inner">
+		                            <div id="rt-mainbody">
+		                                
+<div class="rt-joomla ">
+	<div class="rt-article">
+		
+				<div class="rt-headline"><h1 class="rt-article-title">Wine – 在 Linux 中使用 Windows 程式</h1>		</div>
+		<div class="clear"></div>
+		
+		
+		
+				<div class="rt-articleinfo">
+						<div class="rt-article-icons">
+								<a href="8374-wine-linux-windows-%3Ftmpl=component&amp;print=1&amp;layout=default&amp;page=.html" title="列印" onclick="window.open(this.href,'win2','status=no,toolbar=no,scrollbars=yes,titlebar=no,menubar=no,resizable=yes,width=640,height=480,directories=no,location=no'); return false;" rel="nofollow"><span class="icon print"></span></a>																</div>
+			
+			<span class="rt-date-posted">
+						建立日期			2011-06-27 14:54						&nbsp;&nbsp;&nbsp;&nbsp;						最近更新在 2011-07-06 10:26						</span>
+
+						<span class="rt-author">
+				作者是 Rex			</span>
+				
+					</div>
+		
+		
+		<h3>簡介</h3>
+<p>自從 <a href="https://people.debian.org.tw/~chihchun/2008/05/15/wine-10-rc1/" target="_blank">Wine 1.0</a> 在 <a href="https://wine-reviews.net/wine-release/wine-10-released.html" target="_blank">2008 年 6 月釋出</a>之後，便開始以兩、三周為週期，開始固定的釋出<a href="https://wine-reviews.net/archive.html#catid37" target="_blank">新版</a>。Wine 是針對 POSIX 相容的作業系統所設計，目前 Wine 已經被移植到許多平臺上，除了 Linux 外，也可以在 Solaris，FreeBSD，x86 版本的 Mac OS 上使用。經過長期的開發與社群支援，目前在 <a href="https://appdb.winehq.org/" target="_blank">Appdb</a> 中已有超過一萬六千個軟體測試報告，其中有將近 3000 筆是屬於<a href="https://appdb.winehq.org/objectManager.php?sClass=application&sTitle=Browse+Applications&iappVersion-ratingOp0=5&sappVersion-ratingData0=Platinum&sOrderBy=appName&bAscending=true" target="_blank">高度可用 (Platinum List)</a> 的軟體。</p>
+
+<p><br />在 Appdb 中仍有大量的軟體存在執行的問題，造成使用上的困擾，甚至無法使用。這與 Wine 的設計有關，Wine 跟 <a href="https://www.dosbox.com/" target="_blank">Dosbox</a>，<a href="https://www.zsnes.com/" target="_blank">ZSNES</a> 不同，既不是<a href="https://en.wikipedia.org/wiki/Emulator" target="_blank">模擬器</a>，也不是<a href="https://en.wikipedia.org/wiki/Virtual_machine" target="_blank">虛擬機器</a>。它是以軟體方式模擬出 Windows 作業系統所需的軟體架構 (Software Stack)，理論上只新增一層 software layer 會比虛擬化成本低廉。 <br /> <br />雖然 Wine 計劃經過十幾年發展，但是市面上目前為止沒有任何書籍介紹 Wine 及其程式架構，開發者只能參考少數幾份<a href="https://www.winehq.org/documentation" target="_blank">線上文件</a>與 <a href="https://wiki.winehq.org/" target="_blank">Wiki</a> 網站上資料來理解 Wine 的程式架構。本文簡單地介紹 Wine 的相關設計。</p>
+<h3>軟體架構與初始化簡介</h3>
+<p>根據 <a href="https://www.winehq.org/docs/winedev-guide/x2543" target="_blank">Wine Developer's Guide</a>，軟體架構如下： <br /><a href="../../images/110628/Rex-Wine/wine-262x300.png" target="_blank"><img src="../../images/110628/Rex-Wine/wine-262x300.png" border="0" /></a><br />▲ 圖1<br /> <br />要在 UNIX 中模擬一個 Windows 作業系統，有許多差異需要克服，且 Wine 為了開源授權的合法性，並不對 Windows 本身進行反組譯，而是用<a href="https://en.wikipedia.org/wiki/Black-box_testing" target="_blank">黑箱測試法</a>所開發出來，並參照開發文件逐步實做所有的 Win32 APIs。問題在與 Win32 API 文件並沒有完全開放，不同版本作業系統間，也有些微行為上的差異。然而 Windows® 有著為數不少缺乏文件的 APIs，甚至錯誤的 API 反應等等，Wine 都需要一一的實踐。加上仍有一些未開放的<a href="https://en.wikipedia.org/wiki/Thunk_(compatibility_mapping)" target="_blank">低階 API</a>，以及一些缺乏文件的協定或設計，Wine 計劃可以說是以血淚走過來的開發工作。 <br /> <br />以 Wine 模擬 Windows 最重要的功能之一就是 Wine server，它基本上是提供作業系統核心模擬的功能，負責 <a href="https://en.wikipedia.org/wiki/Inter-process_communication" target="_blank">Inter-Process Communication (IPC)</a>，synchronization 與 process/thread management 等等工作。Wine server 是一個獨立的程序，每次啟動任何 Windows 程式前，它會優先被叫起。若出現了什麼問題，也要確保砍掉 (kill) 它後，才能乾淨的重新執行。 <br /> <br />而在 Wine preloader 載入 .<a href="https://en.wikipedia.org/wiki/COM_file" target="_blank">COM</a> / <a href="https://en.wikipedia.org/wiki/New_Executable" target="_blank">NE</a> / <a href="https://en.wikipedia.org/wiki/Dynamic-link_library" target="_blank">DLL</a> / <a href="https://en.wikipedia.org/wiki/Portable_Executable" target="_blank">PE</a> 前，由於每個程序都將使用自己的<a href="https://en.wikipedia.org/wiki/Address_space" target="_blank">記憶體空間</a>，Wine 要先依照不同的執行檔格式需求建立 Memory layout。為了能夠在 Linux 中製造出跟 Win32 一樣的記憶體位置，除了試圖將相關的 DLLs 載到正確的記憶體位置，Wine 也要避免 dynamic linker 預先把 Wine 所需的函式庫配置 (mapping) 到錯誤的位址，於是修改預設的 ELF 初始化程序，以 syscall 將相關的函式庫配置到正確的位置。 <br /> <br />另外在 Windows 中，每個 process 或 thread 有一塊資料結構稱做 Environment Block (PEB–Process Environment block or TEB – Thread Environment Block)，這些資料中包含了 <a href="https://en.wikipedia.org/wiki/Thread-local_storage" target="_blank">TLS slots</a>，message queue，error code (SEH, <a href="https://www.winehq.org/docs/winedev-guide/seh" target="_blank">Structured Exception Handling</a>) 等等，這塊資料結構提供了 Windowing，Threading 以及錯誤處理等所需資訊。在建立 PEB/TEB 後，才初始化 <a href="https://en.wikipedia.org/wiki/Dynamic_memory_allocation" target="_blank">process heap</a>，載入執行檔，依照執行檔指示建立 <a href="https://en.wikipedia.org/wiki/Stack-based_memory_allocation" target="_blank">stack</a>，最後才將控制權交給執行檔的 <a href="https://en.wikipedia.org/wiki/Entry_point" target="_blank">EntryPoint</a>。 <br /> <br />上述工作均由 NTDLL/KERNEL32 處置，NTDLL/KERNEL32 也會負責傳遞執行序資訊給 Wine Server。至於啟動後的 <a href="https://en.wikipedia.org/wiki/Graphics_Device_Interface" target="_blank">Graphics Device Interface</a> 與 X11 的圖形界面轉換由 <a href="https://en.wikipedia.org/wiki/Microsoft_Windows_library_files#Gdi32.dll" target="_blank">GDI32</a> 處理。<a href="https://en.wikipedia.org/wiki/Microsoft_Windows_library_files#User32.dll" target="_blank">USER32</a> 則實做 Windowing and Messaging subsystem，像是一些狀態列顯示等功能，都已經實做完成。 <br /> <br />另外一個值得一提的是<a href="https://en.wikipedia.org/wiki/Microsoft-specific_exception_handling_mechanisms" target="_blank">錯誤處理的機制</a>，在 Windows 上 <a href="https://en.wikipedia.org/wiki/Exception_handling" target="_blank">exception handling</a> 的方式比 Linux 中複雜許多。以 <a href="https://en.wikipedia.org/wiki/Segmentation_fault" target="_blank">STATUS_ACCESS_VIOLATION / Segmentation fault</a> 為例子，在 Linux 中只是吐一個 <a href="https://en.wikipedia.org/wiki/SIGSEGV" target="_blank">SIGSEGV</a> 錯誤，在 Windows 中則會吐出一個 <a href="https://en.wikipedia.org/wiki/Exception_handling" target="_blank">Exception</a>，還會帶上錯誤位址 (faulting address) 等資訊，也可在 SEH 中指定 handler function 來處理錯誤事件。在 Linux 中，並沒有所謂的 system exception interface，Wine 為了模擬出 Windows 的<a href="https://en.wikipedia.org/wiki/Microsoft-specific_exception_handling_mechanisms" target="_blank">錯誤處理機制</a>，將 exception 轉為<a href="https://en.wikipedia.org/wiki/Signal_(computing)" target="_blank"> signal</a> 來模擬。 <br /> <br />除了上述幾個主要的核心程式外，Wine 也實做了許多<a href="https://wiki.winehq.org/SourceTreeStructure" target="_blank">軟體原件</a>，像是 <a href="https://wiki.winehq.org/Crypt32" target="_blank">Cryptography</a>、<a href="https://wiki.winehq.org/DirectShow" target="_blank">DirectShow Framework</a>、<a href="https://wiki.winehq.org/DirectX-Shaders" target="_blank">Direct3D shader → GL mapper</a>、Network protocol stacks、DirectSound (ALSA, OSS)、 <a href="https://wiki.winehq.org/DInput" target="_blank">DirectInput</a>、 DirectShow、 <a href="https://wiki.winehq.org/DirectDraw" target="_blank">DirectDraw</a>、 Direct3D 等等。甚至連 <a href="https://msdn.microsoft.com/en-us/library/aa741317(v=vs.85).aspx" target="_blank">MSHTML</a> / IE 都已經以 <a href="https://wiki.winehq.org/Gecko" target="_blank">Gecko Engine</a> 實做。 <br /> <br />目前 Wine 在編譯時，已經支援 <a href="https://wiki.winehq.org/Wine64" target="_blank">64 bits</a> 也支援 <a href="https://en.wikipedia.org/wiki/WoW64" target="_blank">WoW64</a> 來跑 32 bits 程式。 <br /><br /></p>
+<h3>開發模式</h3>
+<p>Wine 是用 Git 管理，任何人都可以隨意 commit patches，test cases 到 <a href="https://news.gmane.org/gmane.comp.emulators.wine.patches" target="_blank">patches mailing list</a> 上，經過公開的 code review 後就會在下一次 release 中被合併。如果有任何技術上的疑問，則會被提到開發論壇進行討論，有歧異或暫時無法解決的問題，會被彙整到<a href="https://bugs.winehq.org/" target="_blank">問題追蹤系統</a>中，是個相當透明開放且平等的開發模式。 <br /> <br />由於 Wine 是完全重製 Win32 APIs，且是黑箱測試開發模式，難免會出現修東壞西的悲慘現象。為了避免舊問題在新版中重現，Wine 設計了一套<a href="https://www.winehq.org/docs/winedev-guide/testing-test" target="_blank">測試方法</a>，來作 <a href="https://wiki.winehq.org/RegressionTesting" target="_blank">Regression Testing</a>，藉此確保軟體品質。不過這個方法只能測試功能性的問題，還是避免不了一些圖形界面的變異。 <br /> <br />Wine 計劃授權<a href="https://wiki.winehq.org/WineHistory" target="_blank">原本</a>是採用 MIT，但在市場高度期待，出現了數家公司為不同的平臺提供服務，社群為了避免多家營利公司商業競爭造成開發資源分散，2002 年三月後已經改成 LGPL。 也由於授權開放，Wine 的開發成果，如：D3D 也被整合到 <a href="https://www.virtualbox.org/" target="_blank">VirtualBox</a> 中。另外像是想重新實做開源Windows® XP/2003 的 <a href="https://www.reactos.org/" target="_blank">ReactOS</a> 計劃，其軟體層也使用 Wine Libraries。一般開發者也可以用 <a href="https://www.winehq.org/docs/winelib-guide/index" target="_blank">Winelib</a> 作為跨平臺的函式庫，在 Linux 上將程式移植到 Win32 平臺上（類似 <a href="https://www.mingw.org/" target="_blank">mingw</a>）。<br /> <br />目前在 Linux 上，Wine 對於音效支援，只有 OSS 與 ALSA。社群已有 <a href="https://art.ified.ca/?page_id=40" target="_blank">PulseAudio</a>，但由於開發團隊策略上的<a href="https://bugs.winehq.org/show_bug.cgi?id=10495" target="_blank">考量</a>，希望朝支援 <a href="https://connect.creativelabs.com/openal/default.aspx" target="_blank">OpenAL</a> 的方向走，因此尚未被整合到官方版本。至於在 MacOS 上，其圖形界面驅動程式還是 winex11.drv，需要 X Server 才能使用，OS X 上的 <a href="https://en.wikipedia.org/wiki/Quartz_(graphics_layer)" target="_blank">Quartz</a> 在 2010 年時曾經有<a href="https://wiki.winehq.org/MacOSX/QuartzDriver" target="_blank">一部分實做</a>，但已停止開發，功能也暫時無法使用。</p>
+<h3>使用現況</h3>
+<p>目前 Wine 計劃處在一個尷尬的狀態。Wine 已經完成很大部分的 Win32 Libraries，但仍有尚未實做的部分，為了能夠順利使用，使用者仍必須使用 Microsoft  函式庫（以下稱為 native）。又因為已高度實做 Wine 的函式庫（以下稱為 build-in）往往有不相容 native 函式庫的問題，因此對於使用者在現階段而言，並不容易只使用一套 Wine 設定，來套用所有的 Win32 應用程式。 <br /> <br />結局就是造成使用 Wine 執行 Win32 程式時，常需要搭配不同的函式庫。例如這一版本需要 native 的 yyy.dll 配合 build-in 的 zzz.dll，另外一套軟體卻可以只用 build-in dll 執行。 <br /> <br />如果軟體出現相容性問題，不再像初期一樣，只要靠換 Win32 Libraries 就可以排除，因為每個原生函式庫有高度相依性。由於安裝軟體時，常常需要用到一些 Microsoft 的程式碼，或者偶爾也許要微調一下 <a href="https://wiki.winehq.org/UsefulRegistryKeys" target="_blank">Windows Registry Keys</a> 才能順利安裝。因此常需要透過特定道程序才能成功安裝，因此網路上有許多<a href="https://wiki.winehq.org/ThirdPartyApplications" target="_blank">第三方工具</a>，最常用也最知名的就是 <a href="https://wiki.winehq.org/winetricks" target="_blank">Winetricks</a>。 <br /> <br />雖然 Wine 已經開始有些像是 <a href="https://picasa.google.com/linux/download.html" target="_blank">Picasa</a>，<a href="https://www.teamviewer.com/" target="_blank">TeamViewer</a> 等等的商用軟體應用，以 Wine 直接提供原生 Win32 程式給 Linux 平臺。但他們的做法，都是隨贈一套已調整完成的 Wine 系統。 <br /> <br />由於 Wine 執行環境可以安裝在不同的 <a href="https://en.wikipedia.org/wiki/Sandbox_(software_development)" target="_blank">sandbox</a>，因此系統中可以有多套不同的 Wine 同時執行。這種技巧叫做 bottle，使用者可以透過不同的環境變數，來設定 Wine 所要使用的設定檔路徑，載入 Win32 程式時，也會啟動不同的 wine server，不同的 bottle 會是獨立的執行環境，可作不同設定或安裝不同版本的函式庫。 <br /> <br />使用者可以透過環境變數或<a href="https://wiki.winehq.org/ThirdPartyApplications" target="_blank">第三方工具</a>，來測試並配置各種不同的軟體，在 Linux 上可以使用今年剛發表的 <a href="https://wibom.sourceforge.net/" target="_blank">wibom</a>。在 MacOS 平臺上，由於編譯的困難性，可以使用 <a href="https://wineskin.doh123.com/" target="_blank">Wineskin</a> 之類的工具來協助安裝管理 Win32 系統。此外，像是 <a href="https://www.codeweavers.com/" target="_blank">CrossOver</a>，<a href="https://bordeauxgroup.com/store/bordeaux-software" target="_blank">Bordeaux</a> 等公司也提供商業版的友善界面與預先調整好的安裝工具等服務。 <br /> <br />在 <a href="https://appdb.winehq.org/" target="_blank">Appdb</a> 上已經有眾多程式資料，何不試試能否在 Linux 執行看看你最喜歡的 Windows 程式呢?<br /><br /></p>
+<h3>作者簡介</h3>
+<p>蔡志展 (Rex Tsai) 或網名 chihchun，現為自由工作者，從事開源軟體顧問或開發服務。倡議並推廣自由軟體與開放源碼，早期 KaLUG 成員，現常出席 Tossug、 HackingThursday 聚會，亦是開源人年會 (COSCUP) 籌備志工。長期 Debian、OpenWrt 使用者。關注議題甚廣，進一步資訊請參考 <a href="https://people.debian.org.tw/~chihchun/" target="_blank">https://people.debian.org.tw/~chihchun/</a>。</p>
+			<!-- Show relate article -->
+				<!-- end -->
+		<div class="article_note">
+		<!-- Add tags use metakey, and show OSSF Newsletter tag: OSSFNL+NUM-->
+		<br><br> <hr style='border: 1px dashed #D2DADB;'><b>自由軟體鑄造場電子報&nbsp;:</b>&nbsp;<a href='../../previous-issue%3Ftask=view&amp;id=737.html'>第 175 期 淺談著作財產權讓與適用於 copyleft 開源軟體所產生的問題及因應之道</a><br>				<!-- End -->
+					<br>
+					<b>分類: </b><a href="../foss-projects.html">				源碼專案					</a>				</div>
+			 <!-- AddThis Button BEGIN ID 3001 is the front page article -->
+     			<br><br>
+       <div class="addthis_toolbox addthis_default_style addthis_32x32_style">
+       <a class="addthis_button_preferred_1"></a>
+       <a class="addthis_button_preferred_2"></a>
+       <a class="addthis_button_preferred_3"></a>
+       <a class="addthis_button_preferred_4"></a>
+       <a class="addthis_button_compact"></a>
+       <a class="addthis_counter addthis_bubble_style"></a>
+       </div>
+       <script type="text/javascript">var addthis_config = {"data_track_clickback":true};</script>
+       <script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js#pubid=openfoundry"></script>
+       <!-- AddThis Button END -->
+     <br>
+		<div class="totop" ><a class="rt-totop" href="8374-wine-linux-windows-.html#" style="outline: medium none;">↑ Top</a></div>
+            <!-- AddThis Button END -->
+
+			</div>
+</div>
+
+		                            </div>
+									<div class="clear"></div>
+								</div>
+								<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+							</div>
+							</div>
+                                                    </div>
+                                            </div>
+                                <div class="rt-grid-3 rt-pull-9">
+                <div id="rt-sidebar-a">
+                                    <div class="square4">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<ul class="menu"><li class="item56"><a href="../previous-issue.html"><span>電子報總覽</span></a></li><li class="item55"><a href="../about-newsletter.html"><span>關於本報</span></a></li></ul>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<ul class="menu"><li class="item115"><a href="../foss-news.html"><span>源碼新聞</span></a></li><li class="item141"><a href="../case-job.html"><span>接案 / 工作</span></a></li></ul>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+        	                <div class="square1">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-title"><h2 class="title">專欄總覽</h2></div>
+						<div class="clear"></div>
+		                						<div class="module-content">
+		                	<ul class="menu"><li class="item37"><a href="../tech-column.html"><span>技術專欄</span></a></li><li class="item40"><a href="../foss-programs.html"><span>源碼秘技</span></a></li><li class="item35"><a href="../legal-article-.html"><span>法律專欄</span></a></li><li class="item154"><a href="../foss-forum.html"><span>自由專欄</span></a></li><li class="item162"><a href="../enterprise-application.html"><span>企業應用</span></a></li><li id="current" class="active item44"><a href="../foss-projects.html"><span>源碼專案</span></a></li></ul>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		                <div class="square1">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<p style="text-align: center;"><a href="../../news%3Fformat=feed&amp;type=rss" target="_black"><img src="../../images/M_images/news-rss-feed.png" border="0" /></a><br /><a href="https://www.openfoundry.org/rss-feed/Newsletter" target="_black"><img src="../../images/M_images/newsletter-rss-feed.png" border="0" /></a></p>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		
+                </div>
+            </div>
+
+                    <div class="clear"></div>
+                </div>
+            </div>
+																													</div>
+										<div id="rt-copyright">
+						<div class="rt-grid-12 rt-alpha rt-omega">
+                        <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<div id="desktop-mobile-version-switch"><span id="mobile-version" class="version-switch"><a href="8374-wine-linux-windows-.html#">行動版</a></span></div>
+自由軟體鑄造場 製作 最佳瀏覽狀態：IE7或Firefox2.0以上 (建議使用Firefox) ‧ 解析度1024*768 <br /> <strong>E-Mail</strong>：<a href="mailto:contact@openfoundry.org">contact@openfoundry.org</a> <strong>Address</strong>：台北市南港區研究院路2段128號 中央研究院資訊科學研究所 . <a href="../../privacy-policy.html">隱私權條款</a>. <a href="../../terms-of-use.html">使用條款</a><span style="position: relative; top: 8px; margin-top: -8px;"> <a href="../../about/8101.html"><img src="../../images/M_images/rss-feed-all.png" border="0" /></a></span>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+        	
+</div>
+						<div class="clear"></div>
+					</div>
+					<div class="rt-footer-bottom-wrap"><div class="rt-footer-bottom"><div class="rt-footer-bottom2"><div class="rt-footer-bottom3"></div></div></div></div>
+									</div></div></div>
+				<div class="rt-surround-bottom"><div class="rt-surround-bottom2"><div class="rt-surround-bottom3"></div></div></div>
+							</div>
+		</div>
+		<!--
+		<script id="aptureScript">
+						(function (){var a=document.createElement("script");a.defer="true";a.src="http://www.apture.com/js/apture.js?siteToken=vsJttrn";document.getElementsByTagName("head")[0].appendChild(a);})();
+     </script>
+-->
+
+<!-- Piwik -->
+<!-- 			<script type="text/javascript">
+			  var _paq = _paq || [];
+		  _paq.push(["trackPageView"]);
+		  _paq.push(["enableLinkTracking"]);
+
+		    (function() {
+			        var u=(("https:" == document.location.protocol) ? "https" : "https") + "://www.openfoundry.org/piwik/";
+				    _paq.push(["setTrackerUrl", u+"piwik.php"]);
+				    _paq.push(["setSiteId", "1"]);
+				        var d=document, g=d.createElement("script"), s=d.getElementsByTagName("script")[0]; g.type="text/javascript";
+				        g.defer=true; g.async=true; g.src=u+"piwik.js"; s.parentNode.insertBefore(g,s);
+					  })();
+		  </script> -->
+<!-- End Piwik Code -->
+	</body>
+</html>

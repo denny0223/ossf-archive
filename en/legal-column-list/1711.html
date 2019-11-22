@@ -1,0 +1,423 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-gb" lang="en-gb" >
+<head>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<link rel="shortcut icon" href="../../images/favicon.ico" />
+	  <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+  <meta name="robots" content="index, follow" />
+  <meta name="keywords" content="GPL 區隔機制, GPL, OSSFNL438" />
+  <meta name="title" content="GPL 的另類利用方式：「分開散布．責任轉嫁」" />
+  <meta name="description" content="一個常被提出的問題：要如何在利用 GPL 程式碼的同時，避免其他部份的程式碼也被 GPL 感染？之前曾經提過一些抽象的判斷標準，例如採用動態連結 (dynamic link) 利用 GPL 程式碼，因此開發出來的新程式，許多開發者認為可以不用受到 GPL 的拘束，但是採用靜態連結 (static link) 利用 GPL 程式碼，許多開發者認為新程式仍應該採用 GPL" />
+  <meta name="generator" content="" />
+  <title>GPL 的另類利用方式：「分開散布．責任轉嫁」 - OpenFoundry</title>
+  <link href="../../favicon.ico" rel="shortcut icon" type="image/x-icon" />
+  <link rel="stylesheet" href="../../components/com_gantry/css/gantry.css" type="text/css" />
+  <link rel="stylesheet" href="../../components/com_gantry/css/grid-12.css" type="text/css" />
+  <link rel="stylesheet" href="../../components/com_gantry/css/joomla.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/joomla.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/style1.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/light-body.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/demo-styles.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/template.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/typography.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/fusionmenu.css" type="text/css" />
+  <style type="text/css">
+    <!--
+#rt-main-surround ul.menu li.active > a, #rt-main-surround ul.menu li.active > .separator, #rt-main-surround ul.menu li.active > .item, #rt-main-surround .square4 ul.menu li:hover > a, #rt-main-surround .square4 ul.menu li:hover > .item, #rt-main-surround .square4 ul.menu li:hover > .separator, .roktabs-links ul li.active span {color:#0088B5;}
+a, #rt-main-surround ul.menu a:hover, #rt-main-surround ul.menu .separator:hover, #rt-main-surround ul.menu .item:hover {color:#0088B5;}
+    -->
+  </style>
+  <script type="text/javascript" src="../../components/com_jcomments/js/jcomments-v2.1.js%3Fv=2"></script>
+  <script type="text/javascript" src="../../components/com_jcomments/libraries/joomlatune/ajax.js"></script>
+  <script type="text/javascript" src="../../media/system/js/mootools.js"></script>
+  <script type="text/javascript" src="../../media/system/js/caption.js"></script>
+  <script type="text/javascript" src="../../components/com_gantry/js/gantry-buildspans.js"></script>
+  <script type="text/javascript" src="../../components/com_gantry/js/gantry-inputs.js"></script>
+  <script type="text/javascript" src="../../templates/rt_quantive_j15/js/jquery.cookie.js"></script>
+  <script type="text/javascript" src="../../modules/mod_roknavmenu/themes/fusion/js/fusion.js"></script>
+  <script type="text/javascript" src="../../modules/mod_ofssologin/js/ofssologin.js"></script>
+  <script type="text/javascript">
+
+			window.addEvent('domready', function() {
+				var modules = ['rt-block'];
+				var header = ['h3','h2','h1'];
+				GantryBuildSpans(modules, header);
+			});
+		InputsExclusion.push('.content_vote','#rt-popup')
+		        window.addEvent('load', function() {
+					new Fusion('ul.menutop', {
+						pill: 0,
+						effect: 'slide and fade',
+						opacity: 1,
+						hideDelay: 500,
+						centered: 0,
+						tweakInitial: {'x': -2, 'y': 0},
+        				tweakSubsequent: {'x': 0, 'y': -14},
+						menuFx: {duration: 200, transition: Fx.Transitions.Sine.easeOut},
+						pillFx: {duration: 400, transition: Fx.Transitions.Back.easeOut}
+					});
+	            });
+  </script>
+<!-- <script type="text/javascript" src="/sso/javascripts/langsync.js"></script> -->
+<!-- <script src="/templates/rt_quantive_j15/js/ossf.js"></script> -->
+<script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-4136519-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
+</head>
+	<body  class="backgroundlevel-low backgroundstyle-style8 bodylevel-med bodystyle-light cssstyle-style1 logostyle-dark font-family-helvetica font-size-is-default menu-type-fusionmenu col12 ">
+		<div id="rt-main-background">
+			<div class="rt-container">
+																<div id="rt-header">
+					<div class="rt-grid-7 rt-alpha">
+    			<div class="rt-block">
+    	    	<a href="../../index.html" id="rt-logo"></a>
+    		</div>
+	    
+</div>
+<div class="rt-grid-5 rt-omega">
+                    <div class="square9">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<div class="ofssologin_square9"><a href="../../index.html">Login</a>&nbsp;&nbsp|&nbsp;&nbsp;<span><a href="../../tw/legal-column-list/1711.html" ><span lang="tw" xml:lang="tw">繁體中文</span></a></li></ul></span><!--Joom!fish V2.0.4 (Lightning)-->
+<!-- &copy; 2003-2009 Think Network, released under the GPL. -->
+<!-- More information: at http://www.joomfish.net -->
+<div class="ofssologin_search_square9">
+  <form id="of_search" action="https://www.openfoundry.org/of/openfoundry/search" method="get" onsubmit="of_search(); return false;">
+    <select id="of_search_type">
+      <option value="Projects"> Projects </option>
+      <option value="Content"> Content </option>
+      <option value="People"> People </option>
+    </select>
+    <input id="query" name="query" id="mod_search_searchword" maxlength="50" alt="search" class="inputbox" type="text" size="28" value="search..."  onblur="if(this.value=='') this.value='search...';" onfocus="if(this.value=='search...') this.value='';" />
+    <input type="hidden" name="commit" value="search" />
+  </form>
+</div></div>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		
+</div>
+					<div class="clear"></div>
+				</div>
+																<div id="rt-navigation"><div id="rt-navigation2"><div id="rt-navigation3">
+					
+<div class="nopill">
+	<ul class="menutop level1 " >
+						<li class="item1 root" >
+					<a class="orphan item bullet" href="../../index.html"  >
+				<span>
+			    				Home				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item32 root" >
+					<a class="orphan item bullet" href="../../archived.html"  >
+				<span>
+			    				Projects				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item186 root" >
+					<a class="orphan item bullet" href="../community.html"  >
+				<span>
+			    				Who&#039;s Who				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item4 root" >
+					<a class="orphan item bullet" href="../news.html"  >
+				<span>
+			    				News				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item5 root" >
+					<a class="orphan item bullet" href="../law-and-licensing.html"  >
+				<span>
+			    				Law &amp; Licensing				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item3 root" >
+					<a class="orphan item bullet" href="../activities.html"  >
+				<span>
+			    				Activities				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item2 root" >
+					<a class="orphan item bullet" href="../resourcecatalog.html"  >
+				<span>
+			    				Resource Catalog				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item45 root" >
+					<a class="orphan item bullet" href="../about.html"  >
+				<span>
+			    				About				   
+				</span>
+			</a>
+			
+			
+	</li>	
+				</ul>
+</div>
+
+				    <div class="clear"></div>
+				</div></div></div>
+								<div class="rt-surround"><div class="rt-surround2"><div class="rt-surround3">
+										<div id="rt-showcase-section">
+												<div id="rt-showcase">
+							<div class="rt-grid-12 rt-alpha rt-omega">
+    		<div class="clear"></div>
+		
+		
+                <div class="close-note">
+                    <div class="rt-block">
+               					<div class="module-content">
+                	<div style="font-size:medium; background-image:linear-gradient(120deg,#159957,#4298b2);color:white;padding:20px;margin:-10px -18px;">感謝您對「自由軟體鑄造場」的支持與愛護，十多年來「自由軟體鑄造場」受中央研究院支持，並在資訊科學研究所以及資訊科技創新研究中心執行，現已完成階段性的任務。 本網站預計持續維運至 2021年底，網站內容基本上不會再更動。<br />也紀念我們永遠的朋友 李士傑先生（Shih-Chieh Ilya Li）。</div>				</div>
+            </div>
+                </div>
+		
+</div>
+							<div class="clear"></div>
+						</div>
+																	</div>
+															<div id="rt-main-surround">
+												<div id="rt-breadcrumbs">
+								<div class="rt-breadcrumb-surround">
+		<a href="../../index.html" id="breadcrumbs-home"></a>
+		<span class="breadcrumbs pathway">
+<a href="../legal-column-list.html" class="pathway">Legal Column</a> <img src="../../templates/rt_quantive_j15/images/arrow.png" alt=""  /> <span class="no-link">GPL 的另類利用方式：「分開散布．責任轉嫁」</span></span>
+	</div>
+	
+							<div class="clear"></div>
+						</div>
+																							              <div id="rt-main" class="sa3-mb9">
+                <div class="rt-main-inner">
+                    <div class="rt-grid-9 rt-push-3">
+                                                <div id="rt-content-top">
+                            <div class="rt-grid-9 rt-alpha rt-omega">
+                    <div class="title1">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-title"><h2 class="title">Open Source Software license</h2></div>
+						<div class="clear"></div>
+		                						<div class="module-content">
+		                	<p><img style="float: right; border: 0; margin-left: 5px; margin-right: 5px;" src="../../images/banners/consulting1.png" alt="" width="100" border="0" />We provide Open Source Software license and legal materials via this page.</p>
+<p>&nbsp;</p>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		
+</div>
+							<div class="clear"></div>
+                        </div>
+                                                <div class="rt-block">
+                            							<div class="square1">
+							<div class="rt-module-surround">
+								<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+								<div class="rt-module-inner">
+		                            <div id="rt-mainbody">
+		                                
+<div class="rt-joomla ">
+	<div class="rt-article">
+		
+				<div class="rt-headline"><h1 class="rt-article-title">GPL 的另類利用方式：「分開散布．責任轉嫁」</h1>		</div>
+		<div class="clear"></div>
+		
+		
+		
+				<div class="rt-articleinfo">
+						<div class="rt-article-icons">
+								<a href="https://www.openfoundry.org/en/legal-column-list/1711-gpl?tmpl=component&amp;print=1&amp;page=" title="Print" onclick="window.open(this.href,'win2','status=no,toolbar=no,scrollbars=yes,titlebar=no,menubar=no,resizable=yes,width=640,height=480,directories=no,location=no'); return false;" rel="nofollow"><span class="icon print"></span></a>																</div>
+			
+			<span class="rt-date-posted">
+						 Created at			Saturday, 30 August 2008 08:00						&nbsp;&nbsp;&nbsp;&nbsp;						Last Updated on Wednesday, 30 May 2012 10:34						</span>
+
+						<span class="rt-author">
+				Written by 葛冬梅			</span>
+				
+					</div>
+		
+		
+		<p>一個常被提出的問題：要如何在利用 GPL 程式碼的同時，避免其他部份的程式碼也被 GPL 感染？之前曾經提過一些抽象的判斷標準，例如採用動態連結 (dynamic link) 利用 GPL 程式碼，因此開發出來的新程式，許多開發者認為可以不用受到 GPL 的拘束，但是採用靜態連結 (static link) 利用 GPL 程式碼，許多開發者認為新程式仍應該採用 GPL 授權。這樣的標準仍是相當抽象，這期的法律園地就來談一個比較具體的方式，筆者稱這樣的方式為「分開散布．責任轉嫁」。</p>
+
+<p>所謂「分開散布」是指將 GPL 程式碼與非 GPL 程式碼分開散布，「責任轉嫁」則是將提供原始碼的責任轉嫁到他人身上。聽來這好像是兩件不同的事情，要怎麼樣才能兜在一起呢？現在就說個甲跟乙的故事來說明。<br /><br />甲開發一個程式，裡面利用到 GPL 程式碼，這個程式也因此採用 GPL 授權，甲將這個程式燒在光碟裡送給朋友乙。甲另外還為這個程式寫了一些附加元件，這些附加元件完全是甲自己寫的，並沒有利用到 GPL 程式碼，甲決定只讓他人可以安裝、執行這些附加元件，但是並不提供原始碼給別人。甲把這些附加元件放在網路上，當乙將程式安裝到電腦上的時候，安裝過程中跳出一個視窗，裡面有一些說明文字，並且詢問乙是否要下載放在網路的附加元件並安裝，乙選擇「是」，這時候，電腦將附加元件下載並安裝到程式裡。乙用了這個程式，覺得這些附加元件很棒，來跟甲索取原始碼。<br /><br />甲：「我還不想提供附加元件的原始碼。」<br />乙：「可是你這個程式不是 GPL 授權的嗎？這上面的附加元件也應該是 GPL 授權的，依照 GPL 規定我就可以跟你拿到原始碼啊！」<br />甲：「程式是 GPL 授權的沒錯，但是附加元件並不是 GPL 授權的，所以不受到 GPL 的拘束。目前我只想給人用而已，並不想把這些附加元件原始碼給人。」<br />乙指責甲：「怎麼會這樣？你這樣違反了 GPL！」<br />甲：「我並沒有違反啊！這些附加元件完全是我自己寫的，根本沒有用到任何 GPL 的程式碼。」<br />乙：「但是這些附加元件是跟程式結合在一起，是一起執行的啊！」<br />甲說：「我並沒有把附加元件程式碼與 GPL 程式碼結合在一起，『結合』這個動作是『你』做的，程式安裝過程不是有問你『是否下載並安裝附加元件』，此外還有說明文字，說明這些附加元件並非 GPL 授權的，並不提供原始碼給人，若是你同意將附加元件安裝到程式，會讓安裝在程式上的附加元件也成為 GPL 授權，在沒有附加元件原始碼的狀況下，你將無法依照 GPL 規定來散布這整個程式。這些說明都你瞭解並同意，才會按下『同意』按鈕。所以讓附加元件感染成為 GPL 授權的人是『你』，不是我」<br />乙：「我...沒注意看清楚那些說明文字......」<br /><br />甲在這裡用的方式，就是將程式與附加元件分開散布，讓結合的動作由乙去完成，是乙讓附加元件受到 GPL 感染，身為附加元件完整著作權人的甲，因此還是可以隨心所欲地來決定要給他人原始碼或是不給。<br /><br />那麼，「提供附加元件原始碼」的 GPL 責任落在誰身上呢？這就要看是誰散布「結合有附加元件的程式」了！在這個故事中，甲不會這麼做，就只剩下乙了。若乙真的將「結合有附加元件的程式」再給他的朋友丙，丙來跟乙索取附加元件原始碼的時候，乙就沒有合理的理由可以拒絕，因為這整個「結合有附加元件的程式」都是 GPL 授權的！大家可能會覺得這樣對乙並不公平，因為乙根本沒有原始碼，只有甲擁有原始碼，可甲偏偏又不提供出來。是的，這這樣的方式對於乙來說似乎不夠公平，但是這樣的利用與散布方式，並沒有違反 GPL 的遊戲規則！乙因為沒有注意到當時畫面的說明文字，而直接下載安裝附加元件，這個時候所能做的，就是「不要散布」這個結合有附加元件的程式，因為提供原始碼責任的產生，導因於散布 GPL 程式，只要沒有散布行為，就不會有後續的提供原始碼責任了。<br /><br />以上故事中的「分開」手法，並不侷限於「光碟－網路」，也可以是「裝置 (device) －網路」，或者是任何其他合乎這樣遊戲規則的方式。而再加上附加元件真的沒有用到 GPL 程式碼，這時候，責任就轉嫁到他人身上了！<br /><br />這就是「分開散布．責任轉嫁」的方式，而這種方式的類似應用並不少，讀者稍微留心觀察一下，可能就會在自己使用的自由軟體中發現如故事中的「附加元件」。<br /><br />「分開散布．責任轉嫁」這樣的方式雖然沒有違反 GPL 文字規定上所表達出來的遊戲規則，但筆者也不敢肯定地說，這樣的利用方式完全沒有爭議，因為目前並沒有確定的法院判例可以當作參考標準，所以就容易因為理念不同而產生不同的立場。對於堅持徹底貫徹 GPL 精神的人來說，可能並不贊同這樣的利用方式，但是對於其他人來說，這卻是一種十分合理的解釋與利用方式。而當堅持徹底貫徹 GPL 精神者，不贊同的情緒升高到一定程度時，很可能我們就會在 GPL 第四版中看到與之相關的規定，如同第三版對於 TiVo 與 DRM 有相關規定的情況一樣。<br /><br />筆者個人對此並沒有特定的立場，只是希望透過本文來說明，除了一般所認知的「完全不用 GPL 程式碼」外，還有這樣一種另類的利用方式，此外，也希望大家在透過這種方式利用 GPL 程式碼的同時，可以加強相關說明文字的呈現方式，讓使用者可以清楚明瞭這個下載安裝行為所帶來的後果，並自行決定是否願意承擔這樣的後果。<br /><br /><br />● 本文的完成特別感謝林誠夏以及鑄造場同仁所提供的意見。<br />● 延伸閱讀：<a href="../../index.php%3Foption=com_content&amp;Itemid=56&amp;id=512&amp;task=view%252F.html" target="_blank">葛冬梅，究竟包含多少的 GPL 程式碼才算…？</a>，自由軟體鑄造場電子報，第 54 期。</p>
+			<!-- Show relate article -->
+				<!-- end -->
+		<div class="article_note">
+		<!-- Add tags use metakey, and show OSSF Newsletter tag: OSSFNL+NUM-->
+		<br><br> <hr style='border: 1px dashed #D2DADB;'><b>OSSF Newsletter&nbsp;:</b>&nbsp;<a href='../../previous-issue%3Ftask=view&amp;id=438.html'>第 110 期 GPL的另類利用方式：「分開散布．責任轉嫁」</a><br><b>Tags:</b>&nbsp;<a href='../../index.php%3Foption=com_search&amp;Itemid=58&amp;searchphrase=exact_meta&amp;ordering=newest&amp;searchword=GPL&#32;區隔機制.html'>GPL 區隔機制</a>,&nbsp;&nbsp;<a href='../../index.php%3Foption=com_search&amp;Itemid=58&amp;searchphrase=exact_meta&amp;ordering=newest&amp;searchword=&#32;GPL.html'> GPL</a>,&nbsp;&nbsp;				<!-- End -->
+					<br>
+					<b>Category: </b><a href="../legal-column-list.html">				Legal Column					</a>				</div>
+			 <!-- AddThis Button BEGIN ID 3001 is the front page article -->
+     			<br><br>
+       <div class="addthis_toolbox addthis_default_style addthis_32x32_style">
+       <a class="addthis_button_preferred_1"></a>
+       <a class="addthis_button_preferred_2"></a>
+       <a class="addthis_button_preferred_3"></a>
+       <a class="addthis_button_preferred_4"></a>
+       <a class="addthis_button_compact"></a>
+       <a class="addthis_counter addthis_bubble_style"></a>
+       </div>
+       <script type="text/javascript">var addthis_config = {"data_track_clickback":true};</script>
+       <script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js#pubid=openfoundry"></script>
+       <!-- AddThis Button END -->
+     <br>
+		<div class="totop" ><a class="rt-totop" href="1711.html#" style="outline: medium none;">↑ Top</a></div>
+            <!-- AddThis Button END -->
+
+			</div>
+</div>
+
+		                            </div>
+									<div class="clear"></div>
+								</div>
+								<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+							</div>
+							</div>
+                                                    </div>
+                                            </div>
+                                <div class="rt-grid-3 rt-pull-9">
+                <div id="rt-sidebar-a">
+                                    <div class="square4">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-title"><h2 class="title">Information</h2></div>
+						<div class="clear"></div>
+		                						<div class="module-content">
+		                	<ul class="menu" id="5"><li class="item16"><a href="../for-users.html"><span>For Users</span></a></li><li class="item17"><a href="../for-developers.html"><span>For Developers</span></a></li></ul>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-title"><h2 class="title">Overview</h2></div>
+						<div class="clear"></div>
+		                						<div class="module-content">
+		                	<ul class="menu"><li class="item8"><a href="../basic-concepts.html"><span>Basic Concepts</span></a></li><li class="item9"><a href="../glossary.html"><span>Glossary</span></a></li><li class="parent item10"><a href="../faq.html"><span>FAQ</span></a></li><li class="item13"><a href="../case-study.html"><span>Case Study</span></a></li><li id="current" class="active item14"><a href="../legal-column-list.html"><span>Legal Column</span></a></li><li class="item15"><a href="../law-and-license-forum.html" target="_blank"><span>Forum</span></a></li></ul>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+        	                <div class="square1">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-title"><h2 class="title">Licenses</h2></div>
+						<div class="clear"></div>
+		                						<div class="module-content">
+		                	<ul class="menu"><li class="item18"><a href="../licenses.html"><span>Licenses</span></a></li><li class="parent item19"><a href="../license-wizard.html"><span>License Wizard</span></a></li><li class="item22"><a href="../comparison-of-licenses/27-license.html"><span>Comparison of Licenses</span></a></li><li class="item23"><a href="../compatibility-of-licenses/27-license.html"><span>Compatibility of Licenses</span></a></li><li class="item197"><a href="../foss-license-category/27-license.html"><span>FOSS License Category</span></a></li></ul>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		                <div class="square1">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-title"><h2 class="title">Policy</h2></div>
+						<div class="clear"></div>
+		                						<div class="module-content">
+		                	<ul class="menu"><li class="item24"><a href="../other-countries.html"><span>Other Countries</span></a></li></ul>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		
+                </div>
+            </div>
+
+                    <div class="clear"></div>
+                </div>
+            </div>
+																													</div>
+										<div id="rt-copyright">
+						<div class="rt-grid-12 rt-alpha rt-omega">
+                        <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<span class="nowrap">Open Source Software Foundry</span><span class="nowrap">‧</span><span class="nowrap"> </span><span class="nowrap">Best  Viewed with IE7.0 or Firefox2.0 above, 1024x768 Resolution. </span><strong>E-Mail</strong>：<a href="mailto:contact@openfoundry.org">contact@openfoundry.org</a> <br /><strong>Address</strong>：No.128, Sec.2, Academia Rd., Institute of Information Science, Academia Sinica, Nangang District, Taipei City 11529, Taiwan (R.O.C). <br /><a href="../privacy-policy.html">Privacy Policy</a>. <a href="../terms-of-use.html">Terms-of-use</a> <span style="position: relative; top: 8px; margin-top: -8px;"> <a href="../../about/8101.html"><img src="../../images/M_images/rss-feed-all.png" border="0" /></a></span>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+        	
+</div>
+						<div class="clear"></div>
+					</div>
+					<div class="rt-footer-bottom-wrap"><div class="rt-footer-bottom"><div class="rt-footer-bottom2"><div class="rt-footer-bottom3"></div></div></div></div>
+									</div></div></div>
+				<div class="rt-surround-bottom"><div class="rt-surround-bottom2"><div class="rt-surround-bottom3"></div></div></div>
+							</div>
+		</div>
+		<!--
+		<script id="aptureScript">
+						(function (){var a=document.createElement("script");a.defer="true";a.src="http://www.apture.com/js/apture.js?siteToken=vsJttrn";document.getElementsByTagName("head")[0].appendChild(a);})();
+     </script>
+-->
+
+<!-- Piwik -->
+<!-- 			<script type="text/javascript">
+			  var _paq = _paq || [];
+		  _paq.push(["trackPageView"]);
+		  _paq.push(["enableLinkTracking"]);
+
+		    (function() {
+			        var u=(("https:" == document.location.protocol) ? "https" : "https") + "://www.openfoundry.org/piwik/";
+				    _paq.push(["setTrackerUrl", u+"piwik.php"]);
+				    _paq.push(["setSiteId", "1"]);
+				        var d=document, g=d.createElement("script"), s=d.getElementsByTagName("script")[0]; g.type="text/javascript";
+				        g.defer=true; g.async=true; g.src=u+"piwik.js"; s.parentNode.insertBefore(g,s);
+					  })();
+		  </script> -->
+<!-- End Piwik Code -->
+	</body>
+</html>

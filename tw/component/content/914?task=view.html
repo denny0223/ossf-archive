@@ -1,0 +1,382 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="zh-tw" lang="zh-tw" >
+<head>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<link rel="shortcut icon" href="../../../images/favicon.ico" />
+	  <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+  <meta name="robots" content="index, follow" />
+  <meta name="keywords" content="OSSFNL254" />
+  <meta name="title" content="在 Windows 上也能用的新酷音輸入法 (Win32-chewing)" />
+  <meta name="description" content="新酷音輸入法 (chewing) 是一套原先在 Linux、FreeBSD、Solaris、以及 Mac OS X 等Unix-Like 作業系統上執行的智慧型注音輸入法，受到許多使用者的歡迎與開發者的貢獻，已是一套發展成熟的輸入法。在微軟的 Windows 上，微軟新注音是預設的注音輸入法，但有一群自由軟體開發者用不習慣，想到何不把新酷音移植到 Windows 上？於是新酷音輸入法在" />
+  <meta name="generator" content="" />
+  <title>在 Windows 上也能用的新酷音輸入法 (Win32-chewing) - OpenFoundry</title>
+  <link href="../../../favicon.ico" rel="shortcut icon" type="image/x-icon" />
+  <link rel="stylesheet" href="../../../components/com_jcomments/tpl/default/style.css%3Fv=10.css" type="text/css" />
+  <link rel="stylesheet" href="../../../components/com_gantry/css/gantry.css" type="text/css" />
+  <link rel="stylesheet" href="../../../components/com_gantry/css/grid-12.css" type="text/css" />
+  <link rel="stylesheet" href="../../../components/com_gantry/css/joomla.css" type="text/css" />
+  <link rel="stylesheet" href="../../../templates/rt_quantive_j15/css/joomla.css" type="text/css" />
+  <link rel="stylesheet" href="../../../templates/rt_quantive_j15/css/style1.css" type="text/css" />
+  <link rel="stylesheet" href="../../../templates/rt_quantive_j15/css/light-body.css" type="text/css" />
+  <link rel="stylesheet" href="../../../templates/rt_quantive_j15/css/demo-styles.css" type="text/css" />
+  <link rel="stylesheet" href="../../../templates/rt_quantive_j15/css/template.css" type="text/css" />
+  <link rel="stylesheet" href="../../../templates/rt_quantive_j15/css/typography.css" type="text/css" />
+  <link rel="stylesheet" href="../../../templates/rt_quantive_j15/css/fusionmenu.css" type="text/css" />
+  <style type="text/css">
+    <!--
+#rt-main-surround ul.menu li.active > a, #rt-main-surround ul.menu li.active > .separator, #rt-main-surround ul.menu li.active > .item, #rt-main-surround .square4 ul.menu li:hover > a, #rt-main-surround .square4 ul.menu li:hover > .item, #rt-main-surround .square4 ul.menu li:hover > .separator, .roktabs-links ul li.active span {color:#0088B5;}
+a, #rt-main-surround ul.menu a:hover, #rt-main-surround ul.menu .separator:hover, #rt-main-surround ul.menu .item:hover {color:#0088B5;}
+    -->
+  </style>
+  <script type="text/javascript" src="../../../components/com_jcomments/js/jcomments-v2.1.js%3Fv=2"></script>
+  <script type="text/javascript" src="../../../components/com_jcomments/libraries/joomlatune/ajax.js"></script>
+  <script type="text/javascript" src="../../../media/system/js/mootools.js"></script>
+  <script type="text/javascript" src="../../../media/system/js/caption.js"></script>
+  <script type="text/javascript" src="../../../components/com_gantry/js/gantry-buildspans.js"></script>
+  <script type="text/javascript" src="../../../components/com_gantry/js/gantry-inputs.js"></script>
+  <script type="text/javascript" src="../../../templates/rt_quantive_j15/js/jquery.cookie.js"></script>
+  <script type="text/javascript" src="../../../modules/mod_roknavmenu/themes/fusion/js/fusion.js"></script>
+  <script type="text/javascript" src="../../../modules/mod_ofssologin/js/ofssologin.js"></script>
+  <script type="text/javascript">
+
+			window.addEvent('domready', function() {
+				var modules = ['rt-block'];
+				var header = ['h3','h2','h1'];
+				GantryBuildSpans(modules, header);
+			});
+		InputsExclusion.push('.content_vote','#rt-popup')
+		        window.addEvent('load', function() {
+					new Fusion('ul.menutop', {
+						pill: 0,
+						effect: 'slide and fade',
+						opacity: 1,
+						hideDelay: 500,
+						centered: 0,
+						tweakInitial: {'x': -2, 'y': 0},
+        				tweakSubsequent: {'x': 0, 'y': -14},
+						menuFx: {duration: 200, transition: Fx.Transitions.Sine.easeOut},
+						pillFx: {duration: 400, transition: Fx.Transitions.Back.easeOut}
+					});
+	            });
+  </script>
+<!-- <script type="text/javascript" src="/sso/javascripts/langsync.js"></script> -->
+<!-- <script src="/templates/rt_quantive_j15/js/ossf.js"></script> -->
+<script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-4136519-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
+</head>
+	<body  class="backgroundlevel-low backgroundstyle-style8 bodylevel-med bodystyle-light cssstyle-style1 logostyle-dark font-family-helvetica font-size-is-default menu-type-fusionmenu col12">
+		<div id="rt-main-background">
+			<div class="rt-container">
+																<div id="rt-header">
+					<div class="rt-grid-7 rt-alpha">
+    			<div class="rt-block">
+    	    	<a href="../../../index.html" id="rt-logo"></a>
+    		</div>
+	    
+</div>
+<div class="rt-grid-5 rt-omega">
+                    <div class="square9">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<div class="ofssologin_square9"><a href="../../../index.html">登入</a>&nbsp;&nbsp|&nbsp;&nbsp;<span><a href="https://www.openfoundry.org/en/component/content/914/914?task=view" ><span lang="en" xml:lang="en">English</span></a></li></ul></span><!--Joom!fish V2.0.4 (Lightning)-->
+<!-- &copy; 2003-2009 Think Network, released under the GPL. -->
+<!-- More information: at http://www.joomfish.net -->
+<div class="ofssologin_search_square9">
+  <form id="of_search" action="https://www.openfoundry.org/of/openfoundry/search" method="get" onsubmit="of_search(); return false;">
+    <select id="of_search_type">
+      <option value="Projects"> 專案 </option>
+      <option value="Content"> 文章 </option>
+      <option value="People"> 人才 </option>
+    </select>
+    <input id="query" name="query" id="mod_search_searchword" maxlength="50" alt="search" class="inputbox" type="text" size="28" value="search..."  onblur="if(this.value=='') this.value='search...';" onfocus="if(this.value=='search...') this.value='';" />
+    <input type="hidden" name="commit" value="search" />
+  </form>
+</div></div>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		
+</div>
+					<div class="clear"></div>
+				</div>
+																<div id="rt-navigation"><div id="rt-navigation2"><div id="rt-navigation3">
+					
+<div class="nopill">
+	<ul class="menutop level1 " >
+						<li class="item1 root" >
+					<a class="orphan item bullet" href="../../../index.html"  >
+				<span>
+			    				首頁				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item32 root" >
+					<a class="orphan item bullet" href="../../../archived.html"  >
+				<span>
+			    				專案				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item186 root" >
+					<a class="orphan item bullet" href="../../community.html"  >
+				<span>
+			    				Who&#039;s Who				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item4 root" >
+					<a class="orphan item bullet" href="../../news.html"  >
+				<span>
+			    				新聞				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item5 root" >
+					<a class="orphan item bullet" href="../../law-and-licensing.html"  >
+				<span>
+			    				法律源地				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item3 root" >
+					<a class="orphan item bullet" href="../../activities.html"  >
+				<span>
+			    				活動				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item2 root" >
+					<a class="orphan item bullet" href="../../resourcecatalog%3FName=Value.html"  >
+				<span>
+			    				資源表列				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item45 root" >
+					<a class="orphan item bullet" href="../../about.html"  >
+				<span>
+			    				關於				   
+				</span>
+			</a>
+			
+			
+	</li>	
+				</ul>
+</div>
+
+				    <div class="clear"></div>
+				</div></div></div>
+								<div class="rt-surround"><div class="rt-surround2"><div class="rt-surround3">
+										<div id="rt-showcase-section">
+												<div id="rt-showcase">
+							<div class="rt-grid-12 rt-alpha rt-omega">
+    		<div class="clear"></div>
+		
+		
+                <div class="close-note">
+                    <div class="rt-block">
+               					<div class="module-content">
+                	<div style="font-size:medium; background-image:linear-gradient(120deg,#159957,#4298b2);color:white;padding:20px;margin:-10px -18px;">感謝您對「自由軟體鑄造場」的支持與愛護，十多年來「自由軟體鑄造場」受中央研究院支持，並在資訊科學研究所以及資訊科技創新研究中心執行，現已完成階段性的任務。 本網站預計持續維運至 2021年底，網站內容基本上不會再更動。<br />也紀念我們永遠的朋友 李士傑先生（Shih-Chieh Ilya Li）。</div>				</div>
+            </div>
+                </div>
+		
+</div>
+							<div class="clear"></div>
+						</div>
+																	</div>
+															<div id="rt-main-surround">
+																							              <div id="rt-main" class="mb12">
+                <div class="rt-main-inner">
+                    <div class="rt-grid-12 ">
+                                                <div class="rt-block">
+                            							<div class="square1">
+							<div class="rt-module-surround">
+								<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+								<div class="rt-module-inner">
+		                            <div id="rt-mainbody">
+		                                
+<div class="rt-joomla ">
+	<div class="rt-article">
+		
+				<div class="rt-headline"><h1 class="rt-article-title">在 Windows 上也能用的新酷音輸入法 (Win32-chewing)</h1>		</div>
+		<div class="clear"></div>
+		
+		
+		
+				<div class="rt-articleinfo">
+						<div class="rt-article-icons">
+								<a href="https://www.openfoundry.org/tw/component/content/article/914--windows--win32-chewing?tmpl=component&amp;print=1&amp;page=" title="列印" onclick="window.open(this.href,'win2','status=no,toolbar=no,scrollbars=yes,titlebar=no,menubar=no,resizable=yes,width=640,height=480,directories=no,location=no'); return false;" rel="nofollow"><span class="icon print"></span></a>																</div>
+			
+			<span class="rt-date-posted">
+						建立日期			2007-04-16 08:03						&nbsp;&nbsp;&nbsp;&nbsp;						最近更新在 2011-01-11 18:41						</span>
+
+						<span class="rt-author">
+				作者是 Emmi			</span>
+				
+					</div>
+		
+		
+		新酷音輸入法 (chewing) 是一套原先在 Linux、FreeBSD、Solaris、以及 Mac OS X 等Unix-Like 作業系統上執行的智慧型注音輸入法，受到許多使用者的歡迎與開發者的貢獻，已是一套發展成熟的輸入法。在微軟的 Windows 上，微軟新注音是預設的注音輸入法，但有一群自由軟體開發者用不習慣，想到何不把新酷音移植到 Windows 上？於是新酷音輸入法在 Win32 平台上重獲新生（以下簡稱 Win32 新酷音），雖然開發的過程比想像中艱苦許多，但經過一段時間的耕耘後、目前已經有成果出來，並達到實用的成度，提供了 Windows 上中文輸入另一個新鮮的選擇。
+<p><strong>◎ Win32 新酷音開發源起</strong></p>
+<p>新酷音輸入法在 Linux 等 Unix-like 系統上獲得肯定，開發也趨於穩定，但後來她之所以在 Win32 平台上開始發展，是緣於開發者對於微軟新注音某些功能的不能忍受。目前開發 libchewing 詞庫計畫的 sky008888 認為，新注音的演算法會把常用自在選字頁中向前移動，以方便使用者能夠快速的找到該字，不過當使用者使用一段時間後，常用字反而會出現選字頁的後面，增加了使用者的選字時間，這樣的功能特色、對某些使用者來說卻會造成困擾。</p>
+<p>現在已用 GPL 釋出的知名 BBS 軟體－ PCMan 的創始人 PCMan，也是以上不滿使用者的其中之一，於是興起改善 Windows 上注音輸入的念頭。就在同一時間，著名的 OpenVenilla 輸入法已經開始發展 win32 版，PCMan 亦參與重寫 OpenVanilla(OV-win32) 輸入法的圖形介面、相容性改良、以及小幅改善其效率，並在這段開發的過程中，逐漸學習到一些 Win32 IME 輸入法的開發方式。</p>
+<p>但因為 OV-win32 整體架構過於龐大，使得啟動速度慢，系統資源耗用過多，實際上 PCMan 只需要使用單一的新酷音輸入法，於是興起開發只包含新酷音輸入法的 Windows 版本的念頭。他參考大陸發展的自由拼音輸入法 freepy、微軟提出的 Text Service Framework(TSF) 與Microsoft Developer Network(MSDN) 等等的文件，加上參考 OV-win32 程式碼，從頭發展，Win32 版的新酷音輸入法的雛形於焉誕生。PCMan 回憶起第一個測試版的 Win32 新酷音源碼，是在 PTT BBS 站上釋出，馬上就有網友下載、並設為預設輸入法，不過也因此碰到開機時輸入法載入錯誤，導致系統無法登入，最後以重灌系統收場，但 PCMan 也感謝這些熱心玩家測試，才能從中找到問題修正錯誤，讓之後的版本能更穩定運作。</p>
+<p>由於 Windows XP 上的輸入法需要使用 TSF 開發，才有辦法支援 Windows 語言列，但新酷音目前用的還是前 IME 介面，故 Win32 版的新酷音輸入法會出現兩個 panel，其中新酷音的 panel 還是由 PCMan 親手繪製。目前 PCMan 因為課業關係，不再進行自由軟體開發，因此他已將 Win32 新酷音交棒給其他開發者繼續發展。</p>
+<p><strong>◎ Win32 新酷音開發者</strong></p>
+<p>目前新酷音輸入法計畫以 Win32 新酷音的開發較為活躍，成員包括 kanru、kcwu（瑕疵修改）、seamxr（修改拼音支援與相容性測試）、sky008888（libchewing 詞庫計畫）等。</p>
+<p>Kanru 回憶起加入新酷音計畫，是在大一（2003年）的時候，那時候新酷音的主要開發者之一 Jserv 剛把 libchewing 從 xcin+chewing.patch 的型式分離出來，為了將 libchewing + xcin 移植到 utf8 環境下開始加入開發行列。Kanru patch 完 xcin 的 utf8 支援後，接著建立 chewing 的 autotools 編譯機制，之後就陸陸續續跟 Jserv 一起整理 libchewing。Kanru 表示，由於從一開始使用 Linux 時就很喜歡使用酷音輸入法，所以很樂意參與這個將新酷音專案生命延續下去的計劃。</p>
+<p>專門開發 libchewing 詞庫計畫的 sky008888，則是因為 2006 年 5 月 PCMan 在 PTT BBS 的一篇招收人員修改詞庫的文章，注意到新酷音的計畫，同時對微軟的新注音輸入法不滿，才參與 Win32 新酷音的計畫。sky008888 說，目前詞庫計畫的主要目標是修復存在詞庫裡面的瑕疵 (bug)，包括 tsi.src 和 phone.cin 裡面的單字無法配合，以及 tsi.src 裡面的同音詞與常用字的組合牴觸者，都需要修訂，因此他目前將著重在這方面工作。Seamxr 加入的方式與 sky008888 類似，也是因為 2006 年 10 月多，在網路上看到 Win32 新酷音，使用後覺得非常不錯，就寫信給 PCMan 想要參加 win32 版新酷音的開發。</p>
+<p><strong>◎ 開發時遭遇的困難</strong></p>
+<p>Win32 新酷音的開發過程其實十分艱苦，Kanru 認為，移植所花最大工夫，是要理解 Win32 平台本身的輸入法 framework，不但微軟在 MSDN 上提供的文件多到不知道該怎麼看，即使看了也很難懂中間的 message passing 流程。Kanru 表示，MSDN 的文件僅告知寫輸入法要實作哪些 API，但 Windows 上的輸入法屬於message driven，所以光知道有哪些 API 需要實作仍不夠，還要知道哪些 API 被使用後，會發生什麼事，接下來會遇到的狀況，這些都沒有寫在 MSDN 的文件中，他一開始為了比對新酷音跟新注音的不同，還透過可以偷看程式間的 IPC message 的 spy++ 以觀察 message 到底是怎麼跑的。</p>
+<p>Seamxr 補充，就他所知開發過程最大的問題，是微軟沒有公佈 IME API 的實做，只有 MSDN 上一堆文件，他們曾經為了一個候選字的問題，讀文件讀了好久還是無法領會，開玩笑說簡直比 Request for Comments (RFC) 還難看懂，只好又在網路上努力找其他的文件閱讀。為了要寫出 Win32-chewing 這個看似只跟使用者有關的應用程式，除了 MSDN 的資料，開發者甚至還得接觸到只有開發低階驅動程式的硬體工程師才需要了解的 Driver Development Kit (DDK)，才能順利開發出 Win32-chewing。</p>
+<p><strong>◎ Win32 新酷音的迴響與未來發展</strong></p>
+<p>Win32 新酷音一推出便受到自由軟體愛好者的歡迎，他們很感謝 PCMan讓它們在 Windows 上有另外一種選擇輸入法的機會。之後經由開發團隊的開發，目前已經發展到 0.3.4.2 版，根據下載的 log 統計，目前大概已有一萬多人次下載過。</p>
+<p>Kanru表示，Win32 新酷音相對於注音的優勢就是「智慧選字」，不過相對於新注音的選字演算法，新酷音比較不會有令人驚訝的表現。他補充，新酷音目前的自動學習，是在使用者選字之後、把可能是連在一起的詞記起來，不過每個人的選字習慣不同，有些人是邊打邊選、有些是打完後再選字，因此新酷音對不同使用者可能有不一樣的效果。</p>
+<p>因此，如何增強其選字的功能，Kanru 認為將是未來 Win32 新酷音的開發要點。Kanru 未來規劃開發更聰明的學習系統，如自動學習新詞（同一個詞只要在不同的前後文使用兩次以上就會被記住），以及類似關聯詞的系統（如 tab completion，可根據最後打的字猜測可能的詞出來待選）等。</p>
+<p>在 libchewing 方面，sky008888 表示，中程目標是消滅龐大的系統詞庫，改以收錄常用詞的系統詞庫，加上多使用者詞庫，如：佛學詞庫、工程師詞庫……等組合，達成讓使用者特製化的需求。另外，sky008888 亦希望能在 Win32 新酷音上，加上類似新注音的螢幕小鍵盤和自訂鍵盤的功能。至於 Vista 版對新酷音的支援，seamxr 表示現在正研究 TSF 中，也許五月就會推出 Vista 版新酷音了。</p>
+<p>最後，新酷音計畫的元老 Jserv 表示，新酷音輸入法計畫很希望大學院校的學生，能以智慧型注音輸入法當作專題或者研究素材，畢竟現在這些 codebase 都有了，只是除了功能面的改進外，深入的演算法跟語言層面的改進，才是得以大幅突破的機會。</p>
+<p>相關網址：<br />1. 新酷音輸入法官網 <br /><a href="https://chewing.csie.net/" target="_blank">https://chewing.csie.net/</a><br />2. 新酷音輸入法詞庫<br /><a href="https://rt.openfoundry.org/Foundry/Project/Download/?Queue=436" target="_blank">https://rt.openfoundry.org/Foundry/Project/Download/?Queue=436</a><br />3. Debian.Org.Tw 成員 Kanru Chen 專訪<br /><a href="../../../article.pl%3Fsid=05%252F10%252F16%252F1454231.html" target="_blank">https://www.openfoundry.org/article.pl?sid=05/10/16/1454231</a></p>
+			<!-- Show relate article -->
+				<!-- end -->
+		<div class="article_note">
+		<!-- Add tags use metakey, and show OSSF Newsletter tag: OSSFNL+NUM-->
+		<br><br> <hr style='border: 1px dashed #D2DADB;'><b>自由軟體鑄造場電子報&nbsp;:</b>&nbsp;<a href='../../../previous-issue%3Ftask=view&amp;id=254.html'>第 78 期 新酷音輸入法 Windows 版</a><br>				<!-- End -->
+					<br>
+					<b>分類: </b><a href="../../foss-projects.html">				源碼專案					</a>				</div>
+			 <!-- AddThis Button BEGIN ID 3001 is the front page article -->
+     			<br><br>
+       <div class="addthis_toolbox addthis_default_style addthis_32x32_style">
+       <a class="addthis_button_preferred_1"></a>
+       <a class="addthis_button_preferred_2"></a>
+       <a class="addthis_button_preferred_3"></a>
+       <a class="addthis_button_preferred_4"></a>
+       <a class="addthis_button_compact"></a>
+       <a class="addthis_counter addthis_bubble_style"></a>
+       </div>
+       <script type="text/javascript">var addthis_config = {"data_track_clickback":true};</script>
+       <script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js#pubid=openfoundry"></script>
+       <!-- AddThis Button END -->
+     <br>
+		<div class="totop" ><a class="rt-totop" href="914%3Ftask=view.html#" style="outline: medium none;">↑ Top</a></div>
+            <!-- AddThis Button END -->
+
+		<script type="text/javascript">
+var jcomments=new JComments(914, 'com_content','https://openfoundry.org/index.php?option=com_jcomments&amp;tmpl=component&amp;lang=');
+jcomments.setList('comments-list');
+</script>
+<div id="jc">
+<div id="comments"><h4>評論<a class="refresh" href="914%3Ftask=view.html#" title="重新整理評論列表" onclick="jcomments.showPage(914,'com_content',0);return false;">&nbsp;</a></h4>
+<div id="comments-list" class="comments-list">
+        <div class="even" id="comment-item-84"><div class="rbox"><div class="rbox_tr"><div class="rbox_tl"><div class="rbox_t">&nbsp;</div></div></div><div class="rbox_m">
+<div class="comment-avatar"><img src="http://www.gravatar.com/avatar.php?gravatar_id=d41d8cd98f00b204e9800998ecf8427e&amp;default=https%3A%2F%2Fwww.openfoundry.org%2Fcomponents%2Fcom_jcomments%2Fimages%2Fno_avatar.png" alt="" /></div>
+<div class="comment-box avatar-indent">
+<span class="comments-vote">
+	<span id="comment-vote-holder-84">
+<a href="914%3Ftask=view.html#" class="vote-good" title="優質的評論" onclick="jcomments.voteComment(84, 1);return false;"></a><a href="914%3Ftask=view.html#" class="vote-poor" title="差勁的評論" onclick="jcomments.voteComment(84, -1);return false;"></a>
+<span class="vote-none">0</span>
+	</span>
+</span>
+<a class="comment-anchor" href="../../foss-projects/914--windows--win32-chewing.html#comment-84" id="comment-84">#1</a>
+<span class="comment-author">kevin</span>
+<span class="comment-date">2010-11-12 03:47</span>
+<div class="comment-body" id="comment-body-84">您好:<br />新酷音在lenovo T410無法輸入,請問要如何解決?<br /><br />Tks<br /><br />kevin</div>
+</div><div class="clear"></div>
+</div><div class="rbox_br"><div class="rbox_bl"><div class="rbox_b">&nbsp;</div></div></div></div>
+</div>
+</div>
+<div id="comments-list-footer"><a class="refresh" href="914%3Ftask=view.html#" title="重新整理評論列表" onclick="jcomments.showPage(914,'com_content',0);return false;">重新整理評論列表</a></div>
+</div>
+<div id="comments-footer" align="center"><a href="http://www.joomlatune.com" title="JComments" target="_blank">JComments</a></div>
+<script type="text/javascript">
+jcomments.setAntiCache(1,0,0);
+</script> 
+</div>	</div>
+</div>
+
+		                            </div>
+									<div class="clear"></div>
+								</div>
+								<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+							</div>
+							</div>
+                                                    </div>
+                                            </div>
+                                        <div class="clear"></div>
+                </div>
+            </div>
+																													</div>
+										<div id="rt-copyright">
+						<div class="rt-grid-12 rt-alpha rt-omega">
+                        <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<div id="desktop-mobile-version-switch"><span id="mobile-version" class="version-switch"><a href="914%3Ftask=view.html#">行動版</a></span></div>
+自由軟體鑄造場 製作 最佳瀏覽狀態：IE7或Firefox2.0以上 (建議使用Firefox) ‧ 解析度1024*768 <br /> <strong>E-Mail</strong>：<a href="mailto:contact@openfoundry.org">contact@openfoundry.org</a> <strong>Address</strong>：台北市南港區研究院路2段128號 中央研究院資訊科學研究所 . <a href="../../../privacy-policy.html">隱私權條款</a>. <a href="../../../terms-of-use.html">使用條款</a><span style="position: relative; top: 8px; margin-top: -8px;"> <a href="../../../about/8101.html"><img src="../../../images/M_images/rss-feed-all.png" border="0" /></a></span>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+        	
+</div>
+						<div class="clear"></div>
+					</div>
+					<div class="rt-footer-bottom-wrap"><div class="rt-footer-bottom"><div class="rt-footer-bottom2"><div class="rt-footer-bottom3"></div></div></div></div>
+									</div></div></div>
+				<div class="rt-surround-bottom"><div class="rt-surround-bottom2"><div class="rt-surround-bottom3"></div></div></div>
+							</div>
+		</div>
+		<!--
+		<script id="aptureScript">
+						(function (){var a=document.createElement("script");a.defer="true";a.src="http://www.apture.com/js/apture.js?siteToken=vsJttrn";document.getElementsByTagName("head")[0].appendChild(a);})();
+     </script>
+-->
+
+<!-- Piwik -->
+<!-- 			<script type="text/javascript">
+			  var _paq = _paq || [];
+		  _paq.push(["trackPageView"]);
+		  _paq.push(["enableLinkTracking"]);
+
+		    (function() {
+			        var u=(("https:" == document.location.protocol) ? "https" : "https") + "://www.openfoundry.org/piwik/";
+				    _paq.push(["setTrackerUrl", u+"piwik.php"]);
+				    _paq.push(["setSiteId", "1"]);
+				        var d=document, g=d.createElement("script"), s=d.getElementsByTagName("script")[0]; g.type="text/javascript";
+				        g.defer=true; g.async=true; g.src=u+"piwik.js"; s.parentNode.insertBefore(g,s);
+					  })();
+		  </script> -->
+<!-- End Piwik Code -->
+	</body>
+</html>

@@ -1,0 +1,180 @@
+	<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+	<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="zh-tw" lang="zh-tw" >
+		<head>
+			  <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+  <meta name="robots" content="noindex, nofollow" />
+  <meta name="keywords" content="OSSFNL804" />
+  <meta name="title" content="透過 Bumblebee 及 Synergy 使 Nvidia Optimus 的筆電能在 Ubuntu 上使用 HDMI" />
+  <meta name="description" content="◎本文翻譯自 WEB UPD8 網站，原文請參考這裡。 Nvidia 推出的 Optimus 技術是讓一台擁有內建顯示晶片的 Intel CPU 及 Nvidia 獨立顯示晶片的筆記型電腦，可以視情況在兩個顯示晶片之間做切換，來達到省電目的的解決方案，不過這一直都只能在 Windows 7 上正常的運作，使得 Linux 之父 Linus Torvalds 為此對 Nvidia" />
+  <meta name="generator" content="" />
+  <title>透過 Bumblebee 及 Synergy 使 Nvidia Optimus 的筆電能在 Ubuntu 上使用 HDMI</title>
+  <link href="../../favicon.ico" rel="shortcut icon" type="image/x-icon" />
+  <link rel="stylesheet" href="../../components/com_gantry/css/gantry.css" type="text/css" />
+  <link rel="stylesheet" href="../../components/com_gantry/css/grid-12.css" type="text/css" />
+  <link rel="stylesheet" href="../../components/com_gantry/css/joomla.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/joomla.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/style1.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/light-body.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/demo-styles.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/template.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/typography.css" type="text/css" />
+  <style type="text/css">
+    <!--
+#rt-main-surround ul.menu li.active > a, #rt-main-surround ul.menu li.active > .separator, #rt-main-surround ul.menu li.active > .item, #rt-main-surround .square4 ul.menu li:hover > a, #rt-main-surround .square4 ul.menu li:hover > .item, #rt-main-surround .square4 ul.menu li:hover > .separator, .roktabs-links ul li.active span {color:#0088B5;}
+a, #rt-main-surround ul.menu a:hover, #rt-main-surround ul.menu .separator:hover, #rt-main-surround ul.menu .item:hover {color:#0088B5;}
+    -->
+  </style>
+  <script type="text/javascript" src="../../components/com_jcomments/js/jcomments-v2.1.js%3Fv=2"></script>
+  <script type="text/javascript" src="../../components/com_jcomments/libraries/joomlatune/ajax.js"></script>
+  <script type="text/javascript" src="../../media/system/js/mootools.js"></script>
+  <script type="text/javascript" src="../../media/system/js/caption.js"></script>
+  <script type="text/javascript" src="../../components/com_gantry/js/gantry-buildspans.js"></script>
+  <script type="text/javascript" src="../../components/com_gantry/js/gantry-inputs.js"></script>
+  <script type="text/javascript">
+
+			window.addEvent('domready', function() {
+				var modules = ['rt-block'];
+				var header = ['h3','h2','h1'];
+				GantryBuildSpans(modules, header);
+			});
+		InputsExclusion.push('.content_vote','#rt-popup')
+  </script>
+		</head>
+		<body  class="backgroundlevel-low backgroundstyle-style8 bodylevel-med bodystyle-light cssstyle-style1 logostyle-dark font-family-helvetica font-size-is-default menu-type-fusionmenu col12 ">
+			<div id="rt-main-surround">
+				<div class="rt-container">
+					<div class="rt-block">
+						<div id="rt-mainbody">
+					    	
+<div class="rt-joomla ">
+	<div class="rt-article">
+		
+				<div class="rt-headline"><h1 class="rt-article-title">透過 Bumblebee 及 Synergy 使 Nvidia Optimus 的筆電能在 Ubuntu 上使用 HDMI</h1>		</div>
+		<div class="clear"></div>
+		
+		
+		
+				<div class="rt-articleinfo">
+						<div class="rt-article-icons">
+				<a href="8796--bumblebee-synergy-nvidia-optimus-ubuntu-hdmi%3Ftmpl=component&amp;print=1&amp;layout=default&amp;page=.html#" onclick="window.print();return false;"><span class="icon print"></span></a>									<span class="icon printscreen">
+						<a href="8796--bumblebee-synergy-nvidia-optimus-ubuntu-hdmi%3Ftmpl=component&amp;print=1&amp;layout=default&amp;page=.html#" onclick="window.print();return false;"><img src="../../images/M_images/printButton.png" alt="列印"  /></a>					</span>
+							</div>
+			
+			<span class="rt-date-posted">
+						建立日期			2012-09-06 11:25						&nbsp;&nbsp;&nbsp;&nbsp;						最近更新在 2012-09-25 17:41						</span>
+
+						<span class="rt-author">
+				作者是 蕭惟杰(RJ)／編譯			</span>
+				
+					</div>
+		
+		
+		<p><span style="color: #333333; font-size: 15px; line-height: 27px;">◎</span>本文翻譯自 WEB UPD8 網站，原文請參考<a href="https://www.webupd8.org/2012/08/get-hdmi-working-with-nvidia-optimus-on.html" target="_blank">這裡</a>。</p>
+<p>Nvidia 推出的 Optimus 技術是讓一台擁有內建顯示晶片的 Intel CPU 及 Nvidia 獨立顯示晶片的筆記型電腦，可以視情況在兩個顯示晶片之間做切換，來達到省電目的的解決方案，不過這一直都只能在 Windows 7 上正常的運作，使得 Linux 之父 Linus Torvalds 為此對 Nvidia 大比中指、表達不滿，儘管 Nvidia 推說有大力支援了 Bumblebee 計劃。而 Bumblebee 計劃的目的是在於把 Nvidia Optimus 的功能移植到 Linux 平台上，從命名也可以看出之間的關聯性（Optimus 與 Bumblebee 正是變形金剛中的柯博文及大黃蜂），目前的進度仍處於「需要時才把運算丟到獨立顯示晶片上處理」的階段，而這樣的情況，導致筆電上的 HDMI 或 Display Port 的輸出無法使用（筆電上通常這兩種 Port 為獨立顯卡所管理）。可惜的是，目前的情況，離 Windows 上的「終極型態」尚有很大一段差距，但是仍然有所謂「外道」的做法，可以讓我們「硬是要」透過 HDMI 或 Display Port 將畫面輸出，讓我們的內心得到小小的慰藉。</p>
+
+<p>這裡提供的做法，就是使用第二個桌面環境，這邊使用的是 LXDE，但是其實也可以改用其他的桌面環境像是 Xfce，而這第二個桌面環境將會透過 HDMI 輸出到外接顯示器。你可以同時在平常使用的桌面環境與第二個桌面環境上執行任何應用程式像是玩遊戲、看影片等等，而且這兩個桌面環境共用鍵盤與滑鼠。看起來會像是這樣子：</p>
+<div><a href="../../images/120906/HDMI/01.jpg" target="_blank"><img src="../../images/120906/HDMI/01.jpg" alt="alt" width="500" /></a></div>
+<p>圖1：筆電螢幕所使用的桌面環境</p>
+<div><a href="../../images/120906/HDMI/02.jpg" target="_blank"><img src="../../images/120906/HDMI/02.jpg" alt="alt" width="500" /></a></div>
+<p>圖2：透過 HDMI 輸出到外接顯示器外接顯示器的第二個桌面環境</p>
+<p>從圖中可以發現，他們執行在同一台電腦並各自使用不同的顯示晶片。</p>
+不過，這邊也有幾點要注意：
+<ul>
+<li>目前仍無法透過 HDMI 輸出聲音，聲音只能透過與音效晶片連接的裝置像是內建喇叭輸出。</li>
+<li>無法直接將畫面在兩個桌面環境之間移動，只能透過到直接在第二個桌面環境執行程式或是透過 export DISPLAY=:8.0 將執行程式的畫面導到第二個桌面環境上。</li>
+<li>當第二個桌面環境運行時，你的主要桌面環境上會多出一組系統圖示。下面會提到解決方法。</li>
+</ul>
+<br />
+<h3>步驟</h3>
+<p>以下的步驟將以 Ubuntu 12.04 為例：</p>
+<p>1. 安裝 Bumblebee，如果你尚未安裝。<a href="https://wiki.ubuntu.com/Bumblebee" target="_blank">這裡</a>有相關說明。</p>
+<p>2. 因為 Unity 無法透過 Bumblebee 運行（不確定是否能在不互相干擾的情況下運行兩個相同的桌面環境），所以你需要使用其他不同的桌面環境，像是 LXDE 、 Xfce 等等，安裝你想要的，在這邊我們以 LXDE 為例。然後為了讓這兩個桌面環境共用鍵盤滑鼠，我們需要利用 Synergy 這套可以在多台電腦間共用鍵盤滑鼠的跨平台軟體。以下指令將會安裝 LXDE 與 Synergy ：</p>
+<pre>sudo apt-get install synergy lxde lxde-common</pre>
+<p>3. 安裝好 Synergy 後，你需要建立一個設定檔方能使用。你可以從<a href="https://webupd8.googlecode.com/files/synergy.conf" target="_blank">這裡</a>下載範例檔，複製到家目錄並更名為 .synergy.conf。這樣的設定檔應該足以使用，但如果你還想做些修改，你可以參考這篇<a href="https://synergy2.sourceforge.net/configuration.html" target="_blank">文件</a>來修改你的 Synergy 設定檔。</p>
+<p>4. 透過這個 <a href="https://webupd8.googlecode.com/files/hdmi-0.1.tar.gz" target="_blank">Script</a> 讓 LXDE 啟動並顯示在外接外接顯示器上面。將壓縮檔解開，複製 hdmi 這個 script 到你的家目錄並透過下面指令將這個 script 標示為可執行：</p>
+<pre>chmod +x ~/hdmi</pre>
+<p>然後，你可以開始執行這個指令：</p>
+<pre>~/hdmi</pre>
+<p>之後， LXDE 將會透過 HDMI 啟動到外接顯示器上。等待一下（大約10秒），然後你可以嘗試將滑鼠往右移動，滑鼠游標應該會跑到你的 HDMI 顯示裝置上。</p>
+<p>這邊解說一下這個 script 做了哪些事情：</p>
+<ul>
+<ul>
+<li>設定畫面輸出到我們要使用的 HDMI 顯示器（Display 8， 由 Bumblebee 建立的虛擬顯示畫面編號）：</li>
+</ul>
+</ul>
+<pre>export DISPLAY=:8.0</pre>
+<ul>
+<ul>
+<li>透過 optirun （以 Bumblebee 處理指定應用程式所需繪圖運算的指令）執行 LXDE：</li>
+</ul>
+</ul>
+<pre>optirun startlxde &amp;</pre>
+<ul>
+<ul>
+<li>分別為兩個顯示畫面建立 Synergy 連接：</li>
+</ul>
+</ul>
+<pre>synergys -f -a 127.0.0.1 --display :0 -n ubuntu &amp;
+synergyc -f -n hdmi --display :8 127.0.0.1 &amp;</pre>
+<ul>
+<ul>
+<li>最後，將輸出畫面設定回主顯示器，結束這個回合：</li>
+</ul>
+</ul>
+<pre>export DISPLAY=:0.0</pre>
+<p>這個 script 也使用一些 sleep 指令，以確保有足夠的時間讓目前的指令在下個指令執行前完成所有動作。</p>
+<br />
+<h3>小技巧</h3>
+<p><strong>啟動應用程式</strong></p>
+<p>如果你想要讓應用程式啟動到外接螢幕的畫面上，你可以直接將滑鼠移到外接螢幕上並點選 LXDE 的選單來執行程式，或是在主畫面下達以下指令：</p>
+<pre>export DISPLAY=:8.0 ＜application＞</pre>
+<p>＜application＞可以是你要執行的任何程式。另外，你也可以先在終端機下先執行 export DISPLAY=:8.0，然後你接下來執行的程式都會出現在外接螢幕上。</p>
+<p><strong>設定 Nvidia 顯示卡</strong></p>
+<p>運用上面的指令，你也可以執行 nvidia-settings，如果你是使用 Nvidia 專用顯示驅動：</p>
+<pre>export DISPLAY=:8.0 nvidia-settings</pre>
+<p>修正重複啟動的自動執行程式 / 系統圖示：</p>
+<p>為了避免啟動 LXDE 時，主畫面會出現兩組系統圖示（像是網路圖示等）的情況，我們可以透過下面的指令讓 LXDE 啟動時不會載入所有的自動執行程式：</p>
+<pre>for f in /etc/xdg/autostart/*; do if [[ ! `grep "NotShowIn=LXDE" $f` ]]; then echo "NotShowIn=LXDE;" | sudo tee -a $f; fi; done
+for f in ~/.config/autostart/*; do if [[ ! `grep "NotShowIn=LXDE" $f` ]]; then echo "NotShowIn=LXDE;" | tee -a $f; fi; done</pre>
+<p>你也可以手動將 NotShowIn=LXDE; 加到 `/etc/xdg/autostart` 及 `~/.config/autostart` 兩個資料夾中所有你不想在 LXDE 啟動載入的應用程式所對應的 .desktop 檔案。更多關於 NotShowIn 及 OnlyShowIn 的用法，請參考 <a href="https://www.webupd8.org/2011/11/make-applications-autostart-only-in.html" target="_blank">MAKE APPLICATIONS AUTOSTART ONLY IN A CERTAIN ENVIRONMENT (GNOME, UNITY, KDE, ETC.)</a>。</p>
+<br />
+<h3>相關網址</h3>
+<ol style="list-style-type: decimal;">
+<li>Get HDMI Working With Nvidia Optimus On Ubuntu By Using Bumblebee And Synergy<br /><a href="https://www.webupd8.org/2012/08/get-hdmi-working-with-nvidia-optimus-on.html" target="_blank">https://www.webupd8.org/2012/08/get-hdmi-working-with-nvidia-optimus-on.html</a></li>
+<li>Bumblebee Project<br /><a href="https://github.com/Bumblebee-Project/Bumblebee/" target="_blank">https://github.com/Bumblebee-Project/Bumblebee/</a></li>
+<li>Issue #75: HDMI output possible? · MrMEEE/bumblebee-Old-and-abbandoned<br /><a href="https://github.com/MrMEEE/bumblebee-Old-and-abbandoned/issues/75#issuecomment-2797298" target="_blank">https://github.com/MrMEEE/bumblebee-Old-and-abbandoned/issues/75#issuecomment-2797298</a></li>
+<li>M11XR3 Bumblebee and the dual screen setup<br /><a href="https://itviking.net/blog/m11xr3-bumblebee-and-the-dual-screen-setup" target="_blank">https://itviking.net/blog/m11xr3-bumblebee-and-the-dual-screen-setup</a></li>
+</ol>
+			<!-- Show relate article -->
+				<!-- end -->
+		<div class="article_note">
+		<!-- Add tags use metakey, and show OSSF Newsletter tag: OSSFNL+NUM-->
+		<br><br> <hr style='border: 1px dashed #D2DADB;'><b>自由軟體鑄造場電子報&nbsp;:</b>&nbsp;<a href='../../previous-issue%3Ftask=view&amp;id=804.html'>第 204 期 Simile Widget Timeline - 用靜態網頁表現時間線</a><br>				<!-- End -->
+					<br>
+					<b>分類: </b><a href="../foss-programs.html">				源碼秘技					</a>				</div>
+			 <!-- AddThis Button BEGIN ID 3001 is the front page article -->
+     			<br><br>
+       <div class="addthis_toolbox addthis_default_style addthis_32x32_style">
+       <a class="addthis_button_preferred_1"></a>
+       <a class="addthis_button_preferred_2"></a>
+       <a class="addthis_button_preferred_3"></a>
+       <a class="addthis_button_preferred_4"></a>
+       <a class="addthis_button_compact"></a>
+       <a class="addthis_counter addthis_bubble_style"></a>
+       </div>
+       <script type="text/javascript">var addthis_config = {"data_track_clickback":true};</script>
+       <script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js#pubid=openfoundry"></script>
+       <!-- AddThis Button END -->
+     <br>
+		<div class="totop" ><a class="rt-totop" href="8796--bumblebee-synergy-nvidia-optimus-ubuntu-hdmi%3Ftmpl=component&amp;print=1&amp;layout=default&amp;page=.html#" style="outline: medium none;">↑ Top</a></div>
+            <!-- AddThis Button END -->
+
+			</div>
+</div>
+
+						</div>
+					</div>
+				</div>
+			</div>
+		</body>
+	</html>

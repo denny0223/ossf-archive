@@ -1,0 +1,728 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="zh-tw" lang="zh-tw" >
+<head>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<link rel="shortcut icon" href="../../images/favicon.ico" />
+	  <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+  <meta name="robots" content="index, follow" />
+  <meta name="keywords" content="CPAN, Perl, 延伸模組, extension management tools,OSSFNL765" />
+  <meta name="title" content="Perl CPAN - Comprehensive Perl Archive Network" />
+  <meta name="description" content="簡介 CPAN - Comprehensive Perl Archive Network 的中文名稱為「Perl 綜合典藏網」，是各種程式語言線上典藏網的始祖，在它之後許多語言也複製類似的模式，比如 R 語言的 CRAN、Tex 語言 CTAN、Python 語言的 PyPI 與 PHP 語言的 PEAR 等。 CPAN 網站自從 1995 年十月上線以來，已經累積了 101,232 個" />
+  <meta name="generator" content="" />
+  <title>Perl CPAN - Comprehensive Perl Archive Network - OpenFoundry</title>
+  <link href="../../favicon.ico" rel="shortcut icon" type="image/x-icon" />
+  <link rel="stylesheet" href="../../components/com_gantry/css/gantry.css" type="text/css" />
+  <link rel="stylesheet" href="../../components/com_gantry/css/grid-12.css" type="text/css" />
+  <link rel="stylesheet" href="../../components/com_gantry/css/joomla.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/joomla.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/style1.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/light-body.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/demo-styles.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/template.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/typography.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/fusionmenu.css" type="text/css" />
+  <style type="text/css">
+    <!--
+#rt-main-surround ul.menu li.active > a, #rt-main-surround ul.menu li.active > .separator, #rt-main-surround ul.menu li.active > .item, #rt-main-surround .square4 ul.menu li:hover > a, #rt-main-surround .square4 ul.menu li:hover > .item, #rt-main-surround .square4 ul.menu li:hover > .separator, .roktabs-links ul li.active span {color:#0088B5;}
+a, #rt-main-surround ul.menu a:hover, #rt-main-surround ul.menu .separator:hover, #rt-main-surround ul.menu .item:hover {color:#0088B5;}
+    -->
+  </style>
+  <script type="text/javascript" src="../../components/com_jcomments/js/jcomments-v2.1.js%3Fv=2"></script>
+  <script type="text/javascript" src="../../components/com_jcomments/libraries/joomlatune/ajax.js"></script>
+  <script type="text/javascript" src="../../media/system/js/mootools.js"></script>
+  <script type="text/javascript" src="../../media/system/js/caption.js"></script>
+  <script type="text/javascript" src="../../components/com_gantry/js/gantry-buildspans.js"></script>
+  <script type="text/javascript" src="../../components/com_gantry/js/gantry-inputs.js"></script>
+  <script type="text/javascript" src="../../templates/rt_quantive_j15/js/jquery.cookie.js"></script>
+  <script type="text/javascript" src="../../modules/mod_roknavmenu/themes/fusion/js/fusion.js"></script>
+  <script type="text/javascript" src="../../modules/mod_ofssologin/js/ofssologin.js"></script>
+  <script type="text/javascript">
+
+			window.addEvent('domready', function() {
+				var modules = ['rt-block'];
+				var header = ['h3','h2','h1'];
+				GantryBuildSpans(modules, header);
+			});
+		InputsExclusion.push('.content_vote','#rt-popup')
+		        window.addEvent('load', function() {
+					new Fusion('ul.menutop', {
+						pill: 0,
+						effect: 'slide and fade',
+						opacity: 1,
+						hideDelay: 500,
+						centered: 0,
+						tweakInitial: {'x': -2, 'y': 0},
+        				tweakSubsequent: {'x': 0, 'y': -14},
+						menuFx: {duration: 200, transition: Fx.Transitions.Sine.easeOut},
+						pillFx: {duration: 400, transition: Fx.Transitions.Back.easeOut}
+					});
+	            });
+  </script>
+<!-- <script type="text/javascript" src="/sso/javascripts/langsync.js"></script> -->
+<!-- <script src="/templates/rt_quantive_j15/js/ossf.js"></script> -->
+<script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-4136519-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
+</head>
+	<body  class="backgroundlevel-low backgroundstyle-style8 bodylevel-med bodystyle-light cssstyle-style1 logostyle-dark font-family-helvetica font-size-is-default menu-type-fusionmenu col12 ">
+		<div id="rt-main-background">
+			<div class="rt-container">
+																<div id="rt-header">
+					<div class="rt-grid-7 rt-alpha">
+    			<div class="rt-block">
+    	    	<a href="../../index.html" id="rt-logo"></a>
+    		</div>
+	    
+</div>
+<div class="rt-grid-5 rt-omega">
+                    <div class="square9">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<div class="ofssologin_square9"><a href="../../index.html">登入</a>&nbsp;&nbsp|&nbsp;&nbsp;<span><a href="../../en/tech-column/8533-perl-cpan-comprehensive-perl-archive-network.html" ><span lang="en" xml:lang="en">English</span></a></li></ul></span><!--Joom!fish V2.0.4 (Lightning)-->
+<!-- &copy; 2003-2009 Think Network, released under the GPL. -->
+<!-- More information: at http://www.joomfish.net -->
+<div class="ofssologin_search_square9">
+  <form id="of_search" action="https://www.openfoundry.org/of/openfoundry/search" method="get" onsubmit="of_search(); return false;">
+    <select id="of_search_type">
+      <option value="Projects"> 專案 </option>
+      <option value="Content"> 文章 </option>
+      <option value="People"> 人才 </option>
+    </select>
+    <input id="query" name="query" id="mod_search_searchword" maxlength="50" alt="search" class="inputbox" type="text" size="28" value="search..."  onblur="if(this.value=='') this.value='search...';" onfocus="if(this.value=='search...') this.value='';" />
+    <input type="hidden" name="commit" value="search" />
+  </form>
+</div></div>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		
+</div>
+					<div class="clear"></div>
+				</div>
+																<div id="rt-navigation"><div id="rt-navigation2"><div id="rt-navigation3">
+					
+<div class="nopill">
+	<ul class="menutop level1 " >
+						<li class="item1 root" >
+					<a class="orphan item bullet" href="../../index.html"  >
+				<span>
+			    				首頁				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item32 root" >
+					<a class="orphan item bullet" href="../../archived.html"  >
+				<span>
+			    				專案				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item186 root" >
+					<a class="orphan item bullet" href="../community.html"  >
+				<span>
+			    				Who&#039;s Who				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item4 root" >
+					<a class="orphan item bullet" href="../news.html"  >
+				<span>
+			    				新聞				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item5 root" >
+					<a class="orphan item bullet" href="../law-and-licensing.html"  >
+				<span>
+			    				法律源地				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item3 root" >
+					<a class="orphan item bullet" href="../activities.html"  >
+				<span>
+			    				活動				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item2 root" >
+					<a class="orphan item bullet" href="../resourcecatalog%3FName=Value.html"  >
+				<span>
+			    				資源表列				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item45 root" >
+					<a class="orphan item bullet" href="../about.html"  >
+				<span>
+			    				關於				   
+				</span>
+			</a>
+			
+			
+	</li>	
+				</ul>
+</div>
+
+				    <div class="clear"></div>
+				</div></div></div>
+								<div class="rt-surround"><div class="rt-surround2"><div class="rt-surround3">
+										<div id="rt-showcase-section">
+												<div id="rt-showcase">
+							<div class="rt-grid-12 rt-alpha rt-omega">
+    		<div class="clear"></div>
+		
+		
+                <div class="close-note">
+                    <div class="rt-block">
+               					<div class="module-content">
+                	<div style="font-size:medium; background-image:linear-gradient(120deg,#159957,#4298b2);color:white;padding:20px;margin:-10px -18px;">感謝您對「自由軟體鑄造場」的支持與愛護，十多年來「自由軟體鑄造場」受中央研究院支持，並在資訊科學研究所以及資訊科技創新研究中心執行，現已完成階段性的任務。 本網站預計持續維運至 2021年底，網站內容基本上不會再更動。<br />也紀念我們永遠的朋友 李士傑先生（Shih-Chieh Ilya Li）。</div>				</div>
+            </div>
+                </div>
+		
+</div>
+							<div class="clear"></div>
+						</div>
+																	</div>
+															<div id="rt-main-surround">
+												<div id="rt-breadcrumbs">
+								<div class="rt-breadcrumb-surround">
+		<a href="../../index.html" id="breadcrumbs-home"></a>
+		<span class="breadcrumbs pathway">
+<a href="../tech-column.html" class="pathway">技術專欄</a> <img src="../../templates/rt_quantive_j15/images/arrow.png" alt=""  /> <span class="no-link">Perl CPAN - Comprehensive Perl Archive Network</span></span>
+	</div>
+	
+							<div class="clear"></div>
+						</div>
+																							              <div id="rt-main" class="sa3-mb9">
+                <div class="rt-main-inner">
+                    <div class="rt-grid-9 rt-push-3">
+                                                <div class="rt-block">
+                            							<div class="square1">
+							<div class="rt-module-surround">
+								<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+								<div class="rt-module-inner">
+		                            <div id="rt-mainbody">
+		                                
+<div class="rt-joomla ">
+	<div class="rt-article">
+		
+				<div class="rt-headline"><h1 class="rt-article-title">Perl CPAN - Comprehensive Perl Archive Network</h1>		</div>
+		<div class="clear"></div>
+		
+		
+		
+				<div class="rt-articleinfo">
+						<div class="rt-article-icons">
+								<a href="8533-perl-cpan-comprehensive-perl-archive-network%3Ftmpl=component&amp;print=1&amp;layout=default&amp;page=.html" title="列印" onclick="window.open(this.href,'win2','status=no,toolbar=no,scrollbars=yes,titlebar=no,menubar=no,resizable=yes,width=640,height=480,directories=no,location=no'); return false;" rel="nofollow"><span class="icon print"></span></a>																</div>
+			
+			<span class="rt-date-posted">
+						建立日期			2011-12-01 09:15						&nbsp;&nbsp;&nbsp;&nbsp;						最近更新在 2011-12-14 09:58						</span>
+
+						<span class="rt-author">
+				作者是 BlueT / Matthew Lien / 練喆明			</span>
+				
+					</div>
+		
+		
+		<h3>簡介</h3>
+<p><img src="../../images/111213/CPAN/cpan_logo.jpg" border="0" style="float: left; margin: 5px;" /></p>
+<p><a href="https://cpan.org/" target="_blank">CPAN - Comprehensive Perl Archive Network</a> 的中文名稱為「Perl 綜合典藏網」，是各種程式語言線上典藏網的始祖，在它之後許多語言也複製類似的模式，比如 R 語言的 <a href="https://cran.r-project.org/" target="_blank">CRAN</a>、Tex 語言 <a href="https://ctan.org/">CTAN</a>、Python 語言的 <a href="https://pypi.python.org/" target="_blank">PyPI</a> 與 PHP 語言的 <a href="https://pear.php.net/" target="_blank">PEAR</a> 等。</p>
+<p>CPAN 網站自從 1995 年十月上線以來，已經累積了 101,232 個 Perl 模組，共 23,715 個套件，9330 個作者，在全世界有 269 個鏡像伺服器，而且這些數字還在迅速累加。幾乎開發者需要的所有功能在 CPAN 網站上都能找得到實作，而且因為 Perl 程式語言秉持 TMTOWTDI (There's More Than One Way To Do It) 的哲學，針對不同特性強化的實作往往不只一個，讓開發者與使用者可以選擇最適合自己的模組。</p>
+
+<p> </p>
+<p>CPAN 的使用分成兩個部份：CPAN 網站，以及使用者本機電腦上的工具程式。</p>
+<ul>
+<li>CPAN 網站：線上列表、查詢模組和各種相關資訊，甚至有線上一鍵安裝的功能，以及針對不同需求發展的介面，例如：             
+<ul>
+<li>經典站：CPAN.org</li>
+<li>搜尋網站：Search.CPAN.org</li>
+<li>類似 Google 介面：MetaCPAN.org</li>
+</ul>
+</li>
+<li>工具指令程式：本機端的工具指令程式，可以自動化查詢與安裝模組。大部分為文字介面，但也有開發圖形化介面的工具。             
+<ul>
+<li>經典老工具：             
+<ul>
+<li><code>cpan</code>: 通常只要裝了 Perl 就會附上這個最傳統的工具。</li>
+</ul>
+</li>
+<li>強大的 CPANPLUS             
+<ul>
+<li><code>cpanp</code>: 自 2007 年開始加入預載的強大 CPAN 工具。</li>
+</ul>
+</li>
+<li>方便好用的 cpanminus             
+<ul>
+<li><code>cpanm</code>: 新的工具，資源消耗量少，不需繁雜的設定，極為推薦。</li>
+</ul>
+</li>
+<li>ActiveState 公司的 perl package manager             
+<ul>
+<li><code>ppm</code>: 專有工具，不支援某些模組。</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h3>安裝</h3>
+<p>如同 Perl 本身，CPAN 相關工具存在或支援大部分現有的軟硬體。以下將針對三種類型的作業系統簡略介紹如何安裝 Perl 以及上面提到的 <code>cpanminus</code>。古老的 cpan 不用另外安裝，只要有 Perl 就有 <code>cpan</code> 指令工具。</p>
+<h4><ol style="list-style-type: decimal;">
+<li>安裝 Perl</li>
+</ol></h4>
+<h5>A. 微軟 Windows 系統</h5>
+<p>微軟的 Windows 系統上並沒有預設安裝 Perl，所以必須自行安裝。可以選擇的有老牌商業公司 ActiveState 推出的 <a href="https://www.activestate.com/activeperl/downloads" target="_blank">ActivePerl</a> 以及 OpenSource 的 <a href="https://strawberryperl.com/" target="_blank">Strawberry Perl</a> 。我們將以 Strawberry Perl 為安裝範例，它甚至包涵了 C 編譯器和 <code>make</code> 工具。</p>
+<a href="../../images/111213/CPAN/cpan_windows.png" target="_blank"><img src="../../images/111213/CPAN/cpan_windows.png" border="0" alt="安裝 Perl 於 Windows 上" width="401" height="308" /></a>
+<p>▲ 圖1：安裝 Perl 於 Windows 上</p>
+<h5>B. Unix-like 系統（Linux、*BSD、Hurd 及其他，除了 MacOSX）</h5>
+<p>Perl 被喻為 Unix 系統上的瑞士刀。幾乎所有 Unix-like 的系統都預設有 Perl，不需自行安裝。若進行手動安裝，則必須安裝「make」這個工具以及 C 編譯器。</p>
+<p>在 Ubuntu 與 Debian 系的系統上可以透過 apt 安裝，請於命令列模式下，輸入下列指令：</p>
+<pre><code>$ sudo apt-get install make gcc
+</code></pre>
+<h5>C. MacOSX 系統</h5>
+<p>在 MacOSX 上 Perl 已經預設安裝好了，不需要另外安裝。</p>
+<p>不過如果需要安裝 Perl 模組的話，必須安裝 OSX 安裝光碟中隨附的 developer 套件 xcode（只需安裝 'unix dev tools'）。</p>
+<a href="../../images/111213/CPAN/cpan_macos.jpg" target="_blank"><img src="../../images/111213/CPAN/cpan_macos.jpg" border="0" alt="安裝 Perl 於 MacOS 上" width="500" /></a>
+<p>▲ 圖2：安裝 Perl 於 MacOS 上</p>
+<h4><ol style="list-style-type: decimal;">
+<li>安裝 cpanminus</li>
+</ol></h4>
+<h5>A. 微軟 Windows 系統</h5>
+<p>只能用 cpan 安裝 App::cpanminus 模組。請於命令列模式下，輸入下列指令：</p>
+<pre><code>&gt; cpan App::cpanminus
+</code></pre>
+<h5>B. Unix-like 系統（Linux、*BSD、Hurd 及其他，除了 MacOSX）</h5>
+<p>在 Unix-like 系統上，則有許多不同的安裝方式：</p>
+<h6>I. 以 cpan 安裝</h6>
+<p>請於命令列模式下，輸入下列指令：</p>
+<pre><code>$ cpan App::cpanminus
+</code></pre>
+<h6><ol style="list-style-type: upper-roman;">
+<li>安裝到系統</li>
+</ol></h6>
+<p>下載最新版的 cpanminus，並用它來安裝到系統路徑。</p>
+<p>請於命令列模式下，輸入下列指令：</p>
+<pre><code>$ curl -L https://cpanmin.us | perl - --sudo App::cpanminus
+</code></pre>
+<h6><ol style="list-style-type: upper-roman;">
+<li>安裝到使用者的個人目錄</li>
+</ol></h6>
+<p>如果您在個人目錄使用 perlbrew ( https://www.perlbrew.pl/ ) 安裝了自己的 perl，您就不需要「--sudo」了。</p>
+<p>請於命令列模式下，輸入下列指令：</p>
+<pre><code>$ curl -L https://cpanmin.us | perl - App::cpanminus
+</code></pre>
+<h6><ol style="list-style-type: upper-roman;">
+<li>下載獨立執行檔</li>
+</ol></h6>
+<p>下載後即可使用。請於命令列模式下，輸入下列指令：</p>
+<pre><code>$ curl -LO https://xrl.us/cpanm &amp;&amp; chmod +x cpanm
+</code></pre>
+<h3>使用範例（以 cpanminus 為例）</h3>
+<h4><ol style="list-style-type: decimal;">
+<li>安裝模組</li>
+</ol></h4>
+<h5>I. 使用 perlbrew，或使用之帳號擁有系統寫入權限時</h5>
+<p>請於命令列模式下，輸入下列指令：</p>
+<pre><code>$ cpanm 模組名稱
+</code></pre>
+<h5><ol style="list-style-type: upper-roman;">
+<li>非使用 perlbrew 且使用之帳號沒有系統寫入權限時</li>
+</ol></h5>
+<p>若您不是使用 <code>perlbrew</code> 且帳號沒有系統寫入權限時，則需要加上 "-S" (sudo) 參數。</p>
+<p>請於命令列模式下，輸入下列指令：</p>
+<pre><code>$ cpanm -S 模組名稱
+
+</code></pre>
+<h4><ol style="list-style-type: decimal;">
+<li>安裝所有相依模組</li>
+</ol></h4>
+<p>一般來說 <code>cpanm</code> 會幫您安裝好您所指定的模組，以及所有相依模組。但若您只想安裝相依模組，而不安裝指定模組本身的話，您可以這樣做。</p>
+<h5>I. 使用 perlbrew，或使用之帳號擁有系統寫入權限時</h5>
+<p>請於命令列模式下，輸入下列指令：</p>
+<pre><code>$ cpanm --installdeps 模組名稱
+</code></pre>
+<h5><ol style="list-style-type: upper-roman;">
+<li>非使用 perlbrew 且使用之帳號沒有系統寫入權限時</li>
+</ol></h5>
+<p>若您不是使用 <code>perlbrew</code> 且帳號沒有系統寫入權限時，則需要加上 "-S" (sudo) 參數。</p>
+<p>請於命令列模式下，輸入下列指令：</p>
+<pre><code>$ cpanm -S --installdeps 模組名稱
+
+</code></pre>
+<h4><ol style="list-style-type: decimal;">
+<li>從網址安裝，並安裝到特定目錄中</li>
+</ol></h4>
+<p>若您有特定需求，希望將此模組及其相依模組安裝到特定位置的話，可以用這個指令。</p>
+<h5>I. 使用 perlbrew，或使用之帳號擁有系統寫入權限時</h5>
+<p>請於命令列模式下，輸入下列指令：</p>
+<pre><code>$ cpanm -L ~/another/lib/ https://example.com/path/[模組檔案名稱].tar.gz
+</code></pre>
+<h5><ol style="list-style-type: upper-roman;">
+<li>非使用 perlbrew 且使用之帳號沒有系統寫入權限時</li>
+</ol></h5>
+<p>若您不是使用 <code>perlbrew</code> 且帳號沒有系統寫入權限時，則需要加上 "-S" (sudo) 參數。</p>
+<p>請於命令列模式下，輸入下列指令：</p>
+<pre><code>$ cpanm -S -L ~/another/lib/ https://example.com/path/[模組檔案名稱].tar.gz
+</code></pre>
+<h4><ol style="list-style-type: decimal;">
+<li>從本地檔案安裝 </li>
+</ol>
+<p>若您沒有網路時，您可以直接安裝預先下載好的模組壓縮檔。</p>
+</h4>
+<h5>I. 使用 perlbrew，或使用之帳號擁有系統寫入權限時</h5>
+<p>請於命令列模式下，輸入下列指令：</p>
+<pre><code>$ cpanm ~/tarball/[模組檔案名稱].tar.gz
+</code></pre>
+<h5><ol style="list-style-type: upper-roman;">
+<li>非使用 perlbrew 且使用之帳號沒有系統寫入權限時</li>
+</ol></h5>
+<p>若您不是使用 <code>perlbrew</code> 且帳號沒有系統寫入權限時，則需要加上 "-S" (sudo) 參數。</p>
+<p>請於命令列模式下，輸入下列指令：</p>
+<pre><code>$ cpanm -S ~/tarball/[模組檔案名稱].tar.gz
+</code></pre>
+<h4><ol style="list-style-type: decimal;">
+<li>從已解開的目錄裡安裝</li>
+</ol></h4>
+<p>若您在某個資料夾中開發自己的模組，可以直接從資料夾裡安裝。</p>
+<h5>I. 使用 perlbrew，或使用之帳號擁有系統寫入權限時</h5>
+<p>請於命令列模式下，輸入下列指令：</p>
+<pre><code>$ cpanm ./path/[模組目錄名稱]
+</code></pre>
+<h5><ol style="list-style-type: upper-roman;">
+<li>非使用 perlbrew 且使用之帳號沒有系統寫入權限時</li>
+</ol></h5>
+<p>若您不是使用 <code>perlbrew</code> 且帳號沒有系統寫入權限時，則需要加上 "-S" (sudo) 參數。</p>
+<p>請於命令列模式下，輸入下列指令：</p>
+<pre><code>$ cpanm -S ./path/[模組目錄名稱]
+</code></pre>
+<h4><ol style="list-style-type: decimal;">
+<li>執行自體版本升級</li>
+</ol></h4>
+<p>有句經典名言是這麼說的：「無論多完美的軟體，在其所有的程式碼中，一定至少有一個 Bug，以及至少一行可以被精簡的程式碼」。當您想更新 <code>cpanminus</code> 以取得修正過的新版本，您可以這樣做。</p>
+<h5>I. 使用 perlbrew，或使用之帳號擁有系統寫入權限時</h5>
+<p>請於命令列模式下，輸入下列指令：</p>
+<pre><code>$ cpanm --self-upgrade
+</code></pre>
+<h5><ol style="list-style-type: upper-roman;">
+<li>非使用 perlbrew 且使用之帳號沒有系統寫入權限時</li>
+</ol></h5>
+<p>若您不是使用 <code>perlbrew</code> 且帳號沒有系統寫入權限時，則需要加上 "-S" (sudo) 參數。</p>
+<p>請於命令列模式下，輸入下列指令：</p>
+<pre><code>$ cpanm -S --self-upgrade
+</code></pre>
+<h4><ol style="list-style-type: decimal;">
+<li>其他相關的好東西</li>
+</ol></h4>
+<h5>A. 檢查模組更新</h5>
+<p>時光飛逝，人總會成長，Perl 模組也一樣。若您想找出哪些模組已經有新版本（BugFix 或新功能），您可以安裝 App::cpanoutdated。</p>
+<p>請於命令列模式下，輸入下列指令：</p>
+<pre><code>$ cpanm App::cpanoutdated
+
+</code></pre>
+<h6>I. 列出所有過時的模組</h6>
+<p>請於命令列模式下，輸入下列指令：</p>
+<pre><code>$ cpan-outdated
+</code></pre>
+<h6><ol style="list-style-type: upper-roman;">
+<li>自動更新</li>
+</ol></h6>
+<p>甚至可以結合 cpanminus 做自動更新！</p>
+<p>a. 使用 perlbrew，或使用之帳號擁有系統寫入權限時</p>
+<p>請於命令列模式下，輸入下列指令：</p>
+<pre><code>$ cpan-outdated | cpanm
+</code></pre>
+<p>b. 非使用 perlbrew 且使用之帳號沒有系統寫入權限時</p>
+<p>若您不是使用 <code>perlbrew</code> 且帳號沒有系統寫入權限時，則需要加上 "-S" (sudo) 參數。</p>
+<p>請於命令列模式下，輸入下列指令：</p>
+<pre><code>$ cpan-outdated | cpanm -S
+
+</code></pre>
+<h5>B. 顯示模組的版本差異</h5>
+<p>時間總會在人的臉上留下痕跡，對於 Perl 模組來說也一樣。世界瞬息萬變，幸運的是，您可以清楚知道 Perl 模組每一個版本的成長中，到底改變了些什麼。</p>
+<p>若您想瞭解每一個 Perl 模組的 Changelog，您可以安裝 cpan-listchanges。</p>
+<p>請於命令列模式下，輸入下列指令：</p>
+<pre><code>$ cpanm cpan-listchanges
+</code></pre>
+<h6>I. 列出「目前所使用的」和「CPAN 上最新版的」之間的變動</h6>
+<p>請於命令列模式下，輸入下列指令：</p>
+<pre><code>$ cpan-listchanges 模組名稱
+</code></pre>
+<h6><ol style="list-style-type: upper-roman;">
+<li>列出版本 x 到版本 y 之間的變動</li>
+</ol></h6>
+<p>若不知道最新版本號，可以用「HEAD」表示。</p>
+<p>請於命令列模式下，輸入下列指令：</p>
+<pre><code>$ cpan-listchanges 模組名稱@舊版本號..新版本號
+</code></pre>
+<p>例如：</p>
+<pre><code>$ cpan-listchanges My::
+ <script language='JavaScript' type='text/javascript'>
+ <!--
+ var prefix = 'm&#97;&#105;lt&#111;:';
+ var suffix = '';
+ var attribs = '';
+ var path = 'hr' + 'ef' + '=';
+ var addy45881 = 'M&#111;d&#117;l&#101;' + '&#64;';
+ addy45881 = addy45881 + '0' + '&#46;' + '123' + '&#46;' + '' + '&#46;' + 'HEAD';
+ document.write( '<a ' + path + '\'' + prefix + addy45881 + suffix + '\'' + attribs + '>' );
+ document.write( addy45881 );
+ document.write( '<\/a>' );
+ //-->
+ </script> <script language='JavaScript' type='text/javascript'>
+ <!--
+ document.write( '<span style=\'display: none;\'>' );
+ //-->
+ </script>這個 E-mail 地址已經被防止灌水惡意程式保護，您需要啟用 Java Script 才能觀看
+ <script language='JavaScript' type='text/javascript'>
+ <!--
+ document.write( '</' );
+ document.write( 'span>' );
+ //-->
+ </script>
+
+</code></pre>
+<h6><ol style="list-style-type: upper-roman;">
+<li>顯示自始至今的所有變動</li>
+</ol></h6>
+<p>請於命令列模式下，輸入下列指令：</p>
+<pre><code>$ cpan-listchanges --all 模組名稱
+</code></pre>
+<h6><ol style="list-style-type: upper-roman;">
+<li>列出所有需更新之 Perl 模組的變動</li>
+</ol></h6>
+<p>可以跟 cpan-outdated 結合，列出所有需要更新的 Perl 模組的變動。</p>
+<p>請於命令列模式下，輸入下列指令：</p>
+<pre><code>$ cpan-outdated -p | xargs cpan-listchanges
+</code></pre>
+<h5>C. 移除模組</h5>
+<p>人都有不堪的過去，而且往往難以抹去。但如果您是想把從前裝錯或是不想要的模組抹去，那倒是可行的。</p>
+<p>若想要移除 Perl 模組，您可以安裝 App::pmuninstall。</p>
+<p>請於命令列模式下，輸入下列指令：</p>
+<pre><code>$ cpanm App::pmuninstall
+</code></pre>
+<h6>I. 移除指定之模組</h6>
+<p>需要移除模組時，請於命令列模式下，輸入下列指令：</p>
+<pre><code>$ pm-uninstall 模組名稱
+</code></pre>
+<p>例如：</p>
+<pre><code>$ pm-uninstall App::pmuninstall
+</code></pre>
+<h6><ol style="list-style-type: upper-roman;">
+<li>強制移除指定之模組</li>
+</ol></h6>
+<p>請於命令列模式下，加上參數 "-f"，並輸入下列指令：</p>
+<pre><code>$ pm-uninstall -f 模組名稱
+</code></pre>
+<h6><ol style="list-style-type: upper-roman;">
+<li>移除指定之模組時，不檢查模組相依性</li>
+</ol></h6>
+<p>請於命令列模式下，加上參數 "-n"，並輸入下列指令：</p>
+<pre><code>$ pm-uninstall -n 模組名稱
+</code></pre>
+<h3>優缺點</h3>
+<h4><ol style="list-style-type: decimal;">
+<li>CPAN / CPANPLUS / cpanminus</li>
+</ol></h4>
+<li>CPAN 是最傳統的工具，Bug 最少，具備所有的常用功能。Perl 預設內建。缺點是稍嫌麻煩。</li>
+<li>CPANPLUS 功能強大，Perl 已預設內建。但對於一般使用者來說操作上仍稍嫌複雜。</li>
+<li>cpanminus 功能陽春，預設未包涵 Perl，但方便好上手。</li>
+<h4><ol style="list-style-type: decimal;">
+<li>安裝在系統 vs 個人環境</li>
+</ol></h4>
+<li>系統             
+<ul>
+<li>優點             
+<ul>
+<li>許多作業系統都提供了統一且方便好用的軟體管理工具，通常其中也包涵了很多預先編譯好的 Perl 模組套件，讓所有的升級及控管更容易，而且只要安裝一次，系統上的所有使用者都能受惠。</li>
+</ul>
+</li>
+<li>缺點             
+<ul>
+<li>大部分作業系統套件庫中，所包涵的 Perl 模組都不是最新版的，許多 BugFix 嶄新功能無法使用。且除非您有系統管理員權限，否則無法更動任何 Perl 模組。</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>個人環境             
+<ul>
+<li>優點             
+<ul>
+<li>使用者能自由控制並使用自己喜歡的環境。每個使用者的每個 Perl 版本環境皆完全獨立，互不影響。</li>
+</ul>
+</li>
+<li>缺點             
+<ul>
+<li>若許多使用者的許多環境都需要相同模組，就必須每個都重複安裝，無法共享。重複的 Perl 模組與套件安裝會耗費許多不必要的磁碟空間，以及編譯時的 CPU 資源。</li>
+</ul>
+</li>
+</ul>
+</li>
+<h3>結語</h3>
+<p>學會 Perl，行遍全球。<a href="https://cpan.org" target="_blank">CPAN</a> 十多年來累積了蘊藏量極為豐富的套件庫，甚至可以因應各種不同需求而直接引入或橋接其他語言，各種想得到與想不到的模組都已經被撰寫完成，便於直接使用。面對如此大量的模組庫藏，有時難免感到眼花撩亂，但只要善用 CPAN 網站上的評分系統與 RT（錯誤追蹤系統 <a href="https://rt.cpan.org" target="_blank">https://rt.cpan.org</a>）資訊，通常就能協助您找到合適的模組，大幅減輕您的開發壓力，縮短開發時間，並提昇寫作品質。</p>
+			<!-- Show relate article -->
+				<!-- end -->
+		<div class="article_note">
+		<!-- Add tags use metakey, and show OSSF Newsletter tag: OSSFNL+NUM-->
+		<br><br> <hr style='border: 1px dashed #D2DADB;'><b>自由軟體鑄造場電子報&nbsp;:</b>&nbsp;<a href='../../previous-issue%3Ftask=view&amp;id=765.html'>第 186 期 程式語言延伸模組管理系統</a><br><b>標籤:</b>&nbsp;<a href='../../index.php%3Foption=com_search&amp;Itemid=58&amp;searchphrase=exact_meta&amp;ordering=newest&amp;searchword=CPAN.html'>CPAN</a>,&nbsp;&nbsp;<a href='../../index.php%3Foption=com_search&amp;Itemid=58&amp;searchphrase=exact_meta&amp;ordering=newest&amp;searchword=&#32;Perl.html'> Perl</a>,&nbsp;&nbsp;<a href='../../index.php%3Foption=com_search&amp;Itemid=58&amp;searchphrase=exact_meta&amp;ordering=newest&amp;searchword=&#32;延伸模組.html'> 延伸模組</a>,&nbsp;&nbsp;<a href='../../index.php%3Foption=com_search&amp;Itemid=58&amp;searchphrase=exact_meta&amp;ordering=newest&amp;searchword=&#32;extension&#32;management&#32;tools.html'> extension management tools</a>,&nbsp;&nbsp;				<!-- End -->
+					<br>
+					<b>分類: </b><a href="../tech-column.html">				技術專欄					</a>				</div>
+			 <!-- AddThis Button BEGIN ID 3001 is the front page article -->
+     			<br><br>
+       <div class="addthis_toolbox addthis_default_style addthis_32x32_style">
+       <a class="addthis_button_preferred_1"></a>
+       <a class="addthis_button_preferred_2"></a>
+       <a class="addthis_button_preferred_3"></a>
+       <a class="addthis_button_preferred_4"></a>
+       <a class="addthis_button_compact"></a>
+       <a class="addthis_counter addthis_bubble_style"></a>
+       </div>
+       <script type="text/javascript">var addthis_config = {"data_track_clickback":true};</script>
+       <script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js#pubid=openfoundry"></script>
+       <!-- AddThis Button END -->
+     <br>
+		<div class="totop" ><a class="rt-totop" href="8533-perl-cpan-comprehensive-perl-archive-network.html#" style="outline: medium none;">↑ Top</a></div>
+            <!-- AddThis Button END -->
+
+			</div>
+</div>
+
+		                            </div>
+									<div class="clear"></div>
+								</div>
+								<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+							</div>
+							</div>
+                                                    </div>
+                                            </div>
+                                <div class="rt-grid-3 rt-pull-9">
+                <div id="rt-sidebar-a">
+                                    <div class="square4">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<ul class="menu"><li class="item56"><a href="../previous-issue.html"><span>電子報總覽</span></a></li><li class="item55"><a href="../about-newsletter.html"><span>關於本報</span></a></li></ul>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<ul class="menu"><li class="item115"><a href="../foss-news.html"><span>源碼新聞</span></a></li><li class="item141"><a href="../case-job.html"><span>接案 / 工作</span></a></li></ul>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+        	                <div class="square1">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-title"><h2 class="title">專欄總覽</h2></div>
+						<div class="clear"></div>
+		                						<div class="module-content">
+		                	<ul class="menu"><li id="current" class="active item37"><a href="../tech-column.html"><span>技術專欄</span></a></li><li class="item40"><a href="../foss-programs.html"><span>源碼秘技</span></a></li><li class="item35"><a href="../legal-article-.html"><span>法律專欄</span></a></li><li class="item154"><a href="../foss-forum.html"><span>自由專欄</span></a></li><li class="item162"><a href="../enterprise-application.html"><span>企業應用</span></a></li><li class="item44"><a href="../foss-projects.html"><span>源碼專案</span></a></li></ul>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		                <div class="square1">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<p style="text-align: center;"><a href="../../news%3Fformat=feed&amp;type=rss" target="_black"><img src="../../images/M_images/news-rss-feed.png" border="0" /></a><br /><a href="https://www.openfoundry.org/rss-feed/Newsletter" target="_black"><img src="../../images/M_images/newsletter-rss-feed.png" border="0" /></a></p>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		
+                </div>
+            </div>
+
+                    <div class="clear"></div>
+                </div>
+            </div>
+																													</div>
+										<div id="rt-copyright">
+						<div class="rt-grid-12 rt-alpha rt-omega">
+                        <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<div id="desktop-mobile-version-switch"><span id="mobile-version" class="version-switch"><a href="8533-perl-cpan-comprehensive-perl-archive-network.html#">行動版</a></span></div>
+自由軟體鑄造場 製作 最佳瀏覽狀態：IE7或Firefox2.0以上 (建議使用Firefox) ‧ 解析度1024*768 <br /> <strong>E-Mail</strong>：<a href="mailto:contact@openfoundry.org">contact@openfoundry.org</a> <strong>Address</strong>：台北市南港區研究院路2段128號 中央研究院資訊科學研究所 . <a href="../../privacy-policy.html">隱私權條款</a>. <a href="../../terms-of-use.html">使用條款</a><span style="position: relative; top: 8px; margin-top: -8px;"> <a href="../../about/8101.html"><img src="../../images/M_images/rss-feed-all.png" border="0" /></a></span>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+        	
+</div>
+						<div class="clear"></div>
+					</div>
+					<div class="rt-footer-bottom-wrap"><div class="rt-footer-bottom"><div class="rt-footer-bottom2"><div class="rt-footer-bottom3"></div></div></div></div>
+									</div></div></div>
+				<div class="rt-surround-bottom"><div class="rt-surround-bottom2"><div class="rt-surround-bottom3"></div></div></div>
+							</div>
+		</div>
+		<!--
+		<script id="aptureScript">
+						(function (){var a=document.createElement("script");a.defer="true";a.src="http://www.apture.com/js/apture.js?siteToken=vsJttrn";document.getElementsByTagName("head")[0].appendChild(a);})();
+     </script>
+-->
+
+<!-- Piwik -->
+<!-- 			<script type="text/javascript">
+			  var _paq = _paq || [];
+		  _paq.push(["trackPageView"]);
+		  _paq.push(["enableLinkTracking"]);
+
+		    (function() {
+			        var u=(("https:" == document.location.protocol) ? "https" : "https") + "://www.openfoundry.org/piwik/";
+				    _paq.push(["setTrackerUrl", u+"piwik.php"]);
+				    _paq.push(["setSiteId", "1"]);
+				        var d=document, g=d.createElement("script"), s=d.getElementsByTagName("script")[0]; g.type="text/javascript";
+				        g.defer=true; g.async=true; g.src=u+"piwik.js"; s.parentNode.insertBefore(g,s);
+					  })();
+		  </script> -->
+<!-- End Piwik Code -->
+	</body>
+</html>

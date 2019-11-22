@@ -1,0 +1,660 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="zh-tw" lang="zh-tw" >
+<head>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<link rel="shortcut icon" href="../../images/favicon.ico" />
+	  <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+  <meta name="robots" content="index, follow" />
+  <meta name="keywords" content="OSSFNL861" />
+  <meta name="title" content="運用 Go 語言做 EMR 串流" />
+  <meta name="description" content="本文翻譯自 NY Times，原作者為 JP Robinson：https://open.blogs.nytimes.com/2014 /07/1 0/emr-s treaming-in-go/?_php=true&_type=blogs&_php=true&_type=blogs&_r=1 我們的平台團隊使用 Amazon 的 Elastic MapReduce (EMR)" />
+  <meta name="generator" content="" />
+  <title>運用 Go 語言做 EMR 串流 - OpenFoundry</title>
+  <link href="../../favicon.ico" rel="shortcut icon" type="image/x-icon" />
+  <link rel="stylesheet" href="../../components/com_gantry/css/gantry.css" type="text/css" />
+  <link rel="stylesheet" href="../../components/com_gantry/css/grid-12.css" type="text/css" />
+  <link rel="stylesheet" href="../../components/com_gantry/css/joomla.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/joomla.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/style1.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/light-body.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/demo-styles.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/template.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/typography.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/fusionmenu.css" type="text/css" />
+  <style type="text/css">
+    <!--
+#rt-main-surround ul.menu li.active > a, #rt-main-surround ul.menu li.active > .separator, #rt-main-surround ul.menu li.active > .item, #rt-main-surround .square4 ul.menu li:hover > a, #rt-main-surround .square4 ul.menu li:hover > .item, #rt-main-surround .square4 ul.menu li:hover > .separator, .roktabs-links ul li.active span {color:#0088B5;}
+a, #rt-main-surround ul.menu a:hover, #rt-main-surround ul.menu .separator:hover, #rt-main-surround ul.menu .item:hover {color:#0088B5;}
+    -->
+  </style>
+  <script type="text/javascript" src="../../components/com_jcomments/js/jcomments-v2.1.js%3Fv=2"></script>
+  <script type="text/javascript" src="../../components/com_jcomments/libraries/joomlatune/ajax.js"></script>
+  <script type="text/javascript" src="../../media/system/js/mootools.js"></script>
+  <script type="text/javascript" src="../../media/system/js/caption.js"></script>
+  <script type="text/javascript" src="../../components/com_gantry/js/gantry-buildspans.js"></script>
+  <script type="text/javascript" src="../../components/com_gantry/js/gantry-inputs.js"></script>
+  <script type="text/javascript" src="../../templates/rt_quantive_j15/js/jquery.cookie.js"></script>
+  <script type="text/javascript" src="../../modules/mod_roknavmenu/themes/fusion/js/fusion.js"></script>
+  <script type="text/javascript" src="../../modules/mod_ofssologin/js/ofssologin.js"></script>
+  <script type="text/javascript">
+
+			window.addEvent('domready', function() {
+				var modules = ['rt-block'];
+				var header = ['h3','h2','h1'];
+				GantryBuildSpans(modules, header);
+			});
+		InputsExclusion.push('.content_vote','#rt-popup')
+		        window.addEvent('load', function() {
+					new Fusion('ul.menutop', {
+						pill: 0,
+						effect: 'slide and fade',
+						opacity: 1,
+						hideDelay: 500,
+						centered: 0,
+						tweakInitial: {'x': -2, 'y': 0},
+        				tweakSubsequent: {'x': 0, 'y': -14},
+						menuFx: {duration: 200, transition: Fx.Transitions.Sine.easeOut},
+						pillFx: {duration: 400, transition: Fx.Transitions.Back.easeOut}
+					});
+	            });
+  </script>
+<!-- <script type="text/javascript" src="/sso/javascripts/langsync.js"></script> -->
+<!-- <script src="/templates/rt_quantive_j15/js/ossf.js"></script> -->
+<script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-4136519-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
+</head>
+	<body  class="backgroundlevel-low backgroundstyle-style8 bodylevel-med bodystyle-light cssstyle-style1 logostyle-dark font-family-helvetica font-size-is-default menu-type-fusionmenu col12 ">
+		<div id="rt-main-background">
+			<div class="rt-container">
+																<div id="rt-header">
+					<div class="rt-grid-7 rt-alpha">
+    			<div class="rt-block">
+    	    	<a href="../../index.html" id="rt-logo"></a>
+    		</div>
+	    
+</div>
+<div class="rt-grid-5 rt-omega">
+                    <div class="square9">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<div class="ofssologin_square9"><a href="../../index.html">登入</a>&nbsp;&nbsp|&nbsp;&nbsp;<span><a href="https://www.openfoundry.org/en/news/9289?task=view" ><span lang="en" xml:lang="en">English</span></a></li></ul></span><!--Joom!fish V2.0.4 (Lightning)-->
+<!-- &copy; 2003-2009 Think Network, released under the GPL. -->
+<!-- More information: at http://www.joomfish.net -->
+<div class="ofssologin_search_square9">
+  <form id="of_search" action="https://www.openfoundry.org/of/openfoundry/search" method="get" onsubmit="of_search(); return false;">
+    <select id="of_search_type">
+      <option value="Projects"> 專案 </option>
+      <option value="Content"> 文章 </option>
+      <option value="People"> 人才 </option>
+    </select>
+    <input id="query" name="query" id="mod_search_searchword" maxlength="50" alt="search" class="inputbox" type="text" size="28" value="search..."  onblur="if(this.value=='') this.value='search...';" onfocus="if(this.value=='search...') this.value='';" />
+    <input type="hidden" name="commit" value="search" />
+  </form>
+</div></div>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		
+</div>
+					<div class="clear"></div>
+				</div>
+																<div id="rt-navigation"><div id="rt-navigation2"><div id="rt-navigation3">
+					
+<div class="nopill">
+	<ul class="menutop level1 " >
+						<li class="item1 root" >
+					<a class="orphan item bullet" href="../../index.html"  >
+				<span>
+			    				首頁				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item32 root" >
+					<a class="orphan item bullet" href="../../archived.html"  >
+				<span>
+			    				專案				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item186 root" >
+					<a class="orphan item bullet" href="../community.html"  >
+				<span>
+			    				Who&#039;s Who				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item4 root" >
+					<a class="orphan item bullet" href="../news.html"  >
+				<span>
+			    				新聞				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item5 root" >
+					<a class="orphan item bullet" href="../law-and-licensing.html"  >
+				<span>
+			    				法律源地				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item3 root" >
+					<a class="orphan item bullet" href="../activities.html"  >
+				<span>
+			    				活動				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item2 root" >
+					<a class="orphan item bullet" href="../resourcecatalog%3FName=Value.html"  >
+				<span>
+			    				資源表列				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item45 root" >
+					<a class="orphan item bullet" href="../about.html"  >
+				<span>
+			    				關於				   
+				</span>
+			</a>
+			
+			
+	</li>	
+				</ul>
+</div>
+
+				    <div class="clear"></div>
+				</div></div></div>
+								<div class="rt-surround"><div class="rt-surround2"><div class="rt-surround3">
+										<div id="rt-showcase-section">
+												<div id="rt-showcase">
+							<div class="rt-grid-12 rt-alpha rt-omega">
+    		<div class="clear"></div>
+		
+		
+                <div class="close-note">
+                    <div class="rt-block">
+               					<div class="module-content">
+                	<div style="font-size:medium; background-image:linear-gradient(120deg,#159957,#4298b2);color:white;padding:20px;margin:-10px -18px;">感謝您對「自由軟體鑄造場」的支持與愛護，十多年來「自由軟體鑄造場」受中央研究院支持，並在資訊科學研究所以及資訊科技創新研究中心執行，現已完成階段性的任務。 本網站預計持續維運至 2021年底，網站內容基本上不會再更動。<br />也紀念我們永遠的朋友 李士傑先生（Shih-Chieh Ilya Li）。</div>				</div>
+            </div>
+                </div>
+		
+</div>
+							<div class="clear"></div>
+						</div>
+																	</div>
+															<div id="rt-main-surround">
+												<div id="rt-breadcrumbs">
+								<div class="rt-breadcrumb-surround">
+		<a href="../../index.html" id="breadcrumbs-home"></a>
+		<span class="breadcrumbs pathway">
+<span class="no-link">新聞</span></span>
+	</div>
+	
+							<div class="clear"></div>
+						</div>
+																							              <div id="rt-main" class="sa3-mb9">
+                <div class="rt-main-inner">
+                    <div class="rt-grid-9 rt-push-3">
+                                                <div class="rt-block">
+                            							<div class="square1">
+							<div class="rt-module-surround">
+								<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+								<div class="rt-module-inner">
+		                            <div id="rt-mainbody">
+		                                
+<div class="rt-joomla ">
+	<div class="rt-article">
+		
+				<div class="rt-headline"><h1 class="rt-article-title">運用 Go 語言做 EMR 串流</h1>		</div>
+		<div class="clear"></div>
+		
+		
+		
+				<div class="rt-articleinfo">
+						<div class="rt-article-icons">
+								<a href="https://www.openfoundry.org/tw/news/9289-go-emr-stream?tmpl=component&amp;print=1&amp;page=" title="列印" onclick="window.open(this.href,'win2','status=no,toolbar=no,scrollbars=yes,titlebar=no,menubar=no,resizable=yes,width=640,height=480,directories=no,location=no'); return false;" rel="nofollow"><span class="icon print"></span></a>																</div>
+			
+			<span class="rt-date-posted">
+						建立日期			2014-09-16 11:17						&nbsp;&nbsp;&nbsp;&nbsp;						最近更新在 2014-09-16 11:22						</span>
+
+						<span class="rt-author">
+				作者是 謝良奇／翻譯			</span>
+				
+					</div>
+		
+		
+		<p><strong>本文翻譯自 NY Times，原作者為 JP Robinson：<a href="https://open.blogs.nytimes.com/2014/07/10/emr-streaming-in-go/?_php=true&_type=blogs&_php=true&_type=blogs&_r=1">https://open.blogs.nytimes.com/2014/07/10/emr-streaming-in-go/?_php=true&_type=blogs&_php=true&_type=blogs&_r=1</a></strong></p>
+<p>我們的平台團隊使用 Amazon 的 Elastic MapReduce (EMR) 服務，協助我們從日誌檔收集有用的數據。我們有一些程序會抓取日誌檔，接著壓縮並推送到 Amazon S3 上儲存。感謝 EMR，這套模式聚集出回溯數年之久的龐大資訊，等待我們進行資料重整 (data crunching)。一開始我們用 Python 做了不少苦功，不過我們漸漸地轉而依賴 Go。</p>
+
+<h3 id="-">開始</h3>
+<p>當我們一開始使用 EMR，我的團隊用 Python 來寫 mapper 跟 reducer 腳本。之所以選擇 Python，是因為只要最簡單的設定與程式碼，就可以寫出一支能夠從標準輸入讀取 JSON 或 CSV 記錄，並向標準輸出寫出類似結構化資料的 Python 腳本。還有，既然我們已經決定使用 boto Python 程式庫來啟動 EMR 工作流，並管理其輸出，在整個專案中使用同一種語言是較為合理的。</p>
+<p>Python 對於簡單的處理做得很好。有一段時間的性能表現相當不錯，既然該腳本十分簡單，我們甚至不需要用到第三方模組。最後，我們遇到的情況需要引入一個內部模組，來重用部分商業邏輯，或是藉由第三方模組來挖掘資料的意義，因此在這個 EMR 工作流增加了新一層的複雜度：bootstrap 動作。</p>
+<p>一旦準備完成之後，Bootstrap 動作會在叢集的每一個節點上執行，對於簡單的第三方程式庫，bootstrap 動作可以執行類似 sudo apt-get install python-nltk 的命令。要載入紐約時報內部的程式庫，我們必須把它放在 S3 上，然後寫一支安裝腳本當作 bootstrap 動作。兩種情況都很繁瑣且耗時，我們希望有更優雅的解決方案。既然我們越來越常用 Go 來寫程式庫和服務，我們就想它是不是適用於這個情況。</p>
+<h3 id="-go">改用 Go</h3>
+<p>我的團隊花了一年時間，用 Go 建構後端服務與 web APIs。正如 Dave Cheney 最近在 Gocon 發表的演說所指出，由於 Go 提供的並行性、易於部署、優秀效能，它通常是一個絕佳的選擇。此外，它的語法清晰，有動態語言的感覺，但又仍屬靜態型別。</p>
+<p>當我們在線上有了若干 Go 的服務，我們注意到，在串流 mapper 之中重用這些服務中的部分邏輯，看來是可行的。結果用 Go 來寫 mapper (還有 reducer) 和 Python 比起來，並不會花太多力氣。為了示範，我會並列出用 Python 和 Go 所寫的簡單 mapper/reducer 當作例子。</p>
+<h3 id="python-mapper">Python Mapper</h3>
+<pre><code>#!/usr/bin/python
+
+import sys
+import simplejson as json
+
+def main():
+
+    # loop through each line of stdin
+    for line in sys.stdin:
+    try:
+
+        # parse the incoming json 
+        j = json.loads(line.strip())
+
+        # initialize output structure
+        output = dict()
+
+        # grab an identifier
+        output["key"] = j["data"]["key"]
+
+        # and any other useful information from input json
+        output["secondary-key"] = j["data"]["another-key"]
+        output["first-metric"] = j["data"]["metric"]
+        output["second-metric"] = j["data"]["metric-2"]
+
+    except Exception as e:
+        sys.stderr.write("unable to read log: %s" % e)
+        continue
+
+    try:
+
+        # generate json output
+        output_json = json.dumps(output)
+
+        # write the key and json to stdout    
+        print "%s\t%s" % (output["key"], output_json) 
+
+    except Exception as e:
+        sys.stderr.write("unable to write mapper output: %s" % e)
+        continue
+
+
+if __name__ == "__main__":
+    main()
+</code></pre><h3 id="go-mapper">Go mapper</h3>
+<pre><code>package main
+
+import (
+     "bufio"
+     "encoding/json"
+     "fmt"
+     "log"
+     "os"
+)
+
+func main() {
+     var line []byte
+     var input logRecord
+     var output mapperOutput
+     var outputJSON []byte
+     var err error
+
+     // loop through each line of stdin
+     ls := bufio.NewScanner(os.Stdin)
+     for ls.Scan() {
+      line = ls.Bytes()
+
+      // parse the incoming json
+      if err = json.Unmarshal(line, &input); err != nil {
+           log.Print("unable to read log: ", err)
+           continue
+      }
+
+      // initialize output structure
+      output = mapperOutput{
+           // grab an identifier
+           input.Data.Key,
+           // and any other useful information from input json
+           input.Data.AnotherKey,
+           input.Data.Metric,
+           input.Data.AnotherMetric,
+      }
+
+      // generate json output
+      if outputJSON, err = json.Marshal(output); err != nil {
+           log.Print("unable to write mapper output: ", err)
+           continue
+      }
+
+      // write the key and json to stdout
+      fmt.Fprintf(os.Stdout, "%s\t%s\n", output.Key, outputJSON)
+     }
+
+     if ls.Err() != nil {
+      log.Print("error reading from stdin: ", ls.Err())
+      os.Exit(1)
+     }
+}
+
+type logRecord struct {
+     Data struct {
+      Key           string `json:"key"`
+      AnotherKey    string `json:"another-key"`
+      Metric        int64  `json:"metric"`
+      AnotherMetric int64  `json:"metric-2"`
+     } `json:"data"`
+}
+
+type mapperOutput struct {
+     Key          string `json:"key"`
+     SecondaryKey string `json:"secondary-key"`
+     FirstMetric  int64  `json:"first-metric"`
+     SecondMetric int64  `json:"second-metric"`
+}
+</code></pre><h3 id="python-reducer">Python reducer</h3>
+<pre><code>#!/usr/bin/python
+
+import sys
+import simplejson as json
+
+def main():
+
+    ongoing_count = {"key":""}
+
+    # loop through each line for stdin
+    for line in sys.stdin:
+    try:
+
+        # split line to separate key and value
+        key_val = line.split("\t", 1)
+        key = key_val[0]
+
+        # parse the incoming json
+        data = json.loads(key_val[1])
+
+        # check if incoming key equals ongoing key
+        if key == ongoing_count["key"]:
+        # inrement ongoing metrics
+        ongoing_count["first-metric"] += data["first-metric"]
+        ongoing_count["second-metric"] += data["second-metric"]
+
+        else:
+        # if a new key, emit ongoing counts
+        writeOutput(ongoing_count)
+
+        # set ongoing count with current data
+        ongoing_count = data
+
+    except Exception as e:
+        sys.stderr.write("unable to parse reducer input: %s" % e)
+        continue
+
+    # emit the final counts
+    writeOutput(ongoing_count)
+
+
+def writeOutput(ongoing_count):
+    if ongoing_count["key"] != str():
+    try:
+
+        # generate json output
+        output_json = json.dumps(ongoing_count)
+
+    except Exception as e:
+        sys.stderr.write("unable to create reducer json: %s" % e)
+        continue
+
+    # write the key and json to stdout
+    print "%s\t%s" % (key, output_json)
+
+
+if __name__ == "__main__":
+    main()
+</code></pre><h3 id="go-reducer">Go reducer</h3>
+<pre><code>package main
+
+import (
+    "bufio"
+    "bytes"
+    "encoding/json"
+    "fmt"
+    "log"
+    "os"
+)
+
+var tab = []byte("\t")
+
+func main() {
+    var rawInput []string
+    var input mapperOutput
+    var ongoingCount mapperOutput
+    var err error
+
+    //  loop through each line for stdin
+    ls := bufio.NewScanner(os.Stdin)
+    for ls.Scan() {
+
+    // split line to separate key and value
+    rawInput = bytes.SplitN(ls.Bytes(), tab, 2)
+
+    // parse the incoming json
+    if err = json.Unmarshal(rawInput[1], &input); err != nil {
+        log.Print("unable to parse reducer input: ", err)
+        continue
+    }
+
+    // check if incoming key equals ongoing key
+    if ongoingCount.Key == input.Key {
+        // inrement ongoing metrics
+        ongoingCount.FirstMetric += input.FirstMetric
+        ongoingCount.SecondMetric += input.SecondMetric
+
+    } else {
+        // if a new key, emit ongoing counts
+        writeOutput(ongoingCount)
+        // set ongoing count with current data
+        ongoingCount = input
+
+    }
+
+    }
+
+    if ls.Err() != nil {
+    log.Print("error reading from stdin: ", ls.Err())
+    os.Exit(1)
+    }
+
+    // emit the final counts
+    writeOutput(ongoingCount)
+
+}
+
+func writeOutput(o mapperOutput) {
+    if len(o.Key) == 0 {
+    return
+    }
+    // generate json output
+    data, err := json.Marshal(o)
+    if err != nil {
+    log.Print("unable to marshal reducer output: ", err)
+    return
+    }
+    // write the key and json to stdout
+    fmt.Fprintf(os.Stdout, "%s\t%s\n", o.Key, data)
+}
+
+type mapperOutput struct {
+    Key          string `json:"key"`
+    SecondaryKey string `json:"secondary-key"`
+    FirstMetric  int64  `json:"first-metric"`
+    SecondMetric int64  `json:"second-metric"`
+}
+</code></pre><p>Go 的實作在程式碼數量上有略微增加，不過，對照 Go 提供的簡易部署和效能提升，還是值得的。由於程式被編譯成單一的二進位檔，我們可以包進我們所需要的所有第三方程式庫，只要將我們的二進位檔放上 S3 就完成了部署工作，也不需要 bootstrap 動作。</p>
+<p>我們在速度上有了很棒的提升。我在同一份資料上跑 Go 實作和舊的 Python mapper/reducer，歷經幾次執行之後，我發現平均約提升了 25% 的速度。兩者的這些 mapper/reducers 在 CSV、JSON、regex 上，都使用標準程式庫 (除了 Python 的 simplejson 是個例外)。</p>
+<p>當我們持續建構與改進我們的平台技術，我們對 Go 越來越有信心且熟悉。從後台程序到簡單的 MapReduce 腳本，Go 都是我們團隊在伺服器端的優先選擇。它讓我們打造高性能且可靠又易於維護的服務，Go 社群的熱情，加上高品質釋出版本的速度，讓我們樂於渴望看到這套語言的未來。</p>
+			<!-- Show relate article -->
+				<!-- end -->
+		<div class="article_note">
+		<!-- Add tags use metakey, and show OSSF Newsletter tag: OSSFNL+NUM-->
+		<br><br> <hr style='border: 1px dashed #D2DADB;'><b>自由軟體鑄造場電子報&nbsp;:</b>&nbsp;<a href='../../previous-issue%3Ftask=view&amp;id=861.html'>第 249 期 「兒童呼吸網」關心幼兒呼吸與睡眠─「健康資訊雲端服務平台」專訪</a><br>				<!-- End -->
+					<br>
+					<b>分類: </b><a href="../tech-column.html">				技術專欄					</a>				</div>
+			 <!-- AddThis Button BEGIN ID 3001 is the front page article -->
+     			<br><br>
+       <div class="addthis_toolbox addthis_default_style addthis_32x32_style">
+       <a class="addthis_button_preferred_1"></a>
+       <a class="addthis_button_preferred_2"></a>
+       <a class="addthis_button_preferred_3"></a>
+       <a class="addthis_button_preferred_4"></a>
+       <a class="addthis_button_compact"></a>
+       <a class="addthis_counter addthis_bubble_style"></a>
+       </div>
+       <script type="text/javascript">var addthis_config = {"data_track_clickback":true};</script>
+       <script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js#pubid=openfoundry"></script>
+       <!-- AddThis Button END -->
+     <br>
+		<div class="totop" ><a class="rt-totop" href="9289%3Ftask=view.html#" style="outline: medium none;">↑ Top</a></div>
+            <!-- AddThis Button END -->
+
+			</div>
+</div>
+
+		                            </div>
+									<div class="clear"></div>
+								</div>
+								<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+							</div>
+							</div>
+                                                    </div>
+                                            </div>
+                                <div class="rt-grid-3 rt-pull-9">
+                <div id="rt-sidebar-a">
+                                    <div class="square4">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<ul class="menu"><li class="item56"><a href="../previous-issue.html"><span>電子報總覽</span></a></li><li class="item55"><a href="../about-newsletter.html"><span>關於本報</span></a></li></ul>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<ul class="menu"><li class="item115"><a href="../foss-news.html"><span>源碼新聞</span></a></li><li class="item141"><a href="../case-job.html"><span>接案 / 工作</span></a></li></ul>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+        	                <div class="square1">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-title"><h2 class="title">專欄總覽</h2></div>
+						<div class="clear"></div>
+		                						<div class="module-content">
+		                	<ul class="menu"><li class="item37"><a href="../tech-column.html"><span>技術專欄</span></a></li><li class="item40"><a href="../foss-programs.html"><span>源碼秘技</span></a></li><li class="item35"><a href="../legal-article-.html"><span>法律專欄</span></a></li><li class="item154"><a href="../foss-forum.html"><span>自由專欄</span></a></li><li class="item162"><a href="../enterprise-application.html"><span>企業應用</span></a></li><li class="item44"><a href="../foss-projects.html"><span>源碼專案</span></a></li></ul>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		                <div class="square1">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<p style="text-align: center;"><a href="../../news%3Fformat=feed&amp;type=rss" target="_black"><img src="../../images/M_images/news-rss-feed.png" border="0" /></a><br /><a href="https://www.openfoundry.org/rss-feed/Newsletter" target="_black"><img src="../../images/M_images/newsletter-rss-feed.png" border="0" /></a></p>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		
+                </div>
+            </div>
+
+                    <div class="clear"></div>
+                </div>
+            </div>
+																													</div>
+										<div id="rt-copyright">
+						<div class="rt-grid-12 rt-alpha rt-omega">
+                        <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<div id="desktop-mobile-version-switch"><span id="mobile-version" class="version-switch"><a href="9289%3Ftask=view.html#">行動版</a></span></div>
+自由軟體鑄造場 製作 最佳瀏覽狀態：IE7或Firefox2.0以上 (建議使用Firefox) ‧ 解析度1024*768 <br /> <strong>E-Mail</strong>：<a href="mailto:contact@openfoundry.org">contact@openfoundry.org</a> <strong>Address</strong>：台北市南港區研究院路2段128號 中央研究院資訊科學研究所 . <a href="../../privacy-policy.html">隱私權條款</a>. <a href="../../terms-of-use.html">使用條款</a><span style="position: relative; top: 8px; margin-top: -8px;"> <a href="../../about/8101.html"><img src="../../images/M_images/rss-feed-all.png" border="0" /></a></span>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+        	
+</div>
+						<div class="clear"></div>
+					</div>
+					<div class="rt-footer-bottom-wrap"><div class="rt-footer-bottom"><div class="rt-footer-bottom2"><div class="rt-footer-bottom3"></div></div></div></div>
+									</div></div></div>
+				<div class="rt-surround-bottom"><div class="rt-surround-bottom2"><div class="rt-surround-bottom3"></div></div></div>
+							</div>
+		</div>
+		<!--
+		<script id="aptureScript">
+						(function (){var a=document.createElement("script");a.defer="true";a.src="http://www.apture.com/js/apture.js?siteToken=vsJttrn";document.getElementsByTagName("head")[0].appendChild(a);})();
+     </script>
+-->
+
+<!-- Piwik -->
+<!-- 			<script type="text/javascript">
+			  var _paq = _paq || [];
+		  _paq.push(["trackPageView"]);
+		  _paq.push(["enableLinkTracking"]);
+
+		    (function() {
+			        var u=(("https:" == document.location.protocol) ? "https" : "https") + "://www.openfoundry.org/piwik/";
+				    _paq.push(["setTrackerUrl", u+"piwik.php"]);
+				    _paq.push(["setSiteId", "1"]);
+				        var d=document, g=d.createElement("script"), s=d.getElementsByTagName("script")[0]; g.type="text/javascript";
+				        g.defer=true; g.async=true; g.src=u+"piwik.js"; s.parentNode.insertBefore(g,s);
+					  })();
+		  </script> -->
+<!-- End Piwik Code -->
+	</body>
+</html>

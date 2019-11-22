@@ -1,0 +1,371 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="zh-tw" lang="zh-tw" >
+<head>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<link rel="shortcut icon" href="../../../../../images/favicon.ico" />
+	  <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+  <meta name="robots" content="index, follow" />
+  <meta name="keywords" content="subversion,https,svnbook,那麼我們希望你能對,如何實作這些概念的作法感到有興趣,分支是版本控制的基本部份,如果你要讓,如果你對這些概念不瞭解,我們在這一章提供了一個不錯的介紹,如果你熟悉這些,來管理你的資料,chapter,的基本概念,麼你一定會依賴這,都是所有版本控制系統的共通概念,本章假設你已經瞭解,book各語言列表,nightly,book文件,而詳細的內容應閱讀subversion" />
+  <meta name="title" content="5.Subversion book總覽" />
+  <meta name="description" content="前面的教學主要講的內容在於Subversion Book前三章的內容，為了將來深入運用時能夠有些想法，在這裡說明第三章以後的基本概念！ 而詳細的內容應閱讀Subversion book文件，如下: Subversion book各語言列表 https://svnbook.red-bean.com/nightly/ Subversion book繁體中文版" />
+  <meta name="generator" content="" />
+  <title>5.Subversion book總覽 - OpenFoundry</title>
+  <link href="../../../../../favicon.ico" rel="shortcut icon" type="image/x-icon" />
+  <link rel="stylesheet" href="../../../../../components/com_gantry/css/gantry.css" type="text/css" />
+  <link rel="stylesheet" href="../../../../../components/com_gantry/css/grid-12.css" type="text/css" />
+  <link rel="stylesheet" href="../../../../../components/com_gantry/css/joomla.css" type="text/css" />
+  <link rel="stylesheet" href="../../../../../templates/rt_quantive_j15/css/joomla.css" type="text/css" />
+  <link rel="stylesheet" href="../../../../../templates/rt_quantive_j15/css/style1.css" type="text/css" />
+  <link rel="stylesheet" href="../../../../../templates/rt_quantive_j15/css/light-body.css" type="text/css" />
+  <link rel="stylesheet" href="../../../../../templates/rt_quantive_j15/css/demo-styles.css" type="text/css" />
+  <link rel="stylesheet" href="../../../../../templates/rt_quantive_j15/css/template.css" type="text/css" />
+  <link rel="stylesheet" href="../../../../../templates/rt_quantive_j15/css/typography.css" type="text/css" />
+  <link rel="stylesheet" href="../../../../../templates/rt_quantive_j15/css/fusionmenu.css" type="text/css" />
+  <style type="text/css">
+    <!--
+#rt-main-surround ul.menu li.active > a, #rt-main-surround ul.menu li.active > .separator, #rt-main-surround ul.menu li.active > .item, #rt-main-surround .square4 ul.menu li:hover > a, #rt-main-surround .square4 ul.menu li:hover > .item, #rt-main-surround .square4 ul.menu li:hover > .separator, .roktabs-links ul li.active span {color:#0088B5;}
+a, #rt-main-surround ul.menu a:hover, #rt-main-surround ul.menu .separator:hover, #rt-main-surround ul.menu .item:hover {color:#0088B5;}
+    -->
+  </style>
+  <script type="text/javascript" src="../../../../../components/com_jcomments/js/jcomments-v2.1.js%3Fv=2"></script>
+  <script type="text/javascript" src="../../../../../components/com_jcomments/libraries/joomlatune/ajax.js"></script>
+  <script type="text/javascript" src="../../../../../media/system/js/mootools.js"></script>
+  <script type="text/javascript" src="../../../../../media/system/js/caption.js"></script>
+  <script type="text/javascript" src="../../../../../components/com_gantry/js/gantry-buildspans.js"></script>
+  <script type="text/javascript" src="../../../../../components/com_gantry/js/gantry-inputs.js"></script>
+  <script type="text/javascript" src="../../../../../templates/rt_quantive_j15/js/jquery.cookie.js"></script>
+  <script type="text/javascript" src="../../../../../modules/mod_roknavmenu/themes/fusion/js/fusion.js"></script>
+  <script type="text/javascript" src="../../../../../modules/mod_ofssologin/js/ofssologin.js"></script>
+  <script type="text/javascript">
+
+			window.addEvent('domready', function() {
+				var modules = ['rt-block'];
+				var header = ['h3','h2','h1'];
+				GantryBuildSpans(modules, header);
+			});
+		InputsExclusion.push('.content_vote','#rt-popup')
+		        window.addEvent('load', function() {
+					new Fusion('ul.menutop', {
+						pill: 0,
+						effect: 'slide and fade',
+						opacity: 1,
+						hideDelay: 500,
+						centered: 0,
+						tweakInitial: {'x': -2, 'y': 0},
+        				tweakSubsequent: {'x': 0, 'y': -14},
+						menuFx: {duration: 200, transition: Fx.Transitions.Sine.easeOut},
+						pillFx: {duration: 400, transition: Fx.Transitions.Back.easeOut}
+					});
+	            });
+  </script>
+<!-- <script type="text/javascript" src="/sso/javascripts/langsync.js"></script> -->
+<!-- <script src="/templates/rt_quantive_j15/js/ossf.js"></script> -->
+<script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-4136519-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
+</head>
+	<body  class="backgroundlevel-low backgroundstyle-style8 bodylevel-med bodystyle-light cssstyle-style1 logostyle-dark font-family-helvetica font-size-is-default menu-type-fusionmenu col12">
+		<div id="rt-main-background">
+			<div class="rt-container">
+																<div id="rt-header">
+					<div class="rt-grid-7 rt-alpha">
+    			<div class="rt-block">
+    	    	<a href="../../../../../index.html" id="rt-logo"></a>
+    		</div>
+	    
+</div>
+<div class="rt-grid-5 rt-omega">
+                    <div class="square9">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<div class="ofssologin_square9"><a href="../../../../../index.html">登入</a>&nbsp;&nbsp|&nbsp;&nbsp;<span><a href="https://www.openfoundry.org/en/component/content/article/2379-5subversion-book" ><span lang="en" xml:lang="en">English</span></a></li></ul></span><!--Joom!fish V2.0.4 (Lightning)-->
+<!-- &copy; 2003-2009 Think Network, released under the GPL. -->
+<!-- More information: at http://www.joomfish.net -->
+<div class="ofssologin_search_square9">
+  <form id="of_search" action="https://www.openfoundry.org/of/openfoundry/search" method="get" onsubmit="of_search(); return false;">
+    <select id="of_search_type">
+      <option value="Projects"> 專案 </option>
+      <option value="Content"> 文章 </option>
+      <option value="People"> 人才 </option>
+    </select>
+    <input id="query" name="query" id="mod_search_searchword" maxlength="50" alt="search" class="inputbox" type="text" size="28" value="search..."  onblur="if(this.value=='') this.value='search...';" onfocus="if(this.value=='search...') this.value='';" />
+    <input type="hidden" name="commit" value="search" />
+  </form>
+</div></div>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		
+</div>
+					<div class="clear"></div>
+				</div>
+																<div id="rt-navigation"><div id="rt-navigation2"><div id="rt-navigation3">
+					
+<div class="nopill">
+	<ul class="menutop level1 " >
+						<li class="item1 root" >
+					<a class="orphan item bullet" href="../../../../../index.html"  >
+				<span>
+			    				首頁				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item32 root" >
+					<a class="orphan item bullet" href="../../../../../archived.html"  >
+				<span>
+			    				專案				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item186 root" >
+					<a class="orphan item bullet" href="../../../../community.html"  >
+				<span>
+			    				Who&#039;s Who				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item4 root" >
+					<a class="orphan item bullet" href="../../../../news.html"  >
+				<span>
+			    				新聞				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item5 root" >
+					<a class="orphan item bullet" href="../../../../law-and-licensing.html"  >
+				<span>
+			    				法律源地				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item3 root" >
+					<a class="orphan item bullet" href="../../../../activities.html"  >
+				<span>
+			    				活動				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item2 root" >
+					<a class="orphan item bullet" href="../../../../resourcecatalog%3FName=Value.html"  >
+				<span>
+			    				資源表列				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item45 root" >
+					<a class="orphan item bullet" href="../../../../about.html"  >
+				<span>
+			    				關於				   
+				</span>
+			</a>
+			
+			
+	</li>	
+				</ul>
+</div>
+
+				    <div class="clear"></div>
+				</div></div></div>
+								<div class="rt-surround"><div class="rt-surround2"><div class="rt-surround3">
+										<div id="rt-showcase-section">
+												<div id="rt-showcase">
+							<div class="rt-grid-12 rt-alpha rt-omega">
+    		<div class="clear"></div>
+		
+		
+                <div class="close-note">
+                    <div class="rt-block">
+               					<div class="module-content">
+                	<div style="font-size:medium; background-image:linear-gradient(120deg,#159957,#4298b2);color:white;padding:20px;margin:-10px -18px;">感謝您對「自由軟體鑄造場」的支持與愛護，十多年來「自由軟體鑄造場」受中央研究院支持，並在資訊科學研究所以及資訊科技創新研究中心執行，現已完成階段性的任務。 本網站預計持續維運至 2021年底，網站內容基本上不會再更動。<br />也紀念我們永遠的朋友 李士傑先生（Shih-Chieh Ilya Li）。</div>				</div>
+            </div>
+                </div>
+		
+</div>
+							<div class="clear"></div>
+						</div>
+																	</div>
+															<div id="rt-main-surround">
+																							              <div id="rt-main" class="mb12">
+                <div class="rt-main-inner">
+                    <div class="rt-grid-12 ">
+                                                <div class="rt-block">
+                            							<div class="square1">
+							<div class="rt-module-surround">
+								<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+								<div class="rt-module-inner">
+		                            <div id="rt-mainbody">
+		                                
+<div class="rt-joomla ">
+	<div class="rt-article">
+		
+				<div class="rt-headline"><h1 class="rt-article-title">5.Subversion book總覽</h1>		</div>
+		<div class="clear"></div>
+		
+		
+		
+				<div class="rt-articleinfo">
+						<div class="rt-article-icons">
+								<a href="https://www.openfoundry.org/tw/component/content/article/2379-5subversion-book?tmpl=component&amp;print=1&amp;page=" title="列印" onclick="window.open(this.href,'win2','status=no,toolbar=no,scrollbars=yes,titlebar=no,menubar=no,resizable=yes,width=640,height=480,directories=no,location=no'); return false;" rel="nofollow"><span class="icon print"></span></a>																</div>
+			
+			<span class="rt-date-posted">
+						建立日期			2010-06-11 23:04						&nbsp;&nbsp;&nbsp;&nbsp;						最近更新在 2010-07-14 20:32						</span>
+
+						<span class="rt-author">
+				作者是 webmaster			</span>
+				
+					</div>
+		
+		
+		<p>前面的教學主要講的內容在於Subversion Book前三章的內容，為了將來深入運用時能夠有些想法，在這裡說明第三章以後的基本概念！</p>
+<p>而詳細的內容應閱讀Subversion book文件，如下:</p>
+<p>Subversion book各語言列表 https://svnbook.red-bean.com/nightly/</p>
+<p>Subversion book繁體中文版 https://svn.stu.edu.tw/svnbook/</p>
+<p>依Browser的語言自動選擇對應語言的文件 https://svnbook.red-bean.com/</p>
+
+<h3><span style="color: #0000ff;">分支與合併 </span></h3>
+<p>分支, 標記, 以及合併, 幾乎都是所有版本控制系統的共通概念. 如果你對這些概念不瞭解, 我們在這一章提供了一個不錯的介紹. 如果你熟悉這些概念的話, 那麼我們希望你能對 Subversion 如何實作這些概念的作法感到有興趣.</p>
+<p>分支是版本控制的基本部份. 如果你要讓 Subversion 來管理你的資料, 那麼你一定會依賴這個功能. 本章假設你已經瞭解 Subversion 的基本概念. (Chapter 2, 基本概念).</p>
+<p><strong>何謂分支?</strong></p>
+<p>假設你的工作是負責管理公司部門的文件, 某種使用手冊什麼的. 有一天, 另一個部門跟你要同一份使用手冊, 不過他們行事不同, 要的內容也有 '些微' 的不一樣.</p>
+<p>在這種情況下, 你該怎麼辦? 你會使用直接了當的方法, 直接產生文件的第二份複本, 然後開始分別維護這兩份文件. 隨著各個部份要求你作些小修改, 你會將這些修改整入某一份, 或是另一份文件.</p>
+<p>對這兩份文件, 你常會想要作同樣的修改. 舉個例子, 如果你在第一份複本裡看到一個錯字, 很有可能第二份複本裡也會有. 畢竟這兩份文件幾乎都一樣; 它們只有在特定的一小部份不一樣而已.</p>
+<p>這就是 分支 的基本概念 — 換句話說, 有一條發展途徑與另一條是獨立的, 但是如果回溯的時間夠久, 你會發現它們都有共同的歷史紀錄. 一個分支都是以某樣東西的複本開始其生命週期, 然後就自行發展下去, 有著自己的歷史紀錄發生.</p>
+<p><strong>在分支之間複製更動</strong></p>
+<p>現在你與 Sally 在同一專案的不同平行分支上工作: 你的是私有分支, 而 Sally 則是 主幹 (trunk), 也就是主要的發展線.</p>
+<p>對於有眾多貢獻人員的專案來說, 大多數的人都有主幹的工作複本是很常見的. 要是有哪個人需要進行可能會妨礙到主幹的長期變動, 標準的作法是建立一個私有的分支, 然後將更動都送交至該分支, 直到工作結束為止.</p>
+<p>所以, 好消息就是你和 Sally 兩個不會互相影響, 壞消息是這兩個很容易就跑得 太 遠了. 請記得 "與世隔絕" 策略的一個問題, 就是在你結束分支的工作之後, 幾乎不可能將你所作的更動, 在不產生大量衝突的情況下, 把它合併回主分支去.</p>
+<p>相反地, 你和 Sally 應該在你工作時, 也一直分享彼此的更動. 哪些更動應該被分享, 完全由你來決定; Subversion 提供你在各個分支之間 "複製" 選擇性更動的能力. 而當你已經處理完你的分支時, 整個分支的所有更動就可以複製回主幹去.</p>
+<p><strong>標記</strong></p>
+<p>另一個常見的版本控制概念, 就是 標記. 標記只是一個計劃在時間軸上的 "快照". 在 Subversion 中, 這個概念已經隨處都是了. 每一個檔案庫的修訂版, 就是檔案系統在每一次送交之後的快照.</p>
+<p>但是呢, 人們通常會想要標記一個便於記憶的名稱, 像是 "release-1.0". 而且他們只想要的, 只是一部份檔案系統子目錄的快照而已. 要記住某一個軟體的 release-1.0 版, 對應的是修訂版 4822 裡的某個特定子目錄, 畢竟是不太容易的.</p>
+<p><strong>檔案庫管理</strong></p>
+<p>Subversion 的檔案庫是個中央倉儲, 用來存放任意數量專案的受版本控管資料. 因為如此, 它成為管理員集中注意的焦點. 檔案庫一般並不需要太多的照顧, 但是瞭解如何適當地設定它, 照顧它是很重要的, 如此才能避免一些潛在性的問題, 而實際的問題得以安全地解決.</p>
+<p>在本章中, 我們會討論如何建立與設定 Subversion 的檔案庫, 以及如何開放檔案庫的網路存取. 我們也會提到檔案庫的維護, 包括 svnlook 與 svnadmin 工具的使用方法 (它們都包含 Subversion 中). 我們也會說明常見的問題與錯誤, 並提供幾個如何安排檔案庫資料的建議.</p>
+<p>如果你存取 Subversion 的檔案庫的目的, 只是打算成為一個單純將資料納入版本控管的使用者的話 (也就是透過 Subversion 用戶端), 那你可以完全跳過本章. 但是如果你是, 或想要成為 Subversion 的檔案庫管理員, 本章絕對是你要投注注意力的地方.</p>
+<p>當然了, 一個人無法成為檔案庫的管理員, 除非他有檔案庫可管理.</p>
+<p><strong>伺服器組態</strong></p>
+<p>一個Subversion的版本庫可以和客戶端同時運行在同一個機器上，使用file:///訪問，但是一個典型的Subversion設置應該包括一個單獨的服務器，可以被辦公室的所有客戶端訪問—或者有可能是整個世界。</p>
+<p>本小節描述了怎樣將一個Subversion的版本庫暴露給遠程客戶端，我們會覆蓋Subversion已存在的服務器機制，討論各種方式的配置和使用。經過閱讀本小節，你可以決定你需要哪種網絡設置，並且明白怎樣在你的主機上進行配置。</p>
+<p><strong>進階主題</strong></p>
+<p>如果你是從頭開始逐章閱讀本書的, 你應該已經知道如何使用 Subversion 用戶端, 進行大多數常見的版本控制作業. 你知道如何從 Subversion 檔案庫取出一份工作複本. 你已經習慣利用 svn commit 與 svn update 功能來送交與取得更動. 你甚至可能已經會反射性地使用 svn status 命令而不自覺. 不管從哪個角度看, 你已經相當習慣使用 Subversion 了。</p>
+<p>但是 Subversion 的功能不僅止於 "常見的版本控制作業".</p>
+<p>本章著重於 Subversion 並不常用的功能. 在本章中, 我們會討論 Subversion 的性質 (或 「描述資料」) 支援, 如何透過修改 Subversion 的執行時期設定檔, 來改變它的預設行為. 我們會描述你要怎麼利用外部定義, 讓 Subversion 從多個檔案庫取得資料. 對於 Subversion 發行檔中的額外用戶端與伺服器端的工具, 我們也會有詳盡的解說.</p>
+<p>在閱讀本章之前, 你應該已經熟悉 Subversion 的基本目錄與檔案能力. 如果你還沒看過這部份, 或是需要再重新熟悉一下, 我們建議你看看 Chapter 2, 基本概念 與 Chapter 3, 導覽. 當你能夠駕馭基本的功能, 也瞭解本章的內容, 你就是 Subversion 的強力使用者了 — 無效退費!</p>
+<p><strong>開發者資訊</strong></p>
+<p>Subversion是一個開源的軟件項目，使用Apache樣式的軟件許可證。這個項目由位於加利福尼亞的CollabNet, Inc.軟件開發公司資助。這個關於Subversion開發的社區一直歡迎新成員貢獻自己的時間和注意力。鼓勵志願者做他們能做的任何幫助，不管是發現 和診斷bug，精煉已存的代碼還是補充新的特性。</p>
+<p>本章是為那些希望實際參與源代碼編寫來幫助Subversion不斷進步的人們準備的。我們要知道，在這裡我們會涉及到許多軟件 內在的細節，在開發Subversion本身—或利用Subversion庫開發全新工具時—所用到的許多核心技術。如果你無法預測你是否會以這種層級參 與到這個軟件中來，那麼也可以隨意跳過這一章，而你作為一個Subversion用戶的體驗不會受到任何影響。</p>
+<p><strong>Subversion完整參考</strong></p>
+<p>本章是用來作為 Subversion 的完整參考手冊，裡面包含了命令列用戶端 (svn) 與其所有的子命令，以及檔案庫管理程式 (svnadmin 與 svnlook) 與其子命令。</p>
+			<!-- Show relate article -->
+				<!-- end -->
+		<div class="article_note">
+		<!-- Add tags use metakey, and show OSSF Newsletter tag: OSSFNL+NUM-->
+		<br><br> <hr style='border: 1px dashed #D2DADB;'>		<!-- End -->
+					<br>
+					<b>分類: </b><a href="https://www.openfoundry.org/tw/component/content/category/502-subversion">				Subversion					</a>				</div>
+			 <!-- AddThis Button BEGIN ID 3001 is the front page article -->
+     			<br><br>
+       <div class="addthis_toolbox addthis_default_style addthis_32x32_style">
+       <a class="addthis_button_preferred_1"></a>
+       <a class="addthis_button_preferred_2"></a>
+       <a class="addthis_button_preferred_3"></a>
+       <a class="addthis_button_preferred_4"></a>
+       <a class="addthis_button_compact"></a>
+       <a class="addthis_counter addthis_bubble_style"></a>
+       </div>
+       <script type="text/javascript">var addthis_config = {"data_track_clickback":true};</script>
+       <script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js#pubid=openfoundry"></script>
+       <!-- AddThis Button END -->
+     <br>
+		<div class="totop" ><a class="rt-totop" href="2379-5subversion-book.html#" style="outline: medium none;">↑ Top</a></div>
+            <!-- AddThis Button END -->
+
+			</div>
+</div>
+
+		                            </div>
+									<div class="clear"></div>
+								</div>
+								<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+							</div>
+							</div>
+                                                    </div>
+                                            </div>
+                                        <div class="clear"></div>
+                </div>
+            </div>
+																													</div>
+										<div id="rt-copyright">
+						<div class="rt-grid-12 rt-alpha rt-omega">
+                        <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<div id="desktop-mobile-version-switch"><span id="mobile-version" class="version-switch"><a href="2379-5subversion-book.html#">行動版</a></span></div>
+自由軟體鑄造場 製作 最佳瀏覽狀態：IE7或Firefox2.0以上 (建議使用Firefox) ‧ 解析度1024*768 <br /> <strong>E-Mail</strong>：<a href="mailto:contact@openfoundry.org">contact@openfoundry.org</a> <strong>Address</strong>：台北市南港區研究院路2段128號 中央研究院資訊科學研究所 . <a href="../../../../../privacy-policy.html">隱私權條款</a>. <a href="../../../../../terms-of-use.html">使用條款</a><span style="position: relative; top: 8px; margin-top: -8px;"> <a href="../../../../../about/8101.html"><img src="../../../../../images/M_images/rss-feed-all.png" border="0" /></a></span>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+        	
+</div>
+						<div class="clear"></div>
+					</div>
+					<div class="rt-footer-bottom-wrap"><div class="rt-footer-bottom"><div class="rt-footer-bottom2"><div class="rt-footer-bottom3"></div></div></div></div>
+									</div></div></div>
+				<div class="rt-surround-bottom"><div class="rt-surround-bottom2"><div class="rt-surround-bottom3"></div></div></div>
+							</div>
+		</div>
+		<!--
+		<script id="aptureScript">
+						(function (){var a=document.createElement("script");a.defer="true";a.src="http://www.apture.com/js/apture.js?siteToken=vsJttrn";document.getElementsByTagName("head")[0].appendChild(a);})();
+     </script>
+-->
+
+<!-- Piwik -->
+<!-- 			<script type="text/javascript">
+			  var _paq = _paq || [];
+		  _paq.push(["trackPageView"]);
+		  _paq.push(["enableLinkTracking"]);
+
+		    (function() {
+			        var u=(("https:" == document.location.protocol) ? "https" : "https") + "://www.openfoundry.org/piwik/";
+				    _paq.push(["setTrackerUrl", u+"piwik.php"]);
+				    _paq.push(["setSiteId", "1"]);
+				        var d=document, g=d.createElement("script"), s=d.getElementsByTagName("script")[0]; g.type="text/javascript";
+				        g.defer=true; g.async=true; g.src=u+"piwik.js"; s.parentNode.insertBefore(g,s);
+					  })();
+		  </script> -->
+<!-- End Piwik Code -->
+	</body>
+</html>

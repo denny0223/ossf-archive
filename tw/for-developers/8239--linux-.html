@@ -1,0 +1,516 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="zh-tw" lang="zh-tw" >
+<head>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<link rel="shortcut icon" href="../../images/favicon.ico" />
+	  <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+  <meta name="robots" content="index, follow" />
+  <meta name="keywords" content="linux,上讓人下載,其能見度必然會低於置放於,核心的開發主幹上,而如果程式碼是放置於,您所修改的程式碼可以被更多人看到,上游源頭進行更新,讓程式碼回歸上游源頭進行更新可以帶來各種不同的好處,最重要的是,的核心主幹,將您所修改的程式碼儲放在某些,這會更有助於其他人取得這些程式碼並下載利用,並不代表其他程式開發者,會從程式碼上傳的第一天開始,就為您撰寫改良這些程式碼,至少在上傳這些程式碼的初,將您的程式碼回歸到上游源頭進行更新,核心的程式碼會經常地被更新修改,並使您所生產的晶片組或是主機板更具使用上的吸引性,這也將會便利他人改良您的程式碼" />
+  <meta name="title" content="讓您的程式碼回歸 Linux 上游源頭進行更新：入門篇" />
+  <meta name="description" content="© 2011，著作權所有。作者：Armijn Hemel & Ralf Baechle；譯者：林誠夏，自由軟體鑄造場。 此中譯版之授權條款為：創用CC - 姓名標示 3.0 台灣。 這份文件描述的內容是，晶片製造商需要採取哪些步驟，讓他們的程式碼成功地回歸 Linux 核心的上游開發主幹 (mainline) 進行更新。 為什麼要讓程式碼回歸 上游源頭進行更新？" />
+  <meta name="generator" content="" />
+  <title>讓您的程式碼回歸 Linux 上游源頭進行更新：入門篇 - OpenFoundry</title>
+  <link href="../../favicon.ico" rel="shortcut icon" type="image/x-icon" />
+  <link rel="stylesheet" href="../../components/com_gantry/css/gantry.css" type="text/css" />
+  <link rel="stylesheet" href="../../components/com_gantry/css/grid-12.css" type="text/css" />
+  <link rel="stylesheet" href="../../components/com_gantry/css/joomla.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/joomla.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/style1.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/light-body.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/demo-styles.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/template.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/typography.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/fusionmenu.css" type="text/css" />
+  <style type="text/css">
+    <!--
+#rt-main-surround ul.menu li.active > a, #rt-main-surround ul.menu li.active > .separator, #rt-main-surround ul.menu li.active > .item, #rt-main-surround .square4 ul.menu li:hover > a, #rt-main-surround .square4 ul.menu li:hover > .item, #rt-main-surround .square4 ul.menu li:hover > .separator, .roktabs-links ul li.active span {color:#0088B5;}
+a, #rt-main-surround ul.menu a:hover, #rt-main-surround ul.menu .separator:hover, #rt-main-surround ul.menu .item:hover {color:#0088B5;}
+    -->
+  </style>
+  <script type="text/javascript" src="../../components/com_jcomments/js/jcomments-v2.1.js%3Fv=2"></script>
+  <script type="text/javascript" src="../../components/com_jcomments/libraries/joomlatune/ajax.js"></script>
+  <script type="text/javascript" src="../../media/system/js/mootools.js"></script>
+  <script type="text/javascript" src="../../media/system/js/caption.js"></script>
+  <script type="text/javascript" src="../../components/com_gantry/js/gantry-buildspans.js"></script>
+  <script type="text/javascript" src="../../components/com_gantry/js/gantry-inputs.js"></script>
+  <script type="text/javascript" src="../../templates/rt_quantive_j15/js/jquery.cookie.js"></script>
+  <script type="text/javascript" src="../../modules/mod_roknavmenu/themes/fusion/js/fusion.js"></script>
+  <script type="text/javascript" src="../../modules/mod_ofssologin/js/ofssologin.js"></script>
+  <script type="text/javascript">
+
+			window.addEvent('domready', function() {
+				var modules = ['rt-block'];
+				var header = ['h3','h2','h1'];
+				GantryBuildSpans(modules, header);
+			});
+		InputsExclusion.push('.content_vote','#rt-popup')
+		        window.addEvent('load', function() {
+					new Fusion('ul.menutop', {
+						pill: 0,
+						effect: 'slide and fade',
+						opacity: 1,
+						hideDelay: 500,
+						centered: 0,
+						tweakInitial: {'x': -2, 'y': 0},
+        				tweakSubsequent: {'x': 0, 'y': -14},
+						menuFx: {duration: 200, transition: Fx.Transitions.Sine.easeOut},
+						pillFx: {duration: 400, transition: Fx.Transitions.Back.easeOut}
+					});
+	            });
+  </script>
+<!-- <script type="text/javascript" src="/sso/javascripts/langsync.js"></script> -->
+<!-- <script src="/templates/rt_quantive_j15/js/ossf.js"></script> -->
+<script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-4136519-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
+</head>
+	<body  class="backgroundlevel-low backgroundstyle-style8 bodylevel-med bodystyle-light cssstyle-style1 logostyle-dark font-family-helvetica font-size-is-default menu-type-fusionmenu col12 ">
+		<div id="rt-main-background">
+			<div class="rt-container">
+																<div id="rt-header">
+					<div class="rt-grid-7 rt-alpha">
+    			<div class="rt-block">
+    	    	<a href="../../index.html" id="rt-logo"></a>
+    		</div>
+	    
+</div>
+<div class="rt-grid-5 rt-omega">
+                    <div class="square9">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<div class="ofssologin_square9"><a href="../../index.html">登入</a>&nbsp;&nbsp|&nbsp;&nbsp;<span><a href="../../en/for-developers/8239--linux-.html" ><span lang="en" xml:lang="en">English</span></a></li></ul></span><!--Joom!fish V2.0.4 (Lightning)-->
+<!-- &copy; 2003-2009 Think Network, released under the GPL. -->
+<!-- More information: at http://www.joomfish.net -->
+<div class="ofssologin_search_square9">
+  <form id="of_search" action="https://www.openfoundry.org/of/openfoundry/search" method="get" onsubmit="of_search(); return false;">
+    <select id="of_search_type">
+      <option value="Projects"> 專案 </option>
+      <option value="Content"> 文章 </option>
+      <option value="People"> 人才 </option>
+    </select>
+    <input id="query" name="query" id="mod_search_searchword" maxlength="50" alt="search" class="inputbox" type="text" size="28" value="search..."  onblur="if(this.value=='') this.value='search...';" onfocus="if(this.value=='search...') this.value='';" />
+    <input type="hidden" name="commit" value="search" />
+  </form>
+</div></div>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		
+</div>
+					<div class="clear"></div>
+				</div>
+																<div id="rt-navigation"><div id="rt-navigation2"><div id="rt-navigation3">
+					
+<div class="nopill">
+	<ul class="menutop level1 " >
+						<li class="item1 root" >
+					<a class="orphan item bullet" href="../../index.html"  >
+				<span>
+			    				首頁				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item32 root" >
+					<a class="orphan item bullet" href="../../archived.html"  >
+				<span>
+			    				專案				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item186 root" >
+					<a class="orphan item bullet" href="../community.html"  >
+				<span>
+			    				Who&#039;s Who				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item4 root" >
+					<a class="orphan item bullet" href="../news.html"  >
+				<span>
+			    				新聞				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item5 root" >
+					<a class="orphan item bullet" href="../law-and-licensing.html"  >
+				<span>
+			    				法律源地				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item3 root" >
+					<a class="orphan item bullet" href="../activities.html"  >
+				<span>
+			    				活動				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item2 root" >
+					<a class="orphan item bullet" href="../resourcecatalog%3FName=Value.html"  >
+				<span>
+			    				資源表列				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item45 root" >
+					<a class="orphan item bullet" href="../about.html"  >
+				<span>
+			    				關於				   
+				</span>
+			</a>
+			
+			
+	</li>	
+				</ul>
+</div>
+
+				    <div class="clear"></div>
+				</div></div></div>
+								<div class="rt-surround"><div class="rt-surround2"><div class="rt-surround3">
+										<div id="rt-showcase-section">
+												<div id="rt-showcase">
+							<div class="rt-grid-12 rt-alpha rt-omega">
+    		<div class="clear"></div>
+		
+		
+                <div class="close-note">
+                    <div class="rt-block">
+               					<div class="module-content">
+                	<div style="font-size:medium; background-image:linear-gradient(120deg,#159957,#4298b2);color:white;padding:20px;margin:-10px -18px;">感謝您對「自由軟體鑄造場」的支持與愛護，十多年來「自由軟體鑄造場」受中央研究院支持，並在資訊科學研究所以及資訊科技創新研究中心執行，現已完成階段性的任務。 本網站預計持續維運至 2021年底，網站內容基本上不會再更動。<br />也紀念我們永遠的朋友 李士傑先生（Shih-Chieh Ilya Li）。</div>				</div>
+            </div>
+                </div>
+		
+</div>
+							<div class="clear"></div>
+						</div>
+																	</div>
+															<div id="rt-main-surround">
+												<div id="rt-breadcrumbs">
+								<div class="rt-breadcrumb-surround">
+		<a href="../../index.html" id="breadcrumbs-home"></a>
+		<span class="breadcrumbs pathway">
+<a href="../for-developers.html" class="pathway">開發者注意事項</a> <img src="../../templates/rt_quantive_j15/images/arrow.png" alt=""  /> <span class="no-link">讓您的程式碼回歸 Linux 上游源頭進行更新：入門篇</span></span>
+	</div>
+	
+							<div class="clear"></div>
+						</div>
+																							              <div id="rt-main" class="sa3-mb9">
+                <div class="rt-main-inner">
+                    <div class="rt-grid-9 rt-push-3">
+                                                <div id="rt-content-top">
+                            <div class="rt-grid-9 rt-alpha rt-omega">
+                    <div class="title1">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-title"><h2 class="title">法律源地</h2></div>
+						<div class="clear"></div>
+		                						<div class="module-content">
+		                	<p><img style="float: right; border: 0; margin-left: 5px; margin-right: 5px;" src="../../images/banners/consulting1.png" alt="" width="100" border="0" />本網站法律源地提供相當多自由軟體授權與法律的資訊，歡迎您閱讀這些資訊。</p>
+<p>&nbsp;</p>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		
+</div>
+							<div class="clear"></div>
+                        </div>
+                                                <div class="rt-block">
+                            							<div class="square1">
+							<div class="rt-module-surround">
+								<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+								<div class="rt-module-inner">
+		                            <div id="rt-mainbody">
+		                                
+<div class="rt-joomla ">
+	<div class="rt-article">
+		
+				<div class="rt-headline"><h1 class="rt-article-title">讓您的程式碼回歸 Linux 上游源頭進行更新：入門篇</h1>		</div>
+		<div class="clear"></div>
+		
+		
+		
+				<div class="rt-articleinfo">
+						<div class="rt-article-icons">
+								<a href="8239--linux-%3Ftmpl=component&amp;print=1&amp;layout=default&amp;page=.html" title="列印" onclick="window.open(this.href,'win2','status=no,toolbar=no,scrollbars=yes,titlebar=no,menubar=no,resizable=yes,width=640,height=480,directories=no,location=no'); return false;" rel="nofollow"><span class="icon print"></span></a>																</div>
+			
+			<span class="rt-date-posted">
+						建立日期			2011-01-10 19:59						&nbsp;&nbsp;&nbsp;&nbsp;						最近更新在 2012-04-30 15:28						</span>
+
+						<span class="rt-author">
+				作者是 Armijn Hemel &amp; Ralf Baechle 林誠夏/翻譯			</span>
+				
+					</div>
+		
+		
+		<p>© 2011，著作權所有。作者：Armijn Hemel & Ralf Baechle；譯者：林誠夏，自由軟體鑄造場。</p>
+<p>此中譯版之授權條款為：<a href="https://creativecommons.org/licenses/by/3.0/tw/" target="_blank">創用CC - 姓名標示 3.0 台灣</a>。</p>
+<p>這份文件描述的內容是，晶片製造商需要採取哪些步驟，讓他們的程式碼成功地回歸 Linux 核心的上游開發主幹 (mainline) 進行更新。</p>
+
+<p> </p>
+<h3>為什麼要讓程式碼回歸上游源頭進行更新？</h3>
+<p>讓程式碼回歸上游源頭進行更新可以帶來各種不同的好處：最重要的是，您所修改的程式碼可以被更多人看到。將您所修改的程式碼儲放在某些 FTP 上讓人下載，其能見度必然會低於置放於 Linux 核心的開發主幹上。而如果程式碼是放置於 Linux 的核心主幹，這會更有助於其他人取得這些程式碼並下載利用，並使您所生產的晶片組或是主機板更具使用上的吸引性。此外，這也將會便利他人改良您的程式碼，並有助於該程式碼能一直保持在最新的更新狀態（Linux 核心的程式碼會經常地被更新修改）。</p>
+<p>將您的程式碼回歸到上游源頭進行更新，並不代表其他程式開發者，會從程式碼上傳的第一天開始，就為您撰寫改良這些程式碼。至少在上傳這些程式碼的初期時，在程式開發上面投注最多時間成本的人將還是您本身。而儘管短期來說，您可能還需要花費一些額外的工程資源在程式的開發上，但是從中長期來看，讓程式碼回歸到 Linux 核心的上游主幹絕對會為您帶來值得的回報。</p>
+<p> </p>
+<h3>如何與 Linux 核心的上游開發者溝通</h3>
+<p>Linux 核心的社群開發者針對許多開發事項都已經有了成熟的運作規則，例如：程式碼的撰寫風格 (coding style)、開發者彼此間的連絡溝通方式等等。很多 Linux 核心的主要開發者都非常忙碌，因此在與這些人打交道時最好能遵循這些既定規則，以讓整個溝通流程可以儘可能地順暢進行。</p>
+<p> </p>
+<h3>適當調節您的個人期待<strong> </strong></h3>
+<p>您第一次提交給 Linux 核心開發者的程式碼，有可能不會被接受，不被接受的原因可能基於不同的理由，例如：程式碼不符合既定的撰寫風格、程式碼的品質不如預期等等。不過請不要將這樣的回應視為您的程式碼被拒絕了，而是要將這些互動視為將您的程式碼成功匯入 Linux 核心主流的第一步。</p>
+<p>有時候這些 Linux 核心開發者對您的回應可能非常簡要，或者看似急躁與不耐煩，同樣地，請不要將這樣的回應視為您的程式碼被拒絕了，這其實是您還需要多加些努力的信號。</p>
+<p> </p>
+<h3>準備與提交您的程式碼<strong> </strong></h3>
+<p>將程式碼上傳回 Linux 核心主流的提交與準備工作文件，已經被整理在 Linux 核心源碼目錄下的這些位置：</p>
+<ul>
+<li>Documentation/CodingStyle</li>
+<li>Documentation/SubmitChecklist</li>
+<li>Documentation/SubmittingDrivers</li>
+<li>Documentation/SubmittingPatches</li>
+</ul>
+<p> </p>
+<p>一般來說，程式碼的提交步驟要從程式碼的清整與格式調整開始，提交者要先將程式碼的格式調整到與 (CodingStyle) 目錄裡的指示文件相符。然後依據 "SubmitChecklist" 目錄裡的提交清單逐項檢查，餘下 "SubmittingDrivers" 與 "SubmittingPatches" 這兩個目錄的文件，則是存放實際提交步驟的說明文件。</p>
+<p>當您根據目錄裡的撰寫標準調整完所欲提交的程式碼後，下一個步驟就是將這些程式碼分割為適當大小的修補程式 (patch) 以利提交。這是因為當修補程式的檔案過大時，會造成他人難以檢閱的結果，所以最好是將修補程式維持在合理的容量內。這樣處理的另一個好處在於，適當分割後的修補程式將可以獨立地被不同的 Linux 核心開發者檢閱，例如以下的範例事項，都適合分割為個別獨立的修補程式來進行提交：</p>
+<ul>
+<li>修正程式特定的問題</li>
+<li>修正特定的拼字錯誤</li>
+<li>修正 Linux 核心裡許多地方都會發生的共同問題</li>
+<li>新版的硬體驅動程式</li>
+<li>增加對新式系統晶片 (SOC) 或是評估板的相關支援</li>
+</ul>
+<p> </p>
+<p>修補程式的提交應以上述建議的方式進行，這樣才能確保這些修補程式被納進 Linux 核心時不會破壞了系統的運作，即便是暫時性系統失靈的狀況都得盡量的避免，因為這會使得故障排除的工作變得更為困難。Linux 核心是利用 "git-bisect" 這隻程式進行故障排除，而若是某個版本的 Linux 核心發生系統失靈的狀況，即使這僅是暫時性的失靈，都會讓 "git-bisect" 的運作變得非常困難，或者根本無法運作。</p>
+<p>當您完成了程式碼的清整工作，依照 "CodingStyle" 目錄裡的文件進行格式調整，並依其性質適當地分割為獨立的修補程式之後，接下來便可以將這些修補程式發送出去了。如果這些修補程式是為了增加新作業系統或系統晶片的支援，所影響的層面會觸及到 Linux 核心數個不同領域，但這並不代表您需要將這些修補程式發送給 Linux 核心郵件列表上的每個人。舉例來說，ARM Linux 的維護成員們對於針對 MIPS 所撰寫的程式碼並不會太感興趣。若是您想要了解如何將程式碼發送給 Linux 核心適合的開發成員，Linux 核心源碼樹狀目錄下 "MAINTAINERS" 這個檔案，能協助您了解相關資訊。</p>
+<p>舉例來說，"MAINTAINERS" 這個檔案裡您可以找到 squashfs 程式的相關資訊有：</p>
+<pre>M:      Phillip Lougher 
+L:      
+ <script language='JavaScript' type='text/javascript'>
+ <!--
+ var prefix = 'm&#97;&#105;lt&#111;:';
+ var suffix = '';
+ var attribs = '';
+ var path = 'hr' + 'ef' + '=';
+ var addy30261 = 'sq&#117;&#97;shfs-d&#101;v&#101;l' + '&#64;';
+ addy30261 = addy30261 + 'l&#105;sts' + '&#46;' + 's&#111;&#117;rc&#101;f&#111;rg&#101;' + '&#46;' + 'n&#101;t';
+ document.write( '<a ' + path + '\'' + prefix + addy30261 + suffix + '\'' + attribs + '>' );
+ document.write( addy30261 );
+ document.write( '<\/a>' );
+ //-->
+ </script> <script language='JavaScript' type='text/javascript'>
+ <!--
+ document.write( '<span style=\'display: none;\'>' );
+ //-->
+ </script>這個 E-mail 地址已經被防止灌水惡意程式保護，您需要啟用 Java Script 才能觀看
+ <script language='JavaScript' type='text/javascript'>
+ <!--
+ document.write( '</' );
+ document.write( 'span>' );
+ //-->
+ </script> (subscribers-only)
+W:      https://squashfs.org.uk
+S:      Maintained
+F:      Documentation/filesystems/squashfs.txt
+F:      fs/squashfs/
+</pre>
+<p>"L" 指向針對 squashfs 這個特定子系統建立的郵件列表，"M" 代表 squashfs 主要維護成員的個人連絡信箱或是群組成員的共同連絡信箱。有時您會找不到個別專案的郵件列表或是專案成員連絡信箱的資訊，而若二種資訊都找不到的話，建議您再直接利用 
+ <script language='JavaScript' type='text/javascript'>
+ <!--
+ var prefix = 'm&#97;&#105;lt&#111;:';
+ var suffix = '';
+ var attribs = '';
+ var path = 'hr' + 'ef' + '=';
+ var addy79908 = 'l&#105;n&#117;x-k&#101;rn&#101;l' + '&#64;';
+ addy79908 = addy79908 + 'vg&#101;r' + '&#46;' + 'k&#101;rn&#101;l' + '&#46;' + '&#111;rg';
+ document.write( '<a ' + path + '\'' + prefix + addy79908 + suffix + '\'' + attribs + '>' );
+ document.write( addy79908 );
+ document.write( '<\/a>' );
+ //-->
+ </script> <script language='JavaScript' type='text/javascript'>
+ <!--
+ document.write( '<span style=\'display: none;\'>' );
+ //-->
+ </script>這個 E-mail 地址已經被防止灌水惡意程式保護，您需要啟用 Java Script 才能觀看
+ <script language='JavaScript' type='text/javascript'>
+ <!--
+ document.write( '</' );
+ document.write( 'span>' );
+ //-->
+ </script> 這個信箱來發送您所欲提交的修補程式。</p>
+<p>如果您遵循上述這幾個簡單規則，那麼讓您的程式碼回歸 Linux 核心上游進行更新應該就不會是一件難事。最後、我們想要提供您一個重要的建議：如果您對於向 Linux 核心上流提交程式碼這件事有任何的疑問，儘管向這些 Linux 核心的開發者提出您的疑問。一般來說，這些 Linux 核心的開發成員，將會非常樂意地回答您所提出的相關問題。</p>
+<p> </p>
+<p>原文（英文版）檔案下載：<a href="../papers-and-teaching-materials/teaching-materials/doc_download/1372--linux--odt.html" target="_blank">ODT</a> / <a href="../papers-and-teaching-materials/teaching-materials/doc_download/1373--linux--pdf.html" target="_blank">PDF</a>。</p>
+			<!-- Show relate article -->
+				<!-- end -->
+		<div class="article_note">
+		<!-- Add tags use metakey, and show OSSF Newsletter tag: OSSFNL+NUM-->
+		<br><br> <hr style='border: 1px dashed #D2DADB;'>		<!-- End -->
+					<br>
+					<b>分類: </b><a href="../for-developers.html">				開發者注意事項					</a>				</div>
+			 <!-- AddThis Button BEGIN ID 3001 is the front page article -->
+     			<br><br>
+       <div class="addthis_toolbox addthis_default_style addthis_32x32_style">
+       <a class="addthis_button_preferred_1"></a>
+       <a class="addthis_button_preferred_2"></a>
+       <a class="addthis_button_preferred_3"></a>
+       <a class="addthis_button_preferred_4"></a>
+       <a class="addthis_button_compact"></a>
+       <a class="addthis_counter addthis_bubble_style"></a>
+       </div>
+       <script type="text/javascript">var addthis_config = {"data_track_clickback":true};</script>
+       <script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js#pubid=openfoundry"></script>
+       <!-- AddThis Button END -->
+     <br>
+		<div class="totop" ><a class="rt-totop" href="8239--linux-.html#" style="outline: medium none;">↑ Top</a></div>
+            <!-- AddThis Button END -->
+
+			</div>
+</div>
+
+		                            </div>
+									<div class="clear"></div>
+								</div>
+								<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+							</div>
+							</div>
+                                                    </div>
+                                            </div>
+                                <div class="rt-grid-3 rt-pull-9">
+                <div id="rt-sidebar-a">
+                                    <div class="square4">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-title"><h2 class="title">利用注意事項</h2></div>
+						<div class="clear"></div>
+		                						<div class="module-content">
+		                	<ul class="menu" id="5"><li class="item16"><a href="../for-users.html"><span>使用者注意事項</span></a></li><li id="current" class="active item17"><a href="../for-developers.html"><span>開發者注意事項</span></a></li></ul>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-title"><h2 class="title">法律常識</h2></div>
+						<div class="clear"></div>
+		                						<div class="module-content">
+		                	<ul class="menu"><li class="item8"><a href="../basic-concepts.html"><span>基本觀念</span></a></li><li class="item9"><a href="../glossary.html"><span>法律小辭典</span></a></li><li class="parent item10"><a href="../faq.html"><span>問答集</span></a></li><li class="item13"><a href="../case-study.html"><span>案例</span></a></li><li class="item14"><a href="../legal-column-list.html"><span>法律專欄</span></a></li><li class="item15"><a href="../law-and-license-forum.html" target="_blank"><span>法政討論區</span></a></li></ul>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+        	                <div class="square1">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-title"><h2 class="title">授權條款</h2></div>
+						<div class="clear"></div>
+		                						<div class="module-content">
+		                	<ul class="menu"><li class="item18"><a href="../licenses.html"><span>授權條款介紹</span></a></li><li class="parent item19"><a href="../license-wizard.html"><span>授權 指引/ 精靈</span></a></li><li class="item22"><a href="../comparison-of-licenses/27-license.html"><span>授權條款比較表</span></a></li><li class="item23"><a href="../compatibility-of-licenses/27-license.html"><span>授權條款相容性</span></a></li><li class="item197"><a href="../foss-license-category/27-license.html"><span>授權條款分類表</span></a></li></ul>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		                <div class="square1">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-title"><h2 class="title">法律政策</h2></div>
+						<div class="clear"></div>
+		                						<div class="module-content">
+		                	<ul class="menu"><li class="item24"><a href="../other-countries.html"><span>其他國家政策</span></a></li></ul>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		
+                </div>
+            </div>
+
+                    <div class="clear"></div>
+                </div>
+            </div>
+																													</div>
+										<div id="rt-copyright">
+						<div class="rt-grid-12 rt-alpha rt-omega">
+                        <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<div id="desktop-mobile-version-switch"><span id="mobile-version" class="version-switch"><a href="8239--linux-.html#">行動版</a></span></div>
+自由軟體鑄造場 製作 最佳瀏覽狀態：IE7或Firefox2.0以上 (建議使用Firefox) ‧ 解析度1024*768 <br /> <strong>E-Mail</strong>：<a href="mailto:contact@openfoundry.org">contact@openfoundry.org</a> <strong>Address</strong>：台北市南港區研究院路2段128號 中央研究院資訊科學研究所 . <a href="../../privacy-policy.html">隱私權條款</a>. <a href="../../terms-of-use.html">使用條款</a><span style="position: relative; top: 8px; margin-top: -8px;"> <a href="../../about/8101.html"><img src="../../images/M_images/rss-feed-all.png" border="0" /></a></span>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+        	
+</div>
+						<div class="clear"></div>
+					</div>
+					<div class="rt-footer-bottom-wrap"><div class="rt-footer-bottom"><div class="rt-footer-bottom2"><div class="rt-footer-bottom3"></div></div></div></div>
+									</div></div></div>
+				<div class="rt-surround-bottom"><div class="rt-surround-bottom2"><div class="rt-surround-bottom3"></div></div></div>
+							</div>
+		</div>
+		<!--
+		<script id="aptureScript">
+						(function (){var a=document.createElement("script");a.defer="true";a.src="http://www.apture.com/js/apture.js?siteToken=vsJttrn";document.getElementsByTagName("head")[0].appendChild(a);})();
+     </script>
+-->
+
+<!-- Piwik -->
+<!-- 			<script type="text/javascript">
+			  var _paq = _paq || [];
+		  _paq.push(["trackPageView"]);
+		  _paq.push(["enableLinkTracking"]);
+
+		    (function() {
+			        var u=(("https:" == document.location.protocol) ? "https" : "https") + "://www.openfoundry.org/piwik/";
+				    _paq.push(["setTrackerUrl", u+"piwik.php"]);
+				    _paq.push(["setSiteId", "1"]);
+				        var d=document, g=d.createElement("script"), s=d.getElementsByTagName("script")[0]; g.type="text/javascript";
+				        g.defer=true; g.async=true; g.src=u+"piwik.js"; s.parentNode.insertBefore(g,s);
+					  })();
+		  </script> -->
+<!-- End Piwik Code -->
+	</body>
+</html>

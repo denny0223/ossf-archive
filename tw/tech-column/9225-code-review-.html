@@ -1,0 +1,489 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="zh-tw" lang="zh-tw" >
+<head>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<link rel="shortcut icon" href="../../images/favicon.ico" />
+	  <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+  <meta name="robots" content="index, follow" />
+  <meta name="keywords" content=",,OSSFNL853" />
+  <meta name="title" content="Code Review 指引" />
+  <meta name="description" content="為什麼需要 Code Review 要瞭解為什麼需要 code review 之前，先透過下面這張圖解釋，隨著軟體開發週期越後面的階段或經歷的時間越長，軟體修復 bug 的成本越高。 ▲圖 1" />
+  <meta name="generator" content="" />
+  <title>Code Review 指引 - OpenFoundry</title>
+  <link href="../../favicon.ico" rel="shortcut icon" type="image/x-icon" />
+  <link rel="stylesheet" href="../../components/com_gantry/css/gantry.css" type="text/css" />
+  <link rel="stylesheet" href="../../components/com_gantry/css/grid-12.css" type="text/css" />
+  <link rel="stylesheet" href="../../components/com_gantry/css/joomla.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/joomla.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/style1.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/light-body.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/demo-styles.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/template.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/typography.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/fusionmenu.css" type="text/css" />
+  <style type="text/css">
+    <!--
+#rt-main-surround ul.menu li.active > a, #rt-main-surround ul.menu li.active > .separator, #rt-main-surround ul.menu li.active > .item, #rt-main-surround .square4 ul.menu li:hover > a, #rt-main-surround .square4 ul.menu li:hover > .item, #rt-main-surround .square4 ul.menu li:hover > .separator, .roktabs-links ul li.active span {color:#0088B5;}
+a, #rt-main-surround ul.menu a:hover, #rt-main-surround ul.menu .separator:hover, #rt-main-surround ul.menu .item:hover {color:#0088B5;}
+    -->
+  </style>
+  <script type="text/javascript" src="../../components/com_jcomments/js/jcomments-v2.1.js%3Fv=2"></script>
+  <script type="text/javascript" src="../../components/com_jcomments/libraries/joomlatune/ajax.js"></script>
+  <script type="text/javascript" src="../../media/system/js/mootools.js"></script>
+  <script type="text/javascript" src="../../media/system/js/caption.js"></script>
+  <script type="text/javascript" src="../../components/com_gantry/js/gantry-buildspans.js"></script>
+  <script type="text/javascript" src="../../components/com_gantry/js/gantry-inputs.js"></script>
+  <script type="text/javascript" src="../../templates/rt_quantive_j15/js/jquery.cookie.js"></script>
+  <script type="text/javascript" src="../../modules/mod_roknavmenu/themes/fusion/js/fusion.js"></script>
+  <script type="text/javascript" src="../../modules/mod_ofssologin/js/ofssologin.js"></script>
+  <script type="text/javascript">
+
+			window.addEvent('domready', function() {
+				var modules = ['rt-block'];
+				var header = ['h3','h2','h1'];
+				GantryBuildSpans(modules, header);
+			});
+		InputsExclusion.push('.content_vote','#rt-popup')
+		        window.addEvent('load', function() {
+					new Fusion('ul.menutop', {
+						pill: 0,
+						effect: 'slide and fade',
+						opacity: 1,
+						hideDelay: 500,
+						centered: 0,
+						tweakInitial: {'x': -2, 'y': 0},
+        				tweakSubsequent: {'x': 0, 'y': -14},
+						menuFx: {duration: 200, transition: Fx.Transitions.Sine.easeOut},
+						pillFx: {duration: 400, transition: Fx.Transitions.Back.easeOut}
+					});
+	            });
+  </script>
+<!-- <script type="text/javascript" src="/sso/javascripts/langsync.js"></script> -->
+<!-- <script src="/templates/rt_quantive_j15/js/ossf.js"></script> -->
+<script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-4136519-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
+</head>
+	<body  class="backgroundlevel-low backgroundstyle-style8 bodylevel-med bodystyle-light cssstyle-style1 logostyle-dark font-family-helvetica font-size-is-default menu-type-fusionmenu col12 ">
+		<div id="rt-main-background">
+			<div class="rt-container">
+																<div id="rt-header">
+					<div class="rt-grid-7 rt-alpha">
+    			<div class="rt-block">
+    	    	<a href="../../index.html" id="rt-logo"></a>
+    		</div>
+	    
+</div>
+<div class="rt-grid-5 rt-omega">
+                    <div class="square9">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<div class="ofssologin_square9"><a href="../../index.html">登入</a>&nbsp;&nbsp|&nbsp;&nbsp;<span><a href="../../en/tech-column/9225-code-review-.html" ><span lang="en" xml:lang="en">English</span></a></li></ul></span><!--Joom!fish V2.0.4 (Lightning)-->
+<!-- &copy; 2003-2009 Think Network, released under the GPL. -->
+<!-- More information: at http://www.joomfish.net -->
+<div class="ofssologin_search_square9">
+  <form id="of_search" action="https://www.openfoundry.org/of/openfoundry/search" method="get" onsubmit="of_search(); return false;">
+    <select id="of_search_type">
+      <option value="Projects"> 專案 </option>
+      <option value="Content"> 文章 </option>
+      <option value="People"> 人才 </option>
+    </select>
+    <input id="query" name="query" id="mod_search_searchword" maxlength="50" alt="search" class="inputbox" type="text" size="28" value="search..."  onblur="if(this.value=='') this.value='search...';" onfocus="if(this.value=='search...') this.value='';" />
+    <input type="hidden" name="commit" value="search" />
+  </form>
+</div></div>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		
+</div>
+					<div class="clear"></div>
+				</div>
+																<div id="rt-navigation"><div id="rt-navigation2"><div id="rt-navigation3">
+					
+<div class="nopill">
+	<ul class="menutop level1 " >
+						<li class="item1 root" >
+					<a class="orphan item bullet" href="../../index.html"  >
+				<span>
+			    				首頁				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item32 root" >
+					<a class="orphan item bullet" href="../../archived.html"  >
+				<span>
+			    				專案				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item186 root" >
+					<a class="orphan item bullet" href="../community.html"  >
+				<span>
+			    				Who&#039;s Who				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item4 root" >
+					<a class="orphan item bullet" href="../news.html"  >
+				<span>
+			    				新聞				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item5 root" >
+					<a class="orphan item bullet" href="../law-and-licensing.html"  >
+				<span>
+			    				法律源地				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item3 root" >
+					<a class="orphan item bullet" href="../activities.html"  >
+				<span>
+			    				活動				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item2 root" >
+					<a class="orphan item bullet" href="../resourcecatalog%3FName=Value.html"  >
+				<span>
+			    				資源表列				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item45 root" >
+					<a class="orphan item bullet" href="../about.html"  >
+				<span>
+			    				關於				   
+				</span>
+			</a>
+			
+			
+	</li>	
+				</ul>
+</div>
+
+				    <div class="clear"></div>
+				</div></div></div>
+								<div class="rt-surround"><div class="rt-surround2"><div class="rt-surround3">
+										<div id="rt-showcase-section">
+												<div id="rt-showcase">
+							<div class="rt-grid-12 rt-alpha rt-omega">
+    		<div class="clear"></div>
+		
+		
+                <div class="close-note">
+                    <div class="rt-block">
+               					<div class="module-content">
+                	<div style="font-size:medium; background-image:linear-gradient(120deg,#159957,#4298b2);color:white;padding:20px;margin:-10px -18px;">感謝您對「自由軟體鑄造場」的支持與愛護，十多年來「自由軟體鑄造場」受中央研究院支持，並在資訊科學研究所以及資訊科技創新研究中心執行，現已完成階段性的任務。 本網站預計持續維運至 2021年底，網站內容基本上不會再更動。<br />也紀念我們永遠的朋友 李士傑先生（Shih-Chieh Ilya Li）。</div>				</div>
+            </div>
+                </div>
+		
+</div>
+							<div class="clear"></div>
+						</div>
+																	</div>
+															<div id="rt-main-surround">
+												<div id="rt-breadcrumbs">
+								<div class="rt-breadcrumb-surround">
+		<a href="../../index.html" id="breadcrumbs-home"></a>
+		<span class="breadcrumbs pathway">
+<a href="../tech-column.html" class="pathway">技術專欄</a> <img src="../../templates/rt_quantive_j15/images/arrow.png" alt=""  /> <span class="no-link">Code Review 指引</span></span>
+	</div>
+	
+							<div class="clear"></div>
+						</div>
+																							              <div id="rt-main" class="sa3-mb9">
+                <div class="rt-main-inner">
+                    <div class="rt-grid-9 rt-push-3">
+                                                <div class="rt-block">
+                            							<div class="square1">
+							<div class="rt-module-surround">
+								<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+								<div class="rt-module-inner">
+		                            <div id="rt-mainbody">
+		                                
+<div class="rt-joomla ">
+	<div class="rt-article">
+		
+				<div class="rt-headline"><h1 class="rt-article-title">Code Review 指引</h1>		</div>
+		<div class="clear"></div>
+		
+		
+		
+				<div class="rt-articleinfo">
+						<div class="rt-article-icons">
+								<a href="9225-code-review-%3Ftmpl=component&amp;print=1&amp;layout=default&amp;page=.html" title="列印" onclick="window.open(this.href,'win2','status=no,toolbar=no,scrollbars=yes,titlebar=no,menubar=no,resizable=yes,width=640,height=480,directories=no,location=no'); return false;" rel="nofollow"><span class="icon print"></span></a>																</div>
+			
+			<span class="rt-date-posted">
+						建立日期			2014-05-13 09:53						&nbsp;&nbsp;&nbsp;&nbsp;						最近更新在 2014-05-14 13:00						</span>
+
+						<span class="rt-author">
+				作者是 Joey Chen (91)			</span>
+				
+					</div>
+		
+		
+		<h3>為什麼需要 Code Review</h3>
+<p>要瞭解為什麼需要 code review 之前，先透過下面這張圖解釋，隨著軟體開發週期越後面的階段或經歷的時間越長，軟體修復 bug 的成本越高。</p>
+<p><img alt="01" src="../../images/140513/01.jpg" height="263" width="498" /></p>
+<p>▲圖 1 軟體修復成本與時間關係（資料來源：<a target="_blank" href="https://buildsecurityin.us-cert.gov/articles/best-practices/security-testing/risk-based-and-functional-security-testing">https://buildsecurityin.us-cert.gov/articles/best-practices/security-testing/risk-based-and-functional-security-testing</a>）</p>
+
+<p>為什麼越晚修復，成本會越高呢？這跟技術債的情況相同，債會生利息，而這利息與循環利息和複利一樣可怕。開發越後期大樓越蓋越歪，疊床架屋與貪快累積的技術債將導致程式包袱越大，也越難維護。然而也因為只要是程式就一定會有 bug ，而越晚修復 bug 的成本越高，因此在各個開發團隊中，希望有效降低軟體維護成本最佳的方式，就是下列兩種：</p>
+<ol>
+<li>提早發現 bug 並進行修復，讓 X 軸的值小一點，自然 Y 軸所代表的成本就低一些。</li>
+<li>讓程式儘可能地好維護一些，以減緩成本上升的曲線斜率。一旦曲線平緩一些，Y 軸所代表的成本自然也會低一點。</li>
+</ol>
+<p>而進行 code review 則是有效滿足上面兩個目的：<strong>提早發現 bug 且修復，並讓程式好維護一些</strong>。</p>
+<h3>什麼是 Code Review</h3>
+<p>程式一定有 bug 主要是因為開發人員很容易陷入自己的盲點，常見的盲點有兩種：</p>
+<ol>
+<li>程式是照你寫的跑，不是照你想的跑。</li>
+<li>程式照你想的跑，但你想的是錯的。</li>
+</ol>
+<p>要突破上述的盲點，最簡單的方式就是找別人來 review 你開發中或開發完的程式，跟你一起確認程式是否寫的跟你想的一樣，以及確認你想的是對的。</p>
+<p>註：當然，review 開發中或開發完的程式所發現 bug 的時間點，就是上圖的 Development 階段，如果希望能在 Design 與 Developer 階段中就發現問題，來讓 bug 根本不會發生，或是在第一時間點就被修復，這就是<a target="_blank" href="https://zh.wikipedia.org/wiki/极限编程">極限編程 (eXtreme Programming)</a> 中所提倡的<a target="_blank" href="https://zh.wikipedia.org/zh-tw/结对编程">搭檔編程 (pair programming)</a>，這在實務上更是挑戰工程師的人性以及管理者的極限，但以 bug 修復成本的角度來看，這的確花費的成本最低。</p>
+<p>簡單的說 code review 就是邀請其他人來幫你審查，原始碼上是否存在著不妥之處，例如風格是否與團隊一致、是否有哪邊程式可讀性不佳、有壞味道、不好維護、不好擴充、安全性疑慮、效能不佳、甚至壓根就誤解需求的問題存在。有的時候「三個臭皮匠勝過一個諸葛亮」，臭皮匠有臭皮匠的角度，諸葛亮有諸葛亮的盲點，一定要記住「程式碼是屬於整個團隊的」，不論自己寫的程式再高超、再有效率、再有彈性，如果沒有人可以維護，那就都只是空談。</p>
+<h3>Code Review 會議的種類</h3>
+<p>Code review 的方式見仁見智，個人覺得沒有絕對最佳解，只有慢慢 tuning 出最適合團隊的 review 方式，並建立起自己團隊的文化、價值觀與 Code review 的規範和流程。</p>
+<p>但可以確定的是，當 code review 的頻率越低，則代表著需要 review 的範圍越大，可能重工的範圍與成本越高，而上線的時間壓力也越緊迫。團隊往往會因為上線時間壓力而導致空頭 review 或略過 review 的動作，大家都知道哪些地方設計不好，卻不進行修改。而 code review 的頻率過高，相對會帶來的 overhead 也會比較多。因此怎麼調整 code review 的頻率與 review 的重點就顯得格外重要。</p>
+<p>這邊則針對幾種不同的團隊組成，提供幾種常見的方式供大家參考。</p>
+<p><strong>一、團隊中有大量新進工程師，較少的資深工程師</strong> <br /> 這種時候通常新進工程師只有基本的教育訓練或是由他們自行參考舊的程式與文件，對團隊的開發標準 (coding standard)、開發規範 (code convention)、命名規則、系統架構、系統介接與領域知識不熟悉。他們需要由資深人員帶領，透過實際的例子來對他們進行教育訓練，只是訓練的方式是以 review 新進人員所撰寫的程式碼來進行。</p>
+<p>這種情況下 code review 參與人員幾乎是整個開發團隊，好處是透過一次實務的例子，就能讓所有成員用最快的速度了解哪些錯誤不要犯，進而回去修改他們開發中的程式，避免犯同樣的錯誤。壞處則是與會人員一多，花費的時間成本就會相當高，一定要確保 review 會議有效率且有達到效果。</p>
+<p>這類型的 code review 頻率建議上限一週一次。當新進工程師開始進入狀況，瞭解團隊文化與開發規範後，就可以減少這類型的 code review 會議，而往其他類型進行。</p>
+<p><strong>二、團隊中資深與新進人員比例相當，或是彼此專長領域不相同</strong><br /> 這樣的團隊組成，建議可以進行 daily 的 pair review，由資深與新進的工程師進行配對，或是由熟悉不同領域知識的工程師配對，每天花 15~30 分鐘針對今天程式碼異動的部分 (Code Churn)，彼此同步一下。一般一個開發人員每天可以產出新的程式碼（不包含產生器自動產生的部分）行數約莫 200~400 行，因此建議要控制在半小時內 review 完畢，最好也可以把時段固定下來，如同 Scrum 的每日站立會議一樣，儘速且小範圍地針對原始碼提供回饋與建議。而這樣的範圍也是最容易找出 defect 的比例，如下圖所示：</p>
+<p><img alt="02" src="../../images/140513/02.jpg" height="253" width="372" /></p>
+<p>▲圖 2 LOC 與 Defect 發現的關係圖（資料來源：<a target="_blank" href="https://smartbear.com/SmartBear/media/pdfs/11_Best_Practices_for_Peer_Code_Review.pdf">https://smartbear.com/SmartBear/media/pdfs/11_Best_Practices_for_Peer_Code_Review.pdf</a>）</p>
+<p>這樣配對的好處是，參與的人員較少，可以輕量化地進行 review 與溝通。在 review 過程中，只要出現程式碼看不懂的情況，基本上可以歸類為：</p>
+<ol>
+<li>程式碼是對的，可能是新進人員的技術能力不夠或是不熟悉 domain 的伙伴對需求不夠瞭解。這時候可以針對技術或 domain 不懂的部分進行解說，趁這機會備份彼此的技術與領域知識，這是提升團隊能力與彼此備援的一個重要流程，比起單向的一對多專案分享或教育訓練，來得有效率地多。</li>
+<li>程式碼是有瑕疵的，可能是新進人員違反了開發規範、較難維護擴充或設計出效能較差的演算法，也可能是程式碼的易讀性不夠，讓其他工程師無法輕易瞭解需求與程式碼的設計目的。這時也是協助他們修正與學習的好時機，建立團隊的開發文化，就需要從平時開發的小細節著眼。</li>
+</ol>
+<p>不論 review 後的程式碼如何，可以確保的是，這一份程式碼至少有兩個人以上瞭解其意義，也就是擁有共識。並且透過這個機會來提升或備援彼此的領域知識和技術能力，將 code review 的價值最大化。</p>
+<h3>Code Review 前透過工具的 Preview</h3>
+<p>在進行 code review 之前，有一些開發規範應該要善用工具來作程式碼分析，以節省 review 過程中所需要花的時間。透過這些工具與定義的標準，可以客觀地審視與協助團隊成員在開發時不會像脫韁野馬、各自為政。下面列出幾個開發規範相關的工具（以 .NET 為例）：</p>
+<ol>
+<li><strong>統一命名標準－詞彙表 (Glossary)</strong>：可透過 GoogleDoc、Wiki、Excel 或其他知識管理平台來建立，屬於自己團隊領域知識的相關詞彙，以及開發上的命名習慣。命名，是軟體開發最基本，也是最重要的一件事。</li>
+<li><strong>程式碼風格分析</strong>：可透過 <a target="_blank" href="https://stylecop.codeplex.com/">StyleCop</a> 來自訂屬於團隊的風格規則範本，讓開發團隊可以隨時檢查程式碼是否有違反風格規則。團隊中程式碼風格的一致性是易讀性與可維護性的基礎之一，風格沒有絕對的對錯，但當規範訂出來之後團隊就應該遵守，規範可以經過團隊同意後進行調整，但程式碼風格的檢查應交給工具來做，才會快速且客觀。如果 code review 還要花時間調整 style ，那就無法做到輕量化敏捷的 review ，時間一旦拉長，與會人員就容易失焦與失去耐心。</li>
+<li><strong>程式碼相似度分析</strong>：可透過 <a target="_blank" href="https://www.harukizaemon.com/simian/">Simian</a> 或 <a target="_blank" href="https://msdn.microsoft.com/zh-tw/library/hh205279.aspx">VS2012 Premium</a> 以上的版本來進行重複程式碼分析。重複的程式碼一直都是壞味道的基本來源，如何快速的掃描出專案中有哪些程式碼是重複的，可以幫助團隊快速地找到程式碼壞味道，檢查是否違反了單一職責原則 (SRP) 中的同一份職責散落在不同物件中。團隊也可以設定出自己的指標門檻，例如超過20行重複，才需要送出警告。</li>
+<li><strong>程式碼複雜度分析</strong>：可透過 <a target="_blank" href="https://www.campwoodsw.com/sourcemonitor.html">SourceMonitor</a> 或 VS2010 Premium 以上的版本中的<a target="_blank" href="https://msdn.microsoft.com/zh-tw/library/bb385914.aspx">計算程式碼度量功能</a>來分析循環複雜度。所謂的循環複雜度，簡單的說就是程式碼的分歧路徑，可以想像如果一個方法中程式碼可執行的路徑越多，代表人腦要理解程式碼意義的成本就越高，也代表程式碼可能越難維護。因此複雜度太高也是壞味道之一，直接透過工具分析出複雜度，可以讓開發人員在 code review 之前，就將這些可能不易懂的方法內容修正，以節省 review 的時間，也就是開發人員在開發時就透過工具來幫自己的程式碼做健康檢查，先行用工具 review 的意思。這邊建議分析的報告可以顯示前 15 個最複雜的方法來協助團隊瞭解，目前專案中最複雜的方法是哪一些。而團隊複雜度指標門檻建議可以限定複雜度在 15 以下，也就是複雜度超過 15 時，開發人員應說明原因，確認無法或不需要重構，方可通過審查。</li>
+<li><strong>綜合品質分析</strong>：可透過 <a target="_blank" href="https://msdn.microsoft.com/en-us/library/bb429476(v=vs.80).aspx">FxCop</a> 或 Visual Studio 的<a target="_blank" href="https://msdn.microsoft.com/zh-tw/library/ee1hzekz.aspx">靜態程式碼分析</a>來進行分析，團隊可依據團隊規範以及專案的性質，建立不同規則集。FxCop 與 Visual Studio 的靜態程式碼分析其實核心是一樣的，如果開發團隊針對基本的安全性分析找不到免費或可信任的工具，建議也可以直接使用 FxCop 中的安全性規則，在 <a target="_blank" href="https://www.owasp.org/index.php/FxCop">OWASP</a> 上也有推薦使用 FxCop 來進行基本的分析。</li>
+</ol><br />
+<p>上述的工具，除了在開發時期使用，也都可以部署在<a target="_blank" href="https://en.wikipedia.org/wiki/Continuous_integration">持續整合</a>伺服器（如 <a target="_blank" href="https://jenkins-ci.org/">Jenkins</a>、<a target="_blank" href="https://msdn.microsoft.com/zh-tw/library/ff637362.aspx">TFS</a>）上每次建置時運作。不管是 daily build 或是 checkin build ，每次程式碼有異動時，團隊就可以在第一時間知道程式碼的品質趨勢是上升或下降。團隊應建立品質文化，當 build failed 或品質開始出現缺陷時，必須用最短的時間修正，否則在<a target="_blank" href="https://zh.wikipedia.org/zh-tw/破窗效应">破窗效應</a>下，技術債就可能累積越來越多，最後形成<a target="_blank" href="https://zh.wikipedia.org/wiki/人月神话">焦油坑</a>。</p>
+<p><strong>相對大於絕對，趨勢大於數字</strong> <br />在使用程式碼分析工具時，要避免成為數據的奴隸，這些指標報告就如同健康檢查報告，紅字不代表一定有問題，但一直紅字就代表需要關注。而許多團隊可能已經有既有的程式碼或系統 (legacy code)，這時建議大家應瞭解品質指標數據不是絕對的，但一定要守住相對的底限。</p>
+<p>也就是不管原本的程式碼品質有多差，在每一次程式碼的異動後，經過每一位開發人員手中，程式碼品質只能更好，不能更糟。因此，這些指標的趨勢要比數字來得重要得多。只要每一次的異動，都能讓品質更上一層樓，哪怕只是一個風格警告的修正，都能幫助產品更好。只要維持住這樣的演進過程，就不用擔心被技術債壓垮，缺陷的趨勢是收斂的，團隊就能更有信心。</p>
+<h3>Code Review 的注意事項</h3>
+<p>如前面所說，方式沒有絕對的好壞或對錯，這邊列出一個基本的流程供讀者參考。</p>
+<p><strong>Code review 之前的動作</strong></p>
+<ol>
+<li>確保程式碼已經通過靜態程式碼分析並符合指標規範，若存在違反規範的部分，應針對該指標進行說明。</li>
+<li>應先讓與會人員清楚這次要 review 的範圍、需求、流程，若有開發人員已經存在的疑問，也應提前告知與會人員。</li>
+<li>確保程式可以建置或正確執行。</li>
+</ol>
+<p><strong>Code review 開始</strong></p>
+<ol>
+<li>先檢查工作清單上的 TODO 是否都被清除了，若沒有，應針對 TODO 進行說明。</li>
+<li>透過 scenario 或測試案例來說明需求，針對異動的部分進行說明。</li>
+<li>商業邏輯的說明只需說明 context 的流程，透過程式碼的命名與抽象層級的設計，說明時其實就跟程式碼命名幾乎一模一樣。</li>
+<li>若有需要修改的部分，建議加上 TODO 相關註解，在 Visual Studio 透過<a target="_blank" href="https://msdn.microsoft.com/zh-tw/library/zce12xx2.aspx">工作清單</a>視窗，就可以避免因紀錄或馬上修改導致 review 時間拉長。</li>
+</ol>
+<p><strong>Code review 哪些東西</strong></p>
+<ol>
+<li>程式碼是否滿足業務與營運需求</li>
+<li>程式架構與系統設計是否滿足未來擴充性（確定可能會增加的需求）</li>
+<li>程式碼的易讀性、擴充性與抽象層級一致性</li>
+<li>程式碼效能問題</li>
+<li>程式碼安全問題</li>
+<li>Error handling</li>
+</ol>
+<h3>結論</h3>
+<p>Code review 很常因為資源、時程、習慣等問題，而被歸類到「我知道這很好，也知道應該要做，但我們無法落實在實務上」的情況。透過上述的簡要說明，整理出幾個重點：</p>
+<ol>
+<li>建立團隊文化與開發規範。</li>
+<li>透過工具來快速且客觀分析程式碼壞味道。</li>
+<li>頻繁且小範圍的進行 review。</li>
+<li>Review 過程除了增進程式碼品質以外，更重要的效益在備援與教育訓練團隊成員間的領域知識與技術能力。</li>
+<li>提前準備不能省，讓會議效率最佳化。</li>
+<li>一定要有會議紀錄與待辦事項持續追蹤。</li>
+<li>Review 的心態要正確，不應帶著挑戰或雞蛋裡挑骨頭的態度，目的應是彼此學習和讓產品更加進化。</li>
+</ol><br />
+<p>希望這篇文章可以幫助讀者建立起最適合自己團隊的 code review 流程與規範，消除技術債的糾纏，讓軟體開發的過程能產出逐步進化的產品。</p>
+<div class="note">
+<div class="typo-icon"><strong>作者簡介</strong><br />Joey Chen (91)，一個熱愛軟體工程與敏捷開發的工程師，從 2010 年連任 Microsoft MVP 至今，也仍擔任 MSDN Forum 的版主，熱愛參與社群分享，除微軟技術相關研討會外，曾任 WebConf 2013, AgileCommunity.TW, tw.MVC, C.C.Agile 等研討會與社群講者。同時喜歡撰寫文章、授課與教育訓練，熟悉的語言為 C#，在實務上導入軟體工程的經驗豐富，如持續整合、自動測試、TDD/BDD、Scrum 等流程與技術。
+<ul>
+<li>專業技能：Web Development, TDD/BDD, Scrum, CI, C#, 電子商務。</li>
+<li>學歷：長庚大學資管所。</li>
+<li>Blog：<a target="_blank" href="https://www.dotblogs.com.tw/hatelove/Default.aspx">In 91</a></li>
+<li>出版的書：翻譯「敏捷開發實踐」、翻譯「進入 IT 產業必讀的 200 個 .NET 面試決勝題」，著作「ASP.NET MVC 4 網站開發美學」。</li>
+<li>工作經歷：Yahoo。</li>
+</ul>
+</div>
+</div>
+			<!-- Show relate article -->
+				<!-- end -->
+		<div class="article_note">
+		<!-- Add tags use metakey, and show OSSF Newsletter tag: OSSFNL+NUM-->
+		<br><br> <hr style='border: 1px dashed #D2DADB;'><b>自由軟體鑄造場電子報&nbsp;:</b>&nbsp;<a href='../../previous-issue%3Ftask=view&amp;id=853.html'>第 241 期 Code Review 指引</a><br><b>標籤:</b>&nbsp;<a href='../../index.php%3Foption=com_search&amp;Itemid=58&amp;searchphrase=exact_meta&amp;ordering=newest&amp;searchword=.html'></a>,&nbsp;&nbsp;<a href='../../index.php%3Foption=com_search&amp;Itemid=58&amp;searchphrase=exact_meta&amp;ordering=newest&amp;searchword=.html'></a>,&nbsp;&nbsp;				<!-- End -->
+					<br>
+					<b>分類: </b><a href="../tech-column.html">				技術專欄					</a>				</div>
+			 <!-- AddThis Button BEGIN ID 3001 is the front page article -->
+     			<br><br>
+       <div class="addthis_toolbox addthis_default_style addthis_32x32_style">
+       <a class="addthis_button_preferred_1"></a>
+       <a class="addthis_button_preferred_2"></a>
+       <a class="addthis_button_preferred_3"></a>
+       <a class="addthis_button_preferred_4"></a>
+       <a class="addthis_button_compact"></a>
+       <a class="addthis_counter addthis_bubble_style"></a>
+       </div>
+       <script type="text/javascript">var addthis_config = {"data_track_clickback":true};</script>
+       <script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js#pubid=openfoundry"></script>
+       <!-- AddThis Button END -->
+     <br>
+		<div class="totop" ><a class="rt-totop" href="9225-code-review-.html#" style="outline: medium none;">↑ Top</a></div>
+            <!-- AddThis Button END -->
+
+			</div>
+</div>
+
+		                            </div>
+									<div class="clear"></div>
+								</div>
+								<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+							</div>
+							</div>
+                                                    </div>
+                                            </div>
+                                <div class="rt-grid-3 rt-pull-9">
+                <div id="rt-sidebar-a">
+                                    <div class="square4">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<ul class="menu"><li class="item56"><a href="../previous-issue.html"><span>電子報總覽</span></a></li><li class="item55"><a href="../about-newsletter.html"><span>關於本報</span></a></li></ul>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<ul class="menu"><li class="item115"><a href="../foss-news.html"><span>源碼新聞</span></a></li><li class="item141"><a href="../case-job.html"><span>接案 / 工作</span></a></li></ul>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+        	                <div class="square1">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-title"><h2 class="title">專欄總覽</h2></div>
+						<div class="clear"></div>
+		                						<div class="module-content">
+		                	<ul class="menu"><li id="current" class="active item37"><a href="../tech-column.html"><span>技術專欄</span></a></li><li class="item40"><a href="../foss-programs.html"><span>源碼秘技</span></a></li><li class="item35"><a href="../legal-article-.html"><span>法律專欄</span></a></li><li class="item154"><a href="../foss-forum.html"><span>自由專欄</span></a></li><li class="item162"><a href="../enterprise-application.html"><span>企業應用</span></a></li><li class="item44"><a href="../foss-projects.html"><span>源碼專案</span></a></li></ul>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		                <div class="square1">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<p style="text-align: center;"><a href="../../news%3Fformat=feed&amp;type=rss" target="_black"><img src="../../images/M_images/news-rss-feed.png" border="0" /></a><br /><a href="https://www.openfoundry.org/rss-feed/Newsletter" target="_black"><img src="../../images/M_images/newsletter-rss-feed.png" border="0" /></a></p>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		
+                </div>
+            </div>
+
+                    <div class="clear"></div>
+                </div>
+            </div>
+																													</div>
+										<div id="rt-copyright">
+						<div class="rt-grid-12 rt-alpha rt-omega">
+                        <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<div id="desktop-mobile-version-switch"><span id="mobile-version" class="version-switch"><a href="9225-code-review-.html#">行動版</a></span></div>
+自由軟體鑄造場 製作 最佳瀏覽狀態：IE7或Firefox2.0以上 (建議使用Firefox) ‧ 解析度1024*768 <br /> <strong>E-Mail</strong>：<a href="mailto:contact@openfoundry.org">contact@openfoundry.org</a> <strong>Address</strong>：台北市南港區研究院路2段128號 中央研究院資訊科學研究所 . <a href="../../privacy-policy.html">隱私權條款</a>. <a href="../../terms-of-use.html">使用條款</a><span style="position: relative; top: 8px; margin-top: -8px;"> <a href="../../about/8101.html"><img src="../../images/M_images/rss-feed-all.png" border="0" /></a></span>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+        	
+</div>
+						<div class="clear"></div>
+					</div>
+					<div class="rt-footer-bottom-wrap"><div class="rt-footer-bottom"><div class="rt-footer-bottom2"><div class="rt-footer-bottom3"></div></div></div></div>
+									</div></div></div>
+				<div class="rt-surround-bottom"><div class="rt-surround-bottom2"><div class="rt-surround-bottom3"></div></div></div>
+							</div>
+		</div>
+		<!--
+		<script id="aptureScript">
+						(function (){var a=document.createElement("script");a.defer="true";a.src="http://www.apture.com/js/apture.js?siteToken=vsJttrn";document.getElementsByTagName("head")[0].appendChild(a);})();
+     </script>
+-->
+
+<!-- Piwik -->
+<!-- 			<script type="text/javascript">
+			  var _paq = _paq || [];
+		  _paq.push(["trackPageView"]);
+		  _paq.push(["enableLinkTracking"]);
+
+		    (function() {
+			        var u=(("https:" == document.location.protocol) ? "https" : "https") + "://www.openfoundry.org/piwik/";
+				    _paq.push(["setTrackerUrl", u+"piwik.php"]);
+				    _paq.push(["setSiteId", "1"]);
+				        var d=document, g=d.createElement("script"), s=d.getElementsByTagName("script")[0]; g.type="text/javascript";
+				        g.defer=true; g.async=true; g.src=u+"piwik.js"; s.parentNode.insertBefore(g,s);
+					  })();
+		  </script> -->
+<!-- End Piwik Code -->
+	</body>
+</html>

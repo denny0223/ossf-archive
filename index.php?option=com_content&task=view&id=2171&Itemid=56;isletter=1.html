@@ -1,0 +1,491 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-gb" lang="en-gb" >
+<head>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<link rel="shortcut icon" href="images/favicon.ico" />
+	  <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+  <meta name="robots" content="index, follow" />
+  <meta name="keywords" content="OSSFNL551" />
+  <meta name="title" content="打造三太子" />
+  <meta name="description" content="「三太子」是一個開放專案，目的是要將 Opera 桌面瀏覽器按照台灣使用者的習慣與偏好，修改成適合台灣人使用的樣子。本文將簡要描述這項專案如何進行，提供給任何企圖發起開放源碼專案的讀者參考。 最近一個月來，我著手進行了一項（目前為止仍然只有一個人維護的）軟體專案，這項專案命名為「三太子」，目的是要把 Opera 桌面瀏覽器按照台灣使用者的習慣與偏好，加以調整。Opera" />
+  <meta name="generator" content="" />
+  <title>打造三太子 - OpenFoundry</title>
+  <link href="favicon.ico" rel="shortcut icon" type="image/x-icon" />
+  <link rel="stylesheet" href="components/com_jcomments/tpl/default/style.css%3Fv=10.css" type="text/css" />
+  <link rel="stylesheet" href="components/com_gantry/css/gantry.css" type="text/css" />
+  <link rel="stylesheet" href="components/com_gantry/css/grid-12.css" type="text/css" />
+  <link rel="stylesheet" href="components/com_gantry/css/joomla.css" type="text/css" />
+  <link rel="stylesheet" href="templates/rt_quantive_j15/css/joomla.css" type="text/css" />
+  <link rel="stylesheet" href="templates/rt_quantive_j15/css/style1.css" type="text/css" />
+  <link rel="stylesheet" href="templates/rt_quantive_j15/css/light-body.css" type="text/css" />
+  <link rel="stylesheet" href="templates/rt_quantive_j15/css/demo-styles.css" type="text/css" />
+  <link rel="stylesheet" href="templates/rt_quantive_j15/css/template.css" type="text/css" />
+  <link rel="stylesheet" href="templates/rt_quantive_j15/css/typography.css" type="text/css" />
+  <link rel="stylesheet" href="templates/rt_quantive_j15/css/fusionmenu.css" type="text/css" />
+  <style type="text/css">
+    <!--
+#rt-main-surround ul.menu li.active > a, #rt-main-surround ul.menu li.active > .separator, #rt-main-surround ul.menu li.active > .item, #rt-main-surround .square4 ul.menu li:hover > a, #rt-main-surround .square4 ul.menu li:hover > .item, #rt-main-surround .square4 ul.menu li:hover > .separator, .roktabs-links ul li.active span {color:#0088B5;}
+a, #rt-main-surround ul.menu a:hover, #rt-main-surround ul.menu .separator:hover, #rt-main-surround ul.menu .item:hover {color:#0088B5;}
+    -->
+  </style>
+  <script type="text/javascript" src="components/com_jcomments/js/jcomments-v2.1.js%3Fv=2"></script>
+  <script type="text/javascript" src="components/com_jcomments/libraries/joomlatune/ajax.js"></script>
+  <script type="text/javascript" src="media/system/js/mootools.js"></script>
+  <script type="text/javascript" src="media/system/js/caption.js"></script>
+  <script type="text/javascript" src="components/com_gantry/js/gantry-buildspans.js"></script>
+  <script type="text/javascript" src="components/com_gantry/js/gantry-inputs.js"></script>
+  <script type="text/javascript" src="templates/rt_quantive_j15/js/jquery.cookie.js"></script>
+  <script type="text/javascript" src="modules/mod_roknavmenu/themes/fusion/js/fusion.js"></script>
+  <script type="text/javascript" src="modules/mod_ofssologin/js/ofssologin.js"></script>
+  <script type="text/javascript">
+
+			window.addEvent('domready', function() {
+				var modules = ['rt-block'];
+				var header = ['h3','h2','h1'];
+				GantryBuildSpans(modules, header);
+			});
+		InputsExclusion.push('.content_vote','#rt-popup')
+		        window.addEvent('load', function() {
+					new Fusion('ul.menutop', {
+						pill: 0,
+						effect: 'slide and fade',
+						opacity: 1,
+						hideDelay: 500,
+						centered: 0,
+						tweakInitial: {'x': -2, 'y': 0},
+        				tweakSubsequent: {'x': 0, 'y': -14},
+						menuFx: {duration: 200, transition: Fx.Transitions.Sine.easeOut},
+						pillFx: {duration: 400, transition: Fx.Transitions.Back.easeOut}
+					});
+	            });
+  </script>
+<!-- <script type="text/javascript" src="/sso/javascripts/langsync.js"></script> -->
+<!-- <script src="/templates/rt_quantive_j15/js/ossf.js"></script> -->
+<script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-4136519-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
+</head>
+	<body  class="backgroundlevel-low backgroundstyle-style8 bodylevel-med bodystyle-light cssstyle-style1 logostyle-dark font-family-helvetica font-size-is-default menu-type-fusionmenu col12 ">
+		<div id="rt-main-background">
+			<div class="rt-container">
+																<div id="rt-header">
+					<div class="rt-grid-7 rt-alpha">
+    			<div class="rt-block">
+    	    	<a href="index.html" id="rt-logo"></a>
+    		</div>
+	    
+</div>
+<div class="rt-grid-5 rt-omega">
+                    <div class="square9">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<div class="ofssologin_square9"><a href="index.html">Login</a>&nbsp;&nbsp|&nbsp;&nbsp;<span><a href="tw/component/content/2171%3Ftask=view.html" ><span lang="tw" xml:lang="tw">繁體中文</span></a></li></ul></span><!--Joom!fish V2.0.4 (Lightning)-->
+<!-- &copy; 2003-2009 Think Network, released under the GPL. -->
+<!-- More information: at http://www.joomfish.net -->
+<div class="ofssologin_search_square9">
+  <form id="of_search" action="https://www.openfoundry.org/of/openfoundry/search" method="get" onsubmit="of_search(); return false;">
+    <select id="of_search_type">
+      <option value="Projects"> Projects </option>
+      <option value="Content"> Content </option>
+      <option value="People"> People </option>
+    </select>
+    <input id="query" name="query" id="mod_search_searchword" maxlength="50" alt="search" class="inputbox" type="text" size="28" value="search..."  onblur="if(this.value=='') this.value='search...';" onfocus="if(this.value=='search...') this.value='';" />
+    <input type="hidden" name="commit" value="search" />
+  </form>
+</div></div>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		
+</div>
+					<div class="clear"></div>
+				</div>
+																<div id="rt-navigation"><div id="rt-navigation2"><div id="rt-navigation3">
+					
+<div class="nopill">
+	<ul class="menutop level1 " >
+						<li class="item1 root" >
+					<a class="orphan item bullet" href="index.html"  >
+				<span>
+			    				Home				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item32 root" >
+					<a class="orphan item bullet" href="archived.html"  >
+				<span>
+			    				Projects				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item186 root" >
+					<a class="orphan item bullet" href="en/community.html"  >
+				<span>
+			    				Who&#039;s Who				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item4 root" >
+					<a class="orphan item bullet" href="en/news.html"  >
+				<span>
+			    				News				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item5 root" >
+					<a class="orphan item bullet" href="en/law-and-licensing.html"  >
+				<span>
+			    				Law &amp; Licensing				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item3 root" >
+					<a class="orphan item bullet" href="en/activities.html"  >
+				<span>
+			    				Activities				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item2 root" >
+					<a class="orphan item bullet" href="en/resourcecatalog.html"  >
+				<span>
+			    				Resource Catalog				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item45 root" >
+					<a class="orphan item bullet" href="en/about.html"  >
+				<span>
+			    				About				   
+				</span>
+			</a>
+			
+			
+	</li>	
+				</ul>
+</div>
+
+				    <div class="clear"></div>
+				</div></div></div>
+								<div class="rt-surround"><div class="rt-surround2"><div class="rt-surround3">
+										<div id="rt-showcase-section">
+												<div id="rt-showcase">
+							<div class="rt-grid-12 rt-alpha rt-omega">
+    		<div class="clear"></div>
+		
+		
+                <div class="close-note">
+                    <div class="rt-block">
+               					<div class="module-content">
+                	<div style="font-size:medium; background-image:linear-gradient(120deg,#159957,#4298b2);color:white;padding:20px;margin:-10px -18px;">感謝您對「自由軟體鑄造場」的支持與愛護，十多年來「自由軟體鑄造場」受中央研究院支持，並在資訊科學研究所以及資訊科技創新研究中心執行，現已完成階段性的任務。 本網站預計持續維運至 2021年底，網站內容基本上不會再更動。<br />也紀念我們永遠的朋友 李士傑先生（Shih-Chieh Ilya Li）。</div>				</div>
+            </div>
+                </div>
+		
+</div>
+							<div class="clear"></div>
+						</div>
+																	</div>
+															<div id="rt-main-surround">
+												<div id="rt-breadcrumbs">
+								<div class="rt-breadcrumb-surround">
+		<a href="index.html" id="breadcrumbs-home"></a>
+		<span class="breadcrumbs pathway">
+<span class="no-link">Previous Issue</span></span>
+	</div>
+	
+							<div class="clear"></div>
+						</div>
+																							              <div id="rt-main" class="sa3-mb9">
+                <div class="rt-main-inner">
+                    <div class="rt-grid-9 rt-push-3">
+                                                <div class="rt-block">
+                            							<div class="square1">
+							<div class="rt-module-surround">
+								<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+								<div class="rt-module-inner">
+		                            <div id="rt-mainbody">
+		                                
+<div class="rt-joomla ">
+	<div class="rt-article">
+		
+				<div class="rt-headline"><h1 class="rt-article-title">打造三太子</h1>		</div>
+		<div class="clear"></div>
+		
+		
+		
+				<div class="rt-articleinfo">
+						<div class="rt-article-icons">
+								<a href="https://www.openfoundry.org/en/component/content/2171-2011-01-06-11-16-02?tmpl=component&amp;print=1&amp;page=" title="Print" onclick="window.open(this.href,'win2','status=no,toolbar=no,scrollbars=yes,titlebar=no,menubar=no,resizable=yes,width=640,height=480,directories=no,location=no'); return false;" rel="nofollow"><span class="icon print"></span></a>																</div>
+			
+			<span class="rt-date-posted">
+						 Created at			Sunday, 11 October 2009 21:40						&nbsp;&nbsp;&nbsp;&nbsp;						Last Updated on Tuesday, 12 July 2011 14:43						</span>
+
+						<span class="rt-author">
+				Written by Jedi			</span>
+				
+					</div>
+		
+		
+		<p>「三太子」是一個開放專案，目的是要將 Opera 桌面瀏覽器按照台灣使用者的習慣與偏好，修改成適合台灣人使用的樣子。本文將簡要描述這項專案如何進行，提供給任何企圖發起開放源碼專案的讀者參考。</p>
+
+<p>最近一個月來，我著手進行了一項（目前為止仍然只有一個人維護的）軟體專案，這項專案命名為「三太子」，目的是要把 Opera 桌面瀏覽器按照台灣使用者的習慣與偏好，加以調整。Opera 本身雖然是一套私有軟體，但是其企業文化相當鼓勵使用者社群在不修改 Opera 本身程式碼的前提下加以修改、包裝客製版本；有些客製化版本甚至有機會獲得 Opera 公司的官方支援，並成為正式釋出的版本之一。中國的「朱雀」就是這樣的例子。</p>
+<p>像這樣的一個第三方維護專案，也可以是開放源碼專案。事實上，開放源碼社群行之多年的各種技術、慣例、文化，即使拿來跟私有軟體合作，也能夠有很好的搭配；本著拋磚引玉的精神，我決定以本文來記錄這一個月來用於「三太子」專案的各種實務要點，回饋給開放源碼界的各位。</p>
+<p>在本文開始之前，還有一件事：日前歐萊禮出版社的新書《The Art of Community》（社群的藝術）已採用創用ＣＣ「姓名標示─非商業性─相同方式分享」3.0 授權條款釋出，並可於其網站上下載英文原本及多種語言的譯本，讀者不妨也將此書納入開放源碼社群經營的重要參考。</p>
+<p><strong>■ 命名</strong></p>
+<p>許多開放源碼專案往往始於「我想要做某某事」的想法，由極少數人（例如只有一個人）開始動手進行；接下來隨著專案日趨成熟，參與的人也越來越多，專案也越來越龐大、複雜。不論專案成員有多少人，當專案成為專案的那一刻，就要有個名字，或者是個代號；「名稱」在任何語言當中都有神奇的魔力，可以把一個不存在的、虛幻的、抽象的概念，轉化成一個具體存在的實體，可以讓溝通能夠集中，讓彼此知道在談論的是什麼。</p>
+<p>命名本身是一項大學問，甚至有專門以命名謀生的行業，在此便不多論述；不過命名時有個重點，是每個參與專案的人都該牢記在心的：不管命名的背後考慮了多少細節、用了多少暗示或明示，名字就只是個名字而已，世界上沒有十全十美的名字，一定會有人對這個名字有意見──但是請饒了自己吧，名字取好後沒事最好不要更動，精力應該著重在專案的發展上，而不是一直繞著名字打轉。</p>
+<p>「三太子」這樣的名字，說實話多少受到了「朱雀」的影響。中國版 Opera 叫「朱雀」，如果跟著叫「玄武」、「青龍」、「白虎」之類的顯然太過沒有創意，而且就沒辦法跟 Opera 的主題色：紅色相稱了。那如果從另一個角度來想，Opera（歌劇）到了中國變京劇（Chinese Opera），到了台灣是不是應該叫「歌仔戲」（Taiwanese Opera）呢？總覺得哪裡怪怪的。後來在跟我一個朋友的閒聊之中，冒出了「哪吒三太子」這樣的想法；哪吒三太子在台灣的民間信仰當中，是很重要的神祇，手上有各種神兵利器，而且腳踏風火輪，行動迅速，似乎可以跟 Opera 的本質巧妙呼應！再說，風火輪就是圓形的，又是紅色的嘛！所以最後就決定這個專案要叫「三太子」了。</p>
+<p>有了中文名字後，接著還得有個英文名字，除了可以保留日後「與國際接軌」的可能性外，英文名字也適合用於檔案命名。由於「哪吒」的出處是梵文佛經當中的「Nalakuvara」音譯之略，因此「三太子」的英文名稱就決定採用「Nalakuvara」了。</p>
+<p><strong>■ 決定基準</strong></p>
+<p>許多軟體專案在發展之初並不會先訂好完整的里程碑，或者繪製完整的藍圖（實務上來說，確實不是所有的軟體專案都可能在一開始就做好這些事）；不過就算如此，也應該在一開始就先決定好取捨的準則，讓參與開發的協同工作者，或者是專案的使用者，都能夠明確地判斷哪些事項比較有可能會囊括在專案內，哪些則不大可能。</p>
+<p>這項工作可以為整個專案奠定起最高指導原則，日後若有功能衝突時，或者需要排定工作項目優先順序時，都該以此最高指導原則為基準。有些專案在初期僅憑著核心成員之間的默契來行事，隨著時間過去，或者是隨著成員變動，這些「默契」就很有可能發生變化或喪失，導致專案走向不明，甚至是無法持續下去，實在是相當可惜。</p>
+<p>儘可能地把「默契」轉化成具體的文字，讓各種決策都有明白的依據，這是任何專案健全成長的必要根基之一。</p>
+<p>「三太子」的基準相當簡單，跟五洲製藥的理念一樣，是「先講究不傷身體，再講究效果」。因為 Opera 本身的開發理念之一就是希望能兼具簡潔與功能強大，因此這也成為「三太子」的最高指導原則──讓 Opera 更適合台灣使用者的同時，也一定要讓 Opera 保持簡潔、乾淨。</p>
+<p>在這樣的前提下，「三太子」必須要盡可能地遵循 Opera 本身的設計，按照 Opera 原本的目錄架構邏輯來放置檔案，致力於維持 Opera 一貫的美感。如果可能的話，盡可能地不要添加第三方應用程式、外掛、使用者 JavaScript，這樣才是符合 Opera 精神的「三太子」。</p>
+<p>這樣的決定還有一個好處：理論上各平台的 Opera 的邏輯是一致的，因此在儘可能不添加額外程式的前提下，所有對 Opera 的動作理論上也會是能夠跨平台的。也就是說，遵守這樣的指導原則，可以讓「三太子」更靈活、有彈性，也能更容易地移植到不同的平台上。我們稍後就會看到這樣的實證。</p>
+<p>可惜現實世界當中並非事事順心，有些台灣使用者極為渴望的功能，不靠外力難以達成；這種情況下，「三太子」仍盡力保持 Opera 本身的純淨，想辦法把「破壞」減到最少，並且把各種額外添加的東西都做成選項──如果使用者不想要，那麼這些東西就不會進來。</p>
+<p><strong>■ 版本管理</strong></p>
+<p>就算只有一個人的專案，也應該要使用版本管理系統，而且儘可能不要拿本機當做版本管理系統的伺服器端。</p>
+<p>使用版本管理系統的好處實在是不遑多論了：便於管理（從基本的版本比對到複雜的版本分支及合併）、便於協同作業、作為備份，每一項都十足重要。就算是只有一個人、沒有分支的專案，也有可能因為一時手殘（或者是任何意外）而毀掉手中的檔案，需要回溯到先前可正常運作的版本，任何開發者這時都會對著版本管理系統發出「哈里路亞！」的讚嘆聲。</p>
+<p>版本管理系統的選用會跟專案的本質、專案成員的偏好有關。以「三太子」來說，這個專案會將專案當中的某個目錄直接打包壓縮釋出，因此會產生一堆「.svn」目錄的 svn 在此就不是那麼合適；由於我原本就一直有在使用 Perforce（兩個使用者以內免費，用來開發開放源碼專案的話也可以去申請免費授權金鑰），這套版本管理軟體在各方面表現都不錯，也沒有「.svn」的問題，因此最後「三太子」就決定採用 Perforce 來管理修訂版。</p>
+<p>不論使用哪一種版本管理系統，最重要的是要乖乖按照正確的取出、放入流程來使用，並且要養成仔細撰寫修訂版日誌的習慣。「三太子」半個月內就產生了數百次修訂版，如果沒有修訂版日誌，根本不可能在需要的時刻找到正確的版本。</p>
+<p><strong>■ 源碼語言</strong></p>
+<p>每一種語言都有其擅長之處，也有其不擅長之處。軟體專案應該選用能夠滿足需求的語言──不過值得注意之處在於，一個專案不見得就只能使用一種語言。</p>
+<p>在「三太子」當中，基本上是按照不同作業系統版本的 Opera 安裝方式不同，來選擇所要搭配的腳本語言。</p>
+<p>Windows 版本的 Opera 在安裝時有較多使用者互動，而 Windows 的使用者也比較習慣圖型化使用者介面，因此就要選擇能輕易處理 GUI、能處理 UTF-8 字串、能夠處理檔案及目錄、能夠讀寫登錄、能讀寫 INI 設定檔的腳本語言，最好還要能輕易編譯成執行檔，讓使用者毋須安裝執行環境就可以使用這樣的腳本。在這樣考量之下，最後雀屏中選的是 AutoHotKey。</p>
+<p>到了 Linux 及 FreeBSD 上，則完全不一樣了。Linux 及 FreeBSD 版本的 Opera 在安裝時沒什麼需要使用者介入的地方，而且這些作業系統的使用者往往也比較熟悉文字使用者介面，所以選用了 Shell Script 來處理。</p>
+<p>Mac OS X 又是另一種情況。由於 Mac OS X 內建了一套叫 Automator 的腳本語言，也支援 GUI，所以屆時「三太子」若要移植到 Mac OS X 上，就會選用 Automator 來實作。</p>
+<p>不管選用了何種語言，如果能先撰寫虛擬碼及描述程式邏輯的文件，那麼日後要是不幸得改用不同的語言來實作時，就會比較輕鬆。不過請注意：許多軟體專案隨著時間成長，軟體本身的發展往往會超出虛擬碼及程式邏輯一開始的設定範圍，這時別忘了要跟著更新相關的文件及虛擬碼，以免產生了一堆過時而無法使用的文件，在關鍵的時候反而就幫不上忙了。</p>
+<p><strong>■ 源碼註解與文件</strong></p>
+<p>有了版本管理之後，修訂版日誌可以協助了解每一批修改的用意為何；但是修訂版日誌無論如何也無法取代源碼註解。源碼註解可以幫助明天的你還能看懂今天所寫的東西，也能幫你釐清邏輯上的瑕疵與漏洞──換句話說，詳細的註解其實主要還是幫自己的忙，其次才是幫其他人看懂你都在寫些什麼。</p>
+<p>除了源碼當中的註解外，還要另外維護使用者文件跟開發者文件。使用者文件用來讓專案的使用者知道這個專案做了些什麼事、有什麼功能可以使用、有哪些東西可以調整或開關、如果出錯了可能是誰造成的；開發者文件則是讓其他有興趣參與開發的人，可以更迅速地上手，掌握整個專案的結構與步調。</p>
+<p>雖然維護這些註解與文件所費不貲（「三太子」專案花在文件上的時間大約是三分之一到一半左右），但是卻會是物超所值的行動，因為藉由這些文件，可以讓整個專案更容易地被檢視，有瑕疵時也能更迅速地補正，因此使用者及開發者之間的關係更透明而直接，信任關係也就越強烈。「信任」正是一切社群的核心，妥善而完整的文件則是開放源碼專案累積信任的重要基礎。</p>
+<p>「三太子」對 Opera 所做的一切處理，皆儘可能詳實地公布在網頁上，這樣不但能讓台灣使用者社群更放心地使用三太子，也能讓台灣使用者社群藉此機會更瞭解 Opera，甚至是以此為基礎，打造屬於自己的個人 Opera。</p>
+<p><strong>■ 訊息管道</strong></p>
+<p>任何一個開放源碼專案，有了名字、進行開發、有了文件之後，更重要的是得有個便於公眾取用的入口。在網頁時代，這個入口也就是一個網頁或網站。</p>
+<p>但是光有網站還不夠，因為這年頭網站實在太多了，開放源碼專案也如過江之鯽，九成以上的使用者對任何網站都只會看一次──這些使用者可能是看到某些資訊入口網站或媒體的報導而來，但是離開之後就不會再回來。</p>
+<p>對於健康的開放源碼專案來說，只有一次的高度關注是沒有用的，細水長流才是生生不息的象徵。如何能夠掌握那唯一一次的使用者來訪呢？在網站上提供源料，或者是利用 twitter 或 plurk 這類可供訂閱／跟隨的媒介，都會是不錯的作法。藉由這類管道，使用者就能源源不絕地獲得最新的更新資訊，誘使他們再度回訪。</p>
+<p>有些開放源碼專案總是在新版本釋出的時候玩跟著撰寫釋出聲明，這對於專案發展來說幫助是有限的；正確的作法其實是儘可能頻繁地更新訊息，不論是網頁上的文件有修正，或者是專案源碼有變更，就算還沒有達成階段里程碑而不會釋出新版，也還是可以先放出風聲，一方面可以讓社群感受到專案的活躍，另一方面也能鼓舞社群回應，並避免已修正的問題重複回報。</p>
+<p>如果每一則訊息，以及網頁上的每一段資訊，也都能有個靜態鏈結，那麼社群成員就更能把相關的訊息散佈出去，使整個專案能見度更高。</p>
+<p><strong>■ 多語</strong></p>
+<p>任何軟體專案，只要是會有前端使用者介面的部份，就一定要顧及多語的使用情境。這部份可以分成幾個不同的層次，循序漸進：</p>
+<p>1. 在不同語言的環境之中，至少要能正確地顯示同一種語言的訊息<br />2. 在不同語言的環境之中，至少要能正確地處理同一種語言的輸入內容<br />3. 在不同語言的環境之中，至少要能正確地處理同一種語言、不同編碼（例如 Big5 跟 UTF-8）的輸入內容<br />4. 在不同語言的環境之中，能夠正確地按照語言環境變數，用不同的語言來表達相關訊息內容<br />5. 在不同語言的環境之中，能夠正確地處理不同語言、不同編碼的輸入內容<br />6. 在不同語言的環境當中，能夠處理不同語言及編碼的檔案名稱與路徑名稱</p>
+<p>處理輸入內容的時候，重點在於要判斷輸入內容的原始編碼，統一轉換成 UTF-8 等通用編碼格式，再繼續做處理（正好 Opera 的設定檔都必須以 UTF-8 編碼來撰寫）。</p>
+<p>處理訊息時，會遇到的問題則是要同時維護多種語言的版本；為了讓程式／腳本本身盡可能單純、簡化，這些訊息字串最好抽出另外處理，而不要嵌入主程式／主腳本之中。開放源碼界的 GNU gettext 是個相當成熟的國際化框架，當專案成長到某個程度時就可以予以採用，如此也便於把不同語系檔交付給不同的社群成員來負責。（當然在專案還很小的時候就率先採用 gettext 也很好，並沒有什麼不妥）</p>
+<p>從網頁服務乃至於商業化的獨立遊戲，處處都可見到 gettext 的蹤跡，足見其成熟度。</p>
+<p><strong>■ 跨平台</strong></p>
+<p>軟體專案要如何跨平台呢？最簡單的辦法是使用本身就跨平台的開發框架，並且避開平台特定性的元件或語言模組。很不幸地「三太子」沒有辦法這樣做。因為 Opera 在不同平台上的安裝方式、檔案放置位置都有所不同，所以正如前述一般，「三太子」在不同平台上選用了不同的實作腳本語言。不過「三太子」一開始就決定了靈活與彈性的最高指導原則，儘可能避開平台限定的元件，因此很容易就可以移植到許多不同的平台上。</p>
+<p>實務上，「三太子」的開發也是在不同的平台上平行（但是同步）進行，這時候就得說虛擬機器實在是開發者的好朋友了。</p>
+<p>VMware 的 VMware Server、VMware Player 及 Sun 的 VirtualBox 都是開放源碼的虛擬化解決方案，另外微軟也有一套免費（但是沒有開放源碼）的 Virtual PC，都可以讓開發者在自己的電腦上準備好多種不同作業環境，用來開發及測試。</p>
+<p>「三太子」最先完成的平台是 Windows，並且將多語訊息抽離出來另外處理，主要的腳本保持簡潔，又撰寫了詳細的註解，很快就整理出虛擬碼；在虛擬碼的協助之下，很快地就轉寫成 Shell Script 的版本，於是 Linux 及 FreeBSD 平台很快就處理完一半了，剩下來的部份就是將檔案的換列格式調整成 UNIX 格式，並且重新分配檔案路徑，調整檔案權限，然後就可以打包收工。</p>
+<p><strong>■ 檔案測試與釋出</strong></p>
+<p>不論做的變更有多小，檔案都應該要實際測試過再釋出，因為疏忽跟意外總是在料想不到的地方發生。前述虛擬化的做法還有一個優點，就是可以幫準備好的環境建立快照，日後就可以利用這些快照，迅速還原到用來測試的環境。包括全新的乾淨安裝，以及移除舊版後的再安裝、直接覆蓋的安裝、使用非預設路徑及設定的安裝等，通通都要測試過一遍。</p>
+<p>在「三太子」的發展過程當中，最常出現的瑕疵是因為 Big5 衝碼導致腳本執行失敗，以及忘記更改版號，好在多半都有在測試階段發現，及時更正。</p>
+<p>隨著專案規模擴大，要測試的流程與變數也會越來越多，如果可能的話，最好分配給社群成員來進行。不過為了要確認測試方式的一致性，應該要準備好測試說明文件，並且準備好檢核清單，方便社群成員回報。</p>
+<p>釋出檔案時，除了應有釋出註記、版本沿革文件外，最好在檔名對不同的版本做區分，以免使用者同時下載多種不同版本產生檔名衝突。另外若是自行尋找空間放置檔案，則應該要盡可能尋找多個不同的下載空間，讓使用者能夠選擇對他們來說更為便利、迅速的下載來源。提供檔案的 MD5／SHA1 加總檢核碼是確保檔案下載完整的好方法，但是並非所有的使用者都瞭解如何運用加總檢核碼，所以釋出的檔案本身若能檢查自己的完整性，對於使用者來說將會更為便利。</p>
+<p><strong>■ 外交</strong></p>
+<p>檔案釋出了，對於一個軟體專案來說，才是真正的開始。當你的軟體投入廣大的使用者社群後，會面臨到許多你原本所沒有設想到的情境，也可能會激盪出更多不同的需求與想法，其中有些真的是非常珍貴的回應，但是也有一些會導致專案往奇怪的方向發展。專案一開始設立的基準此時就會是護身符了，理性、禮貌、平和地拿出專案基準，與使用者社群互動，就可以釐清八成的回應是否應該納入開發流程、應該納入哪個里程碑。</p>
+<p>但是使用者社群並不是開放源碼專案唯一該接觸的對象。現今的軟體產業很少從上到尾靠自己就能搞定，尤其像「三太子」這樣的專案，除了接觸瀏覽器的使用者外，還有網頁及網頁服務的提供者，以及瀏覽器製造者（也就是 Opera 公司），也會與「三太子」的發展攸關。因此這些「上下游產業」也是「三太子」專案在發展過程當中，不斷聯繫的對象。</p>
+<p>說實話，「三太子」專案的最終目標，是讓「三太子」專案可以不需要繼續下去──一旦 Opera 能夠針對台灣的使用者社群提供更好的預設值及功能，而網頁服務提供商也能更完善地支援 Opera，那麼「三太子」就可以下台鞠躬了。促成此事需要仰賴社群的力量，而一個目標明確、透明誠實的專案，則是凝聚社群力量的良好管道。</p>
+<p>「三太子」專案首次釋出檔案後半個月內就有超過五千人次的下載數，並且在台灣及中國都掀起了一陣討論；目前已經有台灣的網頁服務提供商表達願意配合「三太子」專案修改產品的意願，而 Opera 的台灣辦公室、中國辦公室、挪威總部也都有相關的人員主動聯繫「三太子」專案，足見「三太子」專案至今的經營與發展方向，大致還算穩健、正確。</p>
+<p><strong>■ 結語</strong></p>
+<p>經營一個開放專案，跟經營一個開放社群，兩者都是相當不容易的工作，更需要相當的熱誠與精力，才有辦法保持日久彌新、穩健成長。「三太子」在這個領域當中，實在是非常年輕的一個專案；它到底會如何發展，沒有人能說得準。</p>
+<p>身為計畫的維護者，我能確定的事情只有一樣：秉持著開放的心胸、開放的想法，保持開放的文件與開放的源碼，讓整個專案的內容便於整個社群開放取用，那麼整個社群在此專案上所投注的每一分每一秒，就都能累積下來，成為重要的資產。即便未來這個專案因故告一段落，這些資產也還是會陪伴著整個社群，讓整個社群能以此為基礎，繼續繁衍出其他的計畫。</p>
+<p><strong>■ 相關連結</strong></p>
+<p><a href="https://Jedi.org/p4/Opera/pub/" target="_blank">「三太子」計畫與文件集</a><br /><a href="tw/resourcecatalog/Cloud-Computing/Client/Web-Browser/opera/visit.html" target="_blank">Opera</a><br /><a href="https://www.artofcommunityonline.org/" target="_blank">《The Art of Community》</a><br /><a href="https://www.perforce.com/" target="_blank">Perforce 版本管理系統</a><br /><a href="https://www.autohotkey.com/" target="_blank">AutoHotKey 腳本語言</a><br /><a href="https://linux.vbird.org/linux_basic/0340bashshell-scripts.php" target="_blank">鳥哥的 Linux 私房菜──學習 Shell Scripts</a><br /><a href="https://www.macosxautomation.com/automator/" target="_blank">Automator 腳本語言</a><br /><a href="https://www.gnu.org/software/gettext/" target="_blank">GNU gettext</a><br /><a href="https://www.vmware.com/products/server/" target="_blank">VMware Server</a><br /><a href="https://www.vmware.com/products/player/" target="_blank">VMware Player</a><br /><a href="https://www.virtualbox.org/" target="_blank">Sun VirtualBox</a><br /><a href="https://www.microsoft.com/windows/virtual-pc/" target="_blank">Microsoft Virtual PC</a></p>
+			<!-- Show relate article -->
+				<!-- end -->
+		<div class="article_note">
+		<!-- Add tags use metakey, and show OSSF Newsletter tag: OSSFNL+NUM-->
+		<br><br> <hr style='border: 1px dashed #D2DADB;'><b>OSSF Newsletter&nbsp;:</b>&nbsp;<a href='previous-issue%3Ftask=view&amp;id=551.html'>第 136 期 打造三太子：台灣版 Opera 瀏覽器</a><br>				<!-- End -->
+					<br>
+					<b>Category: </b><a href="en/foss-forum.html">				FOSS Forum					</a>				</div>
+			 <!-- AddThis Button BEGIN ID 3001 is the front page article -->
+     			<br><br>
+       <div class="addthis_toolbox addthis_default_style addthis_32x32_style">
+       <a class="addthis_button_preferred_1"></a>
+       <a class="addthis_button_preferred_2"></a>
+       <a class="addthis_button_preferred_3"></a>
+       <a class="addthis_button_preferred_4"></a>
+       <a class="addthis_button_compact"></a>
+       <a class="addthis_counter addthis_bubble_style"></a>
+       </div>
+       <script type="text/javascript">var addthis_config = {"data_track_clickback":true};</script>
+       <script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js#pubid=openfoundry"></script>
+       <!-- AddThis Button END -->
+     <br>
+		<div class="totop" ><a class="rt-totop" href="index.php%3Foption=com_content&amp;task=view&amp;id=2171&amp;Itemid=56%3Bisletter=1.html#" style="outline: medium none;">↑ Top</a></div>
+            <!-- AddThis Button END -->
+
+		<script type="text/javascript">
+var jcomments=new JComments(2171, 'com_content','https://openfoundry.org/index.php?option=com_jcomments&amp;tmpl=component&amp;lang=');
+jcomments.setList('comments-list');
+</script>
+<div id="jc">
+<div id="comments"><h4>Comments<a class="refresh" href="index.php%3Foption=com_content&amp;task=view&amp;id=2171&amp;Itemid=56%3Bisletter=1.html#" title="Refresh comments list" onclick="jcomments.showPage(2171,'com_content',0);return false;">&nbsp;</a></h4>
+<div id="comments-list" class="comments-list">
+        <div class="even" id="comment-item-270"><div class="rbox"><div class="rbox_tr"><div class="rbox_tl"><div class="rbox_t">&nbsp;</div></div></div><div class="rbox_m">
+<div class="comment-avatar"><img src="http://www.gravatar.com/avatar.php?gravatar_id=5db0a69c19933fe9ffd85a8a1dfb5a8b&amp;default=https%3A%2F%2Fwww.openfoundry.org%2Fcomponents%2Fcom_jcomments%2Fimages%2Fno_avatar.png" alt="" /></div>
+<div class="comment-box avatar-indent">
+<span class="comments-vote">
+	<span id="comment-vote-holder-270">
+<a href="index.php%3Foption=com_content&amp;task=view&amp;id=2171&amp;Itemid=56%3Bisletter=1.html#" class="vote-good" title="Good comment!" onclick="jcomments.voteComment(270, 1);return false;"></a><a href="index.php%3Foption=com_content&amp;task=view&amp;id=2171&amp;Itemid=56%3Bisletter=1.html#" class="vote-poor" title="Poor comment!" onclick="jcomments.voteComment(270, -1);return false;"></a>
+<span class="vote-none">0</span>
+	</span>
+</span>
+<a class="comment-anchor" href="en/foss-forum/2171-2011-01-06-11-16-02.html#comment-270" id="comment-270">#1</a>
+<span class="comment-author">kasser</span>
+<span class="comment-date">2012-03-14 00:24</span>
+<div class="comment-body" id="comment-body-270"><a href="https://www.autohotkey.com/forum/" target="_blank" rel="external nofollow">www.autohotkey.com/forum/</a></div>
+</div><div class="clear"></div>
+</div><div class="rbox_br"><div class="rbox_bl"><div class="rbox_b">&nbsp;</div></div></div></div>
+</div>
+</div>
+<div id="comments-list-footer"><a class="refresh" href="index.php%3Foption=com_content&amp;task=view&amp;id=2171&amp;Itemid=56%3Bisletter=1.html#" title="Refresh comments list" onclick="jcomments.showPage(2171,'com_content',0);return false;">Refresh comments list</a></div>
+</div>
+<div id="comments-footer" align="center"><a href="http://www.joomlatune.com" title="JComments" target="_blank">JComments</a></div>
+<script type="text/javascript">
+jcomments.setAntiCache(1,0,0);
+</script> 
+</div>	</div>
+</div>
+
+		                            </div>
+									<div class="clear"></div>
+								</div>
+								<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+							</div>
+							</div>
+                                                    </div>
+                                            </div>
+                                <div class="rt-grid-3 rt-pull-9">
+                <div id="rt-sidebar-a">
+                                    <div class="square4">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<ul class="menu"><li id="current" class="active item56"><a href="en/previous-issue.html"><span>Previous Issue</span></a></li><li class="item55"><a href="en/about-newsletter.html"><span>About Newsletter</span></a></li></ul>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<ul class="menu"><li class="item115"><a href="en/foss-news.html"><span>FOSS News</span></a></li><li class="item141"><a href="en/case-job.html"><span>Case and Jobs</span></a></li></ul>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+        	                <div class="square1">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-title"><h2 class="title">Special</h2></div>
+						<div class="clear"></div>
+		                						<div class="module-content">
+		                	<ul class="menu"><li class="item37"><a href="en/tech-column.html"><span>Tech Column</span></a></li><li class="item40"><a href="en/foss-programs.html"><span>FOSS Programs</span></a></li><li class="item35"><a href="en/legal-column.html"><span>Legal Column</span></a></li><li class="item154"><a href="en/foss-forum.html"><span>FOSS Forum</span></a></li><li class="item162"><a href="en/enterprise-application.html"><span>Enterprise Application</span></a></li><li class="item44"><a href="en/foss-projects.html"><span>FOSS Projects</span></a></li></ul>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		                <div class="square1">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<p style="text-align: center;"><a href="news%3Fformat=feed&amp;type=rss" target="_black"><img src="images/M_images/news-rss-feed.png" border="0" /></a><br /><a href="https://www.openfoundry.org/rss-feed/Newsletter" target="_black"><img src="images/M_images/newsletter-rss-feed.png" border="0" /></a></p>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		
+                </div>
+            </div>
+
+                    <div class="clear"></div>
+                </div>
+            </div>
+																													</div>
+										<div id="rt-copyright">
+						<div class="rt-grid-12 rt-alpha rt-omega">
+                        <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<span class="nowrap">Open Source Software Foundry</span><span class="nowrap">‧</span><span class="nowrap"> </span><span class="nowrap">Best  Viewed with IE7.0 or Firefox2.0 above, 1024x768 Resolution. </span><strong>E-Mail</strong>：<a href="mailto:contact@openfoundry.org">contact@openfoundry.org</a> <br /><strong>Address</strong>：No.128, Sec.2, Academia Rd., Institute of Information Science, Academia Sinica, Nangang District, Taipei City 11529, Taiwan (R.O.C). <br /><a href="en/privacy-policy.html">Privacy Policy</a>. <a href="en/terms-of-use.html">Terms-of-use</a> <span style="position: relative; top: 8px; margin-top: -8px;"> <a href="about/8101.html"><img src="images/M_images/rss-feed-all.png" border="0" /></a></span>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+        	
+</div>
+						<div class="clear"></div>
+					</div>
+					<div class="rt-footer-bottom-wrap"><div class="rt-footer-bottom"><div class="rt-footer-bottom2"><div class="rt-footer-bottom3"></div></div></div></div>
+									</div></div></div>
+				<div class="rt-surround-bottom"><div class="rt-surround-bottom2"><div class="rt-surround-bottom3"></div></div></div>
+							</div>
+		</div>
+		<!--
+		<script id="aptureScript">
+						(function (){var a=document.createElement("script");a.defer="true";a.src="http://www.apture.com/js/apture.js?siteToken=vsJttrn";document.getElementsByTagName("head")[0].appendChild(a);})();
+     </script>
+-->
+
+<!-- Piwik -->
+<!-- 			<script type="text/javascript">
+			  var _paq = _paq || [];
+		  _paq.push(["trackPageView"]);
+		  _paq.push(["enableLinkTracking"]);
+
+		    (function() {
+			        var u=(("https:" == document.location.protocol) ? "https" : "https") + "://www.openfoundry.org/piwik/";
+				    _paq.push(["setTrackerUrl", u+"piwik.php"]);
+				    _paq.push(["setSiteId", "1"]);
+				        var d=document, g=d.createElement("script"), s=d.getElementsByTagName("script")[0]; g.type="text/javascript";
+				        g.defer=true; g.async=true; g.src=u+"piwik.js"; s.parentNode.insertBefore(g,s);
+					  })();
+		  </script> -->
+<!-- End Piwik Code -->
+	</body>
+</html>

@@ -1,0 +1,526 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="zh-tw" lang="zh-tw" >
+<head>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<link rel="shortcut icon" href="../../images/favicon.ico" />
+	  <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+  <meta name="robots" content="index, follow" />
+  <meta name="keywords" content="OSSFNL445" />
+  <meta name="title" content="把檔案抹除乾淨的Eraser （上）" />
+  <meta name="description" content="在 Windows 底下，千萬不要以為執行清理資源回收筒或刪除檔案的同時按住 Shift，就可以讓檔案完全從電腦中消失。要是徹底清除檔案是這麼容易的一件事，那麼救援軟體就沒有存在的價值了。 當然，要刪除的檔案，不見得都很重要，如果要刪除的只是一些無關痛癢的檔案，當然就不需要使用 Eraser" />
+  <meta name="generator" content="" />
+  <title>把檔案抹除乾淨的Eraser （上） - OpenFoundry</title>
+  <link href="../../favicon.ico" rel="shortcut icon" type="image/x-icon" />
+  <link rel="stylesheet" href="../../components/com_gantry/css/gantry.css" type="text/css" />
+  <link rel="stylesheet" href="../../components/com_gantry/css/grid-12.css" type="text/css" />
+  <link rel="stylesheet" href="../../components/com_gantry/css/joomla.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/joomla.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/style1.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/light-body.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/demo-styles.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/template.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/typography.css" type="text/css" />
+  <link rel="stylesheet" href="../../templates/rt_quantive_j15/css/fusionmenu.css" type="text/css" />
+  <style type="text/css">
+    <!--
+#rt-main-surround ul.menu li.active > a, #rt-main-surround ul.menu li.active > .separator, #rt-main-surround ul.menu li.active > .item, #rt-main-surround .square4 ul.menu li:hover > a, #rt-main-surround .square4 ul.menu li:hover > .item, #rt-main-surround .square4 ul.menu li:hover > .separator, .roktabs-links ul li.active span {color:#0088B5;}
+a, #rt-main-surround ul.menu a:hover, #rt-main-surround ul.menu .separator:hover, #rt-main-surround ul.menu .item:hover {color:#0088B5;}
+    -->
+  </style>
+  <script type="text/javascript" src="../../components/com_jcomments/js/jcomments-v2.1.js%3Fv=2"></script>
+  <script type="text/javascript" src="../../components/com_jcomments/libraries/joomlatune/ajax.js"></script>
+  <script type="text/javascript" src="../../media/system/js/mootools.js"></script>
+  <script type="text/javascript" src="../../media/system/js/caption.js"></script>
+  <script type="text/javascript" src="../../components/com_gantry/js/gantry-buildspans.js"></script>
+  <script type="text/javascript" src="../../components/com_gantry/js/gantry-inputs.js"></script>
+  <script type="text/javascript" src="../../templates/rt_quantive_j15/js/jquery.cookie.js"></script>
+  <script type="text/javascript" src="../../modules/mod_roknavmenu/themes/fusion/js/fusion.js"></script>
+  <script type="text/javascript" src="../../modules/mod_ofssologin/js/ofssologin.js"></script>
+  <script type="text/javascript">
+
+			window.addEvent('domready', function() {
+				var modules = ['rt-block'];
+				var header = ['h3','h2','h1'];
+				GantryBuildSpans(modules, header);
+			});
+		InputsExclusion.push('.content_vote','#rt-popup')
+		        window.addEvent('load', function() {
+					new Fusion('ul.menutop', {
+						pill: 0,
+						effect: 'slide and fade',
+						opacity: 1,
+						hideDelay: 500,
+						centered: 0,
+						tweakInitial: {'x': -2, 'y': 0},
+        				tweakSubsequent: {'x': 0, 'y': -14},
+						menuFx: {duration: 200, transition: Fx.Transitions.Sine.easeOut},
+						pillFx: {duration: 400, transition: Fx.Transitions.Back.easeOut}
+					});
+	            });
+  </script>
+<!-- <script type="text/javascript" src="/sso/javascripts/langsync.js"></script> -->
+<!-- <script src="/templates/rt_quantive_j15/js/ossf.js"></script> -->
+<script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-4136519-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
+</head>
+	<body  class="backgroundlevel-low backgroundstyle-style8 bodylevel-med bodystyle-light cssstyle-style1 logostyle-dark font-family-helvetica font-size-is-default menu-type-fusionmenu col12 ">
+		<div id="rt-main-background">
+			<div class="rt-container">
+																<div id="rt-header">
+					<div class="rt-grid-7 rt-alpha">
+    			<div class="rt-block">
+    	    	<a href="../../index.html" id="rt-logo"></a>
+    		</div>
+	    
+</div>
+<div class="rt-grid-5 rt-omega">
+                    <div class="square9">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<div class="ofssologin_square9"><a href="../../index.html">登入</a>&nbsp;&nbsp|&nbsp;&nbsp;<span><a href="../../en/foss-programs/1861-eraser-.html" ><span lang="en" xml:lang="en">English</span></a></li></ul></span><!--Joom!fish V2.0.4 (Lightning)-->
+<!-- &copy; 2003-2009 Think Network, released under the GPL. -->
+<!-- More information: at http://www.joomfish.net -->
+<div class="ofssologin_search_square9">
+  <form id="of_search" action="https://www.openfoundry.org/of/openfoundry/search" method="get" onsubmit="of_search(); return false;">
+    <select id="of_search_type">
+      <option value="Projects"> 專案 </option>
+      <option value="Content"> 文章 </option>
+      <option value="People"> 人才 </option>
+    </select>
+    <input id="query" name="query" id="mod_search_searchword" maxlength="50" alt="search" class="inputbox" type="text" size="28" value="search..."  onblur="if(this.value=='') this.value='search...';" onfocus="if(this.value=='search...') this.value='';" />
+    <input type="hidden" name="commit" value="search" />
+  </form>
+</div></div>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		
+</div>
+					<div class="clear"></div>
+				</div>
+																<div id="rt-navigation"><div id="rt-navigation2"><div id="rt-navigation3">
+					
+<div class="nopill">
+	<ul class="menutop level1 " >
+						<li class="item1 root" >
+					<a class="orphan item bullet" href="../../index.html"  >
+				<span>
+			    				首頁				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item32 root" >
+					<a class="orphan item bullet" href="../../archived.html"  >
+				<span>
+			    				專案				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item186 root" >
+					<a class="orphan item bullet" href="../community.html"  >
+				<span>
+			    				Who&#039;s Who				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item4 root" >
+					<a class="orphan item bullet" href="../news.html"  >
+				<span>
+			    				新聞				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item5 root" >
+					<a class="orphan item bullet" href="../law-and-licensing.html"  >
+				<span>
+			    				法律源地				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item3 root" >
+					<a class="orphan item bullet" href="../activities.html"  >
+				<span>
+			    				活動				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item2 root" >
+					<a class="orphan item bullet" href="../resourcecatalog%3FName=Value.html"  >
+				<span>
+			    				資源表列				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item45 root" >
+					<a class="orphan item bullet" href="../about.html"  >
+				<span>
+			    				關於				   
+				</span>
+			</a>
+			
+			
+	</li>	
+				</ul>
+</div>
+
+				    <div class="clear"></div>
+				</div></div></div>
+								<div class="rt-surround"><div class="rt-surround2"><div class="rt-surround3">
+										<div id="rt-showcase-section">
+												<div id="rt-showcase">
+							<div class="rt-grid-12 rt-alpha rt-omega">
+    		<div class="clear"></div>
+		
+		
+                <div class="close-note">
+                    <div class="rt-block">
+               					<div class="module-content">
+                	<div style="font-size:medium; background-image:linear-gradient(120deg,#159957,#4298b2);color:white;padding:20px;margin:-10px -18px;">感謝您對「自由軟體鑄造場」的支持與愛護，十多年來「自由軟體鑄造場」受中央研究院支持，並在資訊科學研究所以及資訊科技創新研究中心執行，現已完成階段性的任務。 本網站預計持續維運至 2021年底，網站內容基本上不會再更動。<br />也紀念我們永遠的朋友 李士傑先生（Shih-Chieh Ilya Li）。</div>				</div>
+            </div>
+                </div>
+		
+</div>
+							<div class="clear"></div>
+						</div>
+																	</div>
+															<div id="rt-main-surround">
+												<div id="rt-breadcrumbs">
+								<div class="rt-breadcrumb-surround">
+		<a href="../../index.html" id="breadcrumbs-home"></a>
+		<span class="breadcrumbs pathway">
+<a href="../foss-programs.html" class="pathway">源碼秘技</a> <img src="../../templates/rt_quantive_j15/images/arrow.png" alt=""  /> <span class="no-link">把檔案抹除乾淨的Eraser （上）</span></span>
+	</div>
+	
+							<div class="clear"></div>
+						</div>
+																							              <div id="rt-main" class="sa3-mb9">
+                <div class="rt-main-inner">
+                    <div class="rt-grid-9 rt-push-3">
+                                                <div class="rt-block">
+                            							<div class="square1">
+							<div class="rt-module-surround">
+								<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+								<div class="rt-module-inner">
+		                            <div id="rt-mainbody">
+		                                
+<div class="rt-joomla ">
+	<div class="rt-article">
+		
+				<div class="rt-headline"><h1 class="rt-article-title">把檔案抹除乾淨的Eraser （上）</h1>		</div>
+		<div class="clear"></div>
+		
+		
+		
+				<div class="rt-articleinfo">
+						<div class="rt-article-icons">
+								<a href="1861-eraser-%3Ftmpl=component&amp;print=1&amp;layout=default&amp;page=.html" title="列印" onclick="window.open(this.href,'win2','status=no,toolbar=no,scrollbars=yes,titlebar=no,menubar=no,resizable=yes,width=640,height=480,directories=no,location=no'); return false;" rel="nofollow"><span class="icon print"></span></a>																</div>
+			
+			<span class="rt-date-posted">
+						建立日期			2008-12-10 08:00						&nbsp;&nbsp;&nbsp;&nbsp;						最近更新在 2011-10-12 10:17						</span>
+
+						<span class="rt-author">
+				作者是 Attila			</span>
+				
+					</div>
+		
+		
+		<p>在 Windows 底下，千萬不要以為執行清理資源回收筒或刪除檔案的同時按住 Shift，就可以讓檔案完全從電腦中消失。要是徹底清除檔案是這麼容易的一件事，那麼救援軟體就沒有存在的價值了。</p>
+<p>當然，要刪除的檔案，不見得都很重要，如果要刪除的只是一些無關痛癢的檔案，當然就不需要使用 Eraser 這一類的安全軟體，若檔案的內容牽涉到個人隱私、個人與企業的機密、網頁瀏覽紀錄、網路服務使用紀錄…等等，那麼還是要小心一點的好，以免洩漏出去後，為自己惹來無窮盡的麻煩。</p>
+<p>因此，送修電腦、丟棄硬碟、遺失了隨身碟等，不希望洩漏了不該洩漏的祕密，那麼平常最好養成徹底抹除重要資料的習慣，此時此刻，Eraser 絕對會是一個必備的工具。因為 Eraser 不但提供有效的方法可以徹底抹除檔案，連相關的緩衝區（Buffer），都會一併抹除，絕對不留下任何「殘黨餘孽」！</p>
+
+<p>除了個人使用者之外，公司內需要管理隨身碟的單位（通常是 MIS 人員），也應該要使用這東西。尤其是在把隨身碟發給新進人員使用之前，就應該用 Eraser 把隨身碟清理乾淨，以免殘存的資料有外洩之疑。</p>
+<p>只是在使用之前，有幾點要先提醒大家：</p>
+<p>1. 抹除前，請先確定資料還要不要</p>
+<p>Eraser 提供的抹除方法，只有少數幾種可以透過軟、硬體方式救回資料，所以抹除前一定要先確定檔案真的不要了，否則抹除後要後悔，不論怎麼哭爹喊娘外加搥心肝，都是沒有用的。</p>
+<p>2. 根據需要及電腦運算能力選擇合適的抹除方式</p>
+<p>使用 Eraser 時，部份所提供的抹除方式相當耗費系統資源，有可能讓電腦的效能降低到幾乎無法做其他的事。若硬體的效能不高，卻又用這些方式來抹除大又多的檔案或整個硬碟時，那不止是不能做其他而已，很可能得要空出很長一段時間才行（現在單一硬碟的容量隨便都超過 160 GB，跑個幾小時是很正常的），因此選用和執行前，一定要先做好必要的評估（真的有空閒讓電腦進行抹除任務等），否則耽誤正事就不好啦！</p>
+<p>3. 例行性抹除請善用排程功能</p>
+<p>如果有些資料具有時效性，如企業內某些只需要一定壽命的文件檔案，時間到了就該徹底「處理」掉，或者瀏覽器的快取資料等，這時候就可以利用排程功能，搭配特定的資料夾，在閒暇時間（午休、夜間或週末）進行抹除作業，如此才不會忘記要「做掉」這些檔案，也才不會浪費可做事的寶貴時間。</p>
+<p>好啦！了解這些事情之後，就一起來看看這個能把機密檔案吃乾抹淨的寶貝吧！</p>
+<p><strong>下載</strong></p>
+<p><a href="https://www.heidi.ie/node/6" target="_blank">Eraser的官方網站</a><br /><a href="https://sourceforge.net/project/showfiles.php?group_id=37015" target="_blank">下載處<br /></a></p>
+<p><strong>◎ 使用前的必備基礎</strong></p>
+<p>Eraser 所提供的抹除方式主要有五種（用於磁碟未使用空間的抹除則只有四種），所以使用前應該要根據自己的需要，先設定好想要採用的抹除方式，才能在抹除效果和效能之間取得適當的平衡。現在先來看看 Eraser 所提供的抹除方式有什麼特色吧！</p>
+<p>1. Gutmann：這是根據 Peter Gutmann 的研究報告「Secure Deletion of Data from Magnetic and Solid-State Memory」所發展出來的方法，也是最安全的方法，採用此法抹除後，不論是採用軟、硬體的救援方式，都無法讓資料復原。不過，它執行的速度非常慢，尤其用此法來抹除硬碟的時候。（速度的快慢，和硬體也有關）</p>
+<p>2. US DoD 5220-22.M：從美國國防部於 1995 年元月提出的安全建議中，所發展出來的方法。它所執行的速度比 Gutmann 快一些，不過安全性略差，可用硬體的方式讓資料復原。只是這種方法通常很昂貴，Attila 認為，除非資料價值連城，重要到讓人不惜血本也得救回來，否則採用此法的安全性就已經太足夠了。</p>
+<p>3. Pseudorandom Data：此法是由 Eraser 以亂數產生的假資料來進行覆寫，覆寫的次數最高可達 65,535 次。它的執行速度很快，是 Eraser 所預設的方法。當然，安全性和複寫的次數有關，多了自然比較安全，但電腦的執行效率也相對會變低。</p>
+<p>4. Only first and last 2KB：只覆寫檔案前後 2KB 的資料。此法速度當然快，但安全性相對也低。此法在 Eraser 內只能用於抹除檔案，抹除磁碟時不提供此法。</p>
+<p>5. Schneier’s 7 pass：依據 Bruce Schneier 的演算法所發展出來的，採用特定的密碼形式來產生假資料，然後以亂數的方式來覆寫資料。安全性相當高，速度則和 US DoD 5220-22.M 差不多。</p>
+<p>一般來說，個人使用只需要使用 Pseudorandom Data 即可，次數則可按照電腦的運算能力設定在 3-7 次。如果需要高一點的安全性，則可選擇其他安全性更高的方法（如 Gutmann、US DoD 5220-22.M 等）。</p>
+<p>若抹除的是磁碟，那麼這些方法中，只有 Pseudorandom Data 可用於壓縮磁碟（如使用 Drive Space 這類軟體，針對整個磁碟壓縮以增加儲存空間，不是針對個別的檔案壓縮），其他的方法都可能產生問題，這是必須要注意的地方。</p>
+<p>至於要怎麼設定呢？現在就來看看吧！</p>
+<p><span style="text-decoration: underline;">步驟一</span></p>
+<p><img src="../../images/081215/01.jpg" border="0" hspace="5" vspace="5" width="768" height="530" align="absBottom" /></p>
+<p>開啟 Eraser 後，按功能表的 Edit（編輯）＼Preferences（偏好）＼Erasing（抹除）。</p>
+<p><br /><span style="text-decoration: underline;">步驟二</span></p>
+<p><img src="../../images/081215/02.jpg" border="0" hspace="5" vspace="5" width="481" height="359" align="absBottom" /></p>
+<p>出現的視窗有二個標籤，畫面中顯示的是抹除檔案時可用的抹除方式，新的版本以 Pseudorandom Data 為預設值。如果要改變它的次數，點選 Pseudorandom Data 後，按一下又邊的 Edit鈕。</p>
+<p>至於底下 Overwrite 的三個選項，則表示要複寫哪些部份，覆寫的範圍越廣，資料被救回來的可能性當然越低，通常只要使用預設值就可以了。</p>
+<p><span style="text-decoration: underline;">步驟三</span></p>
+<p><img src="../../images/081215/03.jpg" border="0" hspace="5" vspace="5" width="288" height="214" align="absBottom" /></p>
+<p>此時會出現設定的視窗，根據自己的需要輸入想要的次數即可。修改完畢後按一下 OK。</p>
+<p><br /><span style="text-decoration: underline;">步驟四</span></p>
+<p><img src="../../images/081215/04.jpg" border="0" hspace="5" vspace="5" width="481" height="359" align="absBottom" /></p>
+<p>點選 Unused Disk Space 標籤，這裡就可以設定針對磁碟抹除的設定。大家或許會發現，這裡講的只是抹除磁碟未使用的空間，如果要抹除整個磁碟呢？別急，後面的教學 Attila 會講的啦！</p>
+<p>設定好抹除方式，以後只要針對檔案、資料夾或磁碟直接進行抹除的操作就好。接下來，當然就是要來看看怎麼進行抹除作業了！</p>
+<p>開啟 Eraser 之後，大家應該會發現左邊的欄位有三個項目，分別是 On-Demand、Scheduler 和 Explorer，On-Demand 是當下立刻執行抹除，Scheduler 是排程抹除，Explorer 則是以 Shell Extension 的方式，可在 Eraser 內使用 Windows 的檔案總管，方便直接把檔案直接找出來進行抹除，不必另外開啟檔案總管。</p>
+<p>這三者的用法各有其時機點，也各有其基本的使用方式，底下我們就開始一個個來說明吧！</p>
+<p><strong>抹除資料的基本功 1：On-Demand</strong></p>
+<p><span style="text-decoration: underline;">步驟一</span></p>
+<p><img src="../../images/081215/05.jpg" border="0" hspace="5" vspace="5" width="768" height="530" align="absBottom" /></p>
+<p>開起 Eraser 後，可以在標題列上看到目前使用的是那一項功能，通常一進來就是 On-Demand。接著，按一下工具列上的 New Task（新任務）。</p>
+<p><span style="text-decoration: underline;">步驟二</span></p>
+<p><img src="../../images/081215/06.jpg" border="0" hspace="5" vspace="5" width="344" height="402" align="absBottom" /></p>
+<p>此時會出現 Task Properties（任務屬性）選單，可選擇要抹除的是磁碟、資料夾或檔案，這裡的範例是點選 Files in folder（資料夾中的檔案），也就是要把整個資料夾內的檔案全數抹除。按一下右邊的按鈕，就可以選擇要抹除的資料夾。</p>
+<p><br /><span style="text-decoration: underline;">步驟三</span></p>
+<p><img src="../../images/081215/07.jpg" border="0" hspace="5" vspace="5" width="407" height="399" align="absBottom" /></p>
+<p>選擇資料夾的視窗和檔案總管差不多，在此選擇想要抹除的資料夾後，按一下 OK。</p>
+<p><br /><span style="text-decoration: underline;">步驟四</span></p>
+<p><img src="../../images/081215/08.jpg" border="0" hspace="5" vspace="5" width="344" height="402" align="absBottom" /></p>
+<p>如果這個資料夾想要一併抹除，可以在 Files in folder 下方勾選 Remove folder(s)（移除資料夾），若只是要移除該資料夾中的子資料夾，保留母資料夾，那可以再勾選 Only subfolders（只有子資料夾）。</p>
+<p>勾選完畢後，按一下「確定」。</p>
+<p><br /><span style="text-decoration: underline;">步驟五</span></p>
+<p><img src="../../images/081215/09.jpg" border="0" hspace="5" vspace="5" width="763" height="526" align="absBottom" /></p>
+<p>此時右邊欄位的清單內就會出現新加入的任務。在上面按一下滑鼠右鍵，從快顯功能表中點選 Run（執行）。當然，大家不一定要用快顯功能表，也可以點選任務之後，再按工具列上的 Run 按鈕。</p>
+<p><strong>〔補充說明〕</strong></p>
+<p>在快顯功能表中，會看到一個 Delete 的選項，它是用來刪除加入的任務，並不是用來刪除所選擇的檔案。</p>
+<p><br /><span style="text-decoration: underline;">步驟六</span></p>
+<p><img src="../../images/081215/10.jpg" border="0" hspace="5" vspace="5" width="347" height="173" align="absBottom" /></p>
+<p>此時會出現警告和確認視窗，告訴使用者一旦執行抹除任務，該檔案就無法救回來，因此一定要確定這些檔案是真的要毀掉。確定要毀掉的話，就按一下「是」。</p>
+<p><br /><span style="text-decoration: underline;">步驟七</span></p>
+<p><img src="../../images/081215/11.jpg" border="0" hspace="5" vspace="5" width="371" height="248" align="absBottom" /></p>
+<p>這時就會開始進行檔案的抹除。</p>
+<p><br /><span style="text-decoration: underline;">步驟八</span></p>
+<p><img src="../../images/081215/12.jpg" border="0" hspace="5" vspace="5" width="386" height="425" align="absBottom" /></p>
+<p>任務完畢之後，預設會出現抹除結果的報告，告知使用者這次抹除任務的相關資訊。看過之後，按Close關閉這個報告視窗。</p>
+<p>至於要不要存檔？就看大家覺得需不需要留下紀錄囉！Attila 認為一般使用者是不需要啦！企業管理單位可能就需要，畢竟總要留紀錄，讓上級知道有在做事呀！</p>
+<p><strong>〔補充說明〕</strong></p>
+<p><img src="../../images/081215/13.jpg" border="0" hspace="5" vspace="5" width="768" height="530" align="absBottom" /></p>
+<p>增加新任務時，右邊的欄位中有許多項目，如檔名（Name）、檔案大小（Size）、類型（Type）、最後修改時間（Modified）、屬性（Attributes，這裡指的是檔案本身的屬性，如隱藏、唯讀等）等，這些項目針對的是檔案，所以選擇的若是資料夾，部份欄位會空白。</p>
+<p>另外，On-Demand 不是一次只能執行一個任務，可以一次加入許多個，手動一次一個執行，或全部一起來（Run All）。如果加入的任務很多，加上電腦系統的運算能力沒有很強的話，可千萬不要嘗試 Run All，因為它真的是全部一起來！而且不是用批次的方式進行，雖然進行中可以取消，不過那可能要等一「小」段時間後，電腦才會有反應。</p>
+<p>如果希望要依序執行工作，最好使用排程功能（必須搭配相關設定），以便讓電腦進行抹除任務時，還能保有一些效能，如此比較能兼顧其他工作。</p>
+<p><br />抹除資料的基本功2：快顯功能表</p>
+<p>如果已經把 Eraser 的抹除方式都設定好，還有比 On-Demand 更快速簡便的檔案抹除方式，那就是快顯功能表。只要安裝完 Eraser 之後，會自動加在相關的快顯功能表內。</p>
+<p>另外，安裝 Eraser 後的快顯功能表還有一個好東西，就是安全搬移檔案。什麼意思呢？大家都知道，如果把硬碟的檔案搬移到外接的隨身碟上面，真正的處理過程是把檔案從硬碟複製到隨身碟，然後再把原先硬碟內的檔案刪除（更簡單的說，就是從硬碟剪下檔案，然後貼到隨身碟）。這樣子，原來的檔案就是以 Windows 內建的方法刪除而已，利用救援軟體還是可以復原的。但 Eraser 的安全搬移檔案可不同，它在最後的檔案刪除動作中，是以預設的抹除方式加以抹除，讓檔案的搬移不會留下安全漏洞！</p>
+<p>〔以快顯功能表抹除檔案〕</p>
+<p><span style="text-decoration: underline;">步驟一</span></p>
+<p><img src="../../images/081215/14.jpg" border="0" hspace="5" vspace="5" width="768" height="530" align="absBottom" /></p>
+<p>開啟 Eraser 之後，在左邊的欄位中點選 Explorer 後，就會看到和檔案總管相同的東西，只是右邊的欄位是以檔案明細的方式顯示而已（當然也無法改變顯示方式）。</p>
+<p>接著找到想要抹除的檔案，在上面按一下滑鼠右鍵，從快顯功能表上點選 Erase。</p>
+<p><span style="text-decoration: underline;">步驟二</span></p>
+<p><img src="../../images/081215/15.jpg" border="0" hspace="5" vspace="5" width="416" height="136" align="absBottom" /></p>
+<p>這時候會出現一個確認視窗，要使用者先想清楚，是否真的要抹除所選的檔案。</p>
+<p>這個視窗的內容，和 On-Demand 的有些不同，左邊還多了一個 Option（選項）的按鈕。按了 Option 後，就會開啟一開始我們談過的抹除偏好設定視窗，讓我們選擇這次任務需要的抹除方式。</p>
+<p><strong>〔補充說明〕</strong></p>
+<p><img src="../../images/081215/16.jpg" border="0" hspace="5" vspace="5" width="800" height="596" align="absBottom" /></p>
+<p>其實，我們只要開啟檔案總管，一樣可以使用快顯功能表的 Erase 功能，不一定要使用 Eraser 內的 Explorer。</p>
+<p><br /><strong>〔安全移動檔案〕</strong></p>
+<p><span style="text-decoration: underline;">步驟一</span></p>
+<p><img src="../../images/081215/17.jpg" border="0" hspace="5" vspace="5" width="768" height="530" align="absBottom" /></p>
+<p>和前面一樣，開啟 Eraser 的 Explorer 或檔案總管，在想移動的檔案上按滑鼠右鍵，點選Eraser Secure Move（Eraser 安全搬移）。</p>
+<p><br /><span style="text-decoration: underline;">步驟二</span></p>
+<p><img src="../../images/081215/18.jpg" border="0" hspace="5" vspace="5" width="326" height="300" align="absBottom" /></p>
+<p>選擇目的地磁碟或資料夾後，按一下確定。</p>
+<p><br /><span style="text-decoration: underline;">步驟三</span></p>
+<p><img src="../../images/081215/19.jpg" border="0" hspace="5" vspace="5" width="416" height="136" align="absBottom" /></p>
+<p>此時會出現確認視窗，按一下 Yes，就會先把檔案複製到目的地，然後對原來的檔案加以抹除，完成後一樣會出現結果報告。</p>
+<p>抹除資料的基本功 3：資源回收筒</p>
+<p>如果想要更單純化自己的抹除工作，那就是把不要的檔案全丟到資源回收筒，然後利用快顯功能表直接全抹除！</p>
+<p>不過這樣子的作法和資源回收筒的一個用意不符：迅速找回誤殺的檔案。這一點，可得請大家先想清楚，自己是否有從資源回收筒找回檔案的習慣囉！</p>
+<p><span style="text-decoration: underline;">步驟一</span></p>
+<p><img src="../../images/081215/20.jpg" border="0" hspace="5" vspace="5" width="341" height="306" align="absBottom" /></p>
+<p>在資源回收筒上按一下滑鼠右鍵，在選單中可以選擇要抹除的方式，直接點選自己想用的方式即可。</p>
+<p><span style="text-decoration: underline;">步驟二</span></p>
+<p><img src="../../images/081215/21.jpg" border="0" hspace="5" vspace="5" width="416" height="136" align="absBottom" /></p>
+<p>此時會出現確認的對話視窗，真要抹除資源回收筒內的檔案，按一下 Yes，就會以上一步驟所選定的方式進行抹除。</p>
+<p>抹除資料的基本功 4：抹除未使用的磁碟空間</p>
+<p>Eraser 對於整個磁碟的抹除，只是針對未使用的空間，並不會把現有的檔案抹除掉。為何要提供這樣的方法呢？因為以前刪除或移動檔案時，或許沒有使用有效的抹除方式，為避免這些還留在磁碟內的可被救援檔案，洩漏了重要機密，此時就有必要使用這個功能來加以防範。</p>
+<p>問題來了，如果是要把整個硬碟抹除乾淨呢？該不會要採用 On-Demand 或 Scheduler 把現存的檔案抹除，然後再來個抹除未使用的磁碟空間吧？當然不是！我們只要用檔案總管，把檔案全部刪除掉，然後針對整個磁碟進行抹除就可以囉！</p>
+<p>不過有一點要特別注意，如果要抹除的是系統磁碟（如 C:），最好把這顆硬碟外接到其他電腦或使用開機片另行開機，以文字命令的方式來進行，否則很容易因為使用者權限、作業系統本身的保護功能而失敗。</p>
+<p><br /><span style="text-decoration: underline;">步驟一</span></p>
+<p><img src="../../images/081215/22.jpg" border="0" hspace="5" vspace="5" width="768" height="530" align="absBottom" /></p>
+<p>在 On-Demand 內，按一下工具列的 New Task，在 Unused Disk Space 的項目中，可以選擇要抹除的磁碟。在上面的圖中，大家可以看到有個 Local Hared Drives 的項目，它的意思是安裝在電腦中的硬碟，不是被分割的磁碟。以 Attila 的電腦為例，我只安裝一顆硬碟，卻分割成兩個磁碟，如果不想費心一個一個磁碟進行抹除，想要一次把整個硬碟抹除乾淨，那就可以選 Local Hared Drives。</p>
+<p><br /><span style="text-decoration: underline;">步驟二</span></p>
+<p><img src="../../images/081215/23.jpg" border="0" hspace="5" vspace="5" width="768" height="530" align="absBottom" /></p>
+<p>點選新加入的任務後，在工具列上按一下 Run 按鈕。</p>
+<p><br /><span style="text-decoration: underline;">步驟三</span></p>
+<p><img src="../../images/081215/24.jpg" border="0" hspace="5" vspace="5" width="347" height="173" align="absBottom" /></p>
+<p>一樣會出現確認是否要抹除的視窗，按一下「是」。</p>
+<p><br /><span style="text-decoration: underline;">步驟四</span></p>
+<p><img src="../../images/081215/25.jpg" border="0" hspace="5" vspace="5" width="371" height="248" align="absBottom" /></p>
+<p>這時候會開始進行抹除作業。</p>
+<p><br /><span style="text-decoration: underline;">步驟五</span></p>
+<p><img src="../../images/081215/26.jpg" border="0" hspace="5" vspace="5" width="386" height="425" align="absBottom" /></p>
+<p>抹除完畢後，一樣會出現抹除結果的報告。在上面的圖中，大家應該會發現底下的 Failures 出現了錯誤和失敗的檔案清單，這是因為 Attila 在抹除的過程中，仍舊在隨身碟存取檔案的緣故。在此是要順便告訴大家，進行磁碟抹除工作時，不要有任何程式對該磁碟進行任何的存取動作，否則就會出現部份檔案抹除失敗的現象喔！</p>
+<p><strong>〔補充說明〕</strong></p>
+<p><img src="../../images/081215/27.jpg" border="0" hspace="5" vspace="5" width="800" height="600" align="absBottom" /></p>
+<p>想要抹除磁碟，一樣可從檔案總管內進行。只要在想抹除的磁碟上按右鍵，點選 Erase Unused Space 就可以了。</p>
+<p>（下期待續）</p>
+			<!-- Show relate article -->
+		<br><br><h4>您也許有興趣閱讀以下文章:</h4><ul><li><a href='../../foss-programs/1928.html'>把檔案抹除乾淨的Eraser （下）</a> - <span class='date-posted'>2008-12-24</span></li></ul>		<!-- end -->
+		<div class="article_note">
+		<!-- Add tags use metakey, and show OSSF Newsletter tag: OSSFNL+NUM-->
+		<br><br> <hr style='border: 1px dashed #D2DADB;'><b>自由軟體鑄造場電子報&nbsp;:</b>&nbsp;<a href='../../previous-issue%3Ftask=view&amp;id=445.html'>第 117 期 從MovableType與XMind談開放源碼商業模式</a><br>				<!-- End -->
+					<br>
+					<b>分類: </b><a href="../foss-programs.html">				源碼秘技					</a>				</div>
+			 <!-- AddThis Button BEGIN ID 3001 is the front page article -->
+     			<br><br>
+       <div class="addthis_toolbox addthis_default_style addthis_32x32_style">
+       <a class="addthis_button_preferred_1"></a>
+       <a class="addthis_button_preferred_2"></a>
+       <a class="addthis_button_preferred_3"></a>
+       <a class="addthis_button_preferred_4"></a>
+       <a class="addthis_button_compact"></a>
+       <a class="addthis_counter addthis_bubble_style"></a>
+       </div>
+       <script type="text/javascript">var addthis_config = {"data_track_clickback":true};</script>
+       <script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js#pubid=openfoundry"></script>
+       <!-- AddThis Button END -->
+     <br>
+		<div class="totop" ><a class="rt-totop" href="1861-eraser-.html#" style="outline: medium none;">↑ Top</a></div>
+            <!-- AddThis Button END -->
+
+			</div>
+</div>
+
+		                            </div>
+									<div class="clear"></div>
+								</div>
+								<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+							</div>
+							</div>
+                                                    </div>
+                                            </div>
+                                <div class="rt-grid-3 rt-pull-9">
+                <div id="rt-sidebar-a">
+                                    <div class="square4">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<ul class="menu"><li class="item56"><a href="../previous-issue.html"><span>電子報總覽</span></a></li><li class="item55"><a href="../about-newsletter.html"><span>關於本報</span></a></li></ul>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<ul class="menu"><li class="item115"><a href="../foss-news.html"><span>源碼新聞</span></a></li><li class="item141"><a href="../case-job.html"><span>接案 / 工作</span></a></li></ul>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+        	                <div class="square1">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-title"><h2 class="title">專欄總覽</h2></div>
+						<div class="clear"></div>
+		                						<div class="module-content">
+		                	<ul class="menu"><li class="item37"><a href="../tech-column.html"><span>技術專欄</span></a></li><li id="current" class="active item40"><a href="../foss-programs.html"><span>源碼秘技</span></a></li><li class="item35"><a href="../legal-article-.html"><span>法律專欄</span></a></li><li class="item154"><a href="../foss-forum.html"><span>自由專欄</span></a></li><li class="item162"><a href="../enterprise-application.html"><span>企業應用</span></a></li><li class="item44"><a href="../foss-projects.html"><span>源碼專案</span></a></li></ul>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		                <div class="square1">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<p style="text-align: center;"><a href="../../news%3Fformat=feed&amp;type=rss" target="_black"><img src="../../images/M_images/news-rss-feed.png" border="0" /></a><br /><a href="https://www.openfoundry.org/rss-feed/Newsletter" target="_black"><img src="../../images/M_images/newsletter-rss-feed.png" border="0" /></a></p>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		
+                </div>
+            </div>
+
+                    <div class="clear"></div>
+                </div>
+            </div>
+																													</div>
+										<div id="rt-copyright">
+						<div class="rt-grid-12 rt-alpha rt-omega">
+                        <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<div id="desktop-mobile-version-switch"><span id="mobile-version" class="version-switch"><a href="1861-eraser-.html#">行動版</a></span></div>
+自由軟體鑄造場 製作 最佳瀏覽狀態：IE7或Firefox2.0以上 (建議使用Firefox) ‧ 解析度1024*768 <br /> <strong>E-Mail</strong>：<a href="mailto:contact@openfoundry.org">contact@openfoundry.org</a> <strong>Address</strong>：台北市南港區研究院路2段128號 中央研究院資訊科學研究所 . <a href="../../privacy-policy.html">隱私權條款</a>. <a href="../../terms-of-use.html">使用條款</a><span style="position: relative; top: 8px; margin-top: -8px;"> <a href="../../about/8101.html"><img src="../../images/M_images/rss-feed-all.png" border="0" /></a></span>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+        	
+</div>
+						<div class="clear"></div>
+					</div>
+					<div class="rt-footer-bottom-wrap"><div class="rt-footer-bottom"><div class="rt-footer-bottom2"><div class="rt-footer-bottom3"></div></div></div></div>
+									</div></div></div>
+				<div class="rt-surround-bottom"><div class="rt-surround-bottom2"><div class="rt-surround-bottom3"></div></div></div>
+							</div>
+		</div>
+		<!--
+		<script id="aptureScript">
+						(function (){var a=document.createElement("script");a.defer="true";a.src="http://www.apture.com/js/apture.js?siteToken=vsJttrn";document.getElementsByTagName("head")[0].appendChild(a);})();
+     </script>
+-->
+
+<!-- Piwik -->
+<!-- 			<script type="text/javascript">
+			  var _paq = _paq || [];
+		  _paq.push(["trackPageView"]);
+		  _paq.push(["enableLinkTracking"]);
+
+		    (function() {
+			        var u=(("https:" == document.location.protocol) ? "https" : "https") + "://www.openfoundry.org/piwik/";
+				    _paq.push(["setTrackerUrl", u+"piwik.php"]);
+				    _paq.push(["setSiteId", "1"]);
+				        var d=document, g=d.createElement("script"), s=d.getElementsByTagName("script")[0]; g.type="text/javascript";
+				        g.defer=true; g.async=true; g.src=u+"piwik.js"; s.parentNode.insertBefore(g,s);
+					  })();
+		  </script> -->
+<!-- End Piwik Code -->
+	</body>
+</html>

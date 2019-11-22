@@ -1,0 +1,463 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="zh-tw" lang="zh-tw" >
+<head>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<link rel="shortcut icon" href="images/favicon.ico" />
+	  <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+  <meta name="robots" content="index, follow" />
+  <meta name="keywords" content="OSSFNL709" />
+  <meta name="title" content="GoAccess，一個 Apache Log 的程式分析" />
+  <meta name="description" content=" 官網：https://goaccess.prosof tcorp.com/ 下 載位址：https://ncu.dl.sourceforge.n et /project/go access/0.4.1/goaccess-0.4 . 1.tar.gz (11 5KB)  簡介  如果因為任何理由，在 Linux 主機上要進行網頁伺服器的架設，相信大多數人都會直接選擇使用 Apache" />
+  <meta name="generator" content="" />
+  <title>GoAccess，一個 Apache Log 的程式分析 - OpenFoundry</title>
+  <link href="favicon.ico" rel="shortcut icon" type="image/x-icon" />
+  <link rel="stylesheet" href="components/com_jcomments/tpl/default/style.css%3Fv=10.css" type="text/css" />
+  <link rel="stylesheet" href="components/com_gantry/css/gantry.css" type="text/css" />
+  <link rel="stylesheet" href="components/com_gantry/css/grid-12.css" type="text/css" />
+  <link rel="stylesheet" href="components/com_gantry/css/joomla.css" type="text/css" />
+  <link rel="stylesheet" href="templates/rt_quantive_j15/css/joomla.css" type="text/css" />
+  <link rel="stylesheet" href="templates/rt_quantive_j15/css/style1.css" type="text/css" />
+  <link rel="stylesheet" href="templates/rt_quantive_j15/css/light-body.css" type="text/css" />
+  <link rel="stylesheet" href="templates/rt_quantive_j15/css/demo-styles.css" type="text/css" />
+  <link rel="stylesheet" href="templates/rt_quantive_j15/css/template.css" type="text/css" />
+  <link rel="stylesheet" href="templates/rt_quantive_j15/css/typography.css" type="text/css" />
+  <link rel="stylesheet" href="templates/rt_quantive_j15/css/fusionmenu.css" type="text/css" />
+  <style type="text/css">
+    <!--
+#rt-main-surround ul.menu li.active > a, #rt-main-surround ul.menu li.active > .separator, #rt-main-surround ul.menu li.active > .item, #rt-main-surround .square4 ul.menu li:hover > a, #rt-main-surround .square4 ul.menu li:hover > .item, #rt-main-surround .square4 ul.menu li:hover > .separator, .roktabs-links ul li.active span {color:#0088B5;}
+a, #rt-main-surround ul.menu a:hover, #rt-main-surround ul.menu .separator:hover, #rt-main-surround ul.menu .item:hover {color:#0088B5;}
+    -->
+  </style>
+  <script type="text/javascript" src="components/com_jcomments/js/jcomments-v2.1.js%3Fv=2"></script>
+  <script type="text/javascript" src="components/com_jcomments/libraries/joomlatune/ajax.js"></script>
+  <script type="text/javascript" src="media/system/js/mootools.js"></script>
+  <script type="text/javascript" src="media/system/js/caption.js"></script>
+  <script type="text/javascript" src="components/com_gantry/js/gantry-buildspans.js"></script>
+  <script type="text/javascript" src="components/com_gantry/js/gantry-inputs.js"></script>
+  <script type="text/javascript" src="templates/rt_quantive_j15/js/jquery.cookie.js"></script>
+  <script type="text/javascript" src="modules/mod_roknavmenu/themes/fusion/js/fusion.js"></script>
+  <script type="text/javascript" src="modules/mod_ofssologin/js/ofssologin.js"></script>
+  <script type="text/javascript">
+
+			window.addEvent('domready', function() {
+				var modules = ['rt-block'];
+				var header = ['h3','h2','h1'];
+				GantryBuildSpans(modules, header);
+			});
+		InputsExclusion.push('.content_vote','#rt-popup')
+		        window.addEvent('load', function() {
+					new Fusion('ul.menutop', {
+						pill: 0,
+						effect: 'slide and fade',
+						opacity: 1,
+						hideDelay: 500,
+						centered: 0,
+						tweakInitial: {'x': -2, 'y': 0},
+        				tweakSubsequent: {'x': 0, 'y': -14},
+						menuFx: {duration: 200, transition: Fx.Transitions.Sine.easeOut},
+						pillFx: {duration: 400, transition: Fx.Transitions.Back.easeOut}
+					});
+	            });
+  </script>
+<!-- <script type="text/javascript" src="/sso/javascripts/langsync.js"></script> -->
+<!-- <script src="/templates/rt_quantive_j15/js/ossf.js"></script> -->
+<script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-4136519-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
+</head>
+	<body  class="backgroundlevel-low backgroundstyle-style8 bodylevel-med bodystyle-light cssstyle-style1 logostyle-dark font-family-helvetica font-size-is-default menu-type-fusionmenu col12 ">
+		<div id="rt-main-background">
+			<div class="rt-container">
+																<div id="rt-header">
+					<div class="rt-grid-7 rt-alpha">
+    			<div class="rt-block">
+    	    	<a href="index.html" id="rt-logo"></a>
+    		</div>
+	    
+</div>
+<div class="rt-grid-5 rt-omega">
+                    <div class="square9">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<div class="ofssologin_square9"><a href="index.html">登入</a>&nbsp;&nbsp|&nbsp;&nbsp;<span><a href="en/news/8228%3Ftask=view.html" ><span lang="en" xml:lang="en">English</span></a></li></ul></span><!--Joom!fish V2.0.4 (Lightning)-->
+<!-- &copy; 2003-2009 Think Network, released under the GPL. -->
+<!-- More information: at http://www.joomfish.net -->
+<div class="ofssologin_search_square9">
+  <form id="of_search" action="https://www.openfoundry.org/of/openfoundry/search" method="get" onsubmit="of_search(); return false;">
+    <select id="of_search_type">
+      <option value="Projects"> 專案 </option>
+      <option value="Content"> 文章 </option>
+      <option value="People"> 人才 </option>
+    </select>
+    <input id="query" name="query" id="mod_search_searchword" maxlength="50" alt="search" class="inputbox" type="text" size="28" value="search..."  onblur="if(this.value=='') this.value='search...';" onfocus="if(this.value=='search...') this.value='';" />
+    <input type="hidden" name="commit" value="search" />
+  </form>
+</div></div>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		
+</div>
+					<div class="clear"></div>
+				</div>
+																<div id="rt-navigation"><div id="rt-navigation2"><div id="rt-navigation3">
+					
+<div class="nopill">
+	<ul class="menutop level1 " >
+						<li class="item1 root" >
+					<a class="orphan item bullet" href="index.html"  >
+				<span>
+			    				首頁				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item32 root" >
+					<a class="orphan item bullet" href="archived.html"  >
+				<span>
+			    				專案				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item186 root" >
+					<a class="orphan item bullet" href="tw/community.html"  >
+				<span>
+			    				Who&#039;s Who				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item4 active root" >
+					<a class="orphan item bullet" href="tw/news.html"  >
+				<span>
+			    				新聞				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item5 root" >
+					<a class="orphan item bullet" href="tw/law-and-licensing.html"  >
+				<span>
+			    				法律源地				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item3 root" >
+					<a class="orphan item bullet" href="tw/activities.html"  >
+				<span>
+			    				活動				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item2 root" >
+					<a class="orphan item bullet" href="tw/resourcecatalog%3FName=Value.html"  >
+				<span>
+			    				資源表列				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item45 root" >
+					<a class="orphan item bullet" href="tw/about.html"  >
+				<span>
+			    				關於				   
+				</span>
+			</a>
+			
+			
+	</li>	
+				</ul>
+</div>
+
+				    <div class="clear"></div>
+				</div></div></div>
+								<div class="rt-surround"><div class="rt-surround2"><div class="rt-surround3">
+										<div id="rt-showcase-section">
+												<div id="rt-showcase">
+							<div class="rt-grid-12 rt-alpha rt-omega">
+    		<div class="clear"></div>
+		
+		
+                <div class="close-note">
+                    <div class="rt-block">
+               					<div class="module-content">
+                	<div style="font-size:medium; background-image:linear-gradient(120deg,#159957,#4298b2);color:white;padding:20px;margin:-10px -18px;">感謝您對「自由軟體鑄造場」的支持與愛護，十多年來「自由軟體鑄造場」受中央研究院支持，並在資訊科學研究所以及資訊科技創新研究中心執行，現已完成階段性的任務。 本網站預計持續維運至 2021年底，網站內容基本上不會再更動。<br />也紀念我們永遠的朋友 李士傑先生（Shih-Chieh Ilya Li）。</div>				</div>
+            </div>
+                </div>
+		
+</div>
+							<div class="clear"></div>
+						</div>
+																	</div>
+															<div id="rt-main-surround">
+												<div id="rt-breadcrumbs">
+								<div class="rt-breadcrumb-surround">
+		<a href="index.html" id="breadcrumbs-home"></a>
+		<span class="breadcrumbs pathway">
+<span class="no-link">新聞</span></span>
+	</div>
+	
+							<div class="clear"></div>
+						</div>
+																							              <div id="rt-main" class="sa3-mb9">
+                <div class="rt-main-inner">
+                    <div class="rt-grid-9 rt-push-3">
+                                                <div class="rt-block">
+                            							<div class="square1">
+							<div class="rt-module-surround">
+								<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+								<div class="rt-module-inner">
+		                            <div id="rt-mainbody">
+		                                
+<div class="rt-joomla ">
+	<div class="rt-article">
+		
+				<div class="rt-headline"><h1 class="rt-article-title">GoAccess，一個 Apache Log 的程式分析</h1>		</div>
+		<div class="clear"></div>
+		
+		
+		
+				<div class="rt-articleinfo">
+						<div class="rt-article-icons">
+								<a href="tw/news/8228-goaccess-apache-log-%3Ftmpl=component&amp;print=1&amp;page=.html" title="列印" onclick="window.open(this.href,'win2','status=no,toolbar=no,scrollbars=yes,titlebar=no,menubar=no,resizable=yes,width=640,height=480,directories=no,location=no'); return false;" rel="nofollow"><span class="icon print"></span></a>																</div>
+			
+			<span class="rt-date-posted">
+						建立日期			2011-01-05 21:40						&nbsp;&nbsp;&nbsp;&nbsp;						最近更新在 2011-01-21 18:23						</span>
+
+						<span class="rt-author">
+				作者是 翁卓立			</span>
+				
+					</div>
+		
+		
+		<ul>
+<li>官網：<a href="https://goaccess.prosoftcorp.com/" target="_blank">https://goaccess.prosoftcorp.com/</a></li>
+</ul>
+<ul>
+<li>下載位址：<a href="https://ncu.dl.sourceforge.net/project/goaccess/0.4.1/goaccess-0.4.1.tar.gz" target="_blank">https://ncu.dl.sourceforge.net/project/goaccess/0.4.1/goaccess-0.4.1.tar.gz</a> (115KB)</li>
+</ul>
+<h3><strong>簡介</strong></h3>
+如果因為任何理由，在 Linux 主機上要進行網頁伺服器的架設，相信大多數人都會直接選擇使用 Apache 這套網頁伺服器軟體。一方面這套網頁伺服器軟體的佔有率高，使用上比較穩定而不容易產生意料之外的問題；另一方面則是網路上可以搜尋到的相關文件非常多，甚至 Apache 官方網站中便有一個非常完整的文件系統，可以讓系統管理員在需要時進行查詢。<br /> 
+
+<br />而在架設網頁伺服器之後，接下來除了要建立網站的內容以外，通常大多數的系統管理員也會隨即安裝一些網站流量的統計工具。因為 Apache 本身雖然有非常完善的記錄檔功能，可以將伺服器發生的任何事件一一記載在記錄檔之中，但記錄檔畢竟不是相當容易直接由人類進行判讀的一種資料，有些時候很難直接從記錄檔所提供的資訊判斷出當時所發生的事件為何。再加上網站運作一段時間以後，記錄檔的內容與資料量都會大幅攀升，如果要在數量如此龐大的檔案中搜尋特定資料，有時候會給人大海撈針的感覺。透過網站流量的統計工具輔助，則可以先將記錄檔的內容進行分析，再依照事件相關的屬性加以分門別類，即可使用較為容易被人類閱讀的方式呈現網站流量的統計資料。<br /><br />網站記錄檔的分析與統計工具可以輕易的在網路上找到許多相關的軟體，而這些軟體絕大多數都是以網頁方式呈現。或許是這些軟體的作者認為，既然已經架設了網頁伺服器，表示使用者一定有網頁空間可以放置這些統計後所產生的報表網頁。雖然這樣的想法並沒有錯，但是對於只想在第一時間查到網站相關的統計資料者而言，這樣的作法多少有些麻煩。因為這意味著使用者必須先找到一部可以執行瀏覽器的電腦，再利用此電腦瀏覽網站流量的統計資料。或許現在大多數的電腦都是採用圖形介面，所以問題不大。但如果使用者想要快速查詢到相關的統計資料，或是目前所使用的電腦只有文字終端機介面（例如 Ubuntu 的伺服器版本，預設情況下並未安裝圖形操作介面），便很難使用瀏覽器前往查詢網站統計資料的報表。<br /><br />這樣的問題並非毫無解決之道，因為除了採用網頁方式呈現的統計報表之外，也有專門針對文字終端機介面所設計的網頁記錄檔分析軟體，例如本文所要介紹的 GoAccess 即為最好的範例之一。GoAccess 是一套採用文字終端機介面所設計的 Apache 記錄檔分析程式，本身利用 ncurses 程式庫進行開發，因此雖然使用的是文字介面，但在畫面呈現上仍然具有相當水準。由於 GoAccess 是以即時方式進行記錄檔的分析，並將最新的資料直接呈現在畫面上，因此如果系統管理員需要即時得知目前網頁伺服器相關的運作統計資料，便可以透過此工具程式進行查詢。而不必像其他統計軟體一樣，因為是採用分析記錄檔再產生網頁資訊的運作模式，因此如果要取得最新的資料，多半需要重新執行一次統計軟體，以便產生最新的報表。<br /><br /><a href="images/110111/GoAccess/goaccess_01.png" target="_blank"><img src="images/110111/GoAccess/goaccess_01.png" border="0" width="500" /></a><br />▲ 圖1  GoAccess 的執行畫面<br /><br />
+<h3><strong>安裝 GoAccess 的注意事項</strong></h3>
+安裝 GoAccess 並不是一件非常困難的工作，對於已經非常熟練軟體安裝相關流程的系統管理員而言，只要注意幾個小細節便可以直接完成安裝動作。如果要直接以原始檔編譯的方式進行 GoAccess 的安裝，則必須先行檢查系統中是否有 GoAccess 所需要的程式庫套件。安裝 GoAccess 之前，系統上至少需要先完成 ncurses、GLib2 這二套程式庫的安裝，其中 GLib2 的版本只要大於 2.0.0 版即可。如果希望 GoAccess 可以直接從來源 IP 位址取得對方的地理位置，則可以安裝 GeoIP 程式庫。此程式庫並非必要安裝，因此如果對 GeoIP 的功能不感興趣，可以不需要安裝。<br /><br />安裝上述程式庫可以直接從原始檔編譯著手，但如果使用的 Linux 發行版本本身有套件管理機制，或許從套件管理系統中直接進行安裝會是比較容易的作法。以 Debian、Ubuntu 為例，直接使用 APT 安裝 libncurses5-dev、libglib2.0-dev 與 libgeoip-dev 這三個套件，即可同時完成 ncurses、GLib2 與 GeoIP 程式庫的安裝動作。如果使用的是 Red Hat、Fedora 或是 CentOS 這些發行版本，則可以利用 YUM 安裝 ncurses-devel、glib2-devel 與 GeoIP* （包含 GeoIP-data、GeoIP-devel）等套件。<br /><br />安裝 GoAccess 時，一樣也可以使用套件管理的方式進行，如此一來可以減少一些等待編譯、設定的時間浪費。以 Debian  發行版本為例，在「/etc/apt/sources.list」之中加入一行「deb https://ftp.de.debian.org/debian sid main」，接著依序執行「sudo apt-get update」、「sudo apt-get install goaccess」即可進行安裝。Ubuntu 也可以使用相同的安裝方式，只是「/etc/apt/sources.list」檔案中要加入的網址必須變更為「deb https://ubuntu.mirror.cambrium.nl/ubuntu/ natty main universe」。至於 Red Hat、Fedora 等版本所使用的 RPM 格式，目前 GoAccess 的官方網站並未提供 RPM 格式，但是在網路上可以找到網友自行建立的 RPM 套件。例如「<a href="https://marco-ziesing.de/archives/101-goaccess-fur-fedora-13.html" target="_blank">https://marco-ziesing.de/archives/101-goaccess-fur-fedora-13.html</a>」這個網頁提供了一套 0.3.3 版的 GoAccess RPM 檔，如果不想從原始碼重新編譯，直接使用此 RPM 套件檔也是一個選擇。如果讀者有使用 Git 的習慣，亦可直接使用「git clone git://goaccess.git.sourceforge.net/gitroot/goaccess/goaccess」指令取得最新版本的 GoAccess。<br /><br />
+<h3><strong>GoAccess 的特色</strong></h3>
+GoAccess 與其他的記錄檔分析軟體最大的不同之處，在於 GoAccess 只能支援 Apache 的記錄檔格式。由於許多網頁伺服器（甚至是其他種類的伺服器軟體）也會使用 Apache 伺服器的記錄檔格式，因此並不能就此認定 GoAccess 只能處理 Apache 伺服器的記錄檔。只是 Apache 畢竟是較為知名的網頁伺服器軟體，因此 GoAccess 才會強調本身是一套 Apache 記錄檔的分析軟體。但如此一來，卻會造成部份使用者的誤解，誤以為 GoAccess 只能在網頁伺服器使用 Apache 的情況下使用。<br /><br />在處理記錄檔的時候，GoAccess 會先進行記錄檔的解析動作，接下來才會從這些已經經過解析的資料中收集需要的資訊，並且以文字終端機的介面加以呈現。由於 GoAccess 每一個畫面需要呈現的資訊較多，因此標準的 80 行 24 列的終端機介面，並無法順利執行 GoAccess。一般而言，至少需要將行數調整至 97 行以上，列數調整至 40 列以上，才能執行 GoAccess 進行記錄檔的分析動作。執行 GoAccess 並且收集到相關的資料之後，GoAccess 便會以報表的方式呈現在終端機的畫面之中，讓使用者直接以鍵盤熱鍵的方式進行操作。GoAccess 使用的熱鍵數量並不多，但如果不記得相關的按鍵定義，也可以直接從線上輔助訊息中取得鍵盤的使用方式，並不需要強行記憶相關的熱鍵設定為何。<br /><br /><a href="images/110111/GoAccess/goaccess_02.png" target="_blank"><img src="images/110111/GoAccess/goaccess_02.png" border="0" width="500" style="border: 0;" /></a><br />▲圖2  終端機至少要有 97 行 40 列的解析度，才能執行 GoAccess<br /><br />GoAccess 也是以報表的型式呈現資料統計後的結果，雖然使用的是文字介面，但因為畫面安排得當，所以並不會給人無法找到所需資料或報表的印象。GoAccess 提供的報表項目相當多元化，數量多達十數個，幾乎已經涵蓋了大多數網頁流量分析軟體所會提供的報表類別。統計報表包括基本的統計資訊、頻寬統計、最常前來拜訪的主機名單、最常被存取的檔案、圖片、Flash動畫等等各種資料。而像是參照位址（Referrer URL）、參照主機、訪客主機所使用的作業系統為何，還有當伺服器回應「404 Not Found」訊息時客戶端所使用的網址為何，也會一併被記載下來，這可以協助管理員進行網站的內容檢查，確認網站內容中是否使用了不正確的連結而造成使用者操作錯誤的情況發生。除此之外，客戶端所使用的瀏覽器種類也可以被統計出來，這可以讓網站設計人員了解目前瀏覽器大致的使用潮流，並依據此項統計資訊加以修改網站的設計走向，讓網站可以符合大多數人的使用習慣。而不是只針對某種特定的瀏覽器進行最佳化，其他的瀏覽器則置之不理。<br /><br /><a href="images/110111/GoAccess/goaccess_03.png" target="_blank"><img src="images/110111/GoAccess/goaccess_03.png" border="0" width="500" style="border: 0;" /></a><br />▲圖3  GoAccess 可以針對作業系統或瀏覽器進行統計<br /><br />如果網站已經放置到公開的網路中，一段時間之後勢必會有搜尋引擎的機器人前來擷取資料。如果想查看關於這些搜尋引擎機器人的統計資訊，亦可在 GoAccess 的統計報表中取得相關訊息。由於搜尋引擎的機器人會在收集到資料後，將網站相關的資訊建立在搜尋引擎的資料庫之中，因此在網站運作一定的時間之後，便會開始出現有來訪者是經由搜尋引擎而找到自己網站的情況。如果希望了解大多數人在搜尋引擎是以何種關鍵字查到自己的網站，可以利用 GoAccess 的關鍵字統計報表進行了解。得知網站相關的關鍵字統計資訊，便能依照來訪者的需求，設計更多可能引起來訪者興趣的網頁，以便提高回訪率與停留時間。<br /><br />若系統管理員想得知最常前來存取網頁伺服器的主機位址為何，則可以利用 GoAccess 的主機統計資訊進行查詢。主機統計資訊會依照來源主機前來存取網頁的次數加以排序，讓系統管理員可以很快了解大多數前來存取網站的主機網址為何。如果有異常的存取現象出現，也可以利用此功能進行了解。如果安裝 GoAccess 時有使用 GeoIP 程式庫，甚至還可以查出來源主機的所在位置，這在特定情況下也是相當有用的統計資料。除了這些來源主機相關的資料以外，GoAccess 也可以進行 HTTP 狀態碼的統計，讓系統管理員得知網站最常回應的 HTTP 狀態碼為何。如果發現某一種狀態碼經常出現，亦可進行進一步的查詢，以確認網頁伺服器本身是否有問題發生。<br /><br />雖然 GoAccess 是以文字介面進行設計，但仍然在使用介面上稍微下了一點功夫。如果覺得預設的畫面有些單調，亦可透過切換顏色配置的方式選擇另一種不同的顯示模式。雖然礙於文字介面的因素，導致 GoAccess 無法提供太多的顏色配置方式，但仍然不失為一個可以提供使用者介面一些變化的選擇。只是 GoAccess 畢竟強調的還是本身的分析能力，所以大多數人恐怕對於 GoAccess 是否可以改變顏色配置並不會太過在意。<br /><br /><a href="images/110111/GoAccess/goaccess_04.png" target="_blank"><img src="images/110111/GoAccess/goaccess_04.png" border="0" width="500" style="border: 0;" /></a><br />▲圖4  GoAccess 的顏色配置也可以加以變更，但預設可以選擇的配置項目並不多<br /><br />
+<h3><strong>GoAccess 支援的記錄檔格式</strong></h3>
+Apache 網頁伺服器主要使用二種記錄檔格式，分別是 Common Log Format (CLF) 與 Combined Log Format (ELF)。二者記錄檔的格式稍有差異，也都有一定數量的愛好者。但無論系統管理員採用的是何種記錄檔格式，基本上 GoAccess 都可以進行解譯與分析，不會有任何問題。如果網頁伺服器有設定要以虛擬主機的方式運行，GoAccess 也能正確處理。此外，如果其他網頁伺服器也能支援以 Apache 的記錄檔格式進行事件的記錄動作，理論上 GoAccess 也能加以解讀。例如 GoAccess 的官方網站便提到 Nginx 這種 HTTP 伺服器軟體，如果將記錄檔格式設定為 Apache 的格式，即可使用 GoAccess 作為記錄檔的分析工具。<br /><br />有些記錄檔分析程式可能是因為設計上的考量不周，因此無法處理過大的記錄檔，或是處理到一半會發生問題。但 GoAccess 本身並沒有限制記錄檔的容量上限，基本上只要磁碟空間足以讓網頁伺服器繼續寫入記錄檔的資料，GoAccess 便能持續進行處理。<br />
+<h3><strong>GoAccess 的執行速度</strong></h3>
+由於執行網頁伺服器的主機對於系統效能都非常敏感，尤其是大型網站的使用情況下更是如此，所以記錄檔分析軟體的運行效率，也就成了許多人在採用相關軟體時一個主要的考量重點。根據 GoAccess 官方網站的說法，如果使用 AMD Sempron 2.31GHz 的處理器，搭配 2GB 的系統記憶體，則在開啟 GoAccess 所有功能的情況下，GoAccess 每秒鐘可以處理十萬行的記錄檔資料。如果僅使用預設的功能，則 GoAccess 的處理效率會稍有成長，來到每秒鐘十萬八千行的水準。當然 GoAccess 的運作速度會依照系統硬體的不同而有所增減，一般來說，如果 CPU 的時脈越高、記憶體的容量越大，則 GoAccess 在處理記錄檔的時候，將會有更佳的表現。<br /><br />
+<h3><strong>結語</strong></h3>
+雖然 GoAccess 已經足以應付大多數的網頁記錄檔分析工作，但開發團隊並未停止研發腳步，仍然持續構思可以增加的新功能。例如對於 UTF-8 編碼的更佳支援、可以支援 IPv6 的分析，甚至增加更多執行時的選項，還有讓執行效能更進一步等等。可以想像的是，在不久的將來，GoAccess 在功能上將會更加完善，將來甚至有可能成為所有網頁伺服器管理員必裝的管理工具之一。<br /><br />
+<h3>作者簡介</h3>
+翁卓立<br />逢甲大學資訊工程學系、台灣科技大學電子所畢業，目前擔任韌體研發工作，主要使用 Embedded Linux 進行產品開發。著有「Linux 進化特區：Ubuntu 10.04 從入門到精通」等書。<br /><br />
+			<!-- Show relate article -->
+				<!-- end -->
+		<div class="article_note">
+		<!-- Add tags use metakey, and show OSSF Newsletter tag: OSSFNL+NUM-->
+		<br><br> <hr style='border: 1px dashed #D2DADB;'><b>自由軟體鑄造場電子報&nbsp;:</b>&nbsp;<a href='previous-issue%3Ftask=view&amp;id=709.html'>第 165 期 以 IMSpector 側錄即時通訊軟體 </a><br>				<!-- End -->
+					<br>
+					<b>分類: </b><a href="tw/foss-programs.html">				源碼秘技					</a>				</div>
+			 <!-- AddThis Button BEGIN ID 3001 is the front page article -->
+     			<br><br>
+       <div class="addthis_toolbox addthis_default_style addthis_32x32_style">
+       <a class="addthis_button_preferred_1"></a>
+       <a class="addthis_button_preferred_2"></a>
+       <a class="addthis_button_preferred_3"></a>
+       <a class="addthis_button_preferred_4"></a>
+       <a class="addthis_button_compact"></a>
+       <a class="addthis_counter addthis_bubble_style"></a>
+       </div>
+       <script type="text/javascript">var addthis_config = {"data_track_clickback":true};</script>
+       <script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js#pubid=openfoundry"></script>
+       <!-- AddThis Button END -->
+     <br>
+		<div class="totop" ><a class="rt-totop" href="index.php%3Foption=com_content&amp;task=view&amp;id=8228&amp;Itemid=4%3Bisletter=1.html#" style="outline: medium none;">↑ Top</a></div>
+            <!-- AddThis Button END -->
+
+		<script type="text/javascript">
+var jcomments=new JComments(8228, 'com_content','https://openfoundry.org/index.php?option=com_jcomments&amp;tmpl=component&amp;lang=');
+jcomments.setList('comments-list');
+</script>
+<div id="jc">
+<div id="comments"><h4>評論<a class="refresh" href="index.php%3Foption=com_content&amp;task=view&amp;id=8228&amp;Itemid=4%3Bisletter=1.html#" title="重新整理評論列表" onclick="jcomments.showPage(8228,'com_content',0);return false;">&nbsp;</a></h4>
+<div id="comments-list" class="comments-list">
+        <div class="even" id="comment-item-516"><div class="rbox"><div class="rbox_tr"><div class="rbox_tl"><div class="rbox_t">&nbsp;</div></div></div><div class="rbox_m">
+<div class="comment-avatar"><img src="http://www.gravatar.com/avatar.php?gravatar_id=94cd5cc3e869108e5f087c13d3cab17c&amp;default=https%3A%2F%2Fwww.openfoundry.org%2Fcomponents%2Fcom_jcomments%2Fimages%2Fno_avatar.png" alt="" /></div>
+<div class="comment-box avatar-indent">
+<span class="comments-vote">
+	<span id="comment-vote-holder-516">
+<a href="index.php%3Foption=com_content&amp;task=view&amp;id=8228&amp;Itemid=4%3Bisletter=1.html#" class="vote-good" title="優質的評論" onclick="jcomments.voteComment(516, 1);return false;"></a><a href="index.php%3Foption=com_content&amp;task=view&amp;id=8228&amp;Itemid=4%3Bisletter=1.html#" class="vote-poor" title="差勁的評論" onclick="jcomments.voteComment(516, -1);return false;"></a>
+<span class="vote-none">0</span>
+	</span>
+</span>
+<a class="comment-anchor" href="tw/foss-programs/8228-goaccess-apache-log-.html#comment-516" id="comment-516">#1</a>
+<a class="author-homepage" href="https://chihping.aflypen.com" rel="nofollow" title="面膜哥">面膜哥</a>
+<span class="comment-date">2014-11-26 09:08</span>
+<div class="comment-body" id="comment-body-516">謝謝分享...正在安裝中</div>
+</div><div class="clear"></div>
+</div><div class="rbox_br"><div class="rbox_bl"><div class="rbox_b">&nbsp;</div></div></div></div>
+</div>
+        <div class="odd" id="comment-item-517"><div class="rbox"><div class="rbox_tr"><div class="rbox_tl"><div class="rbox_t">&nbsp;</div></div></div><div class="rbox_m">
+<div class="comment-avatar"><img src="http://www.gravatar.com/avatar.php?gravatar_id=94cd5cc3e869108e5f087c13d3cab17c&amp;default=https%3A%2F%2Fwww.openfoundry.org%2Fcomponents%2Fcom_jcomments%2Fimages%2Fno_avatar.png" alt="" /></div>
+<div class="comment-box avatar-indent">
+<span class="comments-vote">
+	<span id="comment-vote-holder-517">
+<a href="index.php%3Foption=com_content&amp;task=view&amp;id=8228&amp;Itemid=4%3Bisletter=1.html#" class="vote-good" title="優質的評論" onclick="jcomments.voteComment(517, 1);return false;"></a><a href="index.php%3Foption=com_content&amp;task=view&amp;id=8228&amp;Itemid=4%3Bisletter=1.html#" class="vote-poor" title="差勁的評論" onclick="jcomments.voteComment(517, -1);return false;"></a>
+<span class="vote-none">0</span>
+	</span>
+</span>
+<a class="comment-anchor" href="tw/foss-programs/8228-goaccess-apache-log-.html#comment-517" id="comment-517">#2</a>
+<a class="author-homepage" href="https://chihping.aflypen.com" rel="nofollow" title="面膜哥">面膜哥</a>
+<span class="comment-date">2014-11-26 09:12</span>
+<div class="comment-body" id="comment-body-517">-b -s 參數Uknow</div>
+</div><div class="clear"></div>
+</div><div class="rbox_br"><div class="rbox_bl"><div class="rbox_b">&nbsp;</div></div></div></div>
+</div>
+</div>
+<div id="comments-list-footer"><a class="refresh" href="index.php%3Foption=com_content&amp;task=view&amp;id=8228&amp;Itemid=4%3Bisletter=1.html#" title="重新整理評論列表" onclick="jcomments.showPage(8228,'com_content',0);return false;">重新整理評論列表</a></div>
+</div>
+<div id="comments-footer" align="center"><a href="http://www.joomlatune.com" title="JComments" target="_blank">JComments</a></div>
+<script type="text/javascript">
+jcomments.setAntiCache(1,0,0);
+</script> 
+</div>	</div>
+</div>
+
+		                            </div>
+									<div class="clear"></div>
+								</div>
+								<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+							</div>
+							</div>
+                                                    </div>
+                                            </div>
+                                <div class="rt-grid-3 rt-pull-9">
+                <div id="rt-sidebar-a">
+                                    <div class="square4">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<ul class="menu"><li class="item56"><a href="tw/previous-issue.html"><span>電子報總覽</span></a></li><li class="item55"><a href="tw/about-newsletter.html"><span>關於本報</span></a></li></ul>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<ul class="menu"><li class="item115"><a href="tw/foss-news.html"><span>源碼新聞</span></a></li><li class="item141"><a href="tw/case-job.html"><span>接案 / 工作</span></a></li></ul>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+        	                <div class="square1">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-title"><h2 class="title">專欄總覽</h2></div>
+						<div class="clear"></div>
+		                						<div class="module-content">
+		                	<ul class="menu"><li class="item37"><a href="tw/tech-column.html"><span>技術專欄</span></a></li><li class="item40"><a href="tw/foss-programs.html"><span>源碼秘技</span></a></li><li class="item35"><a href="tw/legal-article-.html"><span>法律專欄</span></a></li><li class="item154"><a href="tw/foss-forum.html"><span>自由專欄</span></a></li><li class="item162"><a href="tw/enterprise-application.html"><span>企業應用</span></a></li><li class="item44"><a href="tw/foss-projects.html"><span>源碼專案</span></a></li></ul>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		                <div class="square1">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<p style="text-align: center;"><a href="news%3Fformat=feed&amp;type=rss" target="_black"><img src="images/M_images/news-rss-feed.png" border="0" /></a><br /><a href="https://www.openfoundry.org/rss-feed/Newsletter" target="_black"><img src="images/M_images/newsletter-rss-feed.png" border="0" /></a></p>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		
+                </div>
+            </div>
+
+                    <div class="clear"></div>
+                </div>
+            </div>
+																													</div>
+										<div id="rt-copyright">
+						<div class="rt-grid-12 rt-alpha rt-omega">
+                        <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<div id="desktop-mobile-version-switch"><span id="mobile-version" class="version-switch"><a href="index.php%3Foption=com_content&amp;task=view&amp;id=8228&amp;Itemid=4%3Bisletter=1.html#">行動版</a></span></div>
+自由軟體鑄造場 製作 最佳瀏覽狀態：IE7或Firefox2.0以上 (建議使用Firefox) ‧ 解析度1024*768 <br /> <strong>E-Mail</strong>：<a href="mailto:contact@openfoundry.org">contact@openfoundry.org</a> <strong>Address</strong>：台北市南港區研究院路2段128號 中央研究院資訊科學研究所 . <a href="privacy-policy.html">隱私權條款</a>. <a href="terms-of-use.html">使用條款</a><span style="position: relative; top: 8px; margin-top: -8px;"> <a href="about/8101.html"><img src="images/M_images/rss-feed-all.png" border="0" /></a></span>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+        	
+</div>
+						<div class="clear"></div>
+					</div>
+					<div class="rt-footer-bottom-wrap"><div class="rt-footer-bottom"><div class="rt-footer-bottom2"><div class="rt-footer-bottom3"></div></div></div></div>
+									</div></div></div>
+				<div class="rt-surround-bottom"><div class="rt-surround-bottom2"><div class="rt-surround-bottom3"></div></div></div>
+							</div>
+		</div>
+		<!--
+		<script id="aptureScript">
+						(function (){var a=document.createElement("script");a.defer="true";a.src="http://www.apture.com/js/apture.js?siteToken=vsJttrn";document.getElementsByTagName("head")[0].appendChild(a);})();
+     </script>
+-->
+
+<!-- Piwik -->
+<!-- 			<script type="text/javascript">
+			  var _paq = _paq || [];
+		  _paq.push(["trackPageView"]);
+		  _paq.push(["enableLinkTracking"]);
+
+		    (function() {
+			        var u=(("https:" == document.location.protocol) ? "https" : "https") + "://www.openfoundry.org/piwik/";
+				    _paq.push(["setTrackerUrl", u+"piwik.php"]);
+				    _paq.push(["setSiteId", "1"]);
+				        var d=document, g=d.createElement("script"), s=d.getElementsByTagName("script")[0]; g.type="text/javascript";
+				        g.defer=true; g.async=true; g.src=u+"piwik.js"; s.parentNode.insertBefore(g,s);
+					  })();
+		  </script> -->
+<!-- End Piwik Code -->
+	</body>
+</html>

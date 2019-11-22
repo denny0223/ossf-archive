@@ -1,0 +1,394 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-gb" lang="en-gb" >
+<head>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<link rel="shortcut icon" href="images/favicon.ico" />
+	  <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+  <meta name="robots" content="index, follow" />
+  <meta name="keywords" content="project, component, license difference, 元件, 授權差異, VLC, FFmpeg, Firefox, 授權相容性, 蛇吞象, 牛鷺居, OSSFNL839" />
+  <meta name="title" content="淺析自由開源軟體專案與其個別元件授權條款之差異" />
+  <meta name="description" content="有經驗的開發者在利用自由開源軟體時，會主動了解軟體專案所適用的授權條款，以遵守授權義務規定的方式來應用自由開源軟體。但是，不少開發者可能容易忽略的是，有些自由開源軟體專案裡，還可能包含或附帶與主專案框架不同授權條款的元件，若是應用專案的方式涉及到這些元件的話，便可能會在實際應用上產生完全不同的效果。【個案實例】1、關鍵引擎採用 LGPL-2.1 授權的 GPL-2.0 專案：VLC" />
+  <meta name="generator" content="" />
+  <title>淺析自由開源軟體專案與其個別元件授權條款之差異 - OpenFoundry</title>
+  <link href="favicon.ico" rel="shortcut icon" type="image/x-icon" />
+  <link rel="stylesheet" href="components/com_gantry/css/gantry.css" type="text/css" />
+  <link rel="stylesheet" href="components/com_gantry/css/grid-12.css" type="text/css" />
+  <link rel="stylesheet" href="components/com_gantry/css/joomla.css" type="text/css" />
+  <link rel="stylesheet" href="templates/rt_quantive_j15/css/joomla.css" type="text/css" />
+  <link rel="stylesheet" href="templates/rt_quantive_j15/css/style1.css" type="text/css" />
+  <link rel="stylesheet" href="templates/rt_quantive_j15/css/light-body.css" type="text/css" />
+  <link rel="stylesheet" href="templates/rt_quantive_j15/css/demo-styles.css" type="text/css" />
+  <link rel="stylesheet" href="templates/rt_quantive_j15/css/template.css" type="text/css" />
+  <link rel="stylesheet" href="templates/rt_quantive_j15/css/typography.css" type="text/css" />
+  <link rel="stylesheet" href="templates/rt_quantive_j15/css/fusionmenu.css" type="text/css" />
+  <style type="text/css">
+    <!--
+#rt-main-surround ul.menu li.active > a, #rt-main-surround ul.menu li.active > .separator, #rt-main-surround ul.menu li.active > .item, #rt-main-surround .square4 ul.menu li:hover > a, #rt-main-surround .square4 ul.menu li:hover > .item, #rt-main-surround .square4 ul.menu li:hover > .separator, .roktabs-links ul li.active span {color:#0088B5;}
+a, #rt-main-surround ul.menu a:hover, #rt-main-surround ul.menu .separator:hover, #rt-main-surround ul.menu .item:hover {color:#0088B5;}
+    -->
+  </style>
+  <script type="text/javascript" src="components/com_jcomments/js/jcomments-v2.1.js%3Fv=2"></script>
+  <script type="text/javascript" src="components/com_jcomments/libraries/joomlatune/ajax.js"></script>
+  <script type="text/javascript" src="media/system/js/mootools.js"></script>
+  <script type="text/javascript" src="media/system/js/caption.js"></script>
+  <script type="text/javascript" src="components/com_gantry/js/gantry-buildspans.js"></script>
+  <script type="text/javascript" src="components/com_gantry/js/gantry-inputs.js"></script>
+  <script type="text/javascript" src="templates/rt_quantive_j15/js/jquery.cookie.js"></script>
+  <script type="text/javascript" src="modules/mod_roknavmenu/themes/fusion/js/fusion.js"></script>
+  <script type="text/javascript" src="modules/mod_ofssologin/js/ofssologin.js"></script>
+  <script type="text/javascript">
+
+			window.addEvent('domready', function() {
+				var modules = ['rt-block'];
+				var header = ['h3','h2','h1'];
+				GantryBuildSpans(modules, header);
+			});
+		InputsExclusion.push('.content_vote','#rt-popup')
+		        window.addEvent('load', function() {
+					new Fusion('ul.menutop', {
+						pill: 0,
+						effect: 'slide and fade',
+						opacity: 1,
+						hideDelay: 500,
+						centered: 0,
+						tweakInitial: {'x': -2, 'y': 0},
+        				tweakSubsequent: {'x': 0, 'y': -14},
+						menuFx: {duration: 200, transition: Fx.Transitions.Sine.easeOut},
+						pillFx: {duration: 400, transition: Fx.Transitions.Back.easeOut}
+					});
+	            });
+  </script>
+<!-- <script type="text/javascript" src="/sso/javascripts/langsync.js"></script> -->
+<!-- <script src="/templates/rt_quantive_j15/js/ossf.js"></script> -->
+<script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-4136519-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
+</head>
+	<body  class="backgroundlevel-low backgroundstyle-style8 bodylevel-med bodystyle-light cssstyle-style1 logostyle-dark font-family-helvetica font-size-is-default menu-type-fusionmenu col12 ">
+		<div id="rt-main-background">
+			<div class="rt-container">
+																<div id="rt-header">
+					<div class="rt-grid-7 rt-alpha">
+    			<div class="rt-block">
+    	    	<a href="index.html" id="rt-logo"></a>
+    		</div>
+	    
+</div>
+<div class="rt-grid-5 rt-omega">
+                    <div class="square9">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<div class="ofssologin_square9"><a href="index.html">Login</a>&nbsp;&nbsp|&nbsp;&nbsp;<span><a href="tw/news/9097%3Ftask=view.html" ><span lang="tw" xml:lang="tw">繁體中文</span></a></li></ul></span><!--Joom!fish V2.0.4 (Lightning)-->
+<!-- &copy; 2003-2009 Think Network, released under the GPL. -->
+<!-- More information: at http://www.joomfish.net -->
+<div class="ofssologin_search_square9">
+  <form id="of_search" action="https://www.openfoundry.org/of/openfoundry/search" method="get" onsubmit="of_search(); return false;">
+    <select id="of_search_type">
+      <option value="Projects"> Projects </option>
+      <option value="Content"> Content </option>
+      <option value="People"> People </option>
+    </select>
+    <input id="query" name="query" id="mod_search_searchword" maxlength="50" alt="search" class="inputbox" type="text" size="28" value="search..."  onblur="if(this.value=='') this.value='search...';" onfocus="if(this.value=='search...') this.value='';" />
+    <input type="hidden" name="commit" value="search" />
+  </form>
+</div></div>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		
+</div>
+					<div class="clear"></div>
+				</div>
+																<div id="rt-navigation"><div id="rt-navigation2"><div id="rt-navigation3">
+					
+<div class="nopill">
+	<ul class="menutop level1 " >
+						<li class="item1 root" >
+					<a class="orphan item bullet" href="index.html"  >
+				<span>
+			    				Home				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item32 root" >
+					<a class="orphan item bullet" href="archived.html"  >
+				<span>
+			    				Projects				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item186 root" >
+					<a class="orphan item bullet" href="en/community.html"  >
+				<span>
+			    				Who&#039;s Who				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item4 active root" >
+					<a class="orphan item bullet" href="en/news.html"  >
+				<span>
+			    				News				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item5 root" >
+					<a class="orphan item bullet" href="en/law-and-licensing.html"  >
+				<span>
+			    				Law &amp; Licensing				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item3 root" >
+					<a class="orphan item bullet" href="en/activities.html"  >
+				<span>
+			    				Activities				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item2 root" >
+					<a class="orphan item bullet" href="en/resourcecatalog.html"  >
+				<span>
+			    				Resource Catalog				   
+				</span>
+			</a>
+			
+			
+	</li>	
+							<li class="item45 root" >
+					<a class="orphan item bullet" href="en/about.html"  >
+				<span>
+			    				About				   
+				</span>
+			</a>
+			
+			
+	</li>	
+				</ul>
+</div>
+
+				    <div class="clear"></div>
+				</div></div></div>
+								<div class="rt-surround"><div class="rt-surround2"><div class="rt-surround3">
+										<div id="rt-showcase-section">
+												<div id="rt-showcase">
+							<div class="rt-grid-12 rt-alpha rt-omega">
+    		<div class="clear"></div>
+		
+		
+                <div class="close-note">
+                    <div class="rt-block">
+               					<div class="module-content">
+                	<div style="font-size:medium; background-image:linear-gradient(120deg,#159957,#4298b2);color:white;padding:20px;margin:-10px -18px;">感謝您對「自由軟體鑄造場」的支持與愛護，十多年來「自由軟體鑄造場」受中央研究院支持，並在資訊科學研究所以及資訊科技創新研究中心執行，現已完成階段性的任務。 本網站預計持續維運至 2021年底，網站內容基本上不會再更動。<br />也紀念我們永遠的朋友 李士傑先生（Shih-Chieh Ilya Li）。</div>				</div>
+            </div>
+                </div>
+		
+</div>
+							<div class="clear"></div>
+						</div>
+																	</div>
+															<div id="rt-main-surround">
+												<div id="rt-breadcrumbs">
+								<div class="rt-breadcrumb-surround">
+		<a href="index.html" id="breadcrumbs-home"></a>
+		<span class="breadcrumbs pathway">
+<span class="no-link">News</span></span>
+	</div>
+	
+							<div class="clear"></div>
+						</div>
+																							              <div id="rt-main" class="sa3-mb9">
+                <div class="rt-main-inner">
+                    <div class="rt-grid-9 rt-push-3">
+                                                <div class="rt-block">
+                            							<div class="square1">
+							<div class="rt-module-surround">
+								<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+								<div class="rt-module-inner">
+		                            <div id="rt-mainbody">
+		                                
+<div class="rt-joomla ">
+	<div class="rt-article">
+		
+				<div class="rt-headline"><h1 class="rt-article-title">淺析自由開源軟體專案與其個別元件授權條款之差異</h1>		</div>
+		<div class="clear"></div>
+		
+		
+		
+				<div class="rt-articleinfo">
+						<div class="rt-article-icons">
+								<a href="en/news/9097-the-difference-of-licenses-between-a-foss-project-and-its-components%3Ftmpl=component&amp;print=1&amp;page=.html" title="Print" onclick="window.open(this.href,'win2','status=no,toolbar=no,scrollbars=yes,titlebar=no,menubar=no,resizable=yes,width=640,height=480,directories=no,location=no'); return false;" rel="nofollow"><span class="icon print"></span></a>																</div>
+			
+			<span class="rt-date-posted">
+						 Created at			Monday, 28 October 2013 19:38						&nbsp;&nbsp;&nbsp;&nbsp;						Last Updated on Thursday, 28 November 2013 10:00						</span>
+
+						<span class="rt-author">
+				Written by 葛冬梅			</span>
+				
+					</div>
+		
+		
+		有經驗的開發者在利用自由開源軟體時，會主動了解軟體專案所適用的授權條款，以遵守授權義務規定的方式來應用自由開源軟體。但是，不少開發者可能容易忽略的是，有些自由開源軟體專案裡，還可能包含或附帶與主專案框架不同授權條款的元件，若是應用專案的方式涉及到這些元件的話，便可能會在實際應用上產生完全不同的效果。<br /><br /><strong>【個案實例】</strong><br /><br />1、關鍵引擎採用 LGPL-2.1 授權的 GPL-2.0 專案：VLC <br /><br />這幾年很受到歡迎的多媒體播放器與其框架專案VLC，就是一個很顯著的例子。VLC專案整體採用 GPL-2.0 授權，但是為了讓 VLC 可以持續地被應用在 Linux、Windows、Mac OS X、Android 等不同平台上，該專案的開發者在 2011 年決定，要將 VLC 的關鍵引擎改用 LGPL-2.1 來重新授權（註一），這是因為 LGPL-2.1 對於函式庫的利用方式有著較為彈性的規定，使用者只要在合於授權規定的方式內，透過函式庫既定的介面來與其互動存取資料，則新開發出來的軟體，就可以適用非 LGPL-2.1 條款的方式來授權散布，甚至必要時也有機會採取封閉源碼的方式來授權新軟體。因此當開發者僅利用到 LGPL-2.1 函式庫或程式碼的話，就有著根據 LGPL-2.1 授權規定來開發私有軟體 (proprietary software) 的彈性空間（註二），但若是開發者確實是利用到整個 VLC 專案的程式碼，包括 LGPL-2.1 授權的函式庫，以及 GPL-2.0 的播放框架時，便可能必須一體遵守 GPL-2.0 的規定，因此時 GPL-2.0 授權的程式碼，也一併經引用而成為後續衍生專案不可分割的一部份了。<br /><img style="border: 1px solid #000000;" src="images/131029/licensedifference/lc_201310_1.png" width="600" /><br />▲ 圖1：VLC 在 2011 年 12 月 7 日發佈的新聞稿中說明，核心引擎已經改為 LGPL-2.1 授權（註三）。<br /><br />2、透過 GPL-2.0+ 程式碼最佳化部份功能的 LGPL-2.1 專案：FFmpeg<br /><br />FFmpeg 是個結合多媒體框架與播放解碼器 (codec) 的軟體專案，專案整體採用 LGPL-2.1 及其後版本授權 (LGPL-2.1+)，但是 FFmpeg 在原本標準的預設功能與程式碼之外，還額外提供了可以最佳化部份播放功能的程式碼，但與專案的主要框架不同，這些具有最佳化功能的程式碼是採用 GPL-2.0 及其後版本來授權的 (GPL-2.0+)。因此當開發者利用 FFmpeg 專案的程式碼來開發新軟體時，若是利用到 FFmpeg 的部份僅有其標準預設功能程式碼，新開發出來軟體的授權條款便可以只要考慮 LGPL-2.1 授權方式的拘束性，與利用到同採 LGPL-2.1 的 VLC 核心引擎函式庫一樣，透過既定介面來與其互動者，不需要受到 LGPL-2.1 授權的拘束，不過若是後續開發者，選擇啟動這些以 GPL-2.0 授權的額外程式碼來最佳化 FFmpeg 的衍生專案，就有可能讓整個衍生專案轉為 GPL-2.0+ 授權，影響所及，可能會讓整個新軟體成為 FFmpeg 的衍生程式，新軟體也因此可能必須要採用 GPL-2.0 來授權散布（註四）。<br /> <br /><img style="border: 1px solid #000000;" alt="lc 201310 2" src="images/131029/licensedifference/lc_201310_2.png" height="449" width="600" /><br />▲ 圖2：FFmpeg v. 2.0.2 中的 LICENSE 純文字檔，羅列了所有採用 GPL-2.0+ 授權的源碼檔案。<br /><br />3、融合許多 BSD 類授權條款的 MPL-2.0 專案：Mozilla Firefox<br /><br />Mozilla Firefox（簡稱 Firefox）這款著名的自由開源瀏覽器，整體是採用 MPL-2.0 條款來授權散布，但是若查閱附隨在 Firefox 中的授權資訊時，可以看到許多非 MPL-2.0 授權的程式碼也包含在瀏覽器中，而這些個別元件、檔案的授權條款，幾乎都是屬於義務性規定較為寬鬆的 BSD 類條款（註五）。<br /><br />之所以有這樣現象存在，是因為 MPL-2.0 的授權特性介於 GPL 跟 BSD 之間：原則上，後續開發者修改 MPL-2.0 軟體所產生的衍生檔案，仍然必須採用 MPL-2.0 來授權，但若是一個獨立檔案裡，並未包含任何 MPL-2.0 授權的程式碼，那麼這個檔案就可以採用非 MPL-2.0 的條款來授權，只要其授權條款的具體內容，不會與 MPL-2.0 產生衝突即可。而由於 BSD 類的授權條款並不會與 MPL-2.0 產生衝突，所以我們才會在 Firefox 專案中看到許多 BSD 類條款授權的個別元件與檔案存在其中（註六）。也因此，當開發者擷取 Firefox 程式碼來開發新軟體時，若擷取的剛好僅是這些 BSD 類條款授權的源碼檔案時，那麼在應用上只需要遵守這些 BSD 類條款的授權規定即可，而毋須一體受到 MPL-2.0 所拘束。<br /><br /><img style="border: 1px solid #000000;" alt="lc 201310 3" src="images/131029/licensedifference/lc_201310_3.png" height="351" width="600" /><br />▲ 圖3：Firefox v. 18.0 中的授權資訊頁面，說明 Firefox 包含非 MPL-2.0 授權的元件，這些元件所適用的授權條款數量多達將近 60 款。<br /><br /><strong>【特定授權條款間可以彼此相容】</strong><br /><br />一個自由開源軟體專案中，之所以能夠存在著不同條款授權的元件，最基本的原因就是在於特定授權條款彼此間可以有相容的機制。這些相容的方式主要分為蛇吞象與牛鷺居兩種型態（註七）。<br /><br />1、蛇吞象：嚴格包裹寬鬆的授權相容型態<br /><br />上述 VLC 專案的狀況，就是屬於這種授權相容型態，因為 GPL-2.0 是一份規定相對比較嚴格的授權條款，而 LGPL-2.1 則是相對寬鬆的授權條款，此外，LGPL-2.1 的授權內容與 GPL-2.0 非常相近，並沒有衝突或不相容之處，再加上 LGPL-2.1 與 GPL-2.0 這二份授權條款，本就是有單行道式的轉換關係，所以散布者若是認為必要，隨時可以將 LGPL-2.1 授權的函式庫，改為 GPL-2.0 的授權型態向後散布，因此 VLC 的函式庫與程式碼可以透過 LGPL-2.1 獨立授權散布，卻也可以同時被包裹在 GPL-2.0 的專案中，整體以 GPL-2.0 來對外授權散布。<br /><br />這種的授權相容的型態，類似法國著名小說「小王子（註八）」裡所描述的情節，一條蟒蛇雖然吞了一整隻的大象，但是他人從外觀上，只能看到蟒蛇的外在形體，卻無法得知蟒蛇腹中存在著一隻大象的內在事實，相對地，寬鬆的 LGPL-2.1 函式庫被包裹在相對嚴格的 GPL-2.0 專案中，除非像 VLC 專案一樣有明確的授權說明文字，否則一般人很難清楚得知一個 GPL-2.0 授權的軟體專案中，存在著以 LGPL-2.1 等較寬鬆條款授權的函式庫與程式碼。<br /><br />根據這樣的邏輯，只要一份條款的授權內容相對嚴格，另外一份條款的授權內容相對寬鬆，兩份條款的授權內容也不相衝突，寬鬆條款授權的程式碼，就有機會以原始的授權狀態，被包含在嚴格條款授權的專案之中，而使用者對於整體專案來做觀察，只會大致看到那個較為嚴格的授權方式。舉例來說，除了 GPL-2.0 專案可以包含 LGPL-2.1 授權的函式庫之外，像 BSD、MIT 這類義務性規定寬鬆的授權條款，大都可以被其他相對嚴格的授權提款所包覆，因此 LGPL-2.1 專案可以包含 BSD-3-clasue 元件，而在 GPL-2.0 授權的專案中也可以利用 MIT 授權的元件。<br /><br />不過，相同的邏輯應用在 FFmpeg 專案的例子中，可能會有人感到疑惑：FFmpeg 中包含有 GPL-2.0 授權的程式碼，可是整體專案為何在聲明上，表彰其是以 LGPL-2.1 進行授權散布，而不是 GPL-2.0 呢？這是因為這些具有最佳化功能的額外元件，原則上並不屬於 FFmpeg 專案預設程式碼的一部份，這些 GPL-2.0 授權元件，可說是 FFmpeg 專案另外提供的強化功能。因此若開發者在沒有進行任何調整或啟動額外功能的狀況下，來直接應用 FFmpeg，這時候的 FFmpeg 專案程式碼仍然都是 LGPL-2.1 授權的，據此所開發出來的新軟體也因此保有適用非 LGPL-2.1 條款授權的彈性空間，然而，若開發者在後續應用上，啟動這些 GPL-2.0 授權元件，來最佳化 FFmpeg 的功能，便有機會讓整個 FFmpeg 後續的衍生專案，轉為 GPL-2.0 授權，這便導致新軟體必須適用 GPL-2.0 來授權散布。<br /><br />2、牛鷺居：不同授權條款同時並存的相容型態<br /><br />Firefox 專案就是屬於這種授權相容的型態，如同之前說明過的，MPL-2.0 條款本身就具有包容其他授權條款的特性，所以只要一份條款的授權規定不與 MPL-2.0 產生衝突，那麼就可以用來授權未包含 MPL-2.0 程式碼的檔案，而存在於 MPL-2.0 授權的專案中。<br /><br />在這種授權相容的態樣中，可以看到許多不同的授權條款存在於一個軟體專案中，這些條款不會包覆對方，而是彼此獨立，所以只要條款內容本身不會彼此干擾，即使二個不同元件、檔案的授權內容南轅北轍，也可以沒有問題地存在於一個軟體專案中，甚至不提供源碼的私有軟體授權條款，也可以存在於這類的相容型態裡。這種授權型態的寬廣包容，為軟體專案本身、也為其中個別元件帶來更多應用與發展的機會，就如同水牛龐大的身驅提供牛背鷺避免被天敵攻擊的屏障，而牛背鷺會啄食水牛身上的寄生蟲一樣，是彼此存在互利，但又不彼此侵犯的共生狀態。<br /><br />會形成這類相容型態的授權條款，除了 MPL-2.0、CDDL-1.0 之外，還包括了 BSD、MIT 以及 Apache-2.0 等義務規定相對寬鬆的 BSD 類授權條款。此外， LGPL-2.1 由於對於函式庫有著彈性的寬鬆規定，因此在符合其授權規則的利用方式下，LGPL-2.1 也是可以與許多其他授權條款共生在同一個軟體專案中。<br /><br /><strong>【所應用到元件的授權條款為判斷重點】</strong><br /><br />以上的說明要點，在於讓大家了解到，當利用自由開源專案開發新軟體的時候，了解專案整體授權模式雖然是重要的一環，但實際所擷取、應用到的個別元件，其授權態樣也必須要進一步去了解與掌握，尤其當開發者並非直接應用專案整體程式碼，而是擷取部份元件或者開啟額外功能來利用的時候，就必須要注意個別元件授權內容所帶來的影響，如此才可以遵守正確的授權規定，又或者不會遺漏掉寬鬆授權條款所帶來的彈性運用空間。<br /><br />不過，筆者在此也提醒，本文所舉的三個實例，皆是有著清楚說明的開發專案，在實務上，有些專案並沒有特別說明或者特別標示這種元件授權差異的狀況，而僅是在下層元件目錄中或檔頭說明文字裡面，才有相關的標示與說明，因此在實際應用上，若是在專案整體的說明中沒有看到相關資訊的話，建議可以去查閱元件所在的源碼目錄層或個別檔案的檔頭說明文字，是否有授權相關的資訊，以清楚了解該元件的授權條款，並以正確的方式來應用自由開源軟體專案，與其中夾附的個別元件。<br /><br />----<br /><br />註一：這種改變專案授權方式的過程，就是所謂的「重新授權 (re-license)」。關於重新授權的詳細說明請參見：葛冬梅、林誠夏，自由軟體專案授權方式的轉換（下）：新版本號另以更改後的授權方式釋出，<a href="tw/legal-column-list/8219-2010-12-24-16-47-06.html">https://www.openfoundry.org/tw/legal-column-list/8219-2010-12-24-16-47-06</a>。<br /><br />註二：VLC專案的授權資訊請見：<a href="https://www.videolan.org/legal.html">https://www.videolan.org/legal.html</a>，<a href="https://www.videolan.org/press/2007-1.html">https://www.videolan.org/press/2007-1.html</a>；許多專案開發者在 2011 年的 VideoLAN Dev Days 2011 中同意將核心引擎中的函式庫改為 LGPL-2.1，相關新聞稿請見：<a href="https://www.videolan.org/press/lgpl.html">https://www.videolan.org/press/lgpl.html</a>，<a href="https://www.videolan.org/press/lgpl-libvlc.html">https://www.videolan.org/press/lgpl-libvlc.html</a>。<br /><br />註三：新聞稿網址：<a href="https://www.videolan.org/press/lgpl.html">https://www.videolan.org/press/lgpl.html</a>。<br /><br />註四：FFmpeg 的授權說明請參見：<a href="https://www.ffmpeg.org/legal.html">https://www.ffmpeg.org/legal.html</a>。<br /><br />註五：屬於 BSD 類的授權條款請見：<a href="tw/foss-license-category/27-license.html">https://www.openfoundry.org/tw/foss-license-category</a>。<br /><br />註六：Firefox 瀏覽器的著作權人為 Mozilla Foundation（簡稱 Mozilla 基金會），Mozilla 基金會對於轄下的自由開源軟體專案有著統一的授權政策，內容請參閱：<a href="https://www.mozilla.org/MPL/license-policy.html">https://www.mozilla.org/MPL/license-policy.html</a>。這個授權政策頁面顯示，與 MPL-2.0 相容的授權模式包括了：(1) CC0 (Creative Commons Zero)；(2) 不受到著作權保護的公共財軟體 (Other Public Domain dedications)；(3) MIT與新款 BSD； (4) 類似 MIT/BSD 這類義務規定叫為寬鬆的其他條款；(5) Apache-2.0 ；(6) 以及 GPL/MPL 雙重授權模式。此外，在可以區分清楚且採用動態連結的利用方式下，LGPL-2.1 及其之前版本授權的元件，也是可以應用到 Firefox 專案中。<br /><br />註七：關於授權條款相容性的詳細說明，請參閱：林珈宏，從 Copyleft 看自由開源軟體授權相容性，<a href="tw/legal-column-list/8710-introducing-license-compatibility-via-copyleft-mechanism.html">https://www.openfoundry.org/tw/legal-column-list/8710-introducing-license-compatibility-via-copyleft-mechanism</a>。<br /><br />註八：「小王子（法語：Le Petit Prince；英語：The Little Prince）」小說由法國作家安東尼．聖修伯里（Antoine de Saint-Exupery，又譯「安托萬．德．聖-埃克蘇佩里」）所著，關於這本小說的介紹可以參閱維基百科條目：<a href="https://zh.wikipedia.org/wiki/%E5%B0%8F%E7%8E%8B%E5%AD%90">https://zh.wikipedia.org/wiki/%E5%B0%8F%E7%8E%8B%E5%AD%90</a>。關於蛇吞象的圖片可以參見下列網頁的內容：<a href="https://unmomentoplease.blogspot.tw/2011/09/my-favorite-antoine-marie-jean-baptiste.html">https://unmomentoplease.blogspot.tw/2011/09/my-favorite-antoine-marie-jean-baptiste.html</a>。
+			<!-- Show relate article -->
+				<!-- end -->
+		<div class="article_note">
+		<!-- Add tags use metakey, and show OSSF Newsletter tag: OSSFNL+NUM-->
+		<br><br> <hr style='border: 1px dashed #D2DADB;'><b>OSSF Newsletter&nbsp;:</b>&nbsp;<a href='previous-issue%3Ftask=view&amp;id=839.html'>第 229 期 淺析自由開源軟體專案與其個別元件授權條款之差異</a><br><b>Tags:</b>&nbsp;<a href='index.php%3Foption=com_search&amp;Itemid=58&amp;searchphrase=exact_meta&amp;ordering=newest&amp;searchword=project.html'>project</a>,&nbsp;&nbsp;<a href='index.php%3Foption=com_search&amp;Itemid=58&amp;searchphrase=exact_meta&amp;ordering=newest&amp;searchword=&#32;component.html'> component</a>,&nbsp;&nbsp;<a href='index.php%3Foption=com_search&amp;Itemid=58&amp;searchphrase=exact_meta&amp;ordering=newest&amp;searchword=&#32;license&#32;difference.html'> license difference</a>,&nbsp;&nbsp;<a href='index.php%3Foption=com_search&amp;Itemid=58&amp;searchphrase=exact_meta&amp;ordering=newest&amp;searchword=&#32;元件.html'> 元件</a>,&nbsp;&nbsp;<a href='index.php%3Foption=com_search&amp;Itemid=58&amp;searchphrase=exact_meta&amp;ordering=newest&amp;searchword=&#32;授權差異.html'> 授權差異</a>,&nbsp;&nbsp;<a href='index.php%3Foption=com_search&amp;Itemid=58&amp;searchphrase=exact_meta&amp;ordering=newest&amp;searchword=&#32;VLC.html'> VLC</a>,&nbsp;&nbsp;<a href='index.php%3Foption=com_search&amp;Itemid=58&amp;searchphrase=exact_meta&amp;ordering=newest&amp;searchword=&#32;FFmpeg.html'> FFmpeg</a>,&nbsp;&nbsp;<a href='index.php%3Foption=com_search&amp;Itemid=58&amp;searchphrase=exact_meta&amp;ordering=newest&amp;searchword=&#32;Firefox.html'> Firefox</a>,&nbsp;&nbsp;<a href='index.php%3Foption=com_search&amp;Itemid=58&amp;searchphrase=exact_meta&amp;ordering=newest&amp;searchword=&#32;授權相容性.html'> 授權相容性</a>,&nbsp;&nbsp;<a href='index.php%3Foption=com_search&amp;Itemid=58&amp;searchphrase=exact_meta&amp;ordering=newest&amp;searchword=&#32;蛇吞象.html'> 蛇吞象</a>,&nbsp;&nbsp;<a href='index.php%3Foption=com_search&amp;Itemid=58&amp;searchphrase=exact_meta&amp;ordering=newest&amp;searchword=&#32;牛鷺居.html'> 牛鷺居</a>,&nbsp;&nbsp;				<!-- End -->
+					<br>
+					<b>Category: </b><a href="en/legal-column-list.html">				Legal Column					</a>				</div>
+			 <!-- AddThis Button BEGIN ID 3001 is the front page article -->
+     			<br><br>
+       <div class="addthis_toolbox addthis_default_style addthis_32x32_style">
+       <a class="addthis_button_preferred_1"></a>
+       <a class="addthis_button_preferred_2"></a>
+       <a class="addthis_button_preferred_3"></a>
+       <a class="addthis_button_preferred_4"></a>
+       <a class="addthis_button_compact"></a>
+       <a class="addthis_counter addthis_bubble_style"></a>
+       </div>
+       <script type="text/javascript">var addthis_config = {"data_track_clickback":true};</script>
+       <script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js#pubid=openfoundry"></script>
+       <!-- AddThis Button END -->
+     <br>
+		<div class="totop" ><a class="rt-totop" href="index.php%3Foption=com_content&amp;task=view&amp;id=9097&amp;Itemid=4%3Bisletter=1.html#" style="outline: medium none;">↑ Top</a></div>
+            <!-- AddThis Button END -->
+
+			</div>
+</div>
+
+		                            </div>
+									<div class="clear"></div>
+								</div>
+								<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+							</div>
+							</div>
+                                                    </div>
+                                            </div>
+                                <div class="rt-grid-3 rt-pull-9">
+                <div id="rt-sidebar-a">
+                                    <div class="square4">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<ul class="menu"><li class="item56"><a href="en/previous-issue.html"><span>Previous Issue</span></a></li><li class="item55"><a href="en/about-newsletter.html"><span>About Newsletter</span></a></li></ul>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<ul class="menu"><li class="item115"><a href="en/foss-news.html"><span>FOSS News</span></a></li><li class="item141"><a href="en/case-job.html"><span>Case and Jobs</span></a></li></ul>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+        	                <div class="square1">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-title"><h2 class="title">Special</h2></div>
+						<div class="clear"></div>
+		                						<div class="module-content">
+		                	<ul class="menu"><li class="item37"><a href="en/tech-column.html"><span>Tech Column</span></a></li><li class="item40"><a href="en/foss-programs.html"><span>FOSS Programs</span></a></li><li class="item35"><a href="en/legal-column.html"><span>Legal Column</span></a></li><li class="item154"><a href="en/foss-forum.html"><span>FOSS Forum</span></a></li><li class="item162"><a href="en/enterprise-application.html"><span>Enterprise Application</span></a></li><li class="item44"><a href="en/foss-projects.html"><span>FOSS Projects</span></a></li></ul>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		                <div class="square1">
+                    <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<p style="text-align: center;"><a href="news%3Fformat=feed&amp;type=rss" target="_black"><img src="images/M_images/news-rss-feed.png" border="0" /></a><br /><a href="https://www.openfoundry.org/rss-feed/Newsletter" target="_black"><img src="images/M_images/newsletter-rss-feed.png" border="0" /></a></p>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+                </div>
+		
+                </div>
+            </div>
+
+                    <div class="clear"></div>
+                </div>
+            </div>
+																													</div>
+										<div id="rt-copyright">
+						<div class="rt-grid-12 rt-alpha rt-omega">
+                        <div class="rt-block">
+				<div class="rt-module-surround">
+					<div class="rt-module-top"><div class="rt-module-top2"><div class="rt-module-top3"></div></div></div>
+					<div class="rt-module-inner">
+	                							<div class="module-content">
+		                	<span class="nowrap">Open Source Software Foundry</span><span class="nowrap">‧</span><span class="nowrap"> </span><span class="nowrap">Best  Viewed with IE7.0 or Firefox2.0 above, 1024x768 Resolution. </span><strong>E-Mail</strong>：<a href="mailto:contact@openfoundry.org">contact@openfoundry.org</a> <br /><strong>Address</strong>：No.128, Sec.2, Academia Rd., Institute of Information Science, Academia Sinica, Nangang District, Taipei City 11529, Taiwan (R.O.C). <br /><a href="en/privacy-policy.html">Privacy Policy</a>. <a href="en/terms-of-use.html">Terms-of-use</a> <span style="position: relative; top: 8px; margin-top: -8px;"> <a href="about/8101.html"><img src="images/M_images/rss-feed-all.png" border="0" /></a></span>						</div>
+					</div>
+					<div class="rt-module-bottom"><div class="rt-module-bottom2"><div class="rt-module-bottom3"></div></div></div>
+				</div>
+            </div>
+        	
+</div>
+						<div class="clear"></div>
+					</div>
+					<div class="rt-footer-bottom-wrap"><div class="rt-footer-bottom"><div class="rt-footer-bottom2"><div class="rt-footer-bottom3"></div></div></div></div>
+									</div></div></div>
+				<div class="rt-surround-bottom"><div class="rt-surround-bottom2"><div class="rt-surround-bottom3"></div></div></div>
+							</div>
+		</div>
+		<!--
+		<script id="aptureScript">
+						(function (){var a=document.createElement("script");a.defer="true";a.src="http://www.apture.com/js/apture.js?siteToken=vsJttrn";document.getElementsByTagName("head")[0].appendChild(a);})();
+     </script>
+-->
+
+<!-- Piwik -->
+<!-- 			<script type="text/javascript">
+			  var _paq = _paq || [];
+		  _paq.push(["trackPageView"]);
+		  _paq.push(["enableLinkTracking"]);
+
+		    (function() {
+			        var u=(("https:" == document.location.protocol) ? "https" : "https") + "://www.openfoundry.org/piwik/";
+				    _paq.push(["setTrackerUrl", u+"piwik.php"]);
+				    _paq.push(["setSiteId", "1"]);
+				        var d=document, g=d.createElement("script"), s=d.getElementsByTagName("script")[0]; g.type="text/javascript";
+				        g.defer=true; g.async=true; g.src=u+"piwik.js"; s.parentNode.insertBefore(g,s);
+					  })();
+		  </script> -->
+<!-- End Piwik Code -->
+	</body>
+</html>
